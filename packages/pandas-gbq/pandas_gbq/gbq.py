@@ -410,6 +410,7 @@ class GbqConnector(object):
         from concurrent.futures import TimeoutError
         from google.auth.exceptions import RefreshError
         from google.cloud import bigquery
+        import pandas
 
         job_config = {
             "query": {
@@ -494,6 +495,11 @@ class GbqConnector(object):
             query_reply.result()
         except self.http_error as ex:
             self.process_http_error(ex)
+
+        # Avoid attempting to download results from DML queries, which have no
+        # destination.
+        if query_reply.destination is None:
+            return pandas.DataFrame()
 
         rows_iter = self.client.list_rows(
             query_reply.destination, max_results=max_results

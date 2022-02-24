@@ -32,18 +32,23 @@ def mock_get_credentials_no_project(*args, **kwargs):
     return mock_credentials, None
 
 
-@pytest.fixture(autouse=True)
-def default_bigquery_client(mock_bigquery_client):
+@pytest.fixture
+def mock_query_job():
     mock_query = mock.create_autospec(google.cloud.bigquery.QueryJob)
     mock_query.job_id = "some-random-id"
     mock_query.state = "DONE"
+    return mock_query
+
+
+@pytest.fixture(autouse=True)
+def default_bigquery_client(mock_bigquery_client, mock_query_job):
     mock_rows = mock.create_autospec(google.cloud.bigquery.table.RowIterator)
     mock_rows.total_rows = 1
 
     mock_rows.__iter__.return_value = [(1,)]
-    mock_query.result.return_value = mock_rows
+    mock_query_job.result.return_value = mock_rows
     mock_bigquery_client.list_rows.return_value = mock_rows
-    mock_bigquery_client.query.return_value = mock_query
+    mock_bigquery_client.query.return_value = mock_query_job
 
     # Mock out SELECT 1 query results.
     def generate_schema():
@@ -718,3 +723,15 @@ def test_read_gbq_with_list_rows_error_translates_exception(
 )
 def test_query_response_bytes(size_in_bytes, formatted_text):
     assert gbq.GbqConnector.sizeof_fmt(size_in_bytes) == formatted_text
+
+
+def test_run_query_with_dml_query(mock_bigquery_client, mock_query_job):
+    """
+    Don't attempt to download results from a DML query / query with no results.
+
+    https://github.com/googleapis/python-bigquery-pandas/issues/481
+    """
+    connector = _make_connector()
+    type(mock_query_job).destination = mock.PropertyMock(return_value=None)
+    connector.run_query("UPDATE tablename SET value = '';")
+    mock_bigquery_client.list_rows.assert_not_called()

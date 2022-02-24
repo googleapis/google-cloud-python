@@ -5,8 +5,10 @@
 import collections
 import datetime
 import decimal
+import random
 
 import db_dtypes
+from google.cloud import bigquery
 import pandas
 import pandas.testing
 import pytest
@@ -19,6 +21,21 @@ QueryTestCase = collections.namedtuple(
     ["query", "expected", "use_bqstorage_apis"],
     defaults=[None, None, {True, False}],
 )
+
+
+@pytest.fixture
+def writable_table(
+    bigquery_client: bigquery.Client, project_id: str, random_dataset: bigquery.Dataset
+):
+    full_table_id = f"{project_id}.{random_dataset.dataset_id}.writable_table_{random.randrange(1_000_000_000)}"
+    table = bigquery.Table(full_table_id)
+    table.schema = [
+        bigquery.SchemaField("field1", "STRING"),
+        bigquery.SchemaField("field2", "INTEGER"),
+    ]
+    bigquery_client.create_table(table)
+    yield full_table_id
+    bigquery_client.delete_table(full_table_id)
 
 
 @pytest.mark.parametrize(["use_bqstorage_api"], [(True,), (False,)])
@@ -605,3 +622,16 @@ ORDER BY row_num ASC
     )
     result = read_gbq(query, use_bqstorage_api=use_bqstorage_api)
     pandas.testing.assert_frame_equal(result, expected, check_index_type=False)
+
+
+def test_dml_query(read_gbq, writable_table: str):
+    query = f"""
+    UPDATE `{writable_table}`
+    SET field1 = NULL
+    WHERE field1 = 'string';
+    UPDATE `{writable_table}`
+    SET field2 = NULL
+    WHERE field2 < 0;
+    """
+    result = read_gbq(query)
+    assert result is not None
