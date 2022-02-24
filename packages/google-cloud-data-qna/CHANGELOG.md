@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.6.0](https://github.com/googleapis/python-data-qna/compare/v0.5.1...v0.6.0) (2022-02-03)
+
+
+### Features
+
+* add api key support ([#116](https://github.com/googleapis/python-data-qna/issues/116)) ([2c259e7](https://github.com/googleapis/python-data-qna/commit/2c259e7e0fb1b77fc139e7b6bb060925b79f27d9))
+
+
+### Bug Fixes
+
+* resolve DuplicateCredentialArgs error when using credentials_file ([9fe2aed](https://github.com/googleapis/python-data-qna/commit/9fe2aedd2fac78ef4771bb9c4615c5af2606d4d1))
+
 ### [0.5.1](https://www.github.com/googleapis/python-data-qna/compare/v0.5.0...v0.5.1) (2021-11-01)
 
 
