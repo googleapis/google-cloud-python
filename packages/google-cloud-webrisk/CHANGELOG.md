@@ -3,6 +3,23 @@
 [PyPI History][1]
 
 [1]: https://pypi.org/project/google-cloud-webrisk/#history
+## [1.7.0](https://github.com/googleapis/python-webrisk/compare/v1.6.1...v1.7.0) (2022-02-11)
+
+
+### Features
+
+* add api key support ([#156](https://github.com/googleapis/python-webrisk/issues/156)) ([0a5ebb7](https://github.com/googleapis/python-webrisk/commit/0a5ebb7be318622f018e52cee88079bcd67de2de))
+
+
+### Bug Fixes
+
+* resolve DuplicateCredentialArgs error when using credentials_file ([35d62de](https://github.com/googleapis/python-webrisk/commit/35d62deb0689bc286051d7d1ce1c2297317f40ac))
+
+
+### Documentation
+
+* add generated snippets ([#161](https://github.com/googleapis/python-webrisk/issues/161)) ([101d3fd](https://github.com/googleapis/python-webrisk/commit/101d3fdeb735aecc4aa6a21502ede35ee4b2d3f2))
+
 ### [1.6.1](https://www.github.com/googleapis/python-webrisk/compare/v1.6.0...v1.6.1) (2021-11-01)
 
 
