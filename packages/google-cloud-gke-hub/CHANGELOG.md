@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/googleapis/python-gke-hub/compare/v1.3.0...v1.4.0) (2022-02-24)
+
+
+### Features
+
+* added support for k8s_version field ([#117](https://github.com/googleapis/python-gke-hub/issues/117)) ([5228f98](https://github.com/googleapis/python-gke-hub/commit/5228f988f8ac27db790db42366301e2d3c62385a))
+
 ## [1.3.0](https://github.com/googleapis/python-gke-hub/compare/v1.2.0...v1.3.0) (2022-02-11)
 
 
