@@ -228,6 +228,29 @@ class TranscoderServiceAsyncClient:
     ) -> resources.Job:
         r"""Creates a job in the specified region.
 
+        .. code-block::
+
+            from google.cloud.video import transcoder_v1
+
+            def sample_create_job():
+                # Create a client
+                client = transcoder_v1.TranscoderServiceClient()
+
+                # Initialize request argument(s)
+                job = transcoder_v1.Job()
+                job.template_id = "template_id_value"
+
+                request = transcoder_v1.CreateJobRequest(
+                    parent="parent_value",
+                    job=job,
+                )
+
+                # Make the request
+                response = client.create_job(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.video.transcoder_v1.types.CreateJobRequest, dict]):
                 The request object. Request message for
@@ -305,6 +328,26 @@ class TranscoderServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListJobsAsyncPager:
         r"""Lists jobs in the specified region.
+
+        .. code-block::
+
+            from google.cloud.video import transcoder_v1
+
+            def sample_list_jobs():
+                # Create a client
+                client = transcoder_v1.TranscoderServiceClient()
+
+                # Initialize request argument(s)
+                request = transcoder_v1.ListJobsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_jobs(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.video.transcoder_v1.types.ListJobsRequest, dict]):
@@ -386,6 +429,25 @@ class TranscoderServiceAsyncClient:
     ) -> resources.Job:
         r"""Returns the job data.
 
+        .. code-block::
+
+            from google.cloud.video import transcoder_v1
+
+            def sample_get_job():
+                # Create a client
+                client = transcoder_v1.TranscoderServiceClient()
+
+                # Initialize request argument(s)
+                request = transcoder_v1.GetJobRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_job(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.video.transcoder_v1.types.GetJobRequest, dict]):
                 The request object. Request message for
@@ -455,6 +517,22 @@ class TranscoderServiceAsyncClient:
     ) -> None:
         r"""Deletes a job.
 
+        .. code-block::
+
+            from google.cloud.video import transcoder_v1
+
+            def sample_delete_job():
+                # Create a client
+                client = transcoder_v1.TranscoderServiceClient()
+
+                # Initialize request argument(s)
+                request = transcoder_v1.DeleteJobRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_job(request=request)
+
         Args:
             request (Union[google.cloud.video.transcoder_v1.types.DeleteJobRequest, dict]):
                 The request object. Request message for
@@ -520,6 +598,26 @@ class TranscoderServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.JobTemplate:
         r"""Creates a job template in the specified region.
+
+        .. code-block::
+
+            from google.cloud.video import transcoder_v1
+
+            def sample_create_job_template():
+                # Create a client
+                client = transcoder_v1.TranscoderServiceClient()
+
+                # Initialize request argument(s)
+                request = transcoder_v1.CreateJobTemplateRequest(
+                    parent="parent_value",
+                    job_template_id="job_template_id_value",
+                )
+
+                # Make the request
+                response = client.create_job_template(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.video.transcoder_v1.types.CreateJobTemplateRequest, dict]):
@@ -614,6 +712,26 @@ class TranscoderServiceAsyncClient:
     ) -> pagers.ListJobTemplatesAsyncPager:
         r"""Lists job templates in the specified region.
 
+        .. code-block::
+
+            from google.cloud.video import transcoder_v1
+
+            def sample_list_job_templates():
+                # Create a client
+                client = transcoder_v1.TranscoderServiceClient()
+
+                # Initialize request argument(s)
+                request = transcoder_v1.ListJobTemplatesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_job_templates(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.video.transcoder_v1.types.ListJobTemplatesRequest, dict]):
                 The request object. Request message for
@@ -694,6 +812,25 @@ class TranscoderServiceAsyncClient:
     ) -> resources.JobTemplate:
         r"""Returns the job template data.
 
+        .. code-block::
+
+            from google.cloud.video import transcoder_v1
+
+            def sample_get_job_template():
+                # Create a client
+                client = transcoder_v1.TranscoderServiceClient()
+
+                # Initialize request argument(s)
+                request = transcoder_v1.GetJobTemplateRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_job_template(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.video.transcoder_v1.types.GetJobTemplateRequest, dict]):
                 The request object. Request message for
@@ -763,6 +900,22 @@ class TranscoderServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a job template.
+
+        .. code-block::
+
+            from google.cloud.video import transcoder_v1
+
+            def sample_delete_job_template():
+                # Create a client
+                client = transcoder_v1.TranscoderServiceClient()
+
+                # Initialize request argument(s)
+                request = transcoder_v1.DeleteJobTemplateRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_job_template(request=request)
 
         Args:
             request (Union[google.cloud.video.transcoder_v1.types.DeleteJobTemplateRequest, dict]):
