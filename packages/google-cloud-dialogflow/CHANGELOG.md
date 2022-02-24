@@ -4,6 +4,27 @@
 
 [1]: https://pypi.org/project/dialogflow/#history
 
+## [2.12.0](https://github.com/googleapis/python-dialogflow/compare/v2.11.0...v2.12.0) (2022-02-11)
+
+
+### Features
+
+* add api key support ([#468](https://github.com/googleapis/python-dialogflow/issues/468)) ([0d6bebd](https://github.com/googleapis/python-dialogflow/commit/0d6bebd2c28d46bfd06d42da30778d3b55a1878e))
+* **v2:** add conversation process config ([#464](https://github.com/googleapis/python-dialogflow/issues/464)) ([921861a](https://github.com/googleapis/python-dialogflow/commit/921861a46b48ce16d87308ee96f9ab58171489e6))
+* **v2:** add ImportDocument ([921861a](https://github.com/googleapis/python-dialogflow/commit/921861a46b48ce16d87308ee96f9ab58171489e6))
+* **v2:** add SuggestSmartReplies ([921861a](https://github.com/googleapis/python-dialogflow/commit/921861a46b48ce16d87308ee96f9ab58171489e6))
+
+
+### Bug Fixes
+
+* resolve DuplicateCredentialArgs error when using credentials_file ([74a54c6](https://github.com/googleapis/python-dialogflow/commit/74a54c6fd9d6e03741206ff1e95939123362cab9))
+
+
+### Documentation
+
+* add generated snippets ([#473](https://github.com/googleapis/python-dialogflow/issues/473)) ([c0c7789](https://github.com/googleapis/python-dialogflow/commit/c0c7789e58af7206493fdef99341367ab16f95bd))
+* fix typos in UPGRADING.md ([#472](https://github.com/googleapis/python-dialogflow/issues/472)) ([62bbb7f](https://github.com/googleapis/python-dialogflow/commit/62bbb7fa38889380501eda4f8b6ccfe96fde0db5))
+
 ## [2.11.0](https://github.com/googleapis/python-dialogflow/compare/v2.10.0...v2.11.0) (2022-01-13)
 
 
