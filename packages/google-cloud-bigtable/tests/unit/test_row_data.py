@@ -893,7 +893,10 @@ def test_RRRM_build_updated_request(rrrm_data):
     row_filter = RowSampleFilter(0.33)
     last_scanned_key = b"row_key25"
     request = _ReadRowsRequestPB(
-        filter=row_filter.to_pb(), rows_limit=8, table_name=TABLE_NAME
+        filter=row_filter.to_pb(),
+        rows_limit=8,
+        table_name=TABLE_NAME,
+        app_profile_id="app-profile-id-1",
     )
     request.rows.row_ranges.append(row_range1.get_range_kwargs())
 
@@ -902,7 +905,10 @@ def test_RRRM_build_updated_request(rrrm_data):
     result = request_manager.build_updated_request()
 
     expected_result = _ReadRowsRequestPB(
-        table_name=TABLE_NAME, filter=row_filter.to_pb(), rows_limit=6
+        table_name=TABLE_NAME,
+        filter=row_filter.to_pb(),
+        rows_limit=6,
+        app_profile_id="app-profile-id-1",
     )
 
     row_range1 = types.RowRange(
