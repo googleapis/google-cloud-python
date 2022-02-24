@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-redis/#history
 
+## [2.7.0](https://github.com/googleapis/python-redis/compare/v2.6.0...v2.7.0) (2022-02-24)
+
+
+### Features
+
+* add secondary_ip_range field ([#157](https://github.com/googleapis/python-redis/issues/157)) ([dd310d5](https://github.com/googleapis/python-redis/commit/dd310d56b6b92fecae5bc537161fd8057d82b5b5))
+
 ## [2.6.0](https://github.com/googleapis/python-redis/compare/v2.5.1...v2.6.0) (2022-02-03)
 
 
