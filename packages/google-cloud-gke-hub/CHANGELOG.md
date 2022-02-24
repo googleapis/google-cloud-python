@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.3.0](https://github.com/googleapis/python-gke-hub/compare/v1.2.0...v1.3.0) (2022-02-11)
+
+
+### Features
+
+* add `kubernetes_resource` field ([#107](https://github.com/googleapis/python-gke-hub/issues/107)) ([a887e18](https://github.com/googleapis/python-gke-hub/commit/a887e1897ef34f0bb701b4ad9ecd9559f523648a))
+* add api key support ([#110](https://github.com/googleapis/python-gke-hub/issues/110)) ([e2f7a2c](https://github.com/googleapis/python-gke-hub/commit/e2f7a2ca422d9f14964eff8794ee000c4a1efaee))
+
+
+### Bug Fixes
+
+* resolve DuplicateCredentialArgs error when using credentials_file ([2e4c08f](https://github.com/googleapis/python-gke-hub/commit/2e4c08f3fc9b6217b24f380cc5cc4a4bf2fb3e60))
+
+
+### Documentation
+
+* update API annotation ([a887e18](https://github.com/googleapis/python-gke-hub/commit/a887e1897ef34f0bb701b4ad9ecd9559f523648a))
+
 ## [1.2.0](https://www.github.com/googleapis/python-gke-hub/compare/v1.1.0...v1.2.0) (2021-10-14)
 
 
