@@ -9,6 +9,7 @@ common = gcp.CommonTemplates()
 templated_files = common.py_library()
 s.move(templated_files / ".kokoro")
 s.move(templated_files / ".trampolinerc")
+s.move(templated_files / ".github")
 s.move(templated_files / "docs", excludes=[
   "multiprocessing.rst", 
   "conf.py"
