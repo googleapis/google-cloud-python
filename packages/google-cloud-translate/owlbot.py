@@ -46,8 +46,10 @@ for library in s.get_staging_dirs(default_version):
 s.remove_staging_dirs()
 
 s.replace(".coveragerc",
-    """google/cloud/translate/__init__.py""",
-    """google/__init__.py
+    """omit =
+    google/cloud/translate/__init__.py""",
+    """omit =
+    google/__init__.py
     google/cloud/__init__.py
     google/cloud/translate/__init__.py""",
 )
