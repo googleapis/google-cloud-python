@@ -1,5 +1,17 @@
 # Changelog
 
+### [0.17.1](https://github.com/googleapis/python-bigquery-pandas/compare/v0.17.0...v0.17.1) (2022-02-24)
+
+
+### Bug Fixes
+
+* avoid `TypeError` when executing DML statements with `read_gbq` ([#483](https://github.com/googleapis/python-bigquery-pandas/issues/483)) ([e9f0e3f](https://github.com/googleapis/python-bigquery-pandas/commit/e9f0e3f73f597530b8cf87324b9c4b0b54a79812))
+
+
+### Documentation
+
+* document additional breaking change in 0.17.0 ([#477](https://github.com/googleapis/python-bigquery-pandas/issues/477)) ([a858c80](https://github.com/googleapis/python-bigquery-pandas/commit/a858c80a37dc94707a41a6d865af2bc91543328a))
+
 ## [0.17.0](https://github.com/googleapis/python-bigquery-pandas/compare/v0.16.0...v0.17.0) (2022-01-19)
 
 
