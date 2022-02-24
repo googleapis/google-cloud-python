@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-websecurityscanner/#history
 
+## [1.7.0](https://github.com/googleapis/python-websecurityscanner/compare/v1.6.1...v1.7.0) (2022-02-15)
+
+
+### Features
+
+* add api key support ([#136](https://github.com/googleapis/python-websecurityscanner/issues/136)) ([7f1c666](https://github.com/googleapis/python-websecurityscanner/commit/7f1c666ea384c81ad3fe50a0c5926c2f1ec8e9bf))
+
+
+### Bug Fixes
+
+* resolve DuplicateCredentialArgs error when using credentials_file ([61f51e6](https://github.com/googleapis/python-websecurityscanner/commit/61f51e651d7e91c669a38ac130162262320ccbf6))
+
 ### [1.6.1](https://www.github.com/googleapis/python-websecurityscanner/compare/v1.6.0...v1.6.1) (2021-11-01)
 
 
