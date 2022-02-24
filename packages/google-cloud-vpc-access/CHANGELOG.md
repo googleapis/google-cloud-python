@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.0](https://github.com/googleapis/python-vpc-access/compare/v1.2.1...v1.3.0) (2022-02-11)
+
+
+### Features
+
+* add api key support ([#76](https://github.com/googleapis/python-vpc-access/issues/76)) ([ff52eb5](https://github.com/googleapis/python-vpc-access/commit/ff52eb59ead8c561e057d29d15b6592033b65258))
+
+
+### Bug Fixes
+
+* resolve DuplicateCredentialArgs error when using credentials_file ([6d4115c](https://github.com/googleapis/python-vpc-access/commit/6d4115c40217796cc5797be421889704777edb8d))
+
 ### [1.2.1](https://www.github.com/googleapis/python-vpc-access/compare/v1.2.0...v1.2.1) (2021-11-01)
 
 
