@@ -45,11 +45,7 @@ setuptools.setup(
         # Until this issue is closed
         # https://github.com/googleapis/google-cloud-python/issues/10566
         "google-api-core[grpc] >= 1.28.0, <3.0.0dev",
-        # Require proto-plus >= 1.20.1 which includes
-        # a fix to mitigate collisions in field names, specifically
-        # the `mapping` term which is a reserved term in proto-plus.
-        # https://github.com/googleapis/proto-plus-python/pull/295
-        "proto-plus >= 1.20.1",
+        "proto-plus >= 1.20.3",
     ),
     python_requires=">=3.6",
     classifiers=[
