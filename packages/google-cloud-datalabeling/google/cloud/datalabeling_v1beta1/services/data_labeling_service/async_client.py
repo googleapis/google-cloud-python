@@ -263,6 +263,26 @@ class DataLabelingServiceAsyncClient:
         r"""Creates dataset. If success return a Dataset
         resource.
 
+
+        .. code-block::
+
+            from google.cloud import datalabeling_v1beta1
+
+            def sample_create_dataset():
+                # Create a client
+                client = datalabeling_v1beta1.DataLabelingServiceClient()
+
+                # Initialize request argument(s)
+                request = datalabeling_v1beta1.CreateDatasetRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.create_dataset(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.datalabeling_v1beta1.types.CreateDatasetRequest, dict]):
                 The request object. Request message for CreateDataset.
@@ -341,6 +361,25 @@ class DataLabelingServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dataset.Dataset:
         r"""Gets dataset by resource name.
+
+        .. code-block::
+
+            from google.cloud import datalabeling_v1beta1
+
+            def sample_get_dataset():
+                # Create a client
+                client = datalabeling_v1beta1.DataLabelingServiceClient()
+
+                # Initialize request argument(s)
+                request = datalabeling_v1beta1.GetDatasetRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_dataset(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.datalabeling_v1beta1.types.GetDatasetRequest, dict]):
@@ -425,6 +464,27 @@ class DataLabelingServiceAsyncClient:
     ) -> pagers.ListDatasetsAsyncPager:
         r"""Lists datasets under a project. Pagination is
         supported.
+
+
+        .. code-block::
+
+            from google.cloud import datalabeling_v1beta1
+
+            def sample_list_datasets():
+                # Create a client
+                client = datalabeling_v1beta1.DataLabelingServiceClient()
+
+                # Initialize request argument(s)
+                request = datalabeling_v1beta1.ListDatasetsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_datasets(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.datalabeling_v1beta1.types.ListDatasetsRequest, dict]):
@@ -524,6 +584,22 @@ class DataLabelingServiceAsyncClient:
     ) -> None:
         r"""Deletes a dataset by resource name.
 
+        .. code-block::
+
+            from google.cloud import datalabeling_v1beta1
+
+            def sample_delete_dataset():
+                # Create a client
+                client = datalabeling_v1beta1.DataLabelingServiceClient()
+
+                # Initialize request argument(s)
+                request = datalabeling_v1beta1.DeleteDatasetRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_dataset(request=request)
+
         Args:
             request (Union[google.cloud.datalabeling_v1beta1.types.DeleteDatasetRequest, dict]):
                 The request object. Request message for DeleteDataset.
@@ -602,6 +678,30 @@ class DataLabelingServiceAsyncClient:
         running operation running on it. For example, no
         labeling task (also long running operation) can be
         started while importing is still ongoing. Vice versa.
+
+
+        .. code-block::
+
+            from google.cloud import datalabeling_v1beta1
+
+            def sample_import_data():
+                # Create a client
+                client = datalabeling_v1beta1.DataLabelingServiceClient()
+
+                # Initialize request argument(s)
+                request = datalabeling_v1beta1.ImportDataRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.import_data(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.datalabeling_v1beta1.types.ImportDataRequest, dict]):
@@ -695,6 +795,30 @@ class DataLabelingServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Exports data and annotations from dataset.
+
+        .. code-block::
+
+            from google.cloud import datalabeling_v1beta1
+
+            def sample_export_data():
+                # Create a client
+                client = datalabeling_v1beta1.DataLabelingServiceClient()
+
+                # Initialize request argument(s)
+                request = datalabeling_v1beta1.ExportDataRequest(
+                    name="name_value",
+                    annotated_dataset="annotated_dataset_value",
+                )
+
+                # Make the request
+                operation = client.export_data(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.datalabeling_v1beta1.types.ExportDataRequest, dict]):
@@ -818,6 +942,26 @@ class DataLabelingServiceAsyncClient:
         r"""Gets a data item in a dataset by resource name. This
         API can be called after data are imported into dataset.
 
+
+        .. code-block::
+
+            from google.cloud import datalabeling_v1beta1
+
+            def sample_get_data_item():
+                # Create a client
+                client = datalabeling_v1beta1.DataLabelingServiceClient()
+
+                # Initialize request argument(s)
+                request = datalabeling_v1beta1.GetDataItemRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_data_item(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.datalabeling_v1beta1.types.GetDataItemRequest, dict]):
                 The request object. Request message for GetDataItem.
@@ -900,6 +1044,27 @@ class DataLabelingServiceAsyncClient:
         r"""Lists data items in a dataset. This API can be called
         after data are imported into dataset. Pagination is
         supported.
+
+
+        .. code-block::
+
+            from google.cloud import datalabeling_v1beta1
+
+            def sample_list_data_items():
+                # Create a client
+                client = datalabeling_v1beta1.DataLabelingServiceClient()
+
+                # Initialize request argument(s)
+                request = datalabeling_v1beta1.ListDataItemsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_data_items(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.datalabeling_v1beta1.types.ListDataItemsRequest, dict]):
@@ -999,6 +1164,25 @@ class DataLabelingServiceAsyncClient:
     ) -> dataset.AnnotatedDataset:
         r"""Gets an annotated dataset by resource name.
 
+        .. code-block::
+
+            from google.cloud import datalabeling_v1beta1
+
+            def sample_get_annotated_dataset():
+                # Create a client
+                client = datalabeling_v1beta1.DataLabelingServiceClient()
+
+                # Initialize request argument(s)
+                request = datalabeling_v1beta1.GetAnnotatedDatasetRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_annotated_dataset(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.datalabeling_v1beta1.types.GetAnnotatedDatasetRequest, dict]):
                 The request object. Request message for
@@ -1085,6 +1269,27 @@ class DataLabelingServiceAsyncClient:
     ) -> pagers.ListAnnotatedDatasetsAsyncPager:
         r"""Lists annotated datasets for a dataset. Pagination is
         supported.
+
+
+        .. code-block::
+
+            from google.cloud import datalabeling_v1beta1
+
+            def sample_list_annotated_datasets():
+                # Create a client
+                client = datalabeling_v1beta1.DataLabelingServiceClient()
+
+                # Initialize request argument(s)
+                request = datalabeling_v1beta1.ListAnnotatedDatasetsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_annotated_datasets(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.datalabeling_v1beta1.types.ListAnnotatedDatasetsRequest, dict]):
@@ -1187,6 +1392,22 @@ class DataLabelingServiceAsyncClient:
     ) -> None:
         r"""Deletes an annotated dataset by resource name.
 
+        .. code-block::
+
+            from google.cloud import datalabeling_v1beta1
+
+            def sample_delete_annotated_dataset():
+                # Create a client
+                client = datalabeling_v1beta1.DataLabelingServiceClient()
+
+                # Initialize request argument(s)
+                request = datalabeling_v1beta1.DeleteAnnotatedDatasetRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_annotated_dataset(request=request)
+
         Args:
             request (Union[google.cloud.datalabeling_v1beta1.types.DeleteAnnotatedDatasetRequest, dict]):
                 The request object. Request message for
@@ -1232,6 +1453,40 @@ class DataLabelingServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Starts a labeling task for image. The type of image
         labeling task is configured by feature in the request.
+
+
+        .. code-block::
+
+            from google.cloud import datalabeling_v1beta1
+
+            def sample_label_image():
+                # Create a client
+                client = datalabeling_v1beta1.DataLabelingServiceClient()
+
+                # Initialize request argument(s)
+                image_classification_config = datalabeling_v1beta1.ImageClassificationConfig()
+                image_classification_config.annotation_spec_set = "annotation_spec_set_value"
+
+                basic_config = datalabeling_v1beta1.HumanAnnotationConfig()
+                basic_config.instruction = "instruction_value"
+                basic_config.annotated_dataset_display_name = "annotated_dataset_display_name_value"
+
+                request = datalabeling_v1beta1.LabelImageRequest(
+                    image_classification_config=image_classification_config,
+                    parent="parent_value",
+                    basic_config=basic_config,
+                    feature="SEGMENTATION",
+                )
+
+                # Make the request
+                operation = client.label_image(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.datalabeling_v1beta1.types.LabelImageRequest, dict]):
@@ -1336,6 +1591,40 @@ class DataLabelingServiceAsyncClient:
         r"""Starts a labeling task for video. The type of video
         labeling task is configured by feature in the request.
 
+
+        .. code-block::
+
+            from google.cloud import datalabeling_v1beta1
+
+            def sample_label_video():
+                # Create a client
+                client = datalabeling_v1beta1.DataLabelingServiceClient()
+
+                # Initialize request argument(s)
+                video_classification_config = datalabeling_v1beta1.VideoClassificationConfig()
+                video_classification_config.annotation_spec_set_configs.annotation_spec_set = "annotation_spec_set_value"
+
+                basic_config = datalabeling_v1beta1.HumanAnnotationConfig()
+                basic_config.instruction = "instruction_value"
+                basic_config.annotated_dataset_display_name = "annotated_dataset_display_name_value"
+
+                request = datalabeling_v1beta1.LabelVideoRequest(
+                    video_classification_config=video_classification_config,
+                    parent="parent_value",
+                    basic_config=basic_config,
+                    feature="EVENT",
+                )
+
+                # Make the request
+                operation = client.label_video(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.datalabeling_v1beta1.types.LabelVideoRequest, dict]):
                 The request object. Request message for LabelVideo.
@@ -1438,6 +1727,40 @@ class DataLabelingServiceAsyncClient:
         r"""Starts a labeling task for text. The type of text
         labeling task is configured by feature in the request.
 
+
+        .. code-block::
+
+            from google.cloud import datalabeling_v1beta1
+
+            def sample_label_text():
+                # Create a client
+                client = datalabeling_v1beta1.DataLabelingServiceClient()
+
+                # Initialize request argument(s)
+                text_classification_config = datalabeling_v1beta1.TextClassificationConfig()
+                text_classification_config.annotation_spec_set = "annotation_spec_set_value"
+
+                basic_config = datalabeling_v1beta1.HumanAnnotationConfig()
+                basic_config.instruction = "instruction_value"
+                basic_config.annotated_dataset_display_name = "annotated_dataset_display_name_value"
+
+                request = datalabeling_v1beta1.LabelTextRequest(
+                    text_classification_config=text_classification_config,
+                    parent="parent_value",
+                    basic_config=basic_config,
+                    feature="TEXT_ENTITY_EXTRACTION",
+                )
+
+                # Make the request
+                operation = client.label_text(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.datalabeling_v1beta1.types.LabelTextRequest, dict]):
                 The request object. Request message for LabelText.
@@ -1539,6 +1862,26 @@ class DataLabelingServiceAsyncClient:
         r"""Gets an example by resource name, including both data
         and annotation.
 
+
+        .. code-block::
+
+            from google.cloud import datalabeling_v1beta1
+
+            def sample_get_example():
+                # Create a client
+                client = datalabeling_v1beta1.DataLabelingServiceClient()
+
+                # Initialize request argument(s)
+                request = datalabeling_v1beta1.GetExampleRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_example(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.datalabeling_v1beta1.types.GetExampleRequest, dict]):
                 The request object. Request message for GetExample
@@ -1632,6 +1975,27 @@ class DataLabelingServiceAsyncClient:
     ) -> pagers.ListExamplesAsyncPager:
         r"""Lists examples in an annotated dataset. Pagination is
         supported.
+
+
+        .. code-block::
+
+            from google.cloud import datalabeling_v1beta1
+
+            def sample_list_examples():
+                # Create a client
+                client = datalabeling_v1beta1.DataLabelingServiceClient()
+
+                # Initialize request argument(s)
+                request = datalabeling_v1beta1.ListExamplesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_examples(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.datalabeling_v1beta1.types.ListExamplesRequest, dict]):
@@ -1735,6 +2099,26 @@ class DataLabelingServiceAsyncClient:
         r"""Creates an annotation spec set by providing a set of
         labels.
 
+
+        .. code-block::
+
+            from google.cloud import datalabeling_v1beta1
+
+            def sample_create_annotation_spec_set():
+                # Create a client
+                client = datalabeling_v1beta1.DataLabelingServiceClient()
+
+                # Initialize request argument(s)
+                request = datalabeling_v1beta1.CreateAnnotationSpecSetRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.create_annotation_spec_set(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.datalabeling_v1beta1.types.CreateAnnotationSpecSetRequest, dict]):
                 The request object. Request message for
@@ -1819,6 +2203,25 @@ class DataLabelingServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> annotation_spec_set.AnnotationSpecSet:
         r"""Gets an annotation spec set by resource name.
+
+        .. code-block::
+
+            from google.cloud import datalabeling_v1beta1
+
+            def sample_get_annotation_spec_set():
+                # Create a client
+                client = datalabeling_v1beta1.DataLabelingServiceClient()
+
+                # Initialize request argument(s)
+                request = datalabeling_v1beta1.GetAnnotationSpecSetRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_annotation_spec_set(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.datalabeling_v1beta1.types.GetAnnotationSpecSetRequest, dict]):
@@ -1908,6 +2311,27 @@ class DataLabelingServiceAsyncClient:
     ) -> pagers.ListAnnotationSpecSetsAsyncPager:
         r"""Lists annotation spec sets for a project. Pagination
         is supported.
+
+
+        .. code-block::
+
+            from google.cloud import datalabeling_v1beta1
+
+            def sample_list_annotation_spec_sets():
+                # Create a client
+                client = datalabeling_v1beta1.DataLabelingServiceClient()
+
+                # Initialize request argument(s)
+                request = datalabeling_v1beta1.ListAnnotationSpecSetsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_annotation_spec_sets(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.datalabeling_v1beta1.types.ListAnnotationSpecSetsRequest, dict]):
@@ -2010,6 +2434,22 @@ class DataLabelingServiceAsyncClient:
     ) -> None:
         r"""Deletes an annotation spec set by resource name.
 
+        .. code-block::
+
+            from google.cloud import datalabeling_v1beta1
+
+            def sample_delete_annotation_spec_set():
+                # Create a client
+                client = datalabeling_v1beta1.DataLabelingServiceClient()
+
+                # Initialize request argument(s)
+                request = datalabeling_v1beta1.DeleteAnnotationSpecSetRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_annotation_spec_set(request=request)
+
         Args:
             request (Union[google.cloud.datalabeling_v1beta1.types.DeleteAnnotationSpecSetRequest, dict]):
                 The request object. Request message for
@@ -2085,6 +2525,30 @@ class DataLabelingServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Creates an instruction for how data should be
         labeled.
+
+
+        .. code-block::
+
+            from google.cloud import datalabeling_v1beta1
+
+            def sample_create_instruction():
+                # Create a client
+                client = datalabeling_v1beta1.DataLabelingServiceClient()
+
+                # Initialize request argument(s)
+                request = datalabeling_v1beta1.CreateInstructionRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                operation = client.create_instruction(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.datalabeling_v1beta1.types.CreateInstructionRequest, dict]):
@@ -2176,6 +2640,25 @@ class DataLabelingServiceAsyncClient:
     ) -> instruction.Instruction:
         r"""Gets an instruction by resource name.
 
+        .. code-block::
+
+            from google.cloud import datalabeling_v1beta1
+
+            def sample_get_instruction():
+                # Create a client
+                client = datalabeling_v1beta1.DataLabelingServiceClient()
+
+                # Initialize request argument(s)
+                request = datalabeling_v1beta1.GetInstructionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_instruction(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.datalabeling_v1beta1.types.GetInstructionRequest, dict]):
                 The request object. Request message for GetInstruction.
@@ -2259,6 +2742,27 @@ class DataLabelingServiceAsyncClient:
     ) -> pagers.ListInstructionsAsyncPager:
         r"""Lists instructions for a project. Pagination is
         supported.
+
+
+        .. code-block::
+
+            from google.cloud import datalabeling_v1beta1
+
+            def sample_list_instructions():
+                # Create a client
+                client = datalabeling_v1beta1.DataLabelingServiceClient()
+
+                # Initialize request argument(s)
+                request = datalabeling_v1beta1.ListInstructionsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_instructions(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.datalabeling_v1beta1.types.ListInstructionsRequest, dict]):
@@ -2359,6 +2863,22 @@ class DataLabelingServiceAsyncClient:
     ) -> None:
         r"""Deletes an instruction object by resource name.
 
+        .. code-block::
+
+            from google.cloud import datalabeling_v1beta1
+
+            def sample_delete_instruction():
+                # Create a client
+                client = datalabeling_v1beta1.DataLabelingServiceClient()
+
+                # Initialize request argument(s)
+                request = datalabeling_v1beta1.DeleteInstructionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_instruction(request=request)
+
         Args:
             request (Union[google.cloud.datalabeling_v1beta1.types.DeleteInstructionRequest, dict]):
                 The request object. Request message for
@@ -2433,6 +2953,26 @@ class DataLabelingServiceAsyncClient:
     ) -> evaluation.Evaluation:
         r"""Gets an evaluation by resource name (to search, use
         [projects.evaluations.search][google.cloud.datalabeling.v1beta1.DataLabelingService.SearchEvaluations]).
+
+
+        .. code-block::
+
+            from google.cloud import datalabeling_v1beta1
+
+            def sample_get_evaluation():
+                # Create a client
+                client = datalabeling_v1beta1.DataLabelingServiceClient()
+
+                # Initialize request argument(s)
+                request = datalabeling_v1beta1.GetEvaluationRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_evaluation(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.datalabeling_v1beta1.types.GetEvaluationRequest, dict]):
@@ -2519,6 +3059,27 @@ class DataLabelingServiceAsyncClient:
         r"""Searches
         [evaluations][google.cloud.datalabeling.v1beta1.Evaluation]
         within a project.
+
+
+        .. code-block::
+
+            from google.cloud import datalabeling_v1beta1
+
+            def sample_search_evaluations():
+                # Create a client
+                client = datalabeling_v1beta1.DataLabelingServiceClient()
+
+                # Initialize request argument(s)
+                request = datalabeling_v1beta1.SearchEvaluationsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.search_evaluations(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.datalabeling_v1beta1.types.SearchEvaluationsRequest, dict]):
@@ -2654,6 +3215,27 @@ class DataLabelingServiceAsyncClient:
         ground truth and prediction(s) for a single input.
         Search by providing an evaluation ID.
 
+
+        .. code-block::
+
+            from google.cloud import datalabeling_v1beta1
+
+            def sample_search_example_comparisons():
+                # Create a client
+                client = datalabeling_v1beta1.DataLabelingServiceClient()
+
+                # Initialize request argument(s)
+                request = datalabeling_v1beta1.SearchExampleComparisonsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.search_example_comparisons(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.datalabeling_v1beta1.types.SearchExampleComparisonsRequest, dict]):
                 The request object. Request message of
@@ -2737,6 +3319,25 @@ class DataLabelingServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> evaluation_job.EvaluationJob:
         r"""Creates an evaluation job.
+
+        .. code-block::
+
+            from google.cloud import datalabeling_v1beta1
+
+            def sample_create_evaluation_job():
+                # Create a client
+                client = datalabeling_v1beta1.DataLabelingServiceClient()
+
+                # Initialize request argument(s)
+                request = datalabeling_v1beta1.CreateEvaluationJobRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.create_evaluation_job(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.datalabeling_v1beta1.types.CreateEvaluationJobRequest, dict]):
@@ -2829,6 +3430,25 @@ class DataLabelingServiceAsyncClient:
 
         If you want to change any other aspect of the evaluation job,
         you must delete the job and create a new one.
+
+
+        .. code-block::
+
+            from google.cloud import datalabeling_v1beta1
+
+            def sample_update_evaluation_job():
+                # Create a client
+                client = datalabeling_v1beta1.DataLabelingServiceClient()
+
+                # Initialize request argument(s)
+                request = datalabeling_v1beta1.UpdateEvaluationJobRequest(
+                )
+
+                # Make the request
+                response = client.update_evaluation_job(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.datalabeling_v1beta1.types.UpdateEvaluationJobRequest, dict]):
@@ -2923,6 +3543,25 @@ class DataLabelingServiceAsyncClient:
     ) -> evaluation_job.EvaluationJob:
         r"""Gets an evaluation job by resource name.
 
+        .. code-block::
+
+            from google.cloud import datalabeling_v1beta1
+
+            def sample_get_evaluation_job():
+                # Create a client
+                client = datalabeling_v1beta1.DataLabelingServiceClient()
+
+                # Initialize request argument(s)
+                request = datalabeling_v1beta1.GetEvaluationJobRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_evaluation_job(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.datalabeling_v1beta1.types.GetEvaluationJobRequest, dict]):
                 The request object. Request message for
@@ -3010,6 +3649,23 @@ class DataLabelingServiceAsyncClient:
         r"""Pauses an evaluation job. Pausing an evaluation job that is
         already in a ``PAUSED`` state is a no-op.
 
+
+        .. code-block::
+
+            from google.cloud import datalabeling_v1beta1
+
+            def sample_pause_evaluation_job():
+                # Create a client
+                client = datalabeling_v1beta1.DataLabelingServiceClient()
+
+                # Initialize request argument(s)
+                request = datalabeling_v1beta1.PauseEvaluationJobRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.pause_evaluation_job(request=request)
+
         Args:
             request (Union[google.cloud.datalabeling_v1beta1.types.PauseEvaluationJobRequest, dict]):
                 The request object. Request message for
@@ -3078,6 +3734,23 @@ class DataLabelingServiceAsyncClient:
         job can't be resumed. Resuming a running or scheduled
         evaluation job is a no-op.
 
+
+        .. code-block::
+
+            from google.cloud import datalabeling_v1beta1
+
+            def sample_resume_evaluation_job():
+                # Create a client
+                client = datalabeling_v1beta1.DataLabelingServiceClient()
+
+                # Initialize request argument(s)
+                request = datalabeling_v1beta1.ResumeEvaluationJobRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.resume_evaluation_job(request=request)
+
         Args:
             request (Union[google.cloud.datalabeling_v1beta1.types.ResumeEvaluationJobRequest, dict]):
                 The request object. Request message ResumeEvaluationJob.
@@ -3142,6 +3815,22 @@ class DataLabelingServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Stops and deletes an evaluation job.
+
+        .. code-block::
+
+            from google.cloud import datalabeling_v1beta1
+
+            def sample_delete_evaluation_job():
+                # Create a client
+                client = datalabeling_v1beta1.DataLabelingServiceClient()
+
+                # Initialize request argument(s)
+                request = datalabeling_v1beta1.DeleteEvaluationJobRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_evaluation_job(request=request)
 
         Args:
             request (Union[google.cloud.datalabeling_v1beta1.types.DeleteEvaluationJobRequest, dict]):
@@ -3219,6 +3908,27 @@ class DataLabelingServiceAsyncClient:
     ) -> pagers.ListEvaluationJobsAsyncPager:
         r"""Lists all evaluation jobs within a project with
         possible filters. Pagination is supported.
+
+
+        .. code-block::
+
+            from google.cloud import datalabeling_v1beta1
+
+            def sample_list_evaluation_jobs():
+                # Create a client
+                client = datalabeling_v1beta1.DataLabelingServiceClient()
+
+                # Initialize request argument(s)
+                request = datalabeling_v1beta1.ListEvaluationJobsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_evaluation_jobs(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.datalabeling_v1beta1.types.ListEvaluationJobsRequest, dict]):
