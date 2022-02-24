@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.6.0](https://github.com/googleapis/python-workflows/compare/v1.5.0...v1.6.0) (2022-02-15)
+
+
+### Features
+
+* add api key support ([#127](https://github.com/googleapis/python-workflows/issues/127)) ([9db415f](https://github.com/googleapis/python-workflows/commit/9db415fdcc3ac7372e07b060a06751d0c8804ba8))
+
+
+### Bug Fixes
+
+* **deps:** remove unused dependency libcst ([#133](https://github.com/googleapis/python-workflows/issues/133)) ([bfadb79](https://github.com/googleapis/python-workflows/commit/bfadb7946d7960996a7d371c5b60b47057009eb5))
+* resolve DuplicateCredentialArgs error when using credentials_file ([57614ee](https://github.com/googleapis/python-workflows/commit/57614eeac59b09bcbbb8bdf50369934c73802ae3))
+
 ## [1.5.0](https://www.github.com/googleapis/python-workflows/compare/v1.4.1...v1.5.0) (2021-11-05)
 
 
