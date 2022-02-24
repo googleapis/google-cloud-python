@@ -294,10 +294,16 @@ class ResourceOptions(proto.Message):
             ``apiextensions/v1`` for CustomResourceDefinition resources.
             This option should be set for clusters with Kubernetes
             apiserver versions <1.16.
+        k8s_version (str):
+            Optional. Major version of the Kubernetes cluster. This is
+            only used to determine which version to use for the
+            CustomResourceDefinition resources,
+            ``apiextensions/v1beta1`` or\ ``apiextensions/v1``.
     """
 
     connect_version = proto.Field(proto.STRING, number=1,)
     v1beta1_crd = proto.Field(proto.BOOL, number=2,)
+    k8s_version = proto.Field(proto.STRING, number=3,)
 
 
 class ResourceManifest(proto.Message):
@@ -346,6 +352,7 @@ class OnPremCluster(proto.Message):
         resource_link (str):
             Immutable. Self-link of the GCP resource for
             the GKE On-Prem cluster. For example:
+
             //gkeonprem.googleapis.com/projects/my-project/locations/us-west1-a/vmwareClusters/my-cluster
             //gkeonprem.googleapis.com/projects/my-project/locations/us-west1-a/bareMetalClusters/my-cluster
         cluster_missing (bool):
