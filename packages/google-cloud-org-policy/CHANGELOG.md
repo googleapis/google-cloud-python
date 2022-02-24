@@ -1,5 +1,24 @@
 # Changelog
 
+## [1.3.0](https://github.com/googleapis/python-org-policy/compare/v1.2.1...v1.3.0) (2022-02-18)
+
+
+### Features
+
+* add api key support ([#113](https://github.com/googleapis/python-org-policy/issues/113)) ([90fa145](https://github.com/googleapis/python-org-policy/commit/90fa1459bfce8d8980fd8fd1767b8e83026e48a9))
+* Deprecates AlternativePolicySpec ([#119](https://github.com/googleapis/python-org-policy/issues/119)) ([10dde6e](https://github.com/googleapis/python-org-policy/commit/10dde6e51311a72f29c5efe0e375d751543c0211))
+
+
+### Bug Fixes
+
+* remove tests directory from wheel ([#121](https://github.com/googleapis/python-org-policy/issues/121)) ([90439ab](https://github.com/googleapis/python-org-policy/commit/90439ab7d48c8e6cd679bee3b5fb071bb69776f4))
+* resolve DuplicateCredentialArgs error when using credentials_file ([0dd6187](https://github.com/googleapis/python-org-policy/commit/0dd618763d322b9bec56fd27e62a0dfad4fc5e06))
+
+
+### Documentation
+
+* add generated snippets  ([#118](https://github.com/googleapis/python-org-policy/issues/118)) ([dae6c2c](https://github.com/googleapis/python-org-policy/commit/dae6c2cc9b3b32ddf751aabd4b0d690003f24bef))
+
 ### [1.2.1](https://www.github.com/googleapis/python-org-policy/compare/v1.2.0...v1.2.1) (2021-11-01)
 
 
