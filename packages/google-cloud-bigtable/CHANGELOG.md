@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+### [2.5.2](https://github.com/googleapis/python-bigtable/compare/v2.5.1...v2.5.2) (2022-02-24)
+
+
+### Bug Fixes
+
+* Pass app_profile_id when building updated request ([#512](https://github.com/googleapis/python-bigtable/issues/512)) ([2f8ba7a](https://github.com/googleapis/python-bigtable/commit/2f8ba7a4801b17b5afb6180a7ace1327a2d05a52))
+
 ### [2.5.1](https://github.com/googleapis/python-bigtable/compare/v2.5.0...v2.5.1) (2022-02-17)
 
 
