@@ -979,6 +979,7 @@ def test_get_instance(request_type, transport: str = "grpc"):
             alternative_location_id="alternative_location_id_value",
             redis_version="redis_version_value",
             reserved_ip_range="reserved_ip_range_value",
+            secondary_ip_range="secondary_ip_range_value",
             host="host_value",
             port=453,
             current_location_id="current_location_id_value",
@@ -1011,6 +1012,7 @@ def test_get_instance(request_type, transport: str = "grpc"):
     assert response.alternative_location_id == "alternative_location_id_value"
     assert response.redis_version == "redis_version_value"
     assert response.reserved_ip_range == "reserved_ip_range_value"
+    assert response.secondary_ip_range == "secondary_ip_range_value"
     assert response.host == "host_value"
     assert response.port == 453
     assert response.current_location_id == "current_location_id_value"
@@ -1073,6 +1075,7 @@ async def test_get_instance_async(
                 alternative_location_id="alternative_location_id_value",
                 redis_version="redis_version_value",
                 reserved_ip_range="reserved_ip_range_value",
+                secondary_ip_range="secondary_ip_range_value",
                 host="host_value",
                 port=453,
                 current_location_id="current_location_id_value",
@@ -1106,6 +1109,7 @@ async def test_get_instance_async(
     assert response.alternative_location_id == "alternative_location_id_value"
     assert response.redis_version == "redis_version_value"
     assert response.reserved_ip_range == "reserved_ip_range_value"
+    assert response.secondary_ip_range == "secondary_ip_range_value"
     assert response.host == "host_value"
     assert response.port == 453
     assert response.current_location_id == "current_location_id_value"

@@ -71,7 +71,7 @@ class NodeInfo(proto.Message):
 
 
 class Instance(proto.Message):
-    r"""A Google Cloud Redis instance.
+    r"""A Memorystore for Redis instance.
 
     Attributes:
         name (str):
@@ -129,6 +129,13 @@ class Instance(proto.Message):
             provided, the service will choose an unused /29 block, for
             example, 10.0.0.0/29 or 192.168.0.0/29. For
             READ_REPLICAS_ENABLED the default block size is /28.
+        secondary_ip_range (str):
+            Optional. Additional IP range for node placement. Required
+            when enabling read replicas on an existing instance. For
+            DIRECT_PEERING mode value must be a CIDR range of size /28,
+            or "auto". For PRIVATE_SERVICE_ACCESS mode value must be the
+            name of an allocated address range associated with the
+            private service access connection, or "auto".
         host (str):
             Output only. Hostname or IP address of the
             exposed Redis endpoint used by  clients to
@@ -229,8 +236,8 @@ class Instance(proto.Message):
             readonly redis endpoint. Standard tier only.
             Write requests should target 'port'.
         read_replicas_mode (google.cloud.redis_v1beta1.types.Instance.ReadReplicasMode):
-            Optional. Read replica mode. Can only be
-            specified when trying to create the instance.
+            Optional. Read replicas mode for the instance. Defaults to
+            READ_REPLICAS_DISABLED.
         persistence_config (google.cloud.redis_v1beta1.types.PersistenceConfig):
             Optional. Persistence configuration
             parameters
@@ -279,6 +286,7 @@ class Instance(proto.Message):
     alternative_location_id = proto.Field(proto.STRING, number=5,)
     redis_version = proto.Field(proto.STRING, number=7,)
     reserved_ip_range = proto.Field(proto.STRING, number=9,)
+    secondary_ip_range = proto.Field(proto.STRING, number=30,)
     host = proto.Field(proto.STRING, number=10,)
     port = proto.Field(proto.INT32, number=11,)
     current_location_id = proto.Field(proto.STRING, number=12,)
