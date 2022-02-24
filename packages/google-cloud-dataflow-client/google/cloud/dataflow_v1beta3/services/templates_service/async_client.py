@@ -247,7 +247,7 @@ class TemplatesServiceAsyncClient:
         Returns:
             google.cloud.dataflow_v1beta3.types.Job:
                 Defines a job to be run by the Cloud
-                Dataflow service. nextID: 26
+                Dataflow service.
 
         """
         # Create or coerce a protobuf request object.
