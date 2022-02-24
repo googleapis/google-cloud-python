@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.2.1](https://github.com/googleapis/python-binary-authorization/compare/v1.2.0...v1.2.1) (2022-02-11)
+
+
+### Bug Fixes
+
+* resolve DuplicateCredentialArgs error when using credentials_file ([1f500f5](https://github.com/googleapis/python-binary-authorization/commit/1f500f506715e9028b98e7c42048aacc276fb9b4))
+
 ## [1.2.0](https://github.com/googleapis/python-binary-authorization/compare/v1.1.0...v1.2.0) (2022-01-25)
 
 
