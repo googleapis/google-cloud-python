@@ -1,5 +1,28 @@
 # Changelog
 
+## [1.3.0](https://github.com/googleapis/python-video-transcoder/compare/v1.2.1...v1.3.0) (2022-02-24)
+
+
+### Features
+
+* add api key support ([#127](https://github.com/googleapis/python-video-transcoder/issues/127)) ([ac6a403](https://github.com/googleapis/python-video-transcoder/commit/ac6a4031ac66a721d776c41885830023023f14f2)), closes [#140](https://github.com/googleapis/python-video-transcoder/issues/140)
+
+
+### Bug Fixes
+
+* **deps:** require proto-plus >= 1.20.3 ([ac6a403](https://github.com/googleapis/python-video-transcoder/commit/ac6a4031ac66a721d776c41885830023023f14f2))
+* Remove deprecated v1beta1 API that is no longer available ([#138](https://github.com/googleapis/python-video-transcoder/issues/138)) ([e8a85da](https://github.com/googleapis/python-video-transcoder/commit/e8a85da130a0b688167a1474c339c66af1c6760c))
+* rename mapping attribute of AudioStream to mapping_ ([c14695b](https://github.com/googleapis/python-video-transcoder/commit/c14695bc9070ec64a890c8f81af382165f5d04ea))
+* resolve DuplicateCredentialArgs error when using credentials_file ([6774bd3](https://github.com/googleapis/python-video-transcoder/commit/6774bd328f235894caf7343088c25cc2809d8932))
+* resolve issue where mapping attribute of AudioStream could not be set ([c14695b](https://github.com/googleapis/python-video-transcoder/commit/c14695bc9070ec64a890c8f81af382165f5d04ea))
+
+
+### Documentation
+
+* add generated snippets ([e8a85da](https://github.com/googleapis/python-video-transcoder/commit/e8a85da130a0b688167a1474c339c66af1c6760c))
+* **samples:** update samples to use mapping_ attribute of AudioStream ([#142](https://github.com/googleapis/python-video-transcoder/issues/142)) ([7fbc619](https://github.com/googleapis/python-video-transcoder/commit/7fbc61917562c269439828df82b474700c95ea23))
+* **samples:** add samples and tests for adding captions to a job ([#131](https://github.com/googleapis/python-video-transcoder/issues/131)) ([e30431f](https://github.com/googleapis/python-video-transcoder/commit/e30431fec7c15666afbb5bc975f7077389aac06d))
+
 ### [1.2.1](https://www.github.com/googleapis/python-video-transcoder/compare/v1.2.0...v1.2.1) (2021-11-04)
 
 
