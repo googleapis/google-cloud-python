@@ -15,46 +15,44 @@
 """OAuth 2.0 Authorization Flow
 
 This module provides integration with `requests-oauthlib`_ for running the
-`OAuth 2.0 Authorization Flow`_ and acquiring user credentials.
+`OAuth 2.0 Authorization Flow`_ and acquiring user credentials.  See
+`Using OAuth 2.0 to Access Google APIs`_ for an overview of OAuth 2.0
+authorization scenarios Google APIs support.
 
-Here's an example of using :class:`Flow` with the installed application
-authorization flow::
+Here's an example of using :class:`InstalledAppFlow`::
 
-    from google_auth_oauthlib.flow import Flow
+    from google_auth_oauthlib.flow import InstalledAppFlow
 
     # Create the flow using the client secrets file from the Google API
     # Console.
-    flow = Flow.from_client_secrets_file(
-        'path/to/client_secrets.json',
-        scopes=['profile', 'email'],
-        redirect_uri='urn:ietf:wg:oauth:2.0:oob')
+    flow = InstalledAppFlow.from_client_secrets_file(
+        'client_secrets.json',
+        scopes=['profile', 'email'])
 
-    # Tell the user to go to the authorization URL.
-    auth_url, _ = flow.authorization_url(prompt='consent')
-
-    print('Please go to this URL: {}'.format(auth_url))
-
-    # The user will get an authorization code. This code is used to get the
-    # access token.
-    code = input('Enter the authorization code: ')
-    flow.fetch_token(code=code)
+    flow.run_local_server()
 
     # You can use flow.credentials, or you can just get a requests session
     # using flow.authorized_session.
     session = flow.authorized_session()
-    print(session.get('https://www.googleapis.com/userinfo/v2/me').json())
 
-This particular flow can be handled entirely by using
-:class:`InstalledAppFlow`.
+    profile_info = session.get(
+        'https://www.googleapis.com/userinfo/v2/me').json()
+
+    print(profile_info)
+    # {'name': '...',  'email': '...', ...}
 
 .. _requests-oauthlib: http://requests-oauthlib.readthedocs.io/en/stable/
 .. _OAuth 2.0 Authorization Flow:
     https://tools.ietf.org/html/rfc6749#section-1.2
+.. _Using OAuth 2.0 to Access Google APIs:
+    https://developers.google.com/identity/protocols/oauth2
+
 """
 from base64 import urlsafe_b64encode
 import hashlib
 import json
 import logging
+import warnings
 
 try:
     from secrets import SystemRandom
@@ -72,6 +70,11 @@ import google_auth_oauthlib.helpers
 
 
 _LOGGER = logging.getLogger(__name__)
+_OOB_REDIRECT_URIS = [
+    "urn:ietf:wg:oauth:2.0:oob",
+    "urn:ietf:wg:oauth:2.0:oob:auto",
+    "oob",
+]
 
 
 class Flow(object):
@@ -211,6 +214,17 @@ class Flow(object):
 
     @redirect_uri.setter
     def redirect_uri(self, value):
+        if value in _OOB_REDIRECT_URIS:
+            warnings.warn(
+                "'{}' is an OOB redirect URI. The OAuth out-of-band (OOB) flow is deprecated. "
+                "New clients will be unable to use this flow starting on Feb 28, 2022. "
+                "This flow will be deprecated for all clients on Oct 3, 2022. "
+                "Migrate to an alternative flow. "
+                "See https://developers.googleblog.com/2022/02/making-oauth-flows-safer.html?m=1#disallowed-oob".format(
+                    value
+                ),
+                DeprecationWarning,
+            )
         self.oauth2session.redirect_uri = value
 
     def authorization_url(self, **kwargs):
@@ -325,9 +339,7 @@ class InstalledAppFlow(Flow):
     local development or applications that are installed on a desktop operating
     system.
 
-    This flow has two strategies: The console strategy provided by
-    :meth:`run_console` and the local server strategy provided by
-    :meth:`run_local_server`.
+    This flow uses a local server strategy provided by :meth:`run_local_server`.
 
     Example::
 
@@ -348,8 +360,8 @@ class InstalledAppFlow(Flow):
         # {'name': '...',  'email': '...', ...}
 
 
-    Note that these aren't the only two ways to accomplish the installed
-    application flow, they are just the most common ways. You can use the
+    Note that this isn't the only way to accomplish the installed
+    application flow, just one of the most common. You can use the
     :class:`Flow` class to perform the same flow with different methods of
     presenting the authorization URL to the user or obtaining the authorization
     response, such as using an embedded web view.
@@ -381,6 +393,15 @@ class InstalledAppFlow(Flow):
     ):
         """Run the flow using the console strategy.
 
+        .. deprecated:: 0.5.0
+          Use :meth:`run_local_server` instead.
+
+          The OAuth out-of-band (OOB) flow is deprecated. New clients will be unable to
+          use this flow starting on Feb 28, 2022. This flow will be deprecated
+          for all clients on Oct 3, 2022. Migrate to an alternative flow.
+
+          See https://developers.googleblog.com/2022/02/making-oauth-flows-safer.html?m=1#disallowed-oob"
+
         The console strategy instructs the user to open the authorization URL
         in their browser. Once the authorization is complete the authorization
         server will give the user a code. The user then must copy & paste this
@@ -399,6 +420,13 @@ class InstalledAppFlow(Flow):
                 for the user.
         """
         kwargs.setdefault("prompt", "consent")
+        warnings.warn(
+            "New clients will be unable to use `InstalledAppFlow.run_console` "
+            "starting on Feb 28, 2022. All clients will be unable to use this method starting on Oct 3, 2022. "
+            "Use `InstalledAppFlow.run_local_server` instead. For details on the OOB flow deprecation, "
+            "see https://developers.googleblog.com/2022/02/making-oauth-flows-safer.html?m=1#disallowed-oob",
+            DeprecationWarning,
+        )
 
         self.redirect_uri = self._OOB_REDIRECT_URI
 

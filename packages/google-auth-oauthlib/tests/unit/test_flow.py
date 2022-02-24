@@ -58,6 +58,20 @@ class TestFlow(object):
             == mock.sentinel.redirect_uri
         )
 
+    def test_from_client_secrets_file_with_oob_redirect_uri(self):
+        with pytest.deprecated_call():
+            instance = flow.Flow.from_client_secrets_file(
+                CLIENT_SECRETS_FILE,
+                scopes=mock.sentinel.scopes,
+                redirect_uri="urn:ietf:wg:oauth:2.0:oob",
+            )
+
+        assert (
+            instance.redirect_uri
+            == instance.oauth2session.redirect_uri
+            == "urn:ietf:wg:oauth:2.0:oob"
+        )
+
     def test_from_client_config_installed(self):
         client_config = {"installed": CLIENT_SECRETS_INFO["web"]}
         instance = flow.Flow.from_client_config(
@@ -286,7 +300,9 @@ class TestInstalledAppFlow(object):
     def test_run_console(self, input_mock, instance, mock_fetch_token):
         input_mock.return_value = mock.sentinel.code
         instance.code_verifier = "amanaplanacanalpanama"
-        credentials = instance.run_console()
+
+        with pytest.deprecated_call():
+            credentials = instance.run_console()
 
         assert credentials.token == mock.sentinel.access_token
         assert credentials._refresh_token == mock.sentinel.refresh_token
