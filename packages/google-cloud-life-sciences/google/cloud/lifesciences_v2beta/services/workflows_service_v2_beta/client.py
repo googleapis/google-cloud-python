@@ -416,8 +416,7 @@ class WorkflowsServiceV2BetaClient(metaclass=WorkflowsServiceV2BetaClientMeta):
         -  ``lifesciences.workflows.run``
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import lifesciences_v2beta
 

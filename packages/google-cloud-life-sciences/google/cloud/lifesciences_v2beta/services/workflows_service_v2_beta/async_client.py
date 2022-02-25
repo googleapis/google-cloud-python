@@ -234,7 +234,7 @@ class WorkflowsServiceV2BetaAsyncClient:
         -  ``lifesciences.workflows.run``
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import lifesciences_v2beta
 

@@ -10,8 +10,8 @@
           "shortName": "RunPipeline"
         }
       },
-      "file": "lifesciences_generated_lifesciences_v2beta_workflows_service_v2_beta_run_pipeline_async.py",
-      "regionTag": "lifesciences_generated_lifesciences_v2beta_WorkflowsServiceV2Beta_RunPipeline_async",
+      "file": "lifesciences_v2beta_generated_workflows_service_v2_beta_run_pipeline_async.py",
+      "regionTag": "lifesciences_v2beta_generated_WorkflowsServiceV2Beta_RunPipeline_async",
       "segments": [
         {
           "end": 47,
@@ -54,8 +54,8 @@
           "shortName": "RunPipeline"
         }
       },
-      "file": "lifesciences_generated_lifesciences_v2beta_workflows_service_v2_beta_run_pipeline_sync.py",
-      "regionTag": "lifesciences_generated_lifesciences_v2beta_WorkflowsServiceV2Beta_RunPipeline_sync",
+      "file": "lifesciences_v2beta_generated_workflows_service_v2_beta_run_pipeline_sync.py",
+      "regionTag": "lifesciences_v2beta_generated_WorkflowsServiceV2Beta_RunPipeline_sync",
       "segments": [
         {
           "end": 47,

@@ -23,13 +23,13 @@
 #   python3 -m pip install google-cloud-life-sciences
 
 
-# [START lifesciences_generated_lifesciences_v2beta_WorkflowsServiceV2Beta_RunPipeline_sync]
+# [START lifesciences_v2beta_generated_WorkflowsServiceV2Beta_RunPipeline_async]
 from google.cloud import lifesciences_v2beta
 
 
-def sample_run_pipeline():
+async def sample_run_pipeline():
     # Create a client
-    client = lifesciences_v2beta.WorkflowsServiceV2BetaClient()
+    client = lifesciences_v2beta.WorkflowsServiceV2BetaAsyncClient()
 
     # Initialize request argument(s)
     request = lifesciences_v2beta.RunPipelineRequest(
@@ -40,9 +40,9 @@ def sample_run_pipeline():
 
     print("Waiting for operation to complete...")
 
-    response = operation.result()
+    response = await operation.result()
 
     # Handle the response
     print(response)
 
-# [END lifesciences_generated_lifesciences_v2beta_WorkflowsServiceV2Beta_RunPipeline_sync]
+# [END lifesciences_v2beta_generated_WorkflowsServiceV2Beta_RunPipeline_async]
