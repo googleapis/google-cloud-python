@@ -23,7 +23,7 @@
 #   python3 -m pip install google-analytics-data
 
 
-# [START analyticsdata_generated_data_v1beta_BetaAnalyticsData_BatchRunPivotReports_sync]
+# [START analyticsdata_v1beta_generated_BetaAnalyticsData_BatchRunPivotReports_sync]
 from google.analytics import data_v1beta
 
 
@@ -41,4 +41,4 @@ def sample_batch_run_pivot_reports():
     # Handle the response
     print(response)
 
-# [END analyticsdata_generated_data_v1beta_BetaAnalyticsData_BatchRunPivotReports_sync]
+# [END analyticsdata_v1beta_generated_BetaAnalyticsData_BatchRunPivotReports_sync]

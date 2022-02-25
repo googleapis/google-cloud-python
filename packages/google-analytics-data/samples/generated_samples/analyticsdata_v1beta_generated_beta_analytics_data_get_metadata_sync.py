@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for RunReport
+# Snippet for GetMetadata
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,22 +23,23 @@
 #   python3 -m pip install google-analytics-data
 
 
-# [START analyticsdata_generated_data_v1beta_BetaAnalyticsData_RunReport_sync]
+# [START analyticsdata_v1beta_generated_BetaAnalyticsData_GetMetadata_sync]
 from google.analytics import data_v1beta
 
 
-def sample_run_report():
+def sample_get_metadata():
     # Create a client
     client = data_v1beta.BetaAnalyticsDataClient()
 
     # Initialize request argument(s)
-    request = data_v1beta.RunReportRequest(
+    request = data_v1beta.GetMetadataRequest(
+        name="name_value",
     )
 
     # Make the request
-    response = client.run_report(request=request)
+    response = client.get_metadata(request=request)
 
     # Handle the response
     print(response)
 
-# [END analyticsdata_generated_data_v1beta_BetaAnalyticsData_RunReport_sync]
+# [END analyticsdata_v1beta_generated_BetaAnalyticsData_GetMetadata_sync]

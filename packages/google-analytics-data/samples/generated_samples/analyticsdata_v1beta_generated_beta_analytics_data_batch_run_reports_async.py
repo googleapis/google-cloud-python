@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for BatchRunPivotReports
+# Snippet for BatchRunReports
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,22 +23,22 @@
 #   python3 -m pip install google-analytics-data
 
 
-# [START analyticsdata_generated_data_v1beta_BetaAnalyticsData_BatchRunPivotReports_async]
+# [START analyticsdata_v1beta_generated_BetaAnalyticsData_BatchRunReports_async]
 from google.analytics import data_v1beta
 
 
-async def sample_batch_run_pivot_reports():
+async def sample_batch_run_reports():
     # Create a client
     client = data_v1beta.BetaAnalyticsDataAsyncClient()
 
     # Initialize request argument(s)
-    request = data_v1beta.BatchRunPivotReportsRequest(
+    request = data_v1beta.BatchRunReportsRequest(
     )
 
     # Make the request
-    response = await client.batch_run_pivot_reports(request=request)
+    response = await client.batch_run_reports(request=request)
 
     # Handle the response
     print(response)
 
-# [END analyticsdata_generated_data_v1beta_BetaAnalyticsData_BatchRunPivotReports_async]
+# [END analyticsdata_v1beta_generated_BetaAnalyticsData_BatchRunReports_async]

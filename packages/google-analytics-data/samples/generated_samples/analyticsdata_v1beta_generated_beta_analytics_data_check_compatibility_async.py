@@ -23,22 +23,22 @@
 #   python3 -m pip install google-analytics-data
 
 
-# [START analyticsdata_generated_data_v1beta_BetaAnalyticsData_CheckCompatibility_sync]
+# [START analyticsdata_v1beta_generated_BetaAnalyticsData_CheckCompatibility_async]
 from google.analytics import data_v1beta
 
 
-def sample_check_compatibility():
+async def sample_check_compatibility():
     # Create a client
-    client = data_v1beta.BetaAnalyticsDataClient()
+    client = data_v1beta.BetaAnalyticsDataAsyncClient()
 
     # Initialize request argument(s)
     request = data_v1beta.CheckCompatibilityRequest(
     )
 
     # Make the request
-    response = client.check_compatibility(request=request)
+    response = await client.check_compatibility(request=request)
 
     # Handle the response
     print(response)
 
-# [END analyticsdata_generated_data_v1beta_BetaAnalyticsData_CheckCompatibility_sync]
+# [END analyticsdata_v1beta_generated_BetaAnalyticsData_CheckCompatibility_async]

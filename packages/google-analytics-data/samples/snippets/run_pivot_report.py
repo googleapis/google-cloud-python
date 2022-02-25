@@ -45,9 +45,7 @@ def run_pivot_report(property_id="YOUR-GA4-PROPERTY-ID"):
 
     request = RunPivotReportRequest(
         property=f"properties/{property_id}",
-        date_ranges=[
-            DateRange(start_date="2021-01-01", end_date="2021-01-30"),
-        ],
+        date_ranges=[DateRange(start_date="2021-01-01", end_date="2021-01-30")],
         pivots=[
             Pivot(
                 field_names=["country"],
@@ -70,10 +68,7 @@ def run_pivot_report(property_id="YOUR-GA4-PROPERTY-ID"):
             ),
         ],
         metrics=[Metric(name="sessions")],
-        dimensions=[
-            Dimension(name="country"),
-            Dimension(name="browser"),
-        ],
+        dimensions=[Dimension(name="country"), Dimension(name="browser")],
     )
     response = client.run_pivot_report(request)
     print_run_pivot_report_response(response)

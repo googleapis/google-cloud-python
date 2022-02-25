@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for RunRealtimeReport
+# Snippet for RunReport
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,22 +23,22 @@
 #   python3 -m pip install google-analytics-data
 
 
-# [START analyticsdata_generated_data_v1beta_BetaAnalyticsData_RunRealtimeReport_sync]
+# [START analyticsdata_v1beta_generated_BetaAnalyticsData_RunReport_sync]
 from google.analytics import data_v1beta
 
 
-def sample_run_realtime_report():
+def sample_run_report():
     # Create a client
     client = data_v1beta.BetaAnalyticsDataClient()
 
     # Initialize request argument(s)
-    request = data_v1beta.RunRealtimeReportRequest(
+    request = data_v1beta.RunReportRequest(
     )
 
     # Make the request
-    response = client.run_realtime_report(request=request)
+    response = client.run_report(request=request)
 
     # Handle the response
     print(response)
 
-# [END analyticsdata_generated_data_v1beta_BetaAnalyticsData_RunRealtimeReport_sync]
+# [END analyticsdata_v1beta_generated_BetaAnalyticsData_RunReport_sync]

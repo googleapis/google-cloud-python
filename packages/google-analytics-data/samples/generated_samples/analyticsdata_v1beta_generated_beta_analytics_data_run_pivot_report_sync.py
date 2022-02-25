@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for RunReport
+# Snippet for RunPivotReport
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,22 +23,22 @@
 #   python3 -m pip install google-analytics-data
 
 
-# [START analyticsdata_generated_data_v1beta_BetaAnalyticsData_RunReport_async]
+# [START analyticsdata_v1beta_generated_BetaAnalyticsData_RunPivotReport_sync]
 from google.analytics import data_v1beta
 
 
-async def sample_run_report():
+def sample_run_pivot_report():
     # Create a client
-    client = data_v1beta.BetaAnalyticsDataAsyncClient()
+    client = data_v1beta.BetaAnalyticsDataClient()
 
     # Initialize request argument(s)
-    request = data_v1beta.RunReportRequest(
+    request = data_v1beta.RunPivotReportRequest(
     )
 
     # Make the request
-    response = await client.run_report(request=request)
+    response = client.run_pivot_report(request=request)
 
     # Handle the response
     print(response)
 
-# [END analyticsdata_generated_data_v1beta_BetaAnalyticsData_RunReport_async]
+# [END analyticsdata_v1beta_generated_BetaAnalyticsData_RunPivotReport_sync]

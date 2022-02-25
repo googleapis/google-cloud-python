@@ -415,8 +415,7 @@ class BetaAnalyticsDataClient(metaclass=BetaAnalyticsDataClientMeta):
         criteria, such as country or event name.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import data_v1beta
 
@@ -489,8 +488,7 @@ class BetaAnalyticsDataClient(metaclass=BetaAnalyticsDataClientMeta):
         dissect your data.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import data_v1beta
 
@@ -560,8 +558,7 @@ class BetaAnalyticsDataClient(metaclass=BetaAnalyticsDataClientMeta):
         be for the same GA4 Property.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import data_v1beta
 
@@ -631,8 +628,7 @@ class BetaAnalyticsDataClient(metaclass=BetaAnalyticsDataClientMeta):
         reports must be for the same GA4 Property.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import data_v1beta
 
@@ -712,8 +708,7 @@ class BetaAnalyticsDataClient(metaclass=BetaAnalyticsDataClientMeta):
         such as ``country`` and ``totalUsers``.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import data_v1beta
 
@@ -816,8 +811,7 @@ class BetaAnalyticsDataClient(metaclass=BetaAnalyticsDataClientMeta):
         last 30 minutes.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import data_v1beta
 
@@ -896,8 +890,7 @@ class BetaAnalyticsDataClient(metaclass=BetaAnalyticsDataClientMeta):
         for Core reports.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import data_v1beta
 

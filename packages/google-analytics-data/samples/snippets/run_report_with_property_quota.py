@@ -44,9 +44,7 @@ def run_report_with_property_quota(property_id="YOUR-GA4-PROPERTY-ID"):
         property=f"properties/{property_id}",
         return_property_quota=True,
         dimensions=[Dimension(name="country")],
-        metrics=[
-            Metric(name="activeUsers"),
-        ],
+        metrics=[Metric(name="activeUsers")],
         date_ranges=[DateRange(start_date="7daysAgo", end_date="today")],
     )
     response = client.run_report(request)

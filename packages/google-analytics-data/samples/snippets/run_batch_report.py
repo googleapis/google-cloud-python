@@ -56,9 +56,7 @@ def run_batch_report(property_id="YOUR-GA4-PROPERTY-ID"):
                 date_ranges=[DateRange(start_date="2021-01-03", end_date="2021-01-09")],
             ),
             RunReportRequest(
-                dimensions=[
-                    Dimension(name="browser"),
-                ],
+                dimensions=[Dimension(name="browser")],
                 metrics=[Metric(name="activeUsers")],
                 date_ranges=[DateRange(start_date="2021-01-01", end_date="2021-01-31")],
             ),

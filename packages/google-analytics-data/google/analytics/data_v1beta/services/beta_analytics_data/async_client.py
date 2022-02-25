@@ -221,7 +221,7 @@ class BetaAnalyticsDataAsyncClient:
         criteria, such as country or event name.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import data_v1beta
 
@@ -293,7 +293,7 @@ class BetaAnalyticsDataAsyncClient:
         dissect your data.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import data_v1beta
 
@@ -362,7 +362,7 @@ class BetaAnalyticsDataAsyncClient:
         be for the same GA4 Property.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import data_v1beta
 
@@ -431,7 +431,7 @@ class BetaAnalyticsDataAsyncClient:
         reports must be for the same GA4 Property.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import data_v1beta
 
@@ -510,7 +510,7 @@ class BetaAnalyticsDataAsyncClient:
         such as ``country`` and ``totalUsers``.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import data_v1beta
 
@@ -613,7 +613,7 @@ class BetaAnalyticsDataAsyncClient:
         last 30 minutes.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import data_v1beta
 
@@ -691,7 +691,7 @@ class BetaAnalyticsDataAsyncClient:
         for Core reports.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import data_v1beta
 

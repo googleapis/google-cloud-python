@@ -23,22 +23,22 @@
 #   python3 -m pip install google-analytics-data
 
 
-# [START analyticsdata_generated_data_v1beta_BetaAnalyticsData_BatchRunReports_async]
+# [START analyticsdata_v1beta_generated_BetaAnalyticsData_BatchRunReports_sync]
 from google.analytics import data_v1beta
 
 
-async def sample_batch_run_reports():
+def sample_batch_run_reports():
     # Create a client
-    client = data_v1beta.BetaAnalyticsDataAsyncClient()
+    client = data_v1beta.BetaAnalyticsDataClient()
 
     # Initialize request argument(s)
     request = data_v1beta.BatchRunReportsRequest(
     )
 
     # Make the request
-    response = await client.batch_run_reports(request=request)
+    response = client.batch_run_reports(request=request)
 
     # Handle the response
     print(response)
 
-# [END analyticsdata_generated_data_v1beta_BetaAnalyticsData_BatchRunReports_async]
+# [END analyticsdata_v1beta_generated_BetaAnalyticsData_BatchRunReports_sync]
