@@ -10,8 +10,8 @@
           "shortName": "CreateEkmConnection"
         }
       },
-      "file": "cloudkms_generated_kms_v1_ekm_service_create_ekm_connection_async.py",
-      "regionTag": "cloudkms_generated_kms_v1_EkmService_CreateEkmConnection_async",
+      "file": "cloudkms_v1_generated_ekm_service_create_ekm_connection_async.py",
+      "regionTag": "cloudkms_v1_generated_EkmService_CreateEkmConnection_async",
       "segments": [
         {
           "end": 45,
@@ -54,8 +54,8 @@
           "shortName": "CreateEkmConnection"
         }
       },
-      "file": "cloudkms_generated_kms_v1_ekm_service_create_ekm_connection_sync.py",
-      "regionTag": "cloudkms_generated_kms_v1_EkmService_CreateEkmConnection_sync",
+      "file": "cloudkms_v1_generated_ekm_service_create_ekm_connection_sync.py",
+      "regionTag": "cloudkms_v1_generated_EkmService_CreateEkmConnection_sync",
       "segments": [
         {
           "end": 45,
@@ -99,8 +99,8 @@
           "shortName": "GetEkmConnection"
         }
       },
-      "file": "cloudkms_generated_kms_v1_ekm_service_get_ekm_connection_async.py",
-      "regionTag": "cloudkms_generated_kms_v1_EkmService_GetEkmConnection_async",
+      "file": "cloudkms_v1_generated_ekm_service_get_ekm_connection_async.py",
+      "regionTag": "cloudkms_v1_generated_EkmService_GetEkmConnection_async",
       "segments": [
         {
           "end": 44,
@@ -143,8 +143,8 @@
           "shortName": "GetEkmConnection"
         }
       },
-      "file": "cloudkms_generated_kms_v1_ekm_service_get_ekm_connection_sync.py",
-      "regionTag": "cloudkms_generated_kms_v1_EkmService_GetEkmConnection_sync",
+      "file": "cloudkms_v1_generated_ekm_service_get_ekm_connection_sync.py",
+      "regionTag": "cloudkms_v1_generated_EkmService_GetEkmConnection_sync",
       "segments": [
         {
           "end": 44,
@@ -188,8 +188,8 @@
           "shortName": "ListEkmConnections"
         }
       },
-      "file": "cloudkms_generated_kms_v1_ekm_service_list_ekm_connections_async.py",
-      "regionTag": "cloudkms_generated_kms_v1_EkmService_ListEkmConnections_async",
+      "file": "cloudkms_v1_generated_ekm_service_list_ekm_connections_async.py",
+      "regionTag": "cloudkms_v1_generated_EkmService_ListEkmConnections_async",
       "segments": [
         {
           "end": 45,
@@ -232,8 +232,8 @@
           "shortName": "ListEkmConnections"
         }
       },
-      "file": "cloudkms_generated_kms_v1_ekm_service_list_ekm_connections_sync.py",
-      "regionTag": "cloudkms_generated_kms_v1_EkmService_ListEkmConnections_sync",
+      "file": "cloudkms_v1_generated_ekm_service_list_ekm_connections_sync.py",
+      "regionTag": "cloudkms_v1_generated_EkmService_ListEkmConnections_sync",
       "segments": [
         {
           "end": 45,
@@ -277,8 +277,8 @@
           "shortName": "UpdateEkmConnection"
         }
       },
-      "file": "cloudkms_generated_kms_v1_ekm_service_update_ekm_connection_async.py",
-      "regionTag": "cloudkms_generated_kms_v1_EkmService_UpdateEkmConnection_async",
+      "file": "cloudkms_v1_generated_ekm_service_update_ekm_connection_async.py",
+      "regionTag": "cloudkms_v1_generated_EkmService_UpdateEkmConnection_async",
       "segments": [
         {
           "end": 43,
@@ -321,8 +321,8 @@
           "shortName": "UpdateEkmConnection"
         }
       },
-      "file": "cloudkms_generated_kms_v1_ekm_service_update_ekm_connection_sync.py",
-      "regionTag": "cloudkms_generated_kms_v1_EkmService_UpdateEkmConnection_sync",
+      "file": "cloudkms_v1_generated_ekm_service_update_ekm_connection_sync.py",
+      "regionTag": "cloudkms_v1_generated_EkmService_UpdateEkmConnection_sync",
       "segments": [
         {
           "end": 43,
@@ -366,8 +366,8 @@
           "shortName": "AsymmetricDecrypt"
         }
       },
-      "file": "cloudkms_generated_kms_v1_key_management_service_asymmetric_decrypt_async.py",
-      "regionTag": "cloudkms_generated_kms_v1_KeyManagementService_AsymmetricDecrypt_async",
+      "file": "cloudkms_v1_generated_key_management_service_asymmetric_decrypt_async.py",
+      "regionTag": "cloudkms_v1_generated_KeyManagementService_AsymmetricDecrypt_async",
       "segments": [
         {
           "end": 45,
@@ -410,8 +410,8 @@
           "shortName": "AsymmetricDecrypt"
         }
       },
-      "file": "cloudkms_generated_kms_v1_key_management_service_asymmetric_decrypt_sync.py",
-      "regionTag": "cloudkms_generated_kms_v1_KeyManagementService_AsymmetricDecrypt_sync",
+      "file": "cloudkms_v1_generated_key_management_service_asymmetric_decrypt_sync.py",
+      "regionTag": "cloudkms_v1_generated_KeyManagementService_AsymmetricDecrypt_sync",
       "segments": [
         {
           "end": 45,
@@ -455,8 +455,8 @@
           "shortName": "AsymmetricSign"
         }
       },
-      "file": "cloudkms_generated_kms_v1_key_management_service_asymmetric_sign_async.py",
-      "regionTag": "cloudkms_generated_kms_v1_KeyManagementService_AsymmetricSign_async",
+      "file": "cloudkms_v1_generated_key_management_service_asymmetric_sign_async.py",
+      "regionTag": "cloudkms_v1_generated_KeyManagementService_AsymmetricSign_async",
       "segments": [
         {
           "end": 44,
@@ -499,8 +499,8 @@
           "shortName": "AsymmetricSign"
         }
       },
-      "file": "cloudkms_generated_kms_v1_key_management_service_asymmetric_sign_sync.py",
-      "regionTag": "cloudkms_generated_kms_v1_KeyManagementService_AsymmetricSign_sync",
+      "file": "cloudkms_v1_generated_key_management_service_asymmetric_sign_sync.py",
+      "regionTag": "cloudkms_v1_generated_KeyManagementService_AsymmetricSign_sync",
       "segments": [
         {
           "end": 44,
@@ -544,8 +544,8 @@
           "shortName": "CreateCryptoKeyVersion"
         }
       },
-      "file": "cloudkms_generated_kms_v1_key_management_service_create_crypto_key_version_async.py",
-      "regionTag": "cloudkms_generated_kms_v1_KeyManagementService_CreateCryptoKeyVersion_async",
+      "file": "cloudkms_v1_generated_key_management_service_create_crypto_key_version_async.py",
+      "regionTag": "cloudkms_v1_generated_KeyManagementService_CreateCryptoKeyVersion_async",
       "segments": [
         {
           "end": 44,
@@ -588,8 +588,8 @@
           "shortName": "CreateCryptoKeyVersion"
         }
       },
-      "file": "cloudkms_generated_kms_v1_key_management_service_create_crypto_key_version_sync.py",
-      "regionTag": "cloudkms_generated_kms_v1_KeyManagementService_CreateCryptoKeyVersion_sync",
+      "file": "cloudkms_v1_generated_key_management_service_create_crypto_key_version_sync.py",
+      "regionTag": "cloudkms_v1_generated_KeyManagementService_CreateCryptoKeyVersion_sync",
       "segments": [
         {
           "end": 44,
@@ -633,8 +633,8 @@
           "shortName": "CreateCryptoKey"
         }
       },
-      "file": "cloudkms_generated_kms_v1_key_management_service_create_crypto_key_async.py",
-      "regionTag": "cloudkms_generated_kms_v1_KeyManagementService_CreateCryptoKey_async",
+      "file": "cloudkms_v1_generated_key_management_service_create_crypto_key_async.py",
+      "regionTag": "cloudkms_v1_generated_KeyManagementService_CreateCryptoKey_async",
       "segments": [
         {
           "end": 45,
@@ -677,8 +677,8 @@
           "shortName": "CreateCryptoKey"
         }
       },
-      "file": "cloudkms_generated_kms_v1_key_management_service_create_crypto_key_sync.py",
-      "regionTag": "cloudkms_generated_kms_v1_KeyManagementService_CreateCryptoKey_sync",
+      "file": "cloudkms_v1_generated_key_management_service_create_crypto_key_sync.py",
+      "regionTag": "cloudkms_v1_generated_KeyManagementService_CreateCryptoKey_sync",
       "segments": [
         {
           "end": 45,
@@ -722,8 +722,8 @@
           "shortName": "CreateImportJob"
         }
       },
-      "file": "cloudkms_generated_kms_v1_key_management_service_create_import_job_async.py",
-      "regionTag": "cloudkms_generated_kms_v1_KeyManagementService_CreateImportJob_async",
+      "file": "cloudkms_v1_generated_key_management_service_create_import_job_async.py",
+      "regionTag": "cloudkms_v1_generated_KeyManagementService_CreateImportJob_async",
       "segments": [
         {
           "end": 50,
@@ -766,8 +766,8 @@
           "shortName": "CreateImportJob"
         }
       },
-      "file": "cloudkms_generated_kms_v1_key_management_service_create_import_job_sync.py",
-      "regionTag": "cloudkms_generated_kms_v1_KeyManagementService_CreateImportJob_sync",
+      "file": "cloudkms_v1_generated_key_management_service_create_import_job_sync.py",
+      "regionTag": "cloudkms_v1_generated_KeyManagementService_CreateImportJob_sync",
       "segments": [
         {
           "end": 50,
@@ -811,8 +811,8 @@
           "shortName": "CreateKeyRing"
         }
       },
-      "file": "cloudkms_generated_kms_v1_key_management_service_create_key_ring_async.py",
-      "regionTag": "cloudkms_generated_kms_v1_KeyManagementService_CreateKeyRing_async",
+      "file": "cloudkms_v1_generated_key_management_service_create_key_ring_async.py",
+      "regionTag": "cloudkms_v1_generated_KeyManagementService_CreateKeyRing_async",
       "segments": [
         {
           "end": 45,
@@ -855,8 +855,8 @@
           "shortName": "CreateKeyRing"
         }
       },
-      "file": "cloudkms_generated_kms_v1_key_management_service_create_key_ring_sync.py",
-      "regionTag": "cloudkms_generated_kms_v1_KeyManagementService_CreateKeyRing_sync",
+      "file": "cloudkms_v1_generated_key_management_service_create_key_ring_sync.py",
+      "regionTag": "cloudkms_v1_generated_KeyManagementService_CreateKeyRing_sync",
       "segments": [
         {
           "end": 45,
@@ -900,8 +900,8 @@
           "shortName": "Decrypt"
         }
       },
-      "file": "cloudkms_generated_kms_v1_key_management_service_decrypt_async.py",
-      "regionTag": "cloudkms_generated_kms_v1_KeyManagementService_Decrypt_async",
+      "file": "cloudkms_v1_generated_key_management_service_decrypt_async.py",
+      "regionTag": "cloudkms_v1_generated_KeyManagementService_Decrypt_async",
       "segments": [
         {
           "end": 45,
@@ -944,8 +944,8 @@
           "shortName": "Decrypt"
         }
       },
-      "file": "cloudkms_generated_kms_v1_key_management_service_decrypt_sync.py",
-      "regionTag": "cloudkms_generated_kms_v1_KeyManagementService_Decrypt_sync",
+      "file": "cloudkms_v1_generated_key_management_service_decrypt_sync.py",
+      "regionTag": "cloudkms_v1_generated_KeyManagementService_Decrypt_sync",
       "segments": [
         {
           "end": 45,
@@ -989,8 +989,8 @@
           "shortName": "DestroyCryptoKeyVersion"
         }
       },
-      "file": "cloudkms_generated_kms_v1_key_management_service_destroy_crypto_key_version_async.py",
-      "regionTag": "cloudkms_generated_kms_v1_KeyManagementService_DestroyCryptoKeyVersion_async",
+      "file": "cloudkms_v1_generated_key_management_service_destroy_crypto_key_version_async.py",
+      "regionTag": "cloudkms_v1_generated_KeyManagementService_DestroyCryptoKeyVersion_async",
       "segments": [
         {
           "end": 44,
@@ -1033,8 +1033,8 @@
           "shortName": "DestroyCryptoKeyVersion"
         }
       },
-      "file": "cloudkms_generated_kms_v1_key_management_service_destroy_crypto_key_version_sync.py",
-      "regionTag": "cloudkms_generated_kms_v1_KeyManagementService_DestroyCryptoKeyVersion_sync",
+      "file": "cloudkms_v1_generated_key_management_service_destroy_crypto_key_version_sync.py",
+      "regionTag": "cloudkms_v1_generated_KeyManagementService_DestroyCryptoKeyVersion_sync",
       "segments": [
         {
           "end": 44,
@@ -1078,8 +1078,8 @@
           "shortName": "Encrypt"
         }
       },
-      "file": "cloudkms_generated_kms_v1_key_management_service_encrypt_async.py",
-      "regionTag": "cloudkms_generated_kms_v1_KeyManagementService_Encrypt_async",
+      "file": "cloudkms_v1_generated_key_management_service_encrypt_async.py",
+      "regionTag": "cloudkms_v1_generated_KeyManagementService_Encrypt_async",
       "segments": [
         {
           "end": 45,
@@ -1122,8 +1122,8 @@
           "shortName": "Encrypt"
         }
       },
-      "file": "cloudkms_generated_kms_v1_key_management_service_encrypt_sync.py",
-      "regionTag": "cloudkms_generated_kms_v1_KeyManagementService_Encrypt_sync",
+      "file": "cloudkms_v1_generated_key_management_service_encrypt_sync.py",
+      "regionTag": "cloudkms_v1_generated_KeyManagementService_Encrypt_sync",
       "segments": [
         {
           "end": 45,
@@ -1167,8 +1167,8 @@
           "shortName": "GenerateRandomBytes"
         }
       },
-      "file": "cloudkms_generated_kms_v1_key_management_service_generate_random_bytes_async.py",
-      "regionTag": "cloudkms_generated_kms_v1_KeyManagementService_GenerateRandomBytes_async",
+      "file": "cloudkms_v1_generated_key_management_service_generate_random_bytes_async.py",
+      "regionTag": "cloudkms_v1_generated_KeyManagementService_GenerateRandomBytes_async",
       "segments": [
         {
           "end": 43,
@@ -1211,8 +1211,8 @@
           "shortName": "GenerateRandomBytes"
         }
       },
-      "file": "cloudkms_generated_kms_v1_key_management_service_generate_random_bytes_sync.py",
-      "regionTag": "cloudkms_generated_kms_v1_KeyManagementService_GenerateRandomBytes_sync",
+      "file": "cloudkms_v1_generated_key_management_service_generate_random_bytes_sync.py",
+      "regionTag": "cloudkms_v1_generated_KeyManagementService_GenerateRandomBytes_sync",
       "segments": [
         {
           "end": 43,
@@ -1256,8 +1256,8 @@
           "shortName": "GetCryptoKeyVersion"
         }
       },
-      "file": "cloudkms_generated_kms_v1_key_management_service_get_crypto_key_version_async.py",
-      "regionTag": "cloudkms_generated_kms_v1_KeyManagementService_GetCryptoKeyVersion_async",
+      "file": "cloudkms_v1_generated_key_management_service_get_crypto_key_version_async.py",
+      "regionTag": "cloudkms_v1_generated_KeyManagementService_GetCryptoKeyVersion_async",
       "segments": [
         {
           "end": 44,
@@ -1300,8 +1300,8 @@
           "shortName": "GetCryptoKeyVersion"
         }
       },
-      "file": "cloudkms_generated_kms_v1_key_management_service_get_crypto_key_version_sync.py",
-      "regionTag": "cloudkms_generated_kms_v1_KeyManagementService_GetCryptoKeyVersion_sync",
+      "file": "cloudkms_v1_generated_key_management_service_get_crypto_key_version_sync.py",
+      "regionTag": "cloudkms_v1_generated_KeyManagementService_GetCryptoKeyVersion_sync",
       "segments": [
         {
           "end": 44,
@@ -1345,8 +1345,8 @@
           "shortName": "GetCryptoKey"
         }
       },
-      "file": "cloudkms_generated_kms_v1_key_management_service_get_crypto_key_async.py",
-      "regionTag": "cloudkms_generated_kms_v1_KeyManagementService_GetCryptoKey_async",
+      "file": "cloudkms_v1_generated_key_management_service_get_crypto_key_async.py",
+      "regionTag": "cloudkms_v1_generated_KeyManagementService_GetCryptoKey_async",
       "segments": [
         {
           "end": 44,
@@ -1389,8 +1389,8 @@
           "shortName": "GetCryptoKey"
         }
       },
-      "file": "cloudkms_generated_kms_v1_key_management_service_get_crypto_key_sync.py",
-      "regionTag": "cloudkms_generated_kms_v1_KeyManagementService_GetCryptoKey_sync",
+      "file": "cloudkms_v1_generated_key_management_service_get_crypto_key_sync.py",
+      "regionTag": "cloudkms_v1_generated_KeyManagementService_GetCryptoKey_sync",
       "segments": [
         {
           "end": 44,
@@ -1434,8 +1434,8 @@
           "shortName": "GetImportJob"
         }
       },
-      "file": "cloudkms_generated_kms_v1_key_management_service_get_import_job_async.py",
-      "regionTag": "cloudkms_generated_kms_v1_KeyManagementService_GetImportJob_async",
+      "file": "cloudkms_v1_generated_key_management_service_get_import_job_async.py",
+      "regionTag": "cloudkms_v1_generated_KeyManagementService_GetImportJob_async",
       "segments": [
         {
           "end": 44,
@@ -1478,8 +1478,8 @@
           "shortName": "GetImportJob"
         }
       },
-      "file": "cloudkms_generated_kms_v1_key_management_service_get_import_job_sync.py",
-      "regionTag": "cloudkms_generated_kms_v1_KeyManagementService_GetImportJob_sync",
+      "file": "cloudkms_v1_generated_key_management_service_get_import_job_sync.py",
+      "regionTag": "cloudkms_v1_generated_KeyManagementService_GetImportJob_sync",
       "segments": [
         {
           "end": 44,
@@ -1523,8 +1523,8 @@
           "shortName": "GetKeyRing"
         }
       },
-      "file": "cloudkms_generated_kms_v1_key_management_service_get_key_ring_async.py",
-      "regionTag": "cloudkms_generated_kms_v1_KeyManagementService_GetKeyRing_async",
+      "file": "cloudkms_v1_generated_key_management_service_get_key_ring_async.py",
+      "regionTag": "cloudkms_v1_generated_KeyManagementService_GetKeyRing_async",
       "segments": [
         {
           "end": 44,
@@ -1567,8 +1567,8 @@
           "shortName": "GetKeyRing"
         }
       },
-      "file": "cloudkms_generated_kms_v1_key_management_service_get_key_ring_sync.py",
-      "regionTag": "cloudkms_generated_kms_v1_KeyManagementService_GetKeyRing_sync",
+      "file": "cloudkms_v1_generated_key_management_service_get_key_ring_sync.py",
+      "regionTag": "cloudkms_v1_generated_KeyManagementService_GetKeyRing_sync",
       "segments": [
         {
           "end": 44,
@@ -1612,8 +1612,8 @@
           "shortName": "GetPublicKey"
         }
       },
-      "file": "cloudkms_generated_kms_v1_key_management_service_get_public_key_async.py",
-      "regionTag": "cloudkms_generated_kms_v1_KeyManagementService_GetPublicKey_async",
+      "file": "cloudkms_v1_generated_key_management_service_get_public_key_async.py",
+      "regionTag": "cloudkms_v1_generated_KeyManagementService_GetPublicKey_async",
       "segments": [
         {
           "end": 44,
@@ -1656,8 +1656,8 @@
           "shortName": "GetPublicKey"
         }
       },
-      "file": "cloudkms_generated_kms_v1_key_management_service_get_public_key_sync.py",
-      "regionTag": "cloudkms_generated_kms_v1_KeyManagementService_GetPublicKey_sync",
+      "file": "cloudkms_v1_generated_key_management_service_get_public_key_sync.py",
+      "regionTag": "cloudkms_v1_generated_KeyManagementService_GetPublicKey_sync",
       "segments": [
         {
           "end": 44,
@@ -1701,8 +1701,8 @@
           "shortName": "ImportCryptoKeyVersion"
         }
       },
-      "file": "cloudkms_generated_kms_v1_key_management_service_import_crypto_key_version_async.py",
-      "regionTag": "cloudkms_generated_kms_v1_KeyManagementService_ImportCryptoKeyVersion_async",
+      "file": "cloudkms_v1_generated_key_management_service_import_crypto_key_version_async.py",
+      "regionTag": "cloudkms_v1_generated_KeyManagementService_ImportCryptoKeyVersion_async",
       "segments": [
         {
           "end": 47,
@@ -1745,8 +1745,8 @@
           "shortName": "ImportCryptoKeyVersion"
         }
       },
-      "file": "cloudkms_generated_kms_v1_key_management_service_import_crypto_key_version_sync.py",
-      "regionTag": "cloudkms_generated_kms_v1_KeyManagementService_ImportCryptoKeyVersion_sync",
+      "file": "cloudkms_v1_generated_key_management_service_import_crypto_key_version_sync.py",
+      "regionTag": "cloudkms_v1_generated_KeyManagementService_ImportCryptoKeyVersion_sync",
       "segments": [
         {
           "end": 47,
@@ -1790,8 +1790,8 @@
           "shortName": "ListCryptoKeyVersions"
         }
       },
-      "file": "cloudkms_generated_kms_v1_key_management_service_list_crypto_key_versions_async.py",
-      "regionTag": "cloudkms_generated_kms_v1_KeyManagementService_ListCryptoKeyVersions_async",
+      "file": "cloudkms_v1_generated_key_management_service_list_crypto_key_versions_async.py",
+      "regionTag": "cloudkms_v1_generated_KeyManagementService_ListCryptoKeyVersions_async",
       "segments": [
         {
           "end": 45,
@@ -1834,8 +1834,8 @@
           "shortName": "ListCryptoKeyVersions"
         }
       },
-      "file": "cloudkms_generated_kms_v1_key_management_service_list_crypto_key_versions_sync.py",
-      "regionTag": "cloudkms_generated_kms_v1_KeyManagementService_ListCryptoKeyVersions_sync",
+      "file": "cloudkms_v1_generated_key_management_service_list_crypto_key_versions_sync.py",
+      "regionTag": "cloudkms_v1_generated_KeyManagementService_ListCryptoKeyVersions_sync",
       "segments": [
         {
           "end": 45,
@@ -1879,8 +1879,8 @@
           "shortName": "ListCryptoKeys"
         }
       },
-      "file": "cloudkms_generated_kms_v1_key_management_service_list_crypto_keys_async.py",
-      "regionTag": "cloudkms_generated_kms_v1_KeyManagementService_ListCryptoKeys_async",
+      "file": "cloudkms_v1_generated_key_management_service_list_crypto_keys_async.py",
+      "regionTag": "cloudkms_v1_generated_KeyManagementService_ListCryptoKeys_async",
       "segments": [
         {
           "end": 45,
@@ -1923,8 +1923,8 @@
           "shortName": "ListCryptoKeys"
         }
       },
-      "file": "cloudkms_generated_kms_v1_key_management_service_list_crypto_keys_sync.py",
-      "regionTag": "cloudkms_generated_kms_v1_KeyManagementService_ListCryptoKeys_sync",
+      "file": "cloudkms_v1_generated_key_management_service_list_crypto_keys_sync.py",
+      "regionTag": "cloudkms_v1_generated_KeyManagementService_ListCryptoKeys_sync",
       "segments": [
         {
           "end": 45,
@@ -1968,8 +1968,8 @@
           "shortName": "ListImportJobs"
         }
       },
-      "file": "cloudkms_generated_kms_v1_key_management_service_list_import_jobs_async.py",
-      "regionTag": "cloudkms_generated_kms_v1_KeyManagementService_ListImportJobs_async",
+      "file": "cloudkms_v1_generated_key_management_service_list_import_jobs_async.py",
+      "regionTag": "cloudkms_v1_generated_KeyManagementService_ListImportJobs_async",
       "segments": [
         {
           "end": 45,
@@ -2012,8 +2012,8 @@
           "shortName": "ListImportJobs"
         }
       },
-      "file": "cloudkms_generated_kms_v1_key_management_service_list_import_jobs_sync.py",
-      "regionTag": "cloudkms_generated_kms_v1_KeyManagementService_ListImportJobs_sync",
+      "file": "cloudkms_v1_generated_key_management_service_list_import_jobs_sync.py",
+      "regionTag": "cloudkms_v1_generated_KeyManagementService_ListImportJobs_sync",
       "segments": [
         {
           "end": 45,
@@ -2057,8 +2057,8 @@
           "shortName": "ListKeyRings"
         }
       },
-      "file": "cloudkms_generated_kms_v1_key_management_service_list_key_rings_async.py",
-      "regionTag": "cloudkms_generated_kms_v1_KeyManagementService_ListKeyRings_async",
+      "file": "cloudkms_v1_generated_key_management_service_list_key_rings_async.py",
+      "regionTag": "cloudkms_v1_generated_KeyManagementService_ListKeyRings_async",
       "segments": [
         {
           "end": 45,
@@ -2101,8 +2101,8 @@
           "shortName": "ListKeyRings"
         }
       },
-      "file": "cloudkms_generated_kms_v1_key_management_service_list_key_rings_sync.py",
-      "regionTag": "cloudkms_generated_kms_v1_KeyManagementService_ListKeyRings_sync",
+      "file": "cloudkms_v1_generated_key_management_service_list_key_rings_sync.py",
+      "regionTag": "cloudkms_v1_generated_KeyManagementService_ListKeyRings_sync",
       "segments": [
         {
           "end": 45,
@@ -2146,8 +2146,8 @@
           "shortName": "MacSign"
         }
       },
-      "file": "cloudkms_generated_kms_v1_key_management_service_mac_sign_async.py",
-      "regionTag": "cloudkms_generated_kms_v1_KeyManagementService_MacSign_async",
+      "file": "cloudkms_v1_generated_key_management_service_mac_sign_async.py",
+      "regionTag": "cloudkms_v1_generated_KeyManagementService_MacSign_async",
       "segments": [
         {
           "end": 45,
@@ -2190,8 +2190,8 @@
           "shortName": "MacSign"
         }
       },
-      "file": "cloudkms_generated_kms_v1_key_management_service_mac_sign_sync.py",
-      "regionTag": "cloudkms_generated_kms_v1_KeyManagementService_MacSign_sync",
+      "file": "cloudkms_v1_generated_key_management_service_mac_sign_sync.py",
+      "regionTag": "cloudkms_v1_generated_KeyManagementService_MacSign_sync",
       "segments": [
         {
           "end": 45,
@@ -2235,8 +2235,8 @@
           "shortName": "MacVerify"
         }
       },
-      "file": "cloudkms_generated_kms_v1_key_management_service_mac_verify_async.py",
-      "regionTag": "cloudkms_generated_kms_v1_KeyManagementService_MacVerify_async",
+      "file": "cloudkms_v1_generated_key_management_service_mac_verify_async.py",
+      "regionTag": "cloudkms_v1_generated_KeyManagementService_MacVerify_async",
       "segments": [
         {
           "end": 46,
@@ -2279,8 +2279,8 @@
           "shortName": "MacVerify"
         }
       },
-      "file": "cloudkms_generated_kms_v1_key_management_service_mac_verify_sync.py",
-      "regionTag": "cloudkms_generated_kms_v1_KeyManagementService_MacVerify_sync",
+      "file": "cloudkms_v1_generated_key_management_service_mac_verify_sync.py",
+      "regionTag": "cloudkms_v1_generated_KeyManagementService_MacVerify_sync",
       "segments": [
         {
           "end": 46,
@@ -2324,8 +2324,8 @@
           "shortName": "RestoreCryptoKeyVersion"
         }
       },
-      "file": "cloudkms_generated_kms_v1_key_management_service_restore_crypto_key_version_async.py",
-      "regionTag": "cloudkms_generated_kms_v1_KeyManagementService_RestoreCryptoKeyVersion_async",
+      "file": "cloudkms_v1_generated_key_management_service_restore_crypto_key_version_async.py",
+      "regionTag": "cloudkms_v1_generated_KeyManagementService_RestoreCryptoKeyVersion_async",
       "segments": [
         {
           "end": 44,
@@ -2368,8 +2368,8 @@
           "shortName": "RestoreCryptoKeyVersion"
         }
       },
-      "file": "cloudkms_generated_kms_v1_key_management_service_restore_crypto_key_version_sync.py",
-      "regionTag": "cloudkms_generated_kms_v1_KeyManagementService_RestoreCryptoKeyVersion_sync",
+      "file": "cloudkms_v1_generated_key_management_service_restore_crypto_key_version_sync.py",
+      "regionTag": "cloudkms_v1_generated_KeyManagementService_RestoreCryptoKeyVersion_sync",
       "segments": [
         {
           "end": 44,
@@ -2413,8 +2413,8 @@
           "shortName": "UpdateCryptoKeyPrimaryVersion"
         }
       },
-      "file": "cloudkms_generated_kms_v1_key_management_service_update_crypto_key_primary_version_async.py",
-      "regionTag": "cloudkms_generated_kms_v1_KeyManagementService_UpdateCryptoKeyPrimaryVersion_async",
+      "file": "cloudkms_v1_generated_key_management_service_update_crypto_key_primary_version_async.py",
+      "regionTag": "cloudkms_v1_generated_KeyManagementService_UpdateCryptoKeyPrimaryVersion_async",
       "segments": [
         {
           "end": 45,
@@ -2457,8 +2457,8 @@
           "shortName": "UpdateCryptoKeyPrimaryVersion"
         }
       },
-      "file": "cloudkms_generated_kms_v1_key_management_service_update_crypto_key_primary_version_sync.py",
-      "regionTag": "cloudkms_generated_kms_v1_KeyManagementService_UpdateCryptoKeyPrimaryVersion_sync",
+      "file": "cloudkms_v1_generated_key_management_service_update_crypto_key_primary_version_sync.py",
+      "regionTag": "cloudkms_v1_generated_KeyManagementService_UpdateCryptoKeyPrimaryVersion_sync",
       "segments": [
         {
           "end": 45,
@@ -2502,8 +2502,8 @@
           "shortName": "UpdateCryptoKeyVersion"
         }
       },
-      "file": "cloudkms_generated_kms_v1_key_management_service_update_crypto_key_version_async.py",
-      "regionTag": "cloudkms_generated_kms_v1_KeyManagementService_UpdateCryptoKeyVersion_async",
+      "file": "cloudkms_v1_generated_key_management_service_update_crypto_key_version_async.py",
+      "regionTag": "cloudkms_v1_generated_KeyManagementService_UpdateCryptoKeyVersion_async",
       "segments": [
         {
           "end": 43,
@@ -2546,8 +2546,8 @@
           "shortName": "UpdateCryptoKeyVersion"
         }
       },
-      "file": "cloudkms_generated_kms_v1_key_management_service_update_crypto_key_version_sync.py",
-      "regionTag": "cloudkms_generated_kms_v1_KeyManagementService_UpdateCryptoKeyVersion_sync",
+      "file": "cloudkms_v1_generated_key_management_service_update_crypto_key_version_sync.py",
+      "regionTag": "cloudkms_v1_generated_KeyManagementService_UpdateCryptoKeyVersion_sync",
       "segments": [
         {
           "end": 43,
@@ -2591,8 +2591,8 @@
           "shortName": "UpdateCryptoKey"
         }
       },
-      "file": "cloudkms_generated_kms_v1_key_management_service_update_crypto_key_async.py",
-      "regionTag": "cloudkms_generated_kms_v1_KeyManagementService_UpdateCryptoKey_async",
+      "file": "cloudkms_v1_generated_key_management_service_update_crypto_key_async.py",
+      "regionTag": "cloudkms_v1_generated_KeyManagementService_UpdateCryptoKey_async",
       "segments": [
         {
           "end": 43,
@@ -2635,8 +2635,8 @@
           "shortName": "UpdateCryptoKey"
         }
       },
-      "file": "cloudkms_generated_kms_v1_key_management_service_update_crypto_key_sync.py",
-      "regionTag": "cloudkms_generated_kms_v1_KeyManagementService_UpdateCryptoKey_sync",
+      "file": "cloudkms_v1_generated_key_management_service_update_crypto_key_sync.py",
+      "regionTag": "cloudkms_v1_generated_KeyManagementService_UpdateCryptoKey_sync",
       "segments": [
         {
           "end": 43,

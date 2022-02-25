@@ -255,7 +255,7 @@ class KeyManagementServiceAsyncClient:
     ) -> pagers.ListKeyRingsAsyncPager:
         r"""Lists [KeyRings][google.cloud.kms.v1.KeyRing].
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import kms_v1
 
@@ -367,7 +367,7 @@ class KeyManagementServiceAsyncClient:
     ) -> pagers.ListCryptoKeysAsyncPager:
         r"""Lists [CryptoKeys][google.cloud.kms.v1.CryptoKey].
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import kms_v1
 
@@ -479,7 +479,7 @@ class KeyManagementServiceAsyncClient:
     ) -> pagers.ListCryptoKeyVersionsAsyncPager:
         r"""Lists [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion].
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import kms_v1
 
@@ -592,7 +592,7 @@ class KeyManagementServiceAsyncClient:
     ) -> pagers.ListImportJobsAsyncPager:
         r"""Lists [ImportJobs][google.cloud.kms.v1.ImportJob].
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import kms_v1
 
@@ -706,7 +706,7 @@ class KeyManagementServiceAsyncClient:
         [KeyRing][google.cloud.kms.v1.KeyRing].
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import kms_v1
 
@@ -811,7 +811,7 @@ class KeyManagementServiceAsyncClient:
         [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion].
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import kms_v1
 
@@ -921,7 +921,7 @@ class KeyManagementServiceAsyncClient:
         [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion].
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import kms_v1
 
@@ -1043,7 +1043,7 @@ class KeyManagementServiceAsyncClient:
         [ASYMMETRIC_DECRYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ASYMMETRIC_DECRYPT].
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import kms_v1
 
@@ -1150,7 +1150,7 @@ class KeyManagementServiceAsyncClient:
         [ImportJob][google.cloud.kms.v1.ImportJob].
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import kms_v1
 
@@ -1300,7 +1300,7 @@ class KeyManagementServiceAsyncClient:
         Project and Location.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import kms_v1
 
@@ -1429,7 +1429,7 @@ class KeyManagementServiceAsyncClient:
         are required.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import kms_v1
 
@@ -1565,7 +1565,7 @@ class KeyManagementServiceAsyncClient:
         [ENABLED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.ENABLED].
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import kms_v1
 
@@ -1689,7 +1689,7 @@ class KeyManagementServiceAsyncClient:
         [CryptoKey][google.cloud.kms.v1.CryptoKey].
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import kms_v1
 
@@ -1781,7 +1781,7 @@ class KeyManagementServiceAsyncClient:
         is required.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import kms_v1
 
@@ -1952,7 +1952,7 @@ class KeyManagementServiceAsyncClient:
     ) -> resources.CryptoKey:
         r"""Update a [CryptoKey][google.cloud.kms.v1.CryptoKey].
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import kms_v1
 
@@ -2084,7 +2084,7 @@ class KeyManagementServiceAsyncClient:
         to move between other states.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import kms_v1
 
@@ -2215,7 +2215,7 @@ class KeyManagementServiceAsyncClient:
         [ENCRYPT_DECRYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT].
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import kms_v1
 
@@ -2356,7 +2356,7 @@ class KeyManagementServiceAsyncClient:
         may be called to reverse the process.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import kms_v1
 
@@ -2482,7 +2482,7 @@ class KeyManagementServiceAsyncClient:
         will be cleared.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import kms_v1
 
@@ -2602,7 +2602,7 @@ class KeyManagementServiceAsyncClient:
         [ENCRYPT_DECRYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT].
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import kms_v1
 
@@ -2735,7 +2735,7 @@ class KeyManagementServiceAsyncClient:
         [ENCRYPT_DECRYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT].
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import kms_v1
 
@@ -2855,7 +2855,7 @@ class KeyManagementServiceAsyncClient:
         [GetPublicKey][google.cloud.kms.v1.KeyManagementService.GetPublicKey].
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import kms_v1
 
@@ -2980,7 +2980,7 @@ class KeyManagementServiceAsyncClient:
         ASYMMETRIC_DECRYPT.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import kms_v1
 
@@ -3099,7 +3099,7 @@ class KeyManagementServiceAsyncClient:
         same key.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import kms_v1
 
@@ -3219,7 +3219,7 @@ class KeyManagementServiceAsyncClient:
         verification was successful.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import kms_v1
 
@@ -3344,7 +3344,7 @@ class KeyManagementServiceAsyncClient:
         source in the provided location.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import kms_v1
 

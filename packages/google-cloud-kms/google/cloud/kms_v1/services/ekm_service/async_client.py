@@ -223,7 +223,7 @@ class EkmServiceAsyncClient:
     ) -> pagers.ListEkmConnectionsAsyncPager:
         r"""Lists [EkmConnections][google.cloud.kms.v1.EkmConnection].
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import kms_v1
 
@@ -338,7 +338,7 @@ class EkmServiceAsyncClient:
         [EkmConnection][google.cloud.kms.v1.EkmConnection].
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import kms_v1
 
@@ -455,7 +455,7 @@ class EkmServiceAsyncClient:
         in a given Project and Location.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import kms_v1
 
@@ -591,7 +591,7 @@ class EkmServiceAsyncClient:
         metadata.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import kms_v1
 

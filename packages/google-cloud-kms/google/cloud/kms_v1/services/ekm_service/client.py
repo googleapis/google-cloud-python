@@ -440,8 +440,7 @@ class EkmServiceClient(metaclass=EkmServiceClientMeta):
     ) -> pagers.ListEkmConnectionsPager:
         r"""Lists [EkmConnections][google.cloud.kms.v1.EkmConnection].
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import kms_v1
 
@@ -546,8 +545,7 @@ class EkmServiceClient(metaclass=EkmServiceClientMeta):
         [EkmConnection][google.cloud.kms.v1.EkmConnection].
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import kms_v1
 
@@ -654,8 +652,7 @@ class EkmServiceClient(metaclass=EkmServiceClientMeta):
         in a given Project and Location.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import kms_v1
 
@@ -781,8 +778,7 @@ class EkmServiceClient(metaclass=EkmServiceClientMeta):
         metadata.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import kms_v1
 
