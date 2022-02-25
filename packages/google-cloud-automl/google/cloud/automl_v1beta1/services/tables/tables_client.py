@@ -471,7 +471,7 @@ class TablesClient(object):
             try:
                 setattr(request, key, value)
                 method_kwargs.pop(key)
-            except KeyError:
+            except (AttributeError, KeyError):
                 continue
 
         return method_kwargs
