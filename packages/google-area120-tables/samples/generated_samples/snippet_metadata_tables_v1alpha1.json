@@ -10,8 +10,8 @@
           "shortName": "BatchCreateRows"
         }
       },
-      "file": "area120tables_generated_tables_v1alpha1_tables_service_batch_create_rows_async.py",
-      "regionTag": "area120tables_generated_tables_v1alpha1_TablesService_BatchCreateRows_async",
+      "file": "area120tables_v1alpha1_generated_tables_service_batch_create_rows_async.py",
+      "regionTag": "area120tables_v1alpha1_generated_TablesService_BatchCreateRows_async",
       "segments": [
         {
           "end": 48,
@@ -54,8 +54,8 @@
           "shortName": "BatchCreateRows"
         }
       },
-      "file": "area120tables_generated_tables_v1alpha1_tables_service_batch_create_rows_sync.py",
-      "regionTag": "area120tables_generated_tables_v1alpha1_TablesService_BatchCreateRows_sync",
+      "file": "area120tables_v1alpha1_generated_tables_service_batch_create_rows_sync.py",
+      "regionTag": "area120tables_v1alpha1_generated_TablesService_BatchCreateRows_sync",
       "segments": [
         {
           "end": 48,
@@ -99,8 +99,8 @@
           "shortName": "BatchDeleteRows"
         }
       },
-      "file": "area120tables_generated_tables_v1alpha1_tables_service_batch_delete_rows_async.py",
-      "regionTag": "area120tables_generated_tables_v1alpha1_TablesService_BatchDeleteRows_async",
+      "file": "area120tables_v1alpha1_generated_tables_service_batch_delete_rows_async.py",
+      "regionTag": "area120tables_v1alpha1_generated_TablesService_BatchDeleteRows_async",
       "segments": [
         {
           "end": 43,
@@ -141,8 +141,8 @@
           "shortName": "BatchDeleteRows"
         }
       },
-      "file": "area120tables_generated_tables_v1alpha1_tables_service_batch_delete_rows_sync.py",
-      "regionTag": "area120tables_generated_tables_v1alpha1_TablesService_BatchDeleteRows_sync",
+      "file": "area120tables_v1alpha1_generated_tables_service_batch_delete_rows_sync.py",
+      "regionTag": "area120tables_v1alpha1_generated_TablesService_BatchDeleteRows_sync",
       "segments": [
         {
           "end": 43,
@@ -184,8 +184,8 @@
           "shortName": "BatchUpdateRows"
         }
       },
-      "file": "area120tables_generated_tables_v1alpha1_tables_service_batch_update_rows_async.py",
-      "regionTag": "area120tables_generated_tables_v1alpha1_TablesService_BatchUpdateRows_async",
+      "file": "area120tables_v1alpha1_generated_tables_service_batch_update_rows_async.py",
+      "regionTag": "area120tables_v1alpha1_generated_TablesService_BatchUpdateRows_async",
       "segments": [
         {
           "end": 44,
@@ -228,8 +228,8 @@
           "shortName": "BatchUpdateRows"
         }
       },
-      "file": "area120tables_generated_tables_v1alpha1_tables_service_batch_update_rows_sync.py",
-      "regionTag": "area120tables_generated_tables_v1alpha1_TablesService_BatchUpdateRows_sync",
+      "file": "area120tables_v1alpha1_generated_tables_service_batch_update_rows_sync.py",
+      "regionTag": "area120tables_v1alpha1_generated_TablesService_BatchUpdateRows_sync",
       "segments": [
         {
           "end": 44,
@@ -273,8 +273,8 @@
           "shortName": "CreateRow"
         }
       },
-      "file": "area120tables_generated_tables_v1alpha1_tables_service_create_row_async.py",
-      "regionTag": "area120tables_generated_tables_v1alpha1_TablesService_CreateRow_async",
+      "file": "area120tables_v1alpha1_generated_tables_service_create_row_async.py",
+      "regionTag": "area120tables_v1alpha1_generated_TablesService_CreateRow_async",
       "segments": [
         {
           "end": 44,
@@ -317,8 +317,8 @@
           "shortName": "CreateRow"
         }
       },
-      "file": "area120tables_generated_tables_v1alpha1_tables_service_create_row_sync.py",
-      "regionTag": "area120tables_generated_tables_v1alpha1_TablesService_CreateRow_sync",
+      "file": "area120tables_v1alpha1_generated_tables_service_create_row_sync.py",
+      "regionTag": "area120tables_v1alpha1_generated_TablesService_CreateRow_sync",
       "segments": [
         {
           "end": 44,
@@ -362,8 +362,8 @@
           "shortName": "DeleteRow"
         }
       },
-      "file": "area120tables_generated_tables_v1alpha1_tables_service_delete_row_async.py",
-      "regionTag": "area120tables_generated_tables_v1alpha1_TablesService_DeleteRow_async",
+      "file": "area120tables_v1alpha1_generated_tables_service_delete_row_async.py",
+      "regionTag": "area120tables_v1alpha1_generated_TablesService_DeleteRow_async",
       "segments": [
         {
           "end": 42,
@@ -404,8 +404,8 @@
           "shortName": "DeleteRow"
         }
       },
-      "file": "area120tables_generated_tables_v1alpha1_tables_service_delete_row_sync.py",
-      "regionTag": "area120tables_generated_tables_v1alpha1_TablesService_DeleteRow_sync",
+      "file": "area120tables_v1alpha1_generated_tables_service_delete_row_sync.py",
+      "regionTag": "area120tables_v1alpha1_generated_TablesService_DeleteRow_sync",
       "segments": [
         {
           "end": 42,
@@ -447,8 +447,8 @@
           "shortName": "GetRow"
         }
       },
-      "file": "area120tables_generated_tables_v1alpha1_tables_service_get_row_async.py",
-      "regionTag": "area120tables_generated_tables_v1alpha1_TablesService_GetRow_async",
+      "file": "area120tables_v1alpha1_generated_tables_service_get_row_async.py",
+      "regionTag": "area120tables_v1alpha1_generated_TablesService_GetRow_async",
       "segments": [
         {
           "end": 44,
@@ -491,8 +491,8 @@
           "shortName": "GetRow"
         }
       },
-      "file": "area120tables_generated_tables_v1alpha1_tables_service_get_row_sync.py",
-      "regionTag": "area120tables_generated_tables_v1alpha1_TablesService_GetRow_sync",
+      "file": "area120tables_v1alpha1_generated_tables_service_get_row_sync.py",
+      "regionTag": "area120tables_v1alpha1_generated_TablesService_GetRow_sync",
       "segments": [
         {
           "end": 44,
@@ -536,8 +536,8 @@
           "shortName": "GetTable"
         }
       },
-      "file": "area120tables_generated_tables_v1alpha1_tables_service_get_table_async.py",
-      "regionTag": "area120tables_generated_tables_v1alpha1_TablesService_GetTable_async",
+      "file": "area120tables_v1alpha1_generated_tables_service_get_table_async.py",
+      "regionTag": "area120tables_v1alpha1_generated_TablesService_GetTable_async",
       "segments": [
         {
           "end": 44,
@@ -580,8 +580,8 @@
           "shortName": "GetTable"
         }
       },
-      "file": "area120tables_generated_tables_v1alpha1_tables_service_get_table_sync.py",
-      "regionTag": "area120tables_generated_tables_v1alpha1_TablesService_GetTable_sync",
+      "file": "area120tables_v1alpha1_generated_tables_service_get_table_sync.py",
+      "regionTag": "area120tables_v1alpha1_generated_TablesService_GetTable_sync",
       "segments": [
         {
           "end": 44,
@@ -625,8 +625,8 @@
           "shortName": "GetWorkspace"
         }
       },
-      "file": "area120tables_generated_tables_v1alpha1_tables_service_get_workspace_async.py",
-      "regionTag": "area120tables_generated_tables_v1alpha1_TablesService_GetWorkspace_async",
+      "file": "area120tables_v1alpha1_generated_tables_service_get_workspace_async.py",
+      "regionTag": "area120tables_v1alpha1_generated_TablesService_GetWorkspace_async",
       "segments": [
         {
           "end": 44,
@@ -669,8 +669,8 @@
           "shortName": "GetWorkspace"
         }
       },
-      "file": "area120tables_generated_tables_v1alpha1_tables_service_get_workspace_sync.py",
-      "regionTag": "area120tables_generated_tables_v1alpha1_TablesService_GetWorkspace_sync",
+      "file": "area120tables_v1alpha1_generated_tables_service_get_workspace_sync.py",
+      "regionTag": "area120tables_v1alpha1_generated_TablesService_GetWorkspace_sync",
       "segments": [
         {
           "end": 44,
@@ -714,8 +714,8 @@
           "shortName": "ListRows"
         }
       },
-      "file": "area120tables_generated_tables_v1alpha1_tables_service_list_rows_async.py",
-      "regionTag": "area120tables_generated_tables_v1alpha1_TablesService_ListRows_async",
+      "file": "area120tables_v1alpha1_generated_tables_service_list_rows_async.py",
+      "regionTag": "area120tables_v1alpha1_generated_TablesService_ListRows_async",
       "segments": [
         {
           "end": 45,
@@ -758,8 +758,8 @@
           "shortName": "ListRows"
         }
       },
-      "file": "area120tables_generated_tables_v1alpha1_tables_service_list_rows_sync.py",
-      "regionTag": "area120tables_generated_tables_v1alpha1_TablesService_ListRows_sync",
+      "file": "area120tables_v1alpha1_generated_tables_service_list_rows_sync.py",
+      "regionTag": "area120tables_v1alpha1_generated_TablesService_ListRows_sync",
       "segments": [
         {
           "end": 45,
@@ -803,8 +803,8 @@
           "shortName": "ListTables"
         }
       },
-      "file": "area120tables_generated_tables_v1alpha1_tables_service_list_tables_async.py",
-      "regionTag": "area120tables_generated_tables_v1alpha1_TablesService_ListTables_async",
+      "file": "area120tables_v1alpha1_generated_tables_service_list_tables_async.py",
+      "regionTag": "area120tables_v1alpha1_generated_TablesService_ListTables_async",
       "segments": [
         {
           "end": 44,
@@ -847,8 +847,8 @@
           "shortName": "ListTables"
         }
       },
-      "file": "area120tables_generated_tables_v1alpha1_tables_service_list_tables_sync.py",
-      "regionTag": "area120tables_generated_tables_v1alpha1_TablesService_ListTables_sync",
+      "file": "area120tables_v1alpha1_generated_tables_service_list_tables_sync.py",
+      "regionTag": "area120tables_v1alpha1_generated_TablesService_ListTables_sync",
       "segments": [
         {
           "end": 44,
@@ -892,8 +892,8 @@
           "shortName": "ListWorkspaces"
         }
       },
-      "file": "area120tables_generated_tables_v1alpha1_tables_service_list_workspaces_async.py",
-      "regionTag": "area120tables_generated_tables_v1alpha1_TablesService_ListWorkspaces_async",
+      "file": "area120tables_v1alpha1_generated_tables_service_list_workspaces_async.py",
+      "regionTag": "area120tables_v1alpha1_generated_TablesService_ListWorkspaces_async",
       "segments": [
         {
           "end": 44,
@@ -936,8 +936,8 @@
           "shortName": "ListWorkspaces"
         }
       },
-      "file": "area120tables_generated_tables_v1alpha1_tables_service_list_workspaces_sync.py",
-      "regionTag": "area120tables_generated_tables_v1alpha1_TablesService_ListWorkspaces_sync",
+      "file": "area120tables_v1alpha1_generated_tables_service_list_workspaces_sync.py",
+      "regionTag": "area120tables_v1alpha1_generated_TablesService_ListWorkspaces_sync",
       "segments": [
         {
           "end": 44,
@@ -981,8 +981,8 @@
           "shortName": "UpdateRow"
         }
       },
-      "file": "area120tables_generated_tables_v1alpha1_tables_service_update_row_async.py",
-      "regionTag": "area120tables_generated_tables_v1alpha1_TablesService_UpdateRow_async",
+      "file": "area120tables_v1alpha1_generated_tables_service_update_row_async.py",
+      "regionTag": "area120tables_v1alpha1_generated_TablesService_UpdateRow_async",
       "segments": [
         {
           "end": 43,
@@ -1025,8 +1025,8 @@
           "shortName": "UpdateRow"
         }
       },
-      "file": "area120tables_generated_tables_v1alpha1_tables_service_update_row_sync.py",
-      "regionTag": "area120tables_generated_tables_v1alpha1_TablesService_UpdateRow_sync",
+      "file": "area120tables_v1alpha1_generated_tables_service_update_row_sync.py",
+      "regionTag": "area120tables_v1alpha1_generated_TablesService_UpdateRow_sync",
       "segments": [
         {
           "end": 43,

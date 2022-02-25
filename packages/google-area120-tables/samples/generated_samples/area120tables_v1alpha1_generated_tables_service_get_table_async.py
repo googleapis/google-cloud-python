@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for DeleteRow
+# Snippet for GetTable
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,21 +23,23 @@
 #   python3 -m pip install google-area120-tables
 
 
-# [START area120tables_generated_tables_v1alpha1_TablesService_DeleteRow_sync]
+# [START area120tables_v1alpha1_generated_TablesService_GetTable_async]
 from google.area120 import tables_v1alpha1
 
 
-def sample_delete_row():
+async def sample_get_table():
     # Create a client
-    client = tables_v1alpha1.TablesServiceClient()
+    client = tables_v1alpha1.TablesServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = tables_v1alpha1.DeleteRowRequest(
+    request = tables_v1alpha1.GetTableRequest(
         name="name_value",
     )
 
     # Make the request
-    client.delete_row(request=request)
+    response = await client.get_table(request=request)
 
+    # Handle the response
+    print(response)
 
-# [END area120tables_generated_tables_v1alpha1_TablesService_DeleteRow_sync]
+# [END area120tables_v1alpha1_generated_TablesService_GetTable_async]

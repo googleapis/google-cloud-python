@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ListTables
+# Snippet for GetWorkspace
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,23 +23,23 @@
 #   python3 -m pip install google-area120-tables
 
 
-# [START area120tables_generated_tables_v1alpha1_TablesService_ListTables_sync]
+# [START area120tables_v1alpha1_generated_TablesService_GetWorkspace_sync]
 from google.area120 import tables_v1alpha1
 
 
-def sample_list_tables():
+def sample_get_workspace():
     # Create a client
     client = tables_v1alpha1.TablesServiceClient()
 
     # Initialize request argument(s)
-    request = tables_v1alpha1.ListTablesRequest(
+    request = tables_v1alpha1.GetWorkspaceRequest(
+        name="name_value",
     )
 
     # Make the request
-    page_result = client.list_tables(request=request)
+    response = client.get_workspace(request=request)
 
     # Handle the response
-    for response in page_result:
-        print(response)
+    print(response)
 
-# [END area120tables_generated_tables_v1alpha1_TablesService_ListTables_sync]
+# [END area120tables_v1alpha1_generated_TablesService_GetWorkspace_sync]

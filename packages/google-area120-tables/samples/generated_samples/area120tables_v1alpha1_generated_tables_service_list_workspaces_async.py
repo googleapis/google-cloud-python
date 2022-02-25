@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for CreateRow
+# Snippet for ListWorkspaces
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,23 +23,23 @@
 #   python3 -m pip install google-area120-tables
 
 
-# [START area120tables_generated_tables_v1alpha1_TablesService_CreateRow_sync]
+# [START area120tables_v1alpha1_generated_TablesService_ListWorkspaces_async]
 from google.area120 import tables_v1alpha1
 
 
-def sample_create_row():
+async def sample_list_workspaces():
     # Create a client
-    client = tables_v1alpha1.TablesServiceClient()
+    client = tables_v1alpha1.TablesServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = tables_v1alpha1.CreateRowRequest(
-        parent="parent_value",
+    request = tables_v1alpha1.ListWorkspacesRequest(
     )
 
     # Make the request
-    response = client.create_row(request=request)
+    page_result = client.list_workspaces(request=request)
 
     # Handle the response
-    print(response)
+    async for response in page_result:
+        print(response)
 
-# [END area120tables_generated_tables_v1alpha1_TablesService_CreateRow_sync]
+# [END area120tables_v1alpha1_generated_TablesService_ListWorkspaces_async]

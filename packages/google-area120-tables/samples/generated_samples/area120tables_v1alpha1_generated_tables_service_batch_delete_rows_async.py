@@ -23,13 +23,13 @@
 #   python3 -m pip install google-area120-tables
 
 
-# [START area120tables_generated_tables_v1alpha1_TablesService_BatchDeleteRows_sync]
+# [START area120tables_v1alpha1_generated_TablesService_BatchDeleteRows_async]
 from google.area120 import tables_v1alpha1
 
 
-def sample_batch_delete_rows():
+async def sample_batch_delete_rows():
     # Create a client
-    client = tables_v1alpha1.TablesServiceClient()
+    client = tables_v1alpha1.TablesServiceAsyncClient()
 
     # Initialize request argument(s)
     request = tables_v1alpha1.BatchDeleteRowsRequest(
@@ -38,7 +38,7 @@ def sample_batch_delete_rows():
     )
 
     # Make the request
-    client.batch_delete_rows(request=request)
+    await client.batch_delete_rows(request=request)
 
 
-# [END area120tables_generated_tables_v1alpha1_TablesService_BatchDeleteRows_sync]
+# [END area120tables_v1alpha1_generated_TablesService_BatchDeleteRows_async]

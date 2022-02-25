@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for BatchDeleteRows
+# Snippet for CreateRow
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,22 +23,23 @@
 #   python3 -m pip install google-area120-tables
 
 
-# [START area120tables_generated_tables_v1alpha1_TablesService_BatchDeleteRows_async]
+# [START area120tables_v1alpha1_generated_TablesService_CreateRow_async]
 from google.area120 import tables_v1alpha1
 
 
-async def sample_batch_delete_rows():
+async def sample_create_row():
     # Create a client
     client = tables_v1alpha1.TablesServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = tables_v1alpha1.BatchDeleteRowsRequest(
+    request = tables_v1alpha1.CreateRowRequest(
         parent="parent_value",
-        names=['names_value_1', 'names_value_2'],
     )
 
     # Make the request
-    await client.batch_delete_rows(request=request)
+    response = await client.create_row(request=request)
 
+    # Handle the response
+    print(response)
 
-# [END area120tables_generated_tables_v1alpha1_TablesService_BatchDeleteRows_async]
+# [END area120tables_v1alpha1_generated_TablesService_CreateRow_async]

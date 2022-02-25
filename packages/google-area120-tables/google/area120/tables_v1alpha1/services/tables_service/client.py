@@ -440,8 +440,7 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
     ) -> tables.Table:
         r"""Gets a table. Returns NOT_FOUND if the table does not exist.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.area120 import tables_v1alpha1
 
@@ -528,8 +527,7 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
     ) -> pagers.ListTablesPager:
         r"""Lists tables for the user.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.area120 import tables_v1alpha1
 
@@ -604,8 +602,7 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
         exist.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.area120 import tables_v1alpha1
 
@@ -693,8 +690,7 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
     ) -> pagers.ListWorkspacesPager:
         r"""Lists workspaces for the user.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.area120 import tables_v1alpha1
 
@@ -769,8 +765,7 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
         table.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.area120 import tables_v1alpha1
 
@@ -861,8 +856,7 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
         exist.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.area120 import tables_v1alpha1
 
@@ -963,8 +957,7 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
     ) -> tables.Row:
         r"""Creates a row.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.area120 import tables_v1alpha1
 
@@ -1059,8 +1052,7 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
     ) -> tables.BatchCreateRowsResponse:
         r"""Creates multiple rows.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.area120 import tables_v1alpha1
 
@@ -1135,8 +1127,7 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
     ) -> tables.Row:
         r"""Updates a row.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.area120 import tables_v1alpha1
 
@@ -1227,8 +1218,7 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
     ) -> tables.BatchUpdateRowsResponse:
         r"""Updates multiple rows.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.area120 import tables_v1alpha1
 
@@ -1298,8 +1288,7 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
     ) -> None:
         r"""Deletes a row.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.area120 import tables_v1alpha1
 
@@ -1379,8 +1368,7 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
     ) -> None:
         r"""Deletes multiple rows.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.area120 import tables_v1alpha1
 

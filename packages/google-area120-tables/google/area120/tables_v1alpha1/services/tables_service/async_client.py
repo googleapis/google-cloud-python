@@ -232,7 +232,7 @@ class TablesServiceAsyncClient:
     ) -> tables.Table:
         r"""Gets a table. Returns NOT_FOUND if the table does not exist.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.area120 import tables_v1alpha1
 
@@ -319,7 +319,7 @@ class TablesServiceAsyncClient:
     ) -> pagers.ListTablesAsyncPager:
         r"""Lists tables for the user.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.area120 import tables_v1alpha1
 
@@ -393,7 +393,7 @@ class TablesServiceAsyncClient:
         exist.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.area120 import tables_v1alpha1
 
@@ -481,7 +481,7 @@ class TablesServiceAsyncClient:
     ) -> pagers.ListWorkspacesAsyncPager:
         r"""Lists workspaces for the user.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.area120 import tables_v1alpha1
 
@@ -555,7 +555,7 @@ class TablesServiceAsyncClient:
         table.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.area120 import tables_v1alpha1
 
@@ -646,7 +646,7 @@ class TablesServiceAsyncClient:
         exist.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.area120 import tables_v1alpha1
 
@@ -747,7 +747,7 @@ class TablesServiceAsyncClient:
     ) -> tables.Row:
         r"""Creates a row.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.area120 import tables_v1alpha1
 
@@ -842,7 +842,7 @@ class TablesServiceAsyncClient:
     ) -> tables.BatchCreateRowsResponse:
         r"""Creates multiple rows.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.area120 import tables_v1alpha1
 
@@ -916,7 +916,7 @@ class TablesServiceAsyncClient:
     ) -> tables.Row:
         r"""Updates a row.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.area120 import tables_v1alpha1
 
@@ -1007,7 +1007,7 @@ class TablesServiceAsyncClient:
     ) -> tables.BatchUpdateRowsResponse:
         r"""Updates multiple rows.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.area120 import tables_v1alpha1
 
@@ -1076,7 +1076,7 @@ class TablesServiceAsyncClient:
     ) -> None:
         r"""Deletes a row.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.area120 import tables_v1alpha1
 
@@ -1156,7 +1156,7 @@ class TablesServiceAsyncClient:
     ) -> None:
         r"""Deletes multiple rows.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.area120 import tables_v1alpha1
 

@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ListRows
+# Snippet for UpdateRow
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,24 +23,22 @@
 #   python3 -m pip install google-area120-tables
 
 
-# [START area120tables_generated_tables_v1alpha1_TablesService_ListRows_async]
+# [START area120tables_v1alpha1_generated_TablesService_UpdateRow_sync]
 from google.area120 import tables_v1alpha1
 
 
-async def sample_list_rows():
+def sample_update_row():
     # Create a client
-    client = tables_v1alpha1.TablesServiceAsyncClient()
+    client = tables_v1alpha1.TablesServiceClient()
 
     # Initialize request argument(s)
-    request = tables_v1alpha1.ListRowsRequest(
-        parent="parent_value",
+    request = tables_v1alpha1.UpdateRowRequest(
     )
 
     # Make the request
-    page_result = client.list_rows(request=request)
+    response = client.update_row(request=request)
 
     # Handle the response
-    async for response in page_result:
-        print(response)
+    print(response)
 
-# [END area120tables_generated_tables_v1alpha1_TablesService_ListRows_async]
+# [END area120tables_v1alpha1_generated_TablesService_UpdateRow_sync]

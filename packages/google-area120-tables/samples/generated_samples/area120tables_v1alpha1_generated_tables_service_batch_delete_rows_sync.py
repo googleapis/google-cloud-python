@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for UpdateRow
+# Snippet for BatchDeleteRows
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,22 +23,22 @@
 #   python3 -m pip install google-area120-tables
 
 
-# [START area120tables_generated_tables_v1alpha1_TablesService_UpdateRow_sync]
+# [START area120tables_v1alpha1_generated_TablesService_BatchDeleteRows_sync]
 from google.area120 import tables_v1alpha1
 
 
-def sample_update_row():
+def sample_batch_delete_rows():
     # Create a client
     client = tables_v1alpha1.TablesServiceClient()
 
     # Initialize request argument(s)
-    request = tables_v1alpha1.UpdateRowRequest(
+    request = tables_v1alpha1.BatchDeleteRowsRequest(
+        parent="parent_value",
+        names=['names_value_1', 'names_value_2'],
     )
 
     # Make the request
-    response = client.update_row(request=request)
+    client.batch_delete_rows(request=request)
 
-    # Handle the response
-    print(response)
 
-# [END area120tables_generated_tables_v1alpha1_TablesService_UpdateRow_sync]
+# [END area120tables_v1alpha1_generated_TablesService_BatchDeleteRows_sync]
