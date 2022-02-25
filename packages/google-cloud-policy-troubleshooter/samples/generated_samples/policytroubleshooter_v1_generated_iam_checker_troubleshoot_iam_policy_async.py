@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-policy-troubleshooter
 
 
-# [START policytroubleshooter_generated_policytroubleshooter_v1_IamChecker_TroubleshootIamPolicy_async]
+# [START policytroubleshooter_v1_generated_IamChecker_TroubleshootIamPolicy_async]
 from google.cloud import policytroubleshooter_v1
 
 
@@ -41,4 +41,4 @@ async def sample_troubleshoot_iam_policy():
     # Handle the response
     print(response)
 
-# [END policytroubleshooter_generated_policytroubleshooter_v1_IamChecker_TroubleshootIamPolicy_async]
+# [END policytroubleshooter_v1_generated_IamChecker_TroubleshootIamPolicy_async]

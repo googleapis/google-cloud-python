@@ -210,7 +210,7 @@ class IamCheckerAsyncClient:
         does not have that permission.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import policytroubleshooter_v1
 

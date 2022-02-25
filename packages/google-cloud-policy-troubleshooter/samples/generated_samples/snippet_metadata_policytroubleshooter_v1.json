@@ -10,8 +10,8 @@
           "shortName": "TroubleshootIamPolicy"
         }
       },
-      "file": "policytroubleshooter_generated_policytroubleshooter_v1_iam_checker_troubleshoot_iam_policy_async.py",
-      "regionTag": "policytroubleshooter_generated_policytroubleshooter_v1_IamChecker_TroubleshootIamPolicy_async",
+      "file": "policytroubleshooter_v1_generated_iam_checker_troubleshoot_iam_policy_async.py",
+      "regionTag": "policytroubleshooter_v1_generated_IamChecker_TroubleshootIamPolicy_async",
       "segments": [
         {
           "end": 43,
@@ -54,8 +54,8 @@
           "shortName": "TroubleshootIamPolicy"
         }
       },
-      "file": "policytroubleshooter_generated_policytroubleshooter_v1_iam_checker_troubleshoot_iam_policy_sync.py",
-      "regionTag": "policytroubleshooter_generated_policytroubleshooter_v1_IamChecker_TroubleshootIamPolicy_sync",
+      "file": "policytroubleshooter_v1_generated_iam_checker_troubleshoot_iam_policy_sync.py",
+      "regionTag": "policytroubleshooter_v1_generated_IamChecker_TroubleshootIamPolicy_sync",
       "segments": [
         {
           "end": 43,
