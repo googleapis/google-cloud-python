@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ResumeTransferOperation
+# Snippet for CreateTransferJob
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,21 +23,22 @@
 #   python3 -m pip install google-cloud-storage-transfer
 
 
-# [START storagetransfer_generated_storage_transfer_v1_StorageTransferService_ResumeTransferOperation_sync]
+# [START storagetransfer_v1_generated_StorageTransferService_CreateTransferJob_sync]
 from google.cloud import storage_transfer_v1
 
 
-def sample_resume_transfer_operation():
+def sample_create_transfer_job():
     # Create a client
     client = storage_transfer_v1.StorageTransferServiceClient()
 
     # Initialize request argument(s)
-    request = storage_transfer_v1.ResumeTransferOperationRequest(
-        name="name_value",
+    request = storage_transfer_v1.CreateTransferJobRequest(
     )
 
     # Make the request
-    client.resume_transfer_operation(request=request)
+    response = client.create_transfer_job(request=request)
 
+    # Handle the response
+    print(response)
 
-# [END storagetransfer_generated_storage_transfer_v1_StorageTransferService_ResumeTransferOperation_sync]
+# [END storagetransfer_v1_generated_StorageTransferService_CreateTransferJob_sync]

@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-storage-transfer
 
 
-# [START storagetransfer_generated_storage_transfer_v1_StorageTransferService_ListTransferJobs_sync]
+# [START storagetransfer_v1_generated_StorageTransferService_ListTransferJobs_sync]
 from google.cloud import storage_transfer_v1
 
 
@@ -43,4 +43,4 @@ def sample_list_transfer_jobs():
     for response in page_result:
         print(response)
 
-# [END storagetransfer_generated_storage_transfer_v1_StorageTransferService_ListTransferJobs_sync]
+# [END storagetransfer_v1_generated_StorageTransferService_ListTransferJobs_sync]

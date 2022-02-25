@@ -10,8 +10,8 @@
           "shortName": "CreateTransferJob"
         }
       },
-      "file": "storagetransfer_generated_storage_transfer_v1_storage_transfer_service_create_transfer_job_async.py",
-      "regionTag": "storagetransfer_generated_storage_transfer_v1_StorageTransferService_CreateTransferJob_async",
+      "file": "storagetransfer_v1_generated_storage_transfer_service_create_transfer_job_async.py",
+      "regionTag": "storagetransfer_v1_generated_StorageTransferService_CreateTransferJob_async",
       "segments": [
         {
           "end": 43,
@@ -54,8 +54,8 @@
           "shortName": "CreateTransferJob"
         }
       },
-      "file": "storagetransfer_generated_storage_transfer_v1_storage_transfer_service_create_transfer_job_sync.py",
-      "regionTag": "storagetransfer_generated_storage_transfer_v1_StorageTransferService_CreateTransferJob_sync",
+      "file": "storagetransfer_v1_generated_storage_transfer_service_create_transfer_job_sync.py",
+      "regionTag": "storagetransfer_v1_generated_StorageTransferService_CreateTransferJob_sync",
       "segments": [
         {
           "end": 43,
@@ -99,8 +99,8 @@
           "shortName": "GetGoogleServiceAccount"
         }
       },
-      "file": "storagetransfer_generated_storage_transfer_v1_storage_transfer_service_get_google_service_account_async.py",
-      "regionTag": "storagetransfer_generated_storage_transfer_v1_StorageTransferService_GetGoogleServiceAccount_async",
+      "file": "storagetransfer_v1_generated_storage_transfer_service_get_google_service_account_async.py",
+      "regionTag": "storagetransfer_v1_generated_StorageTransferService_GetGoogleServiceAccount_async",
       "segments": [
         {
           "end": 44,
@@ -143,8 +143,8 @@
           "shortName": "GetGoogleServiceAccount"
         }
       },
-      "file": "storagetransfer_generated_storage_transfer_v1_storage_transfer_service_get_google_service_account_sync.py",
-      "regionTag": "storagetransfer_generated_storage_transfer_v1_StorageTransferService_GetGoogleServiceAccount_sync",
+      "file": "storagetransfer_v1_generated_storage_transfer_service_get_google_service_account_sync.py",
+      "regionTag": "storagetransfer_v1_generated_StorageTransferService_GetGoogleServiceAccount_sync",
       "segments": [
         {
           "end": 44,
@@ -188,8 +188,8 @@
           "shortName": "GetTransferJob"
         }
       },
-      "file": "storagetransfer_generated_storage_transfer_v1_storage_transfer_service_get_transfer_job_async.py",
-      "regionTag": "storagetransfer_generated_storage_transfer_v1_StorageTransferService_GetTransferJob_async",
+      "file": "storagetransfer_v1_generated_storage_transfer_service_get_transfer_job_async.py",
+      "regionTag": "storagetransfer_v1_generated_StorageTransferService_GetTransferJob_async",
       "segments": [
         {
           "end": 45,
@@ -232,8 +232,8 @@
           "shortName": "GetTransferJob"
         }
       },
-      "file": "storagetransfer_generated_storage_transfer_v1_storage_transfer_service_get_transfer_job_sync.py",
-      "regionTag": "storagetransfer_generated_storage_transfer_v1_StorageTransferService_GetTransferJob_sync",
+      "file": "storagetransfer_v1_generated_storage_transfer_service_get_transfer_job_sync.py",
+      "regionTag": "storagetransfer_v1_generated_StorageTransferService_GetTransferJob_sync",
       "segments": [
         {
           "end": 45,
@@ -277,8 +277,8 @@
           "shortName": "ListTransferJobs"
         }
       },
-      "file": "storagetransfer_generated_storage_transfer_v1_storage_transfer_service_list_transfer_jobs_async.py",
-      "regionTag": "storagetransfer_generated_storage_transfer_v1_StorageTransferService_ListTransferJobs_async",
+      "file": "storagetransfer_v1_generated_storage_transfer_service_list_transfer_jobs_async.py",
+      "regionTag": "storagetransfer_v1_generated_StorageTransferService_ListTransferJobs_async",
       "segments": [
         {
           "end": 45,
@@ -321,8 +321,8 @@
           "shortName": "ListTransferJobs"
         }
       },
-      "file": "storagetransfer_generated_storage_transfer_v1_storage_transfer_service_list_transfer_jobs_sync.py",
-      "regionTag": "storagetransfer_generated_storage_transfer_v1_StorageTransferService_ListTransferJobs_sync",
+      "file": "storagetransfer_v1_generated_storage_transfer_service_list_transfer_jobs_sync.py",
+      "regionTag": "storagetransfer_v1_generated_StorageTransferService_ListTransferJobs_sync",
       "segments": [
         {
           "end": 45,
@@ -366,8 +366,8 @@
           "shortName": "PauseTransferOperation"
         }
       },
-      "file": "storagetransfer_generated_storage_transfer_v1_storage_transfer_service_pause_transfer_operation_async.py",
-      "regionTag": "storagetransfer_generated_storage_transfer_v1_StorageTransferService_PauseTransferOperation_async",
+      "file": "storagetransfer_v1_generated_storage_transfer_service_pause_transfer_operation_async.py",
+      "regionTag": "storagetransfer_v1_generated_StorageTransferService_PauseTransferOperation_async",
       "segments": [
         {
           "end": 42,
@@ -408,8 +408,8 @@
           "shortName": "PauseTransferOperation"
         }
       },
-      "file": "storagetransfer_generated_storage_transfer_v1_storage_transfer_service_pause_transfer_operation_sync.py",
-      "regionTag": "storagetransfer_generated_storage_transfer_v1_StorageTransferService_PauseTransferOperation_sync",
+      "file": "storagetransfer_v1_generated_storage_transfer_service_pause_transfer_operation_sync.py",
+      "regionTag": "storagetransfer_v1_generated_StorageTransferService_PauseTransferOperation_sync",
       "segments": [
         {
           "end": 42,
@@ -451,8 +451,8 @@
           "shortName": "ResumeTransferOperation"
         }
       },
-      "file": "storagetransfer_generated_storage_transfer_v1_storage_transfer_service_resume_transfer_operation_async.py",
-      "regionTag": "storagetransfer_generated_storage_transfer_v1_StorageTransferService_ResumeTransferOperation_async",
+      "file": "storagetransfer_v1_generated_storage_transfer_service_resume_transfer_operation_async.py",
+      "regionTag": "storagetransfer_v1_generated_StorageTransferService_ResumeTransferOperation_async",
       "segments": [
         {
           "end": 42,
@@ -493,8 +493,8 @@
           "shortName": "ResumeTransferOperation"
         }
       },
-      "file": "storagetransfer_generated_storage_transfer_v1_storage_transfer_service_resume_transfer_operation_sync.py",
-      "regionTag": "storagetransfer_generated_storage_transfer_v1_StorageTransferService_ResumeTransferOperation_sync",
+      "file": "storagetransfer_v1_generated_storage_transfer_service_resume_transfer_operation_sync.py",
+      "regionTag": "storagetransfer_v1_generated_StorageTransferService_ResumeTransferOperation_sync",
       "segments": [
         {
           "end": 42,
@@ -536,8 +536,8 @@
           "shortName": "RunTransferJob"
         }
       },
-      "file": "storagetransfer_generated_storage_transfer_v1_storage_transfer_service_run_transfer_job_async.py",
-      "regionTag": "storagetransfer_generated_storage_transfer_v1_StorageTransferService_RunTransferJob_async",
+      "file": "storagetransfer_v1_generated_storage_transfer_service_run_transfer_job_async.py",
+      "regionTag": "storagetransfer_v1_generated_StorageTransferService_RunTransferJob_async",
       "segments": [
         {
           "end": 49,
@@ -580,8 +580,8 @@
           "shortName": "RunTransferJob"
         }
       },
-      "file": "storagetransfer_generated_storage_transfer_v1_storage_transfer_service_run_transfer_job_sync.py",
-      "regionTag": "storagetransfer_generated_storage_transfer_v1_StorageTransferService_RunTransferJob_sync",
+      "file": "storagetransfer_v1_generated_storage_transfer_service_run_transfer_job_sync.py",
+      "regionTag": "storagetransfer_v1_generated_StorageTransferService_RunTransferJob_sync",
       "segments": [
         {
           "end": 49,
@@ -625,8 +625,8 @@
           "shortName": "UpdateTransferJob"
         }
       },
-      "file": "storagetransfer_generated_storage_transfer_v1_storage_transfer_service_update_transfer_job_async.py",
-      "regionTag": "storagetransfer_generated_storage_transfer_v1_StorageTransferService_UpdateTransferJob_async",
+      "file": "storagetransfer_v1_generated_storage_transfer_service_update_transfer_job_async.py",
+      "regionTag": "storagetransfer_v1_generated_StorageTransferService_UpdateTransferJob_async",
       "segments": [
         {
           "end": 45,
@@ -669,8 +669,8 @@
           "shortName": "UpdateTransferJob"
         }
       },
-      "file": "storagetransfer_generated_storage_transfer_v1_storage_transfer_service_update_transfer_job_sync.py",
-      "regionTag": "storagetransfer_generated_storage_transfer_v1_StorageTransferService_UpdateTransferJob_sync",
+      "file": "storagetransfer_v1_generated_storage_transfer_service_update_transfer_job_sync.py",
+      "regionTag": "storagetransfer_v1_generated_StorageTransferService_UpdateTransferJob_sync",
       "segments": [
         {
           "end": 45,

@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for PauseTransferOperation
+# Snippet for UpdateTransferJob
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,21 +23,24 @@
 #   python3 -m pip install google-cloud-storage-transfer
 
 
-# [START storagetransfer_generated_storage_transfer_v1_StorageTransferService_PauseTransferOperation_async]
+# [START storagetransfer_v1_generated_StorageTransferService_UpdateTransferJob_sync]
 from google.cloud import storage_transfer_v1
 
 
-async def sample_pause_transfer_operation():
+def sample_update_transfer_job():
     # Create a client
-    client = storage_transfer_v1.StorageTransferServiceAsyncClient()
+    client = storage_transfer_v1.StorageTransferServiceClient()
 
     # Initialize request argument(s)
-    request = storage_transfer_v1.PauseTransferOperationRequest(
-        name="name_value",
+    request = storage_transfer_v1.UpdateTransferJobRequest(
+        job_name="job_name_value",
+        project_id="project_id_value",
     )
 
     # Make the request
-    await client.pause_transfer_operation(request=request)
+    response = client.update_transfer_job(request=request)
 
+    # Handle the response
+    print(response)
 
-# [END storagetransfer_generated_storage_transfer_v1_StorageTransferService_PauseTransferOperation_async]
+# [END storagetransfer_v1_generated_StorageTransferService_UpdateTransferJob_sync]

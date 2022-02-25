@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-storage-transfer
 
 
-# [START storagetransfer_generated_storage_transfer_v1_StorageTransferService_CreateTransferJob_async]
+# [START storagetransfer_v1_generated_StorageTransferService_CreateTransferJob_async]
 from google.cloud import storage_transfer_v1
 
 
@@ -41,4 +41,4 @@ async def sample_create_transfer_job():
     # Handle the response
     print(response)
 
-# [END storagetransfer_generated_storage_transfer_v1_StorageTransferService_CreateTransferJob_async]
+# [END storagetransfer_v1_generated_StorageTransferService_CreateTransferJob_async]

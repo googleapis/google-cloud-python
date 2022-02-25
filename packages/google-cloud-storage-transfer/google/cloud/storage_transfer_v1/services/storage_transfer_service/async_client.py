@@ -231,7 +231,7 @@ class StorageTransferServiceAsyncClient:
         Service.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import storage_transfer_v1
 
@@ -291,7 +291,7 @@ class StorageTransferServiceAsyncClient:
     ) -> transfer_types.TransferJob:
         r"""Creates a transfer job that runs periodically.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import storage_transfer_v1
 
@@ -363,7 +363,7 @@ class StorageTransferServiceAsyncClient:
         [ENABLED][google.storagetransfer.v1.TransferJob.Status.ENABLED]).
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import storage_transfer_v1
 
@@ -432,7 +432,7 @@ class StorageTransferServiceAsyncClient:
     ) -> transfer_types.TransferJob:
         r"""Gets a transfer job.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import storage_transfer_v1
 
@@ -501,7 +501,7 @@ class StorageTransferServiceAsyncClient:
     ) -> pagers.ListTransferJobsAsyncPager:
         r"""Lists transfer jobs.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import storage_transfer_v1
 
@@ -573,7 +573,7 @@ class StorageTransferServiceAsyncClient:
     ) -> None:
         r"""Pauses a transfer operation.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import storage_transfer_v1
 
@@ -631,7 +631,7 @@ class StorageTransferServiceAsyncClient:
     ) -> None:
         r"""Resumes a transfer operation that is paused.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import storage_transfer_v1
 
@@ -693,7 +693,7 @@ class StorageTransferServiceAsyncClient:
         a TransferOperation is active, an error wil be returned.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import storage_transfer_v1
 

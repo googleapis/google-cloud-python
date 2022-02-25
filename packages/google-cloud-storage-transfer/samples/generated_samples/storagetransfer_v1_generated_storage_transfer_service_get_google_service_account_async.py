@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for PauseTransferOperation
+# Snippet for GetGoogleServiceAccount
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,21 +23,23 @@
 #   python3 -m pip install google-cloud-storage-transfer
 
 
-# [START storagetransfer_generated_storage_transfer_v1_StorageTransferService_PauseTransferOperation_sync]
+# [START storagetransfer_v1_generated_StorageTransferService_GetGoogleServiceAccount_async]
 from google.cloud import storage_transfer_v1
 
 
-def sample_pause_transfer_operation():
+async def sample_get_google_service_account():
     # Create a client
-    client = storage_transfer_v1.StorageTransferServiceClient()
+    client = storage_transfer_v1.StorageTransferServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = storage_transfer_v1.PauseTransferOperationRequest(
-        name="name_value",
+    request = storage_transfer_v1.GetGoogleServiceAccountRequest(
+        project_id="project_id_value",
     )
 
     # Make the request
-    client.pause_transfer_operation(request=request)
+    response = await client.get_google_service_account(request=request)
 
+    # Handle the response
+    print(response)
 
-# [END storagetransfer_generated_storage_transfer_v1_StorageTransferService_PauseTransferOperation_sync]
+# [END storagetransfer_v1_generated_StorageTransferService_GetGoogleServiceAccount_async]

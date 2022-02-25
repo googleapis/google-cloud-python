@@ -23,13 +23,13 @@
 #   python3 -m pip install google-cloud-storage-transfer
 
 
-# [START storagetransfer_generated_storage_transfer_v1_StorageTransferService_ResumeTransferOperation_async]
+# [START storagetransfer_v1_generated_StorageTransferService_ResumeTransferOperation_sync]
 from google.cloud import storage_transfer_v1
 
 
-async def sample_resume_transfer_operation():
+def sample_resume_transfer_operation():
     # Create a client
-    client = storage_transfer_v1.StorageTransferServiceAsyncClient()
+    client = storage_transfer_v1.StorageTransferServiceClient()
 
     # Initialize request argument(s)
     request = storage_transfer_v1.ResumeTransferOperationRequest(
@@ -37,7 +37,7 @@ async def sample_resume_transfer_operation():
     )
 
     # Make the request
-    await client.resume_transfer_operation(request=request)
+    client.resume_transfer_operation(request=request)
 
 
-# [END storagetransfer_generated_storage_transfer_v1_StorageTransferService_ResumeTransferOperation_async]
+# [END storagetransfer_v1_generated_StorageTransferService_ResumeTransferOperation_sync]

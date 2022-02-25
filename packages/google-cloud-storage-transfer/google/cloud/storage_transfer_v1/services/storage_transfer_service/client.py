@@ -413,8 +413,7 @@ class StorageTransferServiceClient(metaclass=StorageTransferServiceClientMeta):
         Service.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import storage_transfer_v1
 
@@ -477,8 +476,7 @@ class StorageTransferServiceClient(metaclass=StorageTransferServiceClientMeta):
     ) -> transfer_types.TransferJob:
         r"""Creates a transfer job that runs periodically.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import storage_transfer_v1
 
@@ -551,8 +549,7 @@ class StorageTransferServiceClient(metaclass=StorageTransferServiceClientMeta):
         [ENABLED][google.storagetransfer.v1.TransferJob.Status.ENABLED]).
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import storage_transfer_v1
 
@@ -622,8 +619,7 @@ class StorageTransferServiceClient(metaclass=StorageTransferServiceClientMeta):
     ) -> transfer_types.TransferJob:
         r"""Gets a transfer job.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import storage_transfer_v1
 
@@ -693,8 +689,7 @@ class StorageTransferServiceClient(metaclass=StorageTransferServiceClientMeta):
     ) -> pagers.ListTransferJobsPager:
         r"""Lists transfer jobs.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import storage_transfer_v1
 
@@ -767,8 +762,7 @@ class StorageTransferServiceClient(metaclass=StorageTransferServiceClientMeta):
     ) -> None:
         r"""Pauses a transfer operation.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import storage_transfer_v1
 
@@ -827,8 +821,7 @@ class StorageTransferServiceClient(metaclass=StorageTransferServiceClientMeta):
     ) -> None:
         r"""Resumes a transfer operation that is paused.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import storage_transfer_v1
 
@@ -893,8 +886,7 @@ class StorageTransferServiceClient(metaclass=StorageTransferServiceClientMeta):
         a TransferOperation is active, an error wil be returned.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import storage_transfer_v1
 

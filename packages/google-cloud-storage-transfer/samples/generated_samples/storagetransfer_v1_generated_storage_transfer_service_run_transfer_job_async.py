@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for UpdateTransferJob
+# Snippet for RunTransferJob
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,24 +23,28 @@
 #   python3 -m pip install google-cloud-storage-transfer
 
 
-# [START storagetransfer_generated_storage_transfer_v1_StorageTransferService_UpdateTransferJob_async]
+# [START storagetransfer_v1_generated_StorageTransferService_RunTransferJob_async]
 from google.cloud import storage_transfer_v1
 
 
-async def sample_update_transfer_job():
+async def sample_run_transfer_job():
     # Create a client
     client = storage_transfer_v1.StorageTransferServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = storage_transfer_v1.UpdateTransferJobRequest(
+    request = storage_transfer_v1.RunTransferJobRequest(
         job_name="job_name_value",
         project_id="project_id_value",
     )
 
     # Make the request
-    response = await client.update_transfer_job(request=request)
+    operation = client.run_transfer_job(request=request)
+
+    print("Waiting for operation to complete...")
+
+    response = await operation.result()
 
     # Handle the response
     print(response)
 
-# [END storagetransfer_generated_storage_transfer_v1_StorageTransferService_UpdateTransferJob_async]
+# [END storagetransfer_v1_generated_StorageTransferService_RunTransferJob_async]

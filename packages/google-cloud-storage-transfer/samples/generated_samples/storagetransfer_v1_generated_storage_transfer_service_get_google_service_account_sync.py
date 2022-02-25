@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ListTransferJobs
+# Snippet for GetGoogleServiceAccount
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,24 +23,23 @@
 #   python3 -m pip install google-cloud-storage-transfer
 
 
-# [START storagetransfer_generated_storage_transfer_v1_StorageTransferService_ListTransferJobs_async]
+# [START storagetransfer_v1_generated_StorageTransferService_GetGoogleServiceAccount_sync]
 from google.cloud import storage_transfer_v1
 
 
-async def sample_list_transfer_jobs():
+def sample_get_google_service_account():
     # Create a client
-    client = storage_transfer_v1.StorageTransferServiceAsyncClient()
+    client = storage_transfer_v1.StorageTransferServiceClient()
 
     # Initialize request argument(s)
-    request = storage_transfer_v1.ListTransferJobsRequest(
-        filter="filter_value",
+    request = storage_transfer_v1.GetGoogleServiceAccountRequest(
+        project_id="project_id_value",
     )
 
     # Make the request
-    page_result = client.list_transfer_jobs(request=request)
+    response = client.get_google_service_account(request=request)
 
     # Handle the response
-    async for response in page_result:
-        print(response)
+    print(response)
 
-# [END storagetransfer_generated_storage_transfer_v1_StorageTransferService_ListTransferJobs_async]
+# [END storagetransfer_v1_generated_StorageTransferService_GetGoogleServiceAccount_sync]
