@@ -10,8 +10,8 @@
           "shortName": "DeletePosixAccount"
         }
       },
-      "file": "oslogin_generated_oslogin_v1_os_login_service_delete_posix_account_async.py",
-      "regionTag": "oslogin_generated_oslogin_v1_OsLoginService_DeletePosixAccount_async",
+      "file": "oslogin_v1_generated_os_login_service_delete_posix_account_async.py",
+      "regionTag": "oslogin_v1_generated_OsLoginService_DeletePosixAccount_async",
       "segments": [
         {
           "end": 42,
@@ -52,8 +52,8 @@
           "shortName": "DeletePosixAccount"
         }
       },
-      "file": "oslogin_generated_oslogin_v1_os_login_service_delete_posix_account_sync.py",
-      "regionTag": "oslogin_generated_oslogin_v1_OsLoginService_DeletePosixAccount_sync",
+      "file": "oslogin_v1_generated_os_login_service_delete_posix_account_sync.py",
+      "regionTag": "oslogin_v1_generated_OsLoginService_DeletePosixAccount_sync",
       "segments": [
         {
           "end": 42,
@@ -95,8 +95,8 @@
           "shortName": "DeleteSshPublicKey"
         }
       },
-      "file": "oslogin_generated_oslogin_v1_os_login_service_delete_ssh_public_key_async.py",
-      "regionTag": "oslogin_generated_oslogin_v1_OsLoginService_DeleteSshPublicKey_async",
+      "file": "oslogin_v1_generated_os_login_service_delete_ssh_public_key_async.py",
+      "regionTag": "oslogin_v1_generated_OsLoginService_DeleteSshPublicKey_async",
       "segments": [
         {
           "end": 42,
@@ -137,8 +137,8 @@
           "shortName": "DeleteSshPublicKey"
         }
       },
-      "file": "oslogin_generated_oslogin_v1_os_login_service_delete_ssh_public_key_sync.py",
-      "regionTag": "oslogin_generated_oslogin_v1_OsLoginService_DeleteSshPublicKey_sync",
+      "file": "oslogin_v1_generated_os_login_service_delete_ssh_public_key_sync.py",
+      "regionTag": "oslogin_v1_generated_OsLoginService_DeleteSshPublicKey_sync",
       "segments": [
         {
           "end": 42,
@@ -180,8 +180,8 @@
           "shortName": "GetLoginProfile"
         }
       },
-      "file": "oslogin_generated_oslogin_v1_os_login_service_get_login_profile_async.py",
-      "regionTag": "oslogin_generated_oslogin_v1_OsLoginService_GetLoginProfile_async",
+      "file": "oslogin_v1_generated_os_login_service_get_login_profile_async.py",
+      "regionTag": "oslogin_v1_generated_OsLoginService_GetLoginProfile_async",
       "segments": [
         {
           "end": 44,
@@ -224,8 +224,8 @@
           "shortName": "GetLoginProfile"
         }
       },
-      "file": "oslogin_generated_oslogin_v1_os_login_service_get_login_profile_sync.py",
-      "regionTag": "oslogin_generated_oslogin_v1_OsLoginService_GetLoginProfile_sync",
+      "file": "oslogin_v1_generated_os_login_service_get_login_profile_sync.py",
+      "regionTag": "oslogin_v1_generated_OsLoginService_GetLoginProfile_sync",
       "segments": [
         {
           "end": 44,
@@ -269,8 +269,8 @@
           "shortName": "GetSshPublicKey"
         }
       },
-      "file": "oslogin_generated_oslogin_v1_os_login_service_get_ssh_public_key_async.py",
-      "regionTag": "oslogin_generated_oslogin_v1_OsLoginService_GetSshPublicKey_async",
+      "file": "oslogin_v1_generated_os_login_service_get_ssh_public_key_async.py",
+      "regionTag": "oslogin_v1_generated_OsLoginService_GetSshPublicKey_async",
       "segments": [
         {
           "end": 44,
@@ -313,8 +313,8 @@
           "shortName": "GetSshPublicKey"
         }
       },
-      "file": "oslogin_generated_oslogin_v1_os_login_service_get_ssh_public_key_sync.py",
-      "regionTag": "oslogin_generated_oslogin_v1_OsLoginService_GetSshPublicKey_sync",
+      "file": "oslogin_v1_generated_os_login_service_get_ssh_public_key_sync.py",
+      "regionTag": "oslogin_v1_generated_OsLoginService_GetSshPublicKey_sync",
       "segments": [
         {
           "end": 44,
@@ -358,8 +358,8 @@
           "shortName": "ImportSshPublicKey"
         }
       },
-      "file": "oslogin_generated_oslogin_v1_os_login_service_import_ssh_public_key_async.py",
-      "regionTag": "oslogin_generated_oslogin_v1_OsLoginService_ImportSshPublicKey_async",
+      "file": "oslogin_v1_generated_os_login_service_import_ssh_public_key_async.py",
+      "regionTag": "oslogin_v1_generated_OsLoginService_ImportSshPublicKey_async",
       "segments": [
         {
           "end": 44,
@@ -402,8 +402,8 @@
           "shortName": "ImportSshPublicKey"
         }
       },
-      "file": "oslogin_generated_oslogin_v1_os_login_service_import_ssh_public_key_sync.py",
-      "regionTag": "oslogin_generated_oslogin_v1_OsLoginService_ImportSshPublicKey_sync",
+      "file": "oslogin_v1_generated_os_login_service_import_ssh_public_key_sync.py",
+      "regionTag": "oslogin_v1_generated_OsLoginService_ImportSshPublicKey_sync",
       "segments": [
         {
           "end": 44,
@@ -447,8 +447,8 @@
           "shortName": "UpdateSshPublicKey"
         }
       },
-      "file": "oslogin_generated_oslogin_v1_os_login_service_update_ssh_public_key_async.py",
-      "regionTag": "oslogin_generated_oslogin_v1_OsLoginService_UpdateSshPublicKey_async",
+      "file": "oslogin_v1_generated_os_login_service_update_ssh_public_key_async.py",
+      "regionTag": "oslogin_v1_generated_OsLoginService_UpdateSshPublicKey_async",
       "segments": [
         {
           "end": 44,
@@ -491,8 +491,8 @@
           "shortName": "UpdateSshPublicKey"
         }
       },
-      "file": "oslogin_generated_oslogin_v1_os_login_service_update_ssh_public_key_sync.py",
-      "regionTag": "oslogin_generated_oslogin_v1_OsLoginService_UpdateSshPublicKey_sync",
+      "file": "oslogin_v1_generated_os_login_service_update_ssh_public_key_sync.py",
+      "regionTag": "oslogin_v1_generated_OsLoginService_UpdateSshPublicKey_sync",
       "segments": [
         {
           "end": 44,

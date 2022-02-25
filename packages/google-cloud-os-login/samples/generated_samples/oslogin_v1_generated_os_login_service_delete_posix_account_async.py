@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ImportSshPublicKey
+# Snippet for DeletePosixAccount
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,23 +23,21 @@
 #   python3 -m pip install google-cloud-oslogin
 
 
-# [START oslogin_generated_oslogin_v1_OsLoginService_ImportSshPublicKey_sync]
+# [START oslogin_v1_generated_OsLoginService_DeletePosixAccount_async]
 from google.cloud import oslogin_v1
 
 
-def sample_import_ssh_public_key():
+async def sample_delete_posix_account():
     # Create a client
-    client = oslogin_v1.OsLoginServiceClient()
+    client = oslogin_v1.OsLoginServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = oslogin_v1.ImportSshPublicKeyRequest(
-        parent="parent_value",
+    request = oslogin_v1.DeletePosixAccountRequest(
+        name="name_value",
     )
 
     # Make the request
-    response = client.import_ssh_public_key(request=request)
+    await client.delete_posix_account(request=request)
 
-    # Handle the response
-    print(response)
 
-# [END oslogin_generated_oslogin_v1_OsLoginService_ImportSshPublicKey_sync]
+# [END oslogin_v1_generated_OsLoginService_DeletePosixAccount_async]

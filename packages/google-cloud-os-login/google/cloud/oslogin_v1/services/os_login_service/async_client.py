@@ -224,7 +224,7 @@ class OsLoginServiceAsyncClient:
     ) -> None:
         r"""Deletes a POSIX account.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import oslogin_v1
 
@@ -316,7 +316,7 @@ class OsLoginServiceAsyncClient:
     ) -> None:
         r"""Deletes an SSH public key.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import oslogin_v1
 
@@ -410,7 +410,7 @@ class OsLoginServiceAsyncClient:
         to a virtual machine on Google Compute Engine.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import oslogin_v1
 
@@ -511,7 +511,7 @@ class OsLoginServiceAsyncClient:
     ) -> common.SshPublicKey:
         r"""Retrieves an SSH public key.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import oslogin_v1
 
@@ -619,7 +619,7 @@ class OsLoginServiceAsyncClient:
         profile.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import oslogin_v1
 
@@ -741,7 +741,7 @@ class OsLoginServiceAsyncClient:
         information. This method supports patch semantics.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import oslogin_v1
 

@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ImportSshPublicKey
+# Snippet for GetSshPublicKey
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,23 +23,23 @@
 #   python3 -m pip install google-cloud-oslogin
 
 
-# [START oslogin_generated_oslogin_v1_OsLoginService_ImportSshPublicKey_async]
+# [START oslogin_v1_generated_OsLoginService_GetSshPublicKey_sync]
 from google.cloud import oslogin_v1
 
 
-async def sample_import_ssh_public_key():
+def sample_get_ssh_public_key():
     # Create a client
-    client = oslogin_v1.OsLoginServiceAsyncClient()
+    client = oslogin_v1.OsLoginServiceClient()
 
     # Initialize request argument(s)
-    request = oslogin_v1.ImportSshPublicKeyRequest(
-        parent="parent_value",
+    request = oslogin_v1.GetSshPublicKeyRequest(
+        name="name_value",
     )
 
     # Make the request
-    response = await client.import_ssh_public_key(request=request)
+    response = client.get_ssh_public_key(request=request)
 
     # Handle the response
     print(response)
 
-# [END oslogin_generated_oslogin_v1_OsLoginService_ImportSshPublicKey_async]
+# [END oslogin_v1_generated_OsLoginService_GetSshPublicKey_sync]

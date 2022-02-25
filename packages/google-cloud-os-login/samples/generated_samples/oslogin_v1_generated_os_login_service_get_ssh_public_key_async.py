@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for DeleteSshPublicKey
+# Snippet for GetSshPublicKey
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,21 +23,23 @@
 #   python3 -m pip install google-cloud-oslogin
 
 
-# [START oslogin_generated_oslogin_v1_OsLoginService_DeleteSshPublicKey_async]
+# [START oslogin_v1_generated_OsLoginService_GetSshPublicKey_async]
 from google.cloud import oslogin_v1
 
 
-async def sample_delete_ssh_public_key():
+async def sample_get_ssh_public_key():
     # Create a client
     client = oslogin_v1.OsLoginServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = oslogin_v1.DeleteSshPublicKeyRequest(
+    request = oslogin_v1.GetSshPublicKeyRequest(
         name="name_value",
     )
 
     # Make the request
-    await client.delete_ssh_public_key(request=request)
+    response = await client.get_ssh_public_key(request=request)
 
+    # Handle the response
+    print(response)
 
-# [END oslogin_generated_oslogin_v1_OsLoginService_DeleteSshPublicKey_async]
+# [END oslogin_v1_generated_OsLoginService_GetSshPublicKey_async]

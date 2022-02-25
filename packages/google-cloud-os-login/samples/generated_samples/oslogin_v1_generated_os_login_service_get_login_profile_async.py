@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for DeletePosixAccount
+# Snippet for GetLoginProfile
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,21 +23,23 @@
 #   python3 -m pip install google-cloud-oslogin
 
 
-# [START oslogin_generated_oslogin_v1_OsLoginService_DeletePosixAccount_sync]
+# [START oslogin_v1_generated_OsLoginService_GetLoginProfile_async]
 from google.cloud import oslogin_v1
 
 
-def sample_delete_posix_account():
+async def sample_get_login_profile():
     # Create a client
-    client = oslogin_v1.OsLoginServiceClient()
+    client = oslogin_v1.OsLoginServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = oslogin_v1.DeletePosixAccountRequest(
+    request = oslogin_v1.GetLoginProfileRequest(
         name="name_value",
     )
 
     # Make the request
-    client.delete_posix_account(request=request)
+    response = await client.get_login_profile(request=request)
 
+    # Handle the response
+    print(response)
 
-# [END oslogin_generated_oslogin_v1_OsLoginService_DeletePosixAccount_sync]
+# [END oslogin_v1_generated_OsLoginService_GetLoginProfile_async]
