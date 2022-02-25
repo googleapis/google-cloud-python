@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ApproveApprovalRequest
+# Snippet for DismissApprovalRequest
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,22 +23,22 @@
 #   python3 -m pip install google-cloud-access-approval
 
 
-# [START accessapproval_generated_accessapproval_v1_AccessApproval_ApproveApprovalRequest_sync]
+# [START accessapproval_v1_generated_AccessApproval_DismissApprovalRequest_sync]
 from google.cloud import accessapproval_v1
 
 
-def sample_approve_approval_request():
+def sample_dismiss_approval_request():
     # Create a client
     client = accessapproval_v1.AccessApprovalClient()
 
     # Initialize request argument(s)
-    request = accessapproval_v1.ApproveApprovalRequestMessage(
+    request = accessapproval_v1.DismissApprovalRequestMessage(
     )
 
     # Make the request
-    response = client.approve_approval_request(request=request)
+    response = client.dismiss_approval_request(request=request)
 
     # Handle the response
     print(response)
 
-# [END accessapproval_generated_accessapproval_v1_AccessApproval_ApproveApprovalRequest_sync]
+# [END accessapproval_v1_generated_AccessApproval_DismissApprovalRequest_sync]

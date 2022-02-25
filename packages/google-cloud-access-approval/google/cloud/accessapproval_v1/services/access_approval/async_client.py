@@ -262,7 +262,7 @@ class AccessApprovalAsyncClient:
         order is reverse chronological.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import accessapproval_v1
 
@@ -373,7 +373,7 @@ class AccessApprovalAsyncClient:
         not exist.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import accessapproval_v1
 
@@ -474,7 +474,7 @@ class AccessApprovalAsyncClient:
         pending state.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import accessapproval_v1
 
@@ -551,7 +551,7 @@ class AccessApprovalAsyncClient:
         a pending state.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import accessapproval_v1
 
@@ -621,7 +621,7 @@ class AccessApprovalAsyncClient:
         or organization.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import accessapproval_v1
 
@@ -725,7 +725,7 @@ class AccessApprovalAsyncClient:
         field_mask.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import accessapproval_v1
 
@@ -841,7 +841,7 @@ class AccessApprovalAsyncClient:
         inherited.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import accessapproval_v1
 

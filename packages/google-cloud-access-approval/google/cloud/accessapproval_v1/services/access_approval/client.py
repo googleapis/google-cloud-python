@@ -462,8 +462,7 @@ class AccessApprovalClient(metaclass=AccessApprovalClientMeta):
         order is reverse chronological.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import accessapproval_v1
 
@@ -565,8 +564,7 @@ class AccessApprovalClient(metaclass=AccessApprovalClientMeta):
         not exist.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import accessapproval_v1
 
@@ -658,8 +656,7 @@ class AccessApprovalClient(metaclass=AccessApprovalClientMeta):
         pending state.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import accessapproval_v1
 
@@ -737,8 +734,7 @@ class AccessApprovalClient(metaclass=AccessApprovalClientMeta):
         a pending state.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import accessapproval_v1
 
@@ -809,8 +805,7 @@ class AccessApprovalClient(metaclass=AccessApprovalClientMeta):
         or organization.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import accessapproval_v1
 
@@ -907,8 +902,7 @@ class AccessApprovalClient(metaclass=AccessApprovalClientMeta):
         field_mask.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import accessapproval_v1
 
@@ -1026,8 +1020,7 @@ class AccessApprovalClient(metaclass=AccessApprovalClientMeta):
         inherited.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import accessapproval_v1
 

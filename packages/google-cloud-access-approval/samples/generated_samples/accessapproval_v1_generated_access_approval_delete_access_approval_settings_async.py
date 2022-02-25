@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ListApprovalRequests
+# Snippet for DeleteAccessApprovalSettings
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,23 +23,20 @@
 #   python3 -m pip install google-cloud-access-approval
 
 
-# [START accessapproval_generated_accessapproval_v1_AccessApproval_ListApprovalRequests_async]
+# [START accessapproval_v1_generated_AccessApproval_DeleteAccessApprovalSettings_async]
 from google.cloud import accessapproval_v1
 
 
-async def sample_list_approval_requests():
+async def sample_delete_access_approval_settings():
     # Create a client
     client = accessapproval_v1.AccessApprovalAsyncClient()
 
     # Initialize request argument(s)
-    request = accessapproval_v1.ListApprovalRequestsMessage(
+    request = accessapproval_v1.DeleteAccessApprovalSettingsMessage(
     )
 
     # Make the request
-    page_result = client.list_approval_requests(request=request)
+    await client.delete_access_approval_settings(request=request)
 
-    # Handle the response
-    async for response in page_result:
-        print(response)
 
-# [END accessapproval_generated_accessapproval_v1_AccessApproval_ListApprovalRequests_async]
+# [END accessapproval_v1_generated_AccessApproval_DeleteAccessApprovalSettings_async]

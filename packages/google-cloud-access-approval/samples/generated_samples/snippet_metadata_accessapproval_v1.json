@@ -10,8 +10,8 @@
           "shortName": "ApproveApprovalRequest"
         }
       },
-      "file": "accessapproval_generated_accessapproval_v1_access_approval_approve_approval_request_async.py",
-      "regionTag": "accessapproval_generated_accessapproval_v1_AccessApproval_ApproveApprovalRequest_async",
+      "file": "accessapproval_v1_generated_access_approval_approve_approval_request_async.py",
+      "regionTag": "accessapproval_v1_generated_AccessApproval_ApproveApprovalRequest_async",
       "segments": [
         {
           "end": 43,
@@ -54,8 +54,8 @@
           "shortName": "ApproveApprovalRequest"
         }
       },
-      "file": "accessapproval_generated_accessapproval_v1_access_approval_approve_approval_request_sync.py",
-      "regionTag": "accessapproval_generated_accessapproval_v1_AccessApproval_ApproveApprovalRequest_sync",
+      "file": "accessapproval_v1_generated_access_approval_approve_approval_request_sync.py",
+      "regionTag": "accessapproval_v1_generated_AccessApproval_ApproveApprovalRequest_sync",
       "segments": [
         {
           "end": 43,
@@ -99,8 +99,8 @@
           "shortName": "DeleteAccessApprovalSettings"
         }
       },
-      "file": "accessapproval_generated_accessapproval_v1_access_approval_delete_access_approval_settings_async.py",
-      "regionTag": "accessapproval_generated_accessapproval_v1_AccessApproval_DeleteAccessApprovalSettings_async",
+      "file": "accessapproval_v1_generated_access_approval_delete_access_approval_settings_async.py",
+      "regionTag": "accessapproval_v1_generated_AccessApproval_DeleteAccessApprovalSettings_async",
       "segments": [
         {
           "end": 41,
@@ -141,8 +141,8 @@
           "shortName": "DeleteAccessApprovalSettings"
         }
       },
-      "file": "accessapproval_generated_accessapproval_v1_access_approval_delete_access_approval_settings_sync.py",
-      "regionTag": "accessapproval_generated_accessapproval_v1_AccessApproval_DeleteAccessApprovalSettings_sync",
+      "file": "accessapproval_v1_generated_access_approval_delete_access_approval_settings_sync.py",
+      "regionTag": "accessapproval_v1_generated_AccessApproval_DeleteAccessApprovalSettings_sync",
       "segments": [
         {
           "end": 41,
@@ -184,8 +184,8 @@
           "shortName": "DismissApprovalRequest"
         }
       },
-      "file": "accessapproval_generated_accessapproval_v1_access_approval_dismiss_approval_request_async.py",
-      "regionTag": "accessapproval_generated_accessapproval_v1_AccessApproval_DismissApprovalRequest_async",
+      "file": "accessapproval_v1_generated_access_approval_dismiss_approval_request_async.py",
+      "regionTag": "accessapproval_v1_generated_AccessApproval_DismissApprovalRequest_async",
       "segments": [
         {
           "end": 43,
@@ -228,8 +228,8 @@
           "shortName": "DismissApprovalRequest"
         }
       },
-      "file": "accessapproval_generated_accessapproval_v1_access_approval_dismiss_approval_request_sync.py",
-      "regionTag": "accessapproval_generated_accessapproval_v1_AccessApproval_DismissApprovalRequest_sync",
+      "file": "accessapproval_v1_generated_access_approval_dismiss_approval_request_sync.py",
+      "regionTag": "accessapproval_v1_generated_AccessApproval_DismissApprovalRequest_sync",
       "segments": [
         {
           "end": 43,
@@ -273,8 +273,8 @@
           "shortName": "GetAccessApprovalSettings"
         }
       },
-      "file": "accessapproval_generated_accessapproval_v1_access_approval_get_access_approval_settings_async.py",
-      "regionTag": "accessapproval_generated_accessapproval_v1_AccessApproval_GetAccessApprovalSettings_async",
+      "file": "accessapproval_v1_generated_access_approval_get_access_approval_settings_async.py",
+      "regionTag": "accessapproval_v1_generated_AccessApproval_GetAccessApprovalSettings_async",
       "segments": [
         {
           "end": 43,
@@ -317,8 +317,8 @@
           "shortName": "GetAccessApprovalSettings"
         }
       },
-      "file": "accessapproval_generated_accessapproval_v1_access_approval_get_access_approval_settings_sync.py",
-      "regionTag": "accessapproval_generated_accessapproval_v1_AccessApproval_GetAccessApprovalSettings_sync",
+      "file": "accessapproval_v1_generated_access_approval_get_access_approval_settings_sync.py",
+      "regionTag": "accessapproval_v1_generated_AccessApproval_GetAccessApprovalSettings_sync",
       "segments": [
         {
           "end": 43,
@@ -362,8 +362,8 @@
           "shortName": "GetApprovalRequest"
         }
       },
-      "file": "accessapproval_generated_accessapproval_v1_access_approval_get_approval_request_async.py",
-      "regionTag": "accessapproval_generated_accessapproval_v1_AccessApproval_GetApprovalRequest_async",
+      "file": "accessapproval_v1_generated_access_approval_get_approval_request_async.py",
+      "regionTag": "accessapproval_v1_generated_AccessApproval_GetApprovalRequest_async",
       "segments": [
         {
           "end": 43,
@@ -406,8 +406,8 @@
           "shortName": "GetApprovalRequest"
         }
       },
-      "file": "accessapproval_generated_accessapproval_v1_access_approval_get_approval_request_sync.py",
-      "regionTag": "accessapproval_generated_accessapproval_v1_AccessApproval_GetApprovalRequest_sync",
+      "file": "accessapproval_v1_generated_access_approval_get_approval_request_sync.py",
+      "regionTag": "accessapproval_v1_generated_AccessApproval_GetApprovalRequest_sync",
       "segments": [
         {
           "end": 43,
@@ -451,8 +451,8 @@
           "shortName": "ListApprovalRequests"
         }
       },
-      "file": "accessapproval_generated_accessapproval_v1_access_approval_list_approval_requests_async.py",
-      "regionTag": "accessapproval_generated_accessapproval_v1_AccessApproval_ListApprovalRequests_async",
+      "file": "accessapproval_v1_generated_access_approval_list_approval_requests_async.py",
+      "regionTag": "accessapproval_v1_generated_AccessApproval_ListApprovalRequests_async",
       "segments": [
         {
           "end": 44,
@@ -495,8 +495,8 @@
           "shortName": "ListApprovalRequests"
         }
       },
-      "file": "accessapproval_generated_accessapproval_v1_access_approval_list_approval_requests_sync.py",
-      "regionTag": "accessapproval_generated_accessapproval_v1_AccessApproval_ListApprovalRequests_sync",
+      "file": "accessapproval_v1_generated_access_approval_list_approval_requests_sync.py",
+      "regionTag": "accessapproval_v1_generated_AccessApproval_ListApprovalRequests_sync",
       "segments": [
         {
           "end": 44,
@@ -540,8 +540,8 @@
           "shortName": "UpdateAccessApprovalSettings"
         }
       },
-      "file": "accessapproval_generated_accessapproval_v1_access_approval_update_access_approval_settings_async.py",
-      "regionTag": "accessapproval_generated_accessapproval_v1_AccessApproval_UpdateAccessApprovalSettings_async",
+      "file": "accessapproval_v1_generated_access_approval_update_access_approval_settings_async.py",
+      "regionTag": "accessapproval_v1_generated_AccessApproval_UpdateAccessApprovalSettings_async",
       "segments": [
         {
           "end": 43,
@@ -584,8 +584,8 @@
           "shortName": "UpdateAccessApprovalSettings"
         }
       },
-      "file": "accessapproval_generated_accessapproval_v1_access_approval_update_access_approval_settings_sync.py",
-      "regionTag": "accessapproval_generated_accessapproval_v1_AccessApproval_UpdateAccessApprovalSettings_sync",
+      "file": "accessapproval_v1_generated_access_approval_update_access_approval_settings_sync.py",
+      "regionTag": "accessapproval_v1_generated_AccessApproval_UpdateAccessApprovalSettings_sync",
       "segments": [
         {
           "end": 43,

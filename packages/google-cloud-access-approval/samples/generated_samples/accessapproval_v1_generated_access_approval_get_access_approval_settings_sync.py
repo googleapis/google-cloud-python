@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for UpdateAccessApprovalSettings
+# Snippet for GetAccessApprovalSettings
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,22 +23,22 @@
 #   python3 -m pip install google-cloud-access-approval
 
 
-# [START accessapproval_generated_accessapproval_v1_AccessApproval_UpdateAccessApprovalSettings_async]
+# [START accessapproval_v1_generated_AccessApproval_GetAccessApprovalSettings_sync]
 from google.cloud import accessapproval_v1
 
 
-async def sample_update_access_approval_settings():
+def sample_get_access_approval_settings():
     # Create a client
-    client = accessapproval_v1.AccessApprovalAsyncClient()
+    client = accessapproval_v1.AccessApprovalClient()
 
     # Initialize request argument(s)
-    request = accessapproval_v1.UpdateAccessApprovalSettingsMessage(
+    request = accessapproval_v1.GetAccessApprovalSettingsMessage(
     )
 
     # Make the request
-    response = await client.update_access_approval_settings(request=request)
+    response = client.get_access_approval_settings(request=request)
 
     # Handle the response
     print(response)
 
-# [END accessapproval_generated_accessapproval_v1_AccessApproval_UpdateAccessApprovalSettings_async]
+# [END accessapproval_v1_generated_AccessApproval_GetAccessApprovalSettings_sync]

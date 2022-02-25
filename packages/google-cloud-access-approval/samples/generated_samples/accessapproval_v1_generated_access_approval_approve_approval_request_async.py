@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-access-approval
 
 
-# [START accessapproval_generated_accessapproval_v1_AccessApproval_ApproveApprovalRequest_async]
+# [START accessapproval_v1_generated_AccessApproval_ApproveApprovalRequest_async]
 from google.cloud import accessapproval_v1
 
 
@@ -41,4 +41,4 @@ async def sample_approve_approval_request():
     # Handle the response
     print(response)
 
-# [END accessapproval_generated_accessapproval_v1_AccessApproval_ApproveApprovalRequest_async]
+# [END accessapproval_v1_generated_AccessApproval_ApproveApprovalRequest_async]

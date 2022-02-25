@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for DismissApprovalRequest
+# Snippet for GetApprovalRequest
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,22 +23,22 @@
 #   python3 -m pip install google-cloud-access-approval
 
 
-# [START accessapproval_generated_accessapproval_v1_AccessApproval_DismissApprovalRequest_sync]
+# [START accessapproval_v1_generated_AccessApproval_GetApprovalRequest_async]
 from google.cloud import accessapproval_v1
 
 
-def sample_dismiss_approval_request():
+async def sample_get_approval_request():
     # Create a client
-    client = accessapproval_v1.AccessApprovalClient()
+    client = accessapproval_v1.AccessApprovalAsyncClient()
 
     # Initialize request argument(s)
-    request = accessapproval_v1.DismissApprovalRequestMessage(
+    request = accessapproval_v1.GetApprovalRequestMessage(
     )
 
     # Make the request
-    response = client.dismiss_approval_request(request=request)
+    response = await client.get_approval_request(request=request)
 
     # Handle the response
     print(response)
 
-# [END accessapproval_generated_accessapproval_v1_AccessApproval_DismissApprovalRequest_sync]
+# [END accessapproval_v1_generated_AccessApproval_GetApprovalRequest_async]
