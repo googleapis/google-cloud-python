@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -79,7 +79,7 @@ root_doc = "index"
 
 # General information about the project.
 project = u"google-cloud-logging"
-copyright = u"2020, Google, LLC"
+copyright = u"2022, Google, LLC"
 author = u"Google APIs"         # TODO: autogenerate this bit
 
 # The version info for the project you're documenting, acts as replacement for
