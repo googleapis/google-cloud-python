@@ -10,8 +10,8 @@
           "shortName": "CreateHub"
         }
       },
-      "file": "networkconnectivity_generated_networkconnectivity_v1_hub_service_create_hub_async.py",
-      "regionTag": "networkconnectivity_generated_networkconnectivity_v1_HubService_CreateHub_async",
+      "file": "networkconnectivity_v1_generated_hub_service_create_hub_async.py",
+      "regionTag": "networkconnectivity_v1_generated_HubService_CreateHub_async",
       "segments": [
         {
           "end": 49,
@@ -54,8 +54,8 @@
           "shortName": "CreateHub"
         }
       },
-      "file": "networkconnectivity_generated_networkconnectivity_v1_hub_service_create_hub_sync.py",
-      "regionTag": "networkconnectivity_generated_networkconnectivity_v1_HubService_CreateHub_sync",
+      "file": "networkconnectivity_v1_generated_hub_service_create_hub_sync.py",
+      "regionTag": "networkconnectivity_v1_generated_HubService_CreateHub_sync",
       "segments": [
         {
           "end": 49,
@@ -99,8 +99,8 @@
           "shortName": "CreateSpoke"
         }
       },
-      "file": "networkconnectivity_generated_networkconnectivity_v1_hub_service_create_spoke_async.py",
-      "regionTag": "networkconnectivity_generated_networkconnectivity_v1_HubService_CreateSpoke_async",
+      "file": "networkconnectivity_v1_generated_hub_service_create_spoke_async.py",
+      "regionTag": "networkconnectivity_v1_generated_HubService_CreateSpoke_async",
       "segments": [
         {
           "end": 49,
@@ -143,8 +143,8 @@
           "shortName": "CreateSpoke"
         }
       },
-      "file": "networkconnectivity_generated_networkconnectivity_v1_hub_service_create_spoke_sync.py",
-      "regionTag": "networkconnectivity_generated_networkconnectivity_v1_HubService_CreateSpoke_sync",
+      "file": "networkconnectivity_v1_generated_hub_service_create_spoke_sync.py",
+      "regionTag": "networkconnectivity_v1_generated_HubService_CreateSpoke_sync",
       "segments": [
         {
           "end": 49,
@@ -188,8 +188,8 @@
           "shortName": "DeleteHub"
         }
       },
-      "file": "networkconnectivity_generated_networkconnectivity_v1_hub_service_delete_hub_async.py",
-      "regionTag": "networkconnectivity_generated_networkconnectivity_v1_HubService_DeleteHub_async",
+      "file": "networkconnectivity_v1_generated_hub_service_delete_hub_async.py",
+      "regionTag": "networkconnectivity_v1_generated_HubService_DeleteHub_async",
       "segments": [
         {
           "end": 48,
@@ -232,8 +232,8 @@
           "shortName": "DeleteHub"
         }
       },
-      "file": "networkconnectivity_generated_networkconnectivity_v1_hub_service_delete_hub_sync.py",
-      "regionTag": "networkconnectivity_generated_networkconnectivity_v1_HubService_DeleteHub_sync",
+      "file": "networkconnectivity_v1_generated_hub_service_delete_hub_sync.py",
+      "regionTag": "networkconnectivity_v1_generated_HubService_DeleteHub_sync",
       "segments": [
         {
           "end": 48,
@@ -277,8 +277,8 @@
           "shortName": "DeleteSpoke"
         }
       },
-      "file": "networkconnectivity_generated_networkconnectivity_v1_hub_service_delete_spoke_async.py",
-      "regionTag": "networkconnectivity_generated_networkconnectivity_v1_HubService_DeleteSpoke_async",
+      "file": "networkconnectivity_v1_generated_hub_service_delete_spoke_async.py",
+      "regionTag": "networkconnectivity_v1_generated_HubService_DeleteSpoke_async",
       "segments": [
         {
           "end": 48,
@@ -321,8 +321,8 @@
           "shortName": "DeleteSpoke"
         }
       },
-      "file": "networkconnectivity_generated_networkconnectivity_v1_hub_service_delete_spoke_sync.py",
-      "regionTag": "networkconnectivity_generated_networkconnectivity_v1_HubService_DeleteSpoke_sync",
+      "file": "networkconnectivity_v1_generated_hub_service_delete_spoke_sync.py",
+      "regionTag": "networkconnectivity_v1_generated_HubService_DeleteSpoke_sync",
       "segments": [
         {
           "end": 48,
@@ -366,8 +366,8 @@
           "shortName": "GetHub"
         }
       },
-      "file": "networkconnectivity_generated_networkconnectivity_v1_hub_service_get_hub_async.py",
-      "regionTag": "networkconnectivity_generated_networkconnectivity_v1_HubService_GetHub_async",
+      "file": "networkconnectivity_v1_generated_hub_service_get_hub_async.py",
+      "regionTag": "networkconnectivity_v1_generated_HubService_GetHub_async",
       "segments": [
         {
           "end": 44,
@@ -410,8 +410,8 @@
           "shortName": "GetHub"
         }
       },
-      "file": "networkconnectivity_generated_networkconnectivity_v1_hub_service_get_hub_sync.py",
-      "regionTag": "networkconnectivity_generated_networkconnectivity_v1_HubService_GetHub_sync",
+      "file": "networkconnectivity_v1_generated_hub_service_get_hub_sync.py",
+      "regionTag": "networkconnectivity_v1_generated_HubService_GetHub_sync",
       "segments": [
         {
           "end": 44,
@@ -455,8 +455,8 @@
           "shortName": "GetSpoke"
         }
       },
-      "file": "networkconnectivity_generated_networkconnectivity_v1_hub_service_get_spoke_async.py",
-      "regionTag": "networkconnectivity_generated_networkconnectivity_v1_HubService_GetSpoke_async",
+      "file": "networkconnectivity_v1_generated_hub_service_get_spoke_async.py",
+      "regionTag": "networkconnectivity_v1_generated_HubService_GetSpoke_async",
       "segments": [
         {
           "end": 44,
@@ -499,8 +499,8 @@
           "shortName": "GetSpoke"
         }
       },
-      "file": "networkconnectivity_generated_networkconnectivity_v1_hub_service_get_spoke_sync.py",
-      "regionTag": "networkconnectivity_generated_networkconnectivity_v1_HubService_GetSpoke_sync",
+      "file": "networkconnectivity_v1_generated_hub_service_get_spoke_sync.py",
+      "regionTag": "networkconnectivity_v1_generated_HubService_GetSpoke_sync",
       "segments": [
         {
           "end": 44,
@@ -544,8 +544,8 @@
           "shortName": "ListHubs"
         }
       },
-      "file": "networkconnectivity_generated_networkconnectivity_v1_hub_service_list_hubs_async.py",
-      "regionTag": "networkconnectivity_generated_networkconnectivity_v1_HubService_ListHubs_async",
+      "file": "networkconnectivity_v1_generated_hub_service_list_hubs_async.py",
+      "regionTag": "networkconnectivity_v1_generated_HubService_ListHubs_async",
       "segments": [
         {
           "end": 45,
@@ -588,8 +588,8 @@
           "shortName": "ListHubs"
         }
       },
-      "file": "networkconnectivity_generated_networkconnectivity_v1_hub_service_list_hubs_sync.py",
-      "regionTag": "networkconnectivity_generated_networkconnectivity_v1_HubService_ListHubs_sync",
+      "file": "networkconnectivity_v1_generated_hub_service_list_hubs_sync.py",
+      "regionTag": "networkconnectivity_v1_generated_HubService_ListHubs_sync",
       "segments": [
         {
           "end": 45,
@@ -633,8 +633,8 @@
           "shortName": "ListSpokes"
         }
       },
-      "file": "networkconnectivity_generated_networkconnectivity_v1_hub_service_list_spokes_async.py",
-      "regionTag": "networkconnectivity_generated_networkconnectivity_v1_HubService_ListSpokes_async",
+      "file": "networkconnectivity_v1_generated_hub_service_list_spokes_async.py",
+      "regionTag": "networkconnectivity_v1_generated_HubService_ListSpokes_async",
       "segments": [
         {
           "end": 45,
@@ -677,8 +677,8 @@
           "shortName": "ListSpokes"
         }
       },
-      "file": "networkconnectivity_generated_networkconnectivity_v1_hub_service_list_spokes_sync.py",
-      "regionTag": "networkconnectivity_generated_networkconnectivity_v1_HubService_ListSpokes_sync",
+      "file": "networkconnectivity_v1_generated_hub_service_list_spokes_sync.py",
+      "regionTag": "networkconnectivity_v1_generated_HubService_ListSpokes_sync",
       "segments": [
         {
           "end": 45,
@@ -722,8 +722,8 @@
           "shortName": "UpdateHub"
         }
       },
-      "file": "networkconnectivity_generated_networkconnectivity_v1_hub_service_update_hub_async.py",
-      "regionTag": "networkconnectivity_generated_networkconnectivity_v1_HubService_UpdateHub_async",
+      "file": "networkconnectivity_v1_generated_hub_service_update_hub_async.py",
+      "regionTag": "networkconnectivity_v1_generated_HubService_UpdateHub_async",
       "segments": [
         {
           "end": 47,
@@ -766,8 +766,8 @@
           "shortName": "UpdateHub"
         }
       },
-      "file": "networkconnectivity_generated_networkconnectivity_v1_hub_service_update_hub_sync.py",
-      "regionTag": "networkconnectivity_generated_networkconnectivity_v1_HubService_UpdateHub_sync",
+      "file": "networkconnectivity_v1_generated_hub_service_update_hub_sync.py",
+      "regionTag": "networkconnectivity_v1_generated_HubService_UpdateHub_sync",
       "segments": [
         {
           "end": 47,
@@ -811,8 +811,8 @@
           "shortName": "UpdateSpoke"
         }
       },
-      "file": "networkconnectivity_generated_networkconnectivity_v1_hub_service_update_spoke_async.py",
-      "regionTag": "networkconnectivity_generated_networkconnectivity_v1_HubService_UpdateSpoke_async",
+      "file": "networkconnectivity_v1_generated_hub_service_update_spoke_async.py",
+      "regionTag": "networkconnectivity_v1_generated_HubService_UpdateSpoke_async",
       "segments": [
         {
           "end": 47,
@@ -855,8 +855,8 @@
           "shortName": "UpdateSpoke"
         }
       },
-      "file": "networkconnectivity_generated_networkconnectivity_v1_hub_service_update_spoke_sync.py",
-      "regionTag": "networkconnectivity_generated_networkconnectivity_v1_HubService_UpdateSpoke_sync",
+      "file": "networkconnectivity_v1_generated_hub_service_update_spoke_sync.py",
+      "regionTag": "networkconnectivity_v1_generated_HubService_UpdateSpoke_sync",
       "segments": [
         {
           "end": 47,

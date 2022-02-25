@@ -484,8 +484,7 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
     ) -> pagers.ListHubsPager:
         r"""Lists Hubs in a given project and location.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import networkconnectivity_v1alpha1
 
@@ -585,8 +584,7 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
     ) -> hub.Hub:
         r"""Gets details of a single Hub.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import networkconnectivity_v1alpha1
 
@@ -684,8 +682,7 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
     ) -> operation.Operation:
         r"""Creates a new Hub in a given project and location.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import networkconnectivity_v1alpha1
 
@@ -812,8 +809,7 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
     ) -> operation.Operation:
         r"""Updates the parameters of a single Hub.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import networkconnectivity_v1alpha1
 
@@ -933,8 +929,7 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
     ) -> operation.Operation:
         r"""Deletes a single Hub.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import networkconnectivity_v1alpha1
 
@@ -1049,8 +1044,7 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
     ) -> pagers.ListSpokesPager:
         r"""Lists Spokes in a given project and location.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import networkconnectivity_v1alpha1
 
@@ -1148,8 +1142,7 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
     ) -> hub.Spoke:
         r"""Gets details of a single Spoke.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import networkconnectivity_v1alpha1
 
@@ -1242,8 +1235,7 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
     ) -> operation.Operation:
         r"""Creates a new Spoke in a given project and location.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import networkconnectivity_v1alpha1
 
@@ -1368,8 +1360,7 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
     ) -> operation.Operation:
         r"""Updates the parameters of a single Spoke.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import networkconnectivity_v1alpha1
 
@@ -1490,8 +1481,7 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
     ) -> operation.Operation:
         r"""Deletes a single Spoke.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import networkconnectivity_v1alpha1
 

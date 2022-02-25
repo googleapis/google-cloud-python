@@ -230,7 +230,7 @@ class HubServiceAsyncClient:
     ) -> pagers.ListHubsAsyncPager:
         r"""Lists Hubs in a given project and location.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import networkconnectivity_v1alpha1
 
@@ -330,7 +330,7 @@ class HubServiceAsyncClient:
     ) -> hub.Hub:
         r"""Gets details of a single Hub.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import networkconnectivity_v1alpha1
 
@@ -428,7 +428,7 @@ class HubServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Creates a new Hub in a given project and location.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import networkconnectivity_v1alpha1
 
@@ -555,7 +555,7 @@ class HubServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Updates the parameters of a single Hub.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import networkconnectivity_v1alpha1
 
@@ -675,7 +675,7 @@ class HubServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Deletes a single Hub.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import networkconnectivity_v1alpha1
 
@@ -790,7 +790,7 @@ class HubServiceAsyncClient:
     ) -> pagers.ListSpokesAsyncPager:
         r"""Lists Spokes in a given project and location.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import networkconnectivity_v1alpha1
 
@@ -888,7 +888,7 @@ class HubServiceAsyncClient:
     ) -> hub.Spoke:
         r"""Gets details of a single Spoke.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import networkconnectivity_v1alpha1
 
@@ -981,7 +981,7 @@ class HubServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Creates a new Spoke in a given project and location.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import networkconnectivity_v1alpha1
 
@@ -1106,7 +1106,7 @@ class HubServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Updates the parameters of a single Spoke.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import networkconnectivity_v1alpha1
 
@@ -1227,7 +1227,7 @@ class HubServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Deletes a single Spoke.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import networkconnectivity_v1alpha1
 

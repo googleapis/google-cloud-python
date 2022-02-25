@@ -499,8 +499,7 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
     ) -> pagers.ListHubsPager:
         r"""Lists hubs in a given project.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import networkconnectivity_v1
 
@@ -600,8 +599,7 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
     ) -> hub.Hub:
         r"""Gets details about the specified hub.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import networkconnectivity_v1
 
@@ -701,8 +699,7 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
     ) -> operation.Operation:
         r"""Creates a new hub in the specified project.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import networkconnectivity_v1
 
@@ -832,8 +829,7 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
         specified hub.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import networkconnectivity_v1
 
@@ -955,8 +951,7 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
     ) -> operation.Operation:
         r"""Deletes the specified hub.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import networkconnectivity_v1
 
@@ -1073,8 +1068,7 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
         location.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import networkconnectivity_v1
 
@@ -1172,8 +1166,7 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
     ) -> hub.Spoke:
         r"""Gets details about the specified spoke.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import networkconnectivity_v1
 
@@ -1275,8 +1268,7 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
         location.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import networkconnectivity_v1
 
@@ -1406,8 +1398,7 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
     ) -> operation.Operation:
         r"""Updates the parameters of the specified spoke.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import networkconnectivity_v1
 
@@ -1534,8 +1525,7 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
     ) -> operation.Operation:
         r"""Deletes the specified spoke.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import networkconnectivity_v1
 
