@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for GetJob
+# Snippet for CreateJobTemplate
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,23 +23,24 @@
 #   python3 -m pip install google-cloud-video-transcoder
 
 
-# [START transcoder_generated_transcoder_v1_TranscoderService_GetJob_async]
+# [START transcoder_v1_generated_TranscoderService_CreateJobTemplate_sync]
 from google.cloud.video import transcoder_v1
 
 
-async def sample_get_job():
+def sample_create_job_template():
     # Create a client
-    client = transcoder_v1.TranscoderServiceAsyncClient()
+    client = transcoder_v1.TranscoderServiceClient()
 
     # Initialize request argument(s)
-    request = transcoder_v1.GetJobRequest(
-        name="name_value",
+    request = transcoder_v1.CreateJobTemplateRequest(
+        parent="parent_value",
+        job_template_id="job_template_id_value",
     )
 
     # Make the request
-    response = await client.get_job(request=request)
+    response = client.create_job_template(request=request)
 
     # Handle the response
     print(response)
 
-# [END transcoder_generated_transcoder_v1_TranscoderService_GetJob_async]
+# [END transcoder_v1_generated_TranscoderService_CreateJobTemplate_sync]

@@ -439,8 +439,7 @@ class TranscoderServiceClient(metaclass=TranscoderServiceClientMeta):
     ) -> resources.Job:
         r"""Creates a job in the specified region.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.video import transcoder_v1
 
@@ -541,8 +540,7 @@ class TranscoderServiceClient(metaclass=TranscoderServiceClientMeta):
     ) -> pagers.ListJobsPager:
         r"""Lists jobs in the specified region.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.video import transcoder_v1
 
@@ -642,8 +640,7 @@ class TranscoderServiceClient(metaclass=TranscoderServiceClientMeta):
     ) -> resources.Job:
         r"""Returns the job data.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.video import transcoder_v1
 
@@ -731,8 +728,7 @@ class TranscoderServiceClient(metaclass=TranscoderServiceClientMeta):
     ) -> None:
         r"""Deletes a job.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.video import transcoder_v1
 
@@ -814,8 +810,7 @@ class TranscoderServiceClient(metaclass=TranscoderServiceClientMeta):
     ) -> resources.JobTemplate:
         r"""Creates a job template in the specified region.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.video import transcoder_v1
 
@@ -928,8 +923,7 @@ class TranscoderServiceClient(metaclass=TranscoderServiceClientMeta):
     ) -> pagers.ListJobTemplatesPager:
         r"""Lists job templates in the specified region.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.video import transcoder_v1
 
@@ -1029,8 +1023,7 @@ class TranscoderServiceClient(metaclass=TranscoderServiceClientMeta):
     ) -> resources.JobTemplate:
         r"""Returns the job template data.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.video import transcoder_v1
 
@@ -1119,8 +1112,7 @@ class TranscoderServiceClient(metaclass=TranscoderServiceClientMeta):
     ) -> None:
         r"""Deletes a job template.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.video import transcoder_v1
 

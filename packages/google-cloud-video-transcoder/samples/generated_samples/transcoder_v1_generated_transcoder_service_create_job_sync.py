@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for DeleteJobTemplate
+# Snippet for CreateJob
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,21 +23,27 @@
 #   python3 -m pip install google-cloud-video-transcoder
 
 
-# [START transcoder_generated_transcoder_v1_TranscoderService_DeleteJobTemplate_sync]
+# [START transcoder_v1_generated_TranscoderService_CreateJob_sync]
 from google.cloud.video import transcoder_v1
 
 
-def sample_delete_job_template():
+def sample_create_job():
     # Create a client
     client = transcoder_v1.TranscoderServiceClient()
 
     # Initialize request argument(s)
-    request = transcoder_v1.DeleteJobTemplateRequest(
-        name="name_value",
+    job = transcoder_v1.Job()
+    job.template_id = "template_id_value"
+
+    request = transcoder_v1.CreateJobRequest(
+        parent="parent_value",
+        job=job,
     )
 
     # Make the request
-    client.delete_job_template(request=request)
+    response = client.create_job(request=request)
 
+    # Handle the response
+    print(response)
 
-# [END transcoder_generated_transcoder_v1_TranscoderService_DeleteJobTemplate_sync]
+# [END transcoder_v1_generated_TranscoderService_CreateJob_sync]

@@ -10,8 +10,8 @@
           "shortName": "CreateJobTemplate"
         }
       },
-      "file": "transcoder_generated_transcoder_v1_transcoder_service_create_job_template_async.py",
-      "regionTag": "transcoder_generated_transcoder_v1_TranscoderService_CreateJobTemplate_async",
+      "file": "transcoder_v1_generated_transcoder_service_create_job_template_async.py",
+      "regionTag": "transcoder_v1_generated_TranscoderService_CreateJobTemplate_async",
       "segments": [
         {
           "end": 45,
@@ -54,8 +54,8 @@
           "shortName": "CreateJobTemplate"
         }
       },
-      "file": "transcoder_generated_transcoder_v1_transcoder_service_create_job_template_sync.py",
-      "regionTag": "transcoder_generated_transcoder_v1_TranscoderService_CreateJobTemplate_sync",
+      "file": "transcoder_v1_generated_transcoder_service_create_job_template_sync.py",
+      "regionTag": "transcoder_v1_generated_TranscoderService_CreateJobTemplate_sync",
       "segments": [
         {
           "end": 45,
@@ -99,8 +99,8 @@
           "shortName": "CreateJob"
         }
       },
-      "file": "transcoder_generated_transcoder_v1_transcoder_service_create_job_async.py",
-      "regionTag": "transcoder_generated_transcoder_v1_TranscoderService_CreateJob_async",
+      "file": "transcoder_v1_generated_transcoder_service_create_job_async.py",
+      "regionTag": "transcoder_v1_generated_TranscoderService_CreateJob_async",
       "segments": [
         {
           "end": 48,
@@ -143,8 +143,8 @@
           "shortName": "CreateJob"
         }
       },
-      "file": "transcoder_generated_transcoder_v1_transcoder_service_create_job_sync.py",
-      "regionTag": "transcoder_generated_transcoder_v1_TranscoderService_CreateJob_sync",
+      "file": "transcoder_v1_generated_transcoder_service_create_job_sync.py",
+      "regionTag": "transcoder_v1_generated_TranscoderService_CreateJob_sync",
       "segments": [
         {
           "end": 48,
@@ -188,8 +188,8 @@
           "shortName": "DeleteJobTemplate"
         }
       },
-      "file": "transcoder_generated_transcoder_v1_transcoder_service_delete_job_template_async.py",
-      "regionTag": "transcoder_generated_transcoder_v1_TranscoderService_DeleteJobTemplate_async",
+      "file": "transcoder_v1_generated_transcoder_service_delete_job_template_async.py",
+      "regionTag": "transcoder_v1_generated_TranscoderService_DeleteJobTemplate_async",
       "segments": [
         {
           "end": 42,
@@ -230,8 +230,8 @@
           "shortName": "DeleteJobTemplate"
         }
       },
-      "file": "transcoder_generated_transcoder_v1_transcoder_service_delete_job_template_sync.py",
-      "regionTag": "transcoder_generated_transcoder_v1_TranscoderService_DeleteJobTemplate_sync",
+      "file": "transcoder_v1_generated_transcoder_service_delete_job_template_sync.py",
+      "regionTag": "transcoder_v1_generated_TranscoderService_DeleteJobTemplate_sync",
       "segments": [
         {
           "end": 42,
@@ -273,8 +273,8 @@
           "shortName": "DeleteJob"
         }
       },
-      "file": "transcoder_generated_transcoder_v1_transcoder_service_delete_job_async.py",
-      "regionTag": "transcoder_generated_transcoder_v1_TranscoderService_DeleteJob_async",
+      "file": "transcoder_v1_generated_transcoder_service_delete_job_async.py",
+      "regionTag": "transcoder_v1_generated_TranscoderService_DeleteJob_async",
       "segments": [
         {
           "end": 42,
@@ -315,8 +315,8 @@
           "shortName": "DeleteJob"
         }
       },
-      "file": "transcoder_generated_transcoder_v1_transcoder_service_delete_job_sync.py",
-      "regionTag": "transcoder_generated_transcoder_v1_TranscoderService_DeleteJob_sync",
+      "file": "transcoder_v1_generated_transcoder_service_delete_job_sync.py",
+      "regionTag": "transcoder_v1_generated_TranscoderService_DeleteJob_sync",
       "segments": [
         {
           "end": 42,
@@ -358,8 +358,8 @@
           "shortName": "GetJobTemplate"
         }
       },
-      "file": "transcoder_generated_transcoder_v1_transcoder_service_get_job_template_async.py",
-      "regionTag": "transcoder_generated_transcoder_v1_TranscoderService_GetJobTemplate_async",
+      "file": "transcoder_v1_generated_transcoder_service_get_job_template_async.py",
+      "regionTag": "transcoder_v1_generated_TranscoderService_GetJobTemplate_async",
       "segments": [
         {
           "end": 44,
@@ -402,8 +402,8 @@
           "shortName": "GetJobTemplate"
         }
       },
-      "file": "transcoder_generated_transcoder_v1_transcoder_service_get_job_template_sync.py",
-      "regionTag": "transcoder_generated_transcoder_v1_TranscoderService_GetJobTemplate_sync",
+      "file": "transcoder_v1_generated_transcoder_service_get_job_template_sync.py",
+      "regionTag": "transcoder_v1_generated_TranscoderService_GetJobTemplate_sync",
       "segments": [
         {
           "end": 44,
@@ -447,8 +447,8 @@
           "shortName": "GetJob"
         }
       },
-      "file": "transcoder_generated_transcoder_v1_transcoder_service_get_job_async.py",
-      "regionTag": "transcoder_generated_transcoder_v1_TranscoderService_GetJob_async",
+      "file": "transcoder_v1_generated_transcoder_service_get_job_async.py",
+      "regionTag": "transcoder_v1_generated_TranscoderService_GetJob_async",
       "segments": [
         {
           "end": 44,
@@ -491,8 +491,8 @@
           "shortName": "GetJob"
         }
       },
-      "file": "transcoder_generated_transcoder_v1_transcoder_service_get_job_sync.py",
-      "regionTag": "transcoder_generated_transcoder_v1_TranscoderService_GetJob_sync",
+      "file": "transcoder_v1_generated_transcoder_service_get_job_sync.py",
+      "regionTag": "transcoder_v1_generated_TranscoderService_GetJob_sync",
       "segments": [
         {
           "end": 44,
@@ -536,8 +536,8 @@
           "shortName": "ListJobTemplates"
         }
       },
-      "file": "transcoder_generated_transcoder_v1_transcoder_service_list_job_templates_async.py",
-      "regionTag": "transcoder_generated_transcoder_v1_TranscoderService_ListJobTemplates_async",
+      "file": "transcoder_v1_generated_transcoder_service_list_job_templates_async.py",
+      "regionTag": "transcoder_v1_generated_TranscoderService_ListJobTemplates_async",
       "segments": [
         {
           "end": 45,
@@ -580,8 +580,8 @@
           "shortName": "ListJobTemplates"
         }
       },
-      "file": "transcoder_generated_transcoder_v1_transcoder_service_list_job_templates_sync.py",
-      "regionTag": "transcoder_generated_transcoder_v1_TranscoderService_ListJobTemplates_sync",
+      "file": "transcoder_v1_generated_transcoder_service_list_job_templates_sync.py",
+      "regionTag": "transcoder_v1_generated_TranscoderService_ListJobTemplates_sync",
       "segments": [
         {
           "end": 45,
@@ -625,8 +625,8 @@
           "shortName": "ListJobs"
         }
       },
-      "file": "transcoder_generated_transcoder_v1_transcoder_service_list_jobs_async.py",
-      "regionTag": "transcoder_generated_transcoder_v1_TranscoderService_ListJobs_async",
+      "file": "transcoder_v1_generated_transcoder_service_list_jobs_async.py",
+      "regionTag": "transcoder_v1_generated_TranscoderService_ListJobs_async",
       "segments": [
         {
           "end": 45,
@@ -669,8 +669,8 @@
           "shortName": "ListJobs"
         }
       },
-      "file": "transcoder_generated_transcoder_v1_transcoder_service_list_jobs_sync.py",
-      "regionTag": "transcoder_generated_transcoder_v1_TranscoderService_ListJobs_sync",
+      "file": "transcoder_v1_generated_transcoder_service_list_jobs_sync.py",
+      "regionTag": "transcoder_v1_generated_TranscoderService_ListJobs_sync",
       "segments": [
         {
           "end": 45,
