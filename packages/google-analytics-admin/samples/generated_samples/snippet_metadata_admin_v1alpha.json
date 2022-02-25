@@ -10,8 +10,8 @@
           "shortName": "AcknowledgeUserDataCollection"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_acknowledge_user_data_collection_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_AcknowledgeUserDataCollection_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_acknowledge_user_data_collection_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_AcknowledgeUserDataCollection_async",
       "segments": [
         {
           "end": 45,
@@ -54,8 +54,8 @@
           "shortName": "AcknowledgeUserDataCollection"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_acknowledge_user_data_collection_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_AcknowledgeUserDataCollection_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_acknowledge_user_data_collection_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_AcknowledgeUserDataCollection_sync",
       "segments": [
         {
           "end": 45,
@@ -99,8 +99,8 @@
           "shortName": "ApproveDisplayVideo360AdvertiserLinkProposal"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_approve_display_video360_advertiser_link_proposal_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ApproveDisplayVideo360AdvertiserLinkProposal_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_approve_display_video360_advertiser_link_proposal_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_ApproveDisplayVideo360AdvertiserLinkProposal_async",
       "segments": [
         {
           "end": 44,
@@ -143,8 +143,8 @@
           "shortName": "ApproveDisplayVideo360AdvertiserLinkProposal"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_approve_display_video360_advertiser_link_proposal_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ApproveDisplayVideo360AdvertiserLinkProposal_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_approve_display_video360_advertiser_link_proposal_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_ApproveDisplayVideo360AdvertiserLinkProposal_sync",
       "segments": [
         {
           "end": 44,
@@ -188,8 +188,8 @@
           "shortName": "ArchiveCustomDimension"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_archive_custom_dimension_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ArchiveCustomDimension_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_archive_custom_dimension_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_ArchiveCustomDimension_async",
       "segments": [
         {
           "end": 42,
@@ -230,8 +230,8 @@
           "shortName": "ArchiveCustomDimension"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_archive_custom_dimension_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ArchiveCustomDimension_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_archive_custom_dimension_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_ArchiveCustomDimension_sync",
       "segments": [
         {
           "end": 42,
@@ -273,8 +273,8 @@
           "shortName": "ArchiveCustomMetric"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_archive_custom_metric_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ArchiveCustomMetric_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_archive_custom_metric_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_ArchiveCustomMetric_async",
       "segments": [
         {
           "end": 42,
@@ -315,8 +315,8 @@
           "shortName": "ArchiveCustomMetric"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_archive_custom_metric_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ArchiveCustomMetric_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_archive_custom_metric_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_ArchiveCustomMetric_sync",
       "segments": [
         {
           "end": 42,
@@ -358,8 +358,8 @@
           "shortName": "AuditUserLinks"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_audit_user_links_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_AuditUserLinks_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_audit_user_links_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_AuditUserLinks_async",
       "segments": [
         {
           "end": 45,
@@ -402,8 +402,8 @@
           "shortName": "AuditUserLinks"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_audit_user_links_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_AuditUserLinks_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_audit_user_links_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_AuditUserLinks_sync",
       "segments": [
         {
           "end": 45,
@@ -447,8 +447,8 @@
           "shortName": "BatchCreateUserLinks"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_batch_create_user_links_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_BatchCreateUserLinks_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_batch_create_user_links_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_BatchCreateUserLinks_async",
       "segments": [
         {
           "end": 48,
@@ -491,8 +491,8 @@
           "shortName": "BatchCreateUserLinks"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_batch_create_user_links_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_BatchCreateUserLinks_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_batch_create_user_links_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_BatchCreateUserLinks_sync",
       "segments": [
         {
           "end": 48,
@@ -536,8 +536,8 @@
           "shortName": "BatchDeleteUserLinks"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_batch_delete_user_links_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_BatchDeleteUserLinks_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_batch_delete_user_links_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_BatchDeleteUserLinks_async",
       "segments": [
         {
           "end": 46,
@@ -578,8 +578,8 @@
           "shortName": "BatchDeleteUserLinks"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_batch_delete_user_links_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_BatchDeleteUserLinks_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_batch_delete_user_links_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_BatchDeleteUserLinks_sync",
       "segments": [
         {
           "end": 46,
@@ -621,8 +621,8 @@
           "shortName": "BatchGetUserLinks"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_batch_get_user_links_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_BatchGetUserLinks_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_batch_get_user_links_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_BatchGetUserLinks_async",
       "segments": [
         {
           "end": 45,
@@ -665,8 +665,8 @@
           "shortName": "BatchGetUserLinks"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_batch_get_user_links_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_BatchGetUserLinks_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_batch_get_user_links_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_BatchGetUserLinks_sync",
       "segments": [
         {
           "end": 45,
@@ -710,8 +710,8 @@
           "shortName": "BatchUpdateUserLinks"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_batch_update_user_links_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_BatchUpdateUserLinks_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_batch_update_user_links_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_BatchUpdateUserLinks_async",
       "segments": [
         {
           "end": 44,
@@ -754,8 +754,8 @@
           "shortName": "BatchUpdateUserLinks"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_batch_update_user_links_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_BatchUpdateUserLinks_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_batch_update_user_links_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_BatchUpdateUserLinks_sync",
       "segments": [
         {
           "end": 44,
@@ -799,8 +799,8 @@
           "shortName": "CancelDisplayVideo360AdvertiserLinkProposal"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_cancel_display_video360_advertiser_link_proposal_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_CancelDisplayVideo360AdvertiserLinkProposal_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_cancel_display_video360_advertiser_link_proposal_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_CancelDisplayVideo360AdvertiserLinkProposal_async",
       "segments": [
         {
           "end": 44,
@@ -843,8 +843,8 @@
           "shortName": "CancelDisplayVideo360AdvertiserLinkProposal"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_cancel_display_video360_advertiser_link_proposal_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_CancelDisplayVideo360AdvertiserLinkProposal_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_cancel_display_video360_advertiser_link_proposal_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_CancelDisplayVideo360AdvertiserLinkProposal_sync",
       "segments": [
         {
           "end": 44,
@@ -888,8 +888,8 @@
           "shortName": "CreateConversionEvent"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_create_conversion_event_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_CreateConversionEvent_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_create_conversion_event_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_CreateConversionEvent_async",
       "segments": [
         {
           "end": 44,
@@ -932,8 +932,8 @@
           "shortName": "CreateConversionEvent"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_create_conversion_event_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_CreateConversionEvent_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_create_conversion_event_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_CreateConversionEvent_sync",
       "segments": [
         {
           "end": 44,
@@ -977,8 +977,8 @@
           "shortName": "CreateCustomDimension"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_create_custom_dimension_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_CreateCustomDimension_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_create_custom_dimension_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_CreateCustomDimension_async",
       "segments": [
         {
           "end": 50,
@@ -1021,8 +1021,8 @@
           "shortName": "CreateCustomDimension"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_create_custom_dimension_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_CreateCustomDimension_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_create_custom_dimension_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_CreateCustomDimension_sync",
       "segments": [
         {
           "end": 50,
@@ -1066,8 +1066,8 @@
           "shortName": "CreateCustomMetric"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_create_custom_metric_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_CreateCustomMetric_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_create_custom_metric_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_CreateCustomMetric_async",
       "segments": [
         {
           "end": 51,
@@ -1110,8 +1110,8 @@
           "shortName": "CreateCustomMetric"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_create_custom_metric_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_CreateCustomMetric_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_create_custom_metric_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_CreateCustomMetric_sync",
       "segments": [
         {
           "end": 51,
@@ -1155,8 +1155,8 @@
           "shortName": "CreateDataStream"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_create_data_stream_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_CreateDataStream_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_create_data_stream_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_CreateDataStream_async",
       "segments": [
         {
           "end": 48,
@@ -1199,8 +1199,8 @@
           "shortName": "CreateDataStream"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_create_data_stream_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_CreateDataStream_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_create_data_stream_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_CreateDataStream_sync",
       "segments": [
         {
           "end": 48,
@@ -1244,8 +1244,8 @@
           "shortName": "CreateDisplayVideo360AdvertiserLinkProposal"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_create_display_video360_advertiser_link_proposal_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_CreateDisplayVideo360AdvertiserLinkProposal_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_create_display_video360_advertiser_link_proposal_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_CreateDisplayVideo360AdvertiserLinkProposal_async",
       "segments": [
         {
           "end": 44,
@@ -1288,8 +1288,8 @@
           "shortName": "CreateDisplayVideo360AdvertiserLinkProposal"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_create_display_video360_advertiser_link_proposal_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_CreateDisplayVideo360AdvertiserLinkProposal_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_create_display_video360_advertiser_link_proposal_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_CreateDisplayVideo360AdvertiserLinkProposal_sync",
       "segments": [
         {
           "end": 44,
@@ -1333,8 +1333,8 @@
           "shortName": "CreateDisplayVideo360AdvertiserLink"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_create_display_video360_advertiser_link_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_CreateDisplayVideo360AdvertiserLink_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_create_display_video360_advertiser_link_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_CreateDisplayVideo360AdvertiserLink_async",
       "segments": [
         {
           "end": 44,
@@ -1377,8 +1377,8 @@
           "shortName": "CreateDisplayVideo360AdvertiserLink"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_create_display_video360_advertiser_link_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_CreateDisplayVideo360AdvertiserLink_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_create_display_video360_advertiser_link_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_CreateDisplayVideo360AdvertiserLink_sync",
       "segments": [
         {
           "end": 44,
@@ -1422,8 +1422,8 @@
           "shortName": "CreateFirebaseLink"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_create_firebase_link_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_CreateFirebaseLink_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_create_firebase_link_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_CreateFirebaseLink_async",
       "segments": [
         {
           "end": 44,
@@ -1466,8 +1466,8 @@
           "shortName": "CreateFirebaseLink"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_create_firebase_link_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_CreateFirebaseLink_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_create_firebase_link_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_CreateFirebaseLink_sync",
       "segments": [
         {
           "end": 44,
@@ -1511,8 +1511,8 @@
           "shortName": "CreateGoogleAdsLink"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_create_google_ads_link_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_CreateGoogleAdsLink_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_create_google_ads_link_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_CreateGoogleAdsLink_async",
       "segments": [
         {
           "end": 44,
@@ -1555,8 +1555,8 @@
           "shortName": "CreateGoogleAdsLink"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_create_google_ads_link_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_CreateGoogleAdsLink_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_create_google_ads_link_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_CreateGoogleAdsLink_sync",
       "segments": [
         {
           "end": 44,
@@ -1600,8 +1600,8 @@
           "shortName": "CreateMeasurementProtocolSecret"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_create_measurement_protocol_secret_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_CreateMeasurementProtocolSecret_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_create_measurement_protocol_secret_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_CreateMeasurementProtocolSecret_async",
       "segments": [
         {
           "end": 48,
@@ -1644,8 +1644,8 @@
           "shortName": "CreateMeasurementProtocolSecret"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_create_measurement_protocol_secret_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_CreateMeasurementProtocolSecret_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_create_measurement_protocol_secret_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_CreateMeasurementProtocolSecret_sync",
       "segments": [
         {
           "end": 48,
@@ -1689,8 +1689,8 @@
           "shortName": "CreateProperty"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_create_property_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_CreateProperty_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_create_property_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_CreateProperty_async",
       "segments": [
         {
           "end": 48,
@@ -1733,8 +1733,8 @@
           "shortName": "CreateProperty"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_create_property_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_CreateProperty_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_create_property_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_CreateProperty_sync",
       "segments": [
         {
           "end": 48,
@@ -1778,8 +1778,8 @@
           "shortName": "CreateUserLink"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_create_user_link_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_CreateUserLink_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_create_user_link_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_CreateUserLink_async",
       "segments": [
         {
           "end": 44,
@@ -1822,8 +1822,8 @@
           "shortName": "CreateUserLink"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_create_user_link_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_CreateUserLink_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_create_user_link_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_CreateUserLink_sync",
       "segments": [
         {
           "end": 44,
@@ -1867,8 +1867,8 @@
           "shortName": "CreateWebDataStream"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_create_web_data_stream_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_CreateWebDataStream_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_create_web_data_stream_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_CreateWebDataStream_async",
       "segments": [
         {
           "end": 48,
@@ -1911,8 +1911,8 @@
           "shortName": "CreateWebDataStream"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_create_web_data_stream_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_CreateWebDataStream_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_create_web_data_stream_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_CreateWebDataStream_sync",
       "segments": [
         {
           "end": 48,
@@ -1956,8 +1956,8 @@
           "shortName": "DeleteAccount"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_delete_account_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_DeleteAccount_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_delete_account_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_DeleteAccount_async",
       "segments": [
         {
           "end": 42,
@@ -1998,8 +1998,8 @@
           "shortName": "DeleteAccount"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_delete_account_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_DeleteAccount_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_delete_account_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_DeleteAccount_sync",
       "segments": [
         {
           "end": 42,
@@ -2041,8 +2041,8 @@
           "shortName": "DeleteAndroidAppDataStream"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_delete_android_app_data_stream_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_DeleteAndroidAppDataStream_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_delete_android_app_data_stream_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_DeleteAndroidAppDataStream_async",
       "segments": [
         {
           "end": 42,
@@ -2083,8 +2083,8 @@
           "shortName": "DeleteAndroidAppDataStream"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_delete_android_app_data_stream_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_DeleteAndroidAppDataStream_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_delete_android_app_data_stream_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_DeleteAndroidAppDataStream_sync",
       "segments": [
         {
           "end": 42,
@@ -2126,8 +2126,8 @@
           "shortName": "DeleteConversionEvent"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_delete_conversion_event_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_DeleteConversionEvent_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_delete_conversion_event_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_DeleteConversionEvent_async",
       "segments": [
         {
           "end": 42,
@@ -2168,8 +2168,8 @@
           "shortName": "DeleteConversionEvent"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_delete_conversion_event_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_DeleteConversionEvent_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_delete_conversion_event_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_DeleteConversionEvent_sync",
       "segments": [
         {
           "end": 42,
@@ -2211,8 +2211,8 @@
           "shortName": "DeleteDataStream"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_delete_data_stream_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_DeleteDataStream_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_delete_data_stream_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_DeleteDataStream_async",
       "segments": [
         {
           "end": 42,
@@ -2253,8 +2253,8 @@
           "shortName": "DeleteDataStream"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_delete_data_stream_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_DeleteDataStream_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_delete_data_stream_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_DeleteDataStream_sync",
       "segments": [
         {
           "end": 42,
@@ -2296,8 +2296,8 @@
           "shortName": "DeleteDisplayVideo360AdvertiserLinkProposal"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_delete_display_video360_advertiser_link_proposal_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_DeleteDisplayVideo360AdvertiserLinkProposal_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_delete_display_video360_advertiser_link_proposal_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_DeleteDisplayVideo360AdvertiserLinkProposal_async",
       "segments": [
         {
           "end": 42,
@@ -2338,8 +2338,8 @@
           "shortName": "DeleteDisplayVideo360AdvertiserLinkProposal"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_delete_display_video360_advertiser_link_proposal_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_DeleteDisplayVideo360AdvertiserLinkProposal_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_delete_display_video360_advertiser_link_proposal_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_DeleteDisplayVideo360AdvertiserLinkProposal_sync",
       "segments": [
         {
           "end": 42,
@@ -2381,8 +2381,8 @@
           "shortName": "DeleteDisplayVideo360AdvertiserLink"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_delete_display_video360_advertiser_link_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_DeleteDisplayVideo360AdvertiserLink_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_delete_display_video360_advertiser_link_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_DeleteDisplayVideo360AdvertiserLink_async",
       "segments": [
         {
           "end": 42,
@@ -2423,8 +2423,8 @@
           "shortName": "DeleteDisplayVideo360AdvertiserLink"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_delete_display_video360_advertiser_link_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_DeleteDisplayVideo360AdvertiserLink_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_delete_display_video360_advertiser_link_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_DeleteDisplayVideo360AdvertiserLink_sync",
       "segments": [
         {
           "end": 42,
@@ -2466,8 +2466,8 @@
           "shortName": "DeleteFirebaseLink"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_delete_firebase_link_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_DeleteFirebaseLink_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_delete_firebase_link_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_DeleteFirebaseLink_async",
       "segments": [
         {
           "end": 42,
@@ -2508,8 +2508,8 @@
           "shortName": "DeleteFirebaseLink"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_delete_firebase_link_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_DeleteFirebaseLink_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_delete_firebase_link_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_DeleteFirebaseLink_sync",
       "segments": [
         {
           "end": 42,
@@ -2551,8 +2551,8 @@
           "shortName": "DeleteGoogleAdsLink"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_delete_google_ads_link_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_DeleteGoogleAdsLink_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_delete_google_ads_link_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_DeleteGoogleAdsLink_async",
       "segments": [
         {
           "end": 42,
@@ -2593,8 +2593,8 @@
           "shortName": "DeleteGoogleAdsLink"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_delete_google_ads_link_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_DeleteGoogleAdsLink_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_delete_google_ads_link_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_DeleteGoogleAdsLink_sync",
       "segments": [
         {
           "end": 42,
@@ -2636,8 +2636,8 @@
           "shortName": "DeleteIosAppDataStream"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_delete_ios_app_data_stream_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_DeleteIosAppDataStream_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_delete_ios_app_data_stream_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_DeleteIosAppDataStream_async",
       "segments": [
         {
           "end": 42,
@@ -2678,8 +2678,8 @@
           "shortName": "DeleteIosAppDataStream"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_delete_ios_app_data_stream_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_DeleteIosAppDataStream_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_delete_ios_app_data_stream_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_DeleteIosAppDataStream_sync",
       "segments": [
         {
           "end": 42,
@@ -2721,8 +2721,8 @@
           "shortName": "DeleteMeasurementProtocolSecret"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_delete_measurement_protocol_secret_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_DeleteMeasurementProtocolSecret_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_delete_measurement_protocol_secret_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_DeleteMeasurementProtocolSecret_async",
       "segments": [
         {
           "end": 42,
@@ -2763,8 +2763,8 @@
           "shortName": "DeleteMeasurementProtocolSecret"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_delete_measurement_protocol_secret_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_DeleteMeasurementProtocolSecret_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_delete_measurement_protocol_secret_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_DeleteMeasurementProtocolSecret_sync",
       "segments": [
         {
           "end": 42,
@@ -2806,8 +2806,8 @@
           "shortName": "DeleteProperty"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_delete_property_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_DeleteProperty_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_delete_property_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_DeleteProperty_async",
       "segments": [
         {
           "end": 44,
@@ -2850,8 +2850,8 @@
           "shortName": "DeleteProperty"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_delete_property_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_DeleteProperty_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_delete_property_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_DeleteProperty_sync",
       "segments": [
         {
           "end": 44,
@@ -2895,8 +2895,8 @@
           "shortName": "DeleteUserLink"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_delete_user_link_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_DeleteUserLink_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_delete_user_link_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_DeleteUserLink_async",
       "segments": [
         {
           "end": 42,
@@ -2937,8 +2937,8 @@
           "shortName": "DeleteUserLink"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_delete_user_link_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_DeleteUserLink_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_delete_user_link_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_DeleteUserLink_sync",
       "segments": [
         {
           "end": 42,
@@ -2980,8 +2980,8 @@
           "shortName": "DeleteWebDataStream"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_delete_web_data_stream_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_DeleteWebDataStream_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_delete_web_data_stream_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_DeleteWebDataStream_async",
       "segments": [
         {
           "end": 42,
@@ -3022,8 +3022,8 @@
           "shortName": "DeleteWebDataStream"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_delete_web_data_stream_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_DeleteWebDataStream_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_delete_web_data_stream_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_DeleteWebDataStream_sync",
       "segments": [
         {
           "end": 42,
@@ -3065,8 +3065,8 @@
           "shortName": "GetAccount"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_account_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetAccount_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_get_account_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_GetAccount_async",
       "segments": [
         {
           "end": 44,
@@ -3109,8 +3109,8 @@
           "shortName": "GetAccount"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_account_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetAccount_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_get_account_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_GetAccount_sync",
       "segments": [
         {
           "end": 44,
@@ -3154,8 +3154,8 @@
           "shortName": "GetAndroidAppDataStream"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_android_app_data_stream_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetAndroidAppDataStream_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_get_android_app_data_stream_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_GetAndroidAppDataStream_async",
       "segments": [
         {
           "end": 44,
@@ -3198,8 +3198,8 @@
           "shortName": "GetAndroidAppDataStream"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_android_app_data_stream_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetAndroidAppDataStream_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_get_android_app_data_stream_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_GetAndroidAppDataStream_sync",
       "segments": [
         {
           "end": 44,
@@ -3243,8 +3243,8 @@
           "shortName": "GetConversionEvent"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_conversion_event_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetConversionEvent_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_get_conversion_event_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_GetConversionEvent_async",
       "segments": [
         {
           "end": 44,
@@ -3287,8 +3287,8 @@
           "shortName": "GetConversionEvent"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_conversion_event_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetConversionEvent_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_get_conversion_event_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_GetConversionEvent_sync",
       "segments": [
         {
           "end": 44,
@@ -3332,8 +3332,8 @@
           "shortName": "GetCustomDimension"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_custom_dimension_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetCustomDimension_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_get_custom_dimension_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_GetCustomDimension_async",
       "segments": [
         {
           "end": 44,
@@ -3376,8 +3376,8 @@
           "shortName": "GetCustomDimension"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_custom_dimension_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetCustomDimension_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_get_custom_dimension_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_GetCustomDimension_sync",
       "segments": [
         {
           "end": 44,
@@ -3421,8 +3421,8 @@
           "shortName": "GetCustomMetric"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_custom_metric_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetCustomMetric_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_get_custom_metric_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_GetCustomMetric_async",
       "segments": [
         {
           "end": 44,
@@ -3465,8 +3465,8 @@
           "shortName": "GetCustomMetric"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_custom_metric_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetCustomMetric_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_get_custom_metric_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_GetCustomMetric_sync",
       "segments": [
         {
           "end": 44,
@@ -3510,8 +3510,8 @@
           "shortName": "GetDataRetentionSettings"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_data_retention_settings_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetDataRetentionSettings_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_get_data_retention_settings_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_GetDataRetentionSettings_async",
       "segments": [
         {
           "end": 44,
@@ -3554,8 +3554,8 @@
           "shortName": "GetDataRetentionSettings"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_data_retention_settings_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetDataRetentionSettings_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_get_data_retention_settings_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_GetDataRetentionSettings_sync",
       "segments": [
         {
           "end": 44,
@@ -3599,8 +3599,8 @@
           "shortName": "GetDataSharingSettings"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_data_sharing_settings_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetDataSharingSettings_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_get_data_sharing_settings_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_GetDataSharingSettings_async",
       "segments": [
         {
           "end": 44,
@@ -3643,8 +3643,8 @@
           "shortName": "GetDataSharingSettings"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_data_sharing_settings_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetDataSharingSettings_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_get_data_sharing_settings_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_GetDataSharingSettings_sync",
       "segments": [
         {
           "end": 44,
@@ -3688,8 +3688,8 @@
           "shortName": "GetDataStream"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_data_stream_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetDataStream_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_get_data_stream_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_GetDataStream_async",
       "segments": [
         {
           "end": 44,
@@ -3732,8 +3732,8 @@
           "shortName": "GetDataStream"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_data_stream_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetDataStream_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_get_data_stream_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_GetDataStream_sync",
       "segments": [
         {
           "end": 44,
@@ -3777,8 +3777,8 @@
           "shortName": "GetDisplayVideo360AdvertiserLinkProposal"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_display_video360_advertiser_link_proposal_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetDisplayVideo360AdvertiserLinkProposal_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_get_display_video360_advertiser_link_proposal_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_GetDisplayVideo360AdvertiserLinkProposal_async",
       "segments": [
         {
           "end": 44,
@@ -3821,8 +3821,8 @@
           "shortName": "GetDisplayVideo360AdvertiserLinkProposal"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_display_video360_advertiser_link_proposal_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetDisplayVideo360AdvertiserLinkProposal_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_get_display_video360_advertiser_link_proposal_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_GetDisplayVideo360AdvertiserLinkProposal_sync",
       "segments": [
         {
           "end": 44,
@@ -3866,8 +3866,8 @@
           "shortName": "GetDisplayVideo360AdvertiserLink"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_display_video360_advertiser_link_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetDisplayVideo360AdvertiserLink_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_get_display_video360_advertiser_link_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_GetDisplayVideo360AdvertiserLink_async",
       "segments": [
         {
           "end": 44,
@@ -3910,8 +3910,8 @@
           "shortName": "GetDisplayVideo360AdvertiserLink"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_display_video360_advertiser_link_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetDisplayVideo360AdvertiserLink_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_get_display_video360_advertiser_link_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_GetDisplayVideo360AdvertiserLink_sync",
       "segments": [
         {
           "end": 44,
@@ -3955,8 +3955,8 @@
           "shortName": "GetGlobalSiteTag"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_global_site_tag_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetGlobalSiteTag_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_get_global_site_tag_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_GetGlobalSiteTag_async",
       "segments": [
         {
           "end": 44,
@@ -3999,8 +3999,8 @@
           "shortName": "GetGlobalSiteTag"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_global_site_tag_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetGlobalSiteTag_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_get_global_site_tag_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_GetGlobalSiteTag_sync",
       "segments": [
         {
           "end": 44,
@@ -4044,8 +4044,8 @@
           "shortName": "GetGoogleSignalsSettings"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_google_signals_settings_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetGoogleSignalsSettings_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_get_google_signals_settings_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_GetGoogleSignalsSettings_async",
       "segments": [
         {
           "end": 44,
@@ -4088,8 +4088,8 @@
           "shortName": "GetGoogleSignalsSettings"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_google_signals_settings_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetGoogleSignalsSettings_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_get_google_signals_settings_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_GetGoogleSignalsSettings_sync",
       "segments": [
         {
           "end": 44,
@@ -4133,8 +4133,8 @@
           "shortName": "GetIosAppDataStream"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_ios_app_data_stream_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetIosAppDataStream_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_get_ios_app_data_stream_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_GetIosAppDataStream_async",
       "segments": [
         {
           "end": 44,
@@ -4177,8 +4177,8 @@
           "shortName": "GetIosAppDataStream"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_ios_app_data_stream_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetIosAppDataStream_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_get_ios_app_data_stream_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_GetIosAppDataStream_sync",
       "segments": [
         {
           "end": 44,
@@ -4222,8 +4222,8 @@
           "shortName": "GetMeasurementProtocolSecret"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_measurement_protocol_secret_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetMeasurementProtocolSecret_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_get_measurement_protocol_secret_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_GetMeasurementProtocolSecret_async",
       "segments": [
         {
           "end": 44,
@@ -4266,8 +4266,8 @@
           "shortName": "GetMeasurementProtocolSecret"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_measurement_protocol_secret_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetMeasurementProtocolSecret_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_get_measurement_protocol_secret_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_GetMeasurementProtocolSecret_sync",
       "segments": [
         {
           "end": 44,
@@ -4311,8 +4311,8 @@
           "shortName": "GetProperty"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_property_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetProperty_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_get_property_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_GetProperty_async",
       "segments": [
         {
           "end": 44,
@@ -4355,8 +4355,8 @@
           "shortName": "GetProperty"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_property_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetProperty_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_get_property_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_GetProperty_sync",
       "segments": [
         {
           "end": 44,
@@ -4400,8 +4400,8 @@
           "shortName": "GetUserLink"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_user_link_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetUserLink_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_get_user_link_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_GetUserLink_async",
       "segments": [
         {
           "end": 44,
@@ -4444,8 +4444,8 @@
           "shortName": "GetUserLink"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_user_link_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetUserLink_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_get_user_link_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_GetUserLink_sync",
       "segments": [
         {
           "end": 44,
@@ -4489,8 +4489,8 @@
           "shortName": "GetWebDataStream"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_web_data_stream_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetWebDataStream_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_get_web_data_stream_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_GetWebDataStream_async",
       "segments": [
         {
           "end": 44,
@@ -4533,8 +4533,8 @@
           "shortName": "GetWebDataStream"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_web_data_stream_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetWebDataStream_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_get_web_data_stream_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_GetWebDataStream_sync",
       "segments": [
         {
           "end": 44,
@@ -4578,8 +4578,8 @@
           "shortName": "ListAccountSummaries"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_list_account_summaries_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListAccountSummaries_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_list_account_summaries_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_ListAccountSummaries_async",
       "segments": [
         {
           "end": 44,
@@ -4622,8 +4622,8 @@
           "shortName": "ListAccountSummaries"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_list_account_summaries_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListAccountSummaries_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_list_account_summaries_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_ListAccountSummaries_sync",
       "segments": [
         {
           "end": 44,
@@ -4667,8 +4667,8 @@
           "shortName": "ListAccounts"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_list_accounts_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListAccounts_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_list_accounts_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_ListAccounts_async",
       "segments": [
         {
           "end": 44,
@@ -4711,8 +4711,8 @@
           "shortName": "ListAccounts"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_list_accounts_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListAccounts_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_list_accounts_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_ListAccounts_sync",
       "segments": [
         {
           "end": 44,
@@ -4756,8 +4756,8 @@
           "shortName": "ListAndroidAppDataStreams"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_list_android_app_data_streams_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListAndroidAppDataStreams_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_list_android_app_data_streams_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_ListAndroidAppDataStreams_async",
       "segments": [
         {
           "end": 45,
@@ -4800,8 +4800,8 @@
           "shortName": "ListAndroidAppDataStreams"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_list_android_app_data_streams_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListAndroidAppDataStreams_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_list_android_app_data_streams_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_ListAndroidAppDataStreams_sync",
       "segments": [
         {
           "end": 45,
@@ -4845,8 +4845,8 @@
           "shortName": "ListConversionEvents"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_list_conversion_events_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListConversionEvents_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_list_conversion_events_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_ListConversionEvents_async",
       "segments": [
         {
           "end": 45,
@@ -4889,8 +4889,8 @@
           "shortName": "ListConversionEvents"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_list_conversion_events_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListConversionEvents_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_list_conversion_events_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_ListConversionEvents_sync",
       "segments": [
         {
           "end": 45,
@@ -4934,8 +4934,8 @@
           "shortName": "ListCustomDimensions"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_list_custom_dimensions_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListCustomDimensions_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_list_custom_dimensions_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_ListCustomDimensions_async",
       "segments": [
         {
           "end": 45,
@@ -4978,8 +4978,8 @@
           "shortName": "ListCustomDimensions"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_list_custom_dimensions_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListCustomDimensions_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_list_custom_dimensions_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_ListCustomDimensions_sync",
       "segments": [
         {
           "end": 45,
@@ -5023,8 +5023,8 @@
           "shortName": "ListCustomMetrics"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_list_custom_metrics_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListCustomMetrics_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_list_custom_metrics_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_ListCustomMetrics_async",
       "segments": [
         {
           "end": 45,
@@ -5067,8 +5067,8 @@
           "shortName": "ListCustomMetrics"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_list_custom_metrics_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListCustomMetrics_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_list_custom_metrics_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_ListCustomMetrics_sync",
       "segments": [
         {
           "end": 45,
@@ -5112,8 +5112,8 @@
           "shortName": "ListDataStreams"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_list_data_streams_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListDataStreams_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_list_data_streams_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_ListDataStreams_async",
       "segments": [
         {
           "end": 45,
@@ -5156,8 +5156,8 @@
           "shortName": "ListDataStreams"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_list_data_streams_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListDataStreams_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_list_data_streams_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_ListDataStreams_sync",
       "segments": [
         {
           "end": 45,
@@ -5201,8 +5201,8 @@
           "shortName": "ListDisplayVideo360AdvertiserLinkProposals"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_list_display_video360_advertiser_link_proposals_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListDisplayVideo360AdvertiserLinkProposals_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_list_display_video360_advertiser_link_proposals_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_ListDisplayVideo360AdvertiserLinkProposals_async",
       "segments": [
         {
           "end": 45,
@@ -5245,8 +5245,8 @@
           "shortName": "ListDisplayVideo360AdvertiserLinkProposals"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_list_display_video360_advertiser_link_proposals_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListDisplayVideo360AdvertiserLinkProposals_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_list_display_video360_advertiser_link_proposals_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_ListDisplayVideo360AdvertiserLinkProposals_sync",
       "segments": [
         {
           "end": 45,
@@ -5290,8 +5290,8 @@
           "shortName": "ListDisplayVideo360AdvertiserLinks"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_list_display_video360_advertiser_links_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListDisplayVideo360AdvertiserLinks_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_list_display_video360_advertiser_links_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_ListDisplayVideo360AdvertiserLinks_async",
       "segments": [
         {
           "end": 45,
@@ -5334,8 +5334,8 @@
           "shortName": "ListDisplayVideo360AdvertiserLinks"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_list_display_video360_advertiser_links_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListDisplayVideo360AdvertiserLinks_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_list_display_video360_advertiser_links_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_ListDisplayVideo360AdvertiserLinks_sync",
       "segments": [
         {
           "end": 45,
@@ -5379,8 +5379,8 @@
           "shortName": "ListFirebaseLinks"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_list_firebase_links_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListFirebaseLinks_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_list_firebase_links_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_ListFirebaseLinks_async",
       "segments": [
         {
           "end": 45,
@@ -5423,8 +5423,8 @@
           "shortName": "ListFirebaseLinks"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_list_firebase_links_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListFirebaseLinks_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_list_firebase_links_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_ListFirebaseLinks_sync",
       "segments": [
         {
           "end": 45,
@@ -5468,8 +5468,8 @@
           "shortName": "ListGoogleAdsLinks"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_list_google_ads_links_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListGoogleAdsLinks_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_list_google_ads_links_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_ListGoogleAdsLinks_async",
       "segments": [
         {
           "end": 45,
@@ -5512,8 +5512,8 @@
           "shortName": "ListGoogleAdsLinks"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_list_google_ads_links_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListGoogleAdsLinks_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_list_google_ads_links_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_ListGoogleAdsLinks_sync",
       "segments": [
         {
           "end": 45,
@@ -5557,8 +5557,8 @@
           "shortName": "ListIosAppDataStreams"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_list_ios_app_data_streams_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListIosAppDataStreams_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_list_ios_app_data_streams_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_ListIosAppDataStreams_async",
       "segments": [
         {
           "end": 45,
@@ -5601,8 +5601,8 @@
           "shortName": "ListIosAppDataStreams"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_list_ios_app_data_streams_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListIosAppDataStreams_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_list_ios_app_data_streams_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_ListIosAppDataStreams_sync",
       "segments": [
         {
           "end": 45,
@@ -5646,8 +5646,8 @@
           "shortName": "ListMeasurementProtocolSecrets"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_list_measurement_protocol_secrets_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListMeasurementProtocolSecrets_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_list_measurement_protocol_secrets_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_ListMeasurementProtocolSecrets_async",
       "segments": [
         {
           "end": 45,
@@ -5690,8 +5690,8 @@
           "shortName": "ListMeasurementProtocolSecrets"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_list_measurement_protocol_secrets_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListMeasurementProtocolSecrets_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_list_measurement_protocol_secrets_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_ListMeasurementProtocolSecrets_sync",
       "segments": [
         {
           "end": 45,
@@ -5735,8 +5735,8 @@
           "shortName": "ListProperties"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_list_properties_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListProperties_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_list_properties_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_ListProperties_async",
       "segments": [
         {
           "end": 45,
@@ -5779,8 +5779,8 @@
           "shortName": "ListProperties"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_list_properties_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListProperties_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_list_properties_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_ListProperties_sync",
       "segments": [
         {
           "end": 45,
@@ -5824,8 +5824,8 @@
           "shortName": "ListUserLinks"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_list_user_links_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListUserLinks_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_list_user_links_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_ListUserLinks_async",
       "segments": [
         {
           "end": 45,
@@ -5868,8 +5868,8 @@
           "shortName": "ListUserLinks"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_list_user_links_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListUserLinks_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_list_user_links_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_ListUserLinks_sync",
       "segments": [
         {
           "end": 45,
@@ -5913,8 +5913,8 @@
           "shortName": "ListWebDataStreams"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_list_web_data_streams_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListWebDataStreams_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_list_web_data_streams_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_ListWebDataStreams_async",
       "segments": [
         {
           "end": 45,
@@ -5957,8 +5957,8 @@
           "shortName": "ListWebDataStreams"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_list_web_data_streams_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListWebDataStreams_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_list_web_data_streams_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_ListWebDataStreams_sync",
       "segments": [
         {
           "end": 45,
@@ -6002,8 +6002,8 @@
           "shortName": "ProvisionAccountTicket"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_provision_account_ticket_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ProvisionAccountTicket_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_provision_account_ticket_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_ProvisionAccountTicket_async",
       "segments": [
         {
           "end": 43,
@@ -6046,8 +6046,8 @@
           "shortName": "ProvisionAccountTicket"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_provision_account_ticket_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ProvisionAccountTicket_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_provision_account_ticket_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_ProvisionAccountTicket_sync",
       "segments": [
         {
           "end": 43,
@@ -6091,8 +6091,8 @@
           "shortName": "SearchChangeHistoryEvents"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_search_change_history_events_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_SearchChangeHistoryEvents_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_search_change_history_events_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_SearchChangeHistoryEvents_async",
       "segments": [
         {
           "end": 45,
@@ -6135,8 +6135,8 @@
           "shortName": "SearchChangeHistoryEvents"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_search_change_history_events_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_SearchChangeHistoryEvents_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_search_change_history_events_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_SearchChangeHistoryEvents_sync",
       "segments": [
         {
           "end": 45,
@@ -6180,8 +6180,8 @@
           "shortName": "UpdateAccount"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_update_account_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_UpdateAccount_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_update_account_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_UpdateAccount_async",
       "segments": [
         {
           "end": 47,
@@ -6224,8 +6224,8 @@
           "shortName": "UpdateAccount"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_update_account_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_UpdateAccount_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_update_account_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_UpdateAccount_sync",
       "segments": [
         {
           "end": 47,
@@ -6269,8 +6269,8 @@
           "shortName": "UpdateAndroidAppDataStream"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_update_android_app_data_stream_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_UpdateAndroidAppDataStream_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_update_android_app_data_stream_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_UpdateAndroidAppDataStream_async",
       "segments": [
         {
           "end": 43,
@@ -6313,8 +6313,8 @@
           "shortName": "UpdateAndroidAppDataStream"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_update_android_app_data_stream_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_UpdateAndroidAppDataStream_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_update_android_app_data_stream_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_UpdateAndroidAppDataStream_sync",
       "segments": [
         {
           "end": 43,
@@ -6358,8 +6358,8 @@
           "shortName": "UpdateCustomDimension"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_update_custom_dimension_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_UpdateCustomDimension_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_update_custom_dimension_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_UpdateCustomDimension_async",
       "segments": [
         {
           "end": 43,
@@ -6402,8 +6402,8 @@
           "shortName": "UpdateCustomDimension"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_update_custom_dimension_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_UpdateCustomDimension_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_update_custom_dimension_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_UpdateCustomDimension_sync",
       "segments": [
         {
           "end": 43,
@@ -6447,8 +6447,8 @@
           "shortName": "UpdateCustomMetric"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_update_custom_metric_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_UpdateCustomMetric_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_update_custom_metric_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_UpdateCustomMetric_async",
       "segments": [
         {
           "end": 43,
@@ -6491,8 +6491,8 @@
           "shortName": "UpdateCustomMetric"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_update_custom_metric_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_UpdateCustomMetric_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_update_custom_metric_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_UpdateCustomMetric_sync",
       "segments": [
         {
           "end": 43,
@@ -6536,8 +6536,8 @@
           "shortName": "UpdateDataRetentionSettings"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_update_data_retention_settings_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_UpdateDataRetentionSettings_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_update_data_retention_settings_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_UpdateDataRetentionSettings_async",
       "segments": [
         {
           "end": 43,
@@ -6580,8 +6580,8 @@
           "shortName": "UpdateDataRetentionSettings"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_update_data_retention_settings_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_UpdateDataRetentionSettings_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_update_data_retention_settings_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_UpdateDataRetentionSettings_sync",
       "segments": [
         {
           "end": 43,
@@ -6625,8 +6625,8 @@
           "shortName": "UpdateDataStream"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_update_data_stream_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_UpdateDataStream_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_update_data_stream_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_UpdateDataStream_async",
       "segments": [
         {
           "end": 43,
@@ -6669,8 +6669,8 @@
           "shortName": "UpdateDataStream"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_update_data_stream_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_UpdateDataStream_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_update_data_stream_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_UpdateDataStream_sync",
       "segments": [
         {
           "end": 43,
@@ -6714,8 +6714,8 @@
           "shortName": "UpdateDisplayVideo360AdvertiserLink"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_update_display_video360_advertiser_link_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_UpdateDisplayVideo360AdvertiserLink_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_update_display_video360_advertiser_link_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_UpdateDisplayVideo360AdvertiserLink_async",
       "segments": [
         {
           "end": 43,
@@ -6758,8 +6758,8 @@
           "shortName": "UpdateDisplayVideo360AdvertiserLink"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_update_display_video360_advertiser_link_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_UpdateDisplayVideo360AdvertiserLink_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_update_display_video360_advertiser_link_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_UpdateDisplayVideo360AdvertiserLink_sync",
       "segments": [
         {
           "end": 43,
@@ -6803,8 +6803,8 @@
           "shortName": "UpdateGoogleAdsLink"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_update_google_ads_link_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_UpdateGoogleAdsLink_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_update_google_ads_link_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_UpdateGoogleAdsLink_async",
       "segments": [
         {
           "end": 43,
@@ -6847,8 +6847,8 @@
           "shortName": "UpdateGoogleAdsLink"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_update_google_ads_link_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_UpdateGoogleAdsLink_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_update_google_ads_link_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_UpdateGoogleAdsLink_sync",
       "segments": [
         {
           "end": 43,
@@ -6892,8 +6892,8 @@
           "shortName": "UpdateGoogleSignalsSettings"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_update_google_signals_settings_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_UpdateGoogleSignalsSettings_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_update_google_signals_settings_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_UpdateGoogleSignalsSettings_async",
       "segments": [
         {
           "end": 43,
@@ -6936,8 +6936,8 @@
           "shortName": "UpdateGoogleSignalsSettings"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_update_google_signals_settings_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_UpdateGoogleSignalsSettings_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_update_google_signals_settings_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_UpdateGoogleSignalsSettings_sync",
       "segments": [
         {
           "end": 43,
@@ -6981,8 +6981,8 @@
           "shortName": "UpdateIosAppDataStream"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_update_ios_app_data_stream_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_UpdateIosAppDataStream_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_update_ios_app_data_stream_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_UpdateIosAppDataStream_async",
       "segments": [
         {
           "end": 47,
@@ -7025,8 +7025,8 @@
           "shortName": "UpdateIosAppDataStream"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_update_ios_app_data_stream_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_UpdateIosAppDataStream_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_update_ios_app_data_stream_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_UpdateIosAppDataStream_sync",
       "segments": [
         {
           "end": 47,
@@ -7070,8 +7070,8 @@
           "shortName": "UpdateMeasurementProtocolSecret"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_update_measurement_protocol_secret_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_UpdateMeasurementProtocolSecret_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_update_measurement_protocol_secret_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_UpdateMeasurementProtocolSecret_async",
       "segments": [
         {
           "end": 47,
@@ -7114,8 +7114,8 @@
           "shortName": "UpdateMeasurementProtocolSecret"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_update_measurement_protocol_secret_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_UpdateMeasurementProtocolSecret_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_update_measurement_protocol_secret_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_UpdateMeasurementProtocolSecret_sync",
       "segments": [
         {
           "end": 47,
@@ -7159,8 +7159,8 @@
           "shortName": "UpdateProperty"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_update_property_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_UpdateProperty_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_update_property_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_UpdateProperty_async",
       "segments": [
         {
           "end": 48,
@@ -7203,8 +7203,8 @@
           "shortName": "UpdateProperty"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_update_property_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_UpdateProperty_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_update_property_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_UpdateProperty_sync",
       "segments": [
         {
           "end": 48,
@@ -7248,8 +7248,8 @@
           "shortName": "UpdateUserLink"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_update_user_link_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_UpdateUserLink_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_update_user_link_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_UpdateUserLink_async",
       "segments": [
         {
           "end": 43,
@@ -7292,8 +7292,8 @@
           "shortName": "UpdateUserLink"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_update_user_link_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_UpdateUserLink_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_update_user_link_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_UpdateUserLink_sync",
       "segments": [
         {
           "end": 43,
@@ -7337,8 +7337,8 @@
           "shortName": "UpdateWebDataStream"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_update_web_data_stream_async.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_UpdateWebDataStream_async",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_update_web_data_stream_async.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_UpdateWebDataStream_async",
       "segments": [
         {
           "end": 47,
@@ -7381,8 +7381,8 @@
           "shortName": "UpdateWebDataStream"
         }
       },
-      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_update_web_data_stream_sync.py",
-      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_UpdateWebDataStream_sync",
+      "file": "analyticsadmin_v1alpha_generated_analytics_admin_service_update_web_data_stream_sync.py",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_UpdateWebDataStream_sync",
       "segments": [
         {
           "end": 47,

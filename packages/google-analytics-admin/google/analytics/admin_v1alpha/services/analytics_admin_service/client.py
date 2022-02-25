@@ -686,8 +686,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> resources.Account:
         r"""Lookup for a single Account.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -781,8 +780,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         relevant accounts are found.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -865,8 +863,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         Returns an error if the target is not found.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -948,8 +945,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> resources.Account:
         r"""Updates an account.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -1055,8 +1051,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> analytics_admin.ProvisionAccountTicketResponse:
         r"""Requests a ticket for creating an account.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -1120,8 +1115,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         caller.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -1194,8 +1188,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> resources.Property:
         r"""Lookup for a single "GA4" Property.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -1290,8 +1283,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         relevant properties are found.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -1367,8 +1359,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         and attributes.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -1469,8 +1460,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         an GA4 Property.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -1562,8 +1552,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> resources.Property:
         r"""Updates a property.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -1674,8 +1663,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         property.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -1766,8 +1754,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         account or property.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -1838,8 +1825,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> pagers.ListUserLinksPager:
         r"""Lists all user links on an account or property.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -1949,8 +1935,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         in the GA or GMP UIs.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -2036,8 +2021,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         permissions specified in the new UserLink.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -2146,8 +2130,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         created, none of the UserLinks will be created.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -2221,8 +2204,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> resources.UserLink:
         r"""Updates a user link on an account or property.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -2313,8 +2295,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         account or property.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -2384,8 +2365,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> None:
         r"""Deletes a user link on an account or property.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -2466,8 +2446,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         account or property.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -2531,8 +2510,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> resources.WebDataStream:
         r"""Lookup for a single WebDataStream
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -2624,8 +2602,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> None:
         r"""Deletes a web stream on a property.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -2708,8 +2685,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> resources.WebDataStream:
         r"""Updates a web stream on a property.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -2819,8 +2795,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         attributes.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -2927,8 +2902,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         data streams are found.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -3030,8 +3004,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> resources.IosAppDataStream:
         r"""Lookup for a single IosAppDataStream
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -3123,8 +3096,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> None:
         r"""Deletes an iOS app stream on a property.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -3209,8 +3181,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> resources.IosAppDataStream:
         r"""Updates an iOS app stream on a property.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -3325,8 +3296,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         iOS app data streams are found.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -3430,8 +3400,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> resources.AndroidAppDataStream:
         r"""Lookup for a single AndroidAppDataStream
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -3525,8 +3494,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> None:
         r"""Deletes an android app stream on a property.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -3611,8 +3579,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> resources.AndroidAppDataStream:
         r"""Updates an android app stream on a property.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -3728,8 +3695,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         android app streams are found.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -3836,8 +3802,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         Properties can have at most one FirebaseLink.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -3936,8 +3901,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> None:
         r"""Deletes a FirebaseLink on a property
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -4020,8 +3984,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         Properties can have at most one FirebaseLink.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -4123,8 +4086,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         Site Tags are immutable singletons.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -4220,8 +4182,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> resources.GoogleAdsLink:
         r"""Creates a GoogleAdsLink.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -4321,8 +4282,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> resources.GoogleAdsLink:
         r"""Updates a GoogleAdsLink on a property
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -4423,8 +4383,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> None:
         r"""Deletes a GoogleAdsLink on a property
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -4504,8 +4463,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> pagers.ListGoogleAdsLinksPager:
         r"""Lists GoogleAdsLinks on a property.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -4607,8 +4565,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         Data sharing settings are singletons.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -4706,8 +4663,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> resources.MeasurementProtocolSecret:
         r"""Lookup for a single "GA4" MeasurementProtocolSecret.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -4807,8 +4763,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         specified parent Property.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -4919,8 +4874,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> resources.MeasurementProtocolSecret:
         r"""Creates a measurement protocol secret.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -5033,8 +4987,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> None:
         r"""Deletes target MeasurementProtocolSecret.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -5126,8 +5079,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> resources.MeasurementProtocolSecret:
         r"""Updates a measurement protocol secret.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -5246,8 +5198,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         MeasurementProtocolSecret resources may be created.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -5323,8 +5274,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         children given the specified set of filters.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -5406,8 +5356,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> resources.GoogleSignalsSettings:
         r"""Lookup for Google Signals settings for a property.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -5501,8 +5450,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> resources.GoogleSignalsSettings:
         r"""Updates Google Signals settings for a property.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -5615,8 +5563,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         attributes.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -5717,8 +5664,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> resources.ConversionEvent:
         r"""Retrieve a single conversion event.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -5810,8 +5756,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> None:
         r"""Deletes a conversion event in a property.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -5896,8 +5841,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         Returns an empty list if no conversion events are found.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -6000,8 +5944,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> resources.DisplayVideo360AdvertiserLink:
         r"""Look up a single DisplayVideo360AdvertiserLink
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -6101,8 +6044,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         property.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -6215,8 +6157,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         instead seek to create a DisplayVideo360LinkProposal.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -6327,8 +6268,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         property.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -6421,8 +6361,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         property.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -6541,8 +6480,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         DisplayVideo360AdvertiserLinkProposal.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -6651,8 +6589,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         property.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -6761,8 +6698,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> resources.DisplayVideo360AdvertiserLinkProposal:
         r"""Creates a DisplayVideo360AdvertiserLinkProposal.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -6881,8 +6817,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         property. This can only be used on cancelled proposals.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -6975,8 +6910,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         created.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -7060,8 +6994,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         eventually be deleted automatically.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -7145,8 +7078,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> resources.CustomDimension:
         r"""Creates a CustomDimension.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -7250,8 +7182,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> resources.CustomDimension:
         r"""Updates a CustomDimension on a property.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -7349,8 +7280,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> pagers.ListCustomDimensionsPager:
         r"""Lists CustomDimensions on a property.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -7450,8 +7380,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> None:
         r"""Archives a CustomDimension on a property.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -7533,8 +7462,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> resources.CustomDimension:
         r"""Lookup for a single CustomDimension.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -7624,8 +7552,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> resources.CustomMetric:
         r"""Creates a CustomMetric.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -7728,8 +7655,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> resources.CustomMetric:
         r"""Updates a CustomMetric on a property.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -7827,8 +7753,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> pagers.ListCustomMetricsPager:
         r"""Lists CustomMetrics on a property.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -7928,8 +7853,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> None:
         r"""Archives a CustomMetric on a property.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -8010,8 +7934,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> resources.CustomMetric:
         r"""Lookup for a single CustomMetric.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -8102,8 +8025,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         this property.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -8201,8 +8123,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         this property.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -8313,8 +8234,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> resources.DataStream:
         r"""Creates a DataStream.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -8415,8 +8335,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> None:
         r"""Deletes a DataStream on a property.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -8498,8 +8417,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> resources.DataStream:
         r"""Updates a DataStream on a property.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -8599,8 +8517,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> pagers.ListDataStreamsPager:
         r"""Lists DataStreams on a property.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
@@ -8700,8 +8617,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> resources.DataStream:
         r"""Lookup for a single DataStream.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.analytics import admin_v1alpha
 
