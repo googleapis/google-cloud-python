@@ -232,7 +232,7 @@ class ArtifactRegistryAsyncClient:
     ) -> pagers.ListDockerImagesAsyncPager:
         r"""Lists docker images.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import artifactregistry_v1
 
@@ -332,7 +332,7 @@ class ArtifactRegistryAsyncClient:
     ) -> pagers.ListRepositoriesAsyncPager:
         r"""Lists repositories.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import artifactregistry_v1
 
@@ -432,7 +432,7 @@ class ArtifactRegistryAsyncClient:
     ) -> repository.Repository:
         r"""Gets a repository.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import artifactregistry_v1
 

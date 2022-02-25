@@ -558,8 +558,7 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         with existing resources are ignored.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import artifactregistry_v1beta2
 
@@ -647,8 +646,7 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         with existing resources are ignored.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import artifactregistry_v1beta2
 
@@ -732,8 +730,7 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
     ) -> pagers.ListRepositoriesPager:
         r"""Lists repositories.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import artifactregistry_v1beta2
 
@@ -833,8 +830,7 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
     ) -> repository.Repository:
         r"""Gets a repository.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import artifactregistry_v1beta2
 
@@ -929,8 +925,7 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         response will be the created Repository.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import artifactregistry_v1beta2
 
@@ -1054,8 +1049,7 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
     ) -> gda_repository.Repository:
         r"""Updates a repository.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import artifactregistry_v1beta2
 
@@ -1159,8 +1153,7 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         and will return a google.protobuf.Empty response.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import artifactregistry_v1beta2
 
@@ -1274,8 +1267,7 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
     ) -> pagers.ListPackagesPager:
         r"""Lists packages.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import artifactregistry_v1beta2
 
@@ -1372,8 +1364,7 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
     ) -> package.Package:
         r"""Gets a package.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import artifactregistry_v1beta2
 
@@ -1462,8 +1453,7 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         has been deleted.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import artifactregistry_v1beta2
 
@@ -1574,8 +1564,7 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
     ) -> pagers.ListVersionsPager:
         r"""Lists versions.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import artifactregistry_v1beta2
 
@@ -1672,8 +1661,7 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
     ) -> version.Version:
         r"""Gets a version
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import artifactregistry_v1beta2
 
@@ -1765,8 +1753,7 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         been deleted.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import artifactregistry_v1beta2
 
@@ -1877,8 +1864,7 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
     ) -> pagers.ListFilesPager:
         r"""Lists files.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import artifactregistry_v1beta2
 
@@ -1975,8 +1961,7 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
     ) -> file.File:
         r"""Gets a file.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import artifactregistry_v1beta2
 
@@ -2063,8 +2048,7 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
     ) -> pagers.ListTagsPager:
         r"""Lists tags.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import artifactregistry_v1beta2
 
@@ -2161,8 +2145,7 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
     ) -> tag.Tag:
         r"""Gets a tag.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import artifactregistry_v1beta2
 
@@ -2251,8 +2234,7 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
     ) -> gda_tag.Tag:
         r"""Creates a tag.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import artifactregistry_v1beta2
 
@@ -2358,8 +2340,7 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
     ) -> gda_tag.Tag:
         r"""Updates a tag.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import artifactregistry_v1beta2
 
@@ -2459,8 +2440,7 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
     ) -> None:
         r"""Deletes a tag.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import artifactregistry_v1beta2
 
@@ -2535,8 +2515,7 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
     ) -> policy_pb2.Policy:
         r"""Updates the IAM policy for a given resource.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import artifactregistry_v1beta2
 
@@ -2659,8 +2638,7 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
     ) -> policy_pb2.Policy:
         r"""Gets the IAM policy for a given resource.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import artifactregistry_v1beta2
 
@@ -2785,8 +2763,7 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         resource.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import artifactregistry_v1beta2
 
@@ -2856,8 +2833,7 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
     ) -> settings.ProjectSettings:
         r"""Retrieves the Settings for the Project.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import artifactregistry_v1beta2
 
@@ -2948,8 +2924,7 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
     ) -> settings.ProjectSettings:
         r"""Updates the Settings for the Project.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import artifactregistry_v1beta2
 

@@ -10,8 +10,8 @@
           "shortName": "CreateRepository"
         }
       },
-      "file": "artifactregistry_generated_artifactregistry_v1beta2_artifact_registry_create_repository_async.py",
-      "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_CreateRepository_async",
+      "file": "artifactregistry_v1beta2_generated_artifact_registry_create_repository_async.py",
+      "regionTag": "artifactregistry_v1beta2_generated_ArtifactRegistry_CreateRepository_async",
       "segments": [
         {
           "end": 48,
@@ -54,8 +54,8 @@
           "shortName": "CreateRepository"
         }
       },
-      "file": "artifactregistry_generated_artifactregistry_v1beta2_artifact_registry_create_repository_sync.py",
-      "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_CreateRepository_sync",
+      "file": "artifactregistry_v1beta2_generated_artifact_registry_create_repository_sync.py",
+      "regionTag": "artifactregistry_v1beta2_generated_ArtifactRegistry_CreateRepository_sync",
       "segments": [
         {
           "end": 48,
@@ -99,8 +99,8 @@
           "shortName": "CreateTag"
         }
       },
-      "file": "artifactregistry_generated_artifactregistry_v1beta2_artifact_registry_create_tag_async.py",
-      "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_CreateTag_async",
+      "file": "artifactregistry_v1beta2_generated_artifact_registry_create_tag_async.py",
+      "regionTag": "artifactregistry_v1beta2_generated_ArtifactRegistry_CreateTag_async",
       "segments": [
         {
           "end": 43,
@@ -143,8 +143,8 @@
           "shortName": "CreateTag"
         }
       },
-      "file": "artifactregistry_generated_artifactregistry_v1beta2_artifact_registry_create_tag_sync.py",
-      "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_CreateTag_sync",
+      "file": "artifactregistry_v1beta2_generated_artifact_registry_create_tag_sync.py",
+      "regionTag": "artifactregistry_v1beta2_generated_ArtifactRegistry_CreateTag_sync",
       "segments": [
         {
           "end": 43,
@@ -188,8 +188,8 @@
           "shortName": "DeletePackage"
         }
       },
-      "file": "artifactregistry_generated_artifactregistry_v1beta2_artifact_registry_delete_package_async.py",
-      "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_DeletePackage_async",
+      "file": "artifactregistry_v1beta2_generated_artifact_registry_delete_package_async.py",
+      "regionTag": "artifactregistry_v1beta2_generated_ArtifactRegistry_DeletePackage_async",
       "segments": [
         {
           "end": 47,
@@ -232,8 +232,8 @@
           "shortName": "DeletePackage"
         }
       },
-      "file": "artifactregistry_generated_artifactregistry_v1beta2_artifact_registry_delete_package_sync.py",
-      "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_DeletePackage_sync",
+      "file": "artifactregistry_v1beta2_generated_artifact_registry_delete_package_sync.py",
+      "regionTag": "artifactregistry_v1beta2_generated_ArtifactRegistry_DeletePackage_sync",
       "segments": [
         {
           "end": 47,
@@ -277,8 +277,8 @@
           "shortName": "DeleteRepository"
         }
       },
-      "file": "artifactregistry_generated_artifactregistry_v1beta2_artifact_registry_delete_repository_async.py",
-      "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_DeleteRepository_async",
+      "file": "artifactregistry_v1beta2_generated_artifact_registry_delete_repository_async.py",
+      "regionTag": "artifactregistry_v1beta2_generated_ArtifactRegistry_DeleteRepository_async",
       "segments": [
         {
           "end": 48,
@@ -321,8 +321,8 @@
           "shortName": "DeleteRepository"
         }
       },
-      "file": "artifactregistry_generated_artifactregistry_v1beta2_artifact_registry_delete_repository_sync.py",
-      "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_DeleteRepository_sync",
+      "file": "artifactregistry_v1beta2_generated_artifact_registry_delete_repository_sync.py",
+      "regionTag": "artifactregistry_v1beta2_generated_ArtifactRegistry_DeleteRepository_sync",
       "segments": [
         {
           "end": 48,
@@ -366,8 +366,8 @@
           "shortName": "DeleteTag"
         }
       },
-      "file": "artifactregistry_generated_artifactregistry_v1beta2_artifact_registry_delete_tag_async.py",
-      "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_DeleteTag_async",
+      "file": "artifactregistry_v1beta2_generated_artifact_registry_delete_tag_async.py",
+      "regionTag": "artifactregistry_v1beta2_generated_ArtifactRegistry_DeleteTag_async",
       "segments": [
         {
           "end": 41,
@@ -408,8 +408,8 @@
           "shortName": "DeleteTag"
         }
       },
-      "file": "artifactregistry_generated_artifactregistry_v1beta2_artifact_registry_delete_tag_sync.py",
-      "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_DeleteTag_sync",
+      "file": "artifactregistry_v1beta2_generated_artifact_registry_delete_tag_sync.py",
+      "regionTag": "artifactregistry_v1beta2_generated_ArtifactRegistry_DeleteTag_sync",
       "segments": [
         {
           "end": 41,
@@ -451,8 +451,8 @@
           "shortName": "DeleteVersion"
         }
       },
-      "file": "artifactregistry_generated_artifactregistry_v1beta2_artifact_registry_delete_version_async.py",
-      "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_DeleteVersion_async",
+      "file": "artifactregistry_v1beta2_generated_artifact_registry_delete_version_async.py",
+      "regionTag": "artifactregistry_v1beta2_generated_ArtifactRegistry_DeleteVersion_async",
       "segments": [
         {
           "end": 47,
@@ -495,8 +495,8 @@
           "shortName": "DeleteVersion"
         }
       },
-      "file": "artifactregistry_generated_artifactregistry_v1beta2_artifact_registry_delete_version_sync.py",
-      "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_DeleteVersion_sync",
+      "file": "artifactregistry_v1beta2_generated_artifact_registry_delete_version_sync.py",
+      "regionTag": "artifactregistry_v1beta2_generated_ArtifactRegistry_DeleteVersion_sync",
       "segments": [
         {
           "end": 47,
@@ -540,8 +540,8 @@
           "shortName": "GetFile"
         }
       },
-      "file": "artifactregistry_generated_artifactregistry_v1beta2_artifact_registry_get_file_async.py",
-      "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_GetFile_async",
+      "file": "artifactregistry_v1beta2_generated_artifact_registry_get_file_async.py",
+      "regionTag": "artifactregistry_v1beta2_generated_ArtifactRegistry_GetFile_async",
       "segments": [
         {
           "end": 43,
@@ -584,8 +584,8 @@
           "shortName": "GetFile"
         }
       },
-      "file": "artifactregistry_generated_artifactregistry_v1beta2_artifact_registry_get_file_sync.py",
-      "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_GetFile_sync",
+      "file": "artifactregistry_v1beta2_generated_artifact_registry_get_file_sync.py",
+      "regionTag": "artifactregistry_v1beta2_generated_ArtifactRegistry_GetFile_sync",
       "segments": [
         {
           "end": 43,
@@ -629,8 +629,8 @@
           "shortName": "GetIamPolicy"
         }
       },
-      "file": "artifactregistry_generated_artifactregistry_v1beta2_artifact_registry_get_iam_policy_async.py",
-      "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_GetIamPolicy_async",
+      "file": "artifactregistry_v1beta2_generated_artifact_registry_get_iam_policy_async.py",
+      "regionTag": "artifactregistry_v1beta2_generated_ArtifactRegistry_GetIamPolicy_async",
       "segments": [
         {
           "end": 44,
@@ -673,8 +673,8 @@
           "shortName": "GetIamPolicy"
         }
       },
-      "file": "artifactregistry_generated_artifactregistry_v1beta2_artifact_registry_get_iam_policy_sync.py",
-      "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_GetIamPolicy_sync",
+      "file": "artifactregistry_v1beta2_generated_artifact_registry_get_iam_policy_sync.py",
+      "regionTag": "artifactregistry_v1beta2_generated_ArtifactRegistry_GetIamPolicy_sync",
       "segments": [
         {
           "end": 44,
@@ -718,8 +718,8 @@
           "shortName": "GetPackage"
         }
       },
-      "file": "artifactregistry_generated_artifactregistry_v1beta2_artifact_registry_get_package_async.py",
-      "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_GetPackage_async",
+      "file": "artifactregistry_v1beta2_generated_artifact_registry_get_package_async.py",
+      "regionTag": "artifactregistry_v1beta2_generated_ArtifactRegistry_GetPackage_async",
       "segments": [
         {
           "end": 43,
@@ -762,8 +762,8 @@
           "shortName": "GetPackage"
         }
       },
-      "file": "artifactregistry_generated_artifactregistry_v1beta2_artifact_registry_get_package_sync.py",
-      "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_GetPackage_sync",
+      "file": "artifactregistry_v1beta2_generated_artifact_registry_get_package_sync.py",
+      "regionTag": "artifactregistry_v1beta2_generated_ArtifactRegistry_GetPackage_sync",
       "segments": [
         {
           "end": 43,
@@ -807,8 +807,8 @@
           "shortName": "GetProjectSettings"
         }
       },
-      "file": "artifactregistry_generated_artifactregistry_v1beta2_artifact_registry_get_project_settings_async.py",
-      "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_GetProjectSettings_async",
+      "file": "artifactregistry_v1beta2_generated_artifact_registry_get_project_settings_async.py",
+      "regionTag": "artifactregistry_v1beta2_generated_ArtifactRegistry_GetProjectSettings_async",
       "segments": [
         {
           "end": 44,
@@ -851,8 +851,8 @@
           "shortName": "GetProjectSettings"
         }
       },
-      "file": "artifactregistry_generated_artifactregistry_v1beta2_artifact_registry_get_project_settings_sync.py",
-      "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_GetProjectSettings_sync",
+      "file": "artifactregistry_v1beta2_generated_artifact_registry_get_project_settings_sync.py",
+      "regionTag": "artifactregistry_v1beta2_generated_ArtifactRegistry_GetProjectSettings_sync",
       "segments": [
         {
           "end": 44,
@@ -896,8 +896,8 @@
           "shortName": "GetRepository"
         }
       },
-      "file": "artifactregistry_generated_artifactregistry_v1beta2_artifact_registry_get_repository_async.py",
-      "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_GetRepository_async",
+      "file": "artifactregistry_v1beta2_generated_artifact_registry_get_repository_async.py",
+      "regionTag": "artifactregistry_v1beta2_generated_ArtifactRegistry_GetRepository_async",
       "segments": [
         {
           "end": 44,
@@ -940,8 +940,8 @@
           "shortName": "GetRepository"
         }
       },
-      "file": "artifactregistry_generated_artifactregistry_v1beta2_artifact_registry_get_repository_sync.py",
-      "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_GetRepository_sync",
+      "file": "artifactregistry_v1beta2_generated_artifact_registry_get_repository_sync.py",
+      "regionTag": "artifactregistry_v1beta2_generated_ArtifactRegistry_GetRepository_sync",
       "segments": [
         {
           "end": 44,
@@ -985,8 +985,8 @@
           "shortName": "GetTag"
         }
       },
-      "file": "artifactregistry_generated_artifactregistry_v1beta2_artifact_registry_get_tag_async.py",
-      "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_GetTag_async",
+      "file": "artifactregistry_v1beta2_generated_artifact_registry_get_tag_async.py",
+      "regionTag": "artifactregistry_v1beta2_generated_ArtifactRegistry_GetTag_async",
       "segments": [
         {
           "end": 43,
@@ -1029,8 +1029,8 @@
           "shortName": "GetTag"
         }
       },
-      "file": "artifactregistry_generated_artifactregistry_v1beta2_artifact_registry_get_tag_sync.py",
-      "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_GetTag_sync",
+      "file": "artifactregistry_v1beta2_generated_artifact_registry_get_tag_sync.py",
+      "regionTag": "artifactregistry_v1beta2_generated_ArtifactRegistry_GetTag_sync",
       "segments": [
         {
           "end": 43,
@@ -1074,8 +1074,8 @@
           "shortName": "GetVersion"
         }
       },
-      "file": "artifactregistry_generated_artifactregistry_v1beta2_artifact_registry_get_version_async.py",
-      "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_GetVersion_async",
+      "file": "artifactregistry_v1beta2_generated_artifact_registry_get_version_async.py",
+      "regionTag": "artifactregistry_v1beta2_generated_ArtifactRegistry_GetVersion_async",
       "segments": [
         {
           "end": 43,
@@ -1118,8 +1118,8 @@
           "shortName": "GetVersion"
         }
       },
-      "file": "artifactregistry_generated_artifactregistry_v1beta2_artifact_registry_get_version_sync.py",
-      "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_GetVersion_sync",
+      "file": "artifactregistry_v1beta2_generated_artifact_registry_get_version_sync.py",
+      "regionTag": "artifactregistry_v1beta2_generated_ArtifactRegistry_GetVersion_sync",
       "segments": [
         {
           "end": 43,
@@ -1163,8 +1163,8 @@
           "shortName": "ImportAptArtifacts"
         }
       },
-      "file": "artifactregistry_generated_artifactregistry_v1beta2_artifact_registry_import_apt_artifacts_async.py",
-      "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_ImportAptArtifacts_async",
+      "file": "artifactregistry_v1beta2_generated_artifact_registry_import_apt_artifacts_async.py",
+      "regionTag": "artifactregistry_v1beta2_generated_ArtifactRegistry_ImportAptArtifacts_async",
       "segments": [
         {
           "end": 47,
@@ -1207,8 +1207,8 @@
           "shortName": "ImportAptArtifacts"
         }
       },
-      "file": "artifactregistry_generated_artifactregistry_v1beta2_artifact_registry_import_apt_artifacts_sync.py",
-      "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_ImportAptArtifacts_sync",
+      "file": "artifactregistry_v1beta2_generated_artifact_registry_import_apt_artifacts_sync.py",
+      "regionTag": "artifactregistry_v1beta2_generated_ArtifactRegistry_ImportAptArtifacts_sync",
       "segments": [
         {
           "end": 47,
@@ -1252,8 +1252,8 @@
           "shortName": "ImportYumArtifacts"
         }
       },
-      "file": "artifactregistry_generated_artifactregistry_v1beta2_artifact_registry_import_yum_artifacts_async.py",
-      "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_ImportYumArtifacts_async",
+      "file": "artifactregistry_v1beta2_generated_artifact_registry_import_yum_artifacts_async.py",
+      "regionTag": "artifactregistry_v1beta2_generated_ArtifactRegistry_ImportYumArtifacts_async",
       "segments": [
         {
           "end": 47,
@@ -1296,8 +1296,8 @@
           "shortName": "ImportYumArtifacts"
         }
       },
-      "file": "artifactregistry_generated_artifactregistry_v1beta2_artifact_registry_import_yum_artifacts_sync.py",
-      "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_ImportYumArtifacts_sync",
+      "file": "artifactregistry_v1beta2_generated_artifact_registry_import_yum_artifacts_sync.py",
+      "regionTag": "artifactregistry_v1beta2_generated_ArtifactRegistry_ImportYumArtifacts_sync",
       "segments": [
         {
           "end": 47,
@@ -1341,8 +1341,8 @@
           "shortName": "ListFiles"
         }
       },
-      "file": "artifactregistry_generated_artifactregistry_v1beta2_artifact_registry_list_files_async.py",
-      "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_ListFiles_async",
+      "file": "artifactregistry_v1beta2_generated_artifact_registry_list_files_async.py",
+      "regionTag": "artifactregistry_v1beta2_generated_ArtifactRegistry_ListFiles_async",
       "segments": [
         {
           "end": 44,
@@ -1385,8 +1385,8 @@
           "shortName": "ListFiles"
         }
       },
-      "file": "artifactregistry_generated_artifactregistry_v1beta2_artifact_registry_list_files_sync.py",
-      "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_ListFiles_sync",
+      "file": "artifactregistry_v1beta2_generated_artifact_registry_list_files_sync.py",
+      "regionTag": "artifactregistry_v1beta2_generated_ArtifactRegistry_ListFiles_sync",
       "segments": [
         {
           "end": 44,
@@ -1430,8 +1430,8 @@
           "shortName": "ListPackages"
         }
       },
-      "file": "artifactregistry_generated_artifactregistry_v1beta2_artifact_registry_list_packages_async.py",
-      "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_ListPackages_async",
+      "file": "artifactregistry_v1beta2_generated_artifact_registry_list_packages_async.py",
+      "regionTag": "artifactregistry_v1beta2_generated_ArtifactRegistry_ListPackages_async",
       "segments": [
         {
           "end": 44,
@@ -1474,8 +1474,8 @@
           "shortName": "ListPackages"
         }
       },
-      "file": "artifactregistry_generated_artifactregistry_v1beta2_artifact_registry_list_packages_sync.py",
-      "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_ListPackages_sync",
+      "file": "artifactregistry_v1beta2_generated_artifact_registry_list_packages_sync.py",
+      "regionTag": "artifactregistry_v1beta2_generated_ArtifactRegistry_ListPackages_sync",
       "segments": [
         {
           "end": 44,
@@ -1519,8 +1519,8 @@
           "shortName": "ListRepositories"
         }
       },
-      "file": "artifactregistry_generated_artifactregistry_v1beta2_artifact_registry_list_repositories_async.py",
-      "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_ListRepositories_async",
+      "file": "artifactregistry_v1beta2_generated_artifact_registry_list_repositories_async.py",
+      "regionTag": "artifactregistry_v1beta2_generated_ArtifactRegistry_ListRepositories_async",
       "segments": [
         {
           "end": 45,
@@ -1563,8 +1563,8 @@
           "shortName": "ListRepositories"
         }
       },
-      "file": "artifactregistry_generated_artifactregistry_v1beta2_artifact_registry_list_repositories_sync.py",
-      "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_ListRepositories_sync",
+      "file": "artifactregistry_v1beta2_generated_artifact_registry_list_repositories_sync.py",
+      "regionTag": "artifactregistry_v1beta2_generated_ArtifactRegistry_ListRepositories_sync",
       "segments": [
         {
           "end": 45,
@@ -1608,8 +1608,8 @@
           "shortName": "ListTags"
         }
       },
-      "file": "artifactregistry_generated_artifactregistry_v1beta2_artifact_registry_list_tags_async.py",
-      "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_ListTags_async",
+      "file": "artifactregistry_v1beta2_generated_artifact_registry_list_tags_async.py",
+      "regionTag": "artifactregistry_v1beta2_generated_ArtifactRegistry_ListTags_async",
       "segments": [
         {
           "end": 44,
@@ -1652,8 +1652,8 @@
           "shortName": "ListTags"
         }
       },
-      "file": "artifactregistry_generated_artifactregistry_v1beta2_artifact_registry_list_tags_sync.py",
-      "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_ListTags_sync",
+      "file": "artifactregistry_v1beta2_generated_artifact_registry_list_tags_sync.py",
+      "regionTag": "artifactregistry_v1beta2_generated_ArtifactRegistry_ListTags_sync",
       "segments": [
         {
           "end": 44,
@@ -1697,8 +1697,8 @@
           "shortName": "ListVersions"
         }
       },
-      "file": "artifactregistry_generated_artifactregistry_v1beta2_artifact_registry_list_versions_async.py",
-      "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_ListVersions_async",
+      "file": "artifactregistry_v1beta2_generated_artifact_registry_list_versions_async.py",
+      "regionTag": "artifactregistry_v1beta2_generated_ArtifactRegistry_ListVersions_async",
       "segments": [
         {
           "end": 44,
@@ -1741,8 +1741,8 @@
           "shortName": "ListVersions"
         }
       },
-      "file": "artifactregistry_generated_artifactregistry_v1beta2_artifact_registry_list_versions_sync.py",
-      "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_ListVersions_sync",
+      "file": "artifactregistry_v1beta2_generated_artifact_registry_list_versions_sync.py",
+      "regionTag": "artifactregistry_v1beta2_generated_ArtifactRegistry_ListVersions_sync",
       "segments": [
         {
           "end": 44,
@@ -1786,8 +1786,8 @@
           "shortName": "SetIamPolicy"
         }
       },
-      "file": "artifactregistry_generated_artifactregistry_v1beta2_artifact_registry_set_iam_policy_async.py",
-      "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_SetIamPolicy_async",
+      "file": "artifactregistry_v1beta2_generated_artifact_registry_set_iam_policy_async.py",
+      "regionTag": "artifactregistry_v1beta2_generated_ArtifactRegistry_SetIamPolicy_async",
       "segments": [
         {
           "end": 44,
@@ -1830,8 +1830,8 @@
           "shortName": "SetIamPolicy"
         }
       },
-      "file": "artifactregistry_generated_artifactregistry_v1beta2_artifact_registry_set_iam_policy_sync.py",
-      "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_SetIamPolicy_sync",
+      "file": "artifactregistry_v1beta2_generated_artifact_registry_set_iam_policy_sync.py",
+      "regionTag": "artifactregistry_v1beta2_generated_ArtifactRegistry_SetIamPolicy_sync",
       "segments": [
         {
           "end": 44,
@@ -1875,8 +1875,8 @@
           "shortName": "TestIamPermissions"
         }
       },
-      "file": "artifactregistry_generated_artifactregistry_v1beta2_artifact_registry_test_iam_permissions_async.py",
-      "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_TestIamPermissions_async",
+      "file": "artifactregistry_v1beta2_generated_artifact_registry_test_iam_permissions_async.py",
+      "regionTag": "artifactregistry_v1beta2_generated_ArtifactRegistry_TestIamPermissions_async",
       "segments": [
         {
           "end": 45,
@@ -1919,8 +1919,8 @@
           "shortName": "TestIamPermissions"
         }
       },
-      "file": "artifactregistry_generated_artifactregistry_v1beta2_artifact_registry_test_iam_permissions_sync.py",
-      "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_TestIamPermissions_sync",
+      "file": "artifactregistry_v1beta2_generated_artifact_registry_test_iam_permissions_sync.py",
+      "regionTag": "artifactregistry_v1beta2_generated_ArtifactRegistry_TestIamPermissions_sync",
       "segments": [
         {
           "end": 45,
@@ -1964,8 +1964,8 @@
           "shortName": "UpdateProjectSettings"
         }
       },
-      "file": "artifactregistry_generated_artifactregistry_v1beta2_artifact_registry_update_project_settings_async.py",
-      "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_UpdateProjectSettings_async",
+      "file": "artifactregistry_v1beta2_generated_artifact_registry_update_project_settings_async.py",
+      "regionTag": "artifactregistry_v1beta2_generated_ArtifactRegistry_UpdateProjectSettings_async",
       "segments": [
         {
           "end": 43,
@@ -2008,8 +2008,8 @@
           "shortName": "UpdateProjectSettings"
         }
       },
-      "file": "artifactregistry_generated_artifactregistry_v1beta2_artifact_registry_update_project_settings_sync.py",
-      "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_UpdateProjectSettings_sync",
+      "file": "artifactregistry_v1beta2_generated_artifact_registry_update_project_settings_sync.py",
+      "regionTag": "artifactregistry_v1beta2_generated_ArtifactRegistry_UpdateProjectSettings_sync",
       "segments": [
         {
           "end": 43,
@@ -2053,8 +2053,8 @@
           "shortName": "UpdateRepository"
         }
       },
-      "file": "artifactregistry_generated_artifactregistry_v1beta2_artifact_registry_update_repository_async.py",
-      "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_UpdateRepository_async",
+      "file": "artifactregistry_v1beta2_generated_artifact_registry_update_repository_async.py",
+      "regionTag": "artifactregistry_v1beta2_generated_ArtifactRegistry_UpdateRepository_async",
       "segments": [
         {
           "end": 43,
@@ -2097,8 +2097,8 @@
           "shortName": "UpdateRepository"
         }
       },
-      "file": "artifactregistry_generated_artifactregistry_v1beta2_artifact_registry_update_repository_sync.py",
-      "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_UpdateRepository_sync",
+      "file": "artifactregistry_v1beta2_generated_artifact_registry_update_repository_sync.py",
+      "regionTag": "artifactregistry_v1beta2_generated_ArtifactRegistry_UpdateRepository_sync",
       "segments": [
         {
           "end": 43,
@@ -2142,8 +2142,8 @@
           "shortName": "UpdateTag"
         }
       },
-      "file": "artifactregistry_generated_artifactregistry_v1beta2_artifact_registry_update_tag_async.py",
-      "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_UpdateTag_async",
+      "file": "artifactregistry_v1beta2_generated_artifact_registry_update_tag_async.py",
+      "regionTag": "artifactregistry_v1beta2_generated_ArtifactRegistry_UpdateTag_async",
       "segments": [
         {
           "end": 43,
@@ -2186,8 +2186,8 @@
           "shortName": "UpdateTag"
         }
       },
-      "file": "artifactregistry_generated_artifactregistry_v1beta2_artifact_registry_update_tag_sync.py",
-      "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_UpdateTag_sync",
+      "file": "artifactregistry_v1beta2_generated_artifact_registry_update_tag_sync.py",
+      "regionTag": "artifactregistry_v1beta2_generated_ArtifactRegistry_UpdateTag_sync",
       "segments": [
         {
           "end": 43,

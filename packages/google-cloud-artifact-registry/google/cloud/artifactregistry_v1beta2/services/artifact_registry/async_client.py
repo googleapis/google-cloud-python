@@ -266,7 +266,7 @@ class ArtifactRegistryAsyncClient:
         with existing resources are ignored.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import artifactregistry_v1beta2
 
@@ -353,7 +353,7 @@ class ArtifactRegistryAsyncClient:
         with existing resources are ignored.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import artifactregistry_v1beta2
 
@@ -436,7 +436,7 @@ class ArtifactRegistryAsyncClient:
     ) -> pagers.ListRepositoriesAsyncPager:
         r"""Lists repositories.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import artifactregistry_v1beta2
 
@@ -545,7 +545,7 @@ class ArtifactRegistryAsyncClient:
     ) -> repository.Repository:
         r"""Gets a repository.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import artifactregistry_v1beta2
 
@@ -649,7 +649,7 @@ class ArtifactRegistryAsyncClient:
         response will be the created Repository.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import artifactregistry_v1beta2
 
@@ -773,7 +773,7 @@ class ArtifactRegistryAsyncClient:
     ) -> gda_repository.Repository:
         r"""Updates a repository.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import artifactregistry_v1beta2
 
@@ -877,7 +877,7 @@ class ArtifactRegistryAsyncClient:
         and will return a google.protobuf.Empty response.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import artifactregistry_v1beta2
 
@@ -1000,7 +1000,7 @@ class ArtifactRegistryAsyncClient:
     ) -> pagers.ListPackagesAsyncPager:
         r"""Lists packages.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import artifactregistry_v1beta2
 
@@ -1106,7 +1106,7 @@ class ArtifactRegistryAsyncClient:
     ) -> package.Package:
         r"""Gets a package.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import artifactregistry_v1beta2
 
@@ -1204,7 +1204,7 @@ class ArtifactRegistryAsyncClient:
         has been deleted.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import artifactregistry_v1beta2
 
@@ -1324,7 +1324,7 @@ class ArtifactRegistryAsyncClient:
     ) -> pagers.ListVersionsAsyncPager:
         r"""Lists versions.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import artifactregistry_v1beta2
 
@@ -1430,7 +1430,7 @@ class ArtifactRegistryAsyncClient:
     ) -> version.Version:
         r"""Gets a version
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import artifactregistry_v1beta2
 
@@ -1531,7 +1531,7 @@ class ArtifactRegistryAsyncClient:
         been deleted.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import artifactregistry_v1beta2
 
@@ -1651,7 +1651,7 @@ class ArtifactRegistryAsyncClient:
     ) -> pagers.ListFilesAsyncPager:
         r"""Lists files.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import artifactregistry_v1beta2
 
@@ -1757,7 +1757,7 @@ class ArtifactRegistryAsyncClient:
     ) -> file.File:
         r"""Gets a file.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import artifactregistry_v1beta2
 
@@ -1853,7 +1853,7 @@ class ArtifactRegistryAsyncClient:
     ) -> pagers.ListTagsAsyncPager:
         r"""Lists tags.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import artifactregistry_v1beta2
 
@@ -1959,7 +1959,7 @@ class ArtifactRegistryAsyncClient:
     ) -> tag.Tag:
         r"""Gets a tag.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import artifactregistry_v1beta2
 
@@ -2057,7 +2057,7 @@ class ArtifactRegistryAsyncClient:
     ) -> gda_tag.Tag:
         r"""Creates a tag.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import artifactregistry_v1beta2
 
@@ -2163,7 +2163,7 @@ class ArtifactRegistryAsyncClient:
     ) -> gda_tag.Tag:
         r"""Updates a tag.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import artifactregistry_v1beta2
 
@@ -2263,7 +2263,7 @@ class ArtifactRegistryAsyncClient:
     ) -> None:
         r"""Deletes a tag.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import artifactregistry_v1beta2
 
@@ -2347,7 +2347,7 @@ class ArtifactRegistryAsyncClient:
     ) -> policy_pb2.Policy:
         r"""Updates the IAM policy for a given resource.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import artifactregistry_v1beta2
 
@@ -2471,7 +2471,7 @@ class ArtifactRegistryAsyncClient:
     ) -> policy_pb2.Policy:
         r"""Gets the IAM policy for a given resource.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import artifactregistry_v1beta2
 
@@ -2606,7 +2606,7 @@ class ArtifactRegistryAsyncClient:
         resource.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import artifactregistry_v1beta2
 
@@ -2677,7 +2677,7 @@ class ArtifactRegistryAsyncClient:
     ) -> settings.ProjectSettings:
         r"""Retrieves the Settings for the Project.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import artifactregistry_v1beta2
 
@@ -2768,7 +2768,7 @@ class ArtifactRegistryAsyncClient:
     ) -> settings.ProjectSettings:
         r"""Updates the Settings for the Project.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import artifactregistry_v1beta2
 

@@ -446,8 +446,7 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
     ) -> pagers.ListDockerImagesPager:
         r"""Lists docker images.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import artifactregistry_v1
 
@@ -547,8 +546,7 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
     ) -> pagers.ListRepositoriesPager:
         r"""Lists repositories.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import artifactregistry_v1
 
@@ -648,8 +646,7 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
     ) -> repository.Repository:
         r"""Gets a repository.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import artifactregistry_v1
 

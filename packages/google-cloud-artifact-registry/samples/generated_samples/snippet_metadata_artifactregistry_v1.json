@@ -10,8 +10,8 @@
           "shortName": "GetRepository"
         }
       },
-      "file": "artifactregistry_generated_artifactregistry_v1_artifact_registry_get_repository_async.py",
-      "regionTag": "artifactregistry_generated_artifactregistry_v1_ArtifactRegistry_GetRepository_async",
+      "file": "artifactregistry_v1_generated_artifact_registry_get_repository_async.py",
+      "regionTag": "artifactregistry_v1_generated_ArtifactRegistry_GetRepository_async",
       "segments": [
         {
           "end": 44,
@@ -54,8 +54,8 @@
           "shortName": "GetRepository"
         }
       },
-      "file": "artifactregistry_generated_artifactregistry_v1_artifact_registry_get_repository_sync.py",
-      "regionTag": "artifactregistry_generated_artifactregistry_v1_ArtifactRegistry_GetRepository_sync",
+      "file": "artifactregistry_v1_generated_artifact_registry_get_repository_sync.py",
+      "regionTag": "artifactregistry_v1_generated_ArtifactRegistry_GetRepository_sync",
       "segments": [
         {
           "end": 44,
@@ -99,8 +99,8 @@
           "shortName": "ListDockerImages"
         }
       },
-      "file": "artifactregistry_generated_artifactregistry_v1_artifact_registry_list_docker_images_async.py",
-      "regionTag": "artifactregistry_generated_artifactregistry_v1_ArtifactRegistry_ListDockerImages_async",
+      "file": "artifactregistry_v1_generated_artifact_registry_list_docker_images_async.py",
+      "regionTag": "artifactregistry_v1_generated_ArtifactRegistry_ListDockerImages_async",
       "segments": [
         {
           "end": 45,
@@ -143,8 +143,8 @@
           "shortName": "ListDockerImages"
         }
       },
-      "file": "artifactregistry_generated_artifactregistry_v1_artifact_registry_list_docker_images_sync.py",
-      "regionTag": "artifactregistry_generated_artifactregistry_v1_ArtifactRegistry_ListDockerImages_sync",
+      "file": "artifactregistry_v1_generated_artifact_registry_list_docker_images_sync.py",
+      "regionTag": "artifactregistry_v1_generated_ArtifactRegistry_ListDockerImages_sync",
       "segments": [
         {
           "end": 45,
@@ -188,8 +188,8 @@
           "shortName": "ListRepositories"
         }
       },
-      "file": "artifactregistry_generated_artifactregistry_v1_artifact_registry_list_repositories_async.py",
-      "regionTag": "artifactregistry_generated_artifactregistry_v1_ArtifactRegistry_ListRepositories_async",
+      "file": "artifactregistry_v1_generated_artifact_registry_list_repositories_async.py",
+      "regionTag": "artifactregistry_v1_generated_ArtifactRegistry_ListRepositories_async",
       "segments": [
         {
           "end": 45,
@@ -232,8 +232,8 @@
           "shortName": "ListRepositories"
         }
       },
-      "file": "artifactregistry_generated_artifactregistry_v1_artifact_registry_list_repositories_sync.py",
-      "regionTag": "artifactregistry_generated_artifactregistry_v1_ArtifactRegistry_ListRepositories_sync",
+      "file": "artifactregistry_v1_generated_artifact_registry_list_repositories_sync.py",
+      "regionTag": "artifactregistry_v1_generated_ArtifactRegistry_ListRepositories_sync",
       "segments": [
         {
           "end": 45,
