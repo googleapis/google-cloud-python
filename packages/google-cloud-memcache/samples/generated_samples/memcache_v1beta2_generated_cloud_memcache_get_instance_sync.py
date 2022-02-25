@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ApplySoftwareUpdate
+# Snippet for GetInstance
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,27 +23,23 @@
 #   python3 -m pip install google-cloud-memcache
 
 
-# [START memcache_generated_memcache_v1beta2_CloudMemcache_ApplySoftwareUpdate_async]
+# [START memcache_v1beta2_generated_CloudMemcache_GetInstance_sync]
 from google.cloud import memcache_v1beta2
 
 
-async def sample_apply_software_update():
+def sample_get_instance():
     # Create a client
-    client = memcache_v1beta2.CloudMemcacheAsyncClient()
+    client = memcache_v1beta2.CloudMemcacheClient()
 
     # Initialize request argument(s)
-    request = memcache_v1beta2.ApplySoftwareUpdateRequest(
-        instance="instance_value",
+    request = memcache_v1beta2.GetInstanceRequest(
+        name="name_value",
     )
 
     # Make the request
-    operation = client.apply_software_update(request=request)
-
-    print("Waiting for operation to complete...")
-
-    response = await operation.result()
+    response = client.get_instance(request=request)
 
     # Handle the response
     print(response)
 
-# [END memcache_generated_memcache_v1beta2_CloudMemcache_ApplySoftwareUpdate_async]
+# [END memcache_v1beta2_generated_CloudMemcache_GetInstance_sync]

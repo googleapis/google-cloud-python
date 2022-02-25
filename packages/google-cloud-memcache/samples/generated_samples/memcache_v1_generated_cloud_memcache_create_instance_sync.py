@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ListInstances
+# Snippet for CreateInstance
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,24 +23,35 @@
 #   python3 -m pip install google-cloud-memcache
 
 
-# [START memcache_generated_memcache_v1_CloudMemcache_ListInstances_sync]
+# [START memcache_v1_generated_CloudMemcache_CreateInstance_sync]
 from google.cloud import memcache_v1
 
 
-def sample_list_instances():
+def sample_create_instance():
     # Create a client
     client = memcache_v1.CloudMemcacheClient()
 
     # Initialize request argument(s)
-    request = memcache_v1.ListInstancesRequest(
+    instance = memcache_v1.Instance()
+    instance.name = "name_value"
+    instance.node_count = 1070
+    instance.node_config.cpu_count = 976
+    instance.node_config.memory_size_mb = 1505
+
+    request = memcache_v1.CreateInstanceRequest(
         parent="parent_value",
+        instance_id="instance_id_value",
+        instance=instance,
     )
 
     # Make the request
-    page_result = client.list_instances(request=request)
+    operation = client.create_instance(request=request)
+
+    print("Waiting for operation to complete...")
+
+    response = operation.result()
 
     # Handle the response
-    for response in page_result:
-        print(response)
+    print(response)
 
-# [END memcache_generated_memcache_v1_CloudMemcache_ListInstances_sync]
+# [END memcache_v1_generated_CloudMemcache_CreateInstance_sync]

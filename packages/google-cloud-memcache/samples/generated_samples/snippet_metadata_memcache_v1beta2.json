@@ -10,8 +10,8 @@
           "shortName": "ApplyParameters"
         }
       },
-      "file": "memcache_generated_memcache_v1beta2_cloud_memcache_apply_parameters_async.py",
-      "regionTag": "memcache_generated_memcache_v1beta2_CloudMemcache_ApplyParameters_async",
+      "file": "memcache_v1beta2_generated_cloud_memcache_apply_parameters_async.py",
+      "regionTag": "memcache_v1beta2_generated_CloudMemcache_ApplyParameters_async",
       "segments": [
         {
           "end": 48,
@@ -54,8 +54,8 @@
           "shortName": "ApplyParameters"
         }
       },
-      "file": "memcache_generated_memcache_v1beta2_cloud_memcache_apply_parameters_sync.py",
-      "regionTag": "memcache_generated_memcache_v1beta2_CloudMemcache_ApplyParameters_sync",
+      "file": "memcache_v1beta2_generated_cloud_memcache_apply_parameters_sync.py",
+      "regionTag": "memcache_v1beta2_generated_CloudMemcache_ApplyParameters_sync",
       "segments": [
         {
           "end": 48,
@@ -99,8 +99,8 @@
           "shortName": "ApplySoftwareUpdate"
         }
       },
-      "file": "memcache_generated_memcache_v1beta2_cloud_memcache_apply_software_update_async.py",
-      "regionTag": "memcache_generated_memcache_v1beta2_CloudMemcache_ApplySoftwareUpdate_async",
+      "file": "memcache_v1beta2_generated_cloud_memcache_apply_software_update_async.py",
+      "regionTag": "memcache_v1beta2_generated_CloudMemcache_ApplySoftwareUpdate_async",
       "segments": [
         {
           "end": 48,
@@ -143,8 +143,8 @@
           "shortName": "ApplySoftwareUpdate"
         }
       },
-      "file": "memcache_generated_memcache_v1beta2_cloud_memcache_apply_software_update_sync.py",
-      "regionTag": "memcache_generated_memcache_v1beta2_CloudMemcache_ApplySoftwareUpdate_sync",
+      "file": "memcache_v1beta2_generated_cloud_memcache_apply_software_update_sync.py",
+      "regionTag": "memcache_v1beta2_generated_CloudMemcache_ApplySoftwareUpdate_sync",
       "segments": [
         {
           "end": 48,
@@ -188,8 +188,8 @@
           "shortName": "CreateInstance"
         }
       },
-      "file": "memcache_generated_memcache_v1beta2_cloud_memcache_create_instance_async.py",
-      "regionTag": "memcache_generated_memcache_v1beta2_CloudMemcache_CreateInstance_async",
+      "file": "memcache_v1beta2_generated_cloud_memcache_create_instance_async.py",
+      "regionTag": "memcache_v1beta2_generated_CloudMemcache_CreateInstance_async",
       "segments": [
         {
           "end": 56,
@@ -232,8 +232,8 @@
           "shortName": "CreateInstance"
         }
       },
-      "file": "memcache_generated_memcache_v1beta2_cloud_memcache_create_instance_sync.py",
-      "regionTag": "memcache_generated_memcache_v1beta2_CloudMemcache_CreateInstance_sync",
+      "file": "memcache_v1beta2_generated_cloud_memcache_create_instance_sync.py",
+      "regionTag": "memcache_v1beta2_generated_CloudMemcache_CreateInstance_sync",
       "segments": [
         {
           "end": 56,
@@ -277,8 +277,8 @@
           "shortName": "DeleteInstance"
         }
       },
-      "file": "memcache_generated_memcache_v1beta2_cloud_memcache_delete_instance_async.py",
-      "regionTag": "memcache_generated_memcache_v1beta2_CloudMemcache_DeleteInstance_async",
+      "file": "memcache_v1beta2_generated_cloud_memcache_delete_instance_async.py",
+      "regionTag": "memcache_v1beta2_generated_CloudMemcache_DeleteInstance_async",
       "segments": [
         {
           "end": 48,
@@ -321,8 +321,8 @@
           "shortName": "DeleteInstance"
         }
       },
-      "file": "memcache_generated_memcache_v1beta2_cloud_memcache_delete_instance_sync.py",
-      "regionTag": "memcache_generated_memcache_v1beta2_CloudMemcache_DeleteInstance_sync",
+      "file": "memcache_v1beta2_generated_cloud_memcache_delete_instance_sync.py",
+      "regionTag": "memcache_v1beta2_generated_CloudMemcache_DeleteInstance_sync",
       "segments": [
         {
           "end": 48,
@@ -366,8 +366,8 @@
           "shortName": "GetInstance"
         }
       },
-      "file": "memcache_generated_memcache_v1beta2_cloud_memcache_get_instance_async.py",
-      "regionTag": "memcache_generated_memcache_v1beta2_CloudMemcache_GetInstance_async",
+      "file": "memcache_v1beta2_generated_cloud_memcache_get_instance_async.py",
+      "regionTag": "memcache_v1beta2_generated_CloudMemcache_GetInstance_async",
       "segments": [
         {
           "end": 44,
@@ -410,8 +410,8 @@
           "shortName": "GetInstance"
         }
       },
-      "file": "memcache_generated_memcache_v1beta2_cloud_memcache_get_instance_sync.py",
-      "regionTag": "memcache_generated_memcache_v1beta2_CloudMemcache_GetInstance_sync",
+      "file": "memcache_v1beta2_generated_cloud_memcache_get_instance_sync.py",
+      "regionTag": "memcache_v1beta2_generated_CloudMemcache_GetInstance_sync",
       "segments": [
         {
           "end": 44,
@@ -455,8 +455,8 @@
           "shortName": "ListInstances"
         }
       },
-      "file": "memcache_generated_memcache_v1beta2_cloud_memcache_list_instances_async.py",
-      "regionTag": "memcache_generated_memcache_v1beta2_CloudMemcache_ListInstances_async",
+      "file": "memcache_v1beta2_generated_cloud_memcache_list_instances_async.py",
+      "regionTag": "memcache_v1beta2_generated_CloudMemcache_ListInstances_async",
       "segments": [
         {
           "end": 45,
@@ -499,8 +499,8 @@
           "shortName": "ListInstances"
         }
       },
-      "file": "memcache_generated_memcache_v1beta2_cloud_memcache_list_instances_sync.py",
-      "regionTag": "memcache_generated_memcache_v1beta2_CloudMemcache_ListInstances_sync",
+      "file": "memcache_v1beta2_generated_cloud_memcache_list_instances_sync.py",
+      "regionTag": "memcache_v1beta2_generated_CloudMemcache_ListInstances_sync",
       "segments": [
         {
           "end": 45,
@@ -544,8 +544,8 @@
           "shortName": "UpdateInstance"
         }
       },
-      "file": "memcache_generated_memcache_v1beta2_cloud_memcache_update_instance_async.py",
-      "regionTag": "memcache_generated_memcache_v1beta2_CloudMemcache_UpdateInstance_async",
+      "file": "memcache_v1beta2_generated_cloud_memcache_update_instance_async.py",
+      "regionTag": "memcache_v1beta2_generated_CloudMemcache_UpdateInstance_async",
       "segments": [
         {
           "end": 54,
@@ -588,8 +588,8 @@
           "shortName": "UpdateInstance"
         }
       },
-      "file": "memcache_generated_memcache_v1beta2_cloud_memcache_update_instance_sync.py",
-      "regionTag": "memcache_generated_memcache_v1beta2_CloudMemcache_UpdateInstance_sync",
+      "file": "memcache_v1beta2_generated_cloud_memcache_update_instance_sync.py",
+      "regionTag": "memcache_v1beta2_generated_CloudMemcache_UpdateInstance_sync",
       "segments": [
         {
           "end": 54,
@@ -633,8 +633,8 @@
           "shortName": "UpdateParameters"
         }
       },
-      "file": "memcache_generated_memcache_v1beta2_cloud_memcache_update_parameters_async.py",
-      "regionTag": "memcache_generated_memcache_v1beta2_CloudMemcache_UpdateParameters_async",
+      "file": "memcache_v1beta2_generated_cloud_memcache_update_parameters_async.py",
+      "regionTag": "memcache_v1beta2_generated_CloudMemcache_UpdateParameters_async",
       "segments": [
         {
           "end": 48,
@@ -677,8 +677,8 @@
           "shortName": "UpdateParameters"
         }
       },
-      "file": "memcache_generated_memcache_v1beta2_cloud_memcache_update_parameters_sync.py",
-      "regionTag": "memcache_generated_memcache_v1beta2_CloudMemcache_UpdateParameters_sync",
+      "file": "memcache_v1beta2_generated_cloud_memcache_update_parameters_sync.py",
+      "regionTag": "memcache_v1beta2_generated_CloudMemcache_UpdateParameters_sync",
       "segments": [
         {
           "end": 48,

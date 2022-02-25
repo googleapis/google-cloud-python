@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for DeleteInstance
+# Snippet for UpdateParameters
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,27 +23,27 @@
 #   python3 -m pip install google-cloud-memcache
 
 
-# [START memcache_generated_memcache_v1_CloudMemcache_DeleteInstance_sync]
+# [START memcache_v1_generated_CloudMemcache_UpdateParameters_async]
 from google.cloud import memcache_v1
 
 
-def sample_delete_instance():
+async def sample_update_parameters():
     # Create a client
-    client = memcache_v1.CloudMemcacheClient()
+    client = memcache_v1.CloudMemcacheAsyncClient()
 
     # Initialize request argument(s)
-    request = memcache_v1.DeleteInstanceRequest(
+    request = memcache_v1.UpdateParametersRequest(
         name="name_value",
     )
 
     # Make the request
-    operation = client.delete_instance(request=request)
+    operation = client.update_parameters(request=request)
 
     print("Waiting for operation to complete...")
 
-    response = operation.result()
+    response = await operation.result()
 
     # Handle the response
     print(response)
 
-# [END memcache_generated_memcache_v1_CloudMemcache_DeleteInstance_sync]
+# [END memcache_v1_generated_CloudMemcache_UpdateParameters_async]

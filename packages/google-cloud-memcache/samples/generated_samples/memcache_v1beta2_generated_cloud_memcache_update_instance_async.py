@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ApplyParameters
+# Snippet for UpdateInstance
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,27 +23,33 @@
 #   python3 -m pip install google-cloud-memcache
 
 
-# [START memcache_generated_memcache_v1beta2_CloudMemcache_ApplyParameters_sync]
+# [START memcache_v1beta2_generated_CloudMemcache_UpdateInstance_async]
 from google.cloud import memcache_v1beta2
 
 
-def sample_apply_parameters():
+async def sample_update_instance():
     # Create a client
-    client = memcache_v1beta2.CloudMemcacheClient()
+    client = memcache_v1beta2.CloudMemcacheAsyncClient()
 
     # Initialize request argument(s)
-    request = memcache_v1beta2.ApplyParametersRequest(
-        name="name_value",
+    resource = memcache_v1beta2.Instance()
+    resource.name = "name_value"
+    resource.node_count = 1070
+    resource.node_config.cpu_count = 976
+    resource.node_config.memory_size_mb = 1505
+
+    request = memcache_v1beta2.UpdateInstanceRequest(
+        resource=resource,
     )
 
     # Make the request
-    operation = client.apply_parameters(request=request)
+    operation = client.update_instance(request=request)
 
     print("Waiting for operation to complete...")
 
-    response = operation.result()
+    response = await operation.result()
 
     # Handle the response
     print(response)
 
-# [END memcache_generated_memcache_v1beta2_CloudMemcache_ApplyParameters_sync]
+# [END memcache_v1beta2_generated_CloudMemcache_UpdateInstance_async]

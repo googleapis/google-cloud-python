@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ListInstances
+# Snippet for GetInstance
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,24 +23,23 @@
 #   python3 -m pip install google-cloud-memcache
 
 
-# [START memcache_generated_memcache_v1beta2_CloudMemcache_ListInstances_async]
+# [START memcache_v1beta2_generated_CloudMemcache_GetInstance_async]
 from google.cloud import memcache_v1beta2
 
 
-async def sample_list_instances():
+async def sample_get_instance():
     # Create a client
     client = memcache_v1beta2.CloudMemcacheAsyncClient()
 
     # Initialize request argument(s)
-    request = memcache_v1beta2.ListInstancesRequest(
-        parent="parent_value",
+    request = memcache_v1beta2.GetInstanceRequest(
+        name="name_value",
     )
 
     # Make the request
-    page_result = client.list_instances(request=request)
+    response = await client.get_instance(request=request)
 
     # Handle the response
-    async for response in page_result:
-        print(response)
+    print(response)
 
-# [END memcache_generated_memcache_v1beta2_CloudMemcache_ListInstances_async]
+# [END memcache_v1beta2_generated_CloudMemcache_GetInstance_async]

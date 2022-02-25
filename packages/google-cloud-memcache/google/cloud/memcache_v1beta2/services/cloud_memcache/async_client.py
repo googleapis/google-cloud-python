@@ -237,7 +237,7 @@ class CloudMemcacheAsyncClient:
     ) -> pagers.ListInstancesAsyncPager:
         r"""Lists Instances in a given location.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import memcache_v1beta2
 
@@ -339,7 +339,7 @@ class CloudMemcacheAsyncClient:
     ) -> cloud_memcache.Instance:
         r"""Gets details of a single Instance.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import memcache_v1beta2
 
@@ -431,7 +431,7 @@ class CloudMemcacheAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Creates a new Instance in a given location.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import memcache_v1beta2
 
@@ -575,7 +575,7 @@ class CloudMemcacheAsyncClient:
         location.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import memcache_v1beta2
 
@@ -704,7 +704,7 @@ class CloudMemcacheAsyncClient:
         of the Memcached instance.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import memcache_v1beta2
 
@@ -826,7 +826,7 @@ class CloudMemcacheAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Deletes a single Instance.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import memcache_v1beta2
 
@@ -948,7 +948,7 @@ class CloudMemcacheAsyncClient:
         Memcached Instance.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import memcache_v1beta2
 
@@ -1078,7 +1078,7 @@ class CloudMemcacheAsyncClient:
         Instance.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import memcache_v1beta2
 

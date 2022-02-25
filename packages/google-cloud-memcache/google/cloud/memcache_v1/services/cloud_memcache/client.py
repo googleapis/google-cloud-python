@@ -432,8 +432,7 @@ class CloudMemcacheClient(metaclass=CloudMemcacheClientMeta):
     ) -> pagers.ListInstancesPager:
         r"""Lists Instances in a given location.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import memcache_v1
 
@@ -535,8 +534,7 @@ class CloudMemcacheClient(metaclass=CloudMemcacheClientMeta):
     ) -> cloud_memcache.Instance:
         r"""Gets details of a single Instance.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import memcache_v1
 
@@ -628,8 +626,7 @@ class CloudMemcacheClient(metaclass=CloudMemcacheClientMeta):
     ) -> operation.Operation:
         r"""Creates a new Instance in a given location.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import memcache_v1
 
@@ -772,8 +769,7 @@ class CloudMemcacheClient(metaclass=CloudMemcacheClientMeta):
         location.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import memcache_v1
 
@@ -901,8 +897,7 @@ class CloudMemcacheClient(metaclass=CloudMemcacheClientMeta):
         apply the parameters to nodes of the Memcached Instance.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import memcache_v1
 
@@ -1023,8 +1018,7 @@ class CloudMemcacheClient(metaclass=CloudMemcacheClientMeta):
     ) -> operation.Operation:
         r"""Deletes a single Instance.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import memcache_v1
 
@@ -1146,8 +1140,7 @@ class CloudMemcacheClient(metaclass=CloudMemcacheClientMeta):
         parameters for the Memcached Instance.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import memcache_v1
 

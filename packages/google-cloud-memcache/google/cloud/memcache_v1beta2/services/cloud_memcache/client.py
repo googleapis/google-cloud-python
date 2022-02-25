@@ -432,8 +432,7 @@ class CloudMemcacheClient(metaclass=CloudMemcacheClientMeta):
     ) -> pagers.ListInstancesPager:
         r"""Lists Instances in a given location.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import memcache_v1beta2
 
@@ -535,8 +534,7 @@ class CloudMemcacheClient(metaclass=CloudMemcacheClientMeta):
     ) -> cloud_memcache.Instance:
         r"""Gets details of a single Instance.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import memcache_v1beta2
 
@@ -628,8 +626,7 @@ class CloudMemcacheClient(metaclass=CloudMemcacheClientMeta):
     ) -> operation.Operation:
         r"""Creates a new Instance in a given location.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import memcache_v1beta2
 
@@ -773,8 +770,7 @@ class CloudMemcacheClient(metaclass=CloudMemcacheClientMeta):
         location.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import memcache_v1beta2
 
@@ -903,8 +899,7 @@ class CloudMemcacheClient(metaclass=CloudMemcacheClientMeta):
         of the Memcached instance.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import memcache_v1beta2
 
@@ -1026,8 +1021,7 @@ class CloudMemcacheClient(metaclass=CloudMemcacheClientMeta):
     ) -> operation.Operation:
         r"""Deletes a single Instance.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import memcache_v1beta2
 
@@ -1149,8 +1143,7 @@ class CloudMemcacheClient(metaclass=CloudMemcacheClientMeta):
         Memcached Instance.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import memcache_v1beta2
 
@@ -1280,8 +1273,7 @@ class CloudMemcacheClient(metaclass=CloudMemcacheClientMeta):
         Instance.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import memcache_v1beta2
 

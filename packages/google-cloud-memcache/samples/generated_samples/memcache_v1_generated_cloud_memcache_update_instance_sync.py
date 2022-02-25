@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for CreateInstance
+# Snippet for UpdateInstance
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,35 +23,33 @@
 #   python3 -m pip install google-cloud-memcache
 
 
-# [START memcache_generated_memcache_v1beta2_CloudMemcache_CreateInstance_async]
-from google.cloud import memcache_v1beta2
+# [START memcache_v1_generated_CloudMemcache_UpdateInstance_sync]
+from google.cloud import memcache_v1
 
 
-async def sample_create_instance():
+def sample_update_instance():
     # Create a client
-    client = memcache_v1beta2.CloudMemcacheAsyncClient()
+    client = memcache_v1.CloudMemcacheClient()
 
     # Initialize request argument(s)
-    resource = memcache_v1beta2.Instance()
-    resource.name = "name_value"
-    resource.node_count = 1070
-    resource.node_config.cpu_count = 976
-    resource.node_config.memory_size_mb = 1505
+    instance = memcache_v1.Instance()
+    instance.name = "name_value"
+    instance.node_count = 1070
+    instance.node_config.cpu_count = 976
+    instance.node_config.memory_size_mb = 1505
 
-    request = memcache_v1beta2.CreateInstanceRequest(
-        parent="parent_value",
-        instance_id="instance_id_value",
-        resource=resource,
+    request = memcache_v1.UpdateInstanceRequest(
+        instance=instance,
     )
 
     # Make the request
-    operation = client.create_instance(request=request)
+    operation = client.update_instance(request=request)
 
     print("Waiting for operation to complete...")
 
-    response = await operation.result()
+    response = operation.result()
 
     # Handle the response
     print(response)
 
-# [END memcache_generated_memcache_v1beta2_CloudMemcache_CreateInstance_async]
+# [END memcache_v1_generated_CloudMemcache_UpdateInstance_sync]

@@ -23,16 +23,16 @@
 #   python3 -m pip install google-cloud-memcache
 
 
-# [START memcache_generated_memcache_v1beta2_CloudMemcache_DeleteInstance_sync]
-from google.cloud import memcache_v1beta2
+# [START memcache_v1_generated_CloudMemcache_DeleteInstance_async]
+from google.cloud import memcache_v1
 
 
-def sample_delete_instance():
+async def sample_delete_instance():
     # Create a client
-    client = memcache_v1beta2.CloudMemcacheClient()
+    client = memcache_v1.CloudMemcacheAsyncClient()
 
     # Initialize request argument(s)
-    request = memcache_v1beta2.DeleteInstanceRequest(
+    request = memcache_v1.DeleteInstanceRequest(
         name="name_value",
     )
 
@@ -41,9 +41,9 @@ def sample_delete_instance():
 
     print("Waiting for operation to complete...")
 
-    response = operation.result()
+    response = await operation.result()
 
     # Handle the response
     print(response)
 
-# [END memcache_generated_memcache_v1beta2_CloudMemcache_DeleteInstance_sync]
+# [END memcache_v1_generated_CloudMemcache_DeleteInstance_async]

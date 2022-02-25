@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ApplySoftwareUpdate
+# Snippet for DeleteInstance
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,21 +23,21 @@
 #   python3 -m pip install google-cloud-memcache
 
 
-# [START memcache_generated_memcache_v1beta2_CloudMemcache_ApplySoftwareUpdate_sync]
+# [START memcache_v1beta2_generated_CloudMemcache_DeleteInstance_sync]
 from google.cloud import memcache_v1beta2
 
 
-def sample_apply_software_update():
+def sample_delete_instance():
     # Create a client
     client = memcache_v1beta2.CloudMemcacheClient()
 
     # Initialize request argument(s)
-    request = memcache_v1beta2.ApplySoftwareUpdateRequest(
-        instance="instance_value",
+    request = memcache_v1beta2.DeleteInstanceRequest(
+        name="name_value",
     )
 
     # Make the request
-    operation = client.apply_software_update(request=request)
+    operation = client.delete_instance(request=request)
 
     print("Waiting for operation to complete...")
 
@@ -46,4 +46,4 @@ def sample_apply_software_update():
     # Handle the response
     print(response)
 
-# [END memcache_generated_memcache_v1beta2_CloudMemcache_ApplySoftwareUpdate_sync]
+# [END memcache_v1beta2_generated_CloudMemcache_DeleteInstance_sync]
