@@ -10,8 +10,8 @@
           "shortName": "CreateInstance"
         }
       },
-      "file": "redis_generated_redis_v1_cloud_redis_create_instance_async.py",
-      "regionTag": "redis_generated_redis_v1_CloudRedis_CreateInstance_async",
+      "file": "redis_v1_generated_cloud_redis_create_instance_async.py",
+      "regionTag": "redis_v1_generated_CloudRedis_CreateInstance_async",
       "segments": [
         {
           "end": 55,
@@ -54,8 +54,8 @@
           "shortName": "CreateInstance"
         }
       },
-      "file": "redis_generated_redis_v1_cloud_redis_create_instance_sync.py",
-      "regionTag": "redis_generated_redis_v1_CloudRedis_CreateInstance_sync",
+      "file": "redis_v1_generated_cloud_redis_create_instance_sync.py",
+      "regionTag": "redis_v1_generated_CloudRedis_CreateInstance_sync",
       "segments": [
         {
           "end": 55,
@@ -99,8 +99,8 @@
           "shortName": "DeleteInstance"
         }
       },
-      "file": "redis_generated_redis_v1_cloud_redis_delete_instance_async.py",
-      "regionTag": "redis_generated_redis_v1_CloudRedis_DeleteInstance_async",
+      "file": "redis_v1_generated_cloud_redis_delete_instance_async.py",
+      "regionTag": "redis_v1_generated_CloudRedis_DeleteInstance_async",
       "segments": [
         {
           "end": 48,
@@ -143,8 +143,8 @@
           "shortName": "DeleteInstance"
         }
       },
-      "file": "redis_generated_redis_v1_cloud_redis_delete_instance_sync.py",
-      "regionTag": "redis_generated_redis_v1_CloudRedis_DeleteInstance_sync",
+      "file": "redis_v1_generated_cloud_redis_delete_instance_sync.py",
+      "regionTag": "redis_v1_generated_CloudRedis_DeleteInstance_sync",
       "segments": [
         {
           "end": 48,
@@ -188,8 +188,8 @@
           "shortName": "ExportInstance"
         }
       },
-      "file": "redis_generated_redis_v1_cloud_redis_export_instance_async.py",
-      "regionTag": "redis_generated_redis_v1_CloudRedis_ExportInstance_async",
+      "file": "redis_v1_generated_cloud_redis_export_instance_async.py",
+      "regionTag": "redis_v1_generated_CloudRedis_ExportInstance_async",
       "segments": [
         {
           "end": 52,
@@ -232,8 +232,8 @@
           "shortName": "ExportInstance"
         }
       },
-      "file": "redis_generated_redis_v1_cloud_redis_export_instance_sync.py",
-      "regionTag": "redis_generated_redis_v1_CloudRedis_ExportInstance_sync",
+      "file": "redis_v1_generated_cloud_redis_export_instance_sync.py",
+      "regionTag": "redis_v1_generated_CloudRedis_ExportInstance_sync",
       "segments": [
         {
           "end": 52,
@@ -277,8 +277,8 @@
           "shortName": "FailoverInstance"
         }
       },
-      "file": "redis_generated_redis_v1_cloud_redis_failover_instance_async.py",
-      "regionTag": "redis_generated_redis_v1_CloudRedis_FailoverInstance_async",
+      "file": "redis_v1_generated_cloud_redis_failover_instance_async.py",
+      "regionTag": "redis_v1_generated_CloudRedis_FailoverInstance_async",
       "segments": [
         {
           "end": 48,
@@ -321,8 +321,8 @@
           "shortName": "FailoverInstance"
         }
       },
-      "file": "redis_generated_redis_v1_cloud_redis_failover_instance_sync.py",
-      "regionTag": "redis_generated_redis_v1_CloudRedis_FailoverInstance_sync",
+      "file": "redis_v1_generated_cloud_redis_failover_instance_sync.py",
+      "regionTag": "redis_v1_generated_CloudRedis_FailoverInstance_sync",
       "segments": [
         {
           "end": 48,
@@ -366,8 +366,8 @@
           "shortName": "GetInstance"
         }
       },
-      "file": "redis_generated_redis_v1_cloud_redis_get_instance_async.py",
-      "regionTag": "redis_generated_redis_v1_CloudRedis_GetInstance_async",
+      "file": "redis_v1_generated_cloud_redis_get_instance_async.py",
+      "regionTag": "redis_v1_generated_CloudRedis_GetInstance_async",
       "segments": [
         {
           "end": 44,
@@ -410,8 +410,8 @@
           "shortName": "GetInstance"
         }
       },
-      "file": "redis_generated_redis_v1_cloud_redis_get_instance_sync.py",
-      "regionTag": "redis_generated_redis_v1_CloudRedis_GetInstance_sync",
+      "file": "redis_v1_generated_cloud_redis_get_instance_sync.py",
+      "regionTag": "redis_v1_generated_CloudRedis_GetInstance_sync",
       "segments": [
         {
           "end": 44,
@@ -455,8 +455,8 @@
           "shortName": "ImportInstance"
         }
       },
-      "file": "redis_generated_redis_v1_cloud_redis_import_instance_async.py",
-      "regionTag": "redis_generated_redis_v1_CloudRedis_ImportInstance_async",
+      "file": "redis_v1_generated_cloud_redis_import_instance_async.py",
+      "regionTag": "redis_v1_generated_CloudRedis_ImportInstance_async",
       "segments": [
         {
           "end": 52,
@@ -499,8 +499,8 @@
           "shortName": "ImportInstance"
         }
       },
-      "file": "redis_generated_redis_v1_cloud_redis_import_instance_sync.py",
-      "regionTag": "redis_generated_redis_v1_CloudRedis_ImportInstance_sync",
+      "file": "redis_v1_generated_cloud_redis_import_instance_sync.py",
+      "regionTag": "redis_v1_generated_CloudRedis_ImportInstance_sync",
       "segments": [
         {
           "end": 52,
@@ -544,8 +544,8 @@
           "shortName": "ListInstances"
         }
       },
-      "file": "redis_generated_redis_v1_cloud_redis_list_instances_async.py",
-      "regionTag": "redis_generated_redis_v1_CloudRedis_ListInstances_async",
+      "file": "redis_v1_generated_cloud_redis_list_instances_async.py",
+      "regionTag": "redis_v1_generated_CloudRedis_ListInstances_async",
       "segments": [
         {
           "end": 45,
@@ -588,8 +588,8 @@
           "shortName": "ListInstances"
         }
       },
-      "file": "redis_generated_redis_v1_cloud_redis_list_instances_sync.py",
-      "regionTag": "redis_generated_redis_v1_CloudRedis_ListInstances_sync",
+      "file": "redis_v1_generated_cloud_redis_list_instances_sync.py",
+      "regionTag": "redis_v1_generated_CloudRedis_ListInstances_sync",
       "segments": [
         {
           "end": 45,
@@ -633,8 +633,8 @@
           "shortName": "UpdateInstance"
         }
       },
-      "file": "redis_generated_redis_v1_cloud_redis_update_instance_async.py",
-      "regionTag": "redis_generated_redis_v1_CloudRedis_UpdateInstance_async",
+      "file": "redis_v1_generated_cloud_redis_update_instance_async.py",
+      "regionTag": "redis_v1_generated_CloudRedis_UpdateInstance_async",
       "segments": [
         {
           "end": 53,
@@ -677,8 +677,8 @@
           "shortName": "UpdateInstance"
         }
       },
-      "file": "redis_generated_redis_v1_cloud_redis_update_instance_sync.py",
-      "regionTag": "redis_generated_redis_v1_CloudRedis_UpdateInstance_sync",
+      "file": "redis_v1_generated_cloud_redis_update_instance_sync.py",
+      "regionTag": "redis_v1_generated_CloudRedis_UpdateInstance_sync",
       "segments": [
         {
           "end": 53,
@@ -722,8 +722,8 @@
           "shortName": "UpgradeInstance"
         }
       },
-      "file": "redis_generated_redis_v1_cloud_redis_upgrade_instance_async.py",
-      "regionTag": "redis_generated_redis_v1_CloudRedis_UpgradeInstance_async",
+      "file": "redis_v1_generated_cloud_redis_upgrade_instance_async.py",
+      "regionTag": "redis_v1_generated_CloudRedis_UpgradeInstance_async",
       "segments": [
         {
           "end": 49,
@@ -766,8 +766,8 @@
           "shortName": "UpgradeInstance"
         }
       },
-      "file": "redis_generated_redis_v1_cloud_redis_upgrade_instance_sync.py",
-      "regionTag": "redis_generated_redis_v1_CloudRedis_UpgradeInstance_sync",
+      "file": "redis_v1_generated_cloud_redis_upgrade_instance_sync.py",
+      "regionTag": "redis_v1_generated_CloudRedis_UpgradeInstance_sync",
       "segments": [
         {
           "end": 49,

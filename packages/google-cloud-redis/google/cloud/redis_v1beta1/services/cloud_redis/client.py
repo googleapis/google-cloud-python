@@ -445,8 +445,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         are aggregated.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import redis_v1beta1
 
@@ -548,8 +547,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
     ) -> cloud_redis.Instance:
         r"""Gets the details of a specific Redis instance.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import redis_v1beta1
 
@@ -642,8 +640,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         to GetInstance.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import redis_v1beta1
 
@@ -748,8 +745,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         hours, so there is no need to call DeleteOperation.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import redis_v1beta1
 
@@ -893,8 +889,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         there is no need to call DeleteOperation.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import redis_v1beta1
 
@@ -1026,8 +1021,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         specified in the request.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import redis_v1beta1
 
@@ -1153,8 +1147,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         few hours, so there is no need to call DeleteOperation.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import redis_v1beta1
 
@@ -1279,8 +1272,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         few hours, so there is no need to call DeleteOperation.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import redis_v1beta1
 
@@ -1403,8 +1395,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         Memorystore for Redis instance.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import redis_v1beta1
 
@@ -1522,8 +1513,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         serving and data is deleted.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import redis_v1beta1
 
@@ -1643,8 +1633,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         given project and location.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import redis_v1beta1
 

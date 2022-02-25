@@ -244,7 +244,7 @@ class CloudRedisAsyncClient:
         are aggregated.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import redis_v1beta1
 
@@ -346,7 +346,7 @@ class CloudRedisAsyncClient:
     ) -> cloud_redis.Instance:
         r"""Gets the details of a specific Redis instance.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import redis_v1beta1
 
@@ -439,7 +439,7 @@ class CloudRedisAsyncClient:
         to GetInstance.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import redis_v1beta1
 
@@ -544,7 +544,7 @@ class CloudRedisAsyncClient:
         hours, so there is no need to call DeleteOperation.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import redis_v1beta1
 
@@ -688,7 +688,7 @@ class CloudRedisAsyncClient:
         there is no need to call DeleteOperation.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import redis_v1beta1
 
@@ -820,7 +820,7 @@ class CloudRedisAsyncClient:
         specified in the request.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import redis_v1beta1
 
@@ -946,7 +946,7 @@ class CloudRedisAsyncClient:
         few hours, so there is no need to call DeleteOperation.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import redis_v1beta1
 
@@ -1071,7 +1071,7 @@ class CloudRedisAsyncClient:
         few hours, so there is no need to call DeleteOperation.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import redis_v1beta1
 
@@ -1194,7 +1194,7 @@ class CloudRedisAsyncClient:
         Memorystore for Redis instance.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import redis_v1beta1
 
@@ -1312,7 +1312,7 @@ class CloudRedisAsyncClient:
         serving and data is deleted.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import redis_v1beta1
 
@@ -1432,7 +1432,7 @@ class CloudRedisAsyncClient:
         given project and location.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import redis_v1beta1
 
