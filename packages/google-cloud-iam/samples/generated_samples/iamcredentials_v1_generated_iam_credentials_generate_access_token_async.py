@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for SignJwt
+# Snippet for GenerateAccessToken
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,24 +23,24 @@
 #   python3 -m pip install google-cloud-iam
 
 
-# [START iamcredentials_generated_iam_credentials_v1_IAMCredentials_SignJwt_sync]
+# [START iamcredentials_v1_generated_IAMCredentials_GenerateAccessToken_async]
 from google.cloud import iam_credentials_v1
 
 
-def sample_sign_jwt():
+async def sample_generate_access_token():
     # Create a client
-    client = iam_credentials_v1.IAMCredentialsClient()
+    client = iam_credentials_v1.IAMCredentialsAsyncClient()
 
     # Initialize request argument(s)
-    request = iam_credentials_v1.SignJwtRequest(
+    request = iam_credentials_v1.GenerateAccessTokenRequest(
         name="name_value",
-        payload="payload_value",
+        scope=['scope_value_1', 'scope_value_2'],
     )
 
     # Make the request
-    response = client.sign_jwt(request=request)
+    response = await client.generate_access_token(request=request)
 
     # Handle the response
     print(response)
 
-# [END iamcredentials_generated_iam_credentials_v1_IAMCredentials_SignJwt_sync]
+# [END iamcredentials_v1_generated_IAMCredentials_GenerateAccessToken_async]

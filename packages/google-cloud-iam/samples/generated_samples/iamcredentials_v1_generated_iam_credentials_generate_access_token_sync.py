@@ -23,13 +23,13 @@
 #   python3 -m pip install google-cloud-iam
 
 
-# [START iamcredentials_generated_iam_credentials_v1_IAMCredentials_GenerateAccessToken_async]
+# [START iamcredentials_v1_generated_IAMCredentials_GenerateAccessToken_sync]
 from google.cloud import iam_credentials_v1
 
 
-async def sample_generate_access_token():
+def sample_generate_access_token():
     # Create a client
-    client = iam_credentials_v1.IAMCredentialsAsyncClient()
+    client = iam_credentials_v1.IAMCredentialsClient()
 
     # Initialize request argument(s)
     request = iam_credentials_v1.GenerateAccessTokenRequest(
@@ -38,9 +38,9 @@ async def sample_generate_access_token():
     )
 
     # Make the request
-    response = await client.generate_access_token(request=request)
+    response = client.generate_access_token(request=request)
 
     # Handle the response
     print(response)
 
-# [END iamcredentials_generated_iam_credentials_v1_IAMCredentials_GenerateAccessToken_async]
+# [END iamcredentials_v1_generated_IAMCredentials_GenerateAccessToken_sync]

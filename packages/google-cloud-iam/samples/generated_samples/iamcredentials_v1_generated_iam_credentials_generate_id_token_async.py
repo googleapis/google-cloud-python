@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-iam
 
 
-# [START iamcredentials_generated_iam_credentials_v1_IAMCredentials_GenerateIdToken_async]
+# [START iamcredentials_v1_generated_IAMCredentials_GenerateIdToken_async]
 from google.cloud import iam_credentials_v1
 
 
@@ -43,4 +43,4 @@ async def sample_generate_id_token():
     # Handle the response
     print(response)
 
-# [END iamcredentials_generated_iam_credentials_v1_IAMCredentials_GenerateIdToken_async]
+# [END iamcredentials_v1_generated_IAMCredentials_GenerateIdToken_async]

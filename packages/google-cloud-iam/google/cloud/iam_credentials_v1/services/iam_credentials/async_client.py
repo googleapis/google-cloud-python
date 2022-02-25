@@ -231,7 +231,7 @@ class IAMCredentialsAsyncClient:
         account.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import iam_credentials_v1
 
@@ -384,7 +384,7 @@ class IAMCredentialsAsyncClient:
         account.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import iam_credentials_v1
 
@@ -530,7 +530,7 @@ class IAMCredentialsAsyncClient:
         private key.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import iam_credentials_v1
 
@@ -663,7 +663,7 @@ class IAMCredentialsAsyncClient:
         private key.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import iam_credentials_v1
 

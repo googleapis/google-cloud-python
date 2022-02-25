@@ -426,8 +426,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         account.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import iam_credentials_v1
 
@@ -570,8 +569,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         account.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import iam_credentials_v1
 
@@ -707,8 +705,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         private key.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import iam_credentials_v1
 
@@ -831,8 +828,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         private key.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import iam_credentials_v1
 

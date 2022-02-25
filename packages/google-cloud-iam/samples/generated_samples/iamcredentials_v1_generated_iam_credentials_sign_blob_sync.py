@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for GenerateAccessToken
+# Snippet for SignBlob
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,24 +23,24 @@
 #   python3 -m pip install google-cloud-iam
 
 
-# [START iamcredentials_generated_iam_credentials_v1_IAMCredentials_GenerateAccessToken_sync]
+# [START iamcredentials_v1_generated_IAMCredentials_SignBlob_sync]
 from google.cloud import iam_credentials_v1
 
 
-def sample_generate_access_token():
+def sample_sign_blob():
     # Create a client
     client = iam_credentials_v1.IAMCredentialsClient()
 
     # Initialize request argument(s)
-    request = iam_credentials_v1.GenerateAccessTokenRequest(
+    request = iam_credentials_v1.SignBlobRequest(
         name="name_value",
-        scope=['scope_value_1', 'scope_value_2'],
+        payload=b'payload_blob',
     )
 
     # Make the request
-    response = client.generate_access_token(request=request)
+    response = client.sign_blob(request=request)
 
     # Handle the response
     print(response)
 
-# [END iamcredentials_generated_iam_credentials_v1_IAMCredentials_GenerateAccessToken_sync]
+# [END iamcredentials_v1_generated_IAMCredentials_SignBlob_sync]
