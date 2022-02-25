@@ -404,8 +404,7 @@ class MessagesV1Beta3Client(metaclass=MessagesV1Beta3ClientMeta):
         ``us-central1``.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataflow_v1beta3
 

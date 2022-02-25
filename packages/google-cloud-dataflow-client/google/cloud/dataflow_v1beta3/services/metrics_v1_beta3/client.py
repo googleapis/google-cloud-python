@@ -405,8 +405,7 @@ class MetricsV1Beta3Client(metaclass=MetricsV1Beta3ClientMeta):
         ``us-central1``.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataflow_v1beta3
 
@@ -480,8 +479,7 @@ class MetricsV1Beta3Client(metaclass=MetricsV1Beta3ClientMeta):
         without notice.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataflow_v1beta3
 
@@ -560,8 +558,7 @@ class MetricsV1Beta3Client(metaclass=MetricsV1Beta3ClientMeta):
         without notice.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataflow_v1beta3
 

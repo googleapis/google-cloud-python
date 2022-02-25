@@ -398,8 +398,7 @@ class TemplatesServiceClient(metaclass=TemplatesServiceClientMeta):
     ) -> jobs.Job:
         r"""Creates a Cloud Dataflow job from a template.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataflow_v1beta3
 
@@ -462,8 +461,7 @@ class TemplatesServiceClient(metaclass=TemplatesServiceClientMeta):
     ) -> templates.LaunchTemplateResponse:
         r"""Launch a template.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataflow_v1beta3
 
@@ -525,8 +523,7 @@ class TemplatesServiceClient(metaclass=TemplatesServiceClientMeta):
     ) -> templates.GetTemplateResponse:
         r"""Get the template associated with a template.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataflow_v1beta3
 

@@ -397,8 +397,7 @@ class FlexTemplatesServiceClient(metaclass=FlexTemplatesServiceClientMeta):
     ) -> templates.LaunchFlexTemplateResponse:
         r"""Launch a job with a FlexTemplate.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataflow_v1beta3
 

@@ -221,7 +221,7 @@ class MessagesV1Beta3AsyncClient:
         ``us-central1``.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataflow_v1beta3
 

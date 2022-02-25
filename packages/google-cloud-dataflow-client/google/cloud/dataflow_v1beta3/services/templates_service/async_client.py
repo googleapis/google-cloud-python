@@ -215,7 +215,7 @@ class TemplatesServiceAsyncClient:
     ) -> jobs.Job:
         r"""Creates a Cloud Dataflow job from a template.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataflow_v1beta3
 
@@ -277,7 +277,7 @@ class TemplatesServiceAsyncClient:
     ) -> templates.LaunchTemplateResponse:
         r"""Launch a template.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataflow_v1beta3
 
@@ -338,7 +338,7 @@ class TemplatesServiceAsyncClient:
     ) -> templates.GetTemplateResponse:
         r"""Get the template associated with a template.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataflow_v1beta3
 

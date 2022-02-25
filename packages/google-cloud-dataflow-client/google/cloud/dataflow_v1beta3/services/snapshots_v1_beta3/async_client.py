@@ -213,7 +213,7 @@ class SnapshotsV1Beta3AsyncClient:
     ) -> snapshots.Snapshot:
         r"""Gets information about a snapshot.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataflow_v1beta3
 
@@ -272,7 +272,7 @@ class SnapshotsV1Beta3AsyncClient:
     ) -> snapshots.DeleteSnapshotResponse:
         r"""Deletes a snapshot.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataflow_v1beta3
 
@@ -330,7 +330,7 @@ class SnapshotsV1Beta3AsyncClient:
     ) -> snapshots.ListSnapshotsResponse:
         r"""Lists snapshots.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataflow_v1beta3
 

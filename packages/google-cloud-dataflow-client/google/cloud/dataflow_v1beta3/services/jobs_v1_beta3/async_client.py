@@ -220,7 +220,7 @@ class JobsV1Beta3AsyncClient:
         will always start in ``us-central1``.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataflow_v1beta3
 
@@ -288,7 +288,7 @@ class JobsV1Beta3AsyncClient:
         get the state of jobs that are running in ``us-central1``.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataflow_v1beta3
 
@@ -357,7 +357,7 @@ class JobsV1Beta3AsyncClient:
         ``us-central1``.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataflow_v1beta3
 
@@ -427,7 +427,7 @@ class JobsV1Beta3AsyncClient:
         running in ``us-central1``.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataflow_v1beta3
 
@@ -504,7 +504,7 @@ class JobsV1Beta3AsyncClient:
     ) -> pagers.AggregatedListJobsAsyncPager:
         r"""List the jobs of a project across all regions.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataflow_v1beta3
 
@@ -583,7 +583,7 @@ class JobsV1Beta3AsyncClient:
         project across all regions.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataflow_v1beta3
 
@@ -642,7 +642,7 @@ class JobsV1Beta3AsyncClient:
     ) -> snapshots.Snapshot:
         r"""Snapshot the state of a streaming job.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataflow_v1beta3
 

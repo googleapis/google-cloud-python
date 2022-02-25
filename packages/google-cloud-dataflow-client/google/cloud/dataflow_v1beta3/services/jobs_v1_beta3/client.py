@@ -405,8 +405,7 @@ class JobsV1Beta3Client(metaclass=JobsV1Beta3ClientMeta):
         will always start in ``us-central1``.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataflow_v1beta3
 
@@ -475,8 +474,7 @@ class JobsV1Beta3Client(metaclass=JobsV1Beta3ClientMeta):
         get the state of jobs that are running in ``us-central1``.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataflow_v1beta3
 
@@ -546,8 +544,7 @@ class JobsV1Beta3Client(metaclass=JobsV1Beta3ClientMeta):
         ``us-central1``.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataflow_v1beta3
 
@@ -618,8 +615,7 @@ class JobsV1Beta3Client(metaclass=JobsV1Beta3ClientMeta):
         running in ``us-central1``.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataflow_v1beta3
 
@@ -697,8 +693,7 @@ class JobsV1Beta3Client(metaclass=JobsV1Beta3ClientMeta):
     ) -> pagers.AggregatedListJobsPager:
         r"""List the jobs of a project across all regions.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataflow_v1beta3
 
@@ -778,8 +773,7 @@ class JobsV1Beta3Client(metaclass=JobsV1Beta3ClientMeta):
         project across all regions.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataflow_v1beta3
 
@@ -839,8 +833,7 @@ class JobsV1Beta3Client(metaclass=JobsV1Beta3ClientMeta):
     ) -> snapshots.Snapshot:
         r"""Snapshot the state of a streaming job.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataflow_v1beta3
 

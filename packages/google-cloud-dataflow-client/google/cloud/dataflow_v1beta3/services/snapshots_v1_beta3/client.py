@@ -396,8 +396,7 @@ class SnapshotsV1Beta3Client(metaclass=SnapshotsV1Beta3ClientMeta):
     ) -> snapshots.Snapshot:
         r"""Gets information about a snapshot.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataflow_v1beta3
 
@@ -457,8 +456,7 @@ class SnapshotsV1Beta3Client(metaclass=SnapshotsV1Beta3ClientMeta):
     ) -> snapshots.DeleteSnapshotResponse:
         r"""Deletes a snapshot.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataflow_v1beta3
 
@@ -517,8 +515,7 @@ class SnapshotsV1Beta3Client(metaclass=SnapshotsV1Beta3ClientMeta):
     ) -> snapshots.ListSnapshotsResponse:
         r"""Lists snapshots.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataflow_v1beta3
 

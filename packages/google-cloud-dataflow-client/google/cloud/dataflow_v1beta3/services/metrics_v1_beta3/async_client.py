@@ -222,7 +222,7 @@ class MetricsV1Beta3AsyncClient:
         ``us-central1``.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataflow_v1beta3
 
@@ -295,7 +295,7 @@ class MetricsV1Beta3AsyncClient:
         without notice.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataflow_v1beta3
 
@@ -371,7 +371,7 @@ class MetricsV1Beta3AsyncClient:
         without notice.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataflow_v1beta3
 
