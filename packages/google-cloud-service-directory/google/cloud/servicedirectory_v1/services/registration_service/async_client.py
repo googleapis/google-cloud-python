@@ -244,7 +244,7 @@ class RegistrationServiceAsyncClient:
     ) -> gcs_namespace.Namespace:
         r"""Creates a namespace, and returns the new Namespace.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import servicedirectory_v1
 
@@ -362,7 +362,7 @@ class RegistrationServiceAsyncClient:
     ) -> pagers.ListNamespacesAsyncPager:
         r"""Lists all namespaces.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import servicedirectory_v1
 
@@ -463,7 +463,7 @@ class RegistrationServiceAsyncClient:
     ) -> namespace.Namespace:
         r"""Gets a namespace.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import servicedirectory_v1
 
@@ -556,7 +556,7 @@ class RegistrationServiceAsyncClient:
     ) -> gcs_namespace.Namespace:
         r"""Updates a namespace.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import servicedirectory_v1
 
@@ -658,7 +658,7 @@ class RegistrationServiceAsyncClient:
         and endpoints in the namespace.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import servicedirectory_v1
 
@@ -740,7 +740,7 @@ class RegistrationServiceAsyncClient:
     ) -> gcs_service.Service:
         r"""Creates a service, and returns the new Service.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import servicedirectory_v1
 
@@ -857,7 +857,7 @@ class RegistrationServiceAsyncClient:
     ) -> pagers.ListServicesAsyncPager:
         r"""Lists all services belonging to a namespace.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import servicedirectory_v1
 
@@ -958,7 +958,7 @@ class RegistrationServiceAsyncClient:
     ) -> service.Service:
         r"""Gets a service.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import servicedirectory_v1
 
@@ -1054,7 +1054,7 @@ class RegistrationServiceAsyncClient:
     ) -> gcs_service.Service:
         r"""Updates a service.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import servicedirectory_v1
 
@@ -1156,7 +1156,7 @@ class RegistrationServiceAsyncClient:
         associated with the service.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import servicedirectory_v1
 
@@ -1238,7 +1238,7 @@ class RegistrationServiceAsyncClient:
     ) -> gcs_endpoint.Endpoint:
         r"""Creates a endpoint, and returns the new Endpoint.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import servicedirectory_v1
 
@@ -1354,7 +1354,7 @@ class RegistrationServiceAsyncClient:
     ) -> pagers.ListEndpointsAsyncPager:
         r"""Lists all endpoints.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import servicedirectory_v1
 
@@ -1455,7 +1455,7 @@ class RegistrationServiceAsyncClient:
     ) -> endpoint.Endpoint:
         r"""Gets a endpoint.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import servicedirectory_v1
 
@@ -1549,7 +1549,7 @@ class RegistrationServiceAsyncClient:
     ) -> gcs_endpoint.Endpoint:
         r"""Updates a endpoint.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import servicedirectory_v1
 
@@ -1648,7 +1648,7 @@ class RegistrationServiceAsyncClient:
     ) -> None:
         r"""Deletes a endpoint.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import servicedirectory_v1
 
@@ -1729,7 +1729,7 @@ class RegistrationServiceAsyncClient:
         service only).
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import servicedirectory_v1
 
@@ -1855,7 +1855,7 @@ class RegistrationServiceAsyncClient:
         service only).
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import servicedirectory_v1
 
@@ -1981,7 +1981,7 @@ class RegistrationServiceAsyncClient:
         service only).
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import servicedirectory_v1
 

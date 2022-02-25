@@ -432,8 +432,7 @@ class LookupServiceClient(metaclass=LookupServiceClientMeta):
         considered an active developer method.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import servicedirectory_v1
 

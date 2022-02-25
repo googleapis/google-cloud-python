@@ -217,7 +217,7 @@ class LookupServiceAsyncClient:
         considered an active developer method.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import servicedirectory_v1
 

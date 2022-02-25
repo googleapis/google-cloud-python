@@ -10,8 +10,8 @@
           "shortName": "ResolveService"
         }
       },
-      "file": "servicedirectory_generated_servicedirectory_v1beta1_lookup_service_resolve_service_async.py",
-      "regionTag": "servicedirectory_generated_servicedirectory_v1beta1_LookupService_ResolveService_async",
+      "file": "servicedirectory_v1beta1_generated_lookup_service_resolve_service_async.py",
+      "regionTag": "servicedirectory_v1beta1_generated_LookupService_ResolveService_async",
       "segments": [
         {
           "end": 44,
@@ -54,8 +54,8 @@
           "shortName": "ResolveService"
         }
       },
-      "file": "servicedirectory_generated_servicedirectory_v1beta1_lookup_service_resolve_service_sync.py",
-      "regionTag": "servicedirectory_generated_servicedirectory_v1beta1_LookupService_ResolveService_sync",
+      "file": "servicedirectory_v1beta1_generated_lookup_service_resolve_service_sync.py",
+      "regionTag": "servicedirectory_v1beta1_generated_LookupService_ResolveService_sync",
       "segments": [
         {
           "end": 44,
@@ -99,8 +99,8 @@
           "shortName": "CreateEndpoint"
         }
       },
-      "file": "servicedirectory_generated_servicedirectory_v1beta1_registration_service_create_endpoint_async.py",
-      "regionTag": "servicedirectory_generated_servicedirectory_v1beta1_RegistrationService_CreateEndpoint_async",
+      "file": "servicedirectory_v1beta1_generated_registration_service_create_endpoint_async.py",
+      "regionTag": "servicedirectory_v1beta1_generated_RegistrationService_CreateEndpoint_async",
       "segments": [
         {
           "end": 45,
@@ -143,8 +143,8 @@
           "shortName": "CreateEndpoint"
         }
       },
-      "file": "servicedirectory_generated_servicedirectory_v1beta1_registration_service_create_endpoint_sync.py",
-      "regionTag": "servicedirectory_generated_servicedirectory_v1beta1_RegistrationService_CreateEndpoint_sync",
+      "file": "servicedirectory_v1beta1_generated_registration_service_create_endpoint_sync.py",
+      "regionTag": "servicedirectory_v1beta1_generated_RegistrationService_CreateEndpoint_sync",
       "segments": [
         {
           "end": 45,
@@ -188,8 +188,8 @@
           "shortName": "CreateNamespace"
         }
       },
-      "file": "servicedirectory_generated_servicedirectory_v1beta1_registration_service_create_namespace_async.py",
-      "regionTag": "servicedirectory_generated_servicedirectory_v1beta1_RegistrationService_CreateNamespace_async",
+      "file": "servicedirectory_v1beta1_generated_registration_service_create_namespace_async.py",
+      "regionTag": "servicedirectory_v1beta1_generated_RegistrationService_CreateNamespace_async",
       "segments": [
         {
           "end": 45,
@@ -232,8 +232,8 @@
           "shortName": "CreateNamespace"
         }
       },
-      "file": "servicedirectory_generated_servicedirectory_v1beta1_registration_service_create_namespace_sync.py",
-      "regionTag": "servicedirectory_generated_servicedirectory_v1beta1_RegistrationService_CreateNamespace_sync",
+      "file": "servicedirectory_v1beta1_generated_registration_service_create_namespace_sync.py",
+      "regionTag": "servicedirectory_v1beta1_generated_RegistrationService_CreateNamespace_sync",
       "segments": [
         {
           "end": 45,
@@ -277,8 +277,8 @@
           "shortName": "CreateService"
         }
       },
-      "file": "servicedirectory_generated_servicedirectory_v1beta1_registration_service_create_service_async.py",
-      "regionTag": "servicedirectory_generated_servicedirectory_v1beta1_RegistrationService_CreateService_async",
+      "file": "servicedirectory_v1beta1_generated_registration_service_create_service_async.py",
+      "regionTag": "servicedirectory_v1beta1_generated_RegistrationService_CreateService_async",
       "segments": [
         {
           "end": 45,
@@ -321,8 +321,8 @@
           "shortName": "CreateService"
         }
       },
-      "file": "servicedirectory_generated_servicedirectory_v1beta1_registration_service_create_service_sync.py",
-      "regionTag": "servicedirectory_generated_servicedirectory_v1beta1_RegistrationService_CreateService_sync",
+      "file": "servicedirectory_v1beta1_generated_registration_service_create_service_sync.py",
+      "regionTag": "servicedirectory_v1beta1_generated_RegistrationService_CreateService_sync",
       "segments": [
         {
           "end": 45,
@@ -366,8 +366,8 @@
           "shortName": "DeleteEndpoint"
         }
       },
-      "file": "servicedirectory_generated_servicedirectory_v1beta1_registration_service_delete_endpoint_async.py",
-      "regionTag": "servicedirectory_generated_servicedirectory_v1beta1_RegistrationService_DeleteEndpoint_async",
+      "file": "servicedirectory_v1beta1_generated_registration_service_delete_endpoint_async.py",
+      "regionTag": "servicedirectory_v1beta1_generated_RegistrationService_DeleteEndpoint_async",
       "segments": [
         {
           "end": 42,
@@ -408,8 +408,8 @@
           "shortName": "DeleteEndpoint"
         }
       },
-      "file": "servicedirectory_generated_servicedirectory_v1beta1_registration_service_delete_endpoint_sync.py",
-      "regionTag": "servicedirectory_generated_servicedirectory_v1beta1_RegistrationService_DeleteEndpoint_sync",
+      "file": "servicedirectory_v1beta1_generated_registration_service_delete_endpoint_sync.py",
+      "regionTag": "servicedirectory_v1beta1_generated_RegistrationService_DeleteEndpoint_sync",
       "segments": [
         {
           "end": 42,
@@ -451,8 +451,8 @@
           "shortName": "DeleteNamespace"
         }
       },
-      "file": "servicedirectory_generated_servicedirectory_v1beta1_registration_service_delete_namespace_async.py",
-      "regionTag": "servicedirectory_generated_servicedirectory_v1beta1_RegistrationService_DeleteNamespace_async",
+      "file": "servicedirectory_v1beta1_generated_registration_service_delete_namespace_async.py",
+      "regionTag": "servicedirectory_v1beta1_generated_RegistrationService_DeleteNamespace_async",
       "segments": [
         {
           "end": 42,
@@ -493,8 +493,8 @@
           "shortName": "DeleteNamespace"
         }
       },
-      "file": "servicedirectory_generated_servicedirectory_v1beta1_registration_service_delete_namespace_sync.py",
-      "regionTag": "servicedirectory_generated_servicedirectory_v1beta1_RegistrationService_DeleteNamespace_sync",
+      "file": "servicedirectory_v1beta1_generated_registration_service_delete_namespace_sync.py",
+      "regionTag": "servicedirectory_v1beta1_generated_RegistrationService_DeleteNamespace_sync",
       "segments": [
         {
           "end": 42,
@@ -536,8 +536,8 @@
           "shortName": "DeleteService"
         }
       },
-      "file": "servicedirectory_generated_servicedirectory_v1beta1_registration_service_delete_service_async.py",
-      "regionTag": "servicedirectory_generated_servicedirectory_v1beta1_RegistrationService_DeleteService_async",
+      "file": "servicedirectory_v1beta1_generated_registration_service_delete_service_async.py",
+      "regionTag": "servicedirectory_v1beta1_generated_RegistrationService_DeleteService_async",
       "segments": [
         {
           "end": 42,
@@ -578,8 +578,8 @@
           "shortName": "DeleteService"
         }
       },
-      "file": "servicedirectory_generated_servicedirectory_v1beta1_registration_service_delete_service_sync.py",
-      "regionTag": "servicedirectory_generated_servicedirectory_v1beta1_RegistrationService_DeleteService_sync",
+      "file": "servicedirectory_v1beta1_generated_registration_service_delete_service_sync.py",
+      "regionTag": "servicedirectory_v1beta1_generated_RegistrationService_DeleteService_sync",
       "segments": [
         {
           "end": 42,
@@ -621,8 +621,8 @@
           "shortName": "GetEndpoint"
         }
       },
-      "file": "servicedirectory_generated_servicedirectory_v1beta1_registration_service_get_endpoint_async.py",
-      "regionTag": "servicedirectory_generated_servicedirectory_v1beta1_RegistrationService_GetEndpoint_async",
+      "file": "servicedirectory_v1beta1_generated_registration_service_get_endpoint_async.py",
+      "regionTag": "servicedirectory_v1beta1_generated_RegistrationService_GetEndpoint_async",
       "segments": [
         {
           "end": 44,
@@ -665,8 +665,8 @@
           "shortName": "GetEndpoint"
         }
       },
-      "file": "servicedirectory_generated_servicedirectory_v1beta1_registration_service_get_endpoint_sync.py",
-      "regionTag": "servicedirectory_generated_servicedirectory_v1beta1_RegistrationService_GetEndpoint_sync",
+      "file": "servicedirectory_v1beta1_generated_registration_service_get_endpoint_sync.py",
+      "regionTag": "servicedirectory_v1beta1_generated_RegistrationService_GetEndpoint_sync",
       "segments": [
         {
           "end": 44,
@@ -710,8 +710,8 @@
           "shortName": "GetIamPolicy"
         }
       },
-      "file": "servicedirectory_generated_servicedirectory_v1beta1_registration_service_get_iam_policy_async.py",
-      "regionTag": "servicedirectory_generated_servicedirectory_v1beta1_RegistrationService_GetIamPolicy_async",
+      "file": "servicedirectory_v1beta1_generated_registration_service_get_iam_policy_async.py",
+      "regionTag": "servicedirectory_v1beta1_generated_RegistrationService_GetIamPolicy_async",
       "segments": [
         {
           "end": 44,
@@ -754,8 +754,8 @@
           "shortName": "GetIamPolicy"
         }
       },
-      "file": "servicedirectory_generated_servicedirectory_v1beta1_registration_service_get_iam_policy_sync.py",
-      "regionTag": "servicedirectory_generated_servicedirectory_v1beta1_RegistrationService_GetIamPolicy_sync",
+      "file": "servicedirectory_v1beta1_generated_registration_service_get_iam_policy_sync.py",
+      "regionTag": "servicedirectory_v1beta1_generated_RegistrationService_GetIamPolicy_sync",
       "segments": [
         {
           "end": 44,
@@ -799,8 +799,8 @@
           "shortName": "GetNamespace"
         }
       },
-      "file": "servicedirectory_generated_servicedirectory_v1beta1_registration_service_get_namespace_async.py",
-      "regionTag": "servicedirectory_generated_servicedirectory_v1beta1_RegistrationService_GetNamespace_async",
+      "file": "servicedirectory_v1beta1_generated_registration_service_get_namespace_async.py",
+      "regionTag": "servicedirectory_v1beta1_generated_RegistrationService_GetNamespace_async",
       "segments": [
         {
           "end": 44,
@@ -843,8 +843,8 @@
           "shortName": "GetNamespace"
         }
       },
-      "file": "servicedirectory_generated_servicedirectory_v1beta1_registration_service_get_namespace_sync.py",
-      "regionTag": "servicedirectory_generated_servicedirectory_v1beta1_RegistrationService_GetNamespace_sync",
+      "file": "servicedirectory_v1beta1_generated_registration_service_get_namespace_sync.py",
+      "regionTag": "servicedirectory_v1beta1_generated_RegistrationService_GetNamespace_sync",
       "segments": [
         {
           "end": 44,
@@ -888,8 +888,8 @@
           "shortName": "GetService"
         }
       },
-      "file": "servicedirectory_generated_servicedirectory_v1beta1_registration_service_get_service_async.py",
-      "regionTag": "servicedirectory_generated_servicedirectory_v1beta1_RegistrationService_GetService_async",
+      "file": "servicedirectory_v1beta1_generated_registration_service_get_service_async.py",
+      "regionTag": "servicedirectory_v1beta1_generated_RegistrationService_GetService_async",
       "segments": [
         {
           "end": 44,
@@ -932,8 +932,8 @@
           "shortName": "GetService"
         }
       },
-      "file": "servicedirectory_generated_servicedirectory_v1beta1_registration_service_get_service_sync.py",
-      "regionTag": "servicedirectory_generated_servicedirectory_v1beta1_RegistrationService_GetService_sync",
+      "file": "servicedirectory_v1beta1_generated_registration_service_get_service_sync.py",
+      "regionTag": "servicedirectory_v1beta1_generated_RegistrationService_GetService_sync",
       "segments": [
         {
           "end": 44,
@@ -977,8 +977,8 @@
           "shortName": "ListEndpoints"
         }
       },
-      "file": "servicedirectory_generated_servicedirectory_v1beta1_registration_service_list_endpoints_async.py",
-      "regionTag": "servicedirectory_generated_servicedirectory_v1beta1_RegistrationService_ListEndpoints_async",
+      "file": "servicedirectory_v1beta1_generated_registration_service_list_endpoints_async.py",
+      "regionTag": "servicedirectory_v1beta1_generated_RegistrationService_ListEndpoints_async",
       "segments": [
         {
           "end": 45,
@@ -1021,8 +1021,8 @@
           "shortName": "ListEndpoints"
         }
       },
-      "file": "servicedirectory_generated_servicedirectory_v1beta1_registration_service_list_endpoints_sync.py",
-      "regionTag": "servicedirectory_generated_servicedirectory_v1beta1_RegistrationService_ListEndpoints_sync",
+      "file": "servicedirectory_v1beta1_generated_registration_service_list_endpoints_sync.py",
+      "regionTag": "servicedirectory_v1beta1_generated_RegistrationService_ListEndpoints_sync",
       "segments": [
         {
           "end": 45,
@@ -1066,8 +1066,8 @@
           "shortName": "ListNamespaces"
         }
       },
-      "file": "servicedirectory_generated_servicedirectory_v1beta1_registration_service_list_namespaces_async.py",
-      "regionTag": "servicedirectory_generated_servicedirectory_v1beta1_RegistrationService_ListNamespaces_async",
+      "file": "servicedirectory_v1beta1_generated_registration_service_list_namespaces_async.py",
+      "regionTag": "servicedirectory_v1beta1_generated_RegistrationService_ListNamespaces_async",
       "segments": [
         {
           "end": 45,
@@ -1110,8 +1110,8 @@
           "shortName": "ListNamespaces"
         }
       },
-      "file": "servicedirectory_generated_servicedirectory_v1beta1_registration_service_list_namespaces_sync.py",
-      "regionTag": "servicedirectory_generated_servicedirectory_v1beta1_RegistrationService_ListNamespaces_sync",
+      "file": "servicedirectory_v1beta1_generated_registration_service_list_namespaces_sync.py",
+      "regionTag": "servicedirectory_v1beta1_generated_RegistrationService_ListNamespaces_sync",
       "segments": [
         {
           "end": 45,
@@ -1155,8 +1155,8 @@
           "shortName": "ListServices"
         }
       },
-      "file": "servicedirectory_generated_servicedirectory_v1beta1_registration_service_list_services_async.py",
-      "regionTag": "servicedirectory_generated_servicedirectory_v1beta1_RegistrationService_ListServices_async",
+      "file": "servicedirectory_v1beta1_generated_registration_service_list_services_async.py",
+      "regionTag": "servicedirectory_v1beta1_generated_RegistrationService_ListServices_async",
       "segments": [
         {
           "end": 45,
@@ -1199,8 +1199,8 @@
           "shortName": "ListServices"
         }
       },
-      "file": "servicedirectory_generated_servicedirectory_v1beta1_registration_service_list_services_sync.py",
-      "regionTag": "servicedirectory_generated_servicedirectory_v1beta1_RegistrationService_ListServices_sync",
+      "file": "servicedirectory_v1beta1_generated_registration_service_list_services_sync.py",
+      "regionTag": "servicedirectory_v1beta1_generated_RegistrationService_ListServices_sync",
       "segments": [
         {
           "end": 45,
@@ -1244,8 +1244,8 @@
           "shortName": "SetIamPolicy"
         }
       },
-      "file": "servicedirectory_generated_servicedirectory_v1beta1_registration_service_set_iam_policy_async.py",
-      "regionTag": "servicedirectory_generated_servicedirectory_v1beta1_RegistrationService_SetIamPolicy_async",
+      "file": "servicedirectory_v1beta1_generated_registration_service_set_iam_policy_async.py",
+      "regionTag": "servicedirectory_v1beta1_generated_RegistrationService_SetIamPolicy_async",
       "segments": [
         {
           "end": 44,
@@ -1288,8 +1288,8 @@
           "shortName": "SetIamPolicy"
         }
       },
-      "file": "servicedirectory_generated_servicedirectory_v1beta1_registration_service_set_iam_policy_sync.py",
-      "regionTag": "servicedirectory_generated_servicedirectory_v1beta1_RegistrationService_SetIamPolicy_sync",
+      "file": "servicedirectory_v1beta1_generated_registration_service_set_iam_policy_sync.py",
+      "regionTag": "servicedirectory_v1beta1_generated_RegistrationService_SetIamPolicy_sync",
       "segments": [
         {
           "end": 44,
@@ -1333,8 +1333,8 @@
           "shortName": "TestIamPermissions"
         }
       },
-      "file": "servicedirectory_generated_servicedirectory_v1beta1_registration_service_test_iam_permissions_async.py",
-      "regionTag": "servicedirectory_generated_servicedirectory_v1beta1_RegistrationService_TestIamPermissions_async",
+      "file": "servicedirectory_v1beta1_generated_registration_service_test_iam_permissions_async.py",
+      "regionTag": "servicedirectory_v1beta1_generated_RegistrationService_TestIamPermissions_async",
       "segments": [
         {
           "end": 45,
@@ -1377,8 +1377,8 @@
           "shortName": "TestIamPermissions"
         }
       },
-      "file": "servicedirectory_generated_servicedirectory_v1beta1_registration_service_test_iam_permissions_sync.py",
-      "regionTag": "servicedirectory_generated_servicedirectory_v1beta1_RegistrationService_TestIamPermissions_sync",
+      "file": "servicedirectory_v1beta1_generated_registration_service_test_iam_permissions_sync.py",
+      "regionTag": "servicedirectory_v1beta1_generated_RegistrationService_TestIamPermissions_sync",
       "segments": [
         {
           "end": 45,
@@ -1422,8 +1422,8 @@
           "shortName": "UpdateEndpoint"
         }
       },
-      "file": "servicedirectory_generated_servicedirectory_v1beta1_registration_service_update_endpoint_async.py",
-      "regionTag": "servicedirectory_generated_servicedirectory_v1beta1_RegistrationService_UpdateEndpoint_async",
+      "file": "servicedirectory_v1beta1_generated_registration_service_update_endpoint_async.py",
+      "regionTag": "servicedirectory_v1beta1_generated_RegistrationService_UpdateEndpoint_async",
       "segments": [
         {
           "end": 43,
@@ -1466,8 +1466,8 @@
           "shortName": "UpdateEndpoint"
         }
       },
-      "file": "servicedirectory_generated_servicedirectory_v1beta1_registration_service_update_endpoint_sync.py",
-      "regionTag": "servicedirectory_generated_servicedirectory_v1beta1_RegistrationService_UpdateEndpoint_sync",
+      "file": "servicedirectory_v1beta1_generated_registration_service_update_endpoint_sync.py",
+      "regionTag": "servicedirectory_v1beta1_generated_RegistrationService_UpdateEndpoint_sync",
       "segments": [
         {
           "end": 43,
@@ -1511,8 +1511,8 @@
           "shortName": "UpdateNamespace"
         }
       },
-      "file": "servicedirectory_generated_servicedirectory_v1beta1_registration_service_update_namespace_async.py",
-      "regionTag": "servicedirectory_generated_servicedirectory_v1beta1_RegistrationService_UpdateNamespace_async",
+      "file": "servicedirectory_v1beta1_generated_registration_service_update_namespace_async.py",
+      "regionTag": "servicedirectory_v1beta1_generated_RegistrationService_UpdateNamespace_async",
       "segments": [
         {
           "end": 43,
@@ -1555,8 +1555,8 @@
           "shortName": "UpdateNamespace"
         }
       },
-      "file": "servicedirectory_generated_servicedirectory_v1beta1_registration_service_update_namespace_sync.py",
-      "regionTag": "servicedirectory_generated_servicedirectory_v1beta1_RegistrationService_UpdateNamespace_sync",
+      "file": "servicedirectory_v1beta1_generated_registration_service_update_namespace_sync.py",
+      "regionTag": "servicedirectory_v1beta1_generated_RegistrationService_UpdateNamespace_sync",
       "segments": [
         {
           "end": 43,
@@ -1600,8 +1600,8 @@
           "shortName": "UpdateService"
         }
       },
-      "file": "servicedirectory_generated_servicedirectory_v1beta1_registration_service_update_service_async.py",
-      "regionTag": "servicedirectory_generated_servicedirectory_v1beta1_RegistrationService_UpdateService_async",
+      "file": "servicedirectory_v1beta1_generated_registration_service_update_service_async.py",
+      "regionTag": "servicedirectory_v1beta1_generated_RegistrationService_UpdateService_async",
       "segments": [
         {
           "end": 43,
@@ -1644,8 +1644,8 @@
           "shortName": "UpdateService"
         }
       },
-      "file": "servicedirectory_generated_servicedirectory_v1beta1_registration_service_update_service_sync.py",
-      "regionTag": "servicedirectory_generated_servicedirectory_v1beta1_RegistrationService_UpdateService_sync",
+      "file": "servicedirectory_v1beta1_generated_registration_service_update_service_sync.py",
+      "regionTag": "servicedirectory_v1beta1_generated_RegistrationService_UpdateService_sync",
       "segments": [
         {
           "end": 43,
