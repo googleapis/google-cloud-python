@@ -235,7 +235,7 @@ class LivestreamServiceAsyncClient:
         specified region.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.video import live_stream_v1
 
@@ -365,7 +365,7 @@ class LivestreamServiceAsyncClient:
         region.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.video import live_stream_v1
 
@@ -474,7 +474,7 @@ class LivestreamServiceAsyncClient:
     ) -> resources.Channel:
         r"""Returns the specified channel.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.video import live_stream_v1
 
@@ -580,7 +580,7 @@ class LivestreamServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Deletes the specified channel.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.video import live_stream_v1
 
@@ -697,7 +697,7 @@ class LivestreamServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Updates the specified channel.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.video import live_stream_v1
 
@@ -830,7 +830,7 @@ class LivestreamServiceAsyncClient:
         request is received by the server.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.video import live_stream_v1
 
@@ -940,7 +940,7 @@ class LivestreamServiceAsyncClient:
         is received by the server.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.video import live_stream_v1
 
@@ -1051,7 +1051,7 @@ class LivestreamServiceAsyncClient:
         specified region.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.video import live_stream_v1
 
@@ -1175,7 +1175,7 @@ class LivestreamServiceAsyncClient:
     ) -> pagers.ListInputsAsyncPager:
         r"""Returns a list of all inputs in the specified region.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.video import live_stream_v1
 
@@ -1284,7 +1284,7 @@ class LivestreamServiceAsyncClient:
     ) -> resources.Input:
         r"""Returns the specified input.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.video import live_stream_v1
 
@@ -1385,7 +1385,7 @@ class LivestreamServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Deletes the specified input.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.video import live_stream_v1
 
@@ -1502,7 +1502,7 @@ class LivestreamServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Updates the specified input.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.video import live_stream_v1
 
@@ -1628,7 +1628,7 @@ class LivestreamServiceAsyncClient:
         specified channel.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.video import live_stream_v1
 
@@ -1743,7 +1743,7 @@ class LivestreamServiceAsyncClient:
         channel.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.video import live_stream_v1
 
@@ -1853,7 +1853,7 @@ class LivestreamServiceAsyncClient:
     ) -> resources.Event:
         r"""Returns the specified event.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.video import live_stream_v1
 
@@ -1955,7 +1955,7 @@ class LivestreamServiceAsyncClient:
     ) -> None:
         r"""Deletes the specified event.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.video import live_stream_v1
 

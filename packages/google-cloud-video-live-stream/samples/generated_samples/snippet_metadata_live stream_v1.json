@@ -10,8 +10,8 @@
           "shortName": "CreateChannel"
         }
       },
-      "file": "livestream_generated_live_stream_v1_livestream_service_create_channel_async.py",
-      "regionTag": "livestream_generated_live_stream_v1_LivestreamService_CreateChannel_async",
+      "file": "livestream_v1_generated_livestream_service_create_channel_async.py",
+      "regionTag": "livestream_v1_generated_LivestreamService_CreateChannel_async",
       "segments": [
         {
           "end": 49,
@@ -54,8 +54,8 @@
           "shortName": "CreateChannel"
         }
       },
-      "file": "livestream_generated_live_stream_v1_livestream_service_create_channel_sync.py",
-      "regionTag": "livestream_generated_live_stream_v1_LivestreamService_CreateChannel_sync",
+      "file": "livestream_v1_generated_livestream_service_create_channel_sync.py",
+      "regionTag": "livestream_v1_generated_LivestreamService_CreateChannel_sync",
       "segments": [
         {
           "end": 49,
@@ -99,8 +99,8 @@
           "shortName": "CreateEvent"
         }
       },
-      "file": "livestream_generated_live_stream_v1_livestream_service_create_event_async.py",
-      "regionTag": "livestream_generated_live_stream_v1_LivestreamService_CreateEvent_async",
+      "file": "livestream_v1_generated_livestream_service_create_event_async.py",
+      "regionTag": "livestream_v1_generated_LivestreamService_CreateEvent_async",
       "segments": [
         {
           "end": 45,
@@ -143,8 +143,8 @@
           "shortName": "CreateEvent"
         }
       },
-      "file": "livestream_generated_live_stream_v1_livestream_service_create_event_sync.py",
-      "regionTag": "livestream_generated_live_stream_v1_LivestreamService_CreateEvent_sync",
+      "file": "livestream_v1_generated_livestream_service_create_event_sync.py",
+      "regionTag": "livestream_v1_generated_LivestreamService_CreateEvent_sync",
       "segments": [
         {
           "end": 45,
@@ -188,8 +188,8 @@
           "shortName": "CreateInput"
         }
       },
-      "file": "livestream_generated_live_stream_v1_livestream_service_create_input_async.py",
-      "regionTag": "livestream_generated_live_stream_v1_LivestreamService_CreateInput_async",
+      "file": "livestream_v1_generated_livestream_service_create_input_async.py",
+      "regionTag": "livestream_v1_generated_LivestreamService_CreateInput_async",
       "segments": [
         {
           "end": 49,
@@ -232,8 +232,8 @@
           "shortName": "CreateInput"
         }
       },
-      "file": "livestream_generated_live_stream_v1_livestream_service_create_input_sync.py",
-      "regionTag": "livestream_generated_live_stream_v1_LivestreamService_CreateInput_sync",
+      "file": "livestream_v1_generated_livestream_service_create_input_sync.py",
+      "regionTag": "livestream_v1_generated_LivestreamService_CreateInput_sync",
       "segments": [
         {
           "end": 49,
@@ -277,8 +277,8 @@
           "shortName": "DeleteChannel"
         }
       },
-      "file": "livestream_generated_live_stream_v1_livestream_service_delete_channel_async.py",
-      "regionTag": "livestream_generated_live_stream_v1_LivestreamService_DeleteChannel_async",
+      "file": "livestream_v1_generated_livestream_service_delete_channel_async.py",
+      "regionTag": "livestream_v1_generated_LivestreamService_DeleteChannel_async",
       "segments": [
         {
           "end": 48,
@@ -321,8 +321,8 @@
           "shortName": "DeleteChannel"
         }
       },
-      "file": "livestream_generated_live_stream_v1_livestream_service_delete_channel_sync.py",
-      "regionTag": "livestream_generated_live_stream_v1_LivestreamService_DeleteChannel_sync",
+      "file": "livestream_v1_generated_livestream_service_delete_channel_sync.py",
+      "regionTag": "livestream_v1_generated_LivestreamService_DeleteChannel_sync",
       "segments": [
         {
           "end": 48,
@@ -366,8 +366,8 @@
           "shortName": "DeleteEvent"
         }
       },
-      "file": "livestream_generated_live_stream_v1_livestream_service_delete_event_async.py",
-      "regionTag": "livestream_generated_live_stream_v1_LivestreamService_DeleteEvent_async",
+      "file": "livestream_v1_generated_livestream_service_delete_event_async.py",
+      "regionTag": "livestream_v1_generated_LivestreamService_DeleteEvent_async",
       "segments": [
         {
           "end": 42,
@@ -408,8 +408,8 @@
           "shortName": "DeleteEvent"
         }
       },
-      "file": "livestream_generated_live_stream_v1_livestream_service_delete_event_sync.py",
-      "regionTag": "livestream_generated_live_stream_v1_LivestreamService_DeleteEvent_sync",
+      "file": "livestream_v1_generated_livestream_service_delete_event_sync.py",
+      "regionTag": "livestream_v1_generated_LivestreamService_DeleteEvent_sync",
       "segments": [
         {
           "end": 42,
@@ -451,8 +451,8 @@
           "shortName": "DeleteInput"
         }
       },
-      "file": "livestream_generated_live_stream_v1_livestream_service_delete_input_async.py",
-      "regionTag": "livestream_generated_live_stream_v1_LivestreamService_DeleteInput_async",
+      "file": "livestream_v1_generated_livestream_service_delete_input_async.py",
+      "regionTag": "livestream_v1_generated_LivestreamService_DeleteInput_async",
       "segments": [
         {
           "end": 48,
@@ -495,8 +495,8 @@
           "shortName": "DeleteInput"
         }
       },
-      "file": "livestream_generated_live_stream_v1_livestream_service_delete_input_sync.py",
-      "regionTag": "livestream_generated_live_stream_v1_LivestreamService_DeleteInput_sync",
+      "file": "livestream_v1_generated_livestream_service_delete_input_sync.py",
+      "regionTag": "livestream_v1_generated_LivestreamService_DeleteInput_sync",
       "segments": [
         {
           "end": 48,
@@ -540,8 +540,8 @@
           "shortName": "GetChannel"
         }
       },
-      "file": "livestream_generated_live_stream_v1_livestream_service_get_channel_async.py",
-      "regionTag": "livestream_generated_live_stream_v1_LivestreamService_GetChannel_async",
+      "file": "livestream_v1_generated_livestream_service_get_channel_async.py",
+      "regionTag": "livestream_v1_generated_LivestreamService_GetChannel_async",
       "segments": [
         {
           "end": 44,
@@ -584,8 +584,8 @@
           "shortName": "GetChannel"
         }
       },
-      "file": "livestream_generated_live_stream_v1_livestream_service_get_channel_sync.py",
-      "regionTag": "livestream_generated_live_stream_v1_LivestreamService_GetChannel_sync",
+      "file": "livestream_v1_generated_livestream_service_get_channel_sync.py",
+      "regionTag": "livestream_v1_generated_LivestreamService_GetChannel_sync",
       "segments": [
         {
           "end": 44,
@@ -629,8 +629,8 @@
           "shortName": "GetEvent"
         }
       },
-      "file": "livestream_generated_live_stream_v1_livestream_service_get_event_async.py",
-      "regionTag": "livestream_generated_live_stream_v1_LivestreamService_GetEvent_async",
+      "file": "livestream_v1_generated_livestream_service_get_event_async.py",
+      "regionTag": "livestream_v1_generated_LivestreamService_GetEvent_async",
       "segments": [
         {
           "end": 44,
@@ -673,8 +673,8 @@
           "shortName": "GetEvent"
         }
       },
-      "file": "livestream_generated_live_stream_v1_livestream_service_get_event_sync.py",
-      "regionTag": "livestream_generated_live_stream_v1_LivestreamService_GetEvent_sync",
+      "file": "livestream_v1_generated_livestream_service_get_event_sync.py",
+      "regionTag": "livestream_v1_generated_LivestreamService_GetEvent_sync",
       "segments": [
         {
           "end": 44,
@@ -718,8 +718,8 @@
           "shortName": "GetInput"
         }
       },
-      "file": "livestream_generated_live_stream_v1_livestream_service_get_input_async.py",
-      "regionTag": "livestream_generated_live_stream_v1_LivestreamService_GetInput_async",
+      "file": "livestream_v1_generated_livestream_service_get_input_async.py",
+      "regionTag": "livestream_v1_generated_LivestreamService_GetInput_async",
       "segments": [
         {
           "end": 44,
@@ -762,8 +762,8 @@
           "shortName": "GetInput"
         }
       },
-      "file": "livestream_generated_live_stream_v1_livestream_service_get_input_sync.py",
-      "regionTag": "livestream_generated_live_stream_v1_LivestreamService_GetInput_sync",
+      "file": "livestream_v1_generated_livestream_service_get_input_sync.py",
+      "regionTag": "livestream_v1_generated_LivestreamService_GetInput_sync",
       "segments": [
         {
           "end": 44,
@@ -807,8 +807,8 @@
           "shortName": "ListChannels"
         }
       },
-      "file": "livestream_generated_live_stream_v1_livestream_service_list_channels_async.py",
-      "regionTag": "livestream_generated_live_stream_v1_LivestreamService_ListChannels_async",
+      "file": "livestream_v1_generated_livestream_service_list_channels_async.py",
+      "regionTag": "livestream_v1_generated_LivestreamService_ListChannels_async",
       "segments": [
         {
           "end": 45,
@@ -851,8 +851,8 @@
           "shortName": "ListChannels"
         }
       },
-      "file": "livestream_generated_live_stream_v1_livestream_service_list_channels_sync.py",
-      "regionTag": "livestream_generated_live_stream_v1_LivestreamService_ListChannels_sync",
+      "file": "livestream_v1_generated_livestream_service_list_channels_sync.py",
+      "regionTag": "livestream_v1_generated_LivestreamService_ListChannels_sync",
       "segments": [
         {
           "end": 45,
@@ -896,8 +896,8 @@
           "shortName": "ListEvents"
         }
       },
-      "file": "livestream_generated_live_stream_v1_livestream_service_list_events_async.py",
-      "regionTag": "livestream_generated_live_stream_v1_LivestreamService_ListEvents_async",
+      "file": "livestream_v1_generated_livestream_service_list_events_async.py",
+      "regionTag": "livestream_v1_generated_LivestreamService_ListEvents_async",
       "segments": [
         {
           "end": 45,
@@ -940,8 +940,8 @@
           "shortName": "ListEvents"
         }
       },
-      "file": "livestream_generated_live_stream_v1_livestream_service_list_events_sync.py",
-      "regionTag": "livestream_generated_live_stream_v1_LivestreamService_ListEvents_sync",
+      "file": "livestream_v1_generated_livestream_service_list_events_sync.py",
+      "regionTag": "livestream_v1_generated_LivestreamService_ListEvents_sync",
       "segments": [
         {
           "end": 45,
@@ -985,8 +985,8 @@
           "shortName": "ListInputs"
         }
       },
-      "file": "livestream_generated_live_stream_v1_livestream_service_list_inputs_async.py",
-      "regionTag": "livestream_generated_live_stream_v1_LivestreamService_ListInputs_async",
+      "file": "livestream_v1_generated_livestream_service_list_inputs_async.py",
+      "regionTag": "livestream_v1_generated_LivestreamService_ListInputs_async",
       "segments": [
         {
           "end": 45,
@@ -1029,8 +1029,8 @@
           "shortName": "ListInputs"
         }
       },
-      "file": "livestream_generated_live_stream_v1_livestream_service_list_inputs_sync.py",
-      "regionTag": "livestream_generated_live_stream_v1_LivestreamService_ListInputs_sync",
+      "file": "livestream_v1_generated_livestream_service_list_inputs_sync.py",
+      "regionTag": "livestream_v1_generated_LivestreamService_ListInputs_sync",
       "segments": [
         {
           "end": 45,
@@ -1074,8 +1074,8 @@
           "shortName": "StartChannel"
         }
       },
-      "file": "livestream_generated_live_stream_v1_livestream_service_start_channel_async.py",
-      "regionTag": "livestream_generated_live_stream_v1_LivestreamService_StartChannel_async",
+      "file": "livestream_v1_generated_livestream_service_start_channel_async.py",
+      "regionTag": "livestream_v1_generated_LivestreamService_StartChannel_async",
       "segments": [
         {
           "end": 48,
@@ -1118,8 +1118,8 @@
           "shortName": "StartChannel"
         }
       },
-      "file": "livestream_generated_live_stream_v1_livestream_service_start_channel_sync.py",
-      "regionTag": "livestream_generated_live_stream_v1_LivestreamService_StartChannel_sync",
+      "file": "livestream_v1_generated_livestream_service_start_channel_sync.py",
+      "regionTag": "livestream_v1_generated_LivestreamService_StartChannel_sync",
       "segments": [
         {
           "end": 48,
@@ -1163,8 +1163,8 @@
           "shortName": "StopChannel"
         }
       },
-      "file": "livestream_generated_live_stream_v1_livestream_service_stop_channel_async.py",
-      "regionTag": "livestream_generated_live_stream_v1_LivestreamService_StopChannel_async",
+      "file": "livestream_v1_generated_livestream_service_stop_channel_async.py",
+      "regionTag": "livestream_v1_generated_LivestreamService_StopChannel_async",
       "segments": [
         {
           "end": 48,
@@ -1207,8 +1207,8 @@
           "shortName": "StopChannel"
         }
       },
-      "file": "livestream_generated_live_stream_v1_livestream_service_stop_channel_sync.py",
-      "regionTag": "livestream_generated_live_stream_v1_LivestreamService_StopChannel_sync",
+      "file": "livestream_v1_generated_livestream_service_stop_channel_sync.py",
+      "regionTag": "livestream_v1_generated_LivestreamService_StopChannel_sync",
       "segments": [
         {
           "end": 48,
@@ -1252,8 +1252,8 @@
           "shortName": "UpdateChannel"
         }
       },
-      "file": "livestream_generated_live_stream_v1_livestream_service_update_channel_async.py",
-      "regionTag": "livestream_generated_live_stream_v1_LivestreamService_UpdateChannel_async",
+      "file": "livestream_v1_generated_livestream_service_update_channel_async.py",
+      "regionTag": "livestream_v1_generated_LivestreamService_UpdateChannel_async",
       "segments": [
         {
           "end": 47,
@@ -1296,8 +1296,8 @@
           "shortName": "UpdateChannel"
         }
       },
-      "file": "livestream_generated_live_stream_v1_livestream_service_update_channel_sync.py",
-      "regionTag": "livestream_generated_live_stream_v1_LivestreamService_UpdateChannel_sync",
+      "file": "livestream_v1_generated_livestream_service_update_channel_sync.py",
+      "regionTag": "livestream_v1_generated_LivestreamService_UpdateChannel_sync",
       "segments": [
         {
           "end": 47,
@@ -1341,8 +1341,8 @@
           "shortName": "UpdateInput"
         }
       },
-      "file": "livestream_generated_live_stream_v1_livestream_service_update_input_async.py",
-      "regionTag": "livestream_generated_live_stream_v1_LivestreamService_UpdateInput_async",
+      "file": "livestream_v1_generated_livestream_service_update_input_async.py",
+      "regionTag": "livestream_v1_generated_LivestreamService_UpdateInput_async",
       "segments": [
         {
           "end": 47,
@@ -1385,8 +1385,8 @@
           "shortName": "UpdateInput"
         }
       },
-      "file": "livestream_generated_live_stream_v1_livestream_service_update_input_sync.py",
-      "regionTag": "livestream_generated_live_stream_v1_LivestreamService_UpdateInput_sync",
+      "file": "livestream_v1_generated_livestream_service_update_input_sync.py",
+      "regionTag": "livestream_v1_generated_LivestreamService_UpdateInput_sync",
       "segments": [
         {
           "end": 47,

@@ -462,8 +462,7 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
         specified region.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.video import live_stream_v1
 
@@ -593,8 +592,7 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
         region.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.video import live_stream_v1
 
@@ -694,8 +692,7 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
     ) -> resources.Channel:
         r"""Returns the specified channel.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.video import live_stream_v1
 
@@ -792,8 +789,7 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
     ) -> operation.Operation:
         r"""Deletes the specified channel.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.video import live_stream_v1
 
@@ -910,8 +906,7 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
     ) -> operation.Operation:
         r"""Updates the specified channel.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.video import live_stream_v1
 
@@ -1044,8 +1039,7 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
         request is received by the server.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.video import live_stream_v1
 
@@ -1155,8 +1149,7 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
         is received by the server.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.video import live_stream_v1
 
@@ -1267,8 +1260,7 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
         specified region.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.video import live_stream_v1
 
@@ -1392,8 +1384,7 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
     ) -> pagers.ListInputsPager:
         r"""Returns a list of all inputs in the specified region.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.video import live_stream_v1
 
@@ -1493,8 +1484,7 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
     ) -> resources.Input:
         r"""Returns the specified input.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.video import live_stream_v1
 
@@ -1586,8 +1576,7 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
     ) -> operation.Operation:
         r"""Deletes the specified input.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.video import live_stream_v1
 
@@ -1704,8 +1693,7 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
     ) -> operation.Operation:
         r"""Updates the specified input.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.video import live_stream_v1
 
@@ -1831,8 +1819,7 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
         specified channel.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.video import live_stream_v1
 
@@ -1947,8 +1934,7 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
         channel.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.video import live_stream_v1
 
@@ -2049,8 +2035,7 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
     ) -> resources.Event:
         r"""Returns the specified event.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.video import live_stream_v1
 
@@ -2143,8 +2128,7 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
     ) -> None:
         r"""Deletes the specified event.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.video import live_stream_v1
 
