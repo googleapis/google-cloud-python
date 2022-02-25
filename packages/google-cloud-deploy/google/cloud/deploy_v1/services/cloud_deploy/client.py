@@ -542,8 +542,7 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
         location.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import deploy_v1
 
@@ -643,8 +642,7 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
     ) -> cloud_deploy.DeliveryPipeline:
         r"""Gets details of a single DeliveryPipeline.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import deploy_v1
 
@@ -742,8 +740,7 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
         location.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import deploy_v1
 
@@ -869,8 +866,7 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
     ) -> operation.Operation:
         r"""Updates the parameters of a single DeliveryPipeline.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import deploy_v1
 
@@ -992,8 +988,7 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
     ) -> operation.Operation:
         r"""Deletes a single DeliveryPipeline.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import deploy_v1
 
@@ -1109,8 +1104,7 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
     ) -> pagers.ListTargetsPager:
         r"""Lists Targets in a given project and location.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import deploy_v1
 
@@ -1210,8 +1204,7 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
     ) -> cloud_deploy.Target:
         r"""Gets details of a single Target.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import deploy_v1
 
@@ -1304,8 +1297,7 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
     ) -> operation.Operation:
         r"""Creates a new Target in a given project and location.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import deploy_v1
 
@@ -1430,8 +1422,7 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
     ) -> operation.Operation:
         r"""Updates the parameters of a single Target.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import deploy_v1
 
@@ -1551,8 +1542,7 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
     ) -> operation.Operation:
         r"""Deletes a single Target.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import deploy_v1
 
@@ -1668,8 +1658,7 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
     ) -> pagers.ListReleasesPager:
         r"""Lists Releases in a given project and location.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import deploy_v1
 
@@ -1768,8 +1757,7 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
     ) -> cloud_deploy.Release:
         r"""Gets details of a single Release.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import deploy_v1
 
@@ -1864,8 +1852,7 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
         location.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import deploy_v1
 
@@ -1989,8 +1976,7 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
     ) -> cloud_deploy.ApproveRolloutResponse:
         r"""Approves a Rollout.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import deploy_v1
 
@@ -2081,8 +2067,7 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
     ) -> pagers.ListRolloutsPager:
         r"""Lists Rollouts in a given project and location.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import deploy_v1
 
@@ -2182,8 +2167,7 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
     ) -> cloud_deploy.Rollout:
         r"""Gets details of a single Rollout.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import deploy_v1
 
@@ -2279,8 +2263,7 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
         location.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import deploy_v1
 
@@ -2408,8 +2391,7 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
     ) -> cloud_deploy.Config:
         r"""Gets the configuration for a location.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import deploy_v1
 

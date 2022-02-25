@@ -235,7 +235,7 @@ class CloudDeployAsyncClient:
         location.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import deploy_v1
 
@@ -344,7 +344,7 @@ class CloudDeployAsyncClient:
     ) -> cloud_deploy.DeliveryPipeline:
         r"""Gets details of a single DeliveryPipeline.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import deploy_v1
 
@@ -451,7 +451,7 @@ class CloudDeployAsyncClient:
         location.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import deploy_v1
 
@@ -577,7 +577,7 @@ class CloudDeployAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Updates the parameters of a single DeliveryPipeline.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import deploy_v1
 
@@ -699,7 +699,7 @@ class CloudDeployAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Deletes a single DeliveryPipeline.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import deploy_v1
 
@@ -815,7 +815,7 @@ class CloudDeployAsyncClient:
     ) -> pagers.ListTargetsAsyncPager:
         r"""Lists Targets in a given project and location.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import deploy_v1
 
@@ -924,7 +924,7 @@ class CloudDeployAsyncClient:
     ) -> cloud_deploy.Target:
         r"""Gets details of a single Target.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import deploy_v1
 
@@ -1026,7 +1026,7 @@ class CloudDeployAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Creates a new Target in a given project and location.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import deploy_v1
 
@@ -1151,7 +1151,7 @@ class CloudDeployAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Updates the parameters of a single Target.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import deploy_v1
 
@@ -1271,7 +1271,7 @@ class CloudDeployAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Deletes a single Target.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import deploy_v1
 
@@ -1387,7 +1387,7 @@ class CloudDeployAsyncClient:
     ) -> pagers.ListReleasesAsyncPager:
         r"""Lists Releases in a given project and location.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import deploy_v1
 
@@ -1495,7 +1495,7 @@ class CloudDeployAsyncClient:
     ) -> cloud_deploy.Release:
         r"""Gets details of a single Release.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import deploy_v1
 
@@ -1599,7 +1599,7 @@ class CloudDeployAsyncClient:
         location.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import deploy_v1
 
@@ -1723,7 +1723,7 @@ class CloudDeployAsyncClient:
     ) -> cloud_deploy.ApproveRolloutResponse:
         r"""Approves a Rollout.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import deploy_v1
 
@@ -1814,7 +1814,7 @@ class CloudDeployAsyncClient:
     ) -> pagers.ListRolloutsAsyncPager:
         r"""Lists Rollouts in a given project and location.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import deploy_v1
 
@@ -1923,7 +1923,7 @@ class CloudDeployAsyncClient:
     ) -> cloud_deploy.Rollout:
         r"""Gets details of a single Rollout.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import deploy_v1
 
@@ -2028,7 +2028,7 @@ class CloudDeployAsyncClient:
         location.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import deploy_v1
 
@@ -2156,7 +2156,7 @@ class CloudDeployAsyncClient:
     ) -> cloud_deploy.Config:
         r"""Gets the configuration for a location.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import deploy_v1
 

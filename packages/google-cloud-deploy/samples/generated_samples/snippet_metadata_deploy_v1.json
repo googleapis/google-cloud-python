@@ -10,8 +10,8 @@
           "shortName": "ApproveRollout"
         }
       },
-      "file": "clouddeploy_generated_deploy_v1_cloud_deploy_approve_rollout_async.py",
-      "regionTag": "clouddeploy_generated_deploy_v1_CloudDeploy_ApproveRollout_async",
+      "file": "clouddeploy_v1_generated_cloud_deploy_approve_rollout_async.py",
+      "regionTag": "clouddeploy_v1_generated_CloudDeploy_ApproveRollout_async",
       "segments": [
         {
           "end": 45,
@@ -54,8 +54,8 @@
           "shortName": "ApproveRollout"
         }
       },
-      "file": "clouddeploy_generated_deploy_v1_cloud_deploy_approve_rollout_sync.py",
-      "regionTag": "clouddeploy_generated_deploy_v1_CloudDeploy_ApproveRollout_sync",
+      "file": "clouddeploy_v1_generated_cloud_deploy_approve_rollout_sync.py",
+      "regionTag": "clouddeploy_v1_generated_CloudDeploy_ApproveRollout_sync",
       "segments": [
         {
           "end": 45,
@@ -99,8 +99,8 @@
           "shortName": "CreateDeliveryPipeline"
         }
       },
-      "file": "clouddeploy_generated_deploy_v1_cloud_deploy_create_delivery_pipeline_async.py",
-      "regionTag": "clouddeploy_generated_deploy_v1_CloudDeploy_CreateDeliveryPipeline_async",
+      "file": "clouddeploy_v1_generated_cloud_deploy_create_delivery_pipeline_async.py",
+      "regionTag": "clouddeploy_v1_generated_CloudDeploy_CreateDeliveryPipeline_async",
       "segments": [
         {
           "end": 49,
@@ -143,8 +143,8 @@
           "shortName": "CreateDeliveryPipeline"
         }
       },
-      "file": "clouddeploy_generated_deploy_v1_cloud_deploy_create_delivery_pipeline_sync.py",
-      "regionTag": "clouddeploy_generated_deploy_v1_CloudDeploy_CreateDeliveryPipeline_sync",
+      "file": "clouddeploy_v1_generated_cloud_deploy_create_delivery_pipeline_sync.py",
+      "regionTag": "clouddeploy_v1_generated_CloudDeploy_CreateDeliveryPipeline_sync",
       "segments": [
         {
           "end": 49,
@@ -188,8 +188,8 @@
           "shortName": "CreateRelease"
         }
       },
-      "file": "clouddeploy_generated_deploy_v1_cloud_deploy_create_release_async.py",
-      "regionTag": "clouddeploy_generated_deploy_v1_CloudDeploy_CreateRelease_async",
+      "file": "clouddeploy_v1_generated_cloud_deploy_create_release_async.py",
+      "regionTag": "clouddeploy_v1_generated_CloudDeploy_CreateRelease_async",
       "segments": [
         {
           "end": 49,
@@ -232,8 +232,8 @@
           "shortName": "CreateRelease"
         }
       },
-      "file": "clouddeploy_generated_deploy_v1_cloud_deploy_create_release_sync.py",
-      "regionTag": "clouddeploy_generated_deploy_v1_CloudDeploy_CreateRelease_sync",
+      "file": "clouddeploy_v1_generated_cloud_deploy_create_release_sync.py",
+      "regionTag": "clouddeploy_v1_generated_CloudDeploy_CreateRelease_sync",
       "segments": [
         {
           "end": 49,
@@ -277,8 +277,8 @@
           "shortName": "CreateRollout"
         }
       },
-      "file": "clouddeploy_generated_deploy_v1_cloud_deploy_create_rollout_async.py",
-      "regionTag": "clouddeploy_generated_deploy_v1_CloudDeploy_CreateRollout_async",
+      "file": "clouddeploy_v1_generated_cloud_deploy_create_rollout_async.py",
+      "regionTag": "clouddeploy_v1_generated_CloudDeploy_CreateRollout_async",
       "segments": [
         {
           "end": 53,
@@ -321,8 +321,8 @@
           "shortName": "CreateRollout"
         }
       },
-      "file": "clouddeploy_generated_deploy_v1_cloud_deploy_create_rollout_sync.py",
-      "regionTag": "clouddeploy_generated_deploy_v1_CloudDeploy_CreateRollout_sync",
+      "file": "clouddeploy_v1_generated_cloud_deploy_create_rollout_sync.py",
+      "regionTag": "clouddeploy_v1_generated_CloudDeploy_CreateRollout_sync",
       "segments": [
         {
           "end": 53,
@@ -366,8 +366,8 @@
           "shortName": "CreateTarget"
         }
       },
-      "file": "clouddeploy_generated_deploy_v1_cloud_deploy_create_target_async.py",
-      "regionTag": "clouddeploy_generated_deploy_v1_CloudDeploy_CreateTarget_async",
+      "file": "clouddeploy_v1_generated_cloud_deploy_create_target_async.py",
+      "regionTag": "clouddeploy_v1_generated_CloudDeploy_CreateTarget_async",
       "segments": [
         {
           "end": 49,
@@ -410,8 +410,8 @@
           "shortName": "CreateTarget"
         }
       },
-      "file": "clouddeploy_generated_deploy_v1_cloud_deploy_create_target_sync.py",
-      "regionTag": "clouddeploy_generated_deploy_v1_CloudDeploy_CreateTarget_sync",
+      "file": "clouddeploy_v1_generated_cloud_deploy_create_target_sync.py",
+      "regionTag": "clouddeploy_v1_generated_CloudDeploy_CreateTarget_sync",
       "segments": [
         {
           "end": 49,
@@ -455,8 +455,8 @@
           "shortName": "DeleteDeliveryPipeline"
         }
       },
-      "file": "clouddeploy_generated_deploy_v1_cloud_deploy_delete_delivery_pipeline_async.py",
-      "regionTag": "clouddeploy_generated_deploy_v1_CloudDeploy_DeleteDeliveryPipeline_async",
+      "file": "clouddeploy_v1_generated_cloud_deploy_delete_delivery_pipeline_async.py",
+      "regionTag": "clouddeploy_v1_generated_CloudDeploy_DeleteDeliveryPipeline_async",
       "segments": [
         {
           "end": 48,
@@ -499,8 +499,8 @@
           "shortName": "DeleteDeliveryPipeline"
         }
       },
-      "file": "clouddeploy_generated_deploy_v1_cloud_deploy_delete_delivery_pipeline_sync.py",
-      "regionTag": "clouddeploy_generated_deploy_v1_CloudDeploy_DeleteDeliveryPipeline_sync",
+      "file": "clouddeploy_v1_generated_cloud_deploy_delete_delivery_pipeline_sync.py",
+      "regionTag": "clouddeploy_v1_generated_CloudDeploy_DeleteDeliveryPipeline_sync",
       "segments": [
         {
           "end": 48,
@@ -544,8 +544,8 @@
           "shortName": "DeleteTarget"
         }
       },
-      "file": "clouddeploy_generated_deploy_v1_cloud_deploy_delete_target_async.py",
-      "regionTag": "clouddeploy_generated_deploy_v1_CloudDeploy_DeleteTarget_async",
+      "file": "clouddeploy_v1_generated_cloud_deploy_delete_target_async.py",
+      "regionTag": "clouddeploy_v1_generated_CloudDeploy_DeleteTarget_async",
       "segments": [
         {
           "end": 48,
@@ -588,8 +588,8 @@
           "shortName": "DeleteTarget"
         }
       },
-      "file": "clouddeploy_generated_deploy_v1_cloud_deploy_delete_target_sync.py",
-      "regionTag": "clouddeploy_generated_deploy_v1_CloudDeploy_DeleteTarget_sync",
+      "file": "clouddeploy_v1_generated_cloud_deploy_delete_target_sync.py",
+      "regionTag": "clouddeploy_v1_generated_CloudDeploy_DeleteTarget_sync",
       "segments": [
         {
           "end": 48,
@@ -633,8 +633,8 @@
           "shortName": "GetConfig"
         }
       },
-      "file": "clouddeploy_generated_deploy_v1_cloud_deploy_get_config_async.py",
-      "regionTag": "clouddeploy_generated_deploy_v1_CloudDeploy_GetConfig_async",
+      "file": "clouddeploy_v1_generated_cloud_deploy_get_config_async.py",
+      "regionTag": "clouddeploy_v1_generated_CloudDeploy_GetConfig_async",
       "segments": [
         {
           "end": 44,
@@ -677,8 +677,8 @@
           "shortName": "GetConfig"
         }
       },
-      "file": "clouddeploy_generated_deploy_v1_cloud_deploy_get_config_sync.py",
-      "regionTag": "clouddeploy_generated_deploy_v1_CloudDeploy_GetConfig_sync",
+      "file": "clouddeploy_v1_generated_cloud_deploy_get_config_sync.py",
+      "regionTag": "clouddeploy_v1_generated_CloudDeploy_GetConfig_sync",
       "segments": [
         {
           "end": 44,
@@ -722,8 +722,8 @@
           "shortName": "GetDeliveryPipeline"
         }
       },
-      "file": "clouddeploy_generated_deploy_v1_cloud_deploy_get_delivery_pipeline_async.py",
-      "regionTag": "clouddeploy_generated_deploy_v1_CloudDeploy_GetDeliveryPipeline_async",
+      "file": "clouddeploy_v1_generated_cloud_deploy_get_delivery_pipeline_async.py",
+      "regionTag": "clouddeploy_v1_generated_CloudDeploy_GetDeliveryPipeline_async",
       "segments": [
         {
           "end": 44,
@@ -766,8 +766,8 @@
           "shortName": "GetDeliveryPipeline"
         }
       },
-      "file": "clouddeploy_generated_deploy_v1_cloud_deploy_get_delivery_pipeline_sync.py",
-      "regionTag": "clouddeploy_generated_deploy_v1_CloudDeploy_GetDeliveryPipeline_sync",
+      "file": "clouddeploy_v1_generated_cloud_deploy_get_delivery_pipeline_sync.py",
+      "regionTag": "clouddeploy_v1_generated_CloudDeploy_GetDeliveryPipeline_sync",
       "segments": [
         {
           "end": 44,
@@ -811,8 +811,8 @@
           "shortName": "GetRelease"
         }
       },
-      "file": "clouddeploy_generated_deploy_v1_cloud_deploy_get_release_async.py",
-      "regionTag": "clouddeploy_generated_deploy_v1_CloudDeploy_GetRelease_async",
+      "file": "clouddeploy_v1_generated_cloud_deploy_get_release_async.py",
+      "regionTag": "clouddeploy_v1_generated_CloudDeploy_GetRelease_async",
       "segments": [
         {
           "end": 44,
@@ -855,8 +855,8 @@
           "shortName": "GetRelease"
         }
       },
-      "file": "clouddeploy_generated_deploy_v1_cloud_deploy_get_release_sync.py",
-      "regionTag": "clouddeploy_generated_deploy_v1_CloudDeploy_GetRelease_sync",
+      "file": "clouddeploy_v1_generated_cloud_deploy_get_release_sync.py",
+      "regionTag": "clouddeploy_v1_generated_CloudDeploy_GetRelease_sync",
       "segments": [
         {
           "end": 44,
@@ -900,8 +900,8 @@
           "shortName": "GetRollout"
         }
       },
-      "file": "clouddeploy_generated_deploy_v1_cloud_deploy_get_rollout_async.py",
-      "regionTag": "clouddeploy_generated_deploy_v1_CloudDeploy_GetRollout_async",
+      "file": "clouddeploy_v1_generated_cloud_deploy_get_rollout_async.py",
+      "regionTag": "clouddeploy_v1_generated_CloudDeploy_GetRollout_async",
       "segments": [
         {
           "end": 44,
@@ -944,8 +944,8 @@
           "shortName": "GetRollout"
         }
       },
-      "file": "clouddeploy_generated_deploy_v1_cloud_deploy_get_rollout_sync.py",
-      "regionTag": "clouddeploy_generated_deploy_v1_CloudDeploy_GetRollout_sync",
+      "file": "clouddeploy_v1_generated_cloud_deploy_get_rollout_sync.py",
+      "regionTag": "clouddeploy_v1_generated_CloudDeploy_GetRollout_sync",
       "segments": [
         {
           "end": 44,
@@ -989,8 +989,8 @@
           "shortName": "GetTarget"
         }
       },
-      "file": "clouddeploy_generated_deploy_v1_cloud_deploy_get_target_async.py",
-      "regionTag": "clouddeploy_generated_deploy_v1_CloudDeploy_GetTarget_async",
+      "file": "clouddeploy_v1_generated_cloud_deploy_get_target_async.py",
+      "regionTag": "clouddeploy_v1_generated_CloudDeploy_GetTarget_async",
       "segments": [
         {
           "end": 44,
@@ -1033,8 +1033,8 @@
           "shortName": "GetTarget"
         }
       },
-      "file": "clouddeploy_generated_deploy_v1_cloud_deploy_get_target_sync.py",
-      "regionTag": "clouddeploy_generated_deploy_v1_CloudDeploy_GetTarget_sync",
+      "file": "clouddeploy_v1_generated_cloud_deploy_get_target_sync.py",
+      "regionTag": "clouddeploy_v1_generated_CloudDeploy_GetTarget_sync",
       "segments": [
         {
           "end": 44,
@@ -1078,8 +1078,8 @@
           "shortName": "ListDeliveryPipelines"
         }
       },
-      "file": "clouddeploy_generated_deploy_v1_cloud_deploy_list_delivery_pipelines_async.py",
-      "regionTag": "clouddeploy_generated_deploy_v1_CloudDeploy_ListDeliveryPipelines_async",
+      "file": "clouddeploy_v1_generated_cloud_deploy_list_delivery_pipelines_async.py",
+      "regionTag": "clouddeploy_v1_generated_CloudDeploy_ListDeliveryPipelines_async",
       "segments": [
         {
           "end": 45,
@@ -1122,8 +1122,8 @@
           "shortName": "ListDeliveryPipelines"
         }
       },
-      "file": "clouddeploy_generated_deploy_v1_cloud_deploy_list_delivery_pipelines_sync.py",
-      "regionTag": "clouddeploy_generated_deploy_v1_CloudDeploy_ListDeliveryPipelines_sync",
+      "file": "clouddeploy_v1_generated_cloud_deploy_list_delivery_pipelines_sync.py",
+      "regionTag": "clouddeploy_v1_generated_CloudDeploy_ListDeliveryPipelines_sync",
       "segments": [
         {
           "end": 45,
@@ -1167,8 +1167,8 @@
           "shortName": "ListReleases"
         }
       },
-      "file": "clouddeploy_generated_deploy_v1_cloud_deploy_list_releases_async.py",
-      "regionTag": "clouddeploy_generated_deploy_v1_CloudDeploy_ListReleases_async",
+      "file": "clouddeploy_v1_generated_cloud_deploy_list_releases_async.py",
+      "regionTag": "clouddeploy_v1_generated_CloudDeploy_ListReleases_async",
       "segments": [
         {
           "end": 45,
@@ -1211,8 +1211,8 @@
           "shortName": "ListReleases"
         }
       },
-      "file": "clouddeploy_generated_deploy_v1_cloud_deploy_list_releases_sync.py",
-      "regionTag": "clouddeploy_generated_deploy_v1_CloudDeploy_ListReleases_sync",
+      "file": "clouddeploy_v1_generated_cloud_deploy_list_releases_sync.py",
+      "regionTag": "clouddeploy_v1_generated_CloudDeploy_ListReleases_sync",
       "segments": [
         {
           "end": 45,
@@ -1256,8 +1256,8 @@
           "shortName": "ListRollouts"
         }
       },
-      "file": "clouddeploy_generated_deploy_v1_cloud_deploy_list_rollouts_async.py",
-      "regionTag": "clouddeploy_generated_deploy_v1_CloudDeploy_ListRollouts_async",
+      "file": "clouddeploy_v1_generated_cloud_deploy_list_rollouts_async.py",
+      "regionTag": "clouddeploy_v1_generated_CloudDeploy_ListRollouts_async",
       "segments": [
         {
           "end": 45,
@@ -1300,8 +1300,8 @@
           "shortName": "ListRollouts"
         }
       },
-      "file": "clouddeploy_generated_deploy_v1_cloud_deploy_list_rollouts_sync.py",
-      "regionTag": "clouddeploy_generated_deploy_v1_CloudDeploy_ListRollouts_sync",
+      "file": "clouddeploy_v1_generated_cloud_deploy_list_rollouts_sync.py",
+      "regionTag": "clouddeploy_v1_generated_CloudDeploy_ListRollouts_sync",
       "segments": [
         {
           "end": 45,
@@ -1345,8 +1345,8 @@
           "shortName": "ListTargets"
         }
       },
-      "file": "clouddeploy_generated_deploy_v1_cloud_deploy_list_targets_async.py",
-      "regionTag": "clouddeploy_generated_deploy_v1_CloudDeploy_ListTargets_async",
+      "file": "clouddeploy_v1_generated_cloud_deploy_list_targets_async.py",
+      "regionTag": "clouddeploy_v1_generated_CloudDeploy_ListTargets_async",
       "segments": [
         {
           "end": 45,
@@ -1389,8 +1389,8 @@
           "shortName": "ListTargets"
         }
       },
-      "file": "clouddeploy_generated_deploy_v1_cloud_deploy_list_targets_sync.py",
-      "regionTag": "clouddeploy_generated_deploy_v1_CloudDeploy_ListTargets_sync",
+      "file": "clouddeploy_v1_generated_cloud_deploy_list_targets_sync.py",
+      "regionTag": "clouddeploy_v1_generated_CloudDeploy_ListTargets_sync",
       "segments": [
         {
           "end": 45,
@@ -1434,8 +1434,8 @@
           "shortName": "UpdateDeliveryPipeline"
         }
       },
-      "file": "clouddeploy_generated_deploy_v1_cloud_deploy_update_delivery_pipeline_async.py",
-      "regionTag": "clouddeploy_generated_deploy_v1_CloudDeploy_UpdateDeliveryPipeline_async",
+      "file": "clouddeploy_v1_generated_cloud_deploy_update_delivery_pipeline_async.py",
+      "regionTag": "clouddeploy_v1_generated_CloudDeploy_UpdateDeliveryPipeline_async",
       "segments": [
         {
           "end": 47,
@@ -1478,8 +1478,8 @@
           "shortName": "UpdateDeliveryPipeline"
         }
       },
-      "file": "clouddeploy_generated_deploy_v1_cloud_deploy_update_delivery_pipeline_sync.py",
-      "regionTag": "clouddeploy_generated_deploy_v1_CloudDeploy_UpdateDeliveryPipeline_sync",
+      "file": "clouddeploy_v1_generated_cloud_deploy_update_delivery_pipeline_sync.py",
+      "regionTag": "clouddeploy_v1_generated_CloudDeploy_UpdateDeliveryPipeline_sync",
       "segments": [
         {
           "end": 47,
@@ -1523,8 +1523,8 @@
           "shortName": "UpdateTarget"
         }
       },
-      "file": "clouddeploy_generated_deploy_v1_cloud_deploy_update_target_async.py",
-      "regionTag": "clouddeploy_generated_deploy_v1_CloudDeploy_UpdateTarget_async",
+      "file": "clouddeploy_v1_generated_cloud_deploy_update_target_async.py",
+      "regionTag": "clouddeploy_v1_generated_CloudDeploy_UpdateTarget_async",
       "segments": [
         {
           "end": 47,
@@ -1567,8 +1567,8 @@
           "shortName": "UpdateTarget"
         }
       },
-      "file": "clouddeploy_generated_deploy_v1_cloud_deploy_update_target_sync.py",
-      "regionTag": "clouddeploy_generated_deploy_v1_CloudDeploy_UpdateTarget_sync",
+      "file": "clouddeploy_v1_generated_cloud_deploy_update_target_sync.py",
+      "regionTag": "clouddeploy_v1_generated_CloudDeploy_UpdateTarget_sync",
       "segments": [
         {
           "end": 47,
