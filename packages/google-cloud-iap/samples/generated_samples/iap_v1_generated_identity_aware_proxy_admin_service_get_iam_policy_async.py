@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for TestIamPermissions
+# Snippet for GetIamPolicy
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,24 +23,23 @@
 #   python3 -m pip install google-cloud-iap
 
 
-# [START iap_generated_iap_v1_IdentityAwareProxyAdminService_TestIamPermissions_async]
+# [START iap_v1_generated_IdentityAwareProxyAdminService_GetIamPolicy_async]
 from google.cloud import iap_v1
 
 
-async def sample_test_iam_permissions():
+async def sample_get_iam_policy():
     # Create a client
     client = iap_v1.IdentityAwareProxyAdminServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = iap_v1.TestIamPermissionsRequest(
+    request = iap_v1.GetIamPolicyRequest(
         resource="resource_value",
-        permissions=['permissions_value_1', 'permissions_value_2'],
     )
 
     # Make the request
-    response = await client.test_iam_permissions(request=request)
+    response = await client.get_iam_policy(request=request)
 
     # Handle the response
     print(response)
 
-# [END iap_generated_iap_v1_IdentityAwareProxyAdminService_TestIamPermissions_async]
+# [END iap_v1_generated_IdentityAwareProxyAdminService_GetIamPolicy_async]

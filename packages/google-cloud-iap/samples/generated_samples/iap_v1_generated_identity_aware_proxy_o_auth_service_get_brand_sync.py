@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for CreateBrand
+# Snippet for GetBrand
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,23 +23,23 @@
 #   python3 -m pip install google-cloud-iap
 
 
-# [START iap_generated_iap_v1_IdentityAwareProxyOAuthService_CreateBrand_sync]
+# [START iap_v1_generated_IdentityAwareProxyOAuthService_GetBrand_sync]
 from google.cloud import iap_v1
 
 
-def sample_create_brand():
+def sample_get_brand():
     # Create a client
     client = iap_v1.IdentityAwareProxyOAuthServiceClient()
 
     # Initialize request argument(s)
-    request = iap_v1.CreateBrandRequest(
-        parent="parent_value",
+    request = iap_v1.GetBrandRequest(
+        name="name_value",
     )
 
     # Make the request
-    response = client.create_brand(request=request)
+    response = client.get_brand(request=request)
 
     # Handle the response
     print(response)
 
-# [END iap_generated_iap_v1_IdentityAwareProxyOAuthService_CreateBrand_sync]
+# [END iap_v1_generated_IdentityAwareProxyOAuthService_GetBrand_sync]

@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for GetIdentityAwareProxyClient
+# Snippet for ListIdentityAwareProxyClients
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,23 +23,24 @@
 #   python3 -m pip install google-cloud-iap
 
 
-# [START iap_generated_iap_v1_IdentityAwareProxyOAuthService_GetIdentityAwareProxyClient_async]
+# [START iap_v1_generated_IdentityAwareProxyOAuthService_ListIdentityAwareProxyClients_async]
 from google.cloud import iap_v1
 
 
-async def sample_get_identity_aware_proxy_client():
+async def sample_list_identity_aware_proxy_clients():
     # Create a client
     client = iap_v1.IdentityAwareProxyOAuthServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = iap_v1.GetIdentityAwareProxyClientRequest(
-        name="name_value",
+    request = iap_v1.ListIdentityAwareProxyClientsRequest(
+        parent="parent_value",
     )
 
     # Make the request
-    response = await client.get_identity_aware_proxy_client(request=request)
+    page_result = client.list_identity_aware_proxy_clients(request=request)
 
     # Handle the response
-    print(response)
+    async for response in page_result:
+        print(response)
 
-# [END iap_generated_iap_v1_IdentityAwareProxyOAuthService_GetIdentityAwareProxyClient_async]
+# [END iap_v1_generated_IdentityAwareProxyOAuthService_ListIdentityAwareProxyClients_async]

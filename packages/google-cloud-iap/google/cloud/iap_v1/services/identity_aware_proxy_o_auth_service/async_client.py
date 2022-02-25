@@ -223,7 +223,7 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
     ) -> service.ListBrandsResponse:
         r"""Lists the existing brands for the project.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import iap_v1
 
@@ -298,7 +298,7 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
         by the caller.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import iap_v1
 
@@ -366,7 +366,7 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
     ) -> service.Brand:
         r"""Retrieves the OAuth brand of the project.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import iap_v1
 
@@ -438,7 +438,7 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
         use.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import iap_v1
 
@@ -506,7 +506,7 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
     ) -> pagers.ListIdentityAwareProxyClientsAsyncPager:
         r"""Lists the existing clients for the brand.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import iap_v1
 
@@ -586,7 +586,7 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
         Requires that the client is owned by IAP.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import iap_v1
 
@@ -657,7 +657,7 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
         that the client is owned by IAP.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import iap_v1
 
@@ -729,7 +729,7 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
         after tests. Requires that the client is owned by IAP.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import iap_v1
 

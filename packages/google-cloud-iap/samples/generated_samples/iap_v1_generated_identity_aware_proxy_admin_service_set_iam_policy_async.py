@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-iap
 
 
-# [START iap_generated_iap_v1_IdentityAwareProxyAdminService_SetIamPolicy_async]
+# [START iap_v1_generated_IdentityAwareProxyAdminService_SetIamPolicy_async]
 from google.cloud import iap_v1
 
 
@@ -42,4 +42,4 @@ async def sample_set_iam_policy():
     # Handle the response
     print(response)
 
-# [END iap_generated_iap_v1_IdentityAwareProxyAdminService_SetIamPolicy_async]
+# [END iap_v1_generated_IdentityAwareProxyAdminService_SetIamPolicy_async]

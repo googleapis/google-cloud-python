@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ListIdentityAwareProxyClients
+# Snippet for ListBrands
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,24 +23,23 @@
 #   python3 -m pip install google-cloud-iap
 
 
-# [START iap_generated_iap_v1_IdentityAwareProxyOAuthService_ListIdentityAwareProxyClients_async]
+# [START iap_v1_generated_IdentityAwareProxyOAuthService_ListBrands_sync]
 from google.cloud import iap_v1
 
 
-async def sample_list_identity_aware_proxy_clients():
+def sample_list_brands():
     # Create a client
-    client = iap_v1.IdentityAwareProxyOAuthServiceAsyncClient()
+    client = iap_v1.IdentityAwareProxyOAuthServiceClient()
 
     # Initialize request argument(s)
-    request = iap_v1.ListIdentityAwareProxyClientsRequest(
+    request = iap_v1.ListBrandsRequest(
         parent="parent_value",
     )
 
     # Make the request
-    page_result = client.list_identity_aware_proxy_clients(request=request)
+    response = client.list_brands(request=request)
 
     # Handle the response
-    async for response in page_result:
-        print(response)
+    print(response)
 
-# [END iap_generated_iap_v1_IdentityAwareProxyOAuthService_ListIdentityAwareProxyClients_async]
+# [END iap_v1_generated_IdentityAwareProxyOAuthService_ListBrands_sync]

@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ListBrands
+# Snippet for UpdateIapSettings
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,23 +23,26 @@
 #   python3 -m pip install google-cloud-iap
 
 
-# [START iap_generated_iap_v1_IdentityAwareProxyOAuthService_ListBrands_async]
+# [START iap_v1_generated_IdentityAwareProxyAdminService_UpdateIapSettings_sync]
 from google.cloud import iap_v1
 
 
-async def sample_list_brands():
+def sample_update_iap_settings():
     # Create a client
-    client = iap_v1.IdentityAwareProxyOAuthServiceAsyncClient()
+    client = iap_v1.IdentityAwareProxyAdminServiceClient()
 
     # Initialize request argument(s)
-    request = iap_v1.ListBrandsRequest(
-        parent="parent_value",
+    iap_settings = iap_v1.IapSettings()
+    iap_settings.name = "name_value"
+
+    request = iap_v1.UpdateIapSettingsRequest(
+        iap_settings=iap_settings,
     )
 
     # Make the request
-    response = await client.list_brands(request=request)
+    response = client.update_iap_settings(request=request)
 
     # Handle the response
     print(response)
 
-# [END iap_generated_iap_v1_IdentityAwareProxyOAuthService_ListBrands_async]
+# [END iap_v1_generated_IdentityAwareProxyAdminService_UpdateIapSettings_sync]

@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for SetIamPolicy
+# Snippet for ListBrands
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,23 +23,23 @@
 #   python3 -m pip install google-cloud-iap
 
 
-# [START iap_generated_iap_v1_IdentityAwareProxyAdminService_SetIamPolicy_sync]
+# [START iap_v1_generated_IdentityAwareProxyOAuthService_ListBrands_async]
 from google.cloud import iap_v1
 
 
-def sample_set_iam_policy():
+async def sample_list_brands():
     # Create a client
-    client = iap_v1.IdentityAwareProxyAdminServiceClient()
+    client = iap_v1.IdentityAwareProxyOAuthServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = iap_v1.SetIamPolicyRequest(
-        resource="resource_value",
+    request = iap_v1.ListBrandsRequest(
+        parent="parent_value",
     )
 
     # Make the request
-    response = client.set_iam_policy(request=request)
+    response = await client.list_brands(request=request)
 
     # Handle the response
     print(response)
 
-# [END iap_generated_iap_v1_IdentityAwareProxyAdminService_SetIamPolicy_sync]
+# [END iap_v1_generated_IdentityAwareProxyOAuthService_ListBrands_async]

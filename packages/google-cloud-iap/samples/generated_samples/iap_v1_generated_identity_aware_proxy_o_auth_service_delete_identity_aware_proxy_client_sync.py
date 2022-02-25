@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for GetBrand
+# Snippet for DeleteIdentityAwareProxyClient
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,23 +23,21 @@
 #   python3 -m pip install google-cloud-iap
 
 
-# [START iap_generated_iap_v1_IdentityAwareProxyOAuthService_GetBrand_sync]
+# [START iap_v1_generated_IdentityAwareProxyOAuthService_DeleteIdentityAwareProxyClient_sync]
 from google.cloud import iap_v1
 
 
-def sample_get_brand():
+def sample_delete_identity_aware_proxy_client():
     # Create a client
     client = iap_v1.IdentityAwareProxyOAuthServiceClient()
 
     # Initialize request argument(s)
-    request = iap_v1.GetBrandRequest(
+    request = iap_v1.DeleteIdentityAwareProxyClientRequest(
         name="name_value",
     )
 
     # Make the request
-    response = client.get_brand(request=request)
+    client.delete_identity_aware_proxy_client(request=request)
 
-    # Handle the response
-    print(response)
 
-# [END iap_generated_iap_v1_IdentityAwareProxyOAuthService_GetBrand_sync]
+# [END iap_v1_generated_IdentityAwareProxyOAuthService_DeleteIdentityAwareProxyClient_sync]

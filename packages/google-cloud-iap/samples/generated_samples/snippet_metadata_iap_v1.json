@@ -10,8 +10,8 @@
           "shortName": "GetIamPolicy"
         }
       },
-      "file": "iap_generated_iap_v1_identity_aware_proxy_admin_service_get_iam_policy_async.py",
-      "regionTag": "iap_generated_iap_v1_IdentityAwareProxyAdminService_GetIamPolicy_async",
+      "file": "iap_v1_generated_identity_aware_proxy_admin_service_get_iam_policy_async.py",
+      "regionTag": "iap_v1_generated_IdentityAwareProxyAdminService_GetIamPolicy_async",
       "segments": [
         {
           "end": 44,
@@ -54,8 +54,8 @@
           "shortName": "GetIamPolicy"
         }
       },
-      "file": "iap_generated_iap_v1_identity_aware_proxy_admin_service_get_iam_policy_sync.py",
-      "regionTag": "iap_generated_iap_v1_IdentityAwareProxyAdminService_GetIamPolicy_sync",
+      "file": "iap_v1_generated_identity_aware_proxy_admin_service_get_iam_policy_sync.py",
+      "regionTag": "iap_v1_generated_IdentityAwareProxyAdminService_GetIamPolicy_sync",
       "segments": [
         {
           "end": 44,
@@ -99,8 +99,8 @@
           "shortName": "GetIapSettings"
         }
       },
-      "file": "iap_generated_iap_v1_identity_aware_proxy_admin_service_get_iap_settings_async.py",
-      "regionTag": "iap_generated_iap_v1_IdentityAwareProxyAdminService_GetIapSettings_async",
+      "file": "iap_v1_generated_identity_aware_proxy_admin_service_get_iap_settings_async.py",
+      "regionTag": "iap_v1_generated_IdentityAwareProxyAdminService_GetIapSettings_async",
       "segments": [
         {
           "end": 44,
@@ -143,8 +143,8 @@
           "shortName": "GetIapSettings"
         }
       },
-      "file": "iap_generated_iap_v1_identity_aware_proxy_admin_service_get_iap_settings_sync.py",
-      "regionTag": "iap_generated_iap_v1_IdentityAwareProxyAdminService_GetIapSettings_sync",
+      "file": "iap_v1_generated_identity_aware_proxy_admin_service_get_iap_settings_sync.py",
+      "regionTag": "iap_v1_generated_IdentityAwareProxyAdminService_GetIapSettings_sync",
       "segments": [
         {
           "end": 44,
@@ -188,8 +188,8 @@
           "shortName": "SetIamPolicy"
         }
       },
-      "file": "iap_generated_iap_v1_identity_aware_proxy_admin_service_set_iam_policy_async.py",
-      "regionTag": "iap_generated_iap_v1_IdentityAwareProxyAdminService_SetIamPolicy_async",
+      "file": "iap_v1_generated_identity_aware_proxy_admin_service_set_iam_policy_async.py",
+      "regionTag": "iap_v1_generated_IdentityAwareProxyAdminService_SetIamPolicy_async",
       "segments": [
         {
           "end": 44,
@@ -232,8 +232,8 @@
           "shortName": "SetIamPolicy"
         }
       },
-      "file": "iap_generated_iap_v1_identity_aware_proxy_admin_service_set_iam_policy_sync.py",
-      "regionTag": "iap_generated_iap_v1_IdentityAwareProxyAdminService_SetIamPolicy_sync",
+      "file": "iap_v1_generated_identity_aware_proxy_admin_service_set_iam_policy_sync.py",
+      "regionTag": "iap_v1_generated_IdentityAwareProxyAdminService_SetIamPolicy_sync",
       "segments": [
         {
           "end": 44,
@@ -277,8 +277,8 @@
           "shortName": "TestIamPermissions"
         }
       },
-      "file": "iap_generated_iap_v1_identity_aware_proxy_admin_service_test_iam_permissions_async.py",
-      "regionTag": "iap_generated_iap_v1_IdentityAwareProxyAdminService_TestIamPermissions_async",
+      "file": "iap_v1_generated_identity_aware_proxy_admin_service_test_iam_permissions_async.py",
+      "regionTag": "iap_v1_generated_IdentityAwareProxyAdminService_TestIamPermissions_async",
       "segments": [
         {
           "end": 45,
@@ -321,8 +321,8 @@
           "shortName": "TestIamPermissions"
         }
       },
-      "file": "iap_generated_iap_v1_identity_aware_proxy_admin_service_test_iam_permissions_sync.py",
-      "regionTag": "iap_generated_iap_v1_IdentityAwareProxyAdminService_TestIamPermissions_sync",
+      "file": "iap_v1_generated_identity_aware_proxy_admin_service_test_iam_permissions_sync.py",
+      "regionTag": "iap_v1_generated_IdentityAwareProxyAdminService_TestIamPermissions_sync",
       "segments": [
         {
           "end": 45,
@@ -366,8 +366,8 @@
           "shortName": "UpdateIapSettings"
         }
       },
-      "file": "iap_generated_iap_v1_identity_aware_proxy_admin_service_update_iap_settings_async.py",
-      "regionTag": "iap_generated_iap_v1_IdentityAwareProxyAdminService_UpdateIapSettings_async",
+      "file": "iap_v1_generated_identity_aware_proxy_admin_service_update_iap_settings_async.py",
+      "regionTag": "iap_v1_generated_IdentityAwareProxyAdminService_UpdateIapSettings_async",
       "segments": [
         {
           "end": 47,
@@ -410,8 +410,8 @@
           "shortName": "UpdateIapSettings"
         }
       },
-      "file": "iap_generated_iap_v1_identity_aware_proxy_admin_service_update_iap_settings_sync.py",
-      "regionTag": "iap_generated_iap_v1_IdentityAwareProxyAdminService_UpdateIapSettings_sync",
+      "file": "iap_v1_generated_identity_aware_proxy_admin_service_update_iap_settings_sync.py",
+      "regionTag": "iap_v1_generated_IdentityAwareProxyAdminService_UpdateIapSettings_sync",
       "segments": [
         {
           "end": 47,
@@ -455,8 +455,8 @@
           "shortName": "CreateBrand"
         }
       },
-      "file": "iap_generated_iap_v1_identity_aware_proxy_o_auth_service_create_brand_async.py",
-      "regionTag": "iap_generated_iap_v1_IdentityAwareProxyOAuthService_CreateBrand_async",
+      "file": "iap_v1_generated_identity_aware_proxy_o_auth_service_create_brand_async.py",
+      "regionTag": "iap_v1_generated_IdentityAwareProxyOAuthService_CreateBrand_async",
       "segments": [
         {
           "end": 44,
@@ -499,8 +499,8 @@
           "shortName": "CreateBrand"
         }
       },
-      "file": "iap_generated_iap_v1_identity_aware_proxy_o_auth_service_create_brand_sync.py",
-      "regionTag": "iap_generated_iap_v1_IdentityAwareProxyOAuthService_CreateBrand_sync",
+      "file": "iap_v1_generated_identity_aware_proxy_o_auth_service_create_brand_sync.py",
+      "regionTag": "iap_v1_generated_IdentityAwareProxyOAuthService_CreateBrand_sync",
       "segments": [
         {
           "end": 44,
@@ -544,8 +544,8 @@
           "shortName": "CreateIdentityAwareProxyClient"
         }
       },
-      "file": "iap_generated_iap_v1_identity_aware_proxy_o_auth_service_create_identity_aware_proxy_client_async.py",
-      "regionTag": "iap_generated_iap_v1_IdentityAwareProxyOAuthService_CreateIdentityAwareProxyClient_async",
+      "file": "iap_v1_generated_identity_aware_proxy_o_auth_service_create_identity_aware_proxy_client_async.py",
+      "regionTag": "iap_v1_generated_IdentityAwareProxyOAuthService_CreateIdentityAwareProxyClient_async",
       "segments": [
         {
           "end": 44,
@@ -588,8 +588,8 @@
           "shortName": "CreateIdentityAwareProxyClient"
         }
       },
-      "file": "iap_generated_iap_v1_identity_aware_proxy_o_auth_service_create_identity_aware_proxy_client_sync.py",
-      "regionTag": "iap_generated_iap_v1_IdentityAwareProxyOAuthService_CreateIdentityAwareProxyClient_sync",
+      "file": "iap_v1_generated_identity_aware_proxy_o_auth_service_create_identity_aware_proxy_client_sync.py",
+      "regionTag": "iap_v1_generated_IdentityAwareProxyOAuthService_CreateIdentityAwareProxyClient_sync",
       "segments": [
         {
           "end": 44,
@@ -633,8 +633,8 @@
           "shortName": "DeleteIdentityAwareProxyClient"
         }
       },
-      "file": "iap_generated_iap_v1_identity_aware_proxy_o_auth_service_delete_identity_aware_proxy_client_async.py",
-      "regionTag": "iap_generated_iap_v1_IdentityAwareProxyOAuthService_DeleteIdentityAwareProxyClient_async",
+      "file": "iap_v1_generated_identity_aware_proxy_o_auth_service_delete_identity_aware_proxy_client_async.py",
+      "regionTag": "iap_v1_generated_IdentityAwareProxyOAuthService_DeleteIdentityAwareProxyClient_async",
       "segments": [
         {
           "end": 42,
@@ -675,8 +675,8 @@
           "shortName": "DeleteIdentityAwareProxyClient"
         }
       },
-      "file": "iap_generated_iap_v1_identity_aware_proxy_o_auth_service_delete_identity_aware_proxy_client_sync.py",
-      "regionTag": "iap_generated_iap_v1_IdentityAwareProxyOAuthService_DeleteIdentityAwareProxyClient_sync",
+      "file": "iap_v1_generated_identity_aware_proxy_o_auth_service_delete_identity_aware_proxy_client_sync.py",
+      "regionTag": "iap_v1_generated_IdentityAwareProxyOAuthService_DeleteIdentityAwareProxyClient_sync",
       "segments": [
         {
           "end": 42,
@@ -718,8 +718,8 @@
           "shortName": "GetBrand"
         }
       },
-      "file": "iap_generated_iap_v1_identity_aware_proxy_o_auth_service_get_brand_async.py",
-      "regionTag": "iap_generated_iap_v1_IdentityAwareProxyOAuthService_GetBrand_async",
+      "file": "iap_v1_generated_identity_aware_proxy_o_auth_service_get_brand_async.py",
+      "regionTag": "iap_v1_generated_IdentityAwareProxyOAuthService_GetBrand_async",
       "segments": [
         {
           "end": 44,
@@ -762,8 +762,8 @@
           "shortName": "GetBrand"
         }
       },
-      "file": "iap_generated_iap_v1_identity_aware_proxy_o_auth_service_get_brand_sync.py",
-      "regionTag": "iap_generated_iap_v1_IdentityAwareProxyOAuthService_GetBrand_sync",
+      "file": "iap_v1_generated_identity_aware_proxy_o_auth_service_get_brand_sync.py",
+      "regionTag": "iap_v1_generated_IdentityAwareProxyOAuthService_GetBrand_sync",
       "segments": [
         {
           "end": 44,
@@ -807,8 +807,8 @@
           "shortName": "GetIdentityAwareProxyClient"
         }
       },
-      "file": "iap_generated_iap_v1_identity_aware_proxy_o_auth_service_get_identity_aware_proxy_client_async.py",
-      "regionTag": "iap_generated_iap_v1_IdentityAwareProxyOAuthService_GetIdentityAwareProxyClient_async",
+      "file": "iap_v1_generated_identity_aware_proxy_o_auth_service_get_identity_aware_proxy_client_async.py",
+      "regionTag": "iap_v1_generated_IdentityAwareProxyOAuthService_GetIdentityAwareProxyClient_async",
       "segments": [
         {
           "end": 44,
@@ -851,8 +851,8 @@
           "shortName": "GetIdentityAwareProxyClient"
         }
       },
-      "file": "iap_generated_iap_v1_identity_aware_proxy_o_auth_service_get_identity_aware_proxy_client_sync.py",
-      "regionTag": "iap_generated_iap_v1_IdentityAwareProxyOAuthService_GetIdentityAwareProxyClient_sync",
+      "file": "iap_v1_generated_identity_aware_proxy_o_auth_service_get_identity_aware_proxy_client_sync.py",
+      "regionTag": "iap_v1_generated_IdentityAwareProxyOAuthService_GetIdentityAwareProxyClient_sync",
       "segments": [
         {
           "end": 44,
@@ -896,8 +896,8 @@
           "shortName": "ListBrands"
         }
       },
-      "file": "iap_generated_iap_v1_identity_aware_proxy_o_auth_service_list_brands_async.py",
-      "regionTag": "iap_generated_iap_v1_IdentityAwareProxyOAuthService_ListBrands_async",
+      "file": "iap_v1_generated_identity_aware_proxy_o_auth_service_list_brands_async.py",
+      "regionTag": "iap_v1_generated_IdentityAwareProxyOAuthService_ListBrands_async",
       "segments": [
         {
           "end": 44,
@@ -940,8 +940,8 @@
           "shortName": "ListBrands"
         }
       },
-      "file": "iap_generated_iap_v1_identity_aware_proxy_o_auth_service_list_brands_sync.py",
-      "regionTag": "iap_generated_iap_v1_IdentityAwareProxyOAuthService_ListBrands_sync",
+      "file": "iap_v1_generated_identity_aware_proxy_o_auth_service_list_brands_sync.py",
+      "regionTag": "iap_v1_generated_IdentityAwareProxyOAuthService_ListBrands_sync",
       "segments": [
         {
           "end": 44,
@@ -985,8 +985,8 @@
           "shortName": "ListIdentityAwareProxyClients"
         }
       },
-      "file": "iap_generated_iap_v1_identity_aware_proxy_o_auth_service_list_identity_aware_proxy_clients_async.py",
-      "regionTag": "iap_generated_iap_v1_IdentityAwareProxyOAuthService_ListIdentityAwareProxyClients_async",
+      "file": "iap_v1_generated_identity_aware_proxy_o_auth_service_list_identity_aware_proxy_clients_async.py",
+      "regionTag": "iap_v1_generated_IdentityAwareProxyOAuthService_ListIdentityAwareProxyClients_async",
       "segments": [
         {
           "end": 45,
@@ -1029,8 +1029,8 @@
           "shortName": "ListIdentityAwareProxyClients"
         }
       },
-      "file": "iap_generated_iap_v1_identity_aware_proxy_o_auth_service_list_identity_aware_proxy_clients_sync.py",
-      "regionTag": "iap_generated_iap_v1_IdentityAwareProxyOAuthService_ListIdentityAwareProxyClients_sync",
+      "file": "iap_v1_generated_identity_aware_proxy_o_auth_service_list_identity_aware_proxy_clients_sync.py",
+      "regionTag": "iap_v1_generated_IdentityAwareProxyOAuthService_ListIdentityAwareProxyClients_sync",
       "segments": [
         {
           "end": 45,
@@ -1074,8 +1074,8 @@
           "shortName": "ResetIdentityAwareProxyClientSecret"
         }
       },
-      "file": "iap_generated_iap_v1_identity_aware_proxy_o_auth_service_reset_identity_aware_proxy_client_secret_async.py",
-      "regionTag": "iap_generated_iap_v1_IdentityAwareProxyOAuthService_ResetIdentityAwareProxyClientSecret_async",
+      "file": "iap_v1_generated_identity_aware_proxy_o_auth_service_reset_identity_aware_proxy_client_secret_async.py",
+      "regionTag": "iap_v1_generated_IdentityAwareProxyOAuthService_ResetIdentityAwareProxyClientSecret_async",
       "segments": [
         {
           "end": 44,
@@ -1118,8 +1118,8 @@
           "shortName": "ResetIdentityAwareProxyClientSecret"
         }
       },
-      "file": "iap_generated_iap_v1_identity_aware_proxy_o_auth_service_reset_identity_aware_proxy_client_secret_sync.py",
-      "regionTag": "iap_generated_iap_v1_IdentityAwareProxyOAuthService_ResetIdentityAwareProxyClientSecret_sync",
+      "file": "iap_v1_generated_identity_aware_proxy_o_auth_service_reset_identity_aware_proxy_client_secret_sync.py",
+      "regionTag": "iap_v1_generated_IdentityAwareProxyOAuthService_ResetIdentityAwareProxyClientSecret_sync",
       "segments": [
         {
           "end": 44,

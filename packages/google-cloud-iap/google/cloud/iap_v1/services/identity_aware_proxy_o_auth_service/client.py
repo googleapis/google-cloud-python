@@ -405,8 +405,7 @@ class IdentityAwareProxyOAuthServiceClient(
     ) -> service.ListBrandsResponse:
         r"""Lists the existing brands for the project.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import iap_v1
 
@@ -482,8 +481,7 @@ class IdentityAwareProxyOAuthServiceClient(
         by the caller.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import iap_v1
 
@@ -552,8 +550,7 @@ class IdentityAwareProxyOAuthServiceClient(
     ) -> service.Brand:
         r"""Retrieves the OAuth brand of the project.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import iap_v1
 
@@ -626,8 +623,7 @@ class IdentityAwareProxyOAuthServiceClient(
         use.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import iap_v1
 
@@ -698,8 +694,7 @@ class IdentityAwareProxyOAuthServiceClient(
     ) -> pagers.ListIdentityAwareProxyClientsPager:
         r"""Lists the existing clients for the brand.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import iap_v1
 
@@ -782,8 +777,7 @@ class IdentityAwareProxyOAuthServiceClient(
         Requires that the client is owned by IAP.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import iap_v1
 
@@ -857,8 +851,7 @@ class IdentityAwareProxyOAuthServiceClient(
         that the client is owned by IAP.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import iap_v1
 
@@ -933,8 +926,7 @@ class IdentityAwareProxyOAuthServiceClient(
         after tests. Requires that the client is owned by IAP.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import iap_v1
 

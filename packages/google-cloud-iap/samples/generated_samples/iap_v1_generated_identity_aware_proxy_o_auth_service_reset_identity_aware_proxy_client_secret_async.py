@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for DeleteIdentityAwareProxyClient
+# Snippet for ResetIdentityAwareProxyClientSecret
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,21 +23,23 @@
 #   python3 -m pip install google-cloud-iap
 
 
-# [START iap_generated_iap_v1_IdentityAwareProxyOAuthService_DeleteIdentityAwareProxyClient_sync]
+# [START iap_v1_generated_IdentityAwareProxyOAuthService_ResetIdentityAwareProxyClientSecret_async]
 from google.cloud import iap_v1
 
 
-def sample_delete_identity_aware_proxy_client():
+async def sample_reset_identity_aware_proxy_client_secret():
     # Create a client
-    client = iap_v1.IdentityAwareProxyOAuthServiceClient()
+    client = iap_v1.IdentityAwareProxyOAuthServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = iap_v1.DeleteIdentityAwareProxyClientRequest(
+    request = iap_v1.ResetIdentityAwareProxyClientSecretRequest(
         name="name_value",
     )
 
     # Make the request
-    client.delete_identity_aware_proxy_client(request=request)
+    response = await client.reset_identity_aware_proxy_client_secret(request=request)
 
+    # Handle the response
+    print(response)
 
-# [END iap_generated_iap_v1_IdentityAwareProxyOAuthService_DeleteIdentityAwareProxyClient_sync]
+# [END iap_v1_generated_IdentityAwareProxyOAuthService_ResetIdentityAwareProxyClientSecret_async]

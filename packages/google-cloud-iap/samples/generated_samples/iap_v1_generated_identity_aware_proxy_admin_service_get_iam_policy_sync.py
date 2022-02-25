@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for UpdateIapSettings
+# Snippet for GetIamPolicy
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,26 +23,23 @@
 #   python3 -m pip install google-cloud-iap
 
 
-# [START iap_generated_iap_v1_IdentityAwareProxyAdminService_UpdateIapSettings_async]
+# [START iap_v1_generated_IdentityAwareProxyAdminService_GetIamPolicy_sync]
 from google.cloud import iap_v1
 
 
-async def sample_update_iap_settings():
+def sample_get_iam_policy():
     # Create a client
-    client = iap_v1.IdentityAwareProxyAdminServiceAsyncClient()
+    client = iap_v1.IdentityAwareProxyAdminServiceClient()
 
     # Initialize request argument(s)
-    iap_settings = iap_v1.IapSettings()
-    iap_settings.name = "name_value"
-
-    request = iap_v1.UpdateIapSettingsRequest(
-        iap_settings=iap_settings,
+    request = iap_v1.GetIamPolicyRequest(
+        resource="resource_value",
     )
 
     # Make the request
-    response = await client.update_iap_settings(request=request)
+    response = client.get_iam_policy(request=request)
 
     # Handle the response
     print(response)
 
-# [END iap_generated_iap_v1_IdentityAwareProxyAdminService_UpdateIapSettings_async]
+# [END iap_v1_generated_IdentityAwareProxyAdminService_GetIamPolicy_sync]

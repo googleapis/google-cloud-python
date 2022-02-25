@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for GetIapSettings
+# Snippet for CreateIdentityAwareProxyClient
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,23 +23,23 @@
 #   python3 -m pip install google-cloud-iap
 
 
-# [START iap_generated_iap_v1_IdentityAwareProxyAdminService_GetIapSettings_async]
+# [START iap_v1_generated_IdentityAwareProxyOAuthService_CreateIdentityAwareProxyClient_sync]
 from google.cloud import iap_v1
 
 
-async def sample_get_iap_settings():
+def sample_create_identity_aware_proxy_client():
     # Create a client
-    client = iap_v1.IdentityAwareProxyAdminServiceAsyncClient()
+    client = iap_v1.IdentityAwareProxyOAuthServiceClient()
 
     # Initialize request argument(s)
-    request = iap_v1.GetIapSettingsRequest(
-        name="name_value",
+    request = iap_v1.CreateIdentityAwareProxyClientRequest(
+        parent="parent_value",
     )
 
     # Make the request
-    response = await client.get_iap_settings(request=request)
+    response = client.create_identity_aware_proxy_client(request=request)
 
     # Handle the response
     print(response)
 
-# [END iap_generated_iap_v1_IdentityAwareProxyAdminService_GetIapSettings_async]
+# [END iap_v1_generated_IdentityAwareProxyOAuthService_CreateIdentityAwareProxyClient_sync]

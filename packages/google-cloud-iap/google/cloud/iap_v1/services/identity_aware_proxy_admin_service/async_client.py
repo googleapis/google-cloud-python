@@ -225,7 +225,7 @@ class IdentityAwareProxyAdminServiceAsyncClient:
         https://cloud.google.com/iap/docs/managing-access#managing_access_via_the_api
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import iap_v1
 
@@ -353,7 +353,7 @@ class IdentityAwareProxyAdminServiceAsyncClient:
         https://cloud.google.com/iap/docs/managing-access#managing_access_via_the_api
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import iap_v1
 
@@ -481,7 +481,7 @@ class IdentityAwareProxyAdminServiceAsyncClient:
         https://cloud.google.com/iap/docs/managing-access#managing_access_via_the_api
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import iap_v1
 
@@ -553,7 +553,7 @@ class IdentityAwareProxyAdminServiceAsyncClient:
         resource.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import iap_v1
 
@@ -620,7 +620,7 @@ class IdentityAwareProxyAdminServiceAsyncClient:
         It replaces all fields unless the ``update_mask`` is set.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import iap_v1
 
