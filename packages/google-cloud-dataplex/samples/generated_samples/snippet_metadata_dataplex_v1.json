@@ -10,8 +10,8 @@
           "shortName": "CreateContent"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_content_service_create_content_async.py",
-      "regionTag": "dataplex_generated_dataplex_v1_ContentService_CreateContent_async",
+      "file": "dataplex_v1_generated_content_service_create_content_async.py",
+      "regionTag": "dataplex_v1_generated_ContentService_CreateContent_async",
       "segments": [
         {
           "end": 50,
@@ -54,8 +54,8 @@
           "shortName": "CreateContent"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_content_service_create_content_sync.py",
-      "regionTag": "dataplex_generated_dataplex_v1_ContentService_CreateContent_sync",
+      "file": "dataplex_v1_generated_content_service_create_content_sync.py",
+      "regionTag": "dataplex_v1_generated_ContentService_CreateContent_sync",
       "segments": [
         {
           "end": 50,
@@ -99,8 +99,8 @@
           "shortName": "DeleteContent"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_content_service_delete_content_async.py",
-      "regionTag": "dataplex_generated_dataplex_v1_ContentService_DeleteContent_async",
+      "file": "dataplex_v1_generated_content_service_delete_content_async.py",
+      "regionTag": "dataplex_v1_generated_ContentService_DeleteContent_async",
       "segments": [
         {
           "end": 42,
@@ -141,8 +141,8 @@
           "shortName": "DeleteContent"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_content_service_delete_content_sync.py",
-      "regionTag": "dataplex_generated_dataplex_v1_ContentService_DeleteContent_sync",
+      "file": "dataplex_v1_generated_content_service_delete_content_sync.py",
+      "regionTag": "dataplex_v1_generated_ContentService_DeleteContent_sync",
       "segments": [
         {
           "end": 42,
@@ -184,8 +184,8 @@
           "shortName": "GetContent"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_content_service_get_content_async.py",
-      "regionTag": "dataplex_generated_dataplex_v1_ContentService_GetContent_async",
+      "file": "dataplex_v1_generated_content_service_get_content_async.py",
+      "regionTag": "dataplex_v1_generated_ContentService_GetContent_async",
       "segments": [
         {
           "end": 44,
@@ -228,8 +228,8 @@
           "shortName": "GetContent"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_content_service_get_content_sync.py",
-      "regionTag": "dataplex_generated_dataplex_v1_ContentService_GetContent_sync",
+      "file": "dataplex_v1_generated_content_service_get_content_sync.py",
+      "regionTag": "dataplex_v1_generated_ContentService_GetContent_sync",
       "segments": [
         {
           "end": 44,
@@ -273,8 +273,8 @@
           "shortName": "ListContent"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_content_service_list_content_async.py",
-      "regionTag": "dataplex_generated_dataplex_v1_ContentService_ListContent_async",
+      "file": "dataplex_v1_generated_content_service_list_content_async.py",
+      "regionTag": "dataplex_v1_generated_ContentService_ListContent_async",
       "segments": [
         {
           "end": 45,
@@ -317,8 +317,8 @@
           "shortName": "ListContent"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_content_service_list_content_sync.py",
-      "regionTag": "dataplex_generated_dataplex_v1_ContentService_ListContent_sync",
+      "file": "dataplex_v1_generated_content_service_list_content_sync.py",
+      "regionTag": "dataplex_v1_generated_ContentService_ListContent_sync",
       "segments": [
         {
           "end": 45,
@@ -362,8 +362,8 @@
           "shortName": "UpdateContent"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_content_service_update_content_async.py",
-      "regionTag": "dataplex_generated_dataplex_v1_ContentService_UpdateContent_async",
+      "file": "dataplex_v1_generated_content_service_update_content_async.py",
+      "regionTag": "dataplex_v1_generated_ContentService_UpdateContent_async",
       "segments": [
         {
           "end": 49,
@@ -406,8 +406,8 @@
           "shortName": "UpdateContent"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_content_service_update_content_sync.py",
-      "regionTag": "dataplex_generated_dataplex_v1_ContentService_UpdateContent_sync",
+      "file": "dataplex_v1_generated_content_service_update_content_sync.py",
+      "regionTag": "dataplex_v1_generated_ContentService_UpdateContent_sync",
       "segments": [
         {
           "end": 49,
@@ -451,8 +451,8 @@
           "shortName": "CancelJob"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_dataplex_service_cancel_job_async.py",
-      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_CancelJob_async",
+      "file": "dataplex_v1_generated_dataplex_service_cancel_job_async.py",
+      "regionTag": "dataplex_v1_generated_DataplexService_CancelJob_async",
       "segments": [
         {
           "end": 42,
@@ -493,8 +493,8 @@
           "shortName": "CancelJob"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_dataplex_service_cancel_job_sync.py",
-      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_CancelJob_sync",
+      "file": "dataplex_v1_generated_dataplex_service_cancel_job_sync.py",
+      "regionTag": "dataplex_v1_generated_DataplexService_CancelJob_sync",
       "segments": [
         {
           "end": 42,
@@ -536,8 +536,8 @@
           "shortName": "CreateAsset"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_dataplex_service_create_asset_async.py",
-      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_CreateAsset_async",
+      "file": "dataplex_v1_generated_dataplex_service_create_asset_async.py",
+      "regionTag": "dataplex_v1_generated_DataplexService_CreateAsset_async",
       "segments": [
         {
           "end": 53,
@@ -580,8 +580,8 @@
           "shortName": "CreateAsset"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_dataplex_service_create_asset_sync.py",
-      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_CreateAsset_sync",
+      "file": "dataplex_v1_generated_dataplex_service_create_asset_sync.py",
+      "regionTag": "dataplex_v1_generated_DataplexService_CreateAsset_sync",
       "segments": [
         {
           "end": 53,
@@ -625,8 +625,8 @@
           "shortName": "CreateEnvironment"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_dataplex_service_create_environment_async.py",
-      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_CreateEnvironment_async",
+      "file": "dataplex_v1_generated_dataplex_service_create_environment_async.py",
+      "regionTag": "dataplex_v1_generated_DataplexService_CreateEnvironment_async",
       "segments": [
         {
           "end": 53,
@@ -669,8 +669,8 @@
           "shortName": "CreateEnvironment"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_dataplex_service_create_environment_sync.py",
-      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_CreateEnvironment_sync",
+      "file": "dataplex_v1_generated_dataplex_service_create_environment_sync.py",
+      "regionTag": "dataplex_v1_generated_DataplexService_CreateEnvironment_sync",
       "segments": [
         {
           "end": 53,
@@ -714,8 +714,8 @@
           "shortName": "CreateLake"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_dataplex_service_create_lake_async.py",
-      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_CreateLake_async",
+      "file": "dataplex_v1_generated_dataplex_service_create_lake_async.py",
+      "regionTag": "dataplex_v1_generated_DataplexService_CreateLake_async",
       "segments": [
         {
           "end": 49,
@@ -758,8 +758,8 @@
           "shortName": "CreateLake"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_dataplex_service_create_lake_sync.py",
-      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_CreateLake_sync",
+      "file": "dataplex_v1_generated_dataplex_service_create_lake_sync.py",
+      "regionTag": "dataplex_v1_generated_DataplexService_CreateLake_sync",
       "segments": [
         {
           "end": 49,
@@ -803,8 +803,8 @@
           "shortName": "CreateTask"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_dataplex_service_create_task_async.py",
-      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_CreateTask_async",
+      "file": "dataplex_v1_generated_dataplex_service_create_task_async.py",
+      "regionTag": "dataplex_v1_generated_DataplexService_CreateTask_async",
       "segments": [
         {
           "end": 56,
@@ -847,8 +847,8 @@
           "shortName": "CreateTask"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_dataplex_service_create_task_sync.py",
-      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_CreateTask_sync",
+      "file": "dataplex_v1_generated_dataplex_service_create_task_sync.py",
+      "regionTag": "dataplex_v1_generated_DataplexService_CreateTask_sync",
       "segments": [
         {
           "end": 56,
@@ -892,8 +892,8 @@
           "shortName": "CreateZone"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_dataplex_service_create_zone_async.py",
-      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_CreateZone_async",
+      "file": "dataplex_v1_generated_dataplex_service_create_zone_async.py",
+      "regionTag": "dataplex_v1_generated_DataplexService_CreateZone_async",
       "segments": [
         {
           "end": 54,
@@ -936,8 +936,8 @@
           "shortName": "CreateZone"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_dataplex_service_create_zone_sync.py",
-      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_CreateZone_sync",
+      "file": "dataplex_v1_generated_dataplex_service_create_zone_sync.py",
+      "regionTag": "dataplex_v1_generated_DataplexService_CreateZone_sync",
       "segments": [
         {
           "end": 54,
@@ -981,8 +981,8 @@
           "shortName": "DeleteAsset"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_dataplex_service_delete_asset_async.py",
-      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_DeleteAsset_async",
+      "file": "dataplex_v1_generated_dataplex_service_delete_asset_async.py",
+      "regionTag": "dataplex_v1_generated_DataplexService_DeleteAsset_async",
       "segments": [
         {
           "end": 48,
@@ -1025,8 +1025,8 @@
           "shortName": "DeleteAsset"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_dataplex_service_delete_asset_sync.py",
-      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_DeleteAsset_sync",
+      "file": "dataplex_v1_generated_dataplex_service_delete_asset_sync.py",
+      "regionTag": "dataplex_v1_generated_DataplexService_DeleteAsset_sync",
       "segments": [
         {
           "end": 48,
@@ -1070,8 +1070,8 @@
           "shortName": "DeleteEnvironment"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_dataplex_service_delete_environment_async.py",
-      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_DeleteEnvironment_async",
+      "file": "dataplex_v1_generated_dataplex_service_delete_environment_async.py",
+      "regionTag": "dataplex_v1_generated_DataplexService_DeleteEnvironment_async",
       "segments": [
         {
           "end": 48,
@@ -1114,8 +1114,8 @@
           "shortName": "DeleteEnvironment"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_dataplex_service_delete_environment_sync.py",
-      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_DeleteEnvironment_sync",
+      "file": "dataplex_v1_generated_dataplex_service_delete_environment_sync.py",
+      "regionTag": "dataplex_v1_generated_DataplexService_DeleteEnvironment_sync",
       "segments": [
         {
           "end": 48,
@@ -1159,8 +1159,8 @@
           "shortName": "DeleteLake"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_dataplex_service_delete_lake_async.py",
-      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_DeleteLake_async",
+      "file": "dataplex_v1_generated_dataplex_service_delete_lake_async.py",
+      "regionTag": "dataplex_v1_generated_DataplexService_DeleteLake_async",
       "segments": [
         {
           "end": 48,
@@ -1203,8 +1203,8 @@
           "shortName": "DeleteLake"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_dataplex_service_delete_lake_sync.py",
-      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_DeleteLake_sync",
+      "file": "dataplex_v1_generated_dataplex_service_delete_lake_sync.py",
+      "regionTag": "dataplex_v1_generated_DataplexService_DeleteLake_sync",
       "segments": [
         {
           "end": 48,
@@ -1248,8 +1248,8 @@
           "shortName": "DeleteTask"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_dataplex_service_delete_task_async.py",
-      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_DeleteTask_async",
+      "file": "dataplex_v1_generated_dataplex_service_delete_task_async.py",
+      "regionTag": "dataplex_v1_generated_DataplexService_DeleteTask_async",
       "segments": [
         {
           "end": 48,
@@ -1292,8 +1292,8 @@
           "shortName": "DeleteTask"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_dataplex_service_delete_task_sync.py",
-      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_DeleteTask_sync",
+      "file": "dataplex_v1_generated_dataplex_service_delete_task_sync.py",
+      "regionTag": "dataplex_v1_generated_DataplexService_DeleteTask_sync",
       "segments": [
         {
           "end": 48,
@@ -1337,8 +1337,8 @@
           "shortName": "DeleteZone"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_dataplex_service_delete_zone_async.py",
-      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_DeleteZone_async",
+      "file": "dataplex_v1_generated_dataplex_service_delete_zone_async.py",
+      "regionTag": "dataplex_v1_generated_DataplexService_DeleteZone_async",
       "segments": [
         {
           "end": 48,
@@ -1381,8 +1381,8 @@
           "shortName": "DeleteZone"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_dataplex_service_delete_zone_sync.py",
-      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_DeleteZone_sync",
+      "file": "dataplex_v1_generated_dataplex_service_delete_zone_sync.py",
+      "regionTag": "dataplex_v1_generated_DataplexService_DeleteZone_sync",
       "segments": [
         {
           "end": 48,
@@ -1426,8 +1426,8 @@
           "shortName": "GetAsset"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_dataplex_service_get_asset_async.py",
-      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_GetAsset_async",
+      "file": "dataplex_v1_generated_dataplex_service_get_asset_async.py",
+      "regionTag": "dataplex_v1_generated_DataplexService_GetAsset_async",
       "segments": [
         {
           "end": 44,
@@ -1470,8 +1470,8 @@
           "shortName": "GetAsset"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_dataplex_service_get_asset_sync.py",
-      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_GetAsset_sync",
+      "file": "dataplex_v1_generated_dataplex_service_get_asset_sync.py",
+      "regionTag": "dataplex_v1_generated_DataplexService_GetAsset_sync",
       "segments": [
         {
           "end": 44,
@@ -1515,8 +1515,8 @@
           "shortName": "GetEnvironment"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_dataplex_service_get_environment_async.py",
-      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_GetEnvironment_async",
+      "file": "dataplex_v1_generated_dataplex_service_get_environment_async.py",
+      "regionTag": "dataplex_v1_generated_DataplexService_GetEnvironment_async",
       "segments": [
         {
           "end": 44,
@@ -1559,8 +1559,8 @@
           "shortName": "GetEnvironment"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_dataplex_service_get_environment_sync.py",
-      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_GetEnvironment_sync",
+      "file": "dataplex_v1_generated_dataplex_service_get_environment_sync.py",
+      "regionTag": "dataplex_v1_generated_DataplexService_GetEnvironment_sync",
       "segments": [
         {
           "end": 44,
@@ -1604,8 +1604,8 @@
           "shortName": "GetJob"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_dataplex_service_get_job_async.py",
-      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_GetJob_async",
+      "file": "dataplex_v1_generated_dataplex_service_get_job_async.py",
+      "regionTag": "dataplex_v1_generated_DataplexService_GetJob_async",
       "segments": [
         {
           "end": 44,
@@ -1648,8 +1648,8 @@
           "shortName": "GetJob"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_dataplex_service_get_job_sync.py",
-      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_GetJob_sync",
+      "file": "dataplex_v1_generated_dataplex_service_get_job_sync.py",
+      "regionTag": "dataplex_v1_generated_DataplexService_GetJob_sync",
       "segments": [
         {
           "end": 44,
@@ -1693,8 +1693,8 @@
           "shortName": "GetLake"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_dataplex_service_get_lake_async.py",
-      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_GetLake_async",
+      "file": "dataplex_v1_generated_dataplex_service_get_lake_async.py",
+      "regionTag": "dataplex_v1_generated_DataplexService_GetLake_async",
       "segments": [
         {
           "end": 44,
@@ -1737,8 +1737,8 @@
           "shortName": "GetLake"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_dataplex_service_get_lake_sync.py",
-      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_GetLake_sync",
+      "file": "dataplex_v1_generated_dataplex_service_get_lake_sync.py",
+      "regionTag": "dataplex_v1_generated_DataplexService_GetLake_sync",
       "segments": [
         {
           "end": 44,
@@ -1782,8 +1782,8 @@
           "shortName": "GetTask"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_dataplex_service_get_task_async.py",
-      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_GetTask_async",
+      "file": "dataplex_v1_generated_dataplex_service_get_task_async.py",
+      "regionTag": "dataplex_v1_generated_DataplexService_GetTask_async",
       "segments": [
         {
           "end": 44,
@@ -1826,8 +1826,8 @@
           "shortName": "GetTask"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_dataplex_service_get_task_sync.py",
-      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_GetTask_sync",
+      "file": "dataplex_v1_generated_dataplex_service_get_task_sync.py",
+      "regionTag": "dataplex_v1_generated_DataplexService_GetTask_sync",
       "segments": [
         {
           "end": 44,
@@ -1871,8 +1871,8 @@
           "shortName": "GetZone"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_dataplex_service_get_zone_async.py",
-      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_GetZone_async",
+      "file": "dataplex_v1_generated_dataplex_service_get_zone_async.py",
+      "regionTag": "dataplex_v1_generated_DataplexService_GetZone_async",
       "segments": [
         {
           "end": 44,
@@ -1915,8 +1915,8 @@
           "shortName": "GetZone"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_dataplex_service_get_zone_sync.py",
-      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_GetZone_sync",
+      "file": "dataplex_v1_generated_dataplex_service_get_zone_sync.py",
+      "regionTag": "dataplex_v1_generated_DataplexService_GetZone_sync",
       "segments": [
         {
           "end": 44,
@@ -1960,8 +1960,8 @@
           "shortName": "ListAssetActions"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_dataplex_service_list_asset_actions_async.py",
-      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_ListAssetActions_async",
+      "file": "dataplex_v1_generated_dataplex_service_list_asset_actions_async.py",
+      "regionTag": "dataplex_v1_generated_DataplexService_ListAssetActions_async",
       "segments": [
         {
           "end": 45,
@@ -2004,8 +2004,8 @@
           "shortName": "ListAssetActions"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_dataplex_service_list_asset_actions_sync.py",
-      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_ListAssetActions_sync",
+      "file": "dataplex_v1_generated_dataplex_service_list_asset_actions_sync.py",
+      "regionTag": "dataplex_v1_generated_DataplexService_ListAssetActions_sync",
       "segments": [
         {
           "end": 45,
@@ -2049,8 +2049,8 @@
           "shortName": "ListAssets"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_dataplex_service_list_assets_async.py",
-      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_ListAssets_async",
+      "file": "dataplex_v1_generated_dataplex_service_list_assets_async.py",
+      "regionTag": "dataplex_v1_generated_DataplexService_ListAssets_async",
       "segments": [
         {
           "end": 45,
@@ -2093,8 +2093,8 @@
           "shortName": "ListAssets"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_dataplex_service_list_assets_sync.py",
-      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_ListAssets_sync",
+      "file": "dataplex_v1_generated_dataplex_service_list_assets_sync.py",
+      "regionTag": "dataplex_v1_generated_DataplexService_ListAssets_sync",
       "segments": [
         {
           "end": 45,
@@ -2138,8 +2138,8 @@
           "shortName": "ListEnvironments"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_dataplex_service_list_environments_async.py",
-      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_ListEnvironments_async",
+      "file": "dataplex_v1_generated_dataplex_service_list_environments_async.py",
+      "regionTag": "dataplex_v1_generated_DataplexService_ListEnvironments_async",
       "segments": [
         {
           "end": 45,
@@ -2182,8 +2182,8 @@
           "shortName": "ListEnvironments"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_dataplex_service_list_environments_sync.py",
-      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_ListEnvironments_sync",
+      "file": "dataplex_v1_generated_dataplex_service_list_environments_sync.py",
+      "regionTag": "dataplex_v1_generated_DataplexService_ListEnvironments_sync",
       "segments": [
         {
           "end": 45,
@@ -2227,8 +2227,8 @@
           "shortName": "ListJobs"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_dataplex_service_list_jobs_async.py",
-      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_ListJobs_async",
+      "file": "dataplex_v1_generated_dataplex_service_list_jobs_async.py",
+      "regionTag": "dataplex_v1_generated_DataplexService_ListJobs_async",
       "segments": [
         {
           "end": 45,
@@ -2271,8 +2271,8 @@
           "shortName": "ListJobs"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_dataplex_service_list_jobs_sync.py",
-      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_ListJobs_sync",
+      "file": "dataplex_v1_generated_dataplex_service_list_jobs_sync.py",
+      "regionTag": "dataplex_v1_generated_DataplexService_ListJobs_sync",
       "segments": [
         {
           "end": 45,
@@ -2316,8 +2316,8 @@
           "shortName": "ListLakeActions"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_dataplex_service_list_lake_actions_async.py",
-      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_ListLakeActions_async",
+      "file": "dataplex_v1_generated_dataplex_service_list_lake_actions_async.py",
+      "regionTag": "dataplex_v1_generated_DataplexService_ListLakeActions_async",
       "segments": [
         {
           "end": 45,
@@ -2360,8 +2360,8 @@
           "shortName": "ListLakeActions"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_dataplex_service_list_lake_actions_sync.py",
-      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_ListLakeActions_sync",
+      "file": "dataplex_v1_generated_dataplex_service_list_lake_actions_sync.py",
+      "regionTag": "dataplex_v1_generated_DataplexService_ListLakeActions_sync",
       "segments": [
         {
           "end": 45,
@@ -2405,8 +2405,8 @@
           "shortName": "ListLakes"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_dataplex_service_list_lakes_async.py",
-      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_ListLakes_async",
+      "file": "dataplex_v1_generated_dataplex_service_list_lakes_async.py",
+      "regionTag": "dataplex_v1_generated_DataplexService_ListLakes_async",
       "segments": [
         {
           "end": 45,
@@ -2449,8 +2449,8 @@
           "shortName": "ListLakes"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_dataplex_service_list_lakes_sync.py",
-      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_ListLakes_sync",
+      "file": "dataplex_v1_generated_dataplex_service_list_lakes_sync.py",
+      "regionTag": "dataplex_v1_generated_DataplexService_ListLakes_sync",
       "segments": [
         {
           "end": 45,
@@ -2494,8 +2494,8 @@
           "shortName": "ListSessions"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_dataplex_service_list_sessions_async.py",
-      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_ListSessions_async",
+      "file": "dataplex_v1_generated_dataplex_service_list_sessions_async.py",
+      "regionTag": "dataplex_v1_generated_DataplexService_ListSessions_async",
       "segments": [
         {
           "end": 45,
@@ -2538,8 +2538,8 @@
           "shortName": "ListSessions"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_dataplex_service_list_sessions_sync.py",
-      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_ListSessions_sync",
+      "file": "dataplex_v1_generated_dataplex_service_list_sessions_sync.py",
+      "regionTag": "dataplex_v1_generated_DataplexService_ListSessions_sync",
       "segments": [
         {
           "end": 45,
@@ -2583,8 +2583,8 @@
           "shortName": "ListTasks"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_dataplex_service_list_tasks_async.py",
-      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_ListTasks_async",
+      "file": "dataplex_v1_generated_dataplex_service_list_tasks_async.py",
+      "regionTag": "dataplex_v1_generated_DataplexService_ListTasks_async",
       "segments": [
         {
           "end": 45,
@@ -2627,8 +2627,8 @@
           "shortName": "ListTasks"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_dataplex_service_list_tasks_sync.py",
-      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_ListTasks_sync",
+      "file": "dataplex_v1_generated_dataplex_service_list_tasks_sync.py",
+      "regionTag": "dataplex_v1_generated_DataplexService_ListTasks_sync",
       "segments": [
         {
           "end": 45,
@@ -2672,8 +2672,8 @@
           "shortName": "ListZoneActions"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_dataplex_service_list_zone_actions_async.py",
-      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_ListZoneActions_async",
+      "file": "dataplex_v1_generated_dataplex_service_list_zone_actions_async.py",
+      "regionTag": "dataplex_v1_generated_DataplexService_ListZoneActions_async",
       "segments": [
         {
           "end": 45,
@@ -2716,8 +2716,8 @@
           "shortName": "ListZoneActions"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_dataplex_service_list_zone_actions_sync.py",
-      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_ListZoneActions_sync",
+      "file": "dataplex_v1_generated_dataplex_service_list_zone_actions_sync.py",
+      "regionTag": "dataplex_v1_generated_DataplexService_ListZoneActions_sync",
       "segments": [
         {
           "end": 45,
@@ -2761,8 +2761,8 @@
           "shortName": "ListZones"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_dataplex_service_list_zones_async.py",
-      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_ListZones_async",
+      "file": "dataplex_v1_generated_dataplex_service_list_zones_async.py",
+      "regionTag": "dataplex_v1_generated_DataplexService_ListZones_async",
       "segments": [
         {
           "end": 45,
@@ -2805,8 +2805,8 @@
           "shortName": "ListZones"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_dataplex_service_list_zones_sync.py",
-      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_ListZones_sync",
+      "file": "dataplex_v1_generated_dataplex_service_list_zones_sync.py",
+      "regionTag": "dataplex_v1_generated_DataplexService_ListZones_sync",
       "segments": [
         {
           "end": 45,
@@ -2850,8 +2850,8 @@
           "shortName": "UpdateAsset"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_dataplex_service_update_asset_async.py",
-      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_UpdateAsset_async",
+      "file": "dataplex_v1_generated_dataplex_service_update_asset_async.py",
+      "regionTag": "dataplex_v1_generated_DataplexService_UpdateAsset_async",
       "segments": [
         {
           "end": 51,
@@ -2894,8 +2894,8 @@
           "shortName": "UpdateAsset"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_dataplex_service_update_asset_sync.py",
-      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_UpdateAsset_sync",
+      "file": "dataplex_v1_generated_dataplex_service_update_asset_sync.py",
+      "regionTag": "dataplex_v1_generated_DataplexService_UpdateAsset_sync",
       "segments": [
         {
           "end": 51,
@@ -2939,8 +2939,8 @@
           "shortName": "UpdateEnvironment"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_dataplex_service_update_environment_async.py",
-      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_UpdateEnvironment_async",
+      "file": "dataplex_v1_generated_dataplex_service_update_environment_async.py",
+      "regionTag": "dataplex_v1_generated_DataplexService_UpdateEnvironment_async",
       "segments": [
         {
           "end": 51,
@@ -2983,8 +2983,8 @@
           "shortName": "UpdateEnvironment"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_dataplex_service_update_environment_sync.py",
-      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_UpdateEnvironment_sync",
+      "file": "dataplex_v1_generated_dataplex_service_update_environment_sync.py",
+      "regionTag": "dataplex_v1_generated_DataplexService_UpdateEnvironment_sync",
       "segments": [
         {
           "end": 51,
@@ -3028,8 +3028,8 @@
           "shortName": "UpdateLake"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_dataplex_service_update_lake_async.py",
-      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_UpdateLake_async",
+      "file": "dataplex_v1_generated_dataplex_service_update_lake_async.py",
+      "regionTag": "dataplex_v1_generated_DataplexService_UpdateLake_async",
       "segments": [
         {
           "end": 47,
@@ -3072,8 +3072,8 @@
           "shortName": "UpdateLake"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_dataplex_service_update_lake_sync.py",
-      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_UpdateLake_sync",
+      "file": "dataplex_v1_generated_dataplex_service_update_lake_sync.py",
+      "regionTag": "dataplex_v1_generated_DataplexService_UpdateLake_sync",
       "segments": [
         {
           "end": 47,
@@ -3117,8 +3117,8 @@
           "shortName": "UpdateTask"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_dataplex_service_update_task_async.py",
-      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_UpdateTask_async",
+      "file": "dataplex_v1_generated_dataplex_service_update_task_async.py",
+      "regionTag": "dataplex_v1_generated_DataplexService_UpdateTask_async",
       "segments": [
         {
           "end": 54,
@@ -3161,8 +3161,8 @@
           "shortName": "UpdateTask"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_dataplex_service_update_task_sync.py",
-      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_UpdateTask_sync",
+      "file": "dataplex_v1_generated_dataplex_service_update_task_sync.py",
+      "regionTag": "dataplex_v1_generated_DataplexService_UpdateTask_sync",
       "segments": [
         {
           "end": 54,
@@ -3206,8 +3206,8 @@
           "shortName": "UpdateZone"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_dataplex_service_update_zone_async.py",
-      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_UpdateZone_async",
+      "file": "dataplex_v1_generated_dataplex_service_update_zone_async.py",
+      "regionTag": "dataplex_v1_generated_DataplexService_UpdateZone_async",
       "segments": [
         {
           "end": 52,
@@ -3250,8 +3250,8 @@
           "shortName": "UpdateZone"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_dataplex_service_update_zone_sync.py",
-      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_UpdateZone_sync",
+      "file": "dataplex_v1_generated_dataplex_service_update_zone_sync.py",
+      "regionTag": "dataplex_v1_generated_DataplexService_UpdateZone_sync",
       "segments": [
         {
           "end": 52,
@@ -3295,8 +3295,8 @@
           "shortName": "CreateEntity"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_metadata_service_create_entity_async.py",
-      "regionTag": "dataplex_generated_dataplex_v1_MetadataService_CreateEntity_async",
+      "file": "dataplex_v1_generated_metadata_service_create_entity_async.py",
+      "regionTag": "dataplex_v1_generated_MetadataService_CreateEntity_async",
       "segments": [
         {
           "end": 54,
@@ -3339,8 +3339,8 @@
           "shortName": "CreateEntity"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_metadata_service_create_entity_sync.py",
-      "regionTag": "dataplex_generated_dataplex_v1_MetadataService_CreateEntity_sync",
+      "file": "dataplex_v1_generated_metadata_service_create_entity_sync.py",
+      "regionTag": "dataplex_v1_generated_MetadataService_CreateEntity_sync",
       "segments": [
         {
           "end": 54,
@@ -3384,8 +3384,8 @@
           "shortName": "CreatePartition"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_metadata_service_create_partition_async.py",
-      "regionTag": "dataplex_generated_dataplex_v1_MetadataService_CreatePartition_async",
+      "file": "dataplex_v1_generated_metadata_service_create_partition_async.py",
+      "regionTag": "dataplex_v1_generated_MetadataService_CreatePartition_async",
       "segments": [
         {
           "end": 49,
@@ -3428,8 +3428,8 @@
           "shortName": "CreatePartition"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_metadata_service_create_partition_sync.py",
-      "regionTag": "dataplex_generated_dataplex_v1_MetadataService_CreatePartition_sync",
+      "file": "dataplex_v1_generated_metadata_service_create_partition_sync.py",
+      "regionTag": "dataplex_v1_generated_MetadataService_CreatePartition_sync",
       "segments": [
         {
           "end": 49,
@@ -3473,8 +3473,8 @@
           "shortName": "DeleteEntity"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_metadata_service_delete_entity_async.py",
-      "regionTag": "dataplex_generated_dataplex_v1_MetadataService_DeleteEntity_async",
+      "file": "dataplex_v1_generated_metadata_service_delete_entity_async.py",
+      "regionTag": "dataplex_v1_generated_MetadataService_DeleteEntity_async",
       "segments": [
         {
           "end": 43,
@@ -3515,8 +3515,8 @@
           "shortName": "DeleteEntity"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_metadata_service_delete_entity_sync.py",
-      "regionTag": "dataplex_generated_dataplex_v1_MetadataService_DeleteEntity_sync",
+      "file": "dataplex_v1_generated_metadata_service_delete_entity_sync.py",
+      "regionTag": "dataplex_v1_generated_MetadataService_DeleteEntity_sync",
       "segments": [
         {
           "end": 43,
@@ -3558,8 +3558,8 @@
           "shortName": "DeletePartition"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_metadata_service_delete_partition_async.py",
-      "regionTag": "dataplex_generated_dataplex_v1_MetadataService_DeletePartition_async",
+      "file": "dataplex_v1_generated_metadata_service_delete_partition_async.py",
+      "regionTag": "dataplex_v1_generated_MetadataService_DeletePartition_async",
       "segments": [
         {
           "end": 42,
@@ -3600,8 +3600,8 @@
           "shortName": "DeletePartition"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_metadata_service_delete_partition_sync.py",
-      "regionTag": "dataplex_generated_dataplex_v1_MetadataService_DeletePartition_sync",
+      "file": "dataplex_v1_generated_metadata_service_delete_partition_sync.py",
+      "regionTag": "dataplex_v1_generated_MetadataService_DeletePartition_sync",
       "segments": [
         {
           "end": 42,
@@ -3643,8 +3643,8 @@
           "shortName": "GetEntity"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_metadata_service_get_entity_async.py",
-      "regionTag": "dataplex_generated_dataplex_v1_MetadataService_GetEntity_async",
+      "file": "dataplex_v1_generated_metadata_service_get_entity_async.py",
+      "regionTag": "dataplex_v1_generated_MetadataService_GetEntity_async",
       "segments": [
         {
           "end": 44,
@@ -3687,8 +3687,8 @@
           "shortName": "GetEntity"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_metadata_service_get_entity_sync.py",
-      "regionTag": "dataplex_generated_dataplex_v1_MetadataService_GetEntity_sync",
+      "file": "dataplex_v1_generated_metadata_service_get_entity_sync.py",
+      "regionTag": "dataplex_v1_generated_MetadataService_GetEntity_sync",
       "segments": [
         {
           "end": 44,
@@ -3732,8 +3732,8 @@
           "shortName": "GetPartition"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_metadata_service_get_partition_async.py",
-      "regionTag": "dataplex_generated_dataplex_v1_MetadataService_GetPartition_async",
+      "file": "dataplex_v1_generated_metadata_service_get_partition_async.py",
+      "regionTag": "dataplex_v1_generated_MetadataService_GetPartition_async",
       "segments": [
         {
           "end": 44,
@@ -3776,8 +3776,8 @@
           "shortName": "GetPartition"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_metadata_service_get_partition_sync.py",
-      "regionTag": "dataplex_generated_dataplex_v1_MetadataService_GetPartition_sync",
+      "file": "dataplex_v1_generated_metadata_service_get_partition_sync.py",
+      "regionTag": "dataplex_v1_generated_MetadataService_GetPartition_sync",
       "segments": [
         {
           "end": 44,
@@ -3821,8 +3821,8 @@
           "shortName": "ListEntities"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_metadata_service_list_entities_async.py",
-      "regionTag": "dataplex_generated_dataplex_v1_MetadataService_ListEntities_async",
+      "file": "dataplex_v1_generated_metadata_service_list_entities_async.py",
+      "regionTag": "dataplex_v1_generated_MetadataService_ListEntities_async",
       "segments": [
         {
           "end": 46,
@@ -3865,8 +3865,8 @@
           "shortName": "ListEntities"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_metadata_service_list_entities_sync.py",
-      "regionTag": "dataplex_generated_dataplex_v1_MetadataService_ListEntities_sync",
+      "file": "dataplex_v1_generated_metadata_service_list_entities_sync.py",
+      "regionTag": "dataplex_v1_generated_MetadataService_ListEntities_sync",
       "segments": [
         {
           "end": 46,
@@ -3910,8 +3910,8 @@
           "shortName": "ListPartitions"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_metadata_service_list_partitions_async.py",
-      "regionTag": "dataplex_generated_dataplex_v1_MetadataService_ListPartitions_async",
+      "file": "dataplex_v1_generated_metadata_service_list_partitions_async.py",
+      "regionTag": "dataplex_v1_generated_MetadataService_ListPartitions_async",
       "segments": [
         {
           "end": 45,
@@ -3954,8 +3954,8 @@
           "shortName": "ListPartitions"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_metadata_service_list_partitions_sync.py",
-      "regionTag": "dataplex_generated_dataplex_v1_MetadataService_ListPartitions_sync",
+      "file": "dataplex_v1_generated_metadata_service_list_partitions_sync.py",
+      "regionTag": "dataplex_v1_generated_MetadataService_ListPartitions_sync",
       "segments": [
         {
           "end": 45,
@@ -3999,8 +3999,8 @@
           "shortName": "UpdateEntity"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_metadata_service_update_entity_async.py",
-      "regionTag": "dataplex_generated_dataplex_v1_MetadataService_UpdateEntity_async",
+      "file": "dataplex_v1_generated_metadata_service_update_entity_async.py",
+      "regionTag": "dataplex_v1_generated_MetadataService_UpdateEntity_async",
       "segments": [
         {
           "end": 53,
@@ -4043,8 +4043,8 @@
           "shortName": "UpdateEntity"
         }
       },
-      "file": "dataplex_generated_dataplex_v1_metadata_service_update_entity_sync.py",
-      "regionTag": "dataplex_generated_dataplex_v1_MetadataService_UpdateEntity_sync",
+      "file": "dataplex_v1_generated_metadata_service_update_entity_sync.py",
+      "regionTag": "dataplex_v1_generated_MetadataService_UpdateEntity_sync",
       "segments": [
         {
           "end": 53,

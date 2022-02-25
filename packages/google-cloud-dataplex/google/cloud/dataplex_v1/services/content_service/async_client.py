@@ -220,7 +220,7 @@ class ContentServiceAsyncClient:
     ) -> analyze.Content:
         r"""Create a content.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -323,7 +323,7 @@ class ContentServiceAsyncClient:
     ) -> analyze.Content:
         r"""Update a content. Only supports full resource update.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -426,7 +426,7 @@ class ContentServiceAsyncClient:
     ) -> None:
         r"""Delete a content.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -505,7 +505,7 @@ class ContentServiceAsyncClient:
     ) -> analyze.Content:
         r"""Get a content resource.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -594,7 +594,7 @@ class ContentServiceAsyncClient:
     ) -> pagers.ListContentAsyncPager:
         r"""List content.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 

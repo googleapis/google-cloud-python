@@ -455,8 +455,7 @@ class MetadataServiceClient(metaclass=MetadataServiceClientMeta):
     ) -> metadata_.Entity:
         r"""Create a metadata entity.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -563,8 +562,7 @@ class MetadataServiceClient(metaclass=MetadataServiceClientMeta):
         update.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -648,8 +646,7 @@ class MetadataServiceClient(metaclass=MetadataServiceClientMeta):
     ) -> None:
         r"""Delete a metadata entity.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -729,8 +726,7 @@ class MetadataServiceClient(metaclass=MetadataServiceClientMeta):
     ) -> metadata_.Entity:
         r"""Get a metadata entity.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -819,8 +815,7 @@ class MetadataServiceClient(metaclass=MetadataServiceClientMeta):
     ) -> pagers.ListEntitiesPager:
         r"""List metadata entities in a zone.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -920,8 +915,7 @@ class MetadataServiceClient(metaclass=MetadataServiceClientMeta):
     ) -> metadata_.Partition:
         r"""Create a metadata partition.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -1022,8 +1016,7 @@ class MetadataServiceClient(metaclass=MetadataServiceClientMeta):
     ) -> None:
         r"""Delete a metadata partition.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -1105,8 +1098,7 @@ class MetadataServiceClient(metaclass=MetadataServiceClientMeta):
     ) -> metadata_.Partition:
         r"""Get a metadata partition of an entity.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -1198,8 +1190,7 @@ class MetadataServiceClient(metaclass=MetadataServiceClientMeta):
     ) -> pagers.ListPartitionsPager:
         r"""List metadata partitions of an entity.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 

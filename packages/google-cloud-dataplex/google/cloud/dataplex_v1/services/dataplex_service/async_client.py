@@ -243,7 +243,7 @@ class DataplexServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Creates a lake resource.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -384,7 +384,7 @@ class DataplexServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Updates a lake resource.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -507,7 +507,7 @@ class DataplexServiceAsyncClient:
         must be deleted before the lake can be deleted.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -621,7 +621,7 @@ class DataplexServiceAsyncClient:
     ) -> pagers.ListLakesAsyncPager:
         r"""Lists lake resources in a project and location.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -730,7 +730,7 @@ class DataplexServiceAsyncClient:
     ) -> resources.Lake:
         r"""Retrieves a lake resource.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -842,7 +842,7 @@ class DataplexServiceAsyncClient:
     ) -> pagers.ListLakeActionsAsyncPager:
         r"""Lists action resources in a lake.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -951,7 +951,7 @@ class DataplexServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Creates a zone resource within a lake.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -1091,7 +1091,7 @@ class DataplexServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Updates a zone resource.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -1212,7 +1212,7 @@ class DataplexServiceAsyncClient:
         must be deleted before the zone can be deleted.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -1326,7 +1326,7 @@ class DataplexServiceAsyncClient:
     ) -> pagers.ListZonesAsyncPager:
         r"""Lists zone resources in a lake.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -1433,7 +1433,7 @@ class DataplexServiceAsyncClient:
     ) -> resources.Zone:
         r"""Retrieves a zone resource.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -1537,7 +1537,7 @@ class DataplexServiceAsyncClient:
     ) -> pagers.ListZoneActionsAsyncPager:
         r"""Lists action resources in a zone.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -1646,7 +1646,7 @@ class DataplexServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Creates an asset resource.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -1779,7 +1779,7 @@ class DataplexServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Updates an asset resource.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -1897,7 +1897,7 @@ class DataplexServiceAsyncClient:
         associated Lifecycle policy.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -2011,7 +2011,7 @@ class DataplexServiceAsyncClient:
     ) -> pagers.ListAssetsAsyncPager:
         r"""Lists asset resources in a zone.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -2118,7 +2118,7 @@ class DataplexServiceAsyncClient:
     ) -> resources.Asset:
         r"""Retrieves an asset resource.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -2217,7 +2217,7 @@ class DataplexServiceAsyncClient:
     ) -> pagers.ListAssetActionsAsyncPager:
         r"""Lists action resources in an asset.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -2326,7 +2326,7 @@ class DataplexServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Creates a task resource within a lake.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -2453,7 +2453,7 @@ class DataplexServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Update the task resource.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -2572,7 +2572,7 @@ class DataplexServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Delete the task resource.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -2686,7 +2686,7 @@ class DataplexServiceAsyncClient:
     ) -> pagers.ListTasksAsyncPager:
         r"""Lists tasks under the given lake.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -2793,7 +2793,7 @@ class DataplexServiceAsyncClient:
     ) -> tasks.Task:
         r"""Get task resource.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -2889,7 +2889,7 @@ class DataplexServiceAsyncClient:
     ) -> pagers.ListJobsAsyncPager:
         r"""Lists Jobs under the given task.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -2996,7 +2996,7 @@ class DataplexServiceAsyncClient:
     ) -> tasks.Job:
         r"""Get job resource.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -3094,7 +3094,7 @@ class DataplexServiceAsyncClient:
     ) -> None:
         r"""Cancel jobs running for the task resource.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -3175,7 +3175,7 @@ class DataplexServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Create an environment resource.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -3306,7 +3306,7 @@ class DataplexServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Update the environment resource.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -3424,7 +3424,7 @@ class DataplexServiceAsyncClient:
         deletion can be initiated.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -3538,7 +3538,7 @@ class DataplexServiceAsyncClient:
     ) -> pagers.ListEnvironmentsAsyncPager:
         r"""Lists environments under the given lake.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -3636,7 +3636,7 @@ class DataplexServiceAsyncClient:
     ) -> analyze.Environment:
         r"""Get environment resource.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -3726,7 +3726,7 @@ class DataplexServiceAsyncClient:
     ) -> pagers.ListSessionsAsyncPager:
         r"""Lists session resources in an environment.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 

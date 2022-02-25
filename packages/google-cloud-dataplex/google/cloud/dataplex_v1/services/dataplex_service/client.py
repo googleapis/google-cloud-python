@@ -548,8 +548,7 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
     ) -> operation.Operation:
         r"""Creates a lake resource.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -690,8 +689,7 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
     ) -> operation.Operation:
         r"""Updates a lake resource.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -814,8 +812,7 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         must be deleted before the lake can be deleted.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -929,8 +926,7 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
     ) -> pagers.ListLakesPager:
         r"""Lists lake resources in a project and location.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -1030,8 +1026,7 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
     ) -> resources.Lake:
         r"""Retrieves a lake resource.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -1134,8 +1129,7 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
     ) -> pagers.ListLakeActionsPager:
         r"""Lists action resources in a lake.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -1235,8 +1229,7 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
     ) -> operation.Operation:
         r"""Creates a zone resource within a lake.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -1376,8 +1369,7 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
     ) -> operation.Operation:
         r"""Updates a zone resource.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -1498,8 +1490,7 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         must be deleted before the zone can be deleted.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -1613,8 +1604,7 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
     ) -> pagers.ListZonesPager:
         r"""Lists zone resources in a lake.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -1712,8 +1702,7 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
     ) -> resources.Zone:
         r"""Retrieves a zone resource.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -1808,8 +1797,7 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
     ) -> pagers.ListZoneActionsPager:
         r"""Lists action resources in a zone.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -1909,8 +1897,7 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
     ) -> operation.Operation:
         r"""Creates an asset resource.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -2043,8 +2030,7 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
     ) -> operation.Operation:
         r"""Updates an asset resource.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -2162,8 +2148,7 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         associated Lifecycle policy.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -2277,8 +2262,7 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
     ) -> pagers.ListAssetsPager:
         r"""Lists asset resources in a zone.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -2376,8 +2360,7 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
     ) -> resources.Asset:
         r"""Retrieves an asset resource.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -2467,8 +2450,7 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
     ) -> pagers.ListAssetActionsPager:
         r"""Lists action resources in an asset.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -2568,8 +2550,7 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
     ) -> operation.Operation:
         r"""Creates a task resource within a lake.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -2696,8 +2677,7 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
     ) -> operation.Operation:
         r"""Update the task resource.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -2816,8 +2796,7 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
     ) -> operation.Operation:
         r"""Delete the task resource.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -2931,8 +2910,7 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
     ) -> pagers.ListTasksPager:
         r"""Lists tasks under the given lake.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -3030,8 +3008,7 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
     ) -> tasks.Task:
         r"""Get task resource.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -3118,8 +3095,7 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
     ) -> pagers.ListJobsPager:
         r"""Lists Jobs under the given task.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -3217,8 +3193,7 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
     ) -> tasks.Job:
         r"""Get job resource.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -3307,8 +3282,7 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
     ) -> None:
         r"""Cancel jobs running for the task resource.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -3389,8 +3363,7 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
     ) -> operation.Operation:
         r"""Create an environment resource.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -3521,8 +3494,7 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
     ) -> operation.Operation:
         r"""Update the environment resource.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -3640,8 +3612,7 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         deletion can be initiated.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -3755,8 +3726,7 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
     ) -> pagers.ListEnvironmentsPager:
         r"""Lists environments under the given lake.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -3854,8 +3824,7 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
     ) -> analyze.Environment:
         r"""Get environment resource.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -3945,8 +3914,7 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
     ) -> pagers.ListSessionsPager:
         r"""Lists session resources in an environment.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 

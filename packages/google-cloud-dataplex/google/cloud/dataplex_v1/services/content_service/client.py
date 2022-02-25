@@ -431,8 +431,7 @@ class ContentServiceClient(metaclass=ContentServiceClientMeta):
     ) -> analyze.Content:
         r"""Create a content.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -535,8 +534,7 @@ class ContentServiceClient(metaclass=ContentServiceClientMeta):
     ) -> analyze.Content:
         r"""Update a content. Only supports full resource update.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -639,8 +637,7 @@ class ContentServiceClient(metaclass=ContentServiceClientMeta):
     ) -> None:
         r"""Delete a content.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -719,8 +716,7 @@ class ContentServiceClient(metaclass=ContentServiceClientMeta):
     ) -> analyze.Content:
         r"""Get a content resource.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
@@ -809,8 +805,7 @@ class ContentServiceClient(metaclass=ContentServiceClientMeta):
     ) -> pagers.ListContentPager:
         r"""List content.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataplex_v1
 
