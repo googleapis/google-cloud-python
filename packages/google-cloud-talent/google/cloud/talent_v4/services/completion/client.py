@@ -423,8 +423,7 @@ class CompletionClient(metaclass=CompletionClientMeta):
         auto-complete search box.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import talent_v4
 

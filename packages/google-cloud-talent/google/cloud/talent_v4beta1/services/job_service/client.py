@@ -436,8 +436,7 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
         but it may take up to 5 minutes.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import talent_v4beta1
 
@@ -549,8 +548,7 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
     ) -> operation.Operation:
         r"""Begins executing a batch create jobs operation.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import talent_v4beta1
 
@@ -678,8 +676,7 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
         recently EXPIRED within the last 90 days.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import talent_v4beta1
 
@@ -780,8 +777,7 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
         minutes.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import talent_v4beta1
 
@@ -877,8 +873,7 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
     ) -> operation.Operation:
         r"""Begins executing a batch update jobs operation.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import talent_v4beta1
 
@@ -1007,8 +1002,7 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
         seconds, but it may take up to 5 minutes.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import talent_v4beta1
 
@@ -1096,8 +1090,7 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
         filter.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import talent_v4beta1
 
@@ -1203,8 +1196,7 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
     ) -> pagers.ListJobsPager:
         r"""Lists jobs by filter.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import talent_v4beta1
 
@@ -1344,8 +1336,7 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
         has permission to search against.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import talent_v4beta1
 
@@ -1436,8 +1427,7 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
         permission to search against.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import talent_v4beta1
 

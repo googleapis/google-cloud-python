@@ -430,8 +430,7 @@ class CompanyServiceClient(metaclass=CompanyServiceClientMeta):
     ) -> gct_company.Company:
         r"""Creates a new company entity.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import talent_v4
 
@@ -541,8 +540,7 @@ class CompanyServiceClient(metaclass=CompanyServiceClientMeta):
     ) -> company.Company:
         r"""Retrieves specified company.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import talent_v4
 
@@ -642,8 +640,7 @@ class CompanyServiceClient(metaclass=CompanyServiceClientMeta):
     ) -> gct_company.Company:
         r"""Updates specified company.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import talent_v4
 
@@ -765,8 +762,7 @@ class CompanyServiceClient(metaclass=CompanyServiceClientMeta):
         it.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import talent_v4
 
@@ -849,8 +845,7 @@ class CompanyServiceClient(metaclass=CompanyServiceClientMeta):
     ) -> pagers.ListCompaniesPager:
         r"""Lists all companies associated with the project.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import talent_v4
 

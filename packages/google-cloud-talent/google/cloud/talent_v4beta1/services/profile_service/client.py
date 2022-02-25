@@ -431,8 +431,7 @@ class ProfileServiceClient(metaclass=ProfileServiceClientMeta):
     ) -> pagers.ListProfilesPager:
         r"""Lists profiles by filter. The order is unspecified.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import talent_v4beta1
 
@@ -535,8 +534,7 @@ class ProfileServiceClient(metaclass=ProfileServiceClientMeta):
     ) -> gct_profile.Profile:
         r"""Creates and returns a new profile.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import talent_v4beta1
 
@@ -638,8 +636,7 @@ class ProfileServiceClient(metaclass=ProfileServiceClientMeta):
     ) -> profile.Profile:
         r"""Gets the specified profile.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import talent_v4beta1
 
@@ -735,8 +732,7 @@ class ProfileServiceClient(metaclass=ProfileServiceClientMeta):
         result.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import talent_v4beta1
 
@@ -829,8 +825,7 @@ class ProfileServiceClient(metaclass=ProfileServiceClientMeta):
         or assignments associated.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import talent_v4beta1
 
@@ -920,8 +915,7 @@ class ProfileServiceClient(metaclass=ProfileServiceClientMeta):
         for more information.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import talent_v4beta1
 

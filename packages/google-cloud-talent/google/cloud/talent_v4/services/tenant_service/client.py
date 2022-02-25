@@ -411,8 +411,7 @@ class TenantServiceClient(metaclass=TenantServiceClientMeta):
     ) -> gct_tenant.Tenant:
         r"""Creates a new tenant entity.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import talent_v4
 
@@ -521,8 +520,7 @@ class TenantServiceClient(metaclass=TenantServiceClientMeta):
     ) -> tenant.Tenant:
         r"""Retrieves specified tenant.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import talent_v4
 
@@ -622,8 +620,7 @@ class TenantServiceClient(metaclass=TenantServiceClientMeta):
     ) -> gct_tenant.Tenant:
         r"""Updates specified tenant.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import talent_v4
 
@@ -742,8 +739,7 @@ class TenantServiceClient(metaclass=TenantServiceClientMeta):
     ) -> None:
         r"""Deletes specified tenant.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import talent_v4
 
@@ -825,8 +821,7 @@ class TenantServiceClient(metaclass=TenantServiceClientMeta):
     ) -> pagers.ListTenantsPager:
         r"""Lists all tenants associated with the project.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import talent_v4
 

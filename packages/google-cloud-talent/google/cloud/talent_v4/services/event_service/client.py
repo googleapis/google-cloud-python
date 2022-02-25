@@ -414,8 +414,7 @@ class EventServiceClient(metaclass=EventServiceClientMeta):
         about self service tools.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import talent_v4
 

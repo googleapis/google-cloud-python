@@ -231,7 +231,7 @@ class ApplicationServiceAsyncClient:
     ) -> gct_application.Application:
         r"""Creates a new application entity.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import talent_v4beta1
 
@@ -340,7 +340,7 @@ class ApplicationServiceAsyncClient:
     ) -> application.Application:
         r"""Retrieves specified application.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import talent_v4beta1
 
@@ -445,7 +445,7 @@ class ApplicationServiceAsyncClient:
     ) -> gct_application.Application:
         r"""Updates specified application.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import talent_v4beta1
 
@@ -543,7 +543,7 @@ class ApplicationServiceAsyncClient:
     ) -> None:
         r"""Deletes specified application.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import talent_v4beta1
 
@@ -637,7 +637,7 @@ class ApplicationServiceAsyncClient:
     ) -> pagers.ListApplicationsAsyncPager:
         r"""Lists all applications associated with the profile.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import talent_v4beta1
 

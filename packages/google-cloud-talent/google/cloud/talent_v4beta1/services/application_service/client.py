@@ -471,8 +471,7 @@ class ApplicationServiceClient(metaclass=ApplicationServiceClientMeta):
     ) -> gct_application.Application:
         r"""Creates a new application entity.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import talent_v4beta1
 
@@ -581,8 +580,7 @@ class ApplicationServiceClient(metaclass=ApplicationServiceClientMeta):
     ) -> application.Application:
         r"""Retrieves specified application.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import talent_v4beta1
 
@@ -677,8 +675,7 @@ class ApplicationServiceClient(metaclass=ApplicationServiceClientMeta):
     ) -> gct_application.Application:
         r"""Updates specified application.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import talent_v4beta1
 
@@ -776,8 +773,7 @@ class ApplicationServiceClient(metaclass=ApplicationServiceClientMeta):
     ) -> None:
         r"""Deletes specified application.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import talent_v4beta1
 
@@ -861,8 +857,7 @@ class ApplicationServiceClient(metaclass=ApplicationServiceClientMeta):
     ) -> pagers.ListApplicationsPager:
         r"""Lists all applications associated with the profile.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import talent_v4beta1
 

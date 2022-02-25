@@ -223,7 +223,7 @@ class ProfileServiceAsyncClient:
     ) -> pagers.ListProfilesAsyncPager:
         r"""Lists profiles by filter. The order is unspecified.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import talent_v4beta1
 
@@ -336,7 +336,7 @@ class ProfileServiceAsyncClient:
     ) -> gct_profile.Profile:
         r"""Creates and returns a new profile.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import talent_v4beta1
 
@@ -438,7 +438,7 @@ class ProfileServiceAsyncClient:
     ) -> profile.Profile:
         r"""Gets the specified profile.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import talent_v4beta1
 
@@ -544,7 +544,7 @@ class ProfileServiceAsyncClient:
         result.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import talent_v4beta1
 
@@ -637,7 +637,7 @@ class ProfileServiceAsyncClient:
         or assignments associated.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import talent_v4beta1
 
@@ -737,7 +737,7 @@ class ProfileServiceAsyncClient:
         for more information.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import talent_v4beta1
 

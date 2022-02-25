@@ -10,8 +10,8 @@
           "shortName": "CreateCompany"
         }
       },
-      "file": "jobs_generated_talent_v4_company_service_create_company_async.py",
-      "regionTag": "jobs_generated_talent_v4_CompanyService_CreateCompany_async",
+      "file": "jobs_v4_generated_company_service_create_company_async.py",
+      "regionTag": "jobs_v4_generated_CompanyService_CreateCompany_async",
       "segments": [
         {
           "end": 49,
@@ -54,8 +54,8 @@
           "shortName": "CreateCompany"
         }
       },
-      "file": "jobs_generated_talent_v4_company_service_create_company_sync.py",
-      "regionTag": "jobs_generated_talent_v4_CompanyService_CreateCompany_sync",
+      "file": "jobs_v4_generated_company_service_create_company_sync.py",
+      "regionTag": "jobs_v4_generated_CompanyService_CreateCompany_sync",
       "segments": [
         {
           "end": 49,
@@ -99,8 +99,8 @@
           "shortName": "DeleteCompany"
         }
       },
-      "file": "jobs_generated_talent_v4_company_service_delete_company_async.py",
-      "regionTag": "jobs_generated_talent_v4_CompanyService_DeleteCompany_async",
+      "file": "jobs_v4_generated_company_service_delete_company_async.py",
+      "regionTag": "jobs_v4_generated_CompanyService_DeleteCompany_async",
       "segments": [
         {
           "end": 42,
@@ -141,8 +141,8 @@
           "shortName": "DeleteCompany"
         }
       },
-      "file": "jobs_generated_talent_v4_company_service_delete_company_sync.py",
-      "regionTag": "jobs_generated_talent_v4_CompanyService_DeleteCompany_sync",
+      "file": "jobs_v4_generated_company_service_delete_company_sync.py",
+      "regionTag": "jobs_v4_generated_CompanyService_DeleteCompany_sync",
       "segments": [
         {
           "end": 42,
@@ -184,8 +184,8 @@
           "shortName": "GetCompany"
         }
       },
-      "file": "jobs_generated_talent_v4_company_service_get_company_async.py",
-      "regionTag": "jobs_generated_talent_v4_CompanyService_GetCompany_async",
+      "file": "jobs_v4_generated_company_service_get_company_async.py",
+      "regionTag": "jobs_v4_generated_CompanyService_GetCompany_async",
       "segments": [
         {
           "end": 44,
@@ -228,8 +228,8 @@
           "shortName": "GetCompany"
         }
       },
-      "file": "jobs_generated_talent_v4_company_service_get_company_sync.py",
-      "regionTag": "jobs_generated_talent_v4_CompanyService_GetCompany_sync",
+      "file": "jobs_v4_generated_company_service_get_company_sync.py",
+      "regionTag": "jobs_v4_generated_CompanyService_GetCompany_sync",
       "segments": [
         {
           "end": 44,
@@ -273,8 +273,8 @@
           "shortName": "ListCompanies"
         }
       },
-      "file": "jobs_generated_talent_v4_company_service_list_companies_async.py",
-      "regionTag": "jobs_generated_talent_v4_CompanyService_ListCompanies_async",
+      "file": "jobs_v4_generated_company_service_list_companies_async.py",
+      "regionTag": "jobs_v4_generated_CompanyService_ListCompanies_async",
       "segments": [
         {
           "end": 45,
@@ -317,8 +317,8 @@
           "shortName": "ListCompanies"
         }
       },
-      "file": "jobs_generated_talent_v4_company_service_list_companies_sync.py",
-      "regionTag": "jobs_generated_talent_v4_CompanyService_ListCompanies_sync",
+      "file": "jobs_v4_generated_company_service_list_companies_sync.py",
+      "regionTag": "jobs_v4_generated_CompanyService_ListCompanies_sync",
       "segments": [
         {
           "end": 45,
@@ -362,8 +362,8 @@
           "shortName": "UpdateCompany"
         }
       },
-      "file": "jobs_generated_talent_v4_company_service_update_company_async.py",
-      "regionTag": "jobs_generated_talent_v4_CompanyService_UpdateCompany_async",
+      "file": "jobs_v4_generated_company_service_update_company_async.py",
+      "regionTag": "jobs_v4_generated_CompanyService_UpdateCompany_async",
       "segments": [
         {
           "end": 48,
@@ -406,8 +406,8 @@
           "shortName": "UpdateCompany"
         }
       },
-      "file": "jobs_generated_talent_v4_company_service_update_company_sync.py",
-      "regionTag": "jobs_generated_talent_v4_CompanyService_UpdateCompany_sync",
+      "file": "jobs_v4_generated_company_service_update_company_sync.py",
+      "regionTag": "jobs_v4_generated_CompanyService_UpdateCompany_sync",
       "segments": [
         {
           "end": 48,
@@ -451,8 +451,8 @@
           "shortName": "CompleteQuery"
         }
       },
-      "file": "jobs_generated_talent_v4_completion_complete_query_async.py",
-      "regionTag": "jobs_generated_talent_v4_Completion_CompleteQuery_async",
+      "file": "jobs_v4_generated_completion_complete_query_async.py",
+      "regionTag": "jobs_v4_generated_Completion_CompleteQuery_async",
       "segments": [
         {
           "end": 46,
@@ -495,8 +495,8 @@
           "shortName": "CompleteQuery"
         }
       },
-      "file": "jobs_generated_talent_v4_completion_complete_query_sync.py",
-      "regionTag": "jobs_generated_talent_v4_Completion_CompleteQuery_sync",
+      "file": "jobs_v4_generated_completion_complete_query_sync.py",
+      "regionTag": "jobs_v4_generated_Completion_CompleteQuery_sync",
       "segments": [
         {
           "end": 46,
@@ -540,8 +540,8 @@
           "shortName": "CreateClientEvent"
         }
       },
-      "file": "jobs_generated_talent_v4_event_service_create_client_event_async.py",
-      "regionTag": "jobs_generated_talent_v4_EventService_CreateClientEvent_async",
+      "file": "jobs_v4_generated_event_service_create_client_event_async.py",
+      "regionTag": "jobs_v4_generated_EventService_CreateClientEvent_async",
       "segments": [
         {
           "end": 50,
@@ -584,8 +584,8 @@
           "shortName": "CreateClientEvent"
         }
       },
-      "file": "jobs_generated_talent_v4_event_service_create_client_event_sync.py",
-      "regionTag": "jobs_generated_talent_v4_EventService_CreateClientEvent_sync",
+      "file": "jobs_v4_generated_event_service_create_client_event_sync.py",
+      "regionTag": "jobs_v4_generated_EventService_CreateClientEvent_sync",
       "segments": [
         {
           "end": 50,
@@ -629,8 +629,8 @@
           "shortName": "BatchCreateJobs"
         }
       },
-      "file": "jobs_generated_talent_v4_job_service_batch_create_jobs_async.py",
-      "regionTag": "jobs_generated_talent_v4_JobService_BatchCreateJobs_async",
+      "file": "jobs_v4_generated_job_service_batch_create_jobs_async.py",
+      "regionTag": "jobs_v4_generated_JobService_BatchCreateJobs_async",
       "segments": [
         {
           "end": 55,
@@ -673,8 +673,8 @@
           "shortName": "BatchCreateJobs"
         }
       },
-      "file": "jobs_generated_talent_v4_job_service_batch_create_jobs_sync.py",
-      "regionTag": "jobs_generated_talent_v4_JobService_BatchCreateJobs_sync",
+      "file": "jobs_v4_generated_job_service_batch_create_jobs_sync.py",
+      "regionTag": "jobs_v4_generated_JobService_BatchCreateJobs_sync",
       "segments": [
         {
           "end": 55,
@@ -718,8 +718,8 @@
           "shortName": "BatchDeleteJobs"
         }
       },
-      "file": "jobs_generated_talent_v4_job_service_batch_delete_jobs_async.py",
-      "regionTag": "jobs_generated_talent_v4_JobService_BatchDeleteJobs_async",
+      "file": "jobs_v4_generated_job_service_batch_delete_jobs_async.py",
+      "regionTag": "jobs_v4_generated_JobService_BatchDeleteJobs_async",
       "segments": [
         {
           "end": 48,
@@ -762,8 +762,8 @@
           "shortName": "BatchDeleteJobs"
         }
       },
-      "file": "jobs_generated_talent_v4_job_service_batch_delete_jobs_sync.py",
-      "regionTag": "jobs_generated_talent_v4_JobService_BatchDeleteJobs_sync",
+      "file": "jobs_v4_generated_job_service_batch_delete_jobs_sync.py",
+      "regionTag": "jobs_v4_generated_JobService_BatchDeleteJobs_sync",
       "segments": [
         {
           "end": 48,
@@ -807,8 +807,8 @@
           "shortName": "BatchUpdateJobs"
         }
       },
-      "file": "jobs_generated_talent_v4_job_service_batch_update_jobs_async.py",
-      "regionTag": "jobs_generated_talent_v4_JobService_BatchUpdateJobs_async",
+      "file": "jobs_v4_generated_job_service_batch_update_jobs_async.py",
+      "regionTag": "jobs_v4_generated_JobService_BatchUpdateJobs_async",
       "segments": [
         {
           "end": 55,
@@ -851,8 +851,8 @@
           "shortName": "BatchUpdateJobs"
         }
       },
-      "file": "jobs_generated_talent_v4_job_service_batch_update_jobs_sync.py",
-      "regionTag": "jobs_generated_talent_v4_JobService_BatchUpdateJobs_sync",
+      "file": "jobs_v4_generated_job_service_batch_update_jobs_sync.py",
+      "regionTag": "jobs_v4_generated_JobService_BatchUpdateJobs_sync",
       "segments": [
         {
           "end": 55,
@@ -896,8 +896,8 @@
           "shortName": "CreateJob"
         }
       },
-      "file": "jobs_generated_talent_v4_job_service_create_job_async.py",
-      "regionTag": "jobs_generated_talent_v4_JobService_CreateJob_async",
+      "file": "jobs_v4_generated_job_service_create_job_async.py",
+      "regionTag": "jobs_v4_generated_JobService_CreateJob_async",
       "segments": [
         {
           "end": 51,
@@ -940,8 +940,8 @@
           "shortName": "CreateJob"
         }
       },
-      "file": "jobs_generated_talent_v4_job_service_create_job_sync.py",
-      "regionTag": "jobs_generated_talent_v4_JobService_CreateJob_sync",
+      "file": "jobs_v4_generated_job_service_create_job_sync.py",
+      "regionTag": "jobs_v4_generated_JobService_CreateJob_sync",
       "segments": [
         {
           "end": 51,
@@ -985,8 +985,8 @@
           "shortName": "DeleteJob"
         }
       },
-      "file": "jobs_generated_talent_v4_job_service_delete_job_async.py",
-      "regionTag": "jobs_generated_talent_v4_JobService_DeleteJob_async",
+      "file": "jobs_v4_generated_job_service_delete_job_async.py",
+      "regionTag": "jobs_v4_generated_JobService_DeleteJob_async",
       "segments": [
         {
           "end": 42,
@@ -1027,8 +1027,8 @@
           "shortName": "DeleteJob"
         }
       },
-      "file": "jobs_generated_talent_v4_job_service_delete_job_sync.py",
-      "regionTag": "jobs_generated_talent_v4_JobService_DeleteJob_sync",
+      "file": "jobs_v4_generated_job_service_delete_job_sync.py",
+      "regionTag": "jobs_v4_generated_JobService_DeleteJob_sync",
       "segments": [
         {
           "end": 42,
@@ -1070,8 +1070,8 @@
           "shortName": "GetJob"
         }
       },
-      "file": "jobs_generated_talent_v4_job_service_get_job_async.py",
-      "regionTag": "jobs_generated_talent_v4_JobService_GetJob_async",
+      "file": "jobs_v4_generated_job_service_get_job_async.py",
+      "regionTag": "jobs_v4_generated_JobService_GetJob_async",
       "segments": [
         {
           "end": 44,
@@ -1114,8 +1114,8 @@
           "shortName": "GetJob"
         }
       },
-      "file": "jobs_generated_talent_v4_job_service_get_job_sync.py",
-      "regionTag": "jobs_generated_talent_v4_JobService_GetJob_sync",
+      "file": "jobs_v4_generated_job_service_get_job_sync.py",
+      "regionTag": "jobs_v4_generated_JobService_GetJob_sync",
       "segments": [
         {
           "end": 44,
@@ -1159,8 +1159,8 @@
           "shortName": "ListJobs"
         }
       },
-      "file": "jobs_generated_talent_v4_job_service_list_jobs_async.py",
-      "regionTag": "jobs_generated_talent_v4_JobService_ListJobs_async",
+      "file": "jobs_v4_generated_job_service_list_jobs_async.py",
+      "regionTag": "jobs_v4_generated_JobService_ListJobs_async",
       "segments": [
         {
           "end": 46,
@@ -1203,8 +1203,8 @@
           "shortName": "ListJobs"
         }
       },
-      "file": "jobs_generated_talent_v4_job_service_list_jobs_sync.py",
-      "regionTag": "jobs_generated_talent_v4_JobService_ListJobs_sync",
+      "file": "jobs_v4_generated_job_service_list_jobs_sync.py",
+      "regionTag": "jobs_v4_generated_JobService_ListJobs_sync",
       "segments": [
         {
           "end": 46,
@@ -1248,8 +1248,8 @@
           "shortName": "SearchJobsForAlert"
         }
       },
-      "file": "jobs_generated_talent_v4_job_service_search_jobs_for_alert_async.py",
-      "regionTag": "jobs_generated_talent_v4_JobService_SearchJobsForAlert_async",
+      "file": "jobs_v4_generated_job_service_search_jobs_for_alert_async.py",
+      "regionTag": "jobs_v4_generated_JobService_SearchJobsForAlert_async",
       "segments": [
         {
           "end": 44,
@@ -1292,8 +1292,8 @@
           "shortName": "SearchJobsForAlert"
         }
       },
-      "file": "jobs_generated_talent_v4_job_service_search_jobs_for_alert_sync.py",
-      "regionTag": "jobs_generated_talent_v4_JobService_SearchJobsForAlert_sync",
+      "file": "jobs_v4_generated_job_service_search_jobs_for_alert_sync.py",
+      "regionTag": "jobs_v4_generated_JobService_SearchJobsForAlert_sync",
       "segments": [
         {
           "end": 44,
@@ -1337,8 +1337,8 @@
           "shortName": "SearchJobs"
         }
       },
-      "file": "jobs_generated_talent_v4_job_service_search_jobs_async.py",
-      "regionTag": "jobs_generated_talent_v4_JobService_SearchJobs_async",
+      "file": "jobs_v4_generated_job_service_search_jobs_async.py",
+      "regionTag": "jobs_v4_generated_JobService_SearchJobs_async",
       "segments": [
         {
           "end": 44,
@@ -1381,8 +1381,8 @@
           "shortName": "SearchJobs"
         }
       },
-      "file": "jobs_generated_talent_v4_job_service_search_jobs_sync.py",
-      "regionTag": "jobs_generated_talent_v4_JobService_SearchJobs_sync",
+      "file": "jobs_v4_generated_job_service_search_jobs_sync.py",
+      "regionTag": "jobs_v4_generated_JobService_SearchJobs_sync",
       "segments": [
         {
           "end": 44,
@@ -1426,8 +1426,8 @@
           "shortName": "UpdateJob"
         }
       },
-      "file": "jobs_generated_talent_v4_job_service_update_job_async.py",
-      "regionTag": "jobs_generated_talent_v4_JobService_UpdateJob_async",
+      "file": "jobs_v4_generated_job_service_update_job_async.py",
+      "regionTag": "jobs_v4_generated_JobService_UpdateJob_async",
       "segments": [
         {
           "end": 50,
@@ -1470,8 +1470,8 @@
           "shortName": "UpdateJob"
         }
       },
-      "file": "jobs_generated_talent_v4_job_service_update_job_sync.py",
-      "regionTag": "jobs_generated_talent_v4_JobService_UpdateJob_sync",
+      "file": "jobs_v4_generated_job_service_update_job_sync.py",
+      "regionTag": "jobs_v4_generated_JobService_UpdateJob_sync",
       "segments": [
         {
           "end": 50,
@@ -1515,8 +1515,8 @@
           "shortName": "CreateTenant"
         }
       },
-      "file": "jobs_generated_talent_v4_tenant_service_create_tenant_async.py",
-      "regionTag": "jobs_generated_talent_v4_TenantService_CreateTenant_async",
+      "file": "jobs_v4_generated_tenant_service_create_tenant_async.py",
+      "regionTag": "jobs_v4_generated_TenantService_CreateTenant_async",
       "segments": [
         {
           "end": 48,
@@ -1559,8 +1559,8 @@
           "shortName": "CreateTenant"
         }
       },
-      "file": "jobs_generated_talent_v4_tenant_service_create_tenant_sync.py",
-      "regionTag": "jobs_generated_talent_v4_TenantService_CreateTenant_sync",
+      "file": "jobs_v4_generated_tenant_service_create_tenant_sync.py",
+      "regionTag": "jobs_v4_generated_TenantService_CreateTenant_sync",
       "segments": [
         {
           "end": 48,
@@ -1604,8 +1604,8 @@
           "shortName": "DeleteTenant"
         }
       },
-      "file": "jobs_generated_talent_v4_tenant_service_delete_tenant_async.py",
-      "regionTag": "jobs_generated_talent_v4_TenantService_DeleteTenant_async",
+      "file": "jobs_v4_generated_tenant_service_delete_tenant_async.py",
+      "regionTag": "jobs_v4_generated_TenantService_DeleteTenant_async",
       "segments": [
         {
           "end": 42,
@@ -1646,8 +1646,8 @@
           "shortName": "DeleteTenant"
         }
       },
-      "file": "jobs_generated_talent_v4_tenant_service_delete_tenant_sync.py",
-      "regionTag": "jobs_generated_talent_v4_TenantService_DeleteTenant_sync",
+      "file": "jobs_v4_generated_tenant_service_delete_tenant_sync.py",
+      "regionTag": "jobs_v4_generated_TenantService_DeleteTenant_sync",
       "segments": [
         {
           "end": 42,
@@ -1689,8 +1689,8 @@
           "shortName": "GetTenant"
         }
       },
-      "file": "jobs_generated_talent_v4_tenant_service_get_tenant_async.py",
-      "regionTag": "jobs_generated_talent_v4_TenantService_GetTenant_async",
+      "file": "jobs_v4_generated_tenant_service_get_tenant_async.py",
+      "regionTag": "jobs_v4_generated_TenantService_GetTenant_async",
       "segments": [
         {
           "end": 44,
@@ -1733,8 +1733,8 @@
           "shortName": "GetTenant"
         }
       },
-      "file": "jobs_generated_talent_v4_tenant_service_get_tenant_sync.py",
-      "regionTag": "jobs_generated_talent_v4_TenantService_GetTenant_sync",
+      "file": "jobs_v4_generated_tenant_service_get_tenant_sync.py",
+      "regionTag": "jobs_v4_generated_TenantService_GetTenant_sync",
       "segments": [
         {
           "end": 44,
@@ -1778,8 +1778,8 @@
           "shortName": "ListTenants"
         }
       },
-      "file": "jobs_generated_talent_v4_tenant_service_list_tenants_async.py",
-      "regionTag": "jobs_generated_talent_v4_TenantService_ListTenants_async",
+      "file": "jobs_v4_generated_tenant_service_list_tenants_async.py",
+      "regionTag": "jobs_v4_generated_TenantService_ListTenants_async",
       "segments": [
         {
           "end": 45,
@@ -1822,8 +1822,8 @@
           "shortName": "ListTenants"
         }
       },
-      "file": "jobs_generated_talent_v4_tenant_service_list_tenants_sync.py",
-      "regionTag": "jobs_generated_talent_v4_TenantService_ListTenants_sync",
+      "file": "jobs_v4_generated_tenant_service_list_tenants_sync.py",
+      "regionTag": "jobs_v4_generated_TenantService_ListTenants_sync",
       "segments": [
         {
           "end": 45,
@@ -1867,8 +1867,8 @@
           "shortName": "UpdateTenant"
         }
       },
-      "file": "jobs_generated_talent_v4_tenant_service_update_tenant_async.py",
-      "regionTag": "jobs_generated_talent_v4_TenantService_UpdateTenant_async",
+      "file": "jobs_v4_generated_tenant_service_update_tenant_async.py",
+      "regionTag": "jobs_v4_generated_TenantService_UpdateTenant_async",
       "segments": [
         {
           "end": 47,
@@ -1911,8 +1911,8 @@
           "shortName": "UpdateTenant"
         }
       },
-      "file": "jobs_generated_talent_v4_tenant_service_update_tenant_sync.py",
-      "regionTag": "jobs_generated_talent_v4_TenantService_UpdateTenant_sync",
+      "file": "jobs_v4_generated_tenant_service_update_tenant_sync.py",
+      "regionTag": "jobs_v4_generated_TenantService_UpdateTenant_sync",
       "segments": [
         {
           "end": 47,
