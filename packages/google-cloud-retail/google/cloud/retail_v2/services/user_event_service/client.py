@@ -441,8 +441,7 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
     ) -> user_event.UserEvent:
         r"""Writes a single user event.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import retail_v2
 
@@ -524,8 +523,7 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
         method directly.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import retail_v2
 
@@ -644,8 +642,7 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
         command first.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import retail_v2
 
@@ -737,8 +734,7 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
         ImportMetadata.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import retail_v2
 
@@ -839,8 +835,7 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
         catalog.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import retail_v2
 

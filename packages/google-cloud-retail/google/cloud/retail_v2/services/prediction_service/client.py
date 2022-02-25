@@ -416,8 +416,7 @@ class PredictionServiceClient(metaclass=PredictionServiceClientMeta):
     ) -> prediction_service.PredictResponse:
         r"""Makes a recommendation prediction.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import retail_v2
 

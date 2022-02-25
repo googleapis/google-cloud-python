@@ -224,7 +224,7 @@ class UserEventServiceAsyncClient:
     ) -> user_event.UserEvent:
         r"""Writes a single user event.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import retail_v2
 
@@ -305,7 +305,7 @@ class UserEventServiceAsyncClient:
         method directly.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import retail_v2
 
@@ -423,7 +423,7 @@ class UserEventServiceAsyncClient:
         command first.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import retail_v2
 
@@ -524,7 +524,7 @@ class UserEventServiceAsyncClient:
         ImportMetadata.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import retail_v2
 
@@ -634,7 +634,7 @@ class UserEventServiceAsyncClient:
         catalog.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import retail_v2
 

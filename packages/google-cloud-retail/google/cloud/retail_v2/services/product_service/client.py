@@ -446,8 +446,7 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
     ) -> gcr_product.Product:
         r"""Creates a [Product][google.cloud.retail.v2.Product].
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import retail_v2
 
@@ -577,8 +576,7 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
     ) -> product.Product:
         r"""Gets a [Product][google.cloud.retail.v2.Product].
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import retail_v2
 
@@ -679,8 +677,7 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
     ) -> pagers.ListProductsPager:
         r"""Gets a list of [Product][google.cloud.retail.v2.Product]s.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import retail_v2
 
@@ -790,8 +787,7 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
     ) -> gcr_product.Product:
         r"""Updates a [Product][google.cloud.retail.v2.Product].
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import retail_v2
 
@@ -911,8 +907,7 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
     ) -> None:
         r"""Deletes a [Product][google.cloud.retail.v2.Product].
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import retail_v2
 
@@ -1023,8 +1018,7 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
         updated.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import retail_v2
 
@@ -1163,8 +1157,7 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
         sales if you are interested in using Retail Search.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import retail_v2
 
@@ -1346,8 +1339,7 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
         sales if you are interested in using Retail Search.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import retail_v2
 
@@ -1478,8 +1470,7 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
         sales if you are interested in using Retail Search.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import retail_v2
 

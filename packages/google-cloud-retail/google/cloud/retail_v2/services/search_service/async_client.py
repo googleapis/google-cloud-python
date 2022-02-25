@@ -226,7 +226,7 @@ class SearchServiceAsyncClient:
         sales if you are interested in using Retail Search.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import retail_v2
 

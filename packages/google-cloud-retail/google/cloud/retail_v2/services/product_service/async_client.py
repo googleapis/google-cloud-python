@@ -229,7 +229,7 @@ class ProductServiceAsyncClient:
     ) -> gcr_product.Product:
         r"""Creates a [Product][google.cloud.retail.v2.Product].
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import retail_v2
 
@@ -359,7 +359,7 @@ class ProductServiceAsyncClient:
     ) -> product.Product:
         r"""Gets a [Product][google.cloud.retail.v2.Product].
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import retail_v2
 
@@ -460,7 +460,7 @@ class ProductServiceAsyncClient:
     ) -> pagers.ListProductsAsyncPager:
         r"""Gets a list of [Product][google.cloud.retail.v2.Product]s.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import retail_v2
 
@@ -570,7 +570,7 @@ class ProductServiceAsyncClient:
     ) -> gcr_product.Product:
         r"""Updates a [Product][google.cloud.retail.v2.Product].
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import retail_v2
 
@@ -690,7 +690,7 @@ class ProductServiceAsyncClient:
     ) -> None:
         r"""Deletes a [Product][google.cloud.retail.v2.Product].
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import retail_v2
 
@@ -801,7 +801,7 @@ class ProductServiceAsyncClient:
         updated.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import retail_v2
 
@@ -949,7 +949,7 @@ class ProductServiceAsyncClient:
         sales if you are interested in using Retail Search.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import retail_v2
 
@@ -1131,7 +1131,7 @@ class ProductServiceAsyncClient:
         sales if you are interested in using Retail Search.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import retail_v2
 
@@ -1262,7 +1262,7 @@ class ProductServiceAsyncClient:
         sales if you are interested in using Retail Search.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import retail_v2
 
