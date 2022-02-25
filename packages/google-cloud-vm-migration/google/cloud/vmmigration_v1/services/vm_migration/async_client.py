@@ -237,7 +237,7 @@ class VmMigrationAsyncClient:
     ) -> pagers.ListSourcesAsyncPager:
         r"""Lists Sources in a given project and location.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -338,7 +338,7 @@ class VmMigrationAsyncClient:
     ) -> vmmigration.Source:
         r"""Gets details of a single Source.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -430,7 +430,7 @@ class VmMigrationAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Creates a new Source in a given project and location.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -548,7 +548,7 @@ class VmMigrationAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Updates the parameters of a single Source.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -664,7 +664,7 @@ class VmMigrationAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Deletes a single Source.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -784,7 +784,7 @@ class VmMigrationAsyncClient:
         vmmigration service.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -872,7 +872,7 @@ class VmMigrationAsyncClient:
     ) -> pagers.ListUtilizationReportsAsyncPager:
         r"""Lists Utilization Reports of the given Source.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -973,7 +973,7 @@ class VmMigrationAsyncClient:
     ) -> vmmigration.UtilizationReport:
         r"""Gets a single Utilization Report.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -1066,7 +1066,7 @@ class VmMigrationAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Creates a new UtilizationReport.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -1192,7 +1192,7 @@ class VmMigrationAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Deletes a single Utilization Report.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -1307,7 +1307,7 @@ class VmMigrationAsyncClient:
     ) -> pagers.ListDatacenterConnectorsAsyncPager:
         r"""Lists DatacenterConnectors in a given Source.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -1408,7 +1408,7 @@ class VmMigrationAsyncClient:
     ) -> vmmigration.DatacenterConnector:
         r"""Gets details of a single DatacenterConnector.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -1504,7 +1504,7 @@ class VmMigrationAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Creates a new DatacenterConnector in a given Source.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -1631,7 +1631,7 @@ class VmMigrationAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Deletes a single DatacenterConnector.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -1748,7 +1748,7 @@ class VmMigrationAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Creates a new MigratingVm in a given Source.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -1865,7 +1865,7 @@ class VmMigrationAsyncClient:
     ) -> pagers.ListMigratingVmsAsyncPager:
         r"""Lists MigratingVms in a given Source.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -1966,7 +1966,7 @@ class VmMigrationAsyncClient:
     ) -> vmmigration.MigratingVm:
         r"""Gets details of a single MigratingVm.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -2058,7 +2058,7 @@ class VmMigrationAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Updates the parameters of a single MigratingVm.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -2174,7 +2174,7 @@ class VmMigrationAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Deletes a single MigratingVm.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -2292,7 +2292,7 @@ class VmMigrationAsyncClient:
         cycles scheduled by the policy.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -2404,7 +2404,7 @@ class VmMigrationAsyncClient:
         snapshots.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -2493,7 +2493,7 @@ class VmMigrationAsyncClient:
         while the VM is paused.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -2582,7 +2582,7 @@ class VmMigrationAsyncClient:
         after cutover is done.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -2691,7 +2691,7 @@ class VmMigrationAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Initiates a Clone of a specific migrating VM.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -2820,7 +2820,7 @@ class VmMigrationAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Initiates the cancellation of a running clone job.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -2923,7 +2923,7 @@ class VmMigrationAsyncClient:
     ) -> pagers.ListCloneJobsAsyncPager:
         r"""Lists CloneJobs of a given migrating VM.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -3024,7 +3024,7 @@ class VmMigrationAsyncClient:
     ) -> vmmigration.CloneJob:
         r"""Gets details of a single CloneJob.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -3129,7 +3129,7 @@ class VmMigrationAsyncClient:
         resource is created and the job is initiated.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -3248,7 +3248,7 @@ class VmMigrationAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Initiates the cancellation of a running cutover job.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -3351,7 +3351,7 @@ class VmMigrationAsyncClient:
     ) -> pagers.ListCutoverJobsAsyncPager:
         r"""Lists CutoverJobs of a given migrating VM.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -3452,7 +3452,7 @@ class VmMigrationAsyncClient:
     ) -> vmmigration.CutoverJob:
         r"""Gets details of a single CutoverJob.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -3544,7 +3544,7 @@ class VmMigrationAsyncClient:
     ) -> pagers.ListGroupsAsyncPager:
         r"""Lists Groups in a given project and location.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -3645,7 +3645,7 @@ class VmMigrationAsyncClient:
     ) -> vmmigration.Group:
         r"""Gets details of a single Group.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -3736,7 +3736,7 @@ class VmMigrationAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Creates a new Group in a given project and location.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -3854,7 +3854,7 @@ class VmMigrationAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Updates the parameters of a single Group.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -3970,7 +3970,7 @@ class VmMigrationAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Deletes a single Group.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -4083,7 +4083,7 @@ class VmMigrationAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Adds a MigratingVm to a Group.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -4188,7 +4188,7 @@ class VmMigrationAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Removes a MigratingVm from a Group.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -4295,7 +4295,7 @@ class VmMigrationAsyncClient:
         supported value for location is ``global``.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -4400,7 +4400,7 @@ class VmMigrationAsyncClient:
         supported value for location is ``global``.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -4495,7 +4495,7 @@ class VmMigrationAsyncClient:
         supported value for location is ``global``.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -4617,7 +4617,7 @@ class VmMigrationAsyncClient:
         supported value for location is ``global``.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -4737,7 +4737,7 @@ class VmMigrationAsyncClient:
         supported value for location is ``global``.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 

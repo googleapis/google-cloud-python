@@ -10,8 +10,8 @@
           "shortName": "AddGroupMigration"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_add_group_migration_async.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_AddGroupMigration_async",
+      "file": "vmmigration_v1_generated_vm_migration_add_group_migration_async.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_AddGroupMigration_async",
       "segments": [
         {
           "end": 48,
@@ -54,8 +54,8 @@
           "shortName": "AddGroupMigration"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_add_group_migration_sync.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_AddGroupMigration_sync",
+      "file": "vmmigration_v1_generated_vm_migration_add_group_migration_sync.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_AddGroupMigration_sync",
       "segments": [
         {
           "end": 48,
@@ -99,8 +99,8 @@
           "shortName": "CancelCloneJob"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_cancel_clone_job_async.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_CancelCloneJob_async",
+      "file": "vmmigration_v1_generated_vm_migration_cancel_clone_job_async.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_CancelCloneJob_async",
       "segments": [
         {
           "end": 48,
@@ -143,8 +143,8 @@
           "shortName": "CancelCloneJob"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_cancel_clone_job_sync.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_CancelCloneJob_sync",
+      "file": "vmmigration_v1_generated_vm_migration_cancel_clone_job_sync.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_CancelCloneJob_sync",
       "segments": [
         {
           "end": 48,
@@ -188,8 +188,8 @@
           "shortName": "CancelCutoverJob"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_cancel_cutover_job_async.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_CancelCutoverJob_async",
+      "file": "vmmigration_v1_generated_vm_migration_cancel_cutover_job_async.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_CancelCutoverJob_async",
       "segments": [
         {
           "end": 48,
@@ -232,8 +232,8 @@
           "shortName": "CancelCutoverJob"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_cancel_cutover_job_sync.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_CancelCutoverJob_sync",
+      "file": "vmmigration_v1_generated_vm_migration_cancel_cutover_job_sync.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_CancelCutoverJob_sync",
       "segments": [
         {
           "end": 48,
@@ -277,8 +277,8 @@
           "shortName": "CreateCloneJob"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_create_clone_job_async.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_CreateCloneJob_async",
+      "file": "vmmigration_v1_generated_vm_migration_create_clone_job_async.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_CreateCloneJob_async",
       "segments": [
         {
           "end": 49,
@@ -321,8 +321,8 @@
           "shortName": "CreateCloneJob"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_create_clone_job_sync.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_CreateCloneJob_sync",
+      "file": "vmmigration_v1_generated_vm_migration_create_clone_job_sync.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_CreateCloneJob_sync",
       "segments": [
         {
           "end": 49,
@@ -366,8 +366,8 @@
           "shortName": "CreateCutoverJob"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_create_cutover_job_async.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_CreateCutoverJob_async",
+      "file": "vmmigration_v1_generated_vm_migration_create_cutover_job_async.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_CreateCutoverJob_async",
       "segments": [
         {
           "end": 49,
@@ -410,8 +410,8 @@
           "shortName": "CreateCutoverJob"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_create_cutover_job_sync.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_CreateCutoverJob_sync",
+      "file": "vmmigration_v1_generated_vm_migration_create_cutover_job_sync.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_CreateCutoverJob_sync",
       "segments": [
         {
           "end": 49,
@@ -455,8 +455,8 @@
           "shortName": "CreateDatacenterConnector"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_create_datacenter_connector_async.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_CreateDatacenterConnector_async",
+      "file": "vmmigration_v1_generated_vm_migration_create_datacenter_connector_async.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_CreateDatacenterConnector_async",
       "segments": [
         {
           "end": 49,
@@ -499,8 +499,8 @@
           "shortName": "CreateDatacenterConnector"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_create_datacenter_connector_sync.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_CreateDatacenterConnector_sync",
+      "file": "vmmigration_v1_generated_vm_migration_create_datacenter_connector_sync.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_CreateDatacenterConnector_sync",
       "segments": [
         {
           "end": 49,
@@ -544,8 +544,8 @@
           "shortName": "CreateGroup"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_create_group_async.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_CreateGroup_async",
+      "file": "vmmigration_v1_generated_vm_migration_create_group_async.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_CreateGroup_async",
       "segments": [
         {
           "end": 49,
@@ -588,8 +588,8 @@
           "shortName": "CreateGroup"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_create_group_sync.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_CreateGroup_sync",
+      "file": "vmmigration_v1_generated_vm_migration_create_group_sync.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_CreateGroup_sync",
       "segments": [
         {
           "end": 49,
@@ -633,8 +633,8 @@
           "shortName": "CreateMigratingVm"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_create_migrating_vm_async.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_CreateMigratingVm_async",
+      "file": "vmmigration_v1_generated_vm_migration_create_migrating_vm_async.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_CreateMigratingVm_async",
       "segments": [
         {
           "end": 49,
@@ -677,8 +677,8 @@
           "shortName": "CreateMigratingVm"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_create_migrating_vm_sync.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_CreateMigratingVm_sync",
+      "file": "vmmigration_v1_generated_vm_migration_create_migrating_vm_sync.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_CreateMigratingVm_sync",
       "segments": [
         {
           "end": 49,
@@ -722,8 +722,8 @@
           "shortName": "CreateSource"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_create_source_async.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_CreateSource_async",
+      "file": "vmmigration_v1_generated_vm_migration_create_source_async.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_CreateSource_async",
       "segments": [
         {
           "end": 49,
@@ -766,8 +766,8 @@
           "shortName": "CreateSource"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_create_source_sync.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_CreateSource_sync",
+      "file": "vmmigration_v1_generated_vm_migration_create_source_sync.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_CreateSource_sync",
       "segments": [
         {
           "end": 49,
@@ -811,8 +811,8 @@
           "shortName": "CreateTargetProject"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_create_target_project_async.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_CreateTargetProject_async",
+      "file": "vmmigration_v1_generated_vm_migration_create_target_project_async.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_CreateTargetProject_async",
       "segments": [
         {
           "end": 49,
@@ -855,8 +855,8 @@
           "shortName": "CreateTargetProject"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_create_target_project_sync.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_CreateTargetProject_sync",
+      "file": "vmmigration_v1_generated_vm_migration_create_target_project_sync.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_CreateTargetProject_sync",
       "segments": [
         {
           "end": 49,
@@ -900,8 +900,8 @@
           "shortName": "CreateUtilizationReport"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_create_utilization_report_async.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_CreateUtilizationReport_async",
+      "file": "vmmigration_v1_generated_vm_migration_create_utilization_report_async.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_CreateUtilizationReport_async",
       "segments": [
         {
           "end": 49,
@@ -944,8 +944,8 @@
           "shortName": "CreateUtilizationReport"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_create_utilization_report_sync.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_CreateUtilizationReport_sync",
+      "file": "vmmigration_v1_generated_vm_migration_create_utilization_report_sync.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_CreateUtilizationReport_sync",
       "segments": [
         {
           "end": 49,
@@ -989,8 +989,8 @@
           "shortName": "DeleteDatacenterConnector"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_delete_datacenter_connector_async.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_DeleteDatacenterConnector_async",
+      "file": "vmmigration_v1_generated_vm_migration_delete_datacenter_connector_async.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_DeleteDatacenterConnector_async",
       "segments": [
         {
           "end": 48,
@@ -1033,8 +1033,8 @@
           "shortName": "DeleteDatacenterConnector"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_delete_datacenter_connector_sync.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_DeleteDatacenterConnector_sync",
+      "file": "vmmigration_v1_generated_vm_migration_delete_datacenter_connector_sync.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_DeleteDatacenterConnector_sync",
       "segments": [
         {
           "end": 48,
@@ -1078,8 +1078,8 @@
           "shortName": "DeleteGroup"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_delete_group_async.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_DeleteGroup_async",
+      "file": "vmmigration_v1_generated_vm_migration_delete_group_async.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_DeleteGroup_async",
       "segments": [
         {
           "end": 48,
@@ -1122,8 +1122,8 @@
           "shortName": "DeleteGroup"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_delete_group_sync.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_DeleteGroup_sync",
+      "file": "vmmigration_v1_generated_vm_migration_delete_group_sync.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_DeleteGroup_sync",
       "segments": [
         {
           "end": 48,
@@ -1167,8 +1167,8 @@
           "shortName": "DeleteMigratingVm"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_delete_migrating_vm_async.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_DeleteMigratingVm_async",
+      "file": "vmmigration_v1_generated_vm_migration_delete_migrating_vm_async.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_DeleteMigratingVm_async",
       "segments": [
         {
           "end": 48,
@@ -1211,8 +1211,8 @@
           "shortName": "DeleteMigratingVm"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_delete_migrating_vm_sync.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_DeleteMigratingVm_sync",
+      "file": "vmmigration_v1_generated_vm_migration_delete_migrating_vm_sync.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_DeleteMigratingVm_sync",
       "segments": [
         {
           "end": 48,
@@ -1256,8 +1256,8 @@
           "shortName": "DeleteSource"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_delete_source_async.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_DeleteSource_async",
+      "file": "vmmigration_v1_generated_vm_migration_delete_source_async.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_DeleteSource_async",
       "segments": [
         {
           "end": 48,
@@ -1300,8 +1300,8 @@
           "shortName": "DeleteSource"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_delete_source_sync.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_DeleteSource_sync",
+      "file": "vmmigration_v1_generated_vm_migration_delete_source_sync.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_DeleteSource_sync",
       "segments": [
         {
           "end": 48,
@@ -1345,8 +1345,8 @@
           "shortName": "DeleteTargetProject"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_delete_target_project_async.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_DeleteTargetProject_async",
+      "file": "vmmigration_v1_generated_vm_migration_delete_target_project_async.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_DeleteTargetProject_async",
       "segments": [
         {
           "end": 48,
@@ -1389,8 +1389,8 @@
           "shortName": "DeleteTargetProject"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_delete_target_project_sync.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_DeleteTargetProject_sync",
+      "file": "vmmigration_v1_generated_vm_migration_delete_target_project_sync.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_DeleteTargetProject_sync",
       "segments": [
         {
           "end": 48,
@@ -1434,8 +1434,8 @@
           "shortName": "DeleteUtilizationReport"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_delete_utilization_report_async.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_DeleteUtilizationReport_async",
+      "file": "vmmigration_v1_generated_vm_migration_delete_utilization_report_async.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_DeleteUtilizationReport_async",
       "segments": [
         {
           "end": 48,
@@ -1478,8 +1478,8 @@
           "shortName": "DeleteUtilizationReport"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_delete_utilization_report_sync.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_DeleteUtilizationReport_sync",
+      "file": "vmmigration_v1_generated_vm_migration_delete_utilization_report_sync.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_DeleteUtilizationReport_sync",
       "segments": [
         {
           "end": 48,
@@ -1523,8 +1523,8 @@
           "shortName": "FetchInventory"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_fetch_inventory_async.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_FetchInventory_async",
+      "file": "vmmigration_v1_generated_vm_migration_fetch_inventory_async.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_FetchInventory_async",
       "segments": [
         {
           "end": 44,
@@ -1567,8 +1567,8 @@
           "shortName": "FetchInventory"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_fetch_inventory_sync.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_FetchInventory_sync",
+      "file": "vmmigration_v1_generated_vm_migration_fetch_inventory_sync.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_FetchInventory_sync",
       "segments": [
         {
           "end": 44,
@@ -1612,8 +1612,8 @@
           "shortName": "FinalizeMigration"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_finalize_migration_async.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_FinalizeMigration_async",
+      "file": "vmmigration_v1_generated_vm_migration_finalize_migration_async.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_FinalizeMigration_async",
       "segments": [
         {
           "end": 48,
@@ -1656,8 +1656,8 @@
           "shortName": "FinalizeMigration"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_finalize_migration_sync.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_FinalizeMigration_sync",
+      "file": "vmmigration_v1_generated_vm_migration_finalize_migration_sync.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_FinalizeMigration_sync",
       "segments": [
         {
           "end": 48,
@@ -1701,8 +1701,8 @@
           "shortName": "GetCloneJob"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_get_clone_job_async.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_GetCloneJob_async",
+      "file": "vmmigration_v1_generated_vm_migration_get_clone_job_async.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_GetCloneJob_async",
       "segments": [
         {
           "end": 44,
@@ -1745,8 +1745,8 @@
           "shortName": "GetCloneJob"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_get_clone_job_sync.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_GetCloneJob_sync",
+      "file": "vmmigration_v1_generated_vm_migration_get_clone_job_sync.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_GetCloneJob_sync",
       "segments": [
         {
           "end": 44,
@@ -1790,8 +1790,8 @@
           "shortName": "GetCutoverJob"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_get_cutover_job_async.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_GetCutoverJob_async",
+      "file": "vmmigration_v1_generated_vm_migration_get_cutover_job_async.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_GetCutoverJob_async",
       "segments": [
         {
           "end": 44,
@@ -1834,8 +1834,8 @@
           "shortName": "GetCutoverJob"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_get_cutover_job_sync.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_GetCutoverJob_sync",
+      "file": "vmmigration_v1_generated_vm_migration_get_cutover_job_sync.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_GetCutoverJob_sync",
       "segments": [
         {
           "end": 44,
@@ -1879,8 +1879,8 @@
           "shortName": "GetDatacenterConnector"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_get_datacenter_connector_async.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_GetDatacenterConnector_async",
+      "file": "vmmigration_v1_generated_vm_migration_get_datacenter_connector_async.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_GetDatacenterConnector_async",
       "segments": [
         {
           "end": 44,
@@ -1923,8 +1923,8 @@
           "shortName": "GetDatacenterConnector"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_get_datacenter_connector_sync.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_GetDatacenterConnector_sync",
+      "file": "vmmigration_v1_generated_vm_migration_get_datacenter_connector_sync.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_GetDatacenterConnector_sync",
       "segments": [
         {
           "end": 44,
@@ -1968,8 +1968,8 @@
           "shortName": "GetGroup"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_get_group_async.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_GetGroup_async",
+      "file": "vmmigration_v1_generated_vm_migration_get_group_async.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_GetGroup_async",
       "segments": [
         {
           "end": 44,
@@ -2012,8 +2012,8 @@
           "shortName": "GetGroup"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_get_group_sync.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_GetGroup_sync",
+      "file": "vmmigration_v1_generated_vm_migration_get_group_sync.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_GetGroup_sync",
       "segments": [
         {
           "end": 44,
@@ -2057,8 +2057,8 @@
           "shortName": "GetMigratingVm"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_get_migrating_vm_async.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_GetMigratingVm_async",
+      "file": "vmmigration_v1_generated_vm_migration_get_migrating_vm_async.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_GetMigratingVm_async",
       "segments": [
         {
           "end": 44,
@@ -2101,8 +2101,8 @@
           "shortName": "GetMigratingVm"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_get_migrating_vm_sync.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_GetMigratingVm_sync",
+      "file": "vmmigration_v1_generated_vm_migration_get_migrating_vm_sync.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_GetMigratingVm_sync",
       "segments": [
         {
           "end": 44,
@@ -2146,8 +2146,8 @@
           "shortName": "GetSource"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_get_source_async.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_GetSource_async",
+      "file": "vmmigration_v1_generated_vm_migration_get_source_async.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_GetSource_async",
       "segments": [
         {
           "end": 44,
@@ -2190,8 +2190,8 @@
           "shortName": "GetSource"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_get_source_sync.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_GetSource_sync",
+      "file": "vmmigration_v1_generated_vm_migration_get_source_sync.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_GetSource_sync",
       "segments": [
         {
           "end": 44,
@@ -2235,8 +2235,8 @@
           "shortName": "GetTargetProject"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_get_target_project_async.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_GetTargetProject_async",
+      "file": "vmmigration_v1_generated_vm_migration_get_target_project_async.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_GetTargetProject_async",
       "segments": [
         {
           "end": 44,
@@ -2279,8 +2279,8 @@
           "shortName": "GetTargetProject"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_get_target_project_sync.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_GetTargetProject_sync",
+      "file": "vmmigration_v1_generated_vm_migration_get_target_project_sync.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_GetTargetProject_sync",
       "segments": [
         {
           "end": 44,
@@ -2324,8 +2324,8 @@
           "shortName": "GetUtilizationReport"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_get_utilization_report_async.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_GetUtilizationReport_async",
+      "file": "vmmigration_v1_generated_vm_migration_get_utilization_report_async.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_GetUtilizationReport_async",
       "segments": [
         {
           "end": 44,
@@ -2368,8 +2368,8 @@
           "shortName": "GetUtilizationReport"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_get_utilization_report_sync.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_GetUtilizationReport_sync",
+      "file": "vmmigration_v1_generated_vm_migration_get_utilization_report_sync.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_GetUtilizationReport_sync",
       "segments": [
         {
           "end": 44,
@@ -2413,8 +2413,8 @@
           "shortName": "ListCloneJobs"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_list_clone_jobs_async.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_ListCloneJobs_async",
+      "file": "vmmigration_v1_generated_vm_migration_list_clone_jobs_async.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_ListCloneJobs_async",
       "segments": [
         {
           "end": 46,
@@ -2457,8 +2457,8 @@
           "shortName": "ListCloneJobs"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_list_clone_jobs_sync.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_ListCloneJobs_sync",
+      "file": "vmmigration_v1_generated_vm_migration_list_clone_jobs_sync.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_ListCloneJobs_sync",
       "segments": [
         {
           "end": 46,
@@ -2502,8 +2502,8 @@
           "shortName": "ListCutoverJobs"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_list_cutover_jobs_async.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_ListCutoverJobs_async",
+      "file": "vmmigration_v1_generated_vm_migration_list_cutover_jobs_async.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_ListCutoverJobs_async",
       "segments": [
         {
           "end": 46,
@@ -2546,8 +2546,8 @@
           "shortName": "ListCutoverJobs"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_list_cutover_jobs_sync.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_ListCutoverJobs_sync",
+      "file": "vmmigration_v1_generated_vm_migration_list_cutover_jobs_sync.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_ListCutoverJobs_sync",
       "segments": [
         {
           "end": 46,
@@ -2591,8 +2591,8 @@
           "shortName": "ListDatacenterConnectors"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_list_datacenter_connectors_async.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_ListDatacenterConnectors_async",
+      "file": "vmmigration_v1_generated_vm_migration_list_datacenter_connectors_async.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_ListDatacenterConnectors_async",
       "segments": [
         {
           "end": 46,
@@ -2635,8 +2635,8 @@
           "shortName": "ListDatacenterConnectors"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_list_datacenter_connectors_sync.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_ListDatacenterConnectors_sync",
+      "file": "vmmigration_v1_generated_vm_migration_list_datacenter_connectors_sync.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_ListDatacenterConnectors_sync",
       "segments": [
         {
           "end": 46,
@@ -2680,8 +2680,8 @@
           "shortName": "ListGroups"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_list_groups_async.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_ListGroups_async",
+      "file": "vmmigration_v1_generated_vm_migration_list_groups_async.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_ListGroups_async",
       "segments": [
         {
           "end": 46,
@@ -2724,8 +2724,8 @@
           "shortName": "ListGroups"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_list_groups_sync.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_ListGroups_sync",
+      "file": "vmmigration_v1_generated_vm_migration_list_groups_sync.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_ListGroups_sync",
       "segments": [
         {
           "end": 46,
@@ -2769,8 +2769,8 @@
           "shortName": "ListMigratingVms"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_list_migrating_vms_async.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_ListMigratingVms_async",
+      "file": "vmmigration_v1_generated_vm_migration_list_migrating_vms_async.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_ListMigratingVms_async",
       "segments": [
         {
           "end": 46,
@@ -2813,8 +2813,8 @@
           "shortName": "ListMigratingVms"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_list_migrating_vms_sync.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_ListMigratingVms_sync",
+      "file": "vmmigration_v1_generated_vm_migration_list_migrating_vms_sync.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_ListMigratingVms_sync",
       "segments": [
         {
           "end": 46,
@@ -2858,8 +2858,8 @@
           "shortName": "ListSources"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_list_sources_async.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_ListSources_async",
+      "file": "vmmigration_v1_generated_vm_migration_list_sources_async.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_ListSources_async",
       "segments": [
         {
           "end": 46,
@@ -2902,8 +2902,8 @@
           "shortName": "ListSources"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_list_sources_sync.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_ListSources_sync",
+      "file": "vmmigration_v1_generated_vm_migration_list_sources_sync.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_ListSources_sync",
       "segments": [
         {
           "end": 46,
@@ -2947,8 +2947,8 @@
           "shortName": "ListTargetProjects"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_list_target_projects_async.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_ListTargetProjects_async",
+      "file": "vmmigration_v1_generated_vm_migration_list_target_projects_async.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_ListTargetProjects_async",
       "segments": [
         {
           "end": 46,
@@ -2991,8 +2991,8 @@
           "shortName": "ListTargetProjects"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_list_target_projects_sync.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_ListTargetProjects_sync",
+      "file": "vmmigration_v1_generated_vm_migration_list_target_projects_sync.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_ListTargetProjects_sync",
       "segments": [
         {
           "end": 46,
@@ -3036,8 +3036,8 @@
           "shortName": "ListUtilizationReports"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_list_utilization_reports_async.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_ListUtilizationReports_async",
+      "file": "vmmigration_v1_generated_vm_migration_list_utilization_reports_async.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_ListUtilizationReports_async",
       "segments": [
         {
           "end": 46,
@@ -3080,8 +3080,8 @@
           "shortName": "ListUtilizationReports"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_list_utilization_reports_sync.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_ListUtilizationReports_sync",
+      "file": "vmmigration_v1_generated_vm_migration_list_utilization_reports_sync.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_ListUtilizationReports_sync",
       "segments": [
         {
           "end": 46,
@@ -3125,8 +3125,8 @@
           "shortName": "PauseMigration"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_pause_migration_async.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_PauseMigration_async",
+      "file": "vmmigration_v1_generated_vm_migration_pause_migration_async.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_PauseMigration_async",
       "segments": [
         {
           "end": 48,
@@ -3169,8 +3169,8 @@
           "shortName": "PauseMigration"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_pause_migration_sync.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_PauseMigration_sync",
+      "file": "vmmigration_v1_generated_vm_migration_pause_migration_sync.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_PauseMigration_sync",
       "segments": [
         {
           "end": 48,
@@ -3214,8 +3214,8 @@
           "shortName": "RemoveGroupMigration"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_remove_group_migration_async.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_RemoveGroupMigration_async",
+      "file": "vmmigration_v1_generated_vm_migration_remove_group_migration_async.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_RemoveGroupMigration_async",
       "segments": [
         {
           "end": 48,
@@ -3258,8 +3258,8 @@
           "shortName": "RemoveGroupMigration"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_remove_group_migration_sync.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_RemoveGroupMigration_sync",
+      "file": "vmmigration_v1_generated_vm_migration_remove_group_migration_sync.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_RemoveGroupMigration_sync",
       "segments": [
         {
           "end": 48,
@@ -3303,8 +3303,8 @@
           "shortName": "ResumeMigration"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_resume_migration_async.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_ResumeMigration_async",
+      "file": "vmmigration_v1_generated_vm_migration_resume_migration_async.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_ResumeMigration_async",
       "segments": [
         {
           "end": 48,
@@ -3347,8 +3347,8 @@
           "shortName": "ResumeMigration"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_resume_migration_sync.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_ResumeMigration_sync",
+      "file": "vmmigration_v1_generated_vm_migration_resume_migration_sync.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_ResumeMigration_sync",
       "segments": [
         {
           "end": 48,
@@ -3392,8 +3392,8 @@
           "shortName": "StartMigration"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_start_migration_async.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_StartMigration_async",
+      "file": "vmmigration_v1_generated_vm_migration_start_migration_async.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_StartMigration_async",
       "segments": [
         {
           "end": 48,
@@ -3436,8 +3436,8 @@
           "shortName": "StartMigration"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_start_migration_sync.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_StartMigration_sync",
+      "file": "vmmigration_v1_generated_vm_migration_start_migration_sync.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_StartMigration_sync",
       "segments": [
         {
           "end": 48,
@@ -3481,8 +3481,8 @@
           "shortName": "UpdateGroup"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_update_group_async.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_UpdateGroup_async",
+      "file": "vmmigration_v1_generated_vm_migration_update_group_async.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_UpdateGroup_async",
       "segments": [
         {
           "end": 47,
@@ -3525,8 +3525,8 @@
           "shortName": "UpdateGroup"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_update_group_sync.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_UpdateGroup_sync",
+      "file": "vmmigration_v1_generated_vm_migration_update_group_sync.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_UpdateGroup_sync",
       "segments": [
         {
           "end": 47,
@@ -3570,8 +3570,8 @@
           "shortName": "UpdateMigratingVm"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_update_migrating_vm_async.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_UpdateMigratingVm_async",
+      "file": "vmmigration_v1_generated_vm_migration_update_migrating_vm_async.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_UpdateMigratingVm_async",
       "segments": [
         {
           "end": 47,
@@ -3614,8 +3614,8 @@
           "shortName": "UpdateMigratingVm"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_update_migrating_vm_sync.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_UpdateMigratingVm_sync",
+      "file": "vmmigration_v1_generated_vm_migration_update_migrating_vm_sync.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_UpdateMigratingVm_sync",
       "segments": [
         {
           "end": 47,
@@ -3659,8 +3659,8 @@
           "shortName": "UpdateSource"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_update_source_async.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_UpdateSource_async",
+      "file": "vmmigration_v1_generated_vm_migration_update_source_async.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_UpdateSource_async",
       "segments": [
         {
           "end": 47,
@@ -3703,8 +3703,8 @@
           "shortName": "UpdateSource"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_update_source_sync.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_UpdateSource_sync",
+      "file": "vmmigration_v1_generated_vm_migration_update_source_sync.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_UpdateSource_sync",
       "segments": [
         {
           "end": 47,
@@ -3748,8 +3748,8 @@
           "shortName": "UpdateTargetProject"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_update_target_project_async.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_UpdateTargetProject_async",
+      "file": "vmmigration_v1_generated_vm_migration_update_target_project_async.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_UpdateTargetProject_async",
       "segments": [
         {
           "end": 47,
@@ -3792,8 +3792,8 @@
           "shortName": "UpdateTargetProject"
         }
       },
-      "file": "vmmigration_generated_vmmigration_v1_vm_migration_update_target_project_sync.py",
-      "regionTag": "vmmigration_generated_vmmigration_v1_VmMigration_UpdateTargetProject_sync",
+      "file": "vmmigration_v1_generated_vm_migration_update_target_project_sync.py",
+      "regionTag": "vmmigration_v1_generated_VmMigration_UpdateTargetProject_sync",
       "segments": [
         {
           "end": 47,

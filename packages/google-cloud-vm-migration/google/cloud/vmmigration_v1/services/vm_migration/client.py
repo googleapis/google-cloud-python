@@ -553,8 +553,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
     ) -> pagers.ListSourcesPager:
         r"""Lists Sources in a given project and location.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -655,8 +654,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
     ) -> vmmigration.Source:
         r"""Gets details of a single Source.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -748,8 +746,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
     ) -> operation.Operation:
         r"""Creates a new Source in a given project and location.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -867,8 +864,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
     ) -> operation.Operation:
         r"""Updates the parameters of a single Source.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -984,8 +980,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
     ) -> operation.Operation:
         r"""Deletes a single Source.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -1105,8 +1100,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         vmmigration service.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -1194,8 +1188,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
     ) -> pagers.ListUtilizationReportsPager:
         r"""Lists Utilization Reports of the given Source.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -1296,8 +1289,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
     ) -> vmmigration.UtilizationReport:
         r"""Gets a single Utilization Report.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -1390,8 +1382,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
     ) -> operation.Operation:
         r"""Creates a new UtilizationReport.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -1519,8 +1510,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
     ) -> operation.Operation:
         r"""Deletes a single Utilization Report.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -1637,8 +1627,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
     ) -> pagers.ListDatacenterConnectorsPager:
         r"""Lists DatacenterConnectors in a given Source.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -1741,8 +1730,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
     ) -> vmmigration.DatacenterConnector:
         r"""Gets details of a single DatacenterConnector.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -1838,8 +1826,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
     ) -> operation.Operation:
         r"""Creates a new DatacenterConnector in a given Source.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -1968,8 +1955,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
     ) -> operation.Operation:
         r"""Deletes a single DatacenterConnector.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -2088,8 +2074,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
     ) -> operation.Operation:
         r"""Creates a new MigratingVm in a given Source.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -2206,8 +2191,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
     ) -> pagers.ListMigratingVmsPager:
         r"""Lists MigratingVms in a given Source.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -2308,8 +2292,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
     ) -> vmmigration.MigratingVm:
         r"""Gets details of a single MigratingVm.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -2401,8 +2384,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
     ) -> operation.Operation:
         r"""Updates the parameters of a single MigratingVm.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -2518,8 +2500,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
     ) -> operation.Operation:
         r"""Deletes a single MigratingVm.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -2637,8 +2618,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         cycles scheduled by the policy.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -2750,8 +2730,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         snapshots.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -2841,8 +2820,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         while the VM is paused.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -2932,8 +2910,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         after cutover is done.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -3042,8 +3019,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
     ) -> operation.Operation:
         r"""Initiates a Clone of a specific migrating VM.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -3172,8 +3148,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
     ) -> operation.Operation:
         r"""Initiates the cancellation of a running clone job.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -3276,8 +3251,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
     ) -> pagers.ListCloneJobsPager:
         r"""Lists CloneJobs of a given migrating VM.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -3378,8 +3352,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
     ) -> vmmigration.CloneJob:
         r"""Gets details of a single CloneJob.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -3484,8 +3457,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         resource is created and the job is initiated.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -3604,8 +3576,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
     ) -> operation.Operation:
         r"""Initiates the cancellation of a running cutover job.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -3708,8 +3679,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
     ) -> pagers.ListCutoverJobsPager:
         r"""Lists CutoverJobs of a given migrating VM.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -3810,8 +3780,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
     ) -> vmmigration.CutoverJob:
         r"""Gets details of a single CutoverJob.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -3903,8 +3872,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
     ) -> pagers.ListGroupsPager:
         r"""Lists Groups in a given project and location.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -4005,8 +3973,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
     ) -> vmmigration.Group:
         r"""Gets details of a single Group.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -4097,8 +4064,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
     ) -> operation.Operation:
         r"""Creates a new Group in a given project and location.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -4216,8 +4182,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
     ) -> operation.Operation:
         r"""Updates the parameters of a single Group.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -4333,8 +4298,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
     ) -> operation.Operation:
         r"""Deletes a single Group.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -4447,8 +4411,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
     ) -> operation.Operation:
         r"""Adds a MigratingVm to a Group.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -4553,8 +4516,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
     ) -> operation.Operation:
         r"""Removes a MigratingVm from a Group.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -4661,8 +4623,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         supported value for location is ``global``.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -4767,8 +4728,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         supported value for location is ``global``.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -4863,8 +4823,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         supported value for location is ``global``.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -4986,8 +4945,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         supported value for location is ``global``.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
@@ -5107,8 +5065,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         supported value for location is ``global``.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vmmigration_v1
 
