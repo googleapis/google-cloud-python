@@ -2442,34 +2442,10 @@ def test_cluster_controller_grpc_lro_async_client():
     assert transport.operations_client is transport.operations_client
 
 
-def test_cluster_path():
+def test_service_path():
     project = "squid"
     location = "clam"
-    cluster = "whelk"
-    expected = "projects/{project}/locations/{location}/clusters/{cluster}".format(
-        project=project, location=location, cluster=cluster,
-    )
-    actual = ClusterControllerClient.cluster_path(project, location, cluster)
-    assert expected == actual
-
-
-def test_parse_cluster_path():
-    expected = {
-        "project": "octopus",
-        "location": "oyster",
-        "cluster": "nudibranch",
-    }
-    path = ClusterControllerClient.cluster_path(**expected)
-
-    # Check that the path construction is reversible.
-    actual = ClusterControllerClient.parse_cluster_path(path)
-    assert expected == actual
-
-
-def test_service_path():
-    project = "cuttlefish"
-    location = "mussel"
-    service = "winkle"
+    service = "whelk"
     expected = "projects/{project}/locations/{location}/services/{service}".format(
         project=project, location=location, service=service,
     )
@@ -2479,9 +2455,9 @@ def test_service_path():
 
 def test_parse_service_path():
     expected = {
-        "project": "nautilus",
-        "location": "scallop",
-        "service": "abalone",
+        "project": "octopus",
+        "location": "oyster",
+        "service": "nudibranch",
     }
     path = ClusterControllerClient.service_path(**expected)
 
@@ -2491,7 +2467,7 @@ def test_parse_service_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "squid"
+    billing_account = "cuttlefish"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -2501,7 +2477,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "clam",
+        "billing_account": "mussel",
     }
     path = ClusterControllerClient.common_billing_account_path(**expected)
 
@@ -2511,7 +2487,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "whelk"
+    folder = "winkle"
     expected = "folders/{folder}".format(folder=folder,)
     actual = ClusterControllerClient.common_folder_path(folder)
     assert expected == actual
@@ -2519,7 +2495,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "octopus",
+        "folder": "nautilus",
     }
     path = ClusterControllerClient.common_folder_path(**expected)
 
@@ -2529,7 +2505,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "oyster"
+    organization = "scallop"
     expected = "organizations/{organization}".format(organization=organization,)
     actual = ClusterControllerClient.common_organization_path(organization)
     assert expected == actual
@@ -2537,7 +2513,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nudibranch",
+        "organization": "abalone",
     }
     path = ClusterControllerClient.common_organization_path(**expected)
 
@@ -2547,7 +2523,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "cuttlefish"
+    project = "squid"
     expected = "projects/{project}".format(project=project,)
     actual = ClusterControllerClient.common_project_path(project)
     assert expected == actual
@@ -2555,7 +2531,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "mussel",
+        "project": "clam",
     }
     path = ClusterControllerClient.common_project_path(**expected)
 
@@ -2565,8 +2541,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "winkle"
-    location = "nautilus"
+    project = "whelk"
+    location = "octopus"
     expected = "projects/{project}/locations/{location}".format(
         project=project, location=location,
     )
@@ -2576,8 +2552,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
+        "project": "oyster",
+        "location": "nudibranch",
     }
     path = ClusterControllerClient.common_location_path(**expected)
 

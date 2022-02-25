@@ -26,7 +26,8 @@ __protobuf__ = proto.module(
     manifest={
         "Cluster",
         "ClusterConfig",
-        "GkeClusterConfig",
+        "VirtualClusterConfig",
+        "AuxiliaryServicesConfig",
         "EndpointConfig",
         "AutoscalingConfig",
         "EncryptionConfig",
@@ -79,6 +80,15 @@ class Cluster(proto.Message):
             Compute Engine Instances. Note that Dataproc may
             set default values, and values may change when
             clusters are updated.
+        virtual_cluster_config (google.cloud.dataproc_v1.types.VirtualClusterConfig):
+            Optional. The virtual cluster config, used when creating a
+            Dataproc cluster that does not directly control the
+            underlying compute resources, for example, when creating a
+            `Dataproc-on-GKE
+            cluster <https://cloud.google.com/dataproc/docs/concepts/jobs/dataproc-gke#create-a-dataproc-on-gke-cluster>`__.
+            Note that Dataproc may set default values, and values may
+            change when clusters are updated. Exactly one of config or
+            virtualClusterConfig must be specified.
         labels (Sequence[google.cloud.dataproc_v1.types.Cluster.LabelsEntry]):
             Optional. The labels to associate with this cluster. Label
             **keys** must contain 1 to 63 characters, and must conform
@@ -106,6 +116,9 @@ class Cluster(proto.Message):
     project_id = proto.Field(proto.STRING, number=1,)
     cluster_name = proto.Field(proto.STRING, number=2,)
     config = proto.Field(proto.MESSAGE, number=3, message="ClusterConfig",)
+    virtual_cluster_config = proto.Field(
+        proto.MESSAGE, number=10, message="VirtualClusterConfig",
+    )
     labels = proto.MapField(proto.STRING, proto.STRING, number=8,)
     status = proto.Field(proto.MESSAGE, number=4, message="ClusterStatus",)
     status_history = proto.RepeatedField(
@@ -192,13 +205,6 @@ class ClusterConfig(proto.Message):
             this cluster
         metastore_config (google.cloud.dataproc_v1.types.MetastoreConfig):
             Optional. Metastore configuration.
-        gke_cluster_config (google.cloud.dataproc_v1.types.GkeClusterConfig):
-            Optional. BETA. The Kubernetes Engine config for Dataproc
-            clusters deployed to Kubernetes. Setting this is considered
-            mutually exclusive with Compute Engine-based options such as
-            ``gce_cluster_config``, ``master_config``,
-            ``worker_config``, ``secondary_worker_config``, and
-            ``autoscaling_config``.
     """
 
     config_bucket = proto.Field(proto.STRING, number=1,)
@@ -227,37 +233,81 @@ class ClusterConfig(proto.Message):
     lifecycle_config = proto.Field(proto.MESSAGE, number=17, message="LifecycleConfig",)
     endpoint_config = proto.Field(proto.MESSAGE, number=19, message="EndpointConfig",)
     metastore_config = proto.Field(proto.MESSAGE, number=20, message="MetastoreConfig",)
-    gke_cluster_config = proto.Field(
-        proto.MESSAGE, number=21, message="GkeClusterConfig",
+
+
+class VirtualClusterConfig(proto.Message):
+    r"""Dataproc cluster config for a cluster that does not directly control
+    the underlying compute resources, such as a `Dataproc-on-GKE
+    cluster <https://cloud.google.com/dataproc/docs/concepts/jobs/dataproc-gke#create-a-dataproc-on-gke-cluster>`__.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        staging_bucket (str):
+            Optional. A Storage bucket used to stage job dependencies,
+            config files, and job driver console output. If you do not
+            specify a staging bucket, Cloud Dataproc will determine a
+            Cloud Storage location (US, ASIA, or EU) for your cluster's
+            staging bucket according to the Compute Engine zone where
+            your cluster is deployed, and then create and manage this
+            project-level, per-location bucket (see `Dataproc staging
+            and temp
+            buckets <https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/staging-bucket>`__).
+            **This field requires a Cloud Storage bucket name, not a
+            ``gs://...`` URI to a Cloud Storage bucket.**
+        temp_bucket (str):
+            Optional. A Cloud Storage bucket used to store ephemeral
+            cluster and jobs data, such as Spark and MapReduce history
+            files. If you do not specify a temp bucket, Dataproc will
+            determine a Cloud Storage location (US, ASIA, or EU) for
+            your cluster's temp bucket according to the Compute Engine
+            zone where your cluster is deployed, and then create and
+            manage this project-level, per-location bucket. The default
+            bucket has a TTL of 90 days, but you can use any TTL (or
+            none) if you specify a bucket (see `Dataproc staging and
+            temp
+            buckets <https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/staging-bucket>`__).
+            **This field requires a Cloud Storage bucket name, not a
+            ``gs://...`` URI to a Cloud Storage bucket.**
+        kubernetes_cluster_config (google.cloud.dataproc_v1.types.KubernetesClusterConfig):
+            Required. The configuration for running the
+            Dataproc cluster on Kubernetes.
+
+            This field is a member of `oneof`_ ``infrastructure_config``.
+        auxiliary_services_config (google.cloud.dataproc_v1.types.AuxiliaryServicesConfig):
+            Optional. Configuration of auxiliary services
+            used by this cluster.
+    """
+
+    staging_bucket = proto.Field(proto.STRING, number=1,)
+    temp_bucket = proto.Field(proto.STRING, number=2,)
+    kubernetes_cluster_config = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        oneof="infrastructure_config",
+        message=shared.KubernetesClusterConfig,
+    )
+    auxiliary_services_config = proto.Field(
+        proto.MESSAGE, number=7, message="AuxiliaryServicesConfig",
     )
 
 
-class GkeClusterConfig(proto.Message):
-    r"""The GKE config for this cluster.
+class AuxiliaryServicesConfig(proto.Message):
+    r"""Auxiliary services configuration for a Cluster.
 
     Attributes:
-        namespaced_gke_deployment_target (google.cloud.dataproc_v1.types.GkeClusterConfig.NamespacedGkeDeploymentTarget):
-            Optional. A target for the deployment.
+        metastore_config (google.cloud.dataproc_v1.types.MetastoreConfig):
+            Optional. The Hive Metastore configuration
+            for this workload.
+        spark_history_server_config (google.cloud.dataproc_v1.types.SparkHistoryServerConfig):
+            Optional. The Spark History Server
+            configuration for the workload.
     """
 
-    class NamespacedGkeDeploymentTarget(proto.Message):
-        r"""A full, namespace-isolated deployment target for an existing
-        GKE cluster.
-
-        Attributes:
-            target_gke_cluster (str):
-                Optional. The target GKE cluster to deploy to. Format:
-                'projects/{project}/locations/{location}/clusters/{cluster_id}'
-            cluster_namespace (str):
-                Optional. A namespace within the GKE cluster
-                to deploy into.
-        """
-
-        target_gke_cluster = proto.Field(proto.STRING, number=1,)
-        cluster_namespace = proto.Field(proto.STRING, number=2,)
-
-    namespaced_gke_deployment_target = proto.Field(
-        proto.MESSAGE, number=1, message=NamespacedGkeDeploymentTarget,
+    metastore_config = proto.Field(proto.MESSAGE, number=1, message="MetastoreConfig",)
+    spark_history_server_config = proto.Field(
+        proto.MESSAGE, number=2, message=shared.SparkHistoryServerConfig,
     )
 
 
@@ -686,8 +736,8 @@ class DiskConfig(proto.Message):
         local_ssd_interface (str):
             Optional. Interface type of local SSDs (default is "scsi").
             Valid values: "scsi" (Small Computer System Interface),
-            "nvme" (Non-Volatile Memory Express). See `SSD Interface
-            types <https://cloud.google.com/compute/docs/disks/local-ssd#performance>`__.
+            "nvme" (Non-Volatile Memory Express). See `local SSD
+            performance <https://cloud.google.com/compute/docs/disks/local-ssd#performance>`__.
     """
 
     boot_disk_type = proto.Field(proto.STRING, number=3,)

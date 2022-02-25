@@ -53,8 +53,6 @@ class WorkflowTemplateServiceAsyncClient:
     DEFAULT_ENDPOINT = WorkflowTemplateServiceClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = WorkflowTemplateServiceClient.DEFAULT_MTLS_ENDPOINT
 
-    cluster_path = staticmethod(WorkflowTemplateServiceClient.cluster_path)
-    parse_cluster_path = staticmethod(WorkflowTemplateServiceClient.parse_cluster_path)
     service_path = staticmethod(WorkflowTemplateServiceClient.service_path)
     parse_service_path = staticmethod(WorkflowTemplateServiceClient.parse_service_path)
     workflow_template_path = staticmethod(

@@ -83,6 +83,7 @@ from google.cloud.dataproc_v1.types.batches import SparkRBatch
 from google.cloud.dataproc_v1.types.batches import SparkSqlBatch
 from google.cloud.dataproc_v1.types.clusters import AcceleratorConfig
 from google.cloud.dataproc_v1.types.clusters import AutoscalingConfig
+from google.cloud.dataproc_v1.types.clusters import AuxiliaryServicesConfig
 from google.cloud.dataproc_v1.types.clusters import Cluster
 from google.cloud.dataproc_v1.types.clusters import ClusterConfig
 from google.cloud.dataproc_v1.types.clusters import ClusterMetrics
@@ -97,7 +98,6 @@ from google.cloud.dataproc_v1.types.clusters import EncryptionConfig
 from google.cloud.dataproc_v1.types.clusters import EndpointConfig
 from google.cloud.dataproc_v1.types.clusters import GceClusterConfig
 from google.cloud.dataproc_v1.types.clusters import GetClusterRequest
-from google.cloud.dataproc_v1.types.clusters import GkeClusterConfig
 from google.cloud.dataproc_v1.types.clusters import IdentityConfig
 from google.cloud.dataproc_v1.types.clusters import InstanceGroupConfig
 from google.cloud.dataproc_v1.types.clusters import KerberosConfig
@@ -115,6 +115,7 @@ from google.cloud.dataproc_v1.types.clusters import SoftwareConfig
 from google.cloud.dataproc_v1.types.clusters import StartClusterRequest
 from google.cloud.dataproc_v1.types.clusters import StopClusterRequest
 from google.cloud.dataproc_v1.types.clusters import UpdateClusterRequest
+from google.cloud.dataproc_v1.types.clusters import VirtualClusterConfig
 from google.cloud.dataproc_v1.types.jobs import CancelJobRequest
 from google.cloud.dataproc_v1.types.jobs import DeleteJobRequest
 from google.cloud.dataproc_v1.types.jobs import GetJobRequest
@@ -144,6 +145,11 @@ from google.cloud.dataproc_v1.types.operations import ClusterOperationMetadata
 from google.cloud.dataproc_v1.types.operations import ClusterOperationStatus
 from google.cloud.dataproc_v1.types.shared import EnvironmentConfig
 from google.cloud.dataproc_v1.types.shared import ExecutionConfig
+from google.cloud.dataproc_v1.types.shared import GkeClusterConfig
+from google.cloud.dataproc_v1.types.shared import GkeNodePoolConfig
+from google.cloud.dataproc_v1.types.shared import GkeNodePoolTarget
+from google.cloud.dataproc_v1.types.shared import KubernetesClusterConfig
+from google.cloud.dataproc_v1.types.shared import KubernetesSoftwareConfig
 from google.cloud.dataproc_v1.types.shared import PeripheralsConfig
 from google.cloud.dataproc_v1.types.shared import RuntimeConfig
 from google.cloud.dataproc_v1.types.shared import RuntimeInfo
@@ -219,6 +225,7 @@ __all__ = (
     "SparkSqlBatch",
     "AcceleratorConfig",
     "AutoscalingConfig",
+    "AuxiliaryServicesConfig",
     "Cluster",
     "ClusterConfig",
     "ClusterMetrics",
@@ -233,7 +240,6 @@ __all__ = (
     "EndpointConfig",
     "GceClusterConfig",
     "GetClusterRequest",
-    "GkeClusterConfig",
     "IdentityConfig",
     "InstanceGroupConfig",
     "KerberosConfig",
@@ -251,6 +257,7 @@ __all__ = (
     "StartClusterRequest",
     "StopClusterRequest",
     "UpdateClusterRequest",
+    "VirtualClusterConfig",
     "CancelJobRequest",
     "DeleteJobRequest",
     "GetJobRequest",
@@ -280,6 +287,11 @@ __all__ = (
     "ClusterOperationStatus",
     "EnvironmentConfig",
     "ExecutionConfig",
+    "GkeClusterConfig",
+    "GkeNodePoolConfig",
+    "GkeNodePoolTarget",
+    "KubernetesClusterConfig",
+    "KubernetesSoftwareConfig",
     "PeripheralsConfig",
     "RuntimeConfig",
     "RuntimeInfo",

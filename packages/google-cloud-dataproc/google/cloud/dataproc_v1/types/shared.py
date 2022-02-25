@@ -27,6 +27,11 @@ __protobuf__ = proto.module(
         "SparkHistoryServerConfig",
         "PeripheralsConfig",
         "RuntimeInfo",
+        "GkeClusterConfig",
+        "KubernetesClusterConfig",
+        "KubernetesSoftwareConfig",
+        "GkeNodePoolTarget",
+        "GkeNodePoolConfig",
     },
 )
 
@@ -190,6 +195,239 @@ class RuntimeInfo(proto.Message):
     endpoints = proto.MapField(proto.STRING, proto.STRING, number=1,)
     output_uri = proto.Field(proto.STRING, number=2,)
     diagnostic_output_uri = proto.Field(proto.STRING, number=3,)
+
+
+class GkeClusterConfig(proto.Message):
+    r"""The cluster's GKE config.
+
+    Attributes:
+        gke_cluster_target (str):
+            Optional. A target GKE cluster to deploy to. It must be in
+            the same project and region as the Dataproc cluster (the GKE
+            cluster can be zonal or regional). Format:
+            'projects/{project}/locations/{location}/clusters/{cluster_id}'
+        node_pool_target (Sequence[google.cloud.dataproc_v1.types.GkeNodePoolTarget]):
+            Optional. GKE NodePools where workloads will
+            be scheduled. At least one node pool must be
+            assigned the 'default' role. Each role can be
+            given to only a single NodePoolTarget. All
+            NodePools must have the same location settings.
+            If a nodePoolTarget is not specified, Dataproc
+            constructs a default nodePoolTarget.
+    """
+
+    gke_cluster_target = proto.Field(proto.STRING, number=2,)
+    node_pool_target = proto.RepeatedField(
+        proto.MESSAGE, number=3, message="GkeNodePoolTarget",
+    )
+
+
+class KubernetesClusterConfig(proto.Message):
+    r"""The configuration for running the Dataproc cluster on
+    Kubernetes.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        kubernetes_namespace (str):
+            Optional. A namespace within the Kubernetes
+            cluster to deploy into. If this namespace does
+            not exist, it is created. If it exists, Dataproc
+            verifies that another Dataproc VirtualCluster is
+            not installed into it. If not specified, the
+            name of the Dataproc Cluster is used.
+        gke_cluster_config (google.cloud.dataproc_v1.types.GkeClusterConfig):
+            Required. The configuration for running the
+            Dataproc cluster on GKE.
+
+            This field is a member of `oneof`_ ``config``.
+        kubernetes_software_config (google.cloud.dataproc_v1.types.KubernetesSoftwareConfig):
+            Optional. The software configuration for this
+            Dataproc cluster running on Kubernetes.
+    """
+
+    kubernetes_namespace = proto.Field(proto.STRING, number=1,)
+    gke_cluster_config = proto.Field(
+        proto.MESSAGE, number=2, oneof="config", message="GkeClusterConfig",
+    )
+    kubernetes_software_config = proto.Field(
+        proto.MESSAGE, number=3, message="KubernetesSoftwareConfig",
+    )
+
+
+class KubernetesSoftwareConfig(proto.Message):
+    r"""The software configuration for this Dataproc cluster running
+    on Kubernetes.
+
+    Attributes:
+        component_version (Sequence[google.cloud.dataproc_v1.types.KubernetesSoftwareConfig.ComponentVersionEntry]):
+            The components that should be installed in
+            this Dataproc cluster. The key must be a string
+            from the KubernetesComponent enumeration. The
+            value is the version of the software to be
+            installed.
+            At least one entry must be specified.
+        properties (Sequence[google.cloud.dataproc_v1.types.KubernetesSoftwareConfig.PropertiesEntry]):
+            The properties to set on daemon config files.
+
+            Property keys are specified in ``prefix:property`` format,
+            for example ``spark:spark.kubernetes.container.image``. The
+            following are supported prefixes and their mappings:
+
+            -  spark: ``spark-defaults.conf``
+
+            For more information, see `Cluster
+            properties <https://cloud.google.com/dataproc/docs/concepts/cluster-properties>`__.
+    """
+
+    component_version = proto.MapField(proto.STRING, proto.STRING, number=1,)
+    properties = proto.MapField(proto.STRING, proto.STRING, number=2,)
+
+
+class GkeNodePoolTarget(proto.Message):
+    r"""GKE NodePools that Dataproc workloads run on.
+
+    Attributes:
+        node_pool (str):
+            Required. The target GKE NodePool. Format:
+            'projects/{project}/locations/{location}/clusters/{cluster}/nodePools/{node_pool}'
+        roles (Sequence[google.cloud.dataproc_v1.types.GkeNodePoolTarget.Role]):
+            Required. The types of role for a GKE
+            NodePool
+        node_pool_config (google.cloud.dataproc_v1.types.GkeNodePoolConfig):
+            Optional. The configuration for the GKE
+            NodePool.
+            If specified, Dataproc attempts to create a
+            NodePool with the specified shape. If one with
+            the same name already exists, it is verified
+            against all specified fields. If a field
+            differs, the virtual cluster creation will fail.
+
+            If omitted, any NodePool with the specified name
+            is used. If a NodePool with the specified name
+            does not exist, Dataproc create a NodePool with
+            default values.
+    """
+
+    class Role(proto.Enum):
+        r"""``Role`` specifies whose tasks will run on the NodePool. The roles
+        can be specific to workloads. Exactly one GkeNodePoolTarget within
+        the VirtualCluster must have 'default' role, which is used to run
+        all workloads that are not associated with a NodePool.
+        """
+        ROLE_UNSPECIFIED = 0
+        DEFAULT = 1
+        CONTROLLER = 2
+        SPARK_DRIVER = 3
+        SPARK_EXECUTOR = 4
+
+    node_pool = proto.Field(proto.STRING, number=1,)
+    roles = proto.RepeatedField(proto.ENUM, number=2, enum=Role,)
+    node_pool_config = proto.Field(
+        proto.MESSAGE, number=3, message="GkeNodePoolConfig",
+    )
+
+
+class GkeNodePoolConfig(proto.Message):
+    r"""The configuration of a GKE NodePool used by a `Dataproc-on-GKE
+    cluster <https://cloud.google.com/dataproc/docs/concepts/jobs/dataproc-gke#create-a-dataproc-on-gke-cluster>`__.
+
+    Attributes:
+        config (google.cloud.dataproc_v1.types.GkeNodePoolConfig.GkeNodeConfig):
+            Optional. The node pool configuration.
+        locations (Sequence[str]):
+            Optional. The list of Compute Engine
+            `zones <https://cloud.google.com/compute/docs/zones#available>`__
+            where NodePool's nodes will be located.
+
+            **Note:** Currently, only one zone may be specified.
+
+            If a location is not specified during NodePool creation,
+            Dataproc will choose a location.
+        autoscaling (google.cloud.dataproc_v1.types.GkeNodePoolConfig.GkeNodePoolAutoscalingConfig):
+            Optional. The autoscaler configuration for
+            this NodePool. The autoscaler is enabled only
+            when a valid configuration is present.
+    """
+
+    class GkeNodeConfig(proto.Message):
+        r"""Parameters that describe cluster nodes.
+
+        Attributes:
+            machine_type (str):
+                Optional. The name of a Compute Engine `machine
+                type <https://cloud.google.com/compute/docs/machine-types>`__.
+            preemptible (bool):
+                Optional. Whether the nodes are created as `preemptible VM
+                instances <https://cloud.google.com/compute/docs/instances/preemptible>`__.
+            local_ssd_count (int):
+                Optional. The number of local SSD disks to attach to the
+                node, which is limited by the maximum number of disks
+                allowable per zone (see `Adding Local
+                SSDs <https://cloud.google.com/compute/docs/disks/local-ssd>`__).
+            accelerators (Sequence[google.cloud.dataproc_v1.types.GkeNodePoolConfig.GkeNodePoolAcceleratorConfig]):
+                Optional. A list of `hardware
+                accelerators <https://cloud.google.com/compute/docs/gpus>`__
+                to attach to each node.
+            min_cpu_platform (str):
+                Optional. `Minimum CPU
+                platform <https://cloud.google.com/compute/docs/instances/specify-min-cpu-platform>`__
+                to be used by this instance. The instance may be scheduled
+                on the specified or a newer CPU platform. Specify the
+                friendly names of CPU platforms, such as "Intel Haswell"\`
+                or Intel Sandy Bridge".
+        """
+
+        machine_type = proto.Field(proto.STRING, number=1,)
+        preemptible = proto.Field(proto.BOOL, number=10,)
+        local_ssd_count = proto.Field(proto.INT32, number=7,)
+        accelerators = proto.RepeatedField(
+            proto.MESSAGE,
+            number=11,
+            message="GkeNodePoolConfig.GkeNodePoolAcceleratorConfig",
+        )
+        min_cpu_platform = proto.Field(proto.STRING, number=13,)
+
+    class GkeNodePoolAcceleratorConfig(proto.Message):
+        r"""A GkeNodeConfigAcceleratorConfig represents a Hardware
+        Accelerator request for a NodePool.
+
+        Attributes:
+            accelerator_count (int):
+                The number of accelerator cards exposed to an
+                instance.
+            accelerator_type (str):
+                The accelerator type resource namename (see
+                GPUs on Compute Engine).
+        """
+
+        accelerator_count = proto.Field(proto.INT64, number=1,)
+        accelerator_type = proto.Field(proto.STRING, number=2,)
+
+    class GkeNodePoolAutoscalingConfig(proto.Message):
+        r"""GkeNodePoolAutoscaling contains information the cluster
+        autoscaler needs to adjust the size of the node pool to the
+        current cluster usage.
+
+        Attributes:
+            min_node_count (int):
+                The minimum number of nodes in the NodePool. Must be >= 0
+                and <= max_node_count.
+            max_node_count (int):
+                The maximum number of nodes in the NodePool. Must be >=
+                min_node_count. **Note:** Quota must be sufficient to scale
+                up the cluster.
+        """
+
+        min_node_count = proto.Field(proto.INT32, number=2,)
+        max_node_count = proto.Field(proto.INT32, number=3,)
+
+    config = proto.Field(proto.MESSAGE, number=2, message=GkeNodeConfig,)
+    locations = proto.RepeatedField(proto.STRING, number=13,)
+    autoscaling = proto.Field(
+        proto.MESSAGE, number=4, message=GkeNodePoolAutoscalingConfig,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

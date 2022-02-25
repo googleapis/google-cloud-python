@@ -2944,34 +2944,10 @@ def test_workflow_template_service_grpc_lro_async_client():
     assert transport.operations_client is transport.operations_client
 
 
-def test_cluster_path():
+def test_service_path():
     project = "squid"
     location = "clam"
-    cluster = "whelk"
-    expected = "projects/{project}/locations/{location}/clusters/{cluster}".format(
-        project=project, location=location, cluster=cluster,
-    )
-    actual = WorkflowTemplateServiceClient.cluster_path(project, location, cluster)
-    assert expected == actual
-
-
-def test_parse_cluster_path():
-    expected = {
-        "project": "octopus",
-        "location": "oyster",
-        "cluster": "nudibranch",
-    }
-    path = WorkflowTemplateServiceClient.cluster_path(**expected)
-
-    # Check that the path construction is reversible.
-    actual = WorkflowTemplateServiceClient.parse_cluster_path(path)
-    assert expected == actual
-
-
-def test_service_path():
-    project = "cuttlefish"
-    location = "mussel"
-    service = "winkle"
+    service = "whelk"
     expected = "projects/{project}/locations/{location}/services/{service}".format(
         project=project, location=location, service=service,
     )
@@ -2981,9 +2957,9 @@ def test_service_path():
 
 def test_parse_service_path():
     expected = {
-        "project": "nautilus",
-        "location": "scallop",
-        "service": "abalone",
+        "project": "octopus",
+        "location": "oyster",
+        "service": "nudibranch",
     }
     path = WorkflowTemplateServiceClient.service_path(**expected)
 
@@ -2993,9 +2969,9 @@ def test_parse_service_path():
 
 
 def test_workflow_template_path():
-    project = "squid"
-    region = "clam"
-    workflow_template = "whelk"
+    project = "cuttlefish"
+    region = "mussel"
+    workflow_template = "winkle"
     expected = "projects/{project}/regions/{region}/workflowTemplates/{workflow_template}".format(
         project=project, region=region, workflow_template=workflow_template,
     )
@@ -3007,9 +2983,9 @@ def test_workflow_template_path():
 
 def test_parse_workflow_template_path():
     expected = {
-        "project": "octopus",
-        "region": "oyster",
-        "workflow_template": "nudibranch",
+        "project": "nautilus",
+        "region": "scallop",
+        "workflow_template": "abalone",
     }
     path = WorkflowTemplateServiceClient.workflow_template_path(**expected)
 
@@ -3019,7 +2995,7 @@ def test_parse_workflow_template_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "cuttlefish"
+    billing_account = "squid"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -3029,7 +3005,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "mussel",
+        "billing_account": "clam",
     }
     path = WorkflowTemplateServiceClient.common_billing_account_path(**expected)
 
@@ -3039,7 +3015,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "winkle"
+    folder = "whelk"
     expected = "folders/{folder}".format(folder=folder,)
     actual = WorkflowTemplateServiceClient.common_folder_path(folder)
     assert expected == actual
@@ -3047,7 +3023,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nautilus",
+        "folder": "octopus",
     }
     path = WorkflowTemplateServiceClient.common_folder_path(**expected)
 
@@ -3057,7 +3033,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "scallop"
+    organization = "oyster"
     expected = "organizations/{organization}".format(organization=organization,)
     actual = WorkflowTemplateServiceClient.common_organization_path(organization)
     assert expected == actual
@@ -3065,7 +3041,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "abalone",
+        "organization": "nudibranch",
     }
     path = WorkflowTemplateServiceClient.common_organization_path(**expected)
 
@@ -3075,7 +3051,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "squid"
+    project = "cuttlefish"
     expected = "projects/{project}".format(project=project,)
     actual = WorkflowTemplateServiceClient.common_project_path(project)
     assert expected == actual
@@ -3083,7 +3059,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "clam",
+        "project": "mussel",
     }
     path = WorkflowTemplateServiceClient.common_project_path(**expected)
 
@@ -3093,8 +3069,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "whelk"
-    location = "octopus"
+    project = "winkle"
+    location = "nautilus"
     expected = "projects/{project}/locations/{location}".format(
         project=project, location=location,
     )
@@ -3104,8 +3080,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "oyster",
-        "location": "nudibranch",
+        "project": "scallop",
+        "location": "abalone",
     }
     path = WorkflowTemplateServiceClient.common_location_path(**expected)
 

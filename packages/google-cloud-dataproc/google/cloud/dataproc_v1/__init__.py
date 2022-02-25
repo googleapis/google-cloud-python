@@ -47,6 +47,7 @@ from .types.batches import SparkRBatch
 from .types.batches import SparkSqlBatch
 from .types.clusters import AcceleratorConfig
 from .types.clusters import AutoscalingConfig
+from .types.clusters import AuxiliaryServicesConfig
 from .types.clusters import Cluster
 from .types.clusters import ClusterConfig
 from .types.clusters import ClusterMetrics
@@ -61,7 +62,6 @@ from .types.clusters import EncryptionConfig
 from .types.clusters import EndpointConfig
 from .types.clusters import GceClusterConfig
 from .types.clusters import GetClusterRequest
-from .types.clusters import GkeClusterConfig
 from .types.clusters import IdentityConfig
 from .types.clusters import InstanceGroupConfig
 from .types.clusters import KerberosConfig
@@ -79,6 +79,7 @@ from .types.clusters import SoftwareConfig
 from .types.clusters import StartClusterRequest
 from .types.clusters import StopClusterRequest
 from .types.clusters import UpdateClusterRequest
+from .types.clusters import VirtualClusterConfig
 from .types.jobs import CancelJobRequest
 from .types.jobs import DeleteJobRequest
 from .types.jobs import GetJobRequest
@@ -108,6 +109,11 @@ from .types.operations import ClusterOperationMetadata
 from .types.operations import ClusterOperationStatus
 from .types.shared import EnvironmentConfig
 from .types.shared import ExecutionConfig
+from .types.shared import GkeClusterConfig
+from .types.shared import GkeNodePoolConfig
+from .types.shared import GkeNodePoolTarget
+from .types.shared import KubernetesClusterConfig
+from .types.shared import KubernetesSoftwareConfig
 from .types.shared import PeripheralsConfig
 from .types.shared import RuntimeConfig
 from .types.shared import RuntimeInfo
@@ -146,6 +152,7 @@ __all__ = (
     "AutoscalingConfig",
     "AutoscalingPolicy",
     "AutoscalingPolicyServiceClient",
+    "AuxiliaryServicesConfig",
     "BasicAutoscalingAlgorithm",
     "BasicYarnAutoscalingConfig",
     "Batch",
@@ -187,6 +194,8 @@ __all__ = (
     "GetJobRequest",
     "GetWorkflowTemplateRequest",
     "GkeClusterConfig",
+    "GkeNodePoolConfig",
+    "GkeNodePoolTarget",
     "HadoopJob",
     "HiveJob",
     "IdentityConfig",
@@ -202,6 +211,8 @@ __all__ = (
     "JobScheduling",
     "JobStatus",
     "KerberosConfig",
+    "KubernetesClusterConfig",
+    "KubernetesSoftwareConfig",
     "LifecycleConfig",
     "ListAutoscalingPoliciesRequest",
     "ListAutoscalingPoliciesResponse",
@@ -250,6 +261,7 @@ __all__ = (
     "UpdateJobRequest",
     "UpdateWorkflowTemplateRequest",
     "ValueValidation",
+    "VirtualClusterConfig",
     "WorkflowGraph",
     "WorkflowMetadata",
     "WorkflowNode",
