@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-vpc-access
 
 
-# [START vpcaccess_generated_vpcaccess_v1_VpcAccessService_CreateConnector_async]
+# [START vpcaccess_v1_generated_VpcAccessService_CreateConnector_async]
 from google.cloud import vpcaccess_v1
 
 
@@ -47,4 +47,4 @@ async def sample_create_connector():
     # Handle the response
     print(response)
 
-# [END vpcaccess_generated_vpcaccess_v1_VpcAccessService_CreateConnector_async]
+# [END vpcaccess_v1_generated_VpcAccessService_CreateConnector_async]

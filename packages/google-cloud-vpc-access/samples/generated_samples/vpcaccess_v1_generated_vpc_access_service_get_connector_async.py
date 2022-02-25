@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for DeleteConnector
+# Snippet for GetConnector
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,27 +23,23 @@
 #   python3 -m pip install google-cloud-vpc-access
 
 
-# [START vpcaccess_generated_vpcaccess_v1_VpcAccessService_DeleteConnector_async]
+# [START vpcaccess_v1_generated_VpcAccessService_GetConnector_async]
 from google.cloud import vpcaccess_v1
 
 
-async def sample_delete_connector():
+async def sample_get_connector():
     # Create a client
     client = vpcaccess_v1.VpcAccessServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = vpcaccess_v1.DeleteConnectorRequest(
+    request = vpcaccess_v1.GetConnectorRequest(
         name="name_value",
     )
 
     # Make the request
-    operation = client.delete_connector(request=request)
-
-    print("Waiting for operation to complete...")
-
-    response = await operation.result()
+    response = await client.get_connector(request=request)
 
     # Handle the response
     print(response)
 
-# [END vpcaccess_generated_vpcaccess_v1_VpcAccessService_DeleteConnector_async]
+# [END vpcaccess_v1_generated_VpcAccessService_GetConnector_async]

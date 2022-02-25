@@ -10,8 +10,8 @@
           "shortName": "CreateConnector"
         }
       },
-      "file": "vpcaccess_generated_vpcaccess_v1_vpc_access_service_create_connector_async.py",
-      "regionTag": "vpcaccess_generated_vpcaccess_v1_VpcAccessService_CreateConnector_async",
+      "file": "vpcaccess_v1_generated_vpc_access_service_create_connector_async.py",
+      "regionTag": "vpcaccess_v1_generated_VpcAccessService_CreateConnector_async",
       "segments": [
         {
           "end": 49,
@@ -54,8 +54,8 @@
           "shortName": "CreateConnector"
         }
       },
-      "file": "vpcaccess_generated_vpcaccess_v1_vpc_access_service_create_connector_sync.py",
-      "regionTag": "vpcaccess_generated_vpcaccess_v1_VpcAccessService_CreateConnector_sync",
+      "file": "vpcaccess_v1_generated_vpc_access_service_create_connector_sync.py",
+      "regionTag": "vpcaccess_v1_generated_VpcAccessService_CreateConnector_sync",
       "segments": [
         {
           "end": 49,
@@ -99,8 +99,8 @@
           "shortName": "DeleteConnector"
         }
       },
-      "file": "vpcaccess_generated_vpcaccess_v1_vpc_access_service_delete_connector_async.py",
-      "regionTag": "vpcaccess_generated_vpcaccess_v1_VpcAccessService_DeleteConnector_async",
+      "file": "vpcaccess_v1_generated_vpc_access_service_delete_connector_async.py",
+      "regionTag": "vpcaccess_v1_generated_VpcAccessService_DeleteConnector_async",
       "segments": [
         {
           "end": 48,
@@ -143,8 +143,8 @@
           "shortName": "DeleteConnector"
         }
       },
-      "file": "vpcaccess_generated_vpcaccess_v1_vpc_access_service_delete_connector_sync.py",
-      "regionTag": "vpcaccess_generated_vpcaccess_v1_VpcAccessService_DeleteConnector_sync",
+      "file": "vpcaccess_v1_generated_vpc_access_service_delete_connector_sync.py",
+      "regionTag": "vpcaccess_v1_generated_VpcAccessService_DeleteConnector_sync",
       "segments": [
         {
           "end": 48,
@@ -188,8 +188,8 @@
           "shortName": "GetConnector"
         }
       },
-      "file": "vpcaccess_generated_vpcaccess_v1_vpc_access_service_get_connector_async.py",
-      "regionTag": "vpcaccess_generated_vpcaccess_v1_VpcAccessService_GetConnector_async",
+      "file": "vpcaccess_v1_generated_vpc_access_service_get_connector_async.py",
+      "regionTag": "vpcaccess_v1_generated_VpcAccessService_GetConnector_async",
       "segments": [
         {
           "end": 44,
@@ -232,8 +232,8 @@
           "shortName": "GetConnector"
         }
       },
-      "file": "vpcaccess_generated_vpcaccess_v1_vpc_access_service_get_connector_sync.py",
-      "regionTag": "vpcaccess_generated_vpcaccess_v1_VpcAccessService_GetConnector_sync",
+      "file": "vpcaccess_v1_generated_vpc_access_service_get_connector_sync.py",
+      "regionTag": "vpcaccess_v1_generated_VpcAccessService_GetConnector_sync",
       "segments": [
         {
           "end": 44,
@@ -277,8 +277,8 @@
           "shortName": "ListConnectors"
         }
       },
-      "file": "vpcaccess_generated_vpcaccess_v1_vpc_access_service_list_connectors_async.py",
-      "regionTag": "vpcaccess_generated_vpcaccess_v1_VpcAccessService_ListConnectors_async",
+      "file": "vpcaccess_v1_generated_vpc_access_service_list_connectors_async.py",
+      "regionTag": "vpcaccess_v1_generated_VpcAccessService_ListConnectors_async",
       "segments": [
         {
           "end": 45,
@@ -321,8 +321,8 @@
           "shortName": "ListConnectors"
         }
       },
-      "file": "vpcaccess_generated_vpcaccess_v1_vpc_access_service_list_connectors_sync.py",
-      "regionTag": "vpcaccess_generated_vpcaccess_v1_VpcAccessService_ListConnectors_sync",
+      "file": "vpcaccess_v1_generated_vpc_access_service_list_connectors_sync.py",
+      "regionTag": "vpcaccess_v1_generated_VpcAccessService_ListConnectors_sync",
       "segments": [
         {
           "end": 45,

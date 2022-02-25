@@ -223,7 +223,7 @@ class VpcAccessServiceAsyncClient:
         operation.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vpcaccess_v1
 
@@ -348,7 +348,7 @@ class VpcAccessServiceAsyncClient:
         resource does not exist.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vpcaccess_v1
 
@@ -438,7 +438,7 @@ class VpcAccessServiceAsyncClient:
     ) -> pagers.ListConnectorsAsyncPager:
         r"""Lists Serverless VPC Access connectors.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vpcaccess_v1
 
@@ -540,7 +540,7 @@ class VpcAccessServiceAsyncClient:
         the resource does not exist.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vpcaccess_v1
 

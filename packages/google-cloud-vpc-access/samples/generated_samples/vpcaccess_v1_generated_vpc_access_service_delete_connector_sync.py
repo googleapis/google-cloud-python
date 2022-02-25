@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-vpc-access
 
 
-# [START vpcaccess_generated_vpcaccess_v1_VpcAccessService_DeleteConnector_sync]
+# [START vpcaccess_v1_generated_VpcAccessService_DeleteConnector_sync]
 from google.cloud import vpcaccess_v1
 
 
@@ -46,4 +46,4 @@ def sample_delete_connector():
     # Handle the response
     print(response)
 
-# [END vpcaccess_generated_vpcaccess_v1_VpcAccessService_DeleteConnector_sync]
+# [END vpcaccess_v1_generated_VpcAccessService_DeleteConnector_sync]

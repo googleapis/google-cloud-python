@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for CreateConnector
+# Snippet for ListConnectors
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,28 +23,24 @@
 #   python3 -m pip install google-cloud-vpc-access
 
 
-# [START vpcaccess_generated_vpcaccess_v1_VpcAccessService_CreateConnector_sync]
+# [START vpcaccess_v1_generated_VpcAccessService_ListConnectors_async]
 from google.cloud import vpcaccess_v1
 
 
-def sample_create_connector():
+async def sample_list_connectors():
     # Create a client
-    client = vpcaccess_v1.VpcAccessServiceClient()
+    client = vpcaccess_v1.VpcAccessServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = vpcaccess_v1.CreateConnectorRequest(
+    request = vpcaccess_v1.ListConnectorsRequest(
         parent="parent_value",
-        connector_id="connector_id_value",
     )
 
     # Make the request
-    operation = client.create_connector(request=request)
-
-    print("Waiting for operation to complete...")
-
-    response = operation.result()
+    page_result = client.list_connectors(request=request)
 
     # Handle the response
-    print(response)
+    async for response in page_result:
+        print(response)
 
-# [END vpcaccess_generated_vpcaccess_v1_VpcAccessService_CreateConnector_sync]
+# [END vpcaccess_v1_generated_VpcAccessService_ListConnectors_async]

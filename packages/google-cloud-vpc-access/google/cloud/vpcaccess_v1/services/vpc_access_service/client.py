@@ -420,8 +420,7 @@ class VpcAccessServiceClient(metaclass=VpcAccessServiceClientMeta):
         operation.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vpcaccess_v1
 
@@ -546,8 +545,7 @@ class VpcAccessServiceClient(metaclass=VpcAccessServiceClientMeta):
         resource does not exist.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vpcaccess_v1
 
@@ -637,8 +635,7 @@ class VpcAccessServiceClient(metaclass=VpcAccessServiceClientMeta):
     ) -> pagers.ListConnectorsPager:
         r"""Lists Serverless VPC Access connectors.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vpcaccess_v1
 
@@ -740,8 +737,7 @@ class VpcAccessServiceClient(metaclass=VpcAccessServiceClientMeta):
         the resource does not exist.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vpcaccess_v1
 

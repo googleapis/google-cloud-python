@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-vpc-access
 
 
-# [START vpcaccess_generated_vpcaccess_v1_VpcAccessService_GetConnector_sync]
+# [START vpcaccess_v1_generated_VpcAccessService_GetConnector_sync]
 from google.cloud import vpcaccess_v1
 
 
@@ -42,4 +42,4 @@ def sample_get_connector():
     # Handle the response
     print(response)
 
-# [END vpcaccess_generated_vpcaccess_v1_VpcAccessService_GetConnector_sync]
+# [END vpcaccess_v1_generated_VpcAccessService_GetConnector_sync]
