@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for UpdateChannel
+# Snippet for CreateChannelConnection
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,21 +23,27 @@
 #   python3 -m pip install google-cloud-eventarc
 
 
-# [START eventarc_generated_eventarc_v1_Eventarc_UpdateChannel_sync]
+# [START eventarc_v1_generated_Eventarc_CreateChannelConnection_sync]
 from google.cloud import eventarc_v1
 
 
-def sample_update_channel():
+def sample_create_channel_connection():
     # Create a client
     client = eventarc_v1.EventarcClient()
 
     # Initialize request argument(s)
-    request = eventarc_v1.UpdateChannelRequest(
-        validate_only=True,
+    channel_connection = eventarc_v1.ChannelConnection()
+    channel_connection.name = "name_value"
+    channel_connection.channel = "channel_value"
+
+    request = eventarc_v1.CreateChannelConnectionRequest(
+        parent="parent_value",
+        channel_connection=channel_connection,
+        channel_connection_id="channel_connection_id_value",
     )
 
     # Make the request
-    operation = client.update_channel(request=request)
+    operation = client.create_channel_connection(request=request)
 
     print("Waiting for operation to complete...")
 
@@ -46,4 +52,4 @@ def sample_update_channel():
     # Handle the response
     print(response)
 
-# [END eventarc_generated_eventarc_v1_Eventarc_UpdateChannel_sync]
+# [END eventarc_v1_generated_Eventarc_CreateChannelConnection_sync]

@@ -23,13 +23,13 @@
 #   python3 -m pip install google-cloud-eventarc
 
 
-# [START eventarc_generated_eventarc_v1_Eventarc_DeleteTrigger_sync]
+# [START eventarc_v1_generated_Eventarc_DeleteTrigger_async]
 from google.cloud import eventarc_v1
 
 
-def sample_delete_trigger():
+async def sample_delete_trigger():
     # Create a client
-    client = eventarc_v1.EventarcClient()
+    client = eventarc_v1.EventarcAsyncClient()
 
     # Initialize request argument(s)
     request = eventarc_v1.DeleteTriggerRequest(
@@ -42,9 +42,9 @@ def sample_delete_trigger():
 
     print("Waiting for operation to complete...")
 
-    response = operation.result()
+    response = await operation.result()
 
     # Handle the response
     print(response)
 
-# [END eventarc_generated_eventarc_v1_Eventarc_DeleteTrigger_sync]
+# [END eventarc_v1_generated_Eventarc_DeleteTrigger_async]

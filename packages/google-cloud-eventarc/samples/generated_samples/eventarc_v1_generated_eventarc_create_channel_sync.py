@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for GetChannelConnection
+# Snippet for CreateChannel
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,23 +23,35 @@
 #   python3 -m pip install google-cloud-eventarc
 
 
-# [START eventarc_generated_eventarc_v1_Eventarc_GetChannelConnection_async]
+# [START eventarc_v1_generated_Eventarc_CreateChannel_sync]
 from google.cloud import eventarc_v1
 
 
-async def sample_get_channel_connection():
+def sample_create_channel():
     # Create a client
-    client = eventarc_v1.EventarcAsyncClient()
+    client = eventarc_v1.EventarcClient()
 
     # Initialize request argument(s)
-    request = eventarc_v1.GetChannelConnectionRequest(
-        name="name_value",
+    channel = eventarc_v1.Channel()
+    channel.pubsub_topic = "pubsub_topic_value"
+    channel.name = "name_value"
+    channel.provider = "provider_value"
+
+    request = eventarc_v1.CreateChannelRequest(
+        parent="parent_value",
+        channel=channel,
+        channel_id="channel_id_value",
+        validate_only=True,
     )
 
     # Make the request
-    response = await client.get_channel_connection(request=request)
+    operation = client.create_channel(request=request)
+
+    print("Waiting for operation to complete...")
+
+    response = operation.result()
 
     # Handle the response
     print(response)
 
-# [END eventarc_generated_eventarc_v1_Eventarc_GetChannelConnection_async]
+# [END eventarc_v1_generated_Eventarc_CreateChannel_sync]

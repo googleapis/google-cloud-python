@@ -230,7 +230,7 @@ class EventarcAsyncClient:
     ) -> trigger.Trigger:
         r"""Get a single trigger.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import eventarc_v1
 
@@ -320,7 +320,7 @@ class EventarcAsyncClient:
     ) -> pagers.ListTriggersAsyncPager:
         r"""List triggers.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import eventarc_v1
 
@@ -423,7 +423,7 @@ class EventarcAsyncClient:
         location.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import eventarc_v1
 
@@ -556,7 +556,7 @@ class EventarcAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Update a single trigger.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import eventarc_v1
 
@@ -683,7 +683,7 @@ class EventarcAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Delete a single trigger.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import eventarc_v1
 
@@ -799,7 +799,7 @@ class EventarcAsyncClient:
     ) -> channel.Channel:
         r"""Get a single Channel.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import eventarc_v1
 
@@ -895,7 +895,7 @@ class EventarcAsyncClient:
     ) -> pagers.ListChannelsAsyncPager:
         r"""List channels.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import eventarc_v1
 
@@ -998,7 +998,7 @@ class EventarcAsyncClient:
         location.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import eventarc_v1
 
@@ -1131,7 +1131,7 @@ class EventarcAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Update a single channel.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import eventarc_v1
 
@@ -1250,7 +1250,7 @@ class EventarcAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Delete a single channel.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import eventarc_v1
 
@@ -1359,7 +1359,7 @@ class EventarcAsyncClient:
     ) -> channel_connection.ChannelConnection:
         r"""Get a single ChannelConnection.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import eventarc_v1
 
@@ -1454,7 +1454,7 @@ class EventarcAsyncClient:
     ) -> pagers.ListChannelConnectionsAsyncPager:
         r"""List channel connections.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import eventarc_v1
 
@@ -1558,7 +1558,7 @@ class EventarcAsyncClient:
         project and location.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import eventarc_v1
 
@@ -1689,7 +1689,7 @@ class EventarcAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Delete a single ChannelConnection.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import eventarc_v1
 

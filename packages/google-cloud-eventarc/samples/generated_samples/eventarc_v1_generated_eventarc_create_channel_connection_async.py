@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ListChannelConnections
+# Snippet for CreateChannelConnection
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,24 +23,33 @@
 #   python3 -m pip install google-cloud-eventarc
 
 
-# [START eventarc_generated_eventarc_v1_Eventarc_ListChannelConnections_sync]
+# [START eventarc_v1_generated_Eventarc_CreateChannelConnection_async]
 from google.cloud import eventarc_v1
 
 
-def sample_list_channel_connections():
+async def sample_create_channel_connection():
     # Create a client
-    client = eventarc_v1.EventarcClient()
+    client = eventarc_v1.EventarcAsyncClient()
 
     # Initialize request argument(s)
-    request = eventarc_v1.ListChannelConnectionsRequest(
+    channel_connection = eventarc_v1.ChannelConnection()
+    channel_connection.name = "name_value"
+    channel_connection.channel = "channel_value"
+
+    request = eventarc_v1.CreateChannelConnectionRequest(
         parent="parent_value",
+        channel_connection=channel_connection,
+        channel_connection_id="channel_connection_id_value",
     )
 
     # Make the request
-    page_result = client.list_channel_connections(request=request)
+    operation = client.create_channel_connection(request=request)
+
+    print("Waiting for operation to complete...")
+
+    response = await operation.result()
 
     # Handle the response
-    for response in page_result:
-        print(response)
+    print(response)
 
-# [END eventarc_generated_eventarc_v1_Eventarc_ListChannelConnections_sync]
+# [END eventarc_v1_generated_Eventarc_CreateChannelConnection_async]

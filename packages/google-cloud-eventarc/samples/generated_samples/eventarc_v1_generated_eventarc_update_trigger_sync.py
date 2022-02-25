@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for GetChannel
+# Snippet for UpdateTrigger
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,23 +23,27 @@
 #   python3 -m pip install google-cloud-eventarc
 
 
-# [START eventarc_generated_eventarc_v1_Eventarc_GetChannel_async]
+# [START eventarc_v1_generated_Eventarc_UpdateTrigger_sync]
 from google.cloud import eventarc_v1
 
 
-async def sample_get_channel():
+def sample_update_trigger():
     # Create a client
-    client = eventarc_v1.EventarcAsyncClient()
+    client = eventarc_v1.EventarcClient()
 
     # Initialize request argument(s)
-    request = eventarc_v1.GetChannelRequest(
-        name="name_value",
+    request = eventarc_v1.UpdateTriggerRequest(
+        validate_only=True,
     )
 
     # Make the request
-    response = await client.get_channel(request=request)
+    operation = client.update_trigger(request=request)
+
+    print("Waiting for operation to complete...")
+
+    response = operation.result()
 
     # Handle the response
     print(response)
 
-# [END eventarc_generated_eventarc_v1_Eventarc_GetChannel_async]
+# [END eventarc_v1_generated_Eventarc_UpdateTrigger_sync]

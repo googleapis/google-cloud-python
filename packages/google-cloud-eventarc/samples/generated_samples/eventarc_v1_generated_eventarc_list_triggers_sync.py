@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for DeleteChannelConnection
+# Snippet for ListTriggers
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,27 +23,24 @@
 #   python3 -m pip install google-cloud-eventarc
 
 
-# [START eventarc_generated_eventarc_v1_Eventarc_DeleteChannelConnection_async]
+# [START eventarc_v1_generated_Eventarc_ListTriggers_sync]
 from google.cloud import eventarc_v1
 
 
-async def sample_delete_channel_connection():
+def sample_list_triggers():
     # Create a client
-    client = eventarc_v1.EventarcAsyncClient()
+    client = eventarc_v1.EventarcClient()
 
     # Initialize request argument(s)
-    request = eventarc_v1.DeleteChannelConnectionRequest(
-        name="name_value",
+    request = eventarc_v1.ListTriggersRequest(
+        parent="parent_value",
     )
 
     # Make the request
-    operation = client.delete_channel_connection(request=request)
-
-    print("Waiting for operation to complete...")
-
-    response = await operation.result()
+    page_result = client.list_triggers(request=request)
 
     # Handle the response
-    print(response)
+    for response in page_result:
+        print(response)
 
-# [END eventarc_generated_eventarc_v1_Eventarc_DeleteChannelConnection_async]
+# [END eventarc_v1_generated_Eventarc_ListTriggers_sync]

@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for CreateTrigger
+# Snippet for DeleteChannel
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,37 +23,28 @@
 #   python3 -m pip install google-cloud-eventarc
 
 
-# [START eventarc_generated_eventarc_v1_Eventarc_CreateTrigger_async]
+# [START eventarc_v1_generated_Eventarc_DeleteChannel_sync]
 from google.cloud import eventarc_v1
 
 
-async def sample_create_trigger():
+def sample_delete_channel():
     # Create a client
-    client = eventarc_v1.EventarcAsyncClient()
+    client = eventarc_v1.EventarcClient()
 
     # Initialize request argument(s)
-    trigger = eventarc_v1.Trigger()
-    trigger.name = "name_value"
-    trigger.event_filters.attribute = "attribute_value"
-    trigger.event_filters.value = "value_value"
-    trigger.destination.cloud_run.service = "service_value"
-    trigger.destination.cloud_run.region = "region_value"
-
-    request = eventarc_v1.CreateTriggerRequest(
-        parent="parent_value",
-        trigger=trigger,
-        trigger_id="trigger_id_value",
+    request = eventarc_v1.DeleteChannelRequest(
+        name="name_value",
         validate_only=True,
     )
 
     # Make the request
-    operation = client.create_trigger(request=request)
+    operation = client.delete_channel(request=request)
 
     print("Waiting for operation to complete...")
 
-    response = await operation.result()
+    response = operation.result()
 
     # Handle the response
     print(response)
 
-# [END eventarc_generated_eventarc_v1_Eventarc_CreateTrigger_async]
+# [END eventarc_v1_generated_Eventarc_DeleteChannel_sync]

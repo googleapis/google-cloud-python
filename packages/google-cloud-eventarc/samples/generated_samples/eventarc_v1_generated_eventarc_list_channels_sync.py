@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for CreateChannel
+# Snippet for ListChannels
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,35 +23,24 @@
 #   python3 -m pip install google-cloud-eventarc
 
 
-# [START eventarc_generated_eventarc_v1_Eventarc_CreateChannel_sync]
+# [START eventarc_v1_generated_Eventarc_ListChannels_sync]
 from google.cloud import eventarc_v1
 
 
-def sample_create_channel():
+def sample_list_channels():
     # Create a client
     client = eventarc_v1.EventarcClient()
 
     # Initialize request argument(s)
-    channel = eventarc_v1.Channel()
-    channel.pubsub_topic = "pubsub_topic_value"
-    channel.name = "name_value"
-    channel.provider = "provider_value"
-
-    request = eventarc_v1.CreateChannelRequest(
+    request = eventarc_v1.ListChannelsRequest(
         parent="parent_value",
-        channel=channel,
-        channel_id="channel_id_value",
-        validate_only=True,
     )
 
     # Make the request
-    operation = client.create_channel(request=request)
-
-    print("Waiting for operation to complete...")
-
-    response = operation.result()
+    page_result = client.list_channels(request=request)
 
     # Handle the response
-    print(response)
+    for response in page_result:
+        print(response)
 
-# [END eventarc_generated_eventarc_v1_Eventarc_CreateChannel_sync]
+# [END eventarc_v1_generated_Eventarc_ListChannels_sync]

@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for GetChannelConnection
+# Snippet for DeleteChannel
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,23 +23,28 @@
 #   python3 -m pip install google-cloud-eventarc
 
 
-# [START eventarc_generated_eventarc_v1_Eventarc_GetChannelConnection_sync]
+# [START eventarc_v1_generated_Eventarc_DeleteChannel_async]
 from google.cloud import eventarc_v1
 
 
-def sample_get_channel_connection():
+async def sample_delete_channel():
     # Create a client
-    client = eventarc_v1.EventarcClient()
+    client = eventarc_v1.EventarcAsyncClient()
 
     # Initialize request argument(s)
-    request = eventarc_v1.GetChannelConnectionRequest(
+    request = eventarc_v1.DeleteChannelRequest(
         name="name_value",
+        validate_only=True,
     )
 
     # Make the request
-    response = client.get_channel_connection(request=request)
+    operation = client.delete_channel(request=request)
+
+    print("Waiting for operation to complete...")
+
+    response = await operation.result()
 
     # Handle the response
     print(response)
 
-# [END eventarc_generated_eventarc_v1_Eventarc_GetChannelConnection_sync]
+# [END eventarc_v1_generated_Eventarc_DeleteChannel_async]

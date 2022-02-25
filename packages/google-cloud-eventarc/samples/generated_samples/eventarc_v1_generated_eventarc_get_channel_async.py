@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for GetTrigger
+# Snippet for GetChannel
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,23 +23,23 @@
 #   python3 -m pip install google-cloud-eventarc
 
 
-# [START eventarc_generated_eventarc_v1_Eventarc_GetTrigger_async]
+# [START eventarc_v1_generated_Eventarc_GetChannel_async]
 from google.cloud import eventarc_v1
 
 
-async def sample_get_trigger():
+async def sample_get_channel():
     # Create a client
     client = eventarc_v1.EventarcAsyncClient()
 
     # Initialize request argument(s)
-    request = eventarc_v1.GetTriggerRequest(
+    request = eventarc_v1.GetChannelRequest(
         name="name_value",
     )
 
     # Make the request
-    response = await client.get_trigger(request=request)
+    response = await client.get_channel(request=request)
 
     # Handle the response
     print(response)
 
-# [END eventarc_generated_eventarc_v1_Eventarc_GetTrigger_async]
+# [END eventarc_v1_generated_Eventarc_GetChannel_async]
