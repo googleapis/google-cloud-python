@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for StartEnvironment
+# Snippet for AddPublicKey
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,26 +23,26 @@
 #   python3 -m pip install google-cloud-shell
 
 
-# [START cloudshell_generated_shell_v1_CloudShellService_StartEnvironment_sync]
+# [START cloudshell_v1_generated_CloudShellService_AddPublicKey_async]
 from google.cloud import shell_v1
 
 
-def sample_start_environment():
+async def sample_add_public_key():
     # Create a client
-    client = shell_v1.CloudShellServiceClient()
+    client = shell_v1.CloudShellServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = shell_v1.StartEnvironmentRequest(
+    request = shell_v1.AddPublicKeyRequest(
     )
 
     # Make the request
-    operation = client.start_environment(request=request)
+    operation = client.add_public_key(request=request)
 
     print("Waiting for operation to complete...")
 
-    response = operation.result()
+    response = await operation.result()
 
     # Handle the response
     print(response)
 
-# [END cloudshell_generated_shell_v1_CloudShellService_StartEnvironment_sync]
+# [END cloudshell_v1_generated_CloudShellService_AddPublicKey_async]

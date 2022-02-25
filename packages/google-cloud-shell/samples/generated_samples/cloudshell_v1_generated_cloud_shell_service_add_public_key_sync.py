@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for AuthorizeEnvironment
+# Snippet for AddPublicKey
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,20 +23,20 @@
 #   python3 -m pip install google-cloud-shell
 
 
-# [START cloudshell_generated_shell_v1_CloudShellService_AuthorizeEnvironment_sync]
+# [START cloudshell_v1_generated_CloudShellService_AddPublicKey_sync]
 from google.cloud import shell_v1
 
 
-def sample_authorize_environment():
+def sample_add_public_key():
     # Create a client
     client = shell_v1.CloudShellServiceClient()
 
     # Initialize request argument(s)
-    request = shell_v1.AuthorizeEnvironmentRequest(
+    request = shell_v1.AddPublicKeyRequest(
     )
 
     # Make the request
-    operation = client.authorize_environment(request=request)
+    operation = client.add_public_key(request=request)
 
     print("Waiting for operation to complete...")
 
@@ -45,4 +45,4 @@ def sample_authorize_environment():
     # Handle the response
     print(response)
 
-# [END cloudshell_generated_shell_v1_CloudShellService_AuthorizeEnvironment_sync]
+# [END cloudshell_v1_generated_CloudShellService_AddPublicKey_sync]

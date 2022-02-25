@@ -23,13 +23,13 @@
 #   python3 -m pip install google-cloud-shell
 
 
-# [START cloudshell_generated_shell_v1_CloudShellService_StartEnvironment_async]
+# [START cloudshell_v1_generated_CloudShellService_StartEnvironment_sync]
 from google.cloud import shell_v1
 
 
-async def sample_start_environment():
+def sample_start_environment():
     # Create a client
-    client = shell_v1.CloudShellServiceAsyncClient()
+    client = shell_v1.CloudShellServiceClient()
 
     # Initialize request argument(s)
     request = shell_v1.StartEnvironmentRequest(
@@ -40,9 +40,9 @@ async def sample_start_environment():
 
     print("Waiting for operation to complete...")
 
-    response = await operation.result()
+    response = operation.result()
 
     # Handle the response
     print(response)
 
-# [END cloudshell_generated_shell_v1_CloudShellService_StartEnvironment_async]
+# [END cloudshell_v1_generated_CloudShellService_StartEnvironment_sync]

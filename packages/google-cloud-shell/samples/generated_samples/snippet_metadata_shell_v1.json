@@ -10,8 +10,8 @@
           "shortName": "AddPublicKey"
         }
       },
-      "file": "cloudshell_generated_shell_v1_cloud_shell_service_add_public_key_async.py",
-      "regionTag": "cloudshell_generated_shell_v1_CloudShellService_AddPublicKey_async",
+      "file": "cloudshell_v1_generated_cloud_shell_service_add_public_key_async.py",
+      "regionTag": "cloudshell_v1_generated_CloudShellService_AddPublicKey_async",
       "segments": [
         {
           "end": 47,
@@ -54,8 +54,8 @@
           "shortName": "AddPublicKey"
         }
       },
-      "file": "cloudshell_generated_shell_v1_cloud_shell_service_add_public_key_sync.py",
-      "regionTag": "cloudshell_generated_shell_v1_CloudShellService_AddPublicKey_sync",
+      "file": "cloudshell_v1_generated_cloud_shell_service_add_public_key_sync.py",
+      "regionTag": "cloudshell_v1_generated_CloudShellService_AddPublicKey_sync",
       "segments": [
         {
           "end": 47,
@@ -99,8 +99,8 @@
           "shortName": "AuthorizeEnvironment"
         }
       },
-      "file": "cloudshell_generated_shell_v1_cloud_shell_service_authorize_environment_async.py",
-      "regionTag": "cloudshell_generated_shell_v1_CloudShellService_AuthorizeEnvironment_async",
+      "file": "cloudshell_v1_generated_cloud_shell_service_authorize_environment_async.py",
+      "regionTag": "cloudshell_v1_generated_CloudShellService_AuthorizeEnvironment_async",
       "segments": [
         {
           "end": 47,
@@ -143,8 +143,8 @@
           "shortName": "AuthorizeEnvironment"
         }
       },
-      "file": "cloudshell_generated_shell_v1_cloud_shell_service_authorize_environment_sync.py",
-      "regionTag": "cloudshell_generated_shell_v1_CloudShellService_AuthorizeEnvironment_sync",
+      "file": "cloudshell_v1_generated_cloud_shell_service_authorize_environment_sync.py",
+      "regionTag": "cloudshell_v1_generated_CloudShellService_AuthorizeEnvironment_sync",
       "segments": [
         {
           "end": 47,
@@ -188,8 +188,8 @@
           "shortName": "GetEnvironment"
         }
       },
-      "file": "cloudshell_generated_shell_v1_cloud_shell_service_get_environment_async.py",
-      "regionTag": "cloudshell_generated_shell_v1_CloudShellService_GetEnvironment_async",
+      "file": "cloudshell_v1_generated_cloud_shell_service_get_environment_async.py",
+      "regionTag": "cloudshell_v1_generated_CloudShellService_GetEnvironment_async",
       "segments": [
         {
           "end": 44,
@@ -232,8 +232,8 @@
           "shortName": "GetEnvironment"
         }
       },
-      "file": "cloudshell_generated_shell_v1_cloud_shell_service_get_environment_sync.py",
-      "regionTag": "cloudshell_generated_shell_v1_CloudShellService_GetEnvironment_sync",
+      "file": "cloudshell_v1_generated_cloud_shell_service_get_environment_sync.py",
+      "regionTag": "cloudshell_v1_generated_CloudShellService_GetEnvironment_sync",
       "segments": [
         {
           "end": 44,
@@ -277,8 +277,8 @@
           "shortName": "RemovePublicKey"
         }
       },
-      "file": "cloudshell_generated_shell_v1_cloud_shell_service_remove_public_key_async.py",
-      "regionTag": "cloudshell_generated_shell_v1_CloudShellService_RemovePublicKey_async",
+      "file": "cloudshell_v1_generated_cloud_shell_service_remove_public_key_async.py",
+      "regionTag": "cloudshell_v1_generated_CloudShellService_RemovePublicKey_async",
       "segments": [
         {
           "end": 47,
@@ -321,8 +321,8 @@
           "shortName": "RemovePublicKey"
         }
       },
-      "file": "cloudshell_generated_shell_v1_cloud_shell_service_remove_public_key_sync.py",
-      "regionTag": "cloudshell_generated_shell_v1_CloudShellService_RemovePublicKey_sync",
+      "file": "cloudshell_v1_generated_cloud_shell_service_remove_public_key_sync.py",
+      "regionTag": "cloudshell_v1_generated_CloudShellService_RemovePublicKey_sync",
       "segments": [
         {
           "end": 47,
@@ -366,8 +366,8 @@
           "shortName": "StartEnvironment"
         }
       },
-      "file": "cloudshell_generated_shell_v1_cloud_shell_service_start_environment_async.py",
-      "regionTag": "cloudshell_generated_shell_v1_CloudShellService_StartEnvironment_async",
+      "file": "cloudshell_v1_generated_cloud_shell_service_start_environment_async.py",
+      "regionTag": "cloudshell_v1_generated_CloudShellService_StartEnvironment_async",
       "segments": [
         {
           "end": 47,
@@ -410,8 +410,8 @@
           "shortName": "StartEnvironment"
         }
       },
-      "file": "cloudshell_generated_shell_v1_cloud_shell_service_start_environment_sync.py",
-      "regionTag": "cloudshell_generated_shell_v1_CloudShellService_StartEnvironment_sync",
+      "file": "cloudshell_v1_generated_cloud_shell_service_start_environment_sync.py",
+      "regionTag": "cloudshell_v1_generated_CloudShellService_StartEnvironment_sync",
       "segments": [
         {
           "end": 47,

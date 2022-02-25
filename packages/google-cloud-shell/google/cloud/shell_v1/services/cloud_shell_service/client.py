@@ -420,8 +420,7 @@ class CloudShellServiceClient(metaclass=CloudShellServiceClientMeta):
         not exist.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import shell_v1
 
@@ -525,8 +524,7 @@ class CloudShellServiceClient(metaclass=CloudShellServiceClientMeta):
         StartEnvironmentResponse in its response field.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import shell_v1
 
@@ -614,8 +612,7 @@ class CloudShellServiceClient(metaclass=CloudShellServiceClientMeta):
         authenticate.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import shell_v1
 
@@ -701,8 +698,7 @@ class CloudShellServiceClient(metaclass=CloudShellServiceClientMeta):
         error with ALREADY_EXISTS.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import shell_v1
 
@@ -790,8 +786,7 @@ class CloudShellServiceClient(metaclass=CloudShellServiceClientMeta):
         present, this will error with NOT_FOUND.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import shell_v1
 

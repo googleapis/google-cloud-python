@@ -226,7 +226,7 @@ class CloudShellServiceAsyncClient:
         not exist.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import shell_v1
 
@@ -339,7 +339,7 @@ class CloudShellServiceAsyncClient:
         StartEnvironmentResponse in its response field.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import shell_v1
 
@@ -426,7 +426,7 @@ class CloudShellServiceAsyncClient:
         authenticate.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import shell_v1
 
@@ -511,7 +511,7 @@ class CloudShellServiceAsyncClient:
         error with ALREADY_EXISTS.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import shell_v1
 
@@ -598,7 +598,7 @@ class CloudShellServiceAsyncClient:
         present, this will error with NOT_FOUND.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import shell_v1
 

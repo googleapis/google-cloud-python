@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for AuthorizeEnvironment
+# Snippet for RemovePublicKey
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,20 +23,20 @@
 #   python3 -m pip install google-cloud-shell
 
 
-# [START cloudshell_generated_shell_v1_CloudShellService_AuthorizeEnvironment_async]
+# [START cloudshell_v1_generated_CloudShellService_RemovePublicKey_async]
 from google.cloud import shell_v1
 
 
-async def sample_authorize_environment():
+async def sample_remove_public_key():
     # Create a client
     client = shell_v1.CloudShellServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = shell_v1.AuthorizeEnvironmentRequest(
+    request = shell_v1.RemovePublicKeyRequest(
     )
 
     # Make the request
-    operation = client.authorize_environment(request=request)
+    operation = client.remove_public_key(request=request)
 
     print("Waiting for operation to complete...")
 
@@ -45,4 +45,4 @@ async def sample_authorize_environment():
     # Handle the response
     print(response)
 
-# [END cloudshell_generated_shell_v1_CloudShellService_AuthorizeEnvironment_async]
+# [END cloudshell_v1_generated_CloudShellService_RemovePublicKey_async]

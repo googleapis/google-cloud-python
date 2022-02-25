@@ -23,13 +23,13 @@
 #   python3 -m pip install google-cloud-shell
 
 
-# [START cloudshell_generated_shell_v1_CloudShellService_GetEnvironment_async]
+# [START cloudshell_v1_generated_CloudShellService_GetEnvironment_sync]
 from google.cloud import shell_v1
 
 
-async def sample_get_environment():
+def sample_get_environment():
     # Create a client
-    client = shell_v1.CloudShellServiceAsyncClient()
+    client = shell_v1.CloudShellServiceClient()
 
     # Initialize request argument(s)
     request = shell_v1.GetEnvironmentRequest(
@@ -37,9 +37,9 @@ async def sample_get_environment():
     )
 
     # Make the request
-    response = await client.get_environment(request=request)
+    response = client.get_environment(request=request)
 
     # Handle the response
     print(response)
 
-# [END cloudshell_generated_shell_v1_CloudShellService_GetEnvironment_async]
+# [END cloudshell_v1_generated_CloudShellService_GetEnvironment_sync]

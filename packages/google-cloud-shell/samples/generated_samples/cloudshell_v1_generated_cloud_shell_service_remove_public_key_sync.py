@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for GetEnvironment
+# Snippet for RemovePublicKey
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,23 +23,26 @@
 #   python3 -m pip install google-cloud-shell
 
 
-# [START cloudshell_generated_shell_v1_CloudShellService_GetEnvironment_sync]
+# [START cloudshell_v1_generated_CloudShellService_RemovePublicKey_sync]
 from google.cloud import shell_v1
 
 
-def sample_get_environment():
+def sample_remove_public_key():
     # Create a client
     client = shell_v1.CloudShellServiceClient()
 
     # Initialize request argument(s)
-    request = shell_v1.GetEnvironmentRequest(
-        name="name_value",
+    request = shell_v1.RemovePublicKeyRequest(
     )
 
     # Make the request
-    response = client.get_environment(request=request)
+    operation = client.remove_public_key(request=request)
+
+    print("Waiting for operation to complete...")
+
+    response = operation.result()
 
     # Handle the response
     print(response)
 
-# [END cloudshell_generated_shell_v1_CloudShellService_GetEnvironment_sync]
+# [END cloudshell_v1_generated_CloudShellService_RemovePublicKey_sync]
