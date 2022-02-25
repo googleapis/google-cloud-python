@@ -410,8 +410,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         specified zone or all zones.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import container_v1beta1
 
@@ -519,8 +518,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
     ) -> cluster_service.Cluster:
         r"""Gets the details for a specific cluster.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import container_v1beta1
 
@@ -651,8 +649,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         indicating which CIDR range the cluster is using.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import container_v1beta1
 
@@ -772,8 +769,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
     ) -> cluster_service.Operation:
         r"""Updates the settings for a specific cluster.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import container_v1beta1
 
@@ -903,8 +899,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         node pool.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import container_v1beta1
 
@@ -982,8 +977,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         pool.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import container_v1beta1
 
@@ -1063,8 +1057,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
     ) -> cluster_service.Operation:
         r"""Sets the logging service for a specific cluster.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import container_v1beta1
 
@@ -1209,8 +1202,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
     ) -> cluster_service.Operation:
         r"""Sets the monitoring service for a specific cluster.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import container_v1beta1
 
@@ -1357,8 +1349,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
     ) -> cluster_service.Operation:
         r"""Sets the addons for a specific cluster.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import container_v1beta1
 
@@ -1494,8 +1485,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         instead.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import container_v1beta1
 
@@ -1639,8 +1629,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
     ) -> cluster_service.Operation:
         r"""Updates the master for a specific cluster.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import container_v1beta1
 
@@ -1785,8 +1774,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         password.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import container_v1beta1
 
@@ -1873,8 +1861,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         initially created.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import container_v1beta1
 
@@ -1997,8 +1984,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         zone or all zones.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import container_v1beta1
 
@@ -2107,8 +2093,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
     ) -> cluster_service.Operation:
         r"""Gets the specified operation.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import container_v1beta1
 
@@ -2229,8 +2214,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
     ) -> None:
         r"""Cancels the specified operation.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import container_v1beta1
 
@@ -2340,8 +2324,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         Kubernetes Engine service.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import container_v1beta1
 
@@ -2449,8 +2432,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
     ) -> cluster_service.ListNodePoolsResponse:
         r"""Lists the node pools for a cluster.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import container_v1beta1
 
@@ -2570,8 +2552,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         available for all clusters.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import container_v1beta1
 
@@ -2647,8 +2628,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
     ) -> cluster_service.NodePool:
         r"""Retrieves the requested node pool.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import container_v1beta1
 
@@ -2821,8 +2801,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
     ) -> cluster_service.Operation:
         r"""Creates a node pool for a cluster.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import container_v1beta1
 
@@ -2951,8 +2930,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
     ) -> cluster_service.Operation:
         r"""Deletes a node pool from a cluster.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import container_v1beta1
 
@@ -3089,8 +3067,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         successfully completed.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import container_v1beta1
 
@@ -3230,8 +3207,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
     ) -> cluster_service.Operation:
         r"""Sets the NodeManagement options for a node pool.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import container_v1beta1
 
@@ -3380,8 +3356,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
     ) -> cluster_service.Operation:
         r"""Sets labels on a cluster.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import container_v1beta1
 
@@ -3534,8 +3509,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         on a cluster.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import container_v1beta1
 
@@ -3667,8 +3641,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
     ) -> cluster_service.Operation:
         r"""Starts master IP rotation.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import container_v1beta1
 
@@ -3790,8 +3763,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
     ) -> cluster_service.Operation:
         r"""Completes master IP rotation.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import container_v1beta1
 
@@ -3913,8 +3885,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         [NodePool.locations][google.container.v1beta1.NodePool.locations].
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import container_v1beta1
 
@@ -3993,8 +3964,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
     ) -> cluster_service.Operation:
         r"""Enables or disables Network Policy for a cluster.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import container_v1beta1
 
@@ -4125,8 +4095,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
     ) -> cluster_service.Operation:
         r"""Sets the maintenance policy for a cluster.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import container_v1beta1
 
@@ -4252,8 +4221,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         clusters in a project.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import container_v1beta1
 
@@ -4358,8 +4326,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         Engine.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import container_v1beta1
 

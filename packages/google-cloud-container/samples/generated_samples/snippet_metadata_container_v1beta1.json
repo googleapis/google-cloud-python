@@ -10,8 +10,8 @@
           "shortName": "CancelOperation"
         }
       },
-      "file": "container_generated_container_v1beta1_cluster_manager_cancel_operation_async.py",
-      "regionTag": "container_generated_container_v1beta1_ClusterManager_CancelOperation_async",
+      "file": "container_v1beta1_generated_cluster_manager_cancel_operation_async.py",
+      "regionTag": "container_v1beta1_generated_ClusterManager_CancelOperation_async",
       "segments": [
         {
           "end": 44,
@@ -52,8 +52,8 @@
           "shortName": "CancelOperation"
         }
       },
-      "file": "container_generated_container_v1beta1_cluster_manager_cancel_operation_sync.py",
-      "regionTag": "container_generated_container_v1beta1_ClusterManager_CancelOperation_sync",
+      "file": "container_v1beta1_generated_cluster_manager_cancel_operation_sync.py",
+      "regionTag": "container_v1beta1_generated_ClusterManager_CancelOperation_sync",
       "segments": [
         {
           "end": 44,
@@ -95,8 +95,8 @@
           "shortName": "CompleteIPRotation"
         }
       },
-      "file": "container_generated_container_v1beta1_cluster_manager_complete_ip_rotation_async.py",
-      "regionTag": "container_generated_container_v1beta1_ClusterManager_CompleteIPRotation_async",
+      "file": "container_v1beta1_generated_cluster_manager_complete_ip_rotation_async.py",
+      "regionTag": "container_v1beta1_generated_ClusterManager_CompleteIPRotation_async",
       "segments": [
         {
           "end": 46,
@@ -139,8 +139,8 @@
           "shortName": "CompleteIPRotation"
         }
       },
-      "file": "container_generated_container_v1beta1_cluster_manager_complete_ip_rotation_sync.py",
-      "regionTag": "container_generated_container_v1beta1_ClusterManager_CompleteIPRotation_sync",
+      "file": "container_v1beta1_generated_cluster_manager_complete_ip_rotation_sync.py",
+      "regionTag": "container_v1beta1_generated_ClusterManager_CompleteIPRotation_sync",
       "segments": [
         {
           "end": 46,
@@ -184,8 +184,8 @@
           "shortName": "CreateCluster"
         }
       },
-      "file": "container_generated_container_v1beta1_cluster_manager_create_cluster_async.py",
-      "regionTag": "container_generated_container_v1beta1_ClusterManager_CreateCluster_async",
+      "file": "container_v1beta1_generated_cluster_manager_create_cluster_async.py",
+      "regionTag": "container_v1beta1_generated_ClusterManager_CreateCluster_async",
       "segments": [
         {
           "end": 45,
@@ -228,8 +228,8 @@
           "shortName": "CreateCluster"
         }
       },
-      "file": "container_generated_container_v1beta1_cluster_manager_create_cluster_sync.py",
-      "regionTag": "container_generated_container_v1beta1_ClusterManager_CreateCluster_sync",
+      "file": "container_v1beta1_generated_cluster_manager_create_cluster_sync.py",
+      "regionTag": "container_v1beta1_generated_ClusterManager_CreateCluster_sync",
       "segments": [
         {
           "end": 45,
@@ -273,8 +273,8 @@
           "shortName": "CreateNodePool"
         }
       },
-      "file": "container_generated_container_v1beta1_cluster_manager_create_node_pool_async.py",
-      "regionTag": "container_generated_container_v1beta1_ClusterManager_CreateNodePool_async",
+      "file": "container_v1beta1_generated_cluster_manager_create_node_pool_async.py",
+      "regionTag": "container_v1beta1_generated_ClusterManager_CreateNodePool_async",
       "segments": [
         {
           "end": 46,
@@ -317,8 +317,8 @@
           "shortName": "CreateNodePool"
         }
       },
-      "file": "container_generated_container_v1beta1_cluster_manager_create_node_pool_sync.py",
-      "regionTag": "container_generated_container_v1beta1_ClusterManager_CreateNodePool_sync",
+      "file": "container_v1beta1_generated_cluster_manager_create_node_pool_sync.py",
+      "regionTag": "container_v1beta1_generated_ClusterManager_CreateNodePool_sync",
       "segments": [
         {
           "end": 46,
@@ -362,8 +362,8 @@
           "shortName": "DeleteCluster"
         }
       },
-      "file": "container_generated_container_v1beta1_cluster_manager_delete_cluster_async.py",
-      "regionTag": "container_generated_container_v1beta1_ClusterManager_DeleteCluster_async",
+      "file": "container_v1beta1_generated_cluster_manager_delete_cluster_async.py",
+      "regionTag": "container_v1beta1_generated_ClusterManager_DeleteCluster_async",
       "segments": [
         {
           "end": 46,
@@ -406,8 +406,8 @@
           "shortName": "DeleteCluster"
         }
       },
-      "file": "container_generated_container_v1beta1_cluster_manager_delete_cluster_sync.py",
-      "regionTag": "container_generated_container_v1beta1_ClusterManager_DeleteCluster_sync",
+      "file": "container_v1beta1_generated_cluster_manager_delete_cluster_sync.py",
+      "regionTag": "container_v1beta1_generated_ClusterManager_DeleteCluster_sync",
       "segments": [
         {
           "end": 46,
@@ -451,8 +451,8 @@
           "shortName": "DeleteNodePool"
         }
       },
-      "file": "container_generated_container_v1beta1_cluster_manager_delete_node_pool_async.py",
-      "regionTag": "container_generated_container_v1beta1_ClusterManager_DeleteNodePool_async",
+      "file": "container_v1beta1_generated_cluster_manager_delete_node_pool_async.py",
+      "regionTag": "container_v1beta1_generated_ClusterManager_DeleteNodePool_async",
       "segments": [
         {
           "end": 47,
@@ -495,8 +495,8 @@
           "shortName": "DeleteNodePool"
         }
       },
-      "file": "container_generated_container_v1beta1_cluster_manager_delete_node_pool_sync.py",
-      "regionTag": "container_generated_container_v1beta1_ClusterManager_DeleteNodePool_sync",
+      "file": "container_v1beta1_generated_cluster_manager_delete_node_pool_sync.py",
+      "regionTag": "container_v1beta1_generated_ClusterManager_DeleteNodePool_sync",
       "segments": [
         {
           "end": 47,
@@ -540,8 +540,8 @@
           "shortName": "GetCluster"
         }
       },
-      "file": "container_generated_container_v1beta1_cluster_manager_get_cluster_async.py",
-      "regionTag": "container_generated_container_v1beta1_ClusterManager_GetCluster_async",
+      "file": "container_v1beta1_generated_cluster_manager_get_cluster_async.py",
+      "regionTag": "container_v1beta1_generated_ClusterManager_GetCluster_async",
       "segments": [
         {
           "end": 46,
@@ -584,8 +584,8 @@
           "shortName": "GetCluster"
         }
       },
-      "file": "container_generated_container_v1beta1_cluster_manager_get_cluster_sync.py",
-      "regionTag": "container_generated_container_v1beta1_ClusterManager_GetCluster_sync",
+      "file": "container_v1beta1_generated_cluster_manager_get_cluster_sync.py",
+      "regionTag": "container_v1beta1_generated_ClusterManager_GetCluster_sync",
       "segments": [
         {
           "end": 46,
@@ -629,8 +629,8 @@
           "shortName": "GetJSONWebKeys"
         }
       },
-      "file": "container_generated_container_v1beta1_cluster_manager_get_json_web_keys_async.py",
-      "regionTag": "container_generated_container_v1beta1_ClusterManager_GetJSONWebKeys_async",
+      "file": "container_v1beta1_generated_cluster_manager_get_json_web_keys_async.py",
+      "regionTag": "container_v1beta1_generated_ClusterManager_GetJSONWebKeys_async",
       "segments": [
         {
           "end": 43,
@@ -673,8 +673,8 @@
           "shortName": "GetJSONWebKeys"
         }
       },
-      "file": "container_generated_container_v1beta1_cluster_manager_get_json_web_keys_sync.py",
-      "regionTag": "container_generated_container_v1beta1_ClusterManager_GetJSONWebKeys_sync",
+      "file": "container_v1beta1_generated_cluster_manager_get_json_web_keys_sync.py",
+      "regionTag": "container_v1beta1_generated_ClusterManager_GetJSONWebKeys_sync",
       "segments": [
         {
           "end": 43,
@@ -718,8 +718,8 @@
           "shortName": "GetNodePool"
         }
       },
-      "file": "container_generated_container_v1beta1_cluster_manager_get_node_pool_async.py",
-      "regionTag": "container_generated_container_v1beta1_ClusterManager_GetNodePool_async",
+      "file": "container_v1beta1_generated_cluster_manager_get_node_pool_async.py",
+      "regionTag": "container_v1beta1_generated_ClusterManager_GetNodePool_async",
       "segments": [
         {
           "end": 47,
@@ -762,8 +762,8 @@
           "shortName": "GetNodePool"
         }
       },
-      "file": "container_generated_container_v1beta1_cluster_manager_get_node_pool_sync.py",
-      "regionTag": "container_generated_container_v1beta1_ClusterManager_GetNodePool_sync",
+      "file": "container_v1beta1_generated_cluster_manager_get_node_pool_sync.py",
+      "regionTag": "container_v1beta1_generated_ClusterManager_GetNodePool_sync",
       "segments": [
         {
           "end": 47,
@@ -807,8 +807,8 @@
           "shortName": "GetOperation"
         }
       },
-      "file": "container_generated_container_v1beta1_cluster_manager_get_operation_async.py",
-      "regionTag": "container_generated_container_v1beta1_ClusterManager_GetOperation_async",
+      "file": "container_v1beta1_generated_cluster_manager_get_operation_async.py",
+      "regionTag": "container_v1beta1_generated_ClusterManager_GetOperation_async",
       "segments": [
         {
           "end": 46,
@@ -851,8 +851,8 @@
           "shortName": "GetOperation"
         }
       },
-      "file": "container_generated_container_v1beta1_cluster_manager_get_operation_sync.py",
-      "regionTag": "container_generated_container_v1beta1_ClusterManager_GetOperation_sync",
+      "file": "container_v1beta1_generated_cluster_manager_get_operation_sync.py",
+      "regionTag": "container_v1beta1_generated_ClusterManager_GetOperation_sync",
       "segments": [
         {
           "end": 46,
@@ -896,8 +896,8 @@
           "shortName": "GetServerConfig"
         }
       },
-      "file": "container_generated_container_v1beta1_cluster_manager_get_server_config_async.py",
-      "regionTag": "container_generated_container_v1beta1_ClusterManager_GetServerConfig_async",
+      "file": "container_v1beta1_generated_cluster_manager_get_server_config_async.py",
+      "regionTag": "container_v1beta1_generated_ClusterManager_GetServerConfig_async",
       "segments": [
         {
           "end": 45,
@@ -940,8 +940,8 @@
           "shortName": "GetServerConfig"
         }
       },
-      "file": "container_generated_container_v1beta1_cluster_manager_get_server_config_sync.py",
-      "regionTag": "container_generated_container_v1beta1_ClusterManager_GetServerConfig_sync",
+      "file": "container_v1beta1_generated_cluster_manager_get_server_config_sync.py",
+      "regionTag": "container_v1beta1_generated_ClusterManager_GetServerConfig_sync",
       "segments": [
         {
           "end": 45,
@@ -985,8 +985,8 @@
           "shortName": "ListClusters"
         }
       },
-      "file": "container_generated_container_v1beta1_cluster_manager_list_clusters_async.py",
-      "regionTag": "container_generated_container_v1beta1_ClusterManager_ListClusters_async",
+      "file": "container_v1beta1_generated_cluster_manager_list_clusters_async.py",
+      "regionTag": "container_v1beta1_generated_ClusterManager_ListClusters_async",
       "segments": [
         {
           "end": 45,
@@ -1029,8 +1029,8 @@
           "shortName": "ListClusters"
         }
       },
-      "file": "container_generated_container_v1beta1_cluster_manager_list_clusters_sync.py",
-      "regionTag": "container_generated_container_v1beta1_ClusterManager_ListClusters_sync",
+      "file": "container_v1beta1_generated_cluster_manager_list_clusters_sync.py",
+      "regionTag": "container_v1beta1_generated_ClusterManager_ListClusters_sync",
       "segments": [
         {
           "end": 45,
@@ -1074,8 +1074,8 @@
           "shortName": "ListLocations"
         }
       },
-      "file": "container_generated_container_v1beta1_cluster_manager_list_locations_async.py",
-      "regionTag": "container_generated_container_v1beta1_ClusterManager_ListLocations_async",
+      "file": "container_v1beta1_generated_cluster_manager_list_locations_async.py",
+      "regionTag": "container_v1beta1_generated_ClusterManager_ListLocations_async",
       "segments": [
         {
           "end": 44,
@@ -1118,8 +1118,8 @@
           "shortName": "ListLocations"
         }
       },
-      "file": "container_generated_container_v1beta1_cluster_manager_list_locations_sync.py",
-      "regionTag": "container_generated_container_v1beta1_ClusterManager_ListLocations_sync",
+      "file": "container_v1beta1_generated_cluster_manager_list_locations_sync.py",
+      "regionTag": "container_v1beta1_generated_ClusterManager_ListLocations_sync",
       "segments": [
         {
           "end": 44,
@@ -1163,8 +1163,8 @@
           "shortName": "ListNodePools"
         }
       },
-      "file": "container_generated_container_v1beta1_cluster_manager_list_node_pools_async.py",
-      "regionTag": "container_generated_container_v1beta1_ClusterManager_ListNodePools_async",
+      "file": "container_v1beta1_generated_cluster_manager_list_node_pools_async.py",
+      "regionTag": "container_v1beta1_generated_ClusterManager_ListNodePools_async",
       "segments": [
         {
           "end": 46,
@@ -1207,8 +1207,8 @@
           "shortName": "ListNodePools"
         }
       },
-      "file": "container_generated_container_v1beta1_cluster_manager_list_node_pools_sync.py",
-      "regionTag": "container_generated_container_v1beta1_ClusterManager_ListNodePools_sync",
+      "file": "container_v1beta1_generated_cluster_manager_list_node_pools_sync.py",
+      "regionTag": "container_v1beta1_generated_ClusterManager_ListNodePools_sync",
       "segments": [
         {
           "end": 46,
@@ -1252,8 +1252,8 @@
           "shortName": "ListOperations"
         }
       },
-      "file": "container_generated_container_v1beta1_cluster_manager_list_operations_async.py",
-      "regionTag": "container_generated_container_v1beta1_ClusterManager_ListOperations_async",
+      "file": "container_v1beta1_generated_cluster_manager_list_operations_async.py",
+      "regionTag": "container_v1beta1_generated_ClusterManager_ListOperations_async",
       "segments": [
         {
           "end": 45,
@@ -1296,8 +1296,8 @@
           "shortName": "ListOperations"
         }
       },
-      "file": "container_generated_container_v1beta1_cluster_manager_list_operations_sync.py",
-      "regionTag": "container_generated_container_v1beta1_ClusterManager_ListOperations_sync",
+      "file": "container_v1beta1_generated_cluster_manager_list_operations_sync.py",
+      "regionTag": "container_v1beta1_generated_ClusterManager_ListOperations_sync",
       "segments": [
         {
           "end": 45,
@@ -1341,8 +1341,8 @@
           "shortName": "ListUsableSubnetworks"
         }
       },
-      "file": "container_generated_container_v1beta1_cluster_manager_list_usable_subnetworks_async.py",
-      "regionTag": "container_generated_container_v1beta1_ClusterManager_ListUsableSubnetworks_async",
+      "file": "container_v1beta1_generated_cluster_manager_list_usable_subnetworks_async.py",
+      "regionTag": "container_v1beta1_generated_ClusterManager_ListUsableSubnetworks_async",
       "segments": [
         {
           "end": 45,
@@ -1385,8 +1385,8 @@
           "shortName": "ListUsableSubnetworks"
         }
       },
-      "file": "container_generated_container_v1beta1_cluster_manager_list_usable_subnetworks_sync.py",
-      "regionTag": "container_generated_container_v1beta1_ClusterManager_ListUsableSubnetworks_sync",
+      "file": "container_v1beta1_generated_cluster_manager_list_usable_subnetworks_sync.py",
+      "regionTag": "container_v1beta1_generated_ClusterManager_ListUsableSubnetworks_sync",
       "segments": [
         {
           "end": 45,
@@ -1430,8 +1430,8 @@
           "shortName": "RollbackNodePoolUpgrade"
         }
       },
-      "file": "container_generated_container_v1beta1_cluster_manager_rollback_node_pool_upgrade_async.py",
-      "regionTag": "container_generated_container_v1beta1_ClusterManager_RollbackNodePoolUpgrade_async",
+      "file": "container_v1beta1_generated_cluster_manager_rollback_node_pool_upgrade_async.py",
+      "regionTag": "container_v1beta1_generated_ClusterManager_RollbackNodePoolUpgrade_async",
       "segments": [
         {
           "end": 47,
@@ -1474,8 +1474,8 @@
           "shortName": "RollbackNodePoolUpgrade"
         }
       },
-      "file": "container_generated_container_v1beta1_cluster_manager_rollback_node_pool_upgrade_sync.py",
-      "regionTag": "container_generated_container_v1beta1_ClusterManager_RollbackNodePoolUpgrade_sync",
+      "file": "container_v1beta1_generated_cluster_manager_rollback_node_pool_upgrade_sync.py",
+      "regionTag": "container_v1beta1_generated_ClusterManager_RollbackNodePoolUpgrade_sync",
       "segments": [
         {
           "end": 47,
@@ -1519,8 +1519,8 @@
           "shortName": "SetAddonsConfig"
         }
       },
-      "file": "container_generated_container_v1beta1_cluster_manager_set_addons_config_async.py",
-      "regionTag": "container_generated_container_v1beta1_ClusterManager_SetAddonsConfig_async",
+      "file": "container_v1beta1_generated_cluster_manager_set_addons_config_async.py",
+      "regionTag": "container_v1beta1_generated_ClusterManager_SetAddonsConfig_async",
       "segments": [
         {
           "end": 46,
@@ -1563,8 +1563,8 @@
           "shortName": "SetAddonsConfig"
         }
       },
-      "file": "container_generated_container_v1beta1_cluster_manager_set_addons_config_sync.py",
-      "regionTag": "container_generated_container_v1beta1_ClusterManager_SetAddonsConfig_sync",
+      "file": "container_v1beta1_generated_cluster_manager_set_addons_config_sync.py",
+      "regionTag": "container_v1beta1_generated_ClusterManager_SetAddonsConfig_sync",
       "segments": [
         {
           "end": 46,
@@ -1608,8 +1608,8 @@
           "shortName": "SetLabels"
         }
       },
-      "file": "container_generated_container_v1beta1_cluster_manager_set_labels_async.py",
-      "regionTag": "container_generated_container_v1beta1_ClusterManager_SetLabels_async",
+      "file": "container_v1beta1_generated_cluster_manager_set_labels_async.py",
+      "regionTag": "container_v1beta1_generated_ClusterManager_SetLabels_async",
       "segments": [
         {
           "end": 47,
@@ -1652,8 +1652,8 @@
           "shortName": "SetLabels"
         }
       },
-      "file": "container_generated_container_v1beta1_cluster_manager_set_labels_sync.py",
-      "regionTag": "container_generated_container_v1beta1_ClusterManager_SetLabels_sync",
+      "file": "container_v1beta1_generated_cluster_manager_set_labels_sync.py",
+      "regionTag": "container_v1beta1_generated_ClusterManager_SetLabels_sync",
       "segments": [
         {
           "end": 47,
@@ -1697,8 +1697,8 @@
           "shortName": "SetLegacyAbac"
         }
       },
-      "file": "container_generated_container_v1beta1_cluster_manager_set_legacy_abac_async.py",
-      "regionTag": "container_generated_container_v1beta1_ClusterManager_SetLegacyAbac_async",
+      "file": "container_v1beta1_generated_cluster_manager_set_legacy_abac_async.py",
+      "regionTag": "container_v1beta1_generated_ClusterManager_SetLegacyAbac_async",
       "segments": [
         {
           "end": 47,
@@ -1741,8 +1741,8 @@
           "shortName": "SetLegacyAbac"
         }
       },
-      "file": "container_generated_container_v1beta1_cluster_manager_set_legacy_abac_sync.py",
-      "regionTag": "container_generated_container_v1beta1_ClusterManager_SetLegacyAbac_sync",
+      "file": "container_v1beta1_generated_cluster_manager_set_legacy_abac_sync.py",
+      "regionTag": "container_v1beta1_generated_ClusterManager_SetLegacyAbac_sync",
       "segments": [
         {
           "end": 47,
@@ -1786,8 +1786,8 @@
           "shortName": "SetLocations"
         }
       },
-      "file": "container_generated_container_v1beta1_cluster_manager_set_locations_async.py",
-      "regionTag": "container_generated_container_v1beta1_ClusterManager_SetLocations_async",
+      "file": "container_v1beta1_generated_cluster_manager_set_locations_async.py",
+      "regionTag": "container_v1beta1_generated_ClusterManager_SetLocations_async",
       "segments": [
         {
           "end": 47,
@@ -1830,8 +1830,8 @@
           "shortName": "SetLocations"
         }
       },
-      "file": "container_generated_container_v1beta1_cluster_manager_set_locations_sync.py",
-      "regionTag": "container_generated_container_v1beta1_ClusterManager_SetLocations_sync",
+      "file": "container_v1beta1_generated_cluster_manager_set_locations_sync.py",
+      "regionTag": "container_v1beta1_generated_ClusterManager_SetLocations_sync",
       "segments": [
         {
           "end": 47,
@@ -1875,8 +1875,8 @@
           "shortName": "SetLoggingService"
         }
       },
-      "file": "container_generated_container_v1beta1_cluster_manager_set_logging_service_async.py",
-      "regionTag": "container_generated_container_v1beta1_ClusterManager_SetLoggingService_async",
+      "file": "container_v1beta1_generated_cluster_manager_set_logging_service_async.py",
+      "regionTag": "container_v1beta1_generated_ClusterManager_SetLoggingService_async",
       "segments": [
         {
           "end": 47,
@@ -1919,8 +1919,8 @@
           "shortName": "SetLoggingService"
         }
       },
-      "file": "container_generated_container_v1beta1_cluster_manager_set_logging_service_sync.py",
-      "regionTag": "container_generated_container_v1beta1_ClusterManager_SetLoggingService_sync",
+      "file": "container_v1beta1_generated_cluster_manager_set_logging_service_sync.py",
+      "regionTag": "container_v1beta1_generated_ClusterManager_SetLoggingService_sync",
       "segments": [
         {
           "end": 47,
@@ -1964,8 +1964,8 @@
           "shortName": "SetMaintenancePolicy"
         }
       },
-      "file": "container_generated_container_v1beta1_cluster_manager_set_maintenance_policy_async.py",
-      "regionTag": "container_generated_container_v1beta1_ClusterManager_SetMaintenancePolicy_async",
+      "file": "container_v1beta1_generated_cluster_manager_set_maintenance_policy_async.py",
+      "regionTag": "container_v1beta1_generated_ClusterManager_SetMaintenancePolicy_async",
       "segments": [
         {
           "end": 46,
@@ -2008,8 +2008,8 @@
           "shortName": "SetMaintenancePolicy"
         }
       },
-      "file": "container_generated_container_v1beta1_cluster_manager_set_maintenance_policy_sync.py",
-      "regionTag": "container_generated_container_v1beta1_ClusterManager_SetMaintenancePolicy_sync",
+      "file": "container_v1beta1_generated_cluster_manager_set_maintenance_policy_sync.py",
+      "regionTag": "container_v1beta1_generated_ClusterManager_SetMaintenancePolicy_sync",
       "segments": [
         {
           "end": 46,
@@ -2053,8 +2053,8 @@
           "shortName": "SetMasterAuth"
         }
       },
-      "file": "container_generated_container_v1beta1_cluster_manager_set_master_auth_async.py",
-      "regionTag": "container_generated_container_v1beta1_ClusterManager_SetMasterAuth_async",
+      "file": "container_v1beta1_generated_cluster_manager_set_master_auth_async.py",
+      "regionTag": "container_v1beta1_generated_ClusterManager_SetMasterAuth_async",
       "segments": [
         {
           "end": 47,
@@ -2097,8 +2097,8 @@
           "shortName": "SetMasterAuth"
         }
       },
-      "file": "container_generated_container_v1beta1_cluster_manager_set_master_auth_sync.py",
-      "regionTag": "container_generated_container_v1beta1_ClusterManager_SetMasterAuth_sync",
+      "file": "container_v1beta1_generated_cluster_manager_set_master_auth_sync.py",
+      "regionTag": "container_v1beta1_generated_ClusterManager_SetMasterAuth_sync",
       "segments": [
         {
           "end": 47,
@@ -2142,8 +2142,8 @@
           "shortName": "SetMonitoringService"
         }
       },
-      "file": "container_generated_container_v1beta1_cluster_manager_set_monitoring_service_async.py",
-      "regionTag": "container_generated_container_v1beta1_ClusterManager_SetMonitoringService_async",
+      "file": "container_v1beta1_generated_cluster_manager_set_monitoring_service_async.py",
+      "regionTag": "container_v1beta1_generated_ClusterManager_SetMonitoringService_async",
       "segments": [
         {
           "end": 47,
@@ -2186,8 +2186,8 @@
           "shortName": "SetMonitoringService"
         }
       },
-      "file": "container_generated_container_v1beta1_cluster_manager_set_monitoring_service_sync.py",
-      "regionTag": "container_generated_container_v1beta1_ClusterManager_SetMonitoringService_sync",
+      "file": "container_v1beta1_generated_cluster_manager_set_monitoring_service_sync.py",
+      "regionTag": "container_v1beta1_generated_ClusterManager_SetMonitoringService_sync",
       "segments": [
         {
           "end": 47,
@@ -2231,8 +2231,8 @@
           "shortName": "SetNetworkPolicy"
         }
       },
-      "file": "container_generated_container_v1beta1_cluster_manager_set_network_policy_async.py",
-      "regionTag": "container_generated_container_v1beta1_ClusterManager_SetNetworkPolicy_async",
+      "file": "container_v1beta1_generated_cluster_manager_set_network_policy_async.py",
+      "regionTag": "container_v1beta1_generated_ClusterManager_SetNetworkPolicy_async",
       "segments": [
         {
           "end": 46,
@@ -2275,8 +2275,8 @@
           "shortName": "SetNetworkPolicy"
         }
       },
-      "file": "container_generated_container_v1beta1_cluster_manager_set_network_policy_sync.py",
-      "regionTag": "container_generated_container_v1beta1_ClusterManager_SetNetworkPolicy_sync",
+      "file": "container_v1beta1_generated_cluster_manager_set_network_policy_sync.py",
+      "regionTag": "container_v1beta1_generated_ClusterManager_SetNetworkPolicy_sync",
       "segments": [
         {
           "end": 46,
@@ -2320,8 +2320,8 @@
           "shortName": "SetNodePoolAutoscaling"
         }
       },
-      "file": "container_generated_container_v1beta1_cluster_manager_set_node_pool_autoscaling_async.py",
-      "regionTag": "container_generated_container_v1beta1_ClusterManager_SetNodePoolAutoscaling_async",
+      "file": "container_v1beta1_generated_cluster_manager_set_node_pool_autoscaling_async.py",
+      "regionTag": "container_v1beta1_generated_ClusterManager_SetNodePoolAutoscaling_async",
       "segments": [
         {
           "end": 47,
@@ -2364,8 +2364,8 @@
           "shortName": "SetNodePoolAutoscaling"
         }
       },
-      "file": "container_generated_container_v1beta1_cluster_manager_set_node_pool_autoscaling_sync.py",
-      "regionTag": "container_generated_container_v1beta1_ClusterManager_SetNodePoolAutoscaling_sync",
+      "file": "container_v1beta1_generated_cluster_manager_set_node_pool_autoscaling_sync.py",
+      "regionTag": "container_v1beta1_generated_ClusterManager_SetNodePoolAutoscaling_sync",
       "segments": [
         {
           "end": 47,
@@ -2409,8 +2409,8 @@
           "shortName": "SetNodePoolManagement"
         }
       },
-      "file": "container_generated_container_v1beta1_cluster_manager_set_node_pool_management_async.py",
-      "regionTag": "container_generated_container_v1beta1_ClusterManager_SetNodePoolManagement_async",
+      "file": "container_v1beta1_generated_cluster_manager_set_node_pool_management_async.py",
+      "regionTag": "container_v1beta1_generated_ClusterManager_SetNodePoolManagement_async",
       "segments": [
         {
           "end": 47,
@@ -2453,8 +2453,8 @@
           "shortName": "SetNodePoolManagement"
         }
       },
-      "file": "container_generated_container_v1beta1_cluster_manager_set_node_pool_management_sync.py",
-      "regionTag": "container_generated_container_v1beta1_ClusterManager_SetNodePoolManagement_sync",
+      "file": "container_v1beta1_generated_cluster_manager_set_node_pool_management_sync.py",
+      "regionTag": "container_v1beta1_generated_ClusterManager_SetNodePoolManagement_sync",
       "segments": [
         {
           "end": 47,
@@ -2498,8 +2498,8 @@
           "shortName": "SetNodePoolSize"
         }
       },
-      "file": "container_generated_container_v1beta1_cluster_manager_set_node_pool_size_async.py",
-      "regionTag": "container_generated_container_v1beta1_ClusterManager_SetNodePoolSize_async",
+      "file": "container_v1beta1_generated_cluster_manager_set_node_pool_size_async.py",
+      "regionTag": "container_v1beta1_generated_ClusterManager_SetNodePoolSize_async",
       "segments": [
         {
           "end": 48,
@@ -2542,8 +2542,8 @@
           "shortName": "SetNodePoolSize"
         }
       },
-      "file": "container_generated_container_v1beta1_cluster_manager_set_node_pool_size_sync.py",
-      "regionTag": "container_generated_container_v1beta1_ClusterManager_SetNodePoolSize_sync",
+      "file": "container_v1beta1_generated_cluster_manager_set_node_pool_size_sync.py",
+      "regionTag": "container_v1beta1_generated_ClusterManager_SetNodePoolSize_sync",
       "segments": [
         {
           "end": 48,
@@ -2587,8 +2587,8 @@
           "shortName": "StartIPRotation"
         }
       },
-      "file": "container_generated_container_v1beta1_cluster_manager_start_ip_rotation_async.py",
-      "regionTag": "container_generated_container_v1beta1_ClusterManager_StartIPRotation_async",
+      "file": "container_v1beta1_generated_cluster_manager_start_ip_rotation_async.py",
+      "regionTag": "container_v1beta1_generated_ClusterManager_StartIPRotation_async",
       "segments": [
         {
           "end": 46,
@@ -2631,8 +2631,8 @@
           "shortName": "StartIPRotation"
         }
       },
-      "file": "container_generated_container_v1beta1_cluster_manager_start_ip_rotation_sync.py",
-      "regionTag": "container_generated_container_v1beta1_ClusterManager_StartIPRotation_sync",
+      "file": "container_v1beta1_generated_cluster_manager_start_ip_rotation_sync.py",
+      "regionTag": "container_v1beta1_generated_ClusterManager_StartIPRotation_sync",
       "segments": [
         {
           "end": 46,
@@ -2676,8 +2676,8 @@
           "shortName": "UpdateCluster"
         }
       },
-      "file": "container_generated_container_v1beta1_cluster_manager_update_cluster_async.py",
-      "regionTag": "container_generated_container_v1beta1_ClusterManager_UpdateCluster_async",
+      "file": "container_v1beta1_generated_cluster_manager_update_cluster_async.py",
+      "regionTag": "container_v1beta1_generated_ClusterManager_UpdateCluster_async",
       "segments": [
         {
           "end": 46,
@@ -2720,8 +2720,8 @@
           "shortName": "UpdateCluster"
         }
       },
-      "file": "container_generated_container_v1beta1_cluster_manager_update_cluster_sync.py",
-      "regionTag": "container_generated_container_v1beta1_ClusterManager_UpdateCluster_sync",
+      "file": "container_v1beta1_generated_cluster_manager_update_cluster_sync.py",
+      "regionTag": "container_v1beta1_generated_ClusterManager_UpdateCluster_sync",
       "segments": [
         {
           "end": 46,
@@ -2765,8 +2765,8 @@
           "shortName": "UpdateMaster"
         }
       },
-      "file": "container_generated_container_v1beta1_cluster_manager_update_master_async.py",
-      "regionTag": "container_generated_container_v1beta1_ClusterManager_UpdateMaster_async",
+      "file": "container_v1beta1_generated_cluster_manager_update_master_async.py",
+      "regionTag": "container_v1beta1_generated_ClusterManager_UpdateMaster_async",
       "segments": [
         {
           "end": 47,
@@ -2809,8 +2809,8 @@
           "shortName": "UpdateMaster"
         }
       },
-      "file": "container_generated_container_v1beta1_cluster_manager_update_master_sync.py",
-      "regionTag": "container_generated_container_v1beta1_ClusterManager_UpdateMaster_sync",
+      "file": "container_v1beta1_generated_cluster_manager_update_master_sync.py",
+      "regionTag": "container_v1beta1_generated_ClusterManager_UpdateMaster_sync",
       "segments": [
         {
           "end": 47,
@@ -2854,8 +2854,8 @@
           "shortName": "UpdateNodePool"
         }
       },
-      "file": "container_generated_container_v1beta1_cluster_manager_update_node_pool_async.py",
-      "regionTag": "container_generated_container_v1beta1_ClusterManager_UpdateNodePool_async",
+      "file": "container_v1beta1_generated_cluster_manager_update_node_pool_async.py",
+      "regionTag": "container_v1beta1_generated_ClusterManager_UpdateNodePool_async",
       "segments": [
         {
           "end": 49,
@@ -2898,8 +2898,8 @@
           "shortName": "UpdateNodePool"
         }
       },
-      "file": "container_generated_container_v1beta1_cluster_manager_update_node_pool_sync.py",
-      "regionTag": "container_generated_container_v1beta1_ClusterManager_UpdateNodePool_sync",
+      "file": "container_v1beta1_generated_cluster_manager_update_node_pool_sync.py",
+      "regionTag": "container_v1beta1_generated_ClusterManager_UpdateNodePool_sync",
       "segments": [
         {
           "end": 49,

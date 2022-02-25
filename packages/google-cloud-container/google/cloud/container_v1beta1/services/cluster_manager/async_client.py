@@ -218,7 +218,7 @@ class ClusterManagerAsyncClient:
         specified zone or all zones.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import container_v1beta1
 
@@ -336,7 +336,7 @@ class ClusterManagerAsyncClient:
     ) -> cluster_service.Cluster:
         r"""Gets the details for a specific cluster.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import container_v1beta1
 
@@ -477,7 +477,7 @@ class ClusterManagerAsyncClient:
         indicating which CIDR range the cluster is using.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import container_v1beta1
 
@@ -597,7 +597,7 @@ class ClusterManagerAsyncClient:
     ) -> cluster_service.Operation:
         r"""Updates the settings for a specific cluster.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import container_v1beta1
 
@@ -727,7 +727,7 @@ class ClusterManagerAsyncClient:
         node pool.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import container_v1beta1
 
@@ -804,7 +804,7 @@ class ClusterManagerAsyncClient:
         pool.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import container_v1beta1
 
@@ -881,7 +881,7 @@ class ClusterManagerAsyncClient:
     ) -> cluster_service.Operation:
         r"""Sets the logging service for a specific cluster.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import container_v1beta1
 
@@ -1026,7 +1026,7 @@ class ClusterManagerAsyncClient:
     ) -> cluster_service.Operation:
         r"""Sets the monitoring service for a specific cluster.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import container_v1beta1
 
@@ -1173,7 +1173,7 @@ class ClusterManagerAsyncClient:
     ) -> cluster_service.Operation:
         r"""Sets the addons for a specific cluster.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import container_v1beta1
 
@@ -1309,7 +1309,7 @@ class ClusterManagerAsyncClient:
         instead.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import container_v1beta1
 
@@ -1453,7 +1453,7 @@ class ClusterManagerAsyncClient:
     ) -> cluster_service.Operation:
         r"""Updates the master for a specific cluster.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import container_v1beta1
 
@@ -1598,7 +1598,7 @@ class ClusterManagerAsyncClient:
         password.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import container_v1beta1
 
@@ -1684,7 +1684,7 @@ class ClusterManagerAsyncClient:
         initially created.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import container_v1beta1
 
@@ -1817,7 +1817,7 @@ class ClusterManagerAsyncClient:
         zone or all zones.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import container_v1beta1
 
@@ -1936,7 +1936,7 @@ class ClusterManagerAsyncClient:
     ) -> cluster_service.Operation:
         r"""Gets the specified operation.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import container_v1beta1
 
@@ -2067,7 +2067,7 @@ class ClusterManagerAsyncClient:
     ) -> None:
         r"""Cancels the specified operation.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import container_v1beta1
 
@@ -2177,7 +2177,7 @@ class ClusterManagerAsyncClient:
         Kubernetes Engine service.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import container_v1beta1
 
@@ -2295,7 +2295,7 @@ class ClusterManagerAsyncClient:
     ) -> cluster_service.ListNodePoolsResponse:
         r"""Lists the node pools for a cluster.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import container_v1beta1
 
@@ -2425,7 +2425,7 @@ class ClusterManagerAsyncClient:
         available for all clusters.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import container_v1beta1
 
@@ -2500,7 +2500,7 @@ class ClusterManagerAsyncClient:
     ) -> cluster_service.NodePool:
         r"""Retrieves the requested node pool.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import container_v1beta1
 
@@ -2683,7 +2683,7 @@ class ClusterManagerAsyncClient:
     ) -> cluster_service.Operation:
         r"""Creates a node pool for a cluster.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import container_v1beta1
 
@@ -2812,7 +2812,7 @@ class ClusterManagerAsyncClient:
     ) -> cluster_service.Operation:
         r"""Deletes a node pool from a cluster.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import container_v1beta1
 
@@ -2959,7 +2959,7 @@ class ClusterManagerAsyncClient:
         successfully completed.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import container_v1beta1
 
@@ -3097,7 +3097,7 @@ class ClusterManagerAsyncClient:
     ) -> cluster_service.Operation:
         r"""Sets the NodeManagement options for a node pool.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import container_v1beta1
 
@@ -3246,7 +3246,7 @@ class ClusterManagerAsyncClient:
     ) -> cluster_service.Operation:
         r"""Sets labels on a cluster.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import container_v1beta1
 
@@ -3400,7 +3400,7 @@ class ClusterManagerAsyncClient:
         on a cluster.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import container_v1beta1
 
@@ -3532,7 +3532,7 @@ class ClusterManagerAsyncClient:
     ) -> cluster_service.Operation:
         r"""Starts master IP rotation.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import container_v1beta1
 
@@ -3654,7 +3654,7 @@ class ClusterManagerAsyncClient:
     ) -> cluster_service.Operation:
         r"""Completes master IP rotation.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import container_v1beta1
 
@@ -3776,7 +3776,7 @@ class ClusterManagerAsyncClient:
         [NodePool.locations][google.container.v1beta1.NodePool.locations].
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import container_v1beta1
 
@@ -3854,7 +3854,7 @@ class ClusterManagerAsyncClient:
     ) -> cluster_service.Operation:
         r"""Enables or disables Network Policy for a cluster.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import container_v1beta1
 
@@ -3985,7 +3985,7 @@ class ClusterManagerAsyncClient:
     ) -> cluster_service.Operation:
         r"""Sets the maintenance policy for a cluster.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import container_v1beta1
 
@@ -4111,7 +4111,7 @@ class ClusterManagerAsyncClient:
         clusters in a project.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import container_v1beta1
 
@@ -4226,7 +4226,7 @@ class ClusterManagerAsyncClient:
         Engine.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import container_v1beta1
 
