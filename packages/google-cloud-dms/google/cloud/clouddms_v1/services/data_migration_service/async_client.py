@@ -230,7 +230,7 @@ class DataMigrationServiceAsyncClient:
     ) -> pagers.ListMigrationJobsAsyncPager:
         r"""Lists migration jobs in a given project and location.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import clouddms_v1
 
@@ -330,7 +330,7 @@ class DataMigrationServiceAsyncClient:
     ) -> clouddms_resources.MigrationJob:
         r"""Gets details of a single migration job.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import clouddms_v1
 
@@ -424,7 +424,7 @@ class DataMigrationServiceAsyncClient:
         location.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import clouddms_v1
 
@@ -560,7 +560,7 @@ class DataMigrationServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Updates the parameters of a single migration job.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import clouddms_v1
 
@@ -686,7 +686,7 @@ class DataMigrationServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Deletes a single migration job.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import clouddms_v1
 
@@ -800,7 +800,7 @@ class DataMigrationServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Start an already created migration job.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import clouddms_v1
 
@@ -883,7 +883,7 @@ class DataMigrationServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Stops a running migration job.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import clouddms_v1
 
@@ -968,7 +968,7 @@ class DataMigrationServiceAsyncClient:
         is resumable (was stopped during CDC phase).
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import clouddms_v1
 
@@ -1054,7 +1054,7 @@ class DataMigrationServiceAsyncClient:
         standalone database.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import clouddms_v1
 
@@ -1140,7 +1140,7 @@ class DataMigrationServiceAsyncClient:
         prerequisites are met.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import clouddms_v1
 
@@ -1226,7 +1226,7 @@ class DataMigrationServiceAsyncClient:
         starting the migration process from scratch.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import clouddms_v1
 
@@ -1311,7 +1311,7 @@ class DataMigrationServiceAsyncClient:
         reverse SSH connectivity.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import clouddms_v1
 
@@ -1388,7 +1388,7 @@ class DataMigrationServiceAsyncClient:
         project and location.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import clouddms_v1
 
@@ -1488,7 +1488,7 @@ class DataMigrationServiceAsyncClient:
     ) -> clouddms_resources.ConnectionProfile:
         r"""Gets details of a single connection profile.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import clouddms_v1
 
@@ -1580,7 +1580,7 @@ class DataMigrationServiceAsyncClient:
         and location.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import clouddms_v1
 
@@ -1714,7 +1714,7 @@ class DataMigrationServiceAsyncClient:
         profile.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import clouddms_v1
 
@@ -1842,7 +1842,7 @@ class DataMigrationServiceAsyncClient:
         jobs.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import clouddms_v1
 

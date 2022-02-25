@@ -438,8 +438,7 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
     ) -> pagers.ListMigrationJobsPager:
         r"""Lists migration jobs in a given project and location.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import clouddms_v1
 
@@ -539,8 +538,7 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
     ) -> clouddms_resources.MigrationJob:
         r"""Gets details of a single migration job.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import clouddms_v1
 
@@ -634,8 +632,7 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
         location.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import clouddms_v1
 
@@ -771,8 +768,7 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
     ) -> operation.Operation:
         r"""Updates the parameters of a single migration job.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import clouddms_v1
 
@@ -898,8 +894,7 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
     ) -> operation.Operation:
         r"""Deletes a single migration job.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import clouddms_v1
 
@@ -1013,8 +1008,7 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
     ) -> operation.Operation:
         r"""Start an already created migration job.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import clouddms_v1
 
@@ -1098,8 +1092,7 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
     ) -> operation.Operation:
         r"""Stops a running migration job.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import clouddms_v1
 
@@ -1185,8 +1178,7 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
         is resumable (was stopped during CDC phase).
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import clouddms_v1
 
@@ -1273,8 +1265,7 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
         standalone database.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import clouddms_v1
 
@@ -1361,8 +1352,7 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
         prerequisites are met.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import clouddms_v1
 
@@ -1449,8 +1439,7 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
         starting the migration process from scratch.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import clouddms_v1
 
@@ -1536,8 +1525,7 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
         reverse SSH connectivity.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import clouddms_v1
 
@@ -1615,8 +1603,7 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
         project and location.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import clouddms_v1
 
@@ -1716,8 +1703,7 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
     ) -> clouddms_resources.ConnectionProfile:
         r"""Gets details of a single connection profile.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import clouddms_v1
 
@@ -1809,8 +1795,7 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
         and location.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import clouddms_v1
 
@@ -1946,8 +1931,7 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
         profile.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import clouddms_v1
 
@@ -2077,8 +2061,7 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
         jobs.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import clouddms_v1
 

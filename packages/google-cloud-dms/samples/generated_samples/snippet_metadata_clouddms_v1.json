@@ -10,8 +10,8 @@
           "shortName": "CreateConnectionProfile"
         }
       },
-      "file": "datamigration_generated_clouddms_v1_data_migration_service_create_connection_profile_async.py",
-      "regionTag": "datamigration_generated_clouddms_v1_DataMigrationService_CreateConnectionProfile_async",
+      "file": "datamigration_v1_generated_data_migration_service_create_connection_profile_async.py",
+      "regionTag": "datamigration_v1_generated_DataMigrationService_CreateConnectionProfile_async",
       "segments": [
         {
           "end": 56,
@@ -54,8 +54,8 @@
           "shortName": "CreateConnectionProfile"
         }
       },
-      "file": "datamigration_generated_clouddms_v1_data_migration_service_create_connection_profile_sync.py",
-      "regionTag": "datamigration_generated_clouddms_v1_DataMigrationService_CreateConnectionProfile_sync",
+      "file": "datamigration_v1_generated_data_migration_service_create_connection_profile_sync.py",
+      "regionTag": "datamigration_v1_generated_DataMigrationService_CreateConnectionProfile_sync",
       "segments": [
         {
           "end": 56,
@@ -99,8 +99,8 @@
           "shortName": "CreateMigrationJob"
         }
       },
-      "file": "datamigration_generated_clouddms_v1_data_migration_service_create_migration_job_async.py",
-      "regionTag": "datamigration_generated_clouddms_v1_DataMigrationService_CreateMigrationJob_async",
+      "file": "datamigration_v1_generated_data_migration_service_create_migration_job_async.py",
+      "regionTag": "datamigration_v1_generated_DataMigrationService_CreateMigrationJob_async",
       "segments": [
         {
           "end": 57,
@@ -143,8 +143,8 @@
           "shortName": "CreateMigrationJob"
         }
       },
-      "file": "datamigration_generated_clouddms_v1_data_migration_service_create_migration_job_sync.py",
-      "regionTag": "datamigration_generated_clouddms_v1_DataMigrationService_CreateMigrationJob_sync",
+      "file": "datamigration_v1_generated_data_migration_service_create_migration_job_sync.py",
+      "regionTag": "datamigration_v1_generated_DataMigrationService_CreateMigrationJob_sync",
       "segments": [
         {
           "end": 57,
@@ -188,8 +188,8 @@
           "shortName": "DeleteConnectionProfile"
         }
       },
-      "file": "datamigration_generated_clouddms_v1_data_migration_service_delete_connection_profile_async.py",
-      "regionTag": "datamigration_generated_clouddms_v1_DataMigrationService_DeleteConnectionProfile_async",
+      "file": "datamigration_v1_generated_data_migration_service_delete_connection_profile_async.py",
+      "regionTag": "datamigration_v1_generated_DataMigrationService_DeleteConnectionProfile_async",
       "segments": [
         {
           "end": 48,
@@ -232,8 +232,8 @@
           "shortName": "DeleteConnectionProfile"
         }
       },
-      "file": "datamigration_generated_clouddms_v1_data_migration_service_delete_connection_profile_sync.py",
-      "regionTag": "datamigration_generated_clouddms_v1_DataMigrationService_DeleteConnectionProfile_sync",
+      "file": "datamigration_v1_generated_data_migration_service_delete_connection_profile_sync.py",
+      "regionTag": "datamigration_v1_generated_DataMigrationService_DeleteConnectionProfile_sync",
       "segments": [
         {
           "end": 48,
@@ -277,8 +277,8 @@
           "shortName": "DeleteMigrationJob"
         }
       },
-      "file": "datamigration_generated_clouddms_v1_data_migration_service_delete_migration_job_async.py",
-      "regionTag": "datamigration_generated_clouddms_v1_DataMigrationService_DeleteMigrationJob_async",
+      "file": "datamigration_v1_generated_data_migration_service_delete_migration_job_async.py",
+      "regionTag": "datamigration_v1_generated_DataMigrationService_DeleteMigrationJob_async",
       "segments": [
         {
           "end": 48,
@@ -321,8 +321,8 @@
           "shortName": "DeleteMigrationJob"
         }
       },
-      "file": "datamigration_generated_clouddms_v1_data_migration_service_delete_migration_job_sync.py",
-      "regionTag": "datamigration_generated_clouddms_v1_DataMigrationService_DeleteMigrationJob_sync",
+      "file": "datamigration_v1_generated_data_migration_service_delete_migration_job_sync.py",
+      "regionTag": "datamigration_v1_generated_DataMigrationService_DeleteMigrationJob_sync",
       "segments": [
         {
           "end": 48,
@@ -366,8 +366,8 @@
           "shortName": "GenerateSshScript"
         }
       },
-      "file": "datamigration_generated_clouddms_v1_data_migration_service_generate_ssh_script_async.py",
-      "regionTag": "datamigration_generated_clouddms_v1_DataMigrationService_GenerateSshScript_async",
+      "file": "datamigration_v1_generated_data_migration_service_generate_ssh_script_async.py",
+      "regionTag": "datamigration_v1_generated_DataMigrationService_GenerateSshScript_async",
       "segments": [
         {
           "end": 48,
@@ -410,8 +410,8 @@
           "shortName": "GenerateSshScript"
         }
       },
-      "file": "datamigration_generated_clouddms_v1_data_migration_service_generate_ssh_script_sync.py",
-      "regionTag": "datamigration_generated_clouddms_v1_DataMigrationService_GenerateSshScript_sync",
+      "file": "datamigration_v1_generated_data_migration_service_generate_ssh_script_sync.py",
+      "regionTag": "datamigration_v1_generated_DataMigrationService_GenerateSshScript_sync",
       "segments": [
         {
           "end": 48,
@@ -455,8 +455,8 @@
           "shortName": "GetConnectionProfile"
         }
       },
-      "file": "datamigration_generated_clouddms_v1_data_migration_service_get_connection_profile_async.py",
-      "regionTag": "datamigration_generated_clouddms_v1_DataMigrationService_GetConnectionProfile_async",
+      "file": "datamigration_v1_generated_data_migration_service_get_connection_profile_async.py",
+      "regionTag": "datamigration_v1_generated_DataMigrationService_GetConnectionProfile_async",
       "segments": [
         {
           "end": 44,
@@ -499,8 +499,8 @@
           "shortName": "GetConnectionProfile"
         }
       },
-      "file": "datamigration_generated_clouddms_v1_data_migration_service_get_connection_profile_sync.py",
-      "regionTag": "datamigration_generated_clouddms_v1_DataMigrationService_GetConnectionProfile_sync",
+      "file": "datamigration_v1_generated_data_migration_service_get_connection_profile_sync.py",
+      "regionTag": "datamigration_v1_generated_DataMigrationService_GetConnectionProfile_sync",
       "segments": [
         {
           "end": 44,
@@ -544,8 +544,8 @@
           "shortName": "GetMigrationJob"
         }
       },
-      "file": "datamigration_generated_clouddms_v1_data_migration_service_get_migration_job_async.py",
-      "regionTag": "datamigration_generated_clouddms_v1_DataMigrationService_GetMigrationJob_async",
+      "file": "datamigration_v1_generated_data_migration_service_get_migration_job_async.py",
+      "regionTag": "datamigration_v1_generated_DataMigrationService_GetMigrationJob_async",
       "segments": [
         {
           "end": 44,
@@ -588,8 +588,8 @@
           "shortName": "GetMigrationJob"
         }
       },
-      "file": "datamigration_generated_clouddms_v1_data_migration_service_get_migration_job_sync.py",
-      "regionTag": "datamigration_generated_clouddms_v1_DataMigrationService_GetMigrationJob_sync",
+      "file": "datamigration_v1_generated_data_migration_service_get_migration_job_sync.py",
+      "regionTag": "datamigration_v1_generated_DataMigrationService_GetMigrationJob_sync",
       "segments": [
         {
           "end": 44,
@@ -633,8 +633,8 @@
           "shortName": "ListConnectionProfiles"
         }
       },
-      "file": "datamigration_generated_clouddms_v1_data_migration_service_list_connection_profiles_async.py",
-      "regionTag": "datamigration_generated_clouddms_v1_DataMigrationService_ListConnectionProfiles_async",
+      "file": "datamigration_v1_generated_data_migration_service_list_connection_profiles_async.py",
+      "regionTag": "datamigration_v1_generated_DataMigrationService_ListConnectionProfiles_async",
       "segments": [
         {
           "end": 45,
@@ -677,8 +677,8 @@
           "shortName": "ListConnectionProfiles"
         }
       },
-      "file": "datamigration_generated_clouddms_v1_data_migration_service_list_connection_profiles_sync.py",
-      "regionTag": "datamigration_generated_clouddms_v1_DataMigrationService_ListConnectionProfiles_sync",
+      "file": "datamigration_v1_generated_data_migration_service_list_connection_profiles_sync.py",
+      "regionTag": "datamigration_v1_generated_DataMigrationService_ListConnectionProfiles_sync",
       "segments": [
         {
           "end": 45,
@@ -722,8 +722,8 @@
           "shortName": "ListMigrationJobs"
         }
       },
-      "file": "datamigration_generated_clouddms_v1_data_migration_service_list_migration_jobs_async.py",
-      "regionTag": "datamigration_generated_clouddms_v1_DataMigrationService_ListMigrationJobs_async",
+      "file": "datamigration_v1_generated_data_migration_service_list_migration_jobs_async.py",
+      "regionTag": "datamigration_v1_generated_DataMigrationService_ListMigrationJobs_async",
       "segments": [
         {
           "end": 45,
@@ -766,8 +766,8 @@
           "shortName": "ListMigrationJobs"
         }
       },
-      "file": "datamigration_generated_clouddms_v1_data_migration_service_list_migration_jobs_sync.py",
-      "regionTag": "datamigration_generated_clouddms_v1_DataMigrationService_ListMigrationJobs_sync",
+      "file": "datamigration_v1_generated_data_migration_service_list_migration_jobs_sync.py",
+      "regionTag": "datamigration_v1_generated_DataMigrationService_ListMigrationJobs_sync",
       "segments": [
         {
           "end": 45,
@@ -811,8 +811,8 @@
           "shortName": "PromoteMigrationJob"
         }
       },
-      "file": "datamigration_generated_clouddms_v1_data_migration_service_promote_migration_job_async.py",
-      "regionTag": "datamigration_generated_clouddms_v1_DataMigrationService_PromoteMigrationJob_async",
+      "file": "datamigration_v1_generated_data_migration_service_promote_migration_job_async.py",
+      "regionTag": "datamigration_v1_generated_DataMigrationService_PromoteMigrationJob_async",
       "segments": [
         {
           "end": 47,
@@ -855,8 +855,8 @@
           "shortName": "PromoteMigrationJob"
         }
       },
-      "file": "datamigration_generated_clouddms_v1_data_migration_service_promote_migration_job_sync.py",
-      "regionTag": "datamigration_generated_clouddms_v1_DataMigrationService_PromoteMigrationJob_sync",
+      "file": "datamigration_v1_generated_data_migration_service_promote_migration_job_sync.py",
+      "regionTag": "datamigration_v1_generated_DataMigrationService_PromoteMigrationJob_sync",
       "segments": [
         {
           "end": 47,
@@ -900,8 +900,8 @@
           "shortName": "RestartMigrationJob"
         }
       },
-      "file": "datamigration_generated_clouddms_v1_data_migration_service_restart_migration_job_async.py",
-      "regionTag": "datamigration_generated_clouddms_v1_DataMigrationService_RestartMigrationJob_async",
+      "file": "datamigration_v1_generated_data_migration_service_restart_migration_job_async.py",
+      "regionTag": "datamigration_v1_generated_DataMigrationService_RestartMigrationJob_async",
       "segments": [
         {
           "end": 47,
@@ -944,8 +944,8 @@
           "shortName": "RestartMigrationJob"
         }
       },
-      "file": "datamigration_generated_clouddms_v1_data_migration_service_restart_migration_job_sync.py",
-      "regionTag": "datamigration_generated_clouddms_v1_DataMigrationService_RestartMigrationJob_sync",
+      "file": "datamigration_v1_generated_data_migration_service_restart_migration_job_sync.py",
+      "regionTag": "datamigration_v1_generated_DataMigrationService_RestartMigrationJob_sync",
       "segments": [
         {
           "end": 47,
@@ -989,8 +989,8 @@
           "shortName": "ResumeMigrationJob"
         }
       },
-      "file": "datamigration_generated_clouddms_v1_data_migration_service_resume_migration_job_async.py",
-      "regionTag": "datamigration_generated_clouddms_v1_DataMigrationService_ResumeMigrationJob_async",
+      "file": "datamigration_v1_generated_data_migration_service_resume_migration_job_async.py",
+      "regionTag": "datamigration_v1_generated_DataMigrationService_ResumeMigrationJob_async",
       "segments": [
         {
           "end": 47,
@@ -1033,8 +1033,8 @@
           "shortName": "ResumeMigrationJob"
         }
       },
-      "file": "datamigration_generated_clouddms_v1_data_migration_service_resume_migration_job_sync.py",
-      "regionTag": "datamigration_generated_clouddms_v1_DataMigrationService_ResumeMigrationJob_sync",
+      "file": "datamigration_v1_generated_data_migration_service_resume_migration_job_sync.py",
+      "regionTag": "datamigration_v1_generated_DataMigrationService_ResumeMigrationJob_sync",
       "segments": [
         {
           "end": 47,
@@ -1078,8 +1078,8 @@
           "shortName": "StartMigrationJob"
         }
       },
-      "file": "datamigration_generated_clouddms_v1_data_migration_service_start_migration_job_async.py",
-      "regionTag": "datamigration_generated_clouddms_v1_DataMigrationService_StartMigrationJob_async",
+      "file": "datamigration_v1_generated_data_migration_service_start_migration_job_async.py",
+      "regionTag": "datamigration_v1_generated_DataMigrationService_StartMigrationJob_async",
       "segments": [
         {
           "end": 47,
@@ -1122,8 +1122,8 @@
           "shortName": "StartMigrationJob"
         }
       },
-      "file": "datamigration_generated_clouddms_v1_data_migration_service_start_migration_job_sync.py",
-      "regionTag": "datamigration_generated_clouddms_v1_DataMigrationService_StartMigrationJob_sync",
+      "file": "datamigration_v1_generated_data_migration_service_start_migration_job_sync.py",
+      "regionTag": "datamigration_v1_generated_DataMigrationService_StartMigrationJob_sync",
       "segments": [
         {
           "end": 47,
@@ -1167,8 +1167,8 @@
           "shortName": "StopMigrationJob"
         }
       },
-      "file": "datamigration_generated_clouddms_v1_data_migration_service_stop_migration_job_async.py",
-      "regionTag": "datamigration_generated_clouddms_v1_DataMigrationService_StopMigrationJob_async",
+      "file": "datamigration_v1_generated_data_migration_service_stop_migration_job_async.py",
+      "regionTag": "datamigration_v1_generated_DataMigrationService_StopMigrationJob_async",
       "segments": [
         {
           "end": 47,
@@ -1211,8 +1211,8 @@
           "shortName": "StopMigrationJob"
         }
       },
-      "file": "datamigration_generated_clouddms_v1_data_migration_service_stop_migration_job_sync.py",
-      "regionTag": "datamigration_generated_clouddms_v1_DataMigrationService_StopMigrationJob_sync",
+      "file": "datamigration_v1_generated_data_migration_service_stop_migration_job_sync.py",
+      "regionTag": "datamigration_v1_generated_DataMigrationService_StopMigrationJob_sync",
       "segments": [
         {
           "end": 47,
@@ -1256,8 +1256,8 @@
           "shortName": "UpdateConnectionProfile"
         }
       },
-      "file": "datamigration_generated_clouddms_v1_data_migration_service_update_connection_profile_async.py",
-      "regionTag": "datamigration_generated_clouddms_v1_DataMigrationService_UpdateConnectionProfile_async",
+      "file": "datamigration_v1_generated_data_migration_service_update_connection_profile_async.py",
+      "regionTag": "datamigration_v1_generated_DataMigrationService_UpdateConnectionProfile_async",
       "segments": [
         {
           "end": 54,
@@ -1300,8 +1300,8 @@
           "shortName": "UpdateConnectionProfile"
         }
       },
-      "file": "datamigration_generated_clouddms_v1_data_migration_service_update_connection_profile_sync.py",
-      "regionTag": "datamigration_generated_clouddms_v1_DataMigrationService_UpdateConnectionProfile_sync",
+      "file": "datamigration_v1_generated_data_migration_service_update_connection_profile_sync.py",
+      "regionTag": "datamigration_v1_generated_DataMigrationService_UpdateConnectionProfile_sync",
       "segments": [
         {
           "end": 54,
@@ -1345,8 +1345,8 @@
           "shortName": "UpdateMigrationJob"
         }
       },
-      "file": "datamigration_generated_clouddms_v1_data_migration_service_update_migration_job_async.py",
-      "regionTag": "datamigration_generated_clouddms_v1_DataMigrationService_UpdateMigrationJob_async",
+      "file": "datamigration_v1_generated_data_migration_service_update_migration_job_async.py",
+      "regionTag": "datamigration_v1_generated_DataMigrationService_UpdateMigrationJob_async",
       "segments": [
         {
           "end": 55,
@@ -1389,8 +1389,8 @@
           "shortName": "UpdateMigrationJob"
         }
       },
-      "file": "datamigration_generated_clouddms_v1_data_migration_service_update_migration_job_sync.py",
-      "regionTag": "datamigration_generated_clouddms_v1_DataMigrationService_UpdateMigrationJob_sync",
+      "file": "datamigration_v1_generated_data_migration_service_update_migration_job_sync.py",
+      "regionTag": "datamigration_v1_generated_DataMigrationService_UpdateMigrationJob_sync",
       "segments": [
         {
           "end": 55,
@@ -1434,8 +1434,8 @@
           "shortName": "VerifyMigrationJob"
         }
       },
-      "file": "datamigration_generated_clouddms_v1_data_migration_service_verify_migration_job_async.py",
-      "regionTag": "datamigration_generated_clouddms_v1_DataMigrationService_VerifyMigrationJob_async",
+      "file": "datamigration_v1_generated_data_migration_service_verify_migration_job_async.py",
+      "regionTag": "datamigration_v1_generated_DataMigrationService_VerifyMigrationJob_async",
       "segments": [
         {
           "end": 47,
@@ -1478,8 +1478,8 @@
           "shortName": "VerifyMigrationJob"
         }
       },
-      "file": "datamigration_generated_clouddms_v1_data_migration_service_verify_migration_job_sync.py",
-      "regionTag": "datamigration_generated_clouddms_v1_DataMigrationService_VerifyMigrationJob_sync",
+      "file": "datamigration_v1_generated_data_migration_service_verify_migration_job_sync.py",
+      "regionTag": "datamigration_v1_generated_DataMigrationService_VerifyMigrationJob_sync",
       "segments": [
         {
           "end": 47,
