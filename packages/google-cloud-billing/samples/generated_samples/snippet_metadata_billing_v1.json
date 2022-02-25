@@ -10,8 +10,8 @@
           "shortName": "CreateBillingAccount"
         }
       },
-      "file": "cloudbilling_generated_billing_v1_cloud_billing_create_billing_account_async.py",
-      "regionTag": "cloudbilling_generated_billing_v1_CloudBilling_CreateBillingAccount_async",
+      "file": "cloudbilling_v1_generated_cloud_billing_create_billing_account_async.py",
+      "regionTag": "cloudbilling_v1_generated_CloudBilling_CreateBillingAccount_async",
       "segments": [
         {
           "end": 43,
@@ -54,8 +54,8 @@
           "shortName": "CreateBillingAccount"
         }
       },
-      "file": "cloudbilling_generated_billing_v1_cloud_billing_create_billing_account_sync.py",
-      "regionTag": "cloudbilling_generated_billing_v1_CloudBilling_CreateBillingAccount_sync",
+      "file": "cloudbilling_v1_generated_cloud_billing_create_billing_account_sync.py",
+      "regionTag": "cloudbilling_v1_generated_CloudBilling_CreateBillingAccount_sync",
       "segments": [
         {
           "end": 43,
@@ -99,8 +99,8 @@
           "shortName": "GetBillingAccount"
         }
       },
-      "file": "cloudbilling_generated_billing_v1_cloud_billing_get_billing_account_async.py",
-      "regionTag": "cloudbilling_generated_billing_v1_CloudBilling_GetBillingAccount_async",
+      "file": "cloudbilling_v1_generated_cloud_billing_get_billing_account_async.py",
+      "regionTag": "cloudbilling_v1_generated_CloudBilling_GetBillingAccount_async",
       "segments": [
         {
           "end": 44,
@@ -143,8 +143,8 @@
           "shortName": "GetBillingAccount"
         }
       },
-      "file": "cloudbilling_generated_billing_v1_cloud_billing_get_billing_account_sync.py",
-      "regionTag": "cloudbilling_generated_billing_v1_CloudBilling_GetBillingAccount_sync",
+      "file": "cloudbilling_v1_generated_cloud_billing_get_billing_account_sync.py",
+      "regionTag": "cloudbilling_v1_generated_CloudBilling_GetBillingAccount_sync",
       "segments": [
         {
           "end": 44,
@@ -188,8 +188,8 @@
           "shortName": "GetIamPolicy"
         }
       },
-      "file": "cloudbilling_generated_billing_v1_cloud_billing_get_iam_policy_async.py",
-      "regionTag": "cloudbilling_generated_billing_v1_CloudBilling_GetIamPolicy_async",
+      "file": "cloudbilling_v1_generated_cloud_billing_get_iam_policy_async.py",
+      "regionTag": "cloudbilling_v1_generated_CloudBilling_GetIamPolicy_async",
       "segments": [
         {
           "end": 44,
@@ -232,8 +232,8 @@
           "shortName": "GetIamPolicy"
         }
       },
-      "file": "cloudbilling_generated_billing_v1_cloud_billing_get_iam_policy_sync.py",
-      "regionTag": "cloudbilling_generated_billing_v1_CloudBilling_GetIamPolicy_sync",
+      "file": "cloudbilling_v1_generated_cloud_billing_get_iam_policy_sync.py",
+      "regionTag": "cloudbilling_v1_generated_CloudBilling_GetIamPolicy_sync",
       "segments": [
         {
           "end": 44,
@@ -277,8 +277,8 @@
           "shortName": "GetProjectBillingInfo"
         }
       },
-      "file": "cloudbilling_generated_billing_v1_cloud_billing_get_project_billing_info_async.py",
-      "regionTag": "cloudbilling_generated_billing_v1_CloudBilling_GetProjectBillingInfo_async",
+      "file": "cloudbilling_v1_generated_cloud_billing_get_project_billing_info_async.py",
+      "regionTag": "cloudbilling_v1_generated_CloudBilling_GetProjectBillingInfo_async",
       "segments": [
         {
           "end": 44,
@@ -321,8 +321,8 @@
           "shortName": "GetProjectBillingInfo"
         }
       },
-      "file": "cloudbilling_generated_billing_v1_cloud_billing_get_project_billing_info_sync.py",
-      "regionTag": "cloudbilling_generated_billing_v1_CloudBilling_GetProjectBillingInfo_sync",
+      "file": "cloudbilling_v1_generated_cloud_billing_get_project_billing_info_sync.py",
+      "regionTag": "cloudbilling_v1_generated_CloudBilling_GetProjectBillingInfo_sync",
       "segments": [
         {
           "end": 44,
@@ -366,8 +366,8 @@
           "shortName": "ListBillingAccounts"
         }
       },
-      "file": "cloudbilling_generated_billing_v1_cloud_billing_list_billing_accounts_async.py",
-      "regionTag": "cloudbilling_generated_billing_v1_CloudBilling_ListBillingAccounts_async",
+      "file": "cloudbilling_v1_generated_cloud_billing_list_billing_accounts_async.py",
+      "regionTag": "cloudbilling_v1_generated_CloudBilling_ListBillingAccounts_async",
       "segments": [
         {
           "end": 44,
@@ -410,8 +410,8 @@
           "shortName": "ListBillingAccounts"
         }
       },
-      "file": "cloudbilling_generated_billing_v1_cloud_billing_list_billing_accounts_sync.py",
-      "regionTag": "cloudbilling_generated_billing_v1_CloudBilling_ListBillingAccounts_sync",
+      "file": "cloudbilling_v1_generated_cloud_billing_list_billing_accounts_sync.py",
+      "regionTag": "cloudbilling_v1_generated_CloudBilling_ListBillingAccounts_sync",
       "segments": [
         {
           "end": 44,
@@ -455,8 +455,8 @@
           "shortName": "ListProjectBillingInfo"
         }
       },
-      "file": "cloudbilling_generated_billing_v1_cloud_billing_list_project_billing_info_async.py",
-      "regionTag": "cloudbilling_generated_billing_v1_CloudBilling_ListProjectBillingInfo_async",
+      "file": "cloudbilling_v1_generated_cloud_billing_list_project_billing_info_async.py",
+      "regionTag": "cloudbilling_v1_generated_CloudBilling_ListProjectBillingInfo_async",
       "segments": [
         {
           "end": 45,
@@ -499,8 +499,8 @@
           "shortName": "ListProjectBillingInfo"
         }
       },
-      "file": "cloudbilling_generated_billing_v1_cloud_billing_list_project_billing_info_sync.py",
-      "regionTag": "cloudbilling_generated_billing_v1_CloudBilling_ListProjectBillingInfo_sync",
+      "file": "cloudbilling_v1_generated_cloud_billing_list_project_billing_info_sync.py",
+      "regionTag": "cloudbilling_v1_generated_CloudBilling_ListProjectBillingInfo_sync",
       "segments": [
         {
           "end": 45,
@@ -544,8 +544,8 @@
           "shortName": "SetIamPolicy"
         }
       },
-      "file": "cloudbilling_generated_billing_v1_cloud_billing_set_iam_policy_async.py",
-      "regionTag": "cloudbilling_generated_billing_v1_CloudBilling_SetIamPolicy_async",
+      "file": "cloudbilling_v1_generated_cloud_billing_set_iam_policy_async.py",
+      "regionTag": "cloudbilling_v1_generated_CloudBilling_SetIamPolicy_async",
       "segments": [
         {
           "end": 44,
@@ -588,8 +588,8 @@
           "shortName": "SetIamPolicy"
         }
       },
-      "file": "cloudbilling_generated_billing_v1_cloud_billing_set_iam_policy_sync.py",
-      "regionTag": "cloudbilling_generated_billing_v1_CloudBilling_SetIamPolicy_sync",
+      "file": "cloudbilling_v1_generated_cloud_billing_set_iam_policy_sync.py",
+      "regionTag": "cloudbilling_v1_generated_CloudBilling_SetIamPolicy_sync",
       "segments": [
         {
           "end": 44,
@@ -633,8 +633,8 @@
           "shortName": "TestIamPermissions"
         }
       },
-      "file": "cloudbilling_generated_billing_v1_cloud_billing_test_iam_permissions_async.py",
-      "regionTag": "cloudbilling_generated_billing_v1_CloudBilling_TestIamPermissions_async",
+      "file": "cloudbilling_v1_generated_cloud_billing_test_iam_permissions_async.py",
+      "regionTag": "cloudbilling_v1_generated_CloudBilling_TestIamPermissions_async",
       "segments": [
         {
           "end": 45,
@@ -677,8 +677,8 @@
           "shortName": "TestIamPermissions"
         }
       },
-      "file": "cloudbilling_generated_billing_v1_cloud_billing_test_iam_permissions_sync.py",
-      "regionTag": "cloudbilling_generated_billing_v1_CloudBilling_TestIamPermissions_sync",
+      "file": "cloudbilling_v1_generated_cloud_billing_test_iam_permissions_sync.py",
+      "regionTag": "cloudbilling_v1_generated_CloudBilling_TestIamPermissions_sync",
       "segments": [
         {
           "end": 45,
@@ -722,8 +722,8 @@
           "shortName": "UpdateBillingAccount"
         }
       },
-      "file": "cloudbilling_generated_billing_v1_cloud_billing_update_billing_account_async.py",
-      "regionTag": "cloudbilling_generated_billing_v1_CloudBilling_UpdateBillingAccount_async",
+      "file": "cloudbilling_v1_generated_cloud_billing_update_billing_account_async.py",
+      "regionTag": "cloudbilling_v1_generated_CloudBilling_UpdateBillingAccount_async",
       "segments": [
         {
           "end": 44,
@@ -766,8 +766,8 @@
           "shortName": "UpdateBillingAccount"
         }
       },
-      "file": "cloudbilling_generated_billing_v1_cloud_billing_update_billing_account_sync.py",
-      "regionTag": "cloudbilling_generated_billing_v1_CloudBilling_UpdateBillingAccount_sync",
+      "file": "cloudbilling_v1_generated_cloud_billing_update_billing_account_sync.py",
+      "regionTag": "cloudbilling_v1_generated_CloudBilling_UpdateBillingAccount_sync",
       "segments": [
         {
           "end": 44,
@@ -811,8 +811,8 @@
           "shortName": "UpdateProjectBillingInfo"
         }
       },
-      "file": "cloudbilling_generated_billing_v1_cloud_billing_update_project_billing_info_async.py",
-      "regionTag": "cloudbilling_generated_billing_v1_CloudBilling_UpdateProjectBillingInfo_async",
+      "file": "cloudbilling_v1_generated_cloud_billing_update_project_billing_info_async.py",
+      "regionTag": "cloudbilling_v1_generated_CloudBilling_UpdateProjectBillingInfo_async",
       "segments": [
         {
           "end": 44,
@@ -855,8 +855,8 @@
           "shortName": "UpdateProjectBillingInfo"
         }
       },
-      "file": "cloudbilling_generated_billing_v1_cloud_billing_update_project_billing_info_sync.py",
-      "regionTag": "cloudbilling_generated_billing_v1_CloudBilling_UpdateProjectBillingInfo_sync",
+      "file": "cloudbilling_v1_generated_cloud_billing_update_project_billing_info_sync.py",
+      "regionTag": "cloudbilling_v1_generated_CloudBilling_UpdateProjectBillingInfo_sync",
       "segments": [
         {
           "end": 44,
@@ -900,8 +900,8 @@
           "shortName": "ListServices"
         }
       },
-      "file": "cloudbilling_generated_billing_v1_cloud_catalog_list_services_async.py",
-      "regionTag": "cloudbilling_generated_billing_v1_CloudCatalog_ListServices_async",
+      "file": "cloudbilling_v1_generated_cloud_catalog_list_services_async.py",
+      "regionTag": "cloudbilling_v1_generated_CloudCatalog_ListServices_async",
       "segments": [
         {
           "end": 44,
@@ -944,8 +944,8 @@
           "shortName": "ListServices"
         }
       },
-      "file": "cloudbilling_generated_billing_v1_cloud_catalog_list_services_sync.py",
-      "regionTag": "cloudbilling_generated_billing_v1_CloudCatalog_ListServices_sync",
+      "file": "cloudbilling_v1_generated_cloud_catalog_list_services_sync.py",
+      "regionTag": "cloudbilling_v1_generated_CloudCatalog_ListServices_sync",
       "segments": [
         {
           "end": 44,
@@ -989,8 +989,8 @@
           "shortName": "ListSkus"
         }
       },
-      "file": "cloudbilling_generated_billing_v1_cloud_catalog_list_skus_async.py",
-      "regionTag": "cloudbilling_generated_billing_v1_CloudCatalog_ListSkus_async",
+      "file": "cloudbilling_v1_generated_cloud_catalog_list_skus_async.py",
+      "regionTag": "cloudbilling_v1_generated_CloudCatalog_ListSkus_async",
       "segments": [
         {
           "end": 45,
@@ -1033,8 +1033,8 @@
           "shortName": "ListSkus"
         }
       },
-      "file": "cloudbilling_generated_billing_v1_cloud_catalog_list_skus_sync.py",
-      "regionTag": "cloudbilling_generated_billing_v1_CloudCatalog_ListSkus_sync",
+      "file": "cloudbilling_v1_generated_cloud_catalog_list_skus_sync.py",
+      "regionTag": "cloudbilling_v1_generated_CloudCatalog_ListSkus_sync",
       "segments": [
         {
           "end": 45,

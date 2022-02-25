@@ -214,7 +214,7 @@ class CloudBillingAsyncClient:
         account <https://cloud.google.com/billing/docs/how-to/billing-access>`__.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import billing_v1
 
@@ -318,7 +318,7 @@ class CloudBillingAsyncClient:
         `view <https://cloud.google.com/billing/docs/how-to/billing-access>`__.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import billing_v1
 
@@ -406,7 +406,7 @@ class CloudBillingAsyncClient:
         of the billing account.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import billing_v1
 
@@ -527,7 +527,7 @@ class CloudBillingAsyncClient:
         been provisioned as a reseller account.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import billing_v1
 
@@ -620,7 +620,7 @@ class CloudBillingAsyncClient:
         `viewers <https://cloud.google.com/billing/docs/how-to/billing-access>`__.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import billing_v1
 
@@ -733,7 +733,7 @@ class CloudBillingAsyncClient:
         project <https://cloud.google.com/docs/permissions-overview#h.bgs0oxofvnoo>`__.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import billing_v1
 
@@ -874,7 +874,7 @@ class CloudBillingAsyncClient:
         account.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import billing_v1
 
@@ -992,7 +992,7 @@ class CloudBillingAsyncClient:
         `viewers <https://cloud.google.com/billing/docs/how-to/billing-access>`__.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import billing_v1
 
@@ -1152,7 +1152,7 @@ class CloudBillingAsyncClient:
         `administrators <https://cloud.google.com/billing/docs/how-to/billing-access>`__.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import billing_v1
 
@@ -1313,7 +1313,7 @@ class CloudBillingAsyncClient:
         resource.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import billing_v1
 

@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ListProjectBillingInfo
+# Snippet for GetProjectBillingInfo
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,24 +23,23 @@
 #   python3 -m pip install google-cloud-billing
 
 
-# [START cloudbilling_generated_billing_v1_CloudBilling_ListProjectBillingInfo_async]
+# [START cloudbilling_v1_generated_CloudBilling_GetProjectBillingInfo_async]
 from google.cloud import billing_v1
 
 
-async def sample_list_project_billing_info():
+async def sample_get_project_billing_info():
     # Create a client
     client = billing_v1.CloudBillingAsyncClient()
 
     # Initialize request argument(s)
-    request = billing_v1.ListProjectBillingInfoRequest(
+    request = billing_v1.GetProjectBillingInfoRequest(
         name="name_value",
     )
 
     # Make the request
-    page_result = client.list_project_billing_info(request=request)
+    response = await client.get_project_billing_info(request=request)
 
     # Handle the response
-    async for response in page_result:
-        print(response)
+    print(response)
 
-# [END cloudbilling_generated_billing_v1_CloudBilling_ListProjectBillingInfo_async]
+# [END cloudbilling_v1_generated_CloudBilling_GetProjectBillingInfo_async]

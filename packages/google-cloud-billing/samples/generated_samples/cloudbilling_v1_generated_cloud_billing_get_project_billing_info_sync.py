@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for TestIamPermissions
+# Snippet for GetProjectBillingInfo
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,24 +23,23 @@
 #   python3 -m pip install google-cloud-billing
 
 
-# [START cloudbilling_generated_billing_v1_CloudBilling_TestIamPermissions_sync]
+# [START cloudbilling_v1_generated_CloudBilling_GetProjectBillingInfo_sync]
 from google.cloud import billing_v1
 
 
-def sample_test_iam_permissions():
+def sample_get_project_billing_info():
     # Create a client
     client = billing_v1.CloudBillingClient()
 
     # Initialize request argument(s)
-    request = billing_v1.TestIamPermissionsRequest(
-        resource="resource_value",
-        permissions=['permissions_value_1', 'permissions_value_2'],
+    request = billing_v1.GetProjectBillingInfoRequest(
+        name="name_value",
     )
 
     # Make the request
-    response = client.test_iam_permissions(request=request)
+    response = client.get_project_billing_info(request=request)
 
     # Handle the response
     print(response)
 
-# [END cloudbilling_generated_billing_v1_CloudBilling_TestIamPermissions_sync]
+# [END cloudbilling_v1_generated_CloudBilling_GetProjectBillingInfo_sync]

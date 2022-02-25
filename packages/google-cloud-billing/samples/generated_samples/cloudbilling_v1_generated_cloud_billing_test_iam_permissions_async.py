@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for GetIamPolicy
+# Snippet for TestIamPermissions
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,23 +23,24 @@
 #   python3 -m pip install google-cloud-billing
 
 
-# [START cloudbilling_generated_billing_v1_CloudBilling_GetIamPolicy_sync]
+# [START cloudbilling_v1_generated_CloudBilling_TestIamPermissions_async]
 from google.cloud import billing_v1
 
 
-def sample_get_iam_policy():
+async def sample_test_iam_permissions():
     # Create a client
-    client = billing_v1.CloudBillingClient()
+    client = billing_v1.CloudBillingAsyncClient()
 
     # Initialize request argument(s)
-    request = billing_v1.GetIamPolicyRequest(
+    request = billing_v1.TestIamPermissionsRequest(
         resource="resource_value",
+        permissions=['permissions_value_1', 'permissions_value_2'],
     )
 
     # Make the request
-    response = client.get_iam_policy(request=request)
+    response = await client.test_iam_permissions(request=request)
 
     # Handle the response
     print(response)
 
-# [END cloudbilling_generated_billing_v1_CloudBilling_GetIamPolicy_sync]
+# [END cloudbilling_v1_generated_CloudBilling_TestIamPermissions_async]

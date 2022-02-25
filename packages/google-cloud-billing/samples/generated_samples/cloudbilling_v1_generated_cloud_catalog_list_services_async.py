@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for UpdateProjectBillingInfo
+# Snippet for ListServices
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,23 +23,23 @@
 #   python3 -m pip install google-cloud-billing
 
 
-# [START cloudbilling_generated_billing_v1_CloudBilling_UpdateProjectBillingInfo_async]
+# [START cloudbilling_v1_generated_CloudCatalog_ListServices_async]
 from google.cloud import billing_v1
 
 
-async def sample_update_project_billing_info():
+async def sample_list_services():
     # Create a client
-    client = billing_v1.CloudBillingAsyncClient()
+    client = billing_v1.CloudCatalogAsyncClient()
 
     # Initialize request argument(s)
-    request = billing_v1.UpdateProjectBillingInfoRequest(
-        name="name_value",
+    request = billing_v1.ListServicesRequest(
     )
 
     # Make the request
-    response = await client.update_project_billing_info(request=request)
+    page_result = client.list_services(request=request)
 
     # Handle the response
-    print(response)
+    async for response in page_result:
+        print(response)
 
-# [END cloudbilling_generated_billing_v1_CloudBilling_UpdateProjectBillingInfo_async]
+# [END cloudbilling_v1_generated_CloudCatalog_ListServices_async]

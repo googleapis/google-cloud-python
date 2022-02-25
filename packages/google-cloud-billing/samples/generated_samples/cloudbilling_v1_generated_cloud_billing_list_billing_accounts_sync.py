@@ -23,13 +23,13 @@
 #   python3 -m pip install google-cloud-billing
 
 
-# [START cloudbilling_generated_billing_v1_CloudBilling_ListBillingAccounts_async]
+# [START cloudbilling_v1_generated_CloudBilling_ListBillingAccounts_sync]
 from google.cloud import billing_v1
 
 
-async def sample_list_billing_accounts():
+def sample_list_billing_accounts():
     # Create a client
-    client = billing_v1.CloudBillingAsyncClient()
+    client = billing_v1.CloudBillingClient()
 
     # Initialize request argument(s)
     request = billing_v1.ListBillingAccountsRequest(
@@ -39,7 +39,7 @@ async def sample_list_billing_accounts():
     page_result = client.list_billing_accounts(request=request)
 
     # Handle the response
-    async for response in page_result:
+    for response in page_result:
         print(response)
 
-# [END cloudbilling_generated_billing_v1_CloudBilling_ListBillingAccounts_async]
+# [END cloudbilling_v1_generated_CloudBilling_ListBillingAccounts_sync]

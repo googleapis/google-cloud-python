@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ListSkus
+# Snippet for GetIamPolicy
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,24 +23,23 @@
 #   python3 -m pip install google-cloud-billing
 
 
-# [START cloudbilling_generated_billing_v1_CloudCatalog_ListSkus_async]
+# [START cloudbilling_v1_generated_CloudBilling_GetIamPolicy_async]
 from google.cloud import billing_v1
 
 
-async def sample_list_skus():
+async def sample_get_iam_policy():
     # Create a client
-    client = billing_v1.CloudCatalogAsyncClient()
+    client = billing_v1.CloudBillingAsyncClient()
 
     # Initialize request argument(s)
-    request = billing_v1.ListSkusRequest(
-        parent="parent_value",
+    request = billing_v1.GetIamPolicyRequest(
+        resource="resource_value",
     )
 
     # Make the request
-    page_result = client.list_skus(request=request)
+    response = await client.get_iam_policy(request=request)
 
     # Handle the response
-    async for response in page_result:
-        print(response)
+    print(response)
 
-# [END cloudbilling_generated_billing_v1_CloudCatalog_ListSkus_async]
+# [END cloudbilling_v1_generated_CloudBilling_GetIamPolicy_async]

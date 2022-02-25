@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for TestIamPermissions
+# Snippet for ListServices
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,24 +23,23 @@
 #   python3 -m pip install google-cloud-billing
 
 
-# [START cloudbilling_generated_billing_v1_CloudBilling_TestIamPermissions_async]
+# [START cloudbilling_v1_generated_CloudCatalog_ListServices_sync]
 from google.cloud import billing_v1
 
 
-async def sample_test_iam_permissions():
+def sample_list_services():
     # Create a client
-    client = billing_v1.CloudBillingAsyncClient()
+    client = billing_v1.CloudCatalogClient()
 
     # Initialize request argument(s)
-    request = billing_v1.TestIamPermissionsRequest(
-        resource="resource_value",
-        permissions=['permissions_value_1', 'permissions_value_2'],
+    request = billing_v1.ListServicesRequest(
     )
 
     # Make the request
-    response = await client.test_iam_permissions(request=request)
+    page_result = client.list_services(request=request)
 
     # Handle the response
-    print(response)
+    for response in page_result:
+        print(response)
 
-# [END cloudbilling_generated_billing_v1_CloudBilling_TestIamPermissions_async]
+# [END cloudbilling_v1_generated_CloudCatalog_ListServices_sync]

@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ListProjectBillingInfo
+# Snippet for UpdateProjectBillingInfo
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,24 +23,23 @@
 #   python3 -m pip install google-cloud-billing
 
 
-# [START cloudbilling_generated_billing_v1_CloudBilling_ListProjectBillingInfo_sync]
+# [START cloudbilling_v1_generated_CloudBilling_UpdateProjectBillingInfo_sync]
 from google.cloud import billing_v1
 
 
-def sample_list_project_billing_info():
+def sample_update_project_billing_info():
     # Create a client
     client = billing_v1.CloudBillingClient()
 
     # Initialize request argument(s)
-    request = billing_v1.ListProjectBillingInfoRequest(
+    request = billing_v1.UpdateProjectBillingInfoRequest(
         name="name_value",
     )
 
     # Make the request
-    page_result = client.list_project_billing_info(request=request)
+    response = client.update_project_billing_info(request=request)
 
     # Handle the response
-    for response in page_result:
-        print(response)
+    print(response)
 
-# [END cloudbilling_generated_billing_v1_CloudBilling_ListProjectBillingInfo_sync]
+# [END cloudbilling_v1_generated_CloudBilling_UpdateProjectBillingInfo_sync]

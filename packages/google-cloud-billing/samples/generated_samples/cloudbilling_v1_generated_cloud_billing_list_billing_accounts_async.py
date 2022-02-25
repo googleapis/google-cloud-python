@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ListServices
+# Snippet for ListBillingAccounts
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,23 +23,23 @@
 #   python3 -m pip install google-cloud-billing
 
 
-# [START cloudbilling_generated_billing_v1_CloudCatalog_ListServices_async]
+# [START cloudbilling_v1_generated_CloudBilling_ListBillingAccounts_async]
 from google.cloud import billing_v1
 
 
-async def sample_list_services():
+async def sample_list_billing_accounts():
     # Create a client
-    client = billing_v1.CloudCatalogAsyncClient()
+    client = billing_v1.CloudBillingAsyncClient()
 
     # Initialize request argument(s)
-    request = billing_v1.ListServicesRequest(
+    request = billing_v1.ListBillingAccountsRequest(
     )
 
     # Make the request
-    page_result = client.list_services(request=request)
+    page_result = client.list_billing_accounts(request=request)
 
     # Handle the response
     async for response in page_result:
         print(response)
 
-# [END cloudbilling_generated_billing_v1_CloudCatalog_ListServices_async]
+# [END cloudbilling_v1_generated_CloudBilling_ListBillingAccounts_async]

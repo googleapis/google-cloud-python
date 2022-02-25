@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for UpdateBillingAccount
+# Snippet for CreateBillingAccount
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,23 +23,22 @@
 #   python3 -m pip install google-cloud-billing
 
 
-# [START cloudbilling_generated_billing_v1_CloudBilling_UpdateBillingAccount_async]
+# [START cloudbilling_v1_generated_CloudBilling_CreateBillingAccount_async]
 from google.cloud import billing_v1
 
 
-async def sample_update_billing_account():
+async def sample_create_billing_account():
     # Create a client
     client = billing_v1.CloudBillingAsyncClient()
 
     # Initialize request argument(s)
-    request = billing_v1.UpdateBillingAccountRequest(
-        name="name_value",
+    request = billing_v1.CreateBillingAccountRequest(
     )
 
     # Make the request
-    response = await client.update_billing_account(request=request)
+    response = await client.create_billing_account(request=request)
 
     # Handle the response
     print(response)
 
-# [END cloudbilling_generated_billing_v1_CloudBilling_UpdateBillingAccount_async]
+# [END cloudbilling_v1_generated_CloudBilling_CreateBillingAccount_async]

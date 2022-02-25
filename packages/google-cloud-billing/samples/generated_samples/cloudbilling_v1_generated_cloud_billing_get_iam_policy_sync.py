@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ListServices
+# Snippet for GetIamPolicy
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,23 +23,23 @@
 #   python3 -m pip install google-cloud-billing
 
 
-# [START cloudbilling_generated_billing_v1_CloudCatalog_ListServices_sync]
+# [START cloudbilling_v1_generated_CloudBilling_GetIamPolicy_sync]
 from google.cloud import billing_v1
 
 
-def sample_list_services():
+def sample_get_iam_policy():
     # Create a client
-    client = billing_v1.CloudCatalogClient()
+    client = billing_v1.CloudBillingClient()
 
     # Initialize request argument(s)
-    request = billing_v1.ListServicesRequest(
+    request = billing_v1.GetIamPolicyRequest(
+        resource="resource_value",
     )
 
     # Make the request
-    page_result = client.list_services(request=request)
+    response = client.get_iam_policy(request=request)
 
     # Handle the response
-    for response in page_result:
-        print(response)
+    print(response)
 
-# [END cloudbilling_generated_billing_v1_CloudCatalog_ListServices_sync]
+# [END cloudbilling_v1_generated_CloudBilling_GetIamPolicy_sync]

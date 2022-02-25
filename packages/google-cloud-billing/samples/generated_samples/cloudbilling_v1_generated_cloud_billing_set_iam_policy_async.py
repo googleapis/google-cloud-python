@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for GetBillingAccount
+# Snippet for SetIamPolicy
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,23 +23,23 @@
 #   python3 -m pip install google-cloud-billing
 
 
-# [START cloudbilling_generated_billing_v1_CloudBilling_GetBillingAccount_async]
+# [START cloudbilling_v1_generated_CloudBilling_SetIamPolicy_async]
 from google.cloud import billing_v1
 
 
-async def sample_get_billing_account():
+async def sample_set_iam_policy():
     # Create a client
     client = billing_v1.CloudBillingAsyncClient()
 
     # Initialize request argument(s)
-    request = billing_v1.GetBillingAccountRequest(
-        name="name_value",
+    request = billing_v1.SetIamPolicyRequest(
+        resource="resource_value",
     )
 
     # Make the request
-    response = await client.get_billing_account(request=request)
+    response = await client.set_iam_policy(request=request)
 
     # Handle the response
     print(response)
 
-# [END cloudbilling_generated_billing_v1_CloudBilling_GetBillingAccount_async]
+# [END cloudbilling_v1_generated_CloudBilling_SetIamPolicy_async]

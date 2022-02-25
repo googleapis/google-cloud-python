@@ -416,8 +416,7 @@ class CloudCatalogClient(metaclass=CloudCatalogClientMeta):
     ) -> pagers.ListServicesPager:
         r"""Lists all public cloud services.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import billing_v1
 
@@ -490,8 +489,7 @@ class CloudCatalogClient(metaclass=CloudCatalogClientMeta):
         service.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import billing_v1
 

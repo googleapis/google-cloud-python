@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for GetBillingAccount
+# Snippet for UpdateBillingAccount
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,23 +23,23 @@
 #   python3 -m pip install google-cloud-billing
 
 
-# [START cloudbilling_generated_billing_v1_CloudBilling_GetBillingAccount_sync]
+# [START cloudbilling_v1_generated_CloudBilling_UpdateBillingAccount_sync]
 from google.cloud import billing_v1
 
 
-def sample_get_billing_account():
+def sample_update_billing_account():
     # Create a client
     client = billing_v1.CloudBillingClient()
 
     # Initialize request argument(s)
-    request = billing_v1.GetBillingAccountRequest(
+    request = billing_v1.UpdateBillingAccountRequest(
         name="name_value",
     )
 
     # Make the request
-    response = client.get_billing_account(request=request)
+    response = client.update_billing_account(request=request)
 
     # Handle the response
     print(response)
 
-# [END cloudbilling_generated_billing_v1_CloudBilling_GetBillingAccount_sync]
+# [END cloudbilling_v1_generated_CloudBilling_UpdateBillingAccount_sync]

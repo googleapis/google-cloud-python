@@ -23,13 +23,13 @@
 #   python3 -m pip install google-cloud-billing
 
 
-# [START cloudbilling_generated_billing_v1_CloudBilling_UpdateProjectBillingInfo_sync]
+# [START cloudbilling_v1_generated_CloudBilling_UpdateProjectBillingInfo_async]
 from google.cloud import billing_v1
 
 
-def sample_update_project_billing_info():
+async def sample_update_project_billing_info():
     # Create a client
-    client = billing_v1.CloudBillingClient()
+    client = billing_v1.CloudBillingAsyncClient()
 
     # Initialize request argument(s)
     request = billing_v1.UpdateProjectBillingInfoRequest(
@@ -37,9 +37,9 @@ def sample_update_project_billing_info():
     )
 
     # Make the request
-    response = client.update_project_billing_info(request=request)
+    response = await client.update_project_billing_info(request=request)
 
     # Handle the response
     print(response)
 
-# [END cloudbilling_generated_billing_v1_CloudBilling_UpdateProjectBillingInfo_sync]
+# [END cloudbilling_v1_generated_CloudBilling_UpdateProjectBillingInfo_async]

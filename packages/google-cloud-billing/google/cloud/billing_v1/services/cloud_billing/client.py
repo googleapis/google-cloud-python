@@ -399,8 +399,7 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         account <https://cloud.google.com/billing/docs/how-to/billing-access>`__.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import billing_v1
 
@@ -494,8 +493,7 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         `view <https://cloud.google.com/billing/docs/how-to/billing-access>`__.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import billing_v1
 
@@ -574,8 +572,7 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         of the billing account.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import billing_v1
 
@@ -686,8 +683,7 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         been provisioned as a reseller account.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import billing_v1
 
@@ -780,8 +776,7 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         `viewers <https://cloud.google.com/billing/docs/how-to/billing-access>`__.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import billing_v1
 
@@ -886,8 +881,7 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         project <https://cloud.google.com/docs/permissions-overview#h.bgs0oxofvnoo>`__.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import billing_v1
 
@@ -1018,8 +1012,7 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         account.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import billing_v1
 
@@ -1129,8 +1122,7 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         `viewers <https://cloud.google.com/billing/docs/how-to/billing-access>`__.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import billing_v1
 
@@ -1279,8 +1271,7 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         `administrators <https://cloud.google.com/billing/docs/how-to/billing-access>`__.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import billing_v1
 
@@ -1430,8 +1421,7 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         resource.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import billing_v1
 

@@ -213,7 +213,7 @@ class CloudCatalogAsyncClient:
     ) -> pagers.ListServicesAsyncPager:
         r"""Lists all public cloud services.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import billing_v1
 
@@ -285,7 +285,7 @@ class CloudCatalogAsyncClient:
         service.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import billing_v1
 

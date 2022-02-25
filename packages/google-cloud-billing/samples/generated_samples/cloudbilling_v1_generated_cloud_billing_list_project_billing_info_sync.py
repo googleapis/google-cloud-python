@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for GetIamPolicy
+# Snippet for ListProjectBillingInfo
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,23 +23,24 @@
 #   python3 -m pip install google-cloud-billing
 
 
-# [START cloudbilling_generated_billing_v1_CloudBilling_GetIamPolicy_async]
+# [START cloudbilling_v1_generated_CloudBilling_ListProjectBillingInfo_sync]
 from google.cloud import billing_v1
 
 
-async def sample_get_iam_policy():
+def sample_list_project_billing_info():
     # Create a client
-    client = billing_v1.CloudBillingAsyncClient()
+    client = billing_v1.CloudBillingClient()
 
     # Initialize request argument(s)
-    request = billing_v1.GetIamPolicyRequest(
-        resource="resource_value",
+    request = billing_v1.ListProjectBillingInfoRequest(
+        name="name_value",
     )
 
     # Make the request
-    response = await client.get_iam_policy(request=request)
+    page_result = client.list_project_billing_info(request=request)
 
     # Handle the response
-    print(response)
+    for response in page_result:
+        print(response)
 
-# [END cloudbilling_generated_billing_v1_CloudBilling_GetIamPolicy_async]
+# [END cloudbilling_v1_generated_CloudBilling_ListProjectBillingInfo_sync]

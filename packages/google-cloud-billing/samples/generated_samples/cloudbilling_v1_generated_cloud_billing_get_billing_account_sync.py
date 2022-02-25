@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ListSkus
+# Snippet for GetBillingAccount
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,24 +23,23 @@
 #   python3 -m pip install google-cloud-billing
 
 
-# [START cloudbilling_generated_billing_v1_CloudCatalog_ListSkus_sync]
+# [START cloudbilling_v1_generated_CloudBilling_GetBillingAccount_sync]
 from google.cloud import billing_v1
 
 
-def sample_list_skus():
+def sample_get_billing_account():
     # Create a client
-    client = billing_v1.CloudCatalogClient()
+    client = billing_v1.CloudBillingClient()
 
     # Initialize request argument(s)
-    request = billing_v1.ListSkusRequest(
-        parent="parent_value",
+    request = billing_v1.GetBillingAccountRequest(
+        name="name_value",
     )
 
     # Make the request
-    page_result = client.list_skus(request=request)
+    response = client.get_billing_account(request=request)
 
     # Handle the response
-    for response in page_result:
-        print(response)
+    print(response)
 
-# [END cloudbilling_generated_billing_v1_CloudCatalog_ListSkus_sync]
+# [END cloudbilling_v1_generated_CloudBilling_GetBillingAccount_sync]
