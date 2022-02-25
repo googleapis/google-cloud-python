@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ListMigrationWorkflows
+# Snippet for CreateMigrationWorkflow
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,24 +23,23 @@
 #   python3 -m pip install google-cloud-bigquery-migration
 
 
-# [START bigquerymigration_generated_bigquery_migration_v2alpha_MigrationService_ListMigrationWorkflows_sync]
+# [START bigquerymigration_v2alpha_generated_MigrationService_CreateMigrationWorkflow_sync]
 from google.cloud import bigquery_migration_v2alpha
 
 
-def sample_list_migration_workflows():
+def sample_create_migration_workflow():
     # Create a client
     client = bigquery_migration_v2alpha.MigrationServiceClient()
 
     # Initialize request argument(s)
-    request = bigquery_migration_v2alpha.ListMigrationWorkflowsRequest(
+    request = bigquery_migration_v2alpha.CreateMigrationWorkflowRequest(
         parent="parent_value",
     )
 
     # Make the request
-    page_result = client.list_migration_workflows(request=request)
+    response = client.create_migration_workflow(request=request)
 
     # Handle the response
-    for response in page_result:
-        print(response)
+    print(response)
 
-# [END bigquerymigration_generated_bigquery_migration_v2alpha_MigrationService_ListMigrationWorkflows_sync]
+# [END bigquerymigration_v2alpha_generated_MigrationService_CreateMigrationWorkflow_sync]

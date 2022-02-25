@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-bigquery-migration
 
 
-# [START bigquerymigration_generated_bigquery_migration_v2alpha_MigrationService_GetMigrationWorkflow_sync]
+# [START bigquerymigration_v2alpha_generated_MigrationService_GetMigrationWorkflow_sync]
 from google.cloud import bigquery_migration_v2alpha
 
 
@@ -42,4 +42,4 @@ def sample_get_migration_workflow():
     # Handle the response
     print(response)
 
-# [END bigquerymigration_generated_bigquery_migration_v2alpha_MigrationService_GetMigrationWorkflow_sync]
+# [END bigquerymigration_v2alpha_generated_MigrationService_GetMigrationWorkflow_sync]

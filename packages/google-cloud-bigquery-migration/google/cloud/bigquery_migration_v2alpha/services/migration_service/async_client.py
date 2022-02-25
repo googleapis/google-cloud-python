@@ -227,7 +227,7 @@ class MigrationServiceAsyncClient:
     ) -> migration_entities.MigrationWorkflow:
         r"""Creates a migration workflow.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_migration_v2alpha
 
@@ -328,7 +328,7 @@ class MigrationServiceAsyncClient:
     ) -> migration_entities.MigrationWorkflow:
         r"""Gets a previously created migration workflow.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_migration_v2alpha
 
@@ -429,7 +429,7 @@ class MigrationServiceAsyncClient:
     ) -> pagers.ListMigrationWorkflowsAsyncPager:
         r"""Lists previously created migration workflow.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_migration_v2alpha
 
@@ -538,7 +538,7 @@ class MigrationServiceAsyncClient:
     ) -> None:
         r"""Deletes a migration workflow by name.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_migration_v2alpha
 
@@ -624,7 +624,7 @@ class MigrationServiceAsyncClient:
         RUNNING.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_migration_v2alpha
 
@@ -714,7 +714,7 @@ class MigrationServiceAsyncClient:
     ) -> migration_entities.MigrationSubtask:
         r"""Gets a previously created migration subtask.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_migration_v2alpha
 
@@ -818,7 +818,7 @@ class MigrationServiceAsyncClient:
     ) -> pagers.ListMigrationSubtasksAsyncPager:
         r"""Lists previously created migration subtasks.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_migration_v2alpha
 

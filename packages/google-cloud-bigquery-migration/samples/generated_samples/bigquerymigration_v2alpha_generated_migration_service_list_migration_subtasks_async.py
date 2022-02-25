@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-bigquery-migration
 
 
-# [START bigquerymigration_generated_bigquery_migration_v2alpha_MigrationService_ListMigrationSubtasks_async]
+# [START bigquerymigration_v2alpha_generated_MigrationService_ListMigrationSubtasks_async]
 from google.cloud import bigquery_migration_v2alpha
 
 
@@ -43,4 +43,4 @@ async def sample_list_migration_subtasks():
     async for response in page_result:
         print(response)
 
-# [END bigquerymigration_generated_bigquery_migration_v2alpha_MigrationService_ListMigrationSubtasks_async]
+# [END bigquerymigration_v2alpha_generated_MigrationService_ListMigrationSubtasks_async]

@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for GetMigrationSubtask
+# Snippet for CreateMigrationWorkflow
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,23 +23,23 @@
 #   python3 -m pip install google-cloud-bigquery-migration
 
 
-# [START bigquerymigration_generated_bigquery_migration_v2alpha_MigrationService_GetMigrationSubtask_async]
+# [START bigquerymigration_v2alpha_generated_MigrationService_CreateMigrationWorkflow_async]
 from google.cloud import bigquery_migration_v2alpha
 
 
-async def sample_get_migration_subtask():
+async def sample_create_migration_workflow():
     # Create a client
     client = bigquery_migration_v2alpha.MigrationServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = bigquery_migration_v2alpha.GetMigrationSubtaskRequest(
-        name="name_value",
+    request = bigquery_migration_v2alpha.CreateMigrationWorkflowRequest(
+        parent="parent_value",
     )
 
     # Make the request
-    response = await client.get_migration_subtask(request=request)
+    response = await client.create_migration_workflow(request=request)
 
     # Handle the response
     print(response)
 
-# [END bigquerymigration_generated_bigquery_migration_v2alpha_MigrationService_GetMigrationSubtask_async]
+# [END bigquerymigration_v2alpha_generated_MigrationService_CreateMigrationWorkflow_async]

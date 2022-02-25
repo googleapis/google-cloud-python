@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for GetMigrationSubtask
+# Snippet for ListMigrationSubtasks
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,23 +23,24 @@
 #   python3 -m pip install google-cloud-bigquery-migration
 
 
-# [START bigquerymigration_generated_bigquery_migration_v2alpha_MigrationService_GetMigrationSubtask_sync]
+# [START bigquerymigration_v2alpha_generated_MigrationService_ListMigrationSubtasks_sync]
 from google.cloud import bigquery_migration_v2alpha
 
 
-def sample_get_migration_subtask():
+def sample_list_migration_subtasks():
     # Create a client
     client = bigquery_migration_v2alpha.MigrationServiceClient()
 
     # Initialize request argument(s)
-    request = bigquery_migration_v2alpha.GetMigrationSubtaskRequest(
-        name="name_value",
+    request = bigquery_migration_v2alpha.ListMigrationSubtasksRequest(
+        parent="parent_value",
     )
 
     # Make the request
-    response = client.get_migration_subtask(request=request)
+    page_result = client.list_migration_subtasks(request=request)
 
     # Handle the response
-    print(response)
+    for response in page_result:
+        print(response)
 
-# [END bigquerymigration_generated_bigquery_migration_v2alpha_MigrationService_GetMigrationSubtask_sync]
+# [END bigquerymigration_v2alpha_generated_MigrationService_ListMigrationSubtasks_sync]

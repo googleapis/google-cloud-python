@@ -434,8 +434,7 @@ class MigrationServiceClient(metaclass=MigrationServiceClientMeta):
     ) -> migration_entities.MigrationWorkflow:
         r"""Creates a migration workflow.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_migration_v2alpha
 
@@ -538,8 +537,7 @@ class MigrationServiceClient(metaclass=MigrationServiceClientMeta):
     ) -> migration_entities.MigrationWorkflow:
         r"""Gets a previously created migration workflow.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_migration_v2alpha
 
@@ -631,8 +629,7 @@ class MigrationServiceClient(metaclass=MigrationServiceClientMeta):
     ) -> pagers.ListMigrationWorkflowsPager:
         r"""Lists previously created migration workflow.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_migration_v2alpha
 
@@ -732,8 +729,7 @@ class MigrationServiceClient(metaclass=MigrationServiceClientMeta):
     ) -> None:
         r"""Deletes a migration workflow by name.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_migration_v2alpha
 
@@ -821,8 +817,7 @@ class MigrationServiceClient(metaclass=MigrationServiceClientMeta):
         RUNNING.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_migration_v2alpha
 
@@ -903,8 +898,7 @@ class MigrationServiceClient(metaclass=MigrationServiceClientMeta):
     ) -> migration_entities.MigrationSubtask:
         r"""Gets a previously created migration subtask.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_migration_v2alpha
 
@@ -999,8 +993,7 @@ class MigrationServiceClient(metaclass=MigrationServiceClientMeta):
     ) -> pagers.ListMigrationSubtasksPager:
         r"""Lists previously created migration subtasks.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_migration_v2alpha
 
