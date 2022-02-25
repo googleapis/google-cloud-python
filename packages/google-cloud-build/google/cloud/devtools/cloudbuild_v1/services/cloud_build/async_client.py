@@ -245,7 +245,7 @@ class CloudBuildAsyncClient:
         build status (such as ``SUCCESS`` or ``FAILURE``).
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.devtools import cloudbuild_v1
 
@@ -376,7 +376,7 @@ class CloudBuildAsyncClient:
         information.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.devtools import cloudbuild_v1
 
@@ -500,7 +500,7 @@ class CloudBuildAsyncClient:
         may have finished successfully or unsuccessfully.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.devtools import cloudbuild_v1
 
@@ -610,7 +610,7 @@ class CloudBuildAsyncClient:
     ) -> cloudbuild.Build:
         r"""Cancels a build in progress.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.devtools import cloudbuild_v1
 
@@ -751,7 +751,7 @@ class CloudBuildAsyncClient:
            settings.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.devtools import cloudbuild_v1
 
@@ -885,7 +885,7 @@ class CloudBuildAsyncClient:
         If rejected, the returned LRO will be immediately done.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.devtools import cloudbuild_v1
 
@@ -1023,7 +1023,7 @@ class CloudBuildAsyncClient:
         This API is experimental.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.devtools import cloudbuild_v1
 
@@ -1123,7 +1123,7 @@ class CloudBuildAsyncClient:
         This API is experimental.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.devtools import cloudbuild_v1
 
@@ -1231,7 +1231,7 @@ class CloudBuildAsyncClient:
         This API is experimental.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.devtools import cloudbuild_v1
 
@@ -1338,7 +1338,7 @@ class CloudBuildAsyncClient:
         This API is experimental.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.devtools import cloudbuild_v1
 
@@ -1434,7 +1434,7 @@ class CloudBuildAsyncClient:
         This API is experimental.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.devtools import cloudbuild_v1
 
@@ -1540,7 +1540,7 @@ class CloudBuildAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Runs a ``BuildTrigger`` at a particular source revision.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.devtools import cloudbuild_v1
 
@@ -1675,7 +1675,7 @@ class CloudBuildAsyncClient:
         receives a webhook request targeted at a specific trigger.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.devtools import cloudbuild_v1
 
@@ -1740,7 +1740,7 @@ class CloudBuildAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Creates a ``WorkerPool``.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.devtools import cloudbuild_v1
 
@@ -1881,7 +1881,7 @@ class CloudBuildAsyncClient:
     ) -> cloudbuild.WorkerPool:
         r"""Returns details of a ``WorkerPool``.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.devtools import cloudbuild_v1
 
@@ -1995,7 +1995,7 @@ class CloudBuildAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Deletes a ``WorkerPool``.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.devtools import cloudbuild_v1
 
@@ -2111,7 +2111,7 @@ class CloudBuildAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Updates a ``WorkerPool``.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.devtools import cloudbuild_v1
 
@@ -2242,7 +2242,7 @@ class CloudBuildAsyncClient:
     ) -> pagers.ListWorkerPoolsAsyncPager:
         r"""Lists ``WorkerPool``\ s.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.devtools import cloudbuild_v1
 

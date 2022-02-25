@@ -10,8 +10,8 @@
           "shortName": "ApproveBuild"
         }
       },
-      "file": "cloudbuild_generated_cloudbuild_v1_cloud_build_approve_build_async.py",
-      "regionTag": "cloudbuild_generated_cloudbuild_v1_CloudBuild_ApproveBuild_async",
+      "file": "cloudbuild_v1_generated_cloud_build_approve_build_async.py",
+      "regionTag": "cloudbuild_v1_generated_CloudBuild_ApproveBuild_async",
       "segments": [
         {
           "end": 48,
@@ -54,8 +54,8 @@
           "shortName": "ApproveBuild"
         }
       },
-      "file": "cloudbuild_generated_cloudbuild_v1_cloud_build_approve_build_sync.py",
-      "regionTag": "cloudbuild_generated_cloudbuild_v1_CloudBuild_ApproveBuild_sync",
+      "file": "cloudbuild_v1_generated_cloud_build_approve_build_sync.py",
+      "regionTag": "cloudbuild_v1_generated_CloudBuild_ApproveBuild_sync",
       "segments": [
         {
           "end": 48,
@@ -99,8 +99,8 @@
           "shortName": "CancelBuild"
         }
       },
-      "file": "cloudbuild_generated_cloudbuild_v1_cloud_build_cancel_build_async.py",
-      "regionTag": "cloudbuild_generated_cloudbuild_v1_CloudBuild_CancelBuild_async",
+      "file": "cloudbuild_v1_generated_cloud_build_cancel_build_async.py",
+      "regionTag": "cloudbuild_v1_generated_CloudBuild_CancelBuild_async",
       "segments": [
         {
           "end": 45,
@@ -143,8 +143,8 @@
           "shortName": "CancelBuild"
         }
       },
-      "file": "cloudbuild_generated_cloudbuild_v1_cloud_build_cancel_build_sync.py",
-      "regionTag": "cloudbuild_generated_cloudbuild_v1_CloudBuild_CancelBuild_sync",
+      "file": "cloudbuild_v1_generated_cloud_build_cancel_build_sync.py",
+      "regionTag": "cloudbuild_v1_generated_CloudBuild_CancelBuild_sync",
       "segments": [
         {
           "end": 45,
@@ -188,8 +188,8 @@
           "shortName": "CreateBuildTrigger"
         }
       },
-      "file": "cloudbuild_generated_cloudbuild_v1_cloud_build_create_build_trigger_async.py",
-      "regionTag": "cloudbuild_generated_cloudbuild_v1_CloudBuild_CreateBuildTrigger_async",
+      "file": "cloudbuild_v1_generated_cloud_build_create_build_trigger_async.py",
+      "regionTag": "cloudbuild_v1_generated_CloudBuild_CreateBuildTrigger_async",
       "segments": [
         {
           "end": 48,
@@ -232,8 +232,8 @@
           "shortName": "CreateBuildTrigger"
         }
       },
-      "file": "cloudbuild_generated_cloudbuild_v1_cloud_build_create_build_trigger_sync.py",
-      "regionTag": "cloudbuild_generated_cloudbuild_v1_CloudBuild_CreateBuildTrigger_sync",
+      "file": "cloudbuild_v1_generated_cloud_build_create_build_trigger_sync.py",
+      "regionTag": "cloudbuild_v1_generated_CloudBuild_CreateBuildTrigger_sync",
       "segments": [
         {
           "end": 48,
@@ -277,8 +277,8 @@
           "shortName": "CreateBuild"
         }
       },
-      "file": "cloudbuild_generated_cloudbuild_v1_cloud_build_create_build_async.py",
-      "regionTag": "cloudbuild_generated_cloudbuild_v1_CloudBuild_CreateBuild_async",
+      "file": "cloudbuild_v1_generated_cloud_build_create_build_async.py",
+      "regionTag": "cloudbuild_v1_generated_CloudBuild_CreateBuild_async",
       "segments": [
         {
           "end": 48,
@@ -321,8 +321,8 @@
           "shortName": "CreateBuild"
         }
       },
-      "file": "cloudbuild_generated_cloudbuild_v1_cloud_build_create_build_sync.py",
-      "regionTag": "cloudbuild_generated_cloudbuild_v1_CloudBuild_CreateBuild_sync",
+      "file": "cloudbuild_v1_generated_cloud_build_create_build_sync.py",
+      "regionTag": "cloudbuild_v1_generated_CloudBuild_CreateBuild_sync",
       "segments": [
         {
           "end": 48,
@@ -366,8 +366,8 @@
           "shortName": "CreateWorkerPool"
         }
       },
-      "file": "cloudbuild_generated_cloudbuild_v1_cloud_build_create_worker_pool_async.py",
-      "regionTag": "cloudbuild_generated_cloudbuild_v1_CloudBuild_CreateWorkerPool_async",
+      "file": "cloudbuild_v1_generated_cloud_build_create_worker_pool_async.py",
+      "regionTag": "cloudbuild_v1_generated_CloudBuild_CreateWorkerPool_async",
       "segments": [
         {
           "end": 49,
@@ -410,8 +410,8 @@
           "shortName": "CreateWorkerPool"
         }
       },
-      "file": "cloudbuild_generated_cloudbuild_v1_cloud_build_create_worker_pool_sync.py",
-      "regionTag": "cloudbuild_generated_cloudbuild_v1_CloudBuild_CreateWorkerPool_sync",
+      "file": "cloudbuild_v1_generated_cloud_build_create_worker_pool_sync.py",
+      "regionTag": "cloudbuild_v1_generated_CloudBuild_CreateWorkerPool_sync",
       "segments": [
         {
           "end": 49,
@@ -455,8 +455,8 @@
           "shortName": "DeleteBuildTrigger"
         }
       },
-      "file": "cloudbuild_generated_cloudbuild_v1_cloud_build_delete_build_trigger_async.py",
-      "regionTag": "cloudbuild_generated_cloudbuild_v1_CloudBuild_DeleteBuildTrigger_async",
+      "file": "cloudbuild_v1_generated_cloud_build_delete_build_trigger_async.py",
+      "regionTag": "cloudbuild_v1_generated_CloudBuild_DeleteBuildTrigger_async",
       "segments": [
         {
           "end": 43,
@@ -497,8 +497,8 @@
           "shortName": "DeleteBuildTrigger"
         }
       },
-      "file": "cloudbuild_generated_cloudbuild_v1_cloud_build_delete_build_trigger_sync.py",
-      "regionTag": "cloudbuild_generated_cloudbuild_v1_CloudBuild_DeleteBuildTrigger_sync",
+      "file": "cloudbuild_v1_generated_cloud_build_delete_build_trigger_sync.py",
+      "regionTag": "cloudbuild_v1_generated_CloudBuild_DeleteBuildTrigger_sync",
       "segments": [
         {
           "end": 43,
@@ -540,8 +540,8 @@
           "shortName": "DeleteWorkerPool"
         }
       },
-      "file": "cloudbuild_generated_cloudbuild_v1_cloud_build_delete_worker_pool_async.py",
-      "regionTag": "cloudbuild_generated_cloudbuild_v1_CloudBuild_DeleteWorkerPool_async",
+      "file": "cloudbuild_v1_generated_cloud_build_delete_worker_pool_async.py",
+      "regionTag": "cloudbuild_v1_generated_CloudBuild_DeleteWorkerPool_async",
       "segments": [
         {
           "end": 48,
@@ -584,8 +584,8 @@
           "shortName": "DeleteWorkerPool"
         }
       },
-      "file": "cloudbuild_generated_cloudbuild_v1_cloud_build_delete_worker_pool_sync.py",
-      "regionTag": "cloudbuild_generated_cloudbuild_v1_CloudBuild_DeleteWorkerPool_sync",
+      "file": "cloudbuild_v1_generated_cloud_build_delete_worker_pool_sync.py",
+      "regionTag": "cloudbuild_v1_generated_CloudBuild_DeleteWorkerPool_sync",
       "segments": [
         {
           "end": 48,
@@ -629,8 +629,8 @@
           "shortName": "GetBuildTrigger"
         }
       },
-      "file": "cloudbuild_generated_cloudbuild_v1_cloud_build_get_build_trigger_async.py",
-      "regionTag": "cloudbuild_generated_cloudbuild_v1_CloudBuild_GetBuildTrigger_async",
+      "file": "cloudbuild_v1_generated_cloud_build_get_build_trigger_async.py",
+      "regionTag": "cloudbuild_v1_generated_CloudBuild_GetBuildTrigger_async",
       "segments": [
         {
           "end": 45,
@@ -673,8 +673,8 @@
           "shortName": "GetBuildTrigger"
         }
       },
-      "file": "cloudbuild_generated_cloudbuild_v1_cloud_build_get_build_trigger_sync.py",
-      "regionTag": "cloudbuild_generated_cloudbuild_v1_CloudBuild_GetBuildTrigger_sync",
+      "file": "cloudbuild_v1_generated_cloud_build_get_build_trigger_sync.py",
+      "regionTag": "cloudbuild_v1_generated_CloudBuild_GetBuildTrigger_sync",
       "segments": [
         {
           "end": 45,
@@ -718,8 +718,8 @@
           "shortName": "GetBuild"
         }
       },
-      "file": "cloudbuild_generated_cloudbuild_v1_cloud_build_get_build_async.py",
-      "regionTag": "cloudbuild_generated_cloudbuild_v1_CloudBuild_GetBuild_async",
+      "file": "cloudbuild_v1_generated_cloud_build_get_build_async.py",
+      "regionTag": "cloudbuild_v1_generated_CloudBuild_GetBuild_async",
       "segments": [
         {
           "end": 45,
@@ -762,8 +762,8 @@
           "shortName": "GetBuild"
         }
       },
-      "file": "cloudbuild_generated_cloudbuild_v1_cloud_build_get_build_sync.py",
-      "regionTag": "cloudbuild_generated_cloudbuild_v1_CloudBuild_GetBuild_sync",
+      "file": "cloudbuild_v1_generated_cloud_build_get_build_sync.py",
+      "regionTag": "cloudbuild_v1_generated_CloudBuild_GetBuild_sync",
       "segments": [
         {
           "end": 45,
@@ -807,8 +807,8 @@
           "shortName": "GetWorkerPool"
         }
       },
-      "file": "cloudbuild_generated_cloudbuild_v1_cloud_build_get_worker_pool_async.py",
-      "regionTag": "cloudbuild_generated_cloudbuild_v1_CloudBuild_GetWorkerPool_async",
+      "file": "cloudbuild_v1_generated_cloud_build_get_worker_pool_async.py",
+      "regionTag": "cloudbuild_v1_generated_CloudBuild_GetWorkerPool_async",
       "segments": [
         {
           "end": 44,
@@ -851,8 +851,8 @@
           "shortName": "GetWorkerPool"
         }
       },
-      "file": "cloudbuild_generated_cloudbuild_v1_cloud_build_get_worker_pool_sync.py",
-      "regionTag": "cloudbuild_generated_cloudbuild_v1_CloudBuild_GetWorkerPool_sync",
+      "file": "cloudbuild_v1_generated_cloud_build_get_worker_pool_sync.py",
+      "regionTag": "cloudbuild_v1_generated_CloudBuild_GetWorkerPool_sync",
       "segments": [
         {
           "end": 44,
@@ -896,8 +896,8 @@
           "shortName": "ListBuildTriggers"
         }
       },
-      "file": "cloudbuild_generated_cloudbuild_v1_cloud_build_list_build_triggers_async.py",
-      "regionTag": "cloudbuild_generated_cloudbuild_v1_CloudBuild_ListBuildTriggers_async",
+      "file": "cloudbuild_v1_generated_cloud_build_list_build_triggers_async.py",
+      "regionTag": "cloudbuild_v1_generated_CloudBuild_ListBuildTriggers_async",
       "segments": [
         {
           "end": 45,
@@ -940,8 +940,8 @@
           "shortName": "ListBuildTriggers"
         }
       },
-      "file": "cloudbuild_generated_cloudbuild_v1_cloud_build_list_build_triggers_sync.py",
-      "regionTag": "cloudbuild_generated_cloudbuild_v1_CloudBuild_ListBuildTriggers_sync",
+      "file": "cloudbuild_v1_generated_cloud_build_list_build_triggers_sync.py",
+      "regionTag": "cloudbuild_v1_generated_CloudBuild_ListBuildTriggers_sync",
       "segments": [
         {
           "end": 45,
@@ -985,8 +985,8 @@
           "shortName": "ListBuilds"
         }
       },
-      "file": "cloudbuild_generated_cloudbuild_v1_cloud_build_list_builds_async.py",
-      "regionTag": "cloudbuild_generated_cloudbuild_v1_CloudBuild_ListBuilds_async",
+      "file": "cloudbuild_v1_generated_cloud_build_list_builds_async.py",
+      "regionTag": "cloudbuild_v1_generated_CloudBuild_ListBuilds_async",
       "segments": [
         {
           "end": 45,
@@ -1029,8 +1029,8 @@
           "shortName": "ListBuilds"
         }
       },
-      "file": "cloudbuild_generated_cloudbuild_v1_cloud_build_list_builds_sync.py",
-      "regionTag": "cloudbuild_generated_cloudbuild_v1_CloudBuild_ListBuilds_sync",
+      "file": "cloudbuild_v1_generated_cloud_build_list_builds_sync.py",
+      "regionTag": "cloudbuild_v1_generated_CloudBuild_ListBuilds_sync",
       "segments": [
         {
           "end": 45,
@@ -1074,8 +1074,8 @@
           "shortName": "ListWorkerPools"
         }
       },
-      "file": "cloudbuild_generated_cloudbuild_v1_cloud_build_list_worker_pools_async.py",
-      "regionTag": "cloudbuild_generated_cloudbuild_v1_CloudBuild_ListWorkerPools_async",
+      "file": "cloudbuild_v1_generated_cloud_build_list_worker_pools_async.py",
+      "regionTag": "cloudbuild_v1_generated_CloudBuild_ListWorkerPools_async",
       "segments": [
         {
           "end": 45,
@@ -1118,8 +1118,8 @@
           "shortName": "ListWorkerPools"
         }
       },
-      "file": "cloudbuild_generated_cloudbuild_v1_cloud_build_list_worker_pools_sync.py",
-      "regionTag": "cloudbuild_generated_cloudbuild_v1_CloudBuild_ListWorkerPools_sync",
+      "file": "cloudbuild_v1_generated_cloud_build_list_worker_pools_sync.py",
+      "regionTag": "cloudbuild_v1_generated_CloudBuild_ListWorkerPools_sync",
       "segments": [
         {
           "end": 45,
@@ -1163,8 +1163,8 @@
           "shortName": "ReceiveTriggerWebhook"
         }
       },
-      "file": "cloudbuild_generated_cloudbuild_v1_cloud_build_receive_trigger_webhook_async.py",
-      "regionTag": "cloudbuild_generated_cloudbuild_v1_CloudBuild_ReceiveTriggerWebhook_async",
+      "file": "cloudbuild_v1_generated_cloud_build_receive_trigger_webhook_async.py",
+      "regionTag": "cloudbuild_v1_generated_CloudBuild_ReceiveTriggerWebhook_async",
       "segments": [
         {
           "end": 43,
@@ -1207,8 +1207,8 @@
           "shortName": "ReceiveTriggerWebhook"
         }
       },
-      "file": "cloudbuild_generated_cloudbuild_v1_cloud_build_receive_trigger_webhook_sync.py",
-      "regionTag": "cloudbuild_generated_cloudbuild_v1_CloudBuild_ReceiveTriggerWebhook_sync",
+      "file": "cloudbuild_v1_generated_cloud_build_receive_trigger_webhook_sync.py",
+      "regionTag": "cloudbuild_v1_generated_CloudBuild_ReceiveTriggerWebhook_sync",
       "segments": [
         {
           "end": 43,
@@ -1252,8 +1252,8 @@
           "shortName": "RetryBuild"
         }
       },
-      "file": "cloudbuild_generated_cloudbuild_v1_cloud_build_retry_build_async.py",
-      "regionTag": "cloudbuild_generated_cloudbuild_v1_CloudBuild_RetryBuild_async",
+      "file": "cloudbuild_v1_generated_cloud_build_retry_build_async.py",
+      "regionTag": "cloudbuild_v1_generated_CloudBuild_RetryBuild_async",
       "segments": [
         {
           "end": 49,
@@ -1296,8 +1296,8 @@
           "shortName": "RetryBuild"
         }
       },
-      "file": "cloudbuild_generated_cloudbuild_v1_cloud_build_retry_build_sync.py",
-      "regionTag": "cloudbuild_generated_cloudbuild_v1_CloudBuild_RetryBuild_sync",
+      "file": "cloudbuild_v1_generated_cloud_build_retry_build_sync.py",
+      "regionTag": "cloudbuild_v1_generated_CloudBuild_RetryBuild_sync",
       "segments": [
         {
           "end": 49,
@@ -1341,8 +1341,8 @@
           "shortName": "RunBuildTrigger"
         }
       },
-      "file": "cloudbuild_generated_cloudbuild_v1_cloud_build_run_build_trigger_async.py",
-      "regionTag": "cloudbuild_generated_cloudbuild_v1_CloudBuild_RunBuildTrigger_async",
+      "file": "cloudbuild_v1_generated_cloud_build_run_build_trigger_async.py",
+      "regionTag": "cloudbuild_v1_generated_CloudBuild_RunBuildTrigger_async",
       "segments": [
         {
           "end": 49,
@@ -1385,8 +1385,8 @@
           "shortName": "RunBuildTrigger"
         }
       },
-      "file": "cloudbuild_generated_cloudbuild_v1_cloud_build_run_build_trigger_sync.py",
-      "regionTag": "cloudbuild_generated_cloudbuild_v1_CloudBuild_RunBuildTrigger_sync",
+      "file": "cloudbuild_v1_generated_cloud_build_run_build_trigger_sync.py",
+      "regionTag": "cloudbuild_v1_generated_CloudBuild_RunBuildTrigger_sync",
       "segments": [
         {
           "end": 49,
@@ -1430,8 +1430,8 @@
           "shortName": "UpdateBuildTrigger"
         }
       },
-      "file": "cloudbuild_generated_cloudbuild_v1_cloud_build_update_build_trigger_async.py",
-      "regionTag": "cloudbuild_generated_cloudbuild_v1_CloudBuild_UpdateBuildTrigger_async",
+      "file": "cloudbuild_v1_generated_cloud_build_update_build_trigger_async.py",
+      "regionTag": "cloudbuild_v1_generated_CloudBuild_UpdateBuildTrigger_async",
       "segments": [
         {
           "end": 49,
@@ -1474,8 +1474,8 @@
           "shortName": "UpdateBuildTrigger"
         }
       },
-      "file": "cloudbuild_generated_cloudbuild_v1_cloud_build_update_build_trigger_sync.py",
-      "regionTag": "cloudbuild_generated_cloudbuild_v1_CloudBuild_UpdateBuildTrigger_sync",
+      "file": "cloudbuild_v1_generated_cloud_build_update_build_trigger_sync.py",
+      "regionTag": "cloudbuild_v1_generated_CloudBuild_UpdateBuildTrigger_sync",
       "segments": [
         {
           "end": 49,
@@ -1519,8 +1519,8 @@
           "shortName": "UpdateWorkerPool"
         }
       },
-      "file": "cloudbuild_generated_cloudbuild_v1_cloud_build_update_worker_pool_async.py",
-      "regionTag": "cloudbuild_generated_cloudbuild_v1_CloudBuild_UpdateWorkerPool_async",
+      "file": "cloudbuild_v1_generated_cloud_build_update_worker_pool_async.py",
+      "regionTag": "cloudbuild_v1_generated_CloudBuild_UpdateWorkerPool_async",
       "segments": [
         {
           "end": 47,
@@ -1563,8 +1563,8 @@
           "shortName": "UpdateWorkerPool"
         }
       },
-      "file": "cloudbuild_generated_cloudbuild_v1_cloud_build_update_worker_pool_sync.py",
-      "regionTag": "cloudbuild_generated_cloudbuild_v1_CloudBuild_UpdateWorkerPool_sync",
+      "file": "cloudbuild_v1_generated_cloud_build_update_worker_pool_sync.py",
+      "regionTag": "cloudbuild_v1_generated_CloudBuild_UpdateWorkerPool_sync",
       "segments": [
         {
           "end": 47,

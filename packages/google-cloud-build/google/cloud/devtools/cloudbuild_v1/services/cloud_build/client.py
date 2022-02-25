@@ -541,8 +541,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         build status (such as ``SUCCESS`` or ``FAILURE``).
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.devtools import cloudbuild_v1
 
@@ -673,8 +672,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         information.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.devtools import cloudbuild_v1
 
@@ -788,8 +786,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         may have finished successfully or unsuccessfully.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.devtools import cloudbuild_v1
 
@@ -889,8 +886,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
     ) -> cloudbuild.Build:
         r"""Cancels a build in progress.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.devtools import cloudbuild_v1
 
@@ -1031,8 +1027,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
            settings.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.devtools import cloudbuild_v1
 
@@ -1166,8 +1161,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         If rejected, the returned LRO will be immediately done.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.devtools import cloudbuild_v1
 
@@ -1305,8 +1299,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         This API is experimental.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.devtools import cloudbuild_v1
 
@@ -1406,8 +1399,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         This API is experimental.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.devtools import cloudbuild_v1
 
@@ -1505,8 +1497,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         This API is experimental.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.devtools import cloudbuild_v1
 
@@ -1603,8 +1594,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         This API is experimental.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.devtools import cloudbuild_v1
 
@@ -1690,8 +1680,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         This API is experimental.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.devtools import cloudbuild_v1
 
@@ -1797,8 +1786,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
     ) -> operation.Operation:
         r"""Runs a ``BuildTrigger`` at a particular source revision.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.devtools import cloudbuild_v1
 
@@ -1933,8 +1921,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         receives a webhook request targeted at a specific trigger.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.devtools import cloudbuild_v1
 
@@ -2000,8 +1987,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
     ) -> operation.Operation:
         r"""Creates a ``WorkerPool``.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.devtools import cloudbuild_v1
 
@@ -2142,8 +2128,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
     ) -> cloudbuild.WorkerPool:
         r"""Returns details of a ``WorkerPool``.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.devtools import cloudbuild_v1
 
@@ -2247,8 +2232,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
     ) -> operation.Operation:
         r"""Deletes a ``WorkerPool``.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.devtools import cloudbuild_v1
 
@@ -2364,8 +2348,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
     ) -> operation.Operation:
         r"""Updates a ``WorkerPool``.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.devtools import cloudbuild_v1
 
@@ -2496,8 +2479,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
     ) -> pagers.ListWorkerPoolsPager:
         r"""Lists ``WorkerPool``\ s.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.devtools import cloudbuild_v1
 
