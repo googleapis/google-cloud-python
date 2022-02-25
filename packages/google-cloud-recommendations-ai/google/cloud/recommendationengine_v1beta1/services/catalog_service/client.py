@@ -419,8 +419,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
     ) -> catalog.CatalogItem:
         r"""Creates a catalog item.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recommendationengine_v1beta1
 
@@ -523,8 +522,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
     ) -> catalog.CatalogItem:
         r"""Gets a specific catalog item.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recommendationengine_v1beta1
 
@@ -615,8 +613,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
     ) -> pagers.ListCatalogItemsPager:
         r"""Gets a list of catalog items.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recommendationengine_v1beta1
 
@@ -729,8 +726,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         supported. Non-existing items will be created.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recommendationengine_v1beta1
 
@@ -845,8 +841,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
     ) -> None:
         r"""Deletes a catalog item.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recommendationengine_v1beta1
 
@@ -936,8 +931,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         successfully updated.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recommendationengine_v1beta1
 

@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for CreatePredictionApiKeyRegistration
+# Snippet for CollectUserEvent
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,23 +23,24 @@
 #   python3 -m pip install google-cloud-recommendations-ai
 
 
-# [START recommendationengine_generated_recommendationengine_v1beta1_PredictionApiKeyRegistry_CreatePredictionApiKeyRegistration_sync]
+# [START recommendationengine_v1beta1_generated_UserEventService_CollectUserEvent_sync]
 from google.cloud import recommendationengine_v1beta1
 
 
-def sample_create_prediction_api_key_registration():
+def sample_collect_user_event():
     # Create a client
-    client = recommendationengine_v1beta1.PredictionApiKeyRegistryClient()
+    client = recommendationengine_v1beta1.UserEventServiceClient()
 
     # Initialize request argument(s)
-    request = recommendationengine_v1beta1.CreatePredictionApiKeyRegistrationRequest(
+    request = recommendationengine_v1beta1.CollectUserEventRequest(
         parent="parent_value",
+        user_event="user_event_value",
     )
 
     # Make the request
-    response = client.create_prediction_api_key_registration(request=request)
+    response = client.collect_user_event(request=request)
 
     # Handle the response
     print(response)
 
-# [END recommendationengine_generated_recommendationengine_v1beta1_PredictionApiKeyRegistry_CreatePredictionApiKeyRegistration_sync]
+# [END recommendationengine_v1beta1_generated_UserEventService_CollectUserEvent_sync]

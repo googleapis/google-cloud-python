@@ -23,13 +23,13 @@
 #   python3 -m pip install google-cloud-recommendations-ai
 
 
-# [START recommendationengine_generated_recommendationengine_v1beta1_PredictionService_Predict_sync]
+# [START recommendationengine_v1beta1_generated_PredictionService_Predict_async]
 from google.cloud import recommendationengine_v1beta1
 
 
-def sample_predict():
+async def sample_predict():
     # Create a client
-    client = recommendationengine_v1beta1.PredictionServiceClient()
+    client = recommendationengine_v1beta1.PredictionServiceAsyncClient()
 
     # Initialize request argument(s)
     user_event = recommendationengine_v1beta1.UserEvent()
@@ -45,7 +45,7 @@ def sample_predict():
     page_result = client.predict(request=request)
 
     # Handle the response
-    for response in page_result:
+    async for response in page_result:
         print(response)
 
-# [END recommendationengine_generated_recommendationengine_v1beta1_PredictionService_Predict_sync]
+# [END recommendationengine_v1beta1_generated_PredictionService_Predict_async]

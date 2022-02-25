@@ -23,13 +23,13 @@
 #   python3 -m pip install google-cloud-recommendations-ai
 
 
-# [START recommendationengine_generated_recommendationengine_v1beta1_UserEventService_ListUserEvents_async]
+# [START recommendationengine_v1beta1_generated_UserEventService_ListUserEvents_sync]
 from google.cloud import recommendationengine_v1beta1
 
 
-async def sample_list_user_events():
+def sample_list_user_events():
     # Create a client
-    client = recommendationengine_v1beta1.UserEventServiceAsyncClient()
+    client = recommendationengine_v1beta1.UserEventServiceClient()
 
     # Initialize request argument(s)
     request = recommendationengine_v1beta1.ListUserEventsRequest(
@@ -40,7 +40,7 @@ async def sample_list_user_events():
     page_result = client.list_user_events(request=request)
 
     # Handle the response
-    async for response in page_result:
+    for response in page_result:
         print(response)
 
-# [END recommendationengine_generated_recommendationengine_v1beta1_UserEventService_ListUserEvents_async]
+# [END recommendationengine_v1beta1_generated_UserEventService_ListUserEvents_sync]

@@ -220,7 +220,7 @@ class PredictionServiceAsyncClient:
         more </recommendations-ai/docs/setting-up#register-key>`__.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recommendationengine_v1beta1
 

@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ListUserEvents
+# Snippet for UpdateCatalogItem
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,24 +23,29 @@
 #   python3 -m pip install google-cloud-recommendations-ai
 
 
-# [START recommendationengine_generated_recommendationengine_v1beta1_UserEventService_ListUserEvents_sync]
+# [START recommendationengine_v1beta1_generated_CatalogService_UpdateCatalogItem_async]
 from google.cloud import recommendationengine_v1beta1
 
 
-def sample_list_user_events():
+async def sample_update_catalog_item():
     # Create a client
-    client = recommendationengine_v1beta1.UserEventServiceClient()
+    client = recommendationengine_v1beta1.CatalogServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = recommendationengine_v1beta1.ListUserEventsRequest(
-        parent="parent_value",
+    catalog_item = recommendationengine_v1beta1.CatalogItem()
+    catalog_item.id = "id_value"
+    catalog_item.category_hierarchies.categories = ['categories_value_1', 'categories_value_2']
+    catalog_item.title = "title_value"
+
+    request = recommendationengine_v1beta1.UpdateCatalogItemRequest(
+        name="name_value",
+        catalog_item=catalog_item,
     )
 
     # Make the request
-    page_result = client.list_user_events(request=request)
+    response = await client.update_catalog_item(request=request)
 
     # Handle the response
-    for response in page_result:
-        print(response)
+    print(response)
 
-# [END recommendationengine_generated_recommendationengine_v1beta1_UserEventService_ListUserEvents_sync]
+# [END recommendationengine_v1beta1_generated_CatalogService_UpdateCatalogItem_async]

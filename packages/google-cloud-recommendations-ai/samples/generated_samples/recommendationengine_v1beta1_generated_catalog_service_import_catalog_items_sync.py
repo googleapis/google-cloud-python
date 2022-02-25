@@ -23,13 +23,13 @@
 #   python3 -m pip install google-cloud-recommendations-ai
 
 
-# [START recommendationengine_generated_recommendationengine_v1beta1_CatalogService_ImportCatalogItems_async]
+# [START recommendationengine_v1beta1_generated_CatalogService_ImportCatalogItems_sync]
 from google.cloud import recommendationengine_v1beta1
 
 
-async def sample_import_catalog_items():
+def sample_import_catalog_items():
     # Create a client
-    client = recommendationengine_v1beta1.CatalogServiceAsyncClient()
+    client = recommendationengine_v1beta1.CatalogServiceClient()
 
     # Initialize request argument(s)
     request = recommendationengine_v1beta1.ImportCatalogItemsRequest(
@@ -41,9 +41,9 @@ async def sample_import_catalog_items():
 
     print("Waiting for operation to complete...")
 
-    response = await operation.result()
+    response = operation.result()
 
     # Handle the response
     print(response)
 
-# [END recommendationengine_generated_recommendationengine_v1beta1_CatalogService_ImportCatalogItems_async]
+# [END recommendationengine_v1beta1_generated_CatalogService_ImportCatalogItems_sync]

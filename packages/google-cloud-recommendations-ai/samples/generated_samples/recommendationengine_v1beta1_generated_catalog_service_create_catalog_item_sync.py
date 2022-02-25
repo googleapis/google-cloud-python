@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for WriteUserEvent
+# Snippet for CreateCatalogItem
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,28 +23,29 @@
 #   python3 -m pip install google-cloud-recommendations-ai
 
 
-# [START recommendationengine_generated_recommendationengine_v1beta1_UserEventService_WriteUserEvent_sync]
+# [START recommendationengine_v1beta1_generated_CatalogService_CreateCatalogItem_sync]
 from google.cloud import recommendationengine_v1beta1
 
 
-def sample_write_user_event():
+def sample_create_catalog_item():
     # Create a client
-    client = recommendationengine_v1beta1.UserEventServiceClient()
+    client = recommendationengine_v1beta1.CatalogServiceClient()
 
     # Initialize request argument(s)
-    user_event = recommendationengine_v1beta1.UserEvent()
-    user_event.event_type = "event_type_value"
-    user_event.user_info.visitor_id = "visitor_id_value"
+    catalog_item = recommendationengine_v1beta1.CatalogItem()
+    catalog_item.id = "id_value"
+    catalog_item.category_hierarchies.categories = ['categories_value_1', 'categories_value_2']
+    catalog_item.title = "title_value"
 
-    request = recommendationengine_v1beta1.WriteUserEventRequest(
+    request = recommendationengine_v1beta1.CreateCatalogItemRequest(
         parent="parent_value",
-        user_event=user_event,
+        catalog_item=catalog_item,
     )
 
     # Make the request
-    response = client.write_user_event(request=request)
+    response = client.create_catalog_item(request=request)
 
     # Handle the response
     print(response)
 
-# [END recommendationengine_generated_recommendationengine_v1beta1_UserEventService_WriteUserEvent_sync]
+# [END recommendationengine_v1beta1_generated_CatalogService_CreateCatalogItem_sync]

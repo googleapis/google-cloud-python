@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for UpdateCatalogItem
+# Snippet for ListCatalogItems
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,29 +23,24 @@
 #   python3 -m pip install google-cloud-recommendations-ai
 
 
-# [START recommendationengine_generated_recommendationengine_v1beta1_CatalogService_UpdateCatalogItem_sync]
+# [START recommendationengine_v1beta1_generated_CatalogService_ListCatalogItems_sync]
 from google.cloud import recommendationengine_v1beta1
 
 
-def sample_update_catalog_item():
+def sample_list_catalog_items():
     # Create a client
     client = recommendationengine_v1beta1.CatalogServiceClient()
 
     # Initialize request argument(s)
-    catalog_item = recommendationengine_v1beta1.CatalogItem()
-    catalog_item.id = "id_value"
-    catalog_item.category_hierarchies.categories = ['categories_value_1', 'categories_value_2']
-    catalog_item.title = "title_value"
-
-    request = recommendationengine_v1beta1.UpdateCatalogItemRequest(
-        name="name_value",
-        catalog_item=catalog_item,
+    request = recommendationengine_v1beta1.ListCatalogItemsRequest(
+        parent="parent_value",
     )
 
     # Make the request
-    response = client.update_catalog_item(request=request)
+    page_result = client.list_catalog_items(request=request)
 
     # Handle the response
-    print(response)
+    for response in page_result:
+        print(response)
 
-# [END recommendationengine_generated_recommendationengine_v1beta1_CatalogService_UpdateCatalogItem_sync]
+# [END recommendationengine_v1beta1_generated_CatalogService_ListCatalogItems_sync]

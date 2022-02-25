@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for CreatePredictionApiKeyRegistration
+# Snippet for PurgeUserEvents
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,23 +23,28 @@
 #   python3 -m pip install google-cloud-recommendations-ai
 
 
-# [START recommendationengine_generated_recommendationengine_v1beta1_PredictionApiKeyRegistry_CreatePredictionApiKeyRegistration_async]
+# [START recommendationengine_v1beta1_generated_UserEventService_PurgeUserEvents_async]
 from google.cloud import recommendationengine_v1beta1
 
 
-async def sample_create_prediction_api_key_registration():
+async def sample_purge_user_events():
     # Create a client
-    client = recommendationengine_v1beta1.PredictionApiKeyRegistryAsyncClient()
+    client = recommendationengine_v1beta1.UserEventServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = recommendationengine_v1beta1.CreatePredictionApiKeyRegistrationRequest(
+    request = recommendationengine_v1beta1.PurgeUserEventsRequest(
         parent="parent_value",
+        filter="filter_value",
     )
 
     # Make the request
-    response = await client.create_prediction_api_key_registration(request=request)
+    operation = client.purge_user_events(request=request)
+
+    print("Waiting for operation to complete...")
+
+    response = await operation.result()
 
     # Handle the response
     print(response)
 
-# [END recommendationengine_generated_recommendationengine_v1beta1_PredictionApiKeyRegistry_CreatePredictionApiKeyRegistration_async]
+# [END recommendationengine_v1beta1_generated_UserEventService_PurgeUserEvents_async]

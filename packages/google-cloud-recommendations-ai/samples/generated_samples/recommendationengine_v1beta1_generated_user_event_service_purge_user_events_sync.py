@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for CollectUserEvent
+# Snippet for PurgeUserEvents
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,24 +23,28 @@
 #   python3 -m pip install google-cloud-recommendations-ai
 
 
-# [START recommendationengine_generated_recommendationengine_v1beta1_UserEventService_CollectUserEvent_async]
+# [START recommendationengine_v1beta1_generated_UserEventService_PurgeUserEvents_sync]
 from google.cloud import recommendationengine_v1beta1
 
 
-async def sample_collect_user_event():
+def sample_purge_user_events():
     # Create a client
-    client = recommendationengine_v1beta1.UserEventServiceAsyncClient()
+    client = recommendationengine_v1beta1.UserEventServiceClient()
 
     # Initialize request argument(s)
-    request = recommendationengine_v1beta1.CollectUserEventRequest(
+    request = recommendationengine_v1beta1.PurgeUserEventsRequest(
         parent="parent_value",
-        user_event="user_event_value",
+        filter="filter_value",
     )
 
     # Make the request
-    response = await client.collect_user_event(request=request)
+    operation = client.purge_user_events(request=request)
+
+    print("Waiting for operation to complete...")
+
+    response = operation.result()
 
     # Handle the response
     print(response)
 
-# [END recommendationengine_generated_recommendationengine_v1beta1_UserEventService_CollectUserEvent_async]
+# [END recommendationengine_v1beta1_generated_UserEventService_PurgeUserEvents_sync]

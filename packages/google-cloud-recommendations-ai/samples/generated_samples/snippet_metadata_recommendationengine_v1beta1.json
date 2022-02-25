@@ -10,8 +10,8 @@
           "shortName": "CreateCatalogItem"
         }
       },
-      "file": "recommendationengine_generated_recommendationengine_v1beta1_catalog_service_create_catalog_item_async.py",
-      "regionTag": "recommendationengine_generated_recommendationengine_v1beta1_CatalogService_CreateCatalogItem_async",
+      "file": "recommendationengine_v1beta1_generated_catalog_service_create_catalog_item_async.py",
+      "regionTag": "recommendationengine_v1beta1_generated_CatalogService_CreateCatalogItem_async",
       "segments": [
         {
           "end": 50,
@@ -54,8 +54,8 @@
           "shortName": "CreateCatalogItem"
         }
       },
-      "file": "recommendationengine_generated_recommendationengine_v1beta1_catalog_service_create_catalog_item_sync.py",
-      "regionTag": "recommendationengine_generated_recommendationengine_v1beta1_CatalogService_CreateCatalogItem_sync",
+      "file": "recommendationengine_v1beta1_generated_catalog_service_create_catalog_item_sync.py",
+      "regionTag": "recommendationengine_v1beta1_generated_CatalogService_CreateCatalogItem_sync",
       "segments": [
         {
           "end": 50,
@@ -99,8 +99,8 @@
           "shortName": "DeleteCatalogItem"
         }
       },
-      "file": "recommendationengine_generated_recommendationengine_v1beta1_catalog_service_delete_catalog_item_async.py",
-      "regionTag": "recommendationengine_generated_recommendationengine_v1beta1_CatalogService_DeleteCatalogItem_async",
+      "file": "recommendationengine_v1beta1_generated_catalog_service_delete_catalog_item_async.py",
+      "regionTag": "recommendationengine_v1beta1_generated_CatalogService_DeleteCatalogItem_async",
       "segments": [
         {
           "end": 42,
@@ -141,8 +141,8 @@
           "shortName": "DeleteCatalogItem"
         }
       },
-      "file": "recommendationengine_generated_recommendationengine_v1beta1_catalog_service_delete_catalog_item_sync.py",
-      "regionTag": "recommendationengine_generated_recommendationengine_v1beta1_CatalogService_DeleteCatalogItem_sync",
+      "file": "recommendationengine_v1beta1_generated_catalog_service_delete_catalog_item_sync.py",
+      "regionTag": "recommendationengine_v1beta1_generated_CatalogService_DeleteCatalogItem_sync",
       "segments": [
         {
           "end": 42,
@@ -184,8 +184,8 @@
           "shortName": "GetCatalogItem"
         }
       },
-      "file": "recommendationengine_generated_recommendationengine_v1beta1_catalog_service_get_catalog_item_async.py",
-      "regionTag": "recommendationengine_generated_recommendationengine_v1beta1_CatalogService_GetCatalogItem_async",
+      "file": "recommendationengine_v1beta1_generated_catalog_service_get_catalog_item_async.py",
+      "regionTag": "recommendationengine_v1beta1_generated_CatalogService_GetCatalogItem_async",
       "segments": [
         {
           "end": 44,
@@ -228,8 +228,8 @@
           "shortName": "GetCatalogItem"
         }
       },
-      "file": "recommendationengine_generated_recommendationengine_v1beta1_catalog_service_get_catalog_item_sync.py",
-      "regionTag": "recommendationengine_generated_recommendationengine_v1beta1_CatalogService_GetCatalogItem_sync",
+      "file": "recommendationengine_v1beta1_generated_catalog_service_get_catalog_item_sync.py",
+      "regionTag": "recommendationengine_v1beta1_generated_CatalogService_GetCatalogItem_sync",
       "segments": [
         {
           "end": 44,
@@ -273,8 +273,8 @@
           "shortName": "ImportCatalogItems"
         }
       },
-      "file": "recommendationengine_generated_recommendationengine_v1beta1_catalog_service_import_catalog_items_async.py",
-      "regionTag": "recommendationengine_generated_recommendationengine_v1beta1_CatalogService_ImportCatalogItems_async",
+      "file": "recommendationengine_v1beta1_generated_catalog_service_import_catalog_items_async.py",
+      "regionTag": "recommendationengine_v1beta1_generated_CatalogService_ImportCatalogItems_async",
       "segments": [
         {
           "end": 48,
@@ -317,8 +317,8 @@
           "shortName": "ImportCatalogItems"
         }
       },
-      "file": "recommendationengine_generated_recommendationengine_v1beta1_catalog_service_import_catalog_items_sync.py",
-      "regionTag": "recommendationengine_generated_recommendationengine_v1beta1_CatalogService_ImportCatalogItems_sync",
+      "file": "recommendationengine_v1beta1_generated_catalog_service_import_catalog_items_sync.py",
+      "regionTag": "recommendationengine_v1beta1_generated_CatalogService_ImportCatalogItems_sync",
       "segments": [
         {
           "end": 48,
@@ -362,8 +362,8 @@
           "shortName": "ListCatalogItems"
         }
       },
-      "file": "recommendationengine_generated_recommendationengine_v1beta1_catalog_service_list_catalog_items_async.py",
-      "regionTag": "recommendationengine_generated_recommendationengine_v1beta1_CatalogService_ListCatalogItems_async",
+      "file": "recommendationengine_v1beta1_generated_catalog_service_list_catalog_items_async.py",
+      "regionTag": "recommendationengine_v1beta1_generated_CatalogService_ListCatalogItems_async",
       "segments": [
         {
           "end": 45,
@@ -406,8 +406,8 @@
           "shortName": "ListCatalogItems"
         }
       },
-      "file": "recommendationengine_generated_recommendationengine_v1beta1_catalog_service_list_catalog_items_sync.py",
-      "regionTag": "recommendationengine_generated_recommendationengine_v1beta1_CatalogService_ListCatalogItems_sync",
+      "file": "recommendationengine_v1beta1_generated_catalog_service_list_catalog_items_sync.py",
+      "regionTag": "recommendationengine_v1beta1_generated_CatalogService_ListCatalogItems_sync",
       "segments": [
         {
           "end": 45,
@@ -451,8 +451,8 @@
           "shortName": "UpdateCatalogItem"
         }
       },
-      "file": "recommendationengine_generated_recommendationengine_v1beta1_catalog_service_update_catalog_item_async.py",
-      "regionTag": "recommendationengine_generated_recommendationengine_v1beta1_CatalogService_UpdateCatalogItem_async",
+      "file": "recommendationengine_v1beta1_generated_catalog_service_update_catalog_item_async.py",
+      "regionTag": "recommendationengine_v1beta1_generated_CatalogService_UpdateCatalogItem_async",
       "segments": [
         {
           "end": 50,
@@ -495,8 +495,8 @@
           "shortName": "UpdateCatalogItem"
         }
       },
-      "file": "recommendationengine_generated_recommendationengine_v1beta1_catalog_service_update_catalog_item_sync.py",
-      "regionTag": "recommendationengine_generated_recommendationengine_v1beta1_CatalogService_UpdateCatalogItem_sync",
+      "file": "recommendationengine_v1beta1_generated_catalog_service_update_catalog_item_sync.py",
+      "regionTag": "recommendationengine_v1beta1_generated_CatalogService_UpdateCatalogItem_sync",
       "segments": [
         {
           "end": 50,
@@ -540,8 +540,8 @@
           "shortName": "CreatePredictionApiKeyRegistration"
         }
       },
-      "file": "recommendationengine_generated_recommendationengine_v1beta1_prediction_api_key_registry_create_prediction_api_key_registration_async.py",
-      "regionTag": "recommendationengine_generated_recommendationengine_v1beta1_PredictionApiKeyRegistry_CreatePredictionApiKeyRegistration_async",
+      "file": "recommendationengine_v1beta1_generated_prediction_api_key_registry_create_prediction_api_key_registration_async.py",
+      "regionTag": "recommendationengine_v1beta1_generated_PredictionApiKeyRegistry_CreatePredictionApiKeyRegistration_async",
       "segments": [
         {
           "end": 44,
@@ -584,8 +584,8 @@
           "shortName": "CreatePredictionApiKeyRegistration"
         }
       },
-      "file": "recommendationengine_generated_recommendationengine_v1beta1_prediction_api_key_registry_create_prediction_api_key_registration_sync.py",
-      "regionTag": "recommendationengine_generated_recommendationengine_v1beta1_PredictionApiKeyRegistry_CreatePredictionApiKeyRegistration_sync",
+      "file": "recommendationengine_v1beta1_generated_prediction_api_key_registry_create_prediction_api_key_registration_sync.py",
+      "regionTag": "recommendationengine_v1beta1_generated_PredictionApiKeyRegistry_CreatePredictionApiKeyRegistration_sync",
       "segments": [
         {
           "end": 44,
@@ -629,8 +629,8 @@
           "shortName": "DeletePredictionApiKeyRegistration"
         }
       },
-      "file": "recommendationengine_generated_recommendationengine_v1beta1_prediction_api_key_registry_delete_prediction_api_key_registration_async.py",
-      "regionTag": "recommendationengine_generated_recommendationengine_v1beta1_PredictionApiKeyRegistry_DeletePredictionApiKeyRegistration_async",
+      "file": "recommendationengine_v1beta1_generated_prediction_api_key_registry_delete_prediction_api_key_registration_async.py",
+      "regionTag": "recommendationengine_v1beta1_generated_PredictionApiKeyRegistry_DeletePredictionApiKeyRegistration_async",
       "segments": [
         {
           "end": 42,
@@ -671,8 +671,8 @@
           "shortName": "DeletePredictionApiKeyRegistration"
         }
       },
-      "file": "recommendationengine_generated_recommendationengine_v1beta1_prediction_api_key_registry_delete_prediction_api_key_registration_sync.py",
-      "regionTag": "recommendationengine_generated_recommendationengine_v1beta1_PredictionApiKeyRegistry_DeletePredictionApiKeyRegistration_sync",
+      "file": "recommendationengine_v1beta1_generated_prediction_api_key_registry_delete_prediction_api_key_registration_sync.py",
+      "regionTag": "recommendationengine_v1beta1_generated_PredictionApiKeyRegistry_DeletePredictionApiKeyRegistration_sync",
       "segments": [
         {
           "end": 42,
@@ -714,8 +714,8 @@
           "shortName": "ListPredictionApiKeyRegistrations"
         }
       },
-      "file": "recommendationengine_generated_recommendationengine_v1beta1_prediction_api_key_registry_list_prediction_api_key_registrations_async.py",
-      "regionTag": "recommendationengine_generated_recommendationengine_v1beta1_PredictionApiKeyRegistry_ListPredictionApiKeyRegistrations_async",
+      "file": "recommendationengine_v1beta1_generated_prediction_api_key_registry_list_prediction_api_key_registrations_async.py",
+      "regionTag": "recommendationengine_v1beta1_generated_PredictionApiKeyRegistry_ListPredictionApiKeyRegistrations_async",
       "segments": [
         {
           "end": 45,
@@ -758,8 +758,8 @@
           "shortName": "ListPredictionApiKeyRegistrations"
         }
       },
-      "file": "recommendationengine_generated_recommendationengine_v1beta1_prediction_api_key_registry_list_prediction_api_key_registrations_sync.py",
-      "regionTag": "recommendationengine_generated_recommendationengine_v1beta1_PredictionApiKeyRegistry_ListPredictionApiKeyRegistrations_sync",
+      "file": "recommendationengine_v1beta1_generated_prediction_api_key_registry_list_prediction_api_key_registrations_sync.py",
+      "regionTag": "recommendationengine_v1beta1_generated_PredictionApiKeyRegistry_ListPredictionApiKeyRegistrations_sync",
       "segments": [
         {
           "end": 45,
@@ -803,8 +803,8 @@
           "shortName": "Predict"
         }
       },
-      "file": "recommendationengine_generated_recommendationengine_v1beta1_prediction_service_predict_async.py",
-      "regionTag": "recommendationengine_generated_recommendationengine_v1beta1_PredictionService_Predict_async",
+      "file": "recommendationengine_v1beta1_generated_prediction_service_predict_async.py",
+      "regionTag": "recommendationengine_v1beta1_generated_PredictionService_Predict_async",
       "segments": [
         {
           "end": 50,
@@ -847,8 +847,8 @@
           "shortName": "Predict"
         }
       },
-      "file": "recommendationengine_generated_recommendationengine_v1beta1_prediction_service_predict_sync.py",
-      "regionTag": "recommendationengine_generated_recommendationengine_v1beta1_PredictionService_Predict_sync",
+      "file": "recommendationengine_v1beta1_generated_prediction_service_predict_sync.py",
+      "regionTag": "recommendationengine_v1beta1_generated_PredictionService_Predict_sync",
       "segments": [
         {
           "end": 50,
@@ -892,8 +892,8 @@
           "shortName": "CollectUserEvent"
         }
       },
-      "file": "recommendationengine_generated_recommendationengine_v1beta1_user_event_service_collect_user_event_async.py",
-      "regionTag": "recommendationengine_generated_recommendationengine_v1beta1_UserEventService_CollectUserEvent_async",
+      "file": "recommendationengine_v1beta1_generated_user_event_service_collect_user_event_async.py",
+      "regionTag": "recommendationengine_v1beta1_generated_UserEventService_CollectUserEvent_async",
       "segments": [
         {
           "end": 45,
@@ -936,8 +936,8 @@
           "shortName": "CollectUserEvent"
         }
       },
-      "file": "recommendationengine_generated_recommendationengine_v1beta1_user_event_service_collect_user_event_sync.py",
-      "regionTag": "recommendationengine_generated_recommendationengine_v1beta1_UserEventService_CollectUserEvent_sync",
+      "file": "recommendationengine_v1beta1_generated_user_event_service_collect_user_event_sync.py",
+      "regionTag": "recommendationengine_v1beta1_generated_UserEventService_CollectUserEvent_sync",
       "segments": [
         {
           "end": 45,
@@ -981,8 +981,8 @@
           "shortName": "ImportUserEvents"
         }
       },
-      "file": "recommendationengine_generated_recommendationengine_v1beta1_user_event_service_import_user_events_async.py",
-      "regionTag": "recommendationengine_generated_recommendationengine_v1beta1_UserEventService_ImportUserEvents_async",
+      "file": "recommendationengine_v1beta1_generated_user_event_service_import_user_events_async.py",
+      "regionTag": "recommendationengine_v1beta1_generated_UserEventService_ImportUserEvents_async",
       "segments": [
         {
           "end": 48,
@@ -1025,8 +1025,8 @@
           "shortName": "ImportUserEvents"
         }
       },
-      "file": "recommendationengine_generated_recommendationengine_v1beta1_user_event_service_import_user_events_sync.py",
-      "regionTag": "recommendationengine_generated_recommendationengine_v1beta1_UserEventService_ImportUserEvents_sync",
+      "file": "recommendationengine_v1beta1_generated_user_event_service_import_user_events_sync.py",
+      "regionTag": "recommendationengine_v1beta1_generated_UserEventService_ImportUserEvents_sync",
       "segments": [
         {
           "end": 48,
@@ -1070,8 +1070,8 @@
           "shortName": "ListUserEvents"
         }
       },
-      "file": "recommendationengine_generated_recommendationengine_v1beta1_user_event_service_list_user_events_async.py",
-      "regionTag": "recommendationengine_generated_recommendationengine_v1beta1_UserEventService_ListUserEvents_async",
+      "file": "recommendationengine_v1beta1_generated_user_event_service_list_user_events_async.py",
+      "regionTag": "recommendationengine_v1beta1_generated_UserEventService_ListUserEvents_async",
       "segments": [
         {
           "end": 45,
@@ -1114,8 +1114,8 @@
           "shortName": "ListUserEvents"
         }
       },
-      "file": "recommendationengine_generated_recommendationengine_v1beta1_user_event_service_list_user_events_sync.py",
-      "regionTag": "recommendationengine_generated_recommendationengine_v1beta1_UserEventService_ListUserEvents_sync",
+      "file": "recommendationengine_v1beta1_generated_user_event_service_list_user_events_sync.py",
+      "regionTag": "recommendationengine_v1beta1_generated_UserEventService_ListUserEvents_sync",
       "segments": [
         {
           "end": 45,
@@ -1159,8 +1159,8 @@
           "shortName": "PurgeUserEvents"
         }
       },
-      "file": "recommendationengine_generated_recommendationengine_v1beta1_user_event_service_purge_user_events_async.py",
-      "regionTag": "recommendationengine_generated_recommendationengine_v1beta1_UserEventService_PurgeUserEvents_async",
+      "file": "recommendationengine_v1beta1_generated_user_event_service_purge_user_events_async.py",
+      "regionTag": "recommendationengine_v1beta1_generated_UserEventService_PurgeUserEvents_async",
       "segments": [
         {
           "end": 49,
@@ -1203,8 +1203,8 @@
           "shortName": "PurgeUserEvents"
         }
       },
-      "file": "recommendationengine_generated_recommendationengine_v1beta1_user_event_service_purge_user_events_sync.py",
-      "regionTag": "recommendationengine_generated_recommendationengine_v1beta1_UserEventService_PurgeUserEvents_sync",
+      "file": "recommendationengine_v1beta1_generated_user_event_service_purge_user_events_sync.py",
+      "regionTag": "recommendationengine_v1beta1_generated_UserEventService_PurgeUserEvents_sync",
       "segments": [
         {
           "end": 49,
@@ -1248,8 +1248,8 @@
           "shortName": "WriteUserEvent"
         }
       },
-      "file": "recommendationengine_generated_recommendationengine_v1beta1_user_event_service_write_user_event_async.py",
-      "regionTag": "recommendationengine_generated_recommendationengine_v1beta1_UserEventService_WriteUserEvent_async",
+      "file": "recommendationengine_v1beta1_generated_user_event_service_write_user_event_async.py",
+      "regionTag": "recommendationengine_v1beta1_generated_UserEventService_WriteUserEvent_async",
       "segments": [
         {
           "end": 49,
@@ -1292,8 +1292,8 @@
           "shortName": "WriteUserEvent"
         }
       },
-      "file": "recommendationengine_generated_recommendationengine_v1beta1_user_event_service_write_user_event_sync.py",
-      "regionTag": "recommendationengine_generated_recommendationengine_v1beta1_UserEventService_WriteUserEvent_sync",
+      "file": "recommendationengine_v1beta1_generated_user_event_service_write_user_event_sync.py",
+      "regionTag": "recommendationengine_v1beta1_generated_UserEventService_WriteUserEvent_sync",
       "segments": [
         {
           "end": 49,

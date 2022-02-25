@@ -224,7 +224,7 @@ class UserEventServiceAsyncClient:
     ) -> gcr_user_event.UserEvent:
         r"""Writes a single user event.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recommendationengine_v1beta1
 
@@ -347,7 +347,7 @@ class UserEventServiceAsyncClient:
         directly.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recommendationengine_v1beta1
 
@@ -531,7 +531,7 @@ class UserEventServiceAsyncClient:
         potential filtering.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recommendationengine_v1beta1
 
@@ -691,7 +691,7 @@ class UserEventServiceAsyncClient:
         command first.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recommendationengine_v1beta1
 
@@ -856,7 +856,7 @@ class UserEventServiceAsyncClient:
         ImportMetadata.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recommendationengine_v1beta1
 

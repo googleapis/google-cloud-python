@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for DeleteCatalogItem
+# Snippet for ImportUserEvents
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,21 +23,27 @@
 #   python3 -m pip install google-cloud-recommendations-ai
 
 
-# [START recommendationengine_generated_recommendationengine_v1beta1_CatalogService_DeleteCatalogItem_async]
+# [START recommendationengine_v1beta1_generated_UserEventService_ImportUserEvents_sync]
 from google.cloud import recommendationengine_v1beta1
 
 
-async def sample_delete_catalog_item():
+def sample_import_user_events():
     # Create a client
-    client = recommendationengine_v1beta1.CatalogServiceAsyncClient()
+    client = recommendationengine_v1beta1.UserEventServiceClient()
 
     # Initialize request argument(s)
-    request = recommendationengine_v1beta1.DeleteCatalogItemRequest(
-        name="name_value",
+    request = recommendationengine_v1beta1.ImportUserEventsRequest(
+        parent="parent_value",
     )
 
     # Make the request
-    await client.delete_catalog_item(request=request)
+    operation = client.import_user_events(request=request)
 
+    print("Waiting for operation to complete...")
 
-# [END recommendationengine_generated_recommendationengine_v1beta1_CatalogService_DeleteCatalogItem_async]
+    response = operation.result()
+
+    # Handle the response
+    print(response)
+
+# [END recommendationengine_v1beta1_generated_UserEventService_ImportUserEvents_sync]

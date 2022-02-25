@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for DeleteCatalogItem
+# Snippet for WriteUserEvent
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,21 +23,28 @@
 #   python3 -m pip install google-cloud-recommendations-ai
 
 
-# [START recommendationengine_generated_recommendationengine_v1beta1_CatalogService_DeleteCatalogItem_sync]
+# [START recommendationengine_v1beta1_generated_UserEventService_WriteUserEvent_sync]
 from google.cloud import recommendationengine_v1beta1
 
 
-def sample_delete_catalog_item():
+def sample_write_user_event():
     # Create a client
-    client = recommendationengine_v1beta1.CatalogServiceClient()
+    client = recommendationengine_v1beta1.UserEventServiceClient()
 
     # Initialize request argument(s)
-    request = recommendationengine_v1beta1.DeleteCatalogItemRequest(
-        name="name_value",
+    user_event = recommendationengine_v1beta1.UserEvent()
+    user_event.event_type = "event_type_value"
+    user_event.user_info.visitor_id = "visitor_id_value"
+
+    request = recommendationengine_v1beta1.WriteUserEventRequest(
+        parent="parent_value",
+        user_event=user_event,
     )
 
     # Make the request
-    client.delete_catalog_item(request=request)
+    response = client.write_user_event(request=request)
 
+    # Handle the response
+    print(response)
 
-# [END recommendationengine_generated_recommendationengine_v1beta1_CatalogService_DeleteCatalogItem_sync]
+# [END recommendationengine_v1beta1_generated_UserEventService_WriteUserEvent_sync]

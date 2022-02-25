@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for Predict
+# Snippet for ListCatalogItems
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,29 +23,24 @@
 #   python3 -m pip install google-cloud-recommendations-ai
 
 
-# [START recommendationengine_generated_recommendationengine_v1beta1_PredictionService_Predict_async]
+# [START recommendationengine_v1beta1_generated_CatalogService_ListCatalogItems_async]
 from google.cloud import recommendationengine_v1beta1
 
 
-async def sample_predict():
+async def sample_list_catalog_items():
     # Create a client
-    client = recommendationengine_v1beta1.PredictionServiceAsyncClient()
+    client = recommendationengine_v1beta1.CatalogServiceAsyncClient()
 
     # Initialize request argument(s)
-    user_event = recommendationengine_v1beta1.UserEvent()
-    user_event.event_type = "event_type_value"
-    user_event.user_info.visitor_id = "visitor_id_value"
-
-    request = recommendationengine_v1beta1.PredictRequest(
-        name="name_value",
-        user_event=user_event,
+    request = recommendationengine_v1beta1.ListCatalogItemsRequest(
+        parent="parent_value",
     )
 
     # Make the request
-    page_result = client.predict(request=request)
+    page_result = client.list_catalog_items(request=request)
 
     # Handle the response
     async for response in page_result:
         print(response)
 
-# [END recommendationengine_generated_recommendationengine_v1beta1_PredictionService_Predict_async]
+# [END recommendationengine_v1beta1_generated_CatalogService_ListCatalogItems_async]

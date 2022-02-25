@@ -426,8 +426,7 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
     ) -> gcr_user_event.UserEvent:
         r"""Writes a single user event.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recommendationengine_v1beta1
 
@@ -540,8 +539,7 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
         directly.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recommendationengine_v1beta1
 
@@ -715,8 +713,7 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
         potential filtering.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recommendationengine_v1beta1
 
@@ -866,8 +863,7 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
         command first.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recommendationengine_v1beta1
 
@@ -1022,8 +1018,7 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
         ImportMetadata.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recommendationengine_v1beta1
 

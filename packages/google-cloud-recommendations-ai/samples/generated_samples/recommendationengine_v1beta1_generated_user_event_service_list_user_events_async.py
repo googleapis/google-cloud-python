@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for DeletePredictionApiKeyRegistration
+# Snippet for ListUserEvents
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,21 +23,24 @@
 #   python3 -m pip install google-cloud-recommendations-ai
 
 
-# [START recommendationengine_generated_recommendationengine_v1beta1_PredictionApiKeyRegistry_DeletePredictionApiKeyRegistration_async]
+# [START recommendationengine_v1beta1_generated_UserEventService_ListUserEvents_async]
 from google.cloud import recommendationengine_v1beta1
 
 
-async def sample_delete_prediction_api_key_registration():
+async def sample_list_user_events():
     # Create a client
-    client = recommendationengine_v1beta1.PredictionApiKeyRegistryAsyncClient()
+    client = recommendationengine_v1beta1.UserEventServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = recommendationengine_v1beta1.DeletePredictionApiKeyRegistrationRequest(
-        name="name_value",
+    request = recommendationengine_v1beta1.ListUserEventsRequest(
+        parent="parent_value",
     )
 
     # Make the request
-    await client.delete_prediction_api_key_registration(request=request)
+    page_result = client.list_user_events(request=request)
 
+    # Handle the response
+    async for response in page_result:
+        print(response)
 
-# [END recommendationengine_generated_recommendationengine_v1beta1_PredictionApiKeyRegistry_DeletePredictionApiKeyRegistration_async]
+# [END recommendationengine_v1beta1_generated_UserEventService_ListUserEvents_async]

@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for UpdateCatalogItem
+# Snippet for GetCatalogItem
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,29 +23,23 @@
 #   python3 -m pip install google-cloud-recommendations-ai
 
 
-# [START recommendationengine_generated_recommendationengine_v1beta1_CatalogService_UpdateCatalogItem_async]
+# [START recommendationengine_v1beta1_generated_CatalogService_GetCatalogItem_sync]
 from google.cloud import recommendationengine_v1beta1
 
 
-async def sample_update_catalog_item():
+def sample_get_catalog_item():
     # Create a client
-    client = recommendationengine_v1beta1.CatalogServiceAsyncClient()
+    client = recommendationengine_v1beta1.CatalogServiceClient()
 
     # Initialize request argument(s)
-    catalog_item = recommendationengine_v1beta1.CatalogItem()
-    catalog_item.id = "id_value"
-    catalog_item.category_hierarchies.categories = ['categories_value_1', 'categories_value_2']
-    catalog_item.title = "title_value"
-
-    request = recommendationengine_v1beta1.UpdateCatalogItemRequest(
+    request = recommendationengine_v1beta1.GetCatalogItemRequest(
         name="name_value",
-        catalog_item=catalog_item,
     )
 
     # Make the request
-    response = await client.update_catalog_item(request=request)
+    response = client.get_catalog_item(request=request)
 
     # Handle the response
     print(response)
 
-# [END recommendationengine_generated_recommendationengine_v1beta1_CatalogService_UpdateCatalogItem_async]
+# [END recommendationengine_v1beta1_generated_CatalogService_GetCatalogItem_sync]

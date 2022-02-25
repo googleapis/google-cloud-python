@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for GetCatalogItem
+# Snippet for DeleteCatalogItem
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,23 +23,21 @@
 #   python3 -m pip install google-cloud-recommendations-ai
 
 
-# [START recommendationengine_generated_recommendationengine_v1beta1_CatalogService_GetCatalogItem_async]
+# [START recommendationengine_v1beta1_generated_CatalogService_DeleteCatalogItem_sync]
 from google.cloud import recommendationengine_v1beta1
 
 
-async def sample_get_catalog_item():
+def sample_delete_catalog_item():
     # Create a client
-    client = recommendationengine_v1beta1.CatalogServiceAsyncClient()
+    client = recommendationengine_v1beta1.CatalogServiceClient()
 
     # Initialize request argument(s)
-    request = recommendationengine_v1beta1.GetCatalogItemRequest(
+    request = recommendationengine_v1beta1.DeleteCatalogItemRequest(
         name="name_value",
     )
 
     # Make the request
-    response = await client.get_catalog_item(request=request)
+    client.delete_catalog_item(request=request)
 
-    # Handle the response
-    print(response)
 
-# [END recommendationengine_generated_recommendationengine_v1beta1_CatalogService_GetCatalogItem_async]
+# [END recommendationengine_v1beta1_generated_CatalogService_DeleteCatalogItem_sync]

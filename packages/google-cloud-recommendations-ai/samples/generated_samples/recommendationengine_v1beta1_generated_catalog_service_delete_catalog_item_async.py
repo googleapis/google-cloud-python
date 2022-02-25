@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for PurgeUserEvents
+# Snippet for DeleteCatalogItem
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,28 +23,21 @@
 #   python3 -m pip install google-cloud-recommendations-ai
 
 
-# [START recommendationengine_generated_recommendationengine_v1beta1_UserEventService_PurgeUserEvents_sync]
+# [START recommendationengine_v1beta1_generated_CatalogService_DeleteCatalogItem_async]
 from google.cloud import recommendationengine_v1beta1
 
 
-def sample_purge_user_events():
+async def sample_delete_catalog_item():
     # Create a client
-    client = recommendationengine_v1beta1.UserEventServiceClient()
+    client = recommendationengine_v1beta1.CatalogServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = recommendationengine_v1beta1.PurgeUserEventsRequest(
-        parent="parent_value",
-        filter="filter_value",
+    request = recommendationengine_v1beta1.DeleteCatalogItemRequest(
+        name="name_value",
     )
 
     # Make the request
-    operation = client.purge_user_events(request=request)
+    await client.delete_catalog_item(request=request)
 
-    print("Waiting for operation to complete...")
 
-    response = operation.result()
-
-    # Handle the response
-    print(response)
-
-# [END recommendationengine_generated_recommendationengine_v1beta1_UserEventService_PurgeUserEvents_sync]
+# [END recommendationengine_v1beta1_generated_CatalogService_DeleteCatalogItem_async]

@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for CreateCatalogItem
+# Snippet for Predict
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,29 +23,29 @@
 #   python3 -m pip install google-cloud-recommendations-ai
 
 
-# [START recommendationengine_generated_recommendationengine_v1beta1_CatalogService_CreateCatalogItem_async]
+# [START recommendationengine_v1beta1_generated_PredictionService_Predict_sync]
 from google.cloud import recommendationengine_v1beta1
 
 
-async def sample_create_catalog_item():
+def sample_predict():
     # Create a client
-    client = recommendationengine_v1beta1.CatalogServiceAsyncClient()
+    client = recommendationengine_v1beta1.PredictionServiceClient()
 
     # Initialize request argument(s)
-    catalog_item = recommendationengine_v1beta1.CatalogItem()
-    catalog_item.id = "id_value"
-    catalog_item.category_hierarchies.categories = ['categories_value_1', 'categories_value_2']
-    catalog_item.title = "title_value"
+    user_event = recommendationengine_v1beta1.UserEvent()
+    user_event.event_type = "event_type_value"
+    user_event.user_info.visitor_id = "visitor_id_value"
 
-    request = recommendationengine_v1beta1.CreateCatalogItemRequest(
-        parent="parent_value",
-        catalog_item=catalog_item,
+    request = recommendationengine_v1beta1.PredictRequest(
+        name="name_value",
+        user_event=user_event,
     )
 
     # Make the request
-    response = await client.create_catalog_item(request=request)
+    page_result = client.predict(request=request)
 
     # Handle the response
-    print(response)
+    for response in page_result:
+        print(response)
 
-# [END recommendationengine_generated_recommendationengine_v1beta1_CatalogService_CreateCatalogItem_async]
+# [END recommendationengine_v1beta1_generated_PredictionService_Predict_sync]

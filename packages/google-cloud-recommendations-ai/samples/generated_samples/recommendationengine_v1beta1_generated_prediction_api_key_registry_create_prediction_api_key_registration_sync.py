@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ListCatalogItems
+# Snippet for CreatePredictionApiKeyRegistration
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,24 +23,23 @@
 #   python3 -m pip install google-cloud-recommendations-ai
 
 
-# [START recommendationengine_generated_recommendationengine_v1beta1_CatalogService_ListCatalogItems_sync]
+# [START recommendationengine_v1beta1_generated_PredictionApiKeyRegistry_CreatePredictionApiKeyRegistration_sync]
 from google.cloud import recommendationengine_v1beta1
 
 
-def sample_list_catalog_items():
+def sample_create_prediction_api_key_registration():
     # Create a client
-    client = recommendationengine_v1beta1.CatalogServiceClient()
+    client = recommendationengine_v1beta1.PredictionApiKeyRegistryClient()
 
     # Initialize request argument(s)
-    request = recommendationengine_v1beta1.ListCatalogItemsRequest(
+    request = recommendationengine_v1beta1.CreatePredictionApiKeyRegistrationRequest(
         parent="parent_value",
     )
 
     # Make the request
-    page_result = client.list_catalog_items(request=request)
+    response = client.create_prediction_api_key_registration(request=request)
 
     # Handle the response
-    for response in page_result:
-        print(response)
+    print(response)
 
-# [END recommendationengine_generated_recommendationengine_v1beta1_CatalogService_ListCatalogItems_sync]
+# [END recommendationengine_v1beta1_generated_PredictionApiKeyRegistry_CreatePredictionApiKeyRegistration_sync]

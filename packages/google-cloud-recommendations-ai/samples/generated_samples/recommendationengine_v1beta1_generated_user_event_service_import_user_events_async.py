@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ListCatalogItems
+# Snippet for ImportUserEvents
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,24 +23,27 @@
 #   python3 -m pip install google-cloud-recommendations-ai
 
 
-# [START recommendationengine_generated_recommendationengine_v1beta1_CatalogService_ListCatalogItems_async]
+# [START recommendationengine_v1beta1_generated_UserEventService_ImportUserEvents_async]
 from google.cloud import recommendationengine_v1beta1
 
 
-async def sample_list_catalog_items():
+async def sample_import_user_events():
     # Create a client
-    client = recommendationengine_v1beta1.CatalogServiceAsyncClient()
+    client = recommendationengine_v1beta1.UserEventServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = recommendationengine_v1beta1.ListCatalogItemsRequest(
+    request = recommendationengine_v1beta1.ImportUserEventsRequest(
         parent="parent_value",
     )
 
     # Make the request
-    page_result = client.list_catalog_items(request=request)
+    operation = client.import_user_events(request=request)
+
+    print("Waiting for operation to complete...")
+
+    response = await operation.result()
 
     # Handle the response
-    async for response in page_result:
-        print(response)
+    print(response)
 
-# [END recommendationengine_generated_recommendationengine_v1beta1_CatalogService_ListCatalogItems_async]
+# [END recommendationengine_v1beta1_generated_UserEventService_ImportUserEvents_async]

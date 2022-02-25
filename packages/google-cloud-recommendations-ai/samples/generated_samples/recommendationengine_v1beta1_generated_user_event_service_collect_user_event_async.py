@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for WriteUserEvent
+# Snippet for CollectUserEvent
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,28 +23,24 @@
 #   python3 -m pip install google-cloud-recommendations-ai
 
 
-# [START recommendationengine_generated_recommendationengine_v1beta1_UserEventService_WriteUserEvent_async]
+# [START recommendationengine_v1beta1_generated_UserEventService_CollectUserEvent_async]
 from google.cloud import recommendationengine_v1beta1
 
 
-async def sample_write_user_event():
+async def sample_collect_user_event():
     # Create a client
     client = recommendationengine_v1beta1.UserEventServiceAsyncClient()
 
     # Initialize request argument(s)
-    user_event = recommendationengine_v1beta1.UserEvent()
-    user_event.event_type = "event_type_value"
-    user_event.user_info.visitor_id = "visitor_id_value"
-
-    request = recommendationengine_v1beta1.WriteUserEventRequest(
+    request = recommendationengine_v1beta1.CollectUserEventRequest(
         parent="parent_value",
-        user_event=user_event,
+        user_event="user_event_value",
     )
 
     # Make the request
-    response = await client.write_user_event(request=request)
+    response = await client.collect_user_event(request=request)
 
     # Handle the response
     print(response)
 
-# [END recommendationengine_generated_recommendationengine_v1beta1_UserEventService_WriteUserEvent_async]
+# [END recommendationengine_v1beta1_generated_UserEventService_CollectUserEvent_async]

@@ -240,7 +240,7 @@ class PredictionApiKeyRegistryAsyncClient:
     ) -> prediction_apikey_registry_service.PredictionApiKeyRegistration:
         r"""Register an API key for use with predict method.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recommendationengine_v1beta1
 
@@ -354,7 +354,7 @@ class PredictionApiKeyRegistryAsyncClient:
         method.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recommendationengine_v1beta1
 
@@ -469,7 +469,7 @@ class PredictionApiKeyRegistryAsyncClient:
     ) -> None:
         r"""Unregister an apiKey from using for predict method.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recommendationengine_v1beta1
 

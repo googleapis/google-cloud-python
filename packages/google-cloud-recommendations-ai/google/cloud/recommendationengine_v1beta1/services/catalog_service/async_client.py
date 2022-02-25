@@ -223,7 +223,7 @@ class CatalogServiceAsyncClient:
     ) -> catalog.CatalogItem:
         r"""Creates a catalog item.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recommendationengine_v1beta1
 
@@ -336,7 +336,7 @@ class CatalogServiceAsyncClient:
     ) -> catalog.CatalogItem:
         r"""Gets a specific catalog item.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recommendationengine_v1beta1
 
@@ -437,7 +437,7 @@ class CatalogServiceAsyncClient:
     ) -> pagers.ListCatalogItemsAsyncPager:
         r"""Gets a list of catalog items.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recommendationengine_v1beta1
 
@@ -560,7 +560,7 @@ class CatalogServiceAsyncClient:
         supported. Non-existing items will be created.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recommendationengine_v1beta1
 
@@ -685,7 +685,7 @@ class CatalogServiceAsyncClient:
     ) -> None:
         r"""Deletes a catalog item.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recommendationengine_v1beta1
 
@@ -785,7 +785,7 @@ class CatalogServiceAsyncClient:
         successfully updated.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recommendationengine_v1beta1
 
