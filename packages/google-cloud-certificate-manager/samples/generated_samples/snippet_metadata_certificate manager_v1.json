@@ -10,8 +10,8 @@
           "shortName": "CreateCertificateMapEntry"
         }
       },
-      "file": "certificatemanager_generated_certificate_manager_v1_certificate_manager_create_certificate_map_entry_async.py",
-      "regionTag": "certificatemanager_generated_certificate_manager_v1_CertificateManager_CreateCertificateMapEntry_async",
+      "file": "certificatemanager_v1_generated_certificate_manager_create_certificate_map_entry_async.py",
+      "regionTag": "certificatemanager_v1_generated_CertificateManager_CreateCertificateMapEntry_async",
       "segments": [
         {
           "end": 53,
@@ -54,8 +54,8 @@
           "shortName": "CreateCertificateMapEntry"
         }
       },
-      "file": "certificatemanager_generated_certificate_manager_v1_certificate_manager_create_certificate_map_entry_sync.py",
-      "regionTag": "certificatemanager_generated_certificate_manager_v1_CertificateManager_CreateCertificateMapEntry_sync",
+      "file": "certificatemanager_v1_generated_certificate_manager_create_certificate_map_entry_sync.py",
+      "regionTag": "certificatemanager_v1_generated_CertificateManager_CreateCertificateMapEntry_sync",
       "segments": [
         {
           "end": 53,
@@ -99,8 +99,8 @@
           "shortName": "CreateCertificateMap"
         }
       },
-      "file": "certificatemanager_generated_certificate_manager_v1_certificate_manager_create_certificate_map_async.py",
-      "regionTag": "certificatemanager_generated_certificate_manager_v1_CertificateManager_CreateCertificateMap_async",
+      "file": "certificatemanager_v1_generated_certificate_manager_create_certificate_map_async.py",
+      "regionTag": "certificatemanager_v1_generated_CertificateManager_CreateCertificateMap_async",
       "segments": [
         {
           "end": 49,
@@ -143,8 +143,8 @@
           "shortName": "CreateCertificateMap"
         }
       },
-      "file": "certificatemanager_generated_certificate_manager_v1_certificate_manager_create_certificate_map_sync.py",
-      "regionTag": "certificatemanager_generated_certificate_manager_v1_CertificateManager_CreateCertificateMap_sync",
+      "file": "certificatemanager_v1_generated_certificate_manager_create_certificate_map_sync.py",
+      "regionTag": "certificatemanager_v1_generated_CertificateManager_CreateCertificateMap_sync",
       "segments": [
         {
           "end": 49,
@@ -188,8 +188,8 @@
           "shortName": "CreateCertificate"
         }
       },
-      "file": "certificatemanager_generated_certificate_manager_v1_certificate_manager_create_certificate_async.py",
-      "regionTag": "certificatemanager_generated_certificate_manager_v1_CertificateManager_CreateCertificate_async",
+      "file": "certificatemanager_v1_generated_certificate_manager_create_certificate_async.py",
+      "regionTag": "certificatemanager_v1_generated_CertificateManager_CreateCertificate_async",
       "segments": [
         {
           "end": 49,
@@ -232,8 +232,8 @@
           "shortName": "CreateCertificate"
         }
       },
-      "file": "certificatemanager_generated_certificate_manager_v1_certificate_manager_create_certificate_sync.py",
-      "regionTag": "certificatemanager_generated_certificate_manager_v1_CertificateManager_CreateCertificate_sync",
+      "file": "certificatemanager_v1_generated_certificate_manager_create_certificate_sync.py",
+      "regionTag": "certificatemanager_v1_generated_CertificateManager_CreateCertificate_sync",
       "segments": [
         {
           "end": 49,
@@ -277,8 +277,8 @@
           "shortName": "CreateDnsAuthorization"
         }
       },
-      "file": "certificatemanager_generated_certificate_manager_v1_certificate_manager_create_dns_authorization_async.py",
-      "regionTag": "certificatemanager_generated_certificate_manager_v1_CertificateManager_CreateDnsAuthorization_async",
+      "file": "certificatemanager_v1_generated_certificate_manager_create_dns_authorization_async.py",
+      "regionTag": "certificatemanager_v1_generated_CertificateManager_CreateDnsAuthorization_async",
       "segments": [
         {
           "end": 53,
@@ -321,8 +321,8 @@
           "shortName": "CreateDnsAuthorization"
         }
       },
-      "file": "certificatemanager_generated_certificate_manager_v1_certificate_manager_create_dns_authorization_sync.py",
-      "regionTag": "certificatemanager_generated_certificate_manager_v1_CertificateManager_CreateDnsAuthorization_sync",
+      "file": "certificatemanager_v1_generated_certificate_manager_create_dns_authorization_sync.py",
+      "regionTag": "certificatemanager_v1_generated_CertificateManager_CreateDnsAuthorization_sync",
       "segments": [
         {
           "end": 53,
@@ -366,8 +366,8 @@
           "shortName": "DeleteCertificateMapEntry"
         }
       },
-      "file": "certificatemanager_generated_certificate_manager_v1_certificate_manager_delete_certificate_map_entry_async.py",
-      "regionTag": "certificatemanager_generated_certificate_manager_v1_CertificateManager_DeleteCertificateMapEntry_async",
+      "file": "certificatemanager_v1_generated_certificate_manager_delete_certificate_map_entry_async.py",
+      "regionTag": "certificatemanager_v1_generated_CertificateManager_DeleteCertificateMapEntry_async",
       "segments": [
         {
           "end": 48,
@@ -410,8 +410,8 @@
           "shortName": "DeleteCertificateMapEntry"
         }
       },
-      "file": "certificatemanager_generated_certificate_manager_v1_certificate_manager_delete_certificate_map_entry_sync.py",
-      "regionTag": "certificatemanager_generated_certificate_manager_v1_CertificateManager_DeleteCertificateMapEntry_sync",
+      "file": "certificatemanager_v1_generated_certificate_manager_delete_certificate_map_entry_sync.py",
+      "regionTag": "certificatemanager_v1_generated_CertificateManager_DeleteCertificateMapEntry_sync",
       "segments": [
         {
           "end": 48,
@@ -455,8 +455,8 @@
           "shortName": "DeleteCertificateMap"
         }
       },
-      "file": "certificatemanager_generated_certificate_manager_v1_certificate_manager_delete_certificate_map_async.py",
-      "regionTag": "certificatemanager_generated_certificate_manager_v1_CertificateManager_DeleteCertificateMap_async",
+      "file": "certificatemanager_v1_generated_certificate_manager_delete_certificate_map_async.py",
+      "regionTag": "certificatemanager_v1_generated_CertificateManager_DeleteCertificateMap_async",
       "segments": [
         {
           "end": 48,
@@ -499,8 +499,8 @@
           "shortName": "DeleteCertificateMap"
         }
       },
-      "file": "certificatemanager_generated_certificate_manager_v1_certificate_manager_delete_certificate_map_sync.py",
-      "regionTag": "certificatemanager_generated_certificate_manager_v1_CertificateManager_DeleteCertificateMap_sync",
+      "file": "certificatemanager_v1_generated_certificate_manager_delete_certificate_map_sync.py",
+      "regionTag": "certificatemanager_v1_generated_CertificateManager_DeleteCertificateMap_sync",
       "segments": [
         {
           "end": 48,
@@ -544,8 +544,8 @@
           "shortName": "DeleteCertificate"
         }
       },
-      "file": "certificatemanager_generated_certificate_manager_v1_certificate_manager_delete_certificate_async.py",
-      "regionTag": "certificatemanager_generated_certificate_manager_v1_CertificateManager_DeleteCertificate_async",
+      "file": "certificatemanager_v1_generated_certificate_manager_delete_certificate_async.py",
+      "regionTag": "certificatemanager_v1_generated_CertificateManager_DeleteCertificate_async",
       "segments": [
         {
           "end": 48,
@@ -588,8 +588,8 @@
           "shortName": "DeleteCertificate"
         }
       },
-      "file": "certificatemanager_generated_certificate_manager_v1_certificate_manager_delete_certificate_sync.py",
-      "regionTag": "certificatemanager_generated_certificate_manager_v1_CertificateManager_DeleteCertificate_sync",
+      "file": "certificatemanager_v1_generated_certificate_manager_delete_certificate_sync.py",
+      "regionTag": "certificatemanager_v1_generated_CertificateManager_DeleteCertificate_sync",
       "segments": [
         {
           "end": 48,
@@ -633,8 +633,8 @@
           "shortName": "DeleteDnsAuthorization"
         }
       },
-      "file": "certificatemanager_generated_certificate_manager_v1_certificate_manager_delete_dns_authorization_async.py",
-      "regionTag": "certificatemanager_generated_certificate_manager_v1_CertificateManager_DeleteDnsAuthorization_async",
+      "file": "certificatemanager_v1_generated_certificate_manager_delete_dns_authorization_async.py",
+      "regionTag": "certificatemanager_v1_generated_CertificateManager_DeleteDnsAuthorization_async",
       "segments": [
         {
           "end": 48,
@@ -677,8 +677,8 @@
           "shortName": "DeleteDnsAuthorization"
         }
       },
-      "file": "certificatemanager_generated_certificate_manager_v1_certificate_manager_delete_dns_authorization_sync.py",
-      "regionTag": "certificatemanager_generated_certificate_manager_v1_CertificateManager_DeleteDnsAuthorization_sync",
+      "file": "certificatemanager_v1_generated_certificate_manager_delete_dns_authorization_sync.py",
+      "regionTag": "certificatemanager_v1_generated_CertificateManager_DeleteDnsAuthorization_sync",
       "segments": [
         {
           "end": 48,
@@ -722,8 +722,8 @@
           "shortName": "GetCertificateMapEntry"
         }
       },
-      "file": "certificatemanager_generated_certificate_manager_v1_certificate_manager_get_certificate_map_entry_async.py",
-      "regionTag": "certificatemanager_generated_certificate_manager_v1_CertificateManager_GetCertificateMapEntry_async",
+      "file": "certificatemanager_v1_generated_certificate_manager_get_certificate_map_entry_async.py",
+      "regionTag": "certificatemanager_v1_generated_CertificateManager_GetCertificateMapEntry_async",
       "segments": [
         {
           "end": 44,
@@ -766,8 +766,8 @@
           "shortName": "GetCertificateMapEntry"
         }
       },
-      "file": "certificatemanager_generated_certificate_manager_v1_certificate_manager_get_certificate_map_entry_sync.py",
-      "regionTag": "certificatemanager_generated_certificate_manager_v1_CertificateManager_GetCertificateMapEntry_sync",
+      "file": "certificatemanager_v1_generated_certificate_manager_get_certificate_map_entry_sync.py",
+      "regionTag": "certificatemanager_v1_generated_CertificateManager_GetCertificateMapEntry_sync",
       "segments": [
         {
           "end": 44,
@@ -811,8 +811,8 @@
           "shortName": "GetCertificateMap"
         }
       },
-      "file": "certificatemanager_generated_certificate_manager_v1_certificate_manager_get_certificate_map_async.py",
-      "regionTag": "certificatemanager_generated_certificate_manager_v1_CertificateManager_GetCertificateMap_async",
+      "file": "certificatemanager_v1_generated_certificate_manager_get_certificate_map_async.py",
+      "regionTag": "certificatemanager_v1_generated_CertificateManager_GetCertificateMap_async",
       "segments": [
         {
           "end": 44,
@@ -855,8 +855,8 @@
           "shortName": "GetCertificateMap"
         }
       },
-      "file": "certificatemanager_generated_certificate_manager_v1_certificate_manager_get_certificate_map_sync.py",
-      "regionTag": "certificatemanager_generated_certificate_manager_v1_CertificateManager_GetCertificateMap_sync",
+      "file": "certificatemanager_v1_generated_certificate_manager_get_certificate_map_sync.py",
+      "regionTag": "certificatemanager_v1_generated_CertificateManager_GetCertificateMap_sync",
       "segments": [
         {
           "end": 44,
@@ -900,8 +900,8 @@
           "shortName": "GetCertificate"
         }
       },
-      "file": "certificatemanager_generated_certificate_manager_v1_certificate_manager_get_certificate_async.py",
-      "regionTag": "certificatemanager_generated_certificate_manager_v1_CertificateManager_GetCertificate_async",
+      "file": "certificatemanager_v1_generated_certificate_manager_get_certificate_async.py",
+      "regionTag": "certificatemanager_v1_generated_CertificateManager_GetCertificate_async",
       "segments": [
         {
           "end": 44,
@@ -944,8 +944,8 @@
           "shortName": "GetCertificate"
         }
       },
-      "file": "certificatemanager_generated_certificate_manager_v1_certificate_manager_get_certificate_sync.py",
-      "regionTag": "certificatemanager_generated_certificate_manager_v1_CertificateManager_GetCertificate_sync",
+      "file": "certificatemanager_v1_generated_certificate_manager_get_certificate_sync.py",
+      "regionTag": "certificatemanager_v1_generated_CertificateManager_GetCertificate_sync",
       "segments": [
         {
           "end": 44,
@@ -989,8 +989,8 @@
           "shortName": "GetDnsAuthorization"
         }
       },
-      "file": "certificatemanager_generated_certificate_manager_v1_certificate_manager_get_dns_authorization_async.py",
-      "regionTag": "certificatemanager_generated_certificate_manager_v1_CertificateManager_GetDnsAuthorization_async",
+      "file": "certificatemanager_v1_generated_certificate_manager_get_dns_authorization_async.py",
+      "regionTag": "certificatemanager_v1_generated_CertificateManager_GetDnsAuthorization_async",
       "segments": [
         {
           "end": 44,
@@ -1033,8 +1033,8 @@
           "shortName": "GetDnsAuthorization"
         }
       },
-      "file": "certificatemanager_generated_certificate_manager_v1_certificate_manager_get_dns_authorization_sync.py",
-      "regionTag": "certificatemanager_generated_certificate_manager_v1_CertificateManager_GetDnsAuthorization_sync",
+      "file": "certificatemanager_v1_generated_certificate_manager_get_dns_authorization_sync.py",
+      "regionTag": "certificatemanager_v1_generated_CertificateManager_GetDnsAuthorization_sync",
       "segments": [
         {
           "end": 44,
@@ -1078,8 +1078,8 @@
           "shortName": "ListCertificateMapEntries"
         }
       },
-      "file": "certificatemanager_generated_certificate_manager_v1_certificate_manager_list_certificate_map_entries_async.py",
-      "regionTag": "certificatemanager_generated_certificate_manager_v1_CertificateManager_ListCertificateMapEntries_async",
+      "file": "certificatemanager_v1_generated_certificate_manager_list_certificate_map_entries_async.py",
+      "regionTag": "certificatemanager_v1_generated_CertificateManager_ListCertificateMapEntries_async",
       "segments": [
         {
           "end": 45,
@@ -1122,8 +1122,8 @@
           "shortName": "ListCertificateMapEntries"
         }
       },
-      "file": "certificatemanager_generated_certificate_manager_v1_certificate_manager_list_certificate_map_entries_sync.py",
-      "regionTag": "certificatemanager_generated_certificate_manager_v1_CertificateManager_ListCertificateMapEntries_sync",
+      "file": "certificatemanager_v1_generated_certificate_manager_list_certificate_map_entries_sync.py",
+      "regionTag": "certificatemanager_v1_generated_CertificateManager_ListCertificateMapEntries_sync",
       "segments": [
         {
           "end": 45,
@@ -1167,8 +1167,8 @@
           "shortName": "ListCertificateMaps"
         }
       },
-      "file": "certificatemanager_generated_certificate_manager_v1_certificate_manager_list_certificate_maps_async.py",
-      "regionTag": "certificatemanager_generated_certificate_manager_v1_CertificateManager_ListCertificateMaps_async",
+      "file": "certificatemanager_v1_generated_certificate_manager_list_certificate_maps_async.py",
+      "regionTag": "certificatemanager_v1_generated_CertificateManager_ListCertificateMaps_async",
       "segments": [
         {
           "end": 45,
@@ -1211,8 +1211,8 @@
           "shortName": "ListCertificateMaps"
         }
       },
-      "file": "certificatemanager_generated_certificate_manager_v1_certificate_manager_list_certificate_maps_sync.py",
-      "regionTag": "certificatemanager_generated_certificate_manager_v1_CertificateManager_ListCertificateMaps_sync",
+      "file": "certificatemanager_v1_generated_certificate_manager_list_certificate_maps_sync.py",
+      "regionTag": "certificatemanager_v1_generated_CertificateManager_ListCertificateMaps_sync",
       "segments": [
         {
           "end": 45,
@@ -1256,8 +1256,8 @@
           "shortName": "ListCertificates"
         }
       },
-      "file": "certificatemanager_generated_certificate_manager_v1_certificate_manager_list_certificates_async.py",
-      "regionTag": "certificatemanager_generated_certificate_manager_v1_CertificateManager_ListCertificates_async",
+      "file": "certificatemanager_v1_generated_certificate_manager_list_certificates_async.py",
+      "regionTag": "certificatemanager_v1_generated_CertificateManager_ListCertificates_async",
       "segments": [
         {
           "end": 45,
@@ -1300,8 +1300,8 @@
           "shortName": "ListCertificates"
         }
       },
-      "file": "certificatemanager_generated_certificate_manager_v1_certificate_manager_list_certificates_sync.py",
-      "regionTag": "certificatemanager_generated_certificate_manager_v1_CertificateManager_ListCertificates_sync",
+      "file": "certificatemanager_v1_generated_certificate_manager_list_certificates_sync.py",
+      "regionTag": "certificatemanager_v1_generated_CertificateManager_ListCertificates_sync",
       "segments": [
         {
           "end": 45,
@@ -1345,8 +1345,8 @@
           "shortName": "ListDnsAuthorizations"
         }
       },
-      "file": "certificatemanager_generated_certificate_manager_v1_certificate_manager_list_dns_authorizations_async.py",
-      "regionTag": "certificatemanager_generated_certificate_manager_v1_CertificateManager_ListDnsAuthorizations_async",
+      "file": "certificatemanager_v1_generated_certificate_manager_list_dns_authorizations_async.py",
+      "regionTag": "certificatemanager_v1_generated_CertificateManager_ListDnsAuthorizations_async",
       "segments": [
         {
           "end": 45,
@@ -1389,8 +1389,8 @@
           "shortName": "ListDnsAuthorizations"
         }
       },
-      "file": "certificatemanager_generated_certificate_manager_v1_certificate_manager_list_dns_authorizations_sync.py",
-      "regionTag": "certificatemanager_generated_certificate_manager_v1_CertificateManager_ListDnsAuthorizations_sync",
+      "file": "certificatemanager_v1_generated_certificate_manager_list_dns_authorizations_sync.py",
+      "regionTag": "certificatemanager_v1_generated_CertificateManager_ListDnsAuthorizations_sync",
       "segments": [
         {
           "end": 45,
@@ -1434,8 +1434,8 @@
           "shortName": "UpdateCertificateMapEntry"
         }
       },
-      "file": "certificatemanager_generated_certificate_manager_v1_certificate_manager_update_certificate_map_entry_async.py",
-      "regionTag": "certificatemanager_generated_certificate_manager_v1_CertificateManager_UpdateCertificateMapEntry_async",
+      "file": "certificatemanager_v1_generated_certificate_manager_update_certificate_map_entry_async.py",
+      "regionTag": "certificatemanager_v1_generated_CertificateManager_UpdateCertificateMapEntry_async",
       "segments": [
         {
           "end": 51,
@@ -1478,8 +1478,8 @@
           "shortName": "UpdateCertificateMapEntry"
         }
       },
-      "file": "certificatemanager_generated_certificate_manager_v1_certificate_manager_update_certificate_map_entry_sync.py",
-      "regionTag": "certificatemanager_generated_certificate_manager_v1_CertificateManager_UpdateCertificateMapEntry_sync",
+      "file": "certificatemanager_v1_generated_certificate_manager_update_certificate_map_entry_sync.py",
+      "regionTag": "certificatemanager_v1_generated_CertificateManager_UpdateCertificateMapEntry_sync",
       "segments": [
         {
           "end": 51,
@@ -1523,8 +1523,8 @@
           "shortName": "UpdateCertificateMap"
         }
       },
-      "file": "certificatemanager_generated_certificate_manager_v1_certificate_manager_update_certificate_map_async.py",
-      "regionTag": "certificatemanager_generated_certificate_manager_v1_CertificateManager_UpdateCertificateMap_async",
+      "file": "certificatemanager_v1_generated_certificate_manager_update_certificate_map_async.py",
+      "regionTag": "certificatemanager_v1_generated_CertificateManager_UpdateCertificateMap_async",
       "segments": [
         {
           "end": 47,
@@ -1567,8 +1567,8 @@
           "shortName": "UpdateCertificateMap"
         }
       },
-      "file": "certificatemanager_generated_certificate_manager_v1_certificate_manager_update_certificate_map_sync.py",
-      "regionTag": "certificatemanager_generated_certificate_manager_v1_CertificateManager_UpdateCertificateMap_sync",
+      "file": "certificatemanager_v1_generated_certificate_manager_update_certificate_map_sync.py",
+      "regionTag": "certificatemanager_v1_generated_CertificateManager_UpdateCertificateMap_sync",
       "segments": [
         {
           "end": 47,
@@ -1612,8 +1612,8 @@
           "shortName": "UpdateCertificate"
         }
       },
-      "file": "certificatemanager_generated_certificate_manager_v1_certificate_manager_update_certificate_async.py",
-      "regionTag": "certificatemanager_generated_certificate_manager_v1_CertificateManager_UpdateCertificate_async",
+      "file": "certificatemanager_v1_generated_certificate_manager_update_certificate_async.py",
+      "regionTag": "certificatemanager_v1_generated_CertificateManager_UpdateCertificate_async",
       "segments": [
         {
           "end": 47,
@@ -1656,8 +1656,8 @@
           "shortName": "UpdateCertificate"
         }
       },
-      "file": "certificatemanager_generated_certificate_manager_v1_certificate_manager_update_certificate_sync.py",
-      "regionTag": "certificatemanager_generated_certificate_manager_v1_CertificateManager_UpdateCertificate_sync",
+      "file": "certificatemanager_v1_generated_certificate_manager_update_certificate_sync.py",
+      "regionTag": "certificatemanager_v1_generated_CertificateManager_UpdateCertificate_sync",
       "segments": [
         {
           "end": 47,
@@ -1701,8 +1701,8 @@
           "shortName": "UpdateDnsAuthorization"
         }
       },
-      "file": "certificatemanager_generated_certificate_manager_v1_certificate_manager_update_dns_authorization_async.py",
-      "regionTag": "certificatemanager_generated_certificate_manager_v1_CertificateManager_UpdateDnsAuthorization_async",
+      "file": "certificatemanager_v1_generated_certificate_manager_update_dns_authorization_async.py",
+      "regionTag": "certificatemanager_v1_generated_CertificateManager_UpdateDnsAuthorization_async",
       "segments": [
         {
           "end": 51,
@@ -1745,8 +1745,8 @@
           "shortName": "UpdateDnsAuthorization"
         }
       },
-      "file": "certificatemanager_generated_certificate_manager_v1_certificate_manager_update_dns_authorization_sync.py",
-      "regionTag": "certificatemanager_generated_certificate_manager_v1_CertificateManager_UpdateDnsAuthorization_sync",
+      "file": "certificatemanager_v1_generated_certificate_manager_update_dns_authorization_sync.py",
+      "regionTag": "certificatemanager_v1_generated_CertificateManager_UpdateDnsAuthorization_sync",
       "segments": [
         {
           "end": 51,
