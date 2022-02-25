@@ -229,7 +229,7 @@ class DatastreamAsyncClient:
         in a project and location.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datastream_v1
 
@@ -331,7 +331,7 @@ class DatastreamAsyncClient:
         profile.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datastream_v1
 
@@ -426,7 +426,7 @@ class DatastreamAsyncClient:
         project and location.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datastream_v1
 
@@ -560,7 +560,7 @@ class DatastreamAsyncClient:
         connection profile.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datastream_v1
 
@@ -686,7 +686,7 @@ class DatastreamAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Use this method to delete a connection profile.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datastream_v1
 
@@ -805,7 +805,7 @@ class DatastreamAsyncClient:
         that's optionally supplied in the request.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datastream_v1
 
@@ -883,7 +883,7 @@ class DatastreamAsyncClient:
         location.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datastream_v1
 
@@ -981,7 +981,7 @@ class DatastreamAsyncClient:
     ) -> datastream_resources.Stream:
         r"""Use this method to get details about a stream.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datastream_v1
 
@@ -1073,7 +1073,7 @@ class DatastreamAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Use this method to create a stream.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datastream_v1
 
@@ -1205,7 +1205,7 @@ class DatastreamAsyncClient:
         stream.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datastream_v1
 
@@ -1331,7 +1331,7 @@ class DatastreamAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Use this method to delete a stream.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datastream_v1
 
@@ -1446,7 +1446,7 @@ class DatastreamAsyncClient:
     ) -> datastream_resources.StreamObject:
         r"""Use this method to get details about a stream object.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datastream_v1
 
@@ -1537,7 +1537,7 @@ class DatastreamAsyncClient:
         source object identifier.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datastream_v1
 
@@ -1613,7 +1613,7 @@ class DatastreamAsyncClient:
         stream.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datastream_v1
 
@@ -1715,7 +1715,7 @@ class DatastreamAsyncClient:
         specified stream object.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datastream_v1
 
@@ -1809,7 +1809,7 @@ class DatastreamAsyncClient:
         specified stream object.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datastream_v1
 
@@ -1902,7 +1902,7 @@ class DatastreamAsyncClient:
         addresses used by Datastream.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datastream_v1
 
@@ -2007,7 +2007,7 @@ class DatastreamAsyncClient:
         configuration.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datastream_v1
 
@@ -2136,7 +2136,7 @@ class DatastreamAsyncClient:
         connectivity configuration.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datastream_v1
 
@@ -2230,7 +2230,7 @@ class DatastreamAsyncClient:
         configurations in a project and location.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datastream_v1
 
@@ -2333,7 +2333,7 @@ class DatastreamAsyncClient:
         configuration.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datastream_v1
 
@@ -2452,7 +2452,7 @@ class DatastreamAsyncClient:
         connectivity configuration in a project and location.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datastream_v1
 
@@ -2577,7 +2577,7 @@ class DatastreamAsyncClient:
     ) -> datastream_resources.Route:
         r"""Use this method to get details about a route.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datastream_v1
 
@@ -2670,7 +2670,7 @@ class DatastreamAsyncClient:
         connectivity configuration in a project and location.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datastream_v1
 
@@ -2768,7 +2768,7 @@ class DatastreamAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Use this method to delete a route.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datastream_v1
 

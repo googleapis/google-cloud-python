@@ -10,8 +10,8 @@
           "shortName": "CreateConnectionProfile"
         }
       },
-      "file": "datastream_generated_datastream_v1_datastream_create_connection_profile_async.py",
-      "regionTag": "datastream_generated_datastream_v1_Datastream_CreateConnectionProfile_async",
+      "file": "datastream_v1_generated_datastream_create_connection_profile_async.py",
+      "regionTag": "datastream_v1_generated_Datastream_CreateConnectionProfile_async",
       "segments": [
         {
           "end": 57,
@@ -54,8 +54,8 @@
           "shortName": "CreateConnectionProfile"
         }
       },
-      "file": "datastream_generated_datastream_v1_datastream_create_connection_profile_sync.py",
-      "regionTag": "datastream_generated_datastream_v1_Datastream_CreateConnectionProfile_sync",
+      "file": "datastream_v1_generated_datastream_create_connection_profile_sync.py",
+      "regionTag": "datastream_v1_generated_Datastream_CreateConnectionProfile_sync",
       "segments": [
         {
           "end": 57,
@@ -99,8 +99,8 @@
           "shortName": "CreatePrivateConnection"
         }
       },
-      "file": "datastream_generated_datastream_v1_datastream_create_private_connection_async.py",
-      "regionTag": "datastream_generated_datastream_v1_Datastream_CreatePrivateConnection_async",
+      "file": "datastream_v1_generated_datastream_create_private_connection_async.py",
+      "regionTag": "datastream_v1_generated_Datastream_CreatePrivateConnection_async",
       "segments": [
         {
           "end": 53,
@@ -143,8 +143,8 @@
           "shortName": "CreatePrivateConnection"
         }
       },
-      "file": "datastream_generated_datastream_v1_datastream_create_private_connection_sync.py",
-      "regionTag": "datastream_generated_datastream_v1_Datastream_CreatePrivateConnection_sync",
+      "file": "datastream_v1_generated_datastream_create_private_connection_sync.py",
+      "regionTag": "datastream_v1_generated_Datastream_CreatePrivateConnection_sync",
       "segments": [
         {
           "end": 53,
@@ -188,8 +188,8 @@
           "shortName": "CreateRoute"
         }
       },
-      "file": "datastream_generated_datastream_v1_datastream_create_route_async.py",
-      "regionTag": "datastream_generated_datastream_v1_Datastream_CreateRoute_async",
+      "file": "datastream_v1_generated_datastream_create_route_async.py",
+      "regionTag": "datastream_v1_generated_Datastream_CreateRoute_async",
       "segments": [
         {
           "end": 54,
@@ -232,8 +232,8 @@
           "shortName": "CreateRoute"
         }
       },
-      "file": "datastream_generated_datastream_v1_datastream_create_route_sync.py",
-      "regionTag": "datastream_generated_datastream_v1_Datastream_CreateRoute_sync",
+      "file": "datastream_v1_generated_datastream_create_route_sync.py",
+      "regionTag": "datastream_v1_generated_Datastream_CreateRoute_sync",
       "segments": [
         {
           "end": 54,
@@ -277,8 +277,8 @@
           "shortName": "CreateStream"
         }
       },
-      "file": "datastream_generated_datastream_v1_datastream_create_stream_async.py",
-      "regionTag": "datastream_generated_datastream_v1_Datastream_CreateStream_async",
+      "file": "datastream_v1_generated_datastream_create_stream_async.py",
+      "regionTag": "datastream_v1_generated_Datastream_CreateStream_async",
       "segments": [
         {
           "end": 55,
@@ -321,8 +321,8 @@
           "shortName": "CreateStream"
         }
       },
-      "file": "datastream_generated_datastream_v1_datastream_create_stream_sync.py",
-      "regionTag": "datastream_generated_datastream_v1_Datastream_CreateStream_sync",
+      "file": "datastream_v1_generated_datastream_create_stream_sync.py",
+      "regionTag": "datastream_v1_generated_Datastream_CreateStream_sync",
       "segments": [
         {
           "end": 55,
@@ -366,8 +366,8 @@
           "shortName": "DeleteConnectionProfile"
         }
       },
-      "file": "datastream_generated_datastream_v1_datastream_delete_connection_profile_async.py",
-      "regionTag": "datastream_generated_datastream_v1_Datastream_DeleteConnectionProfile_async",
+      "file": "datastream_v1_generated_datastream_delete_connection_profile_async.py",
+      "regionTag": "datastream_v1_generated_Datastream_DeleteConnectionProfile_async",
       "segments": [
         {
           "end": 48,
@@ -410,8 +410,8 @@
           "shortName": "DeleteConnectionProfile"
         }
       },
-      "file": "datastream_generated_datastream_v1_datastream_delete_connection_profile_sync.py",
-      "regionTag": "datastream_generated_datastream_v1_Datastream_DeleteConnectionProfile_sync",
+      "file": "datastream_v1_generated_datastream_delete_connection_profile_sync.py",
+      "regionTag": "datastream_v1_generated_Datastream_DeleteConnectionProfile_sync",
       "segments": [
         {
           "end": 48,
@@ -455,8 +455,8 @@
           "shortName": "DeletePrivateConnection"
         }
       },
-      "file": "datastream_generated_datastream_v1_datastream_delete_private_connection_async.py",
-      "regionTag": "datastream_generated_datastream_v1_Datastream_DeletePrivateConnection_async",
+      "file": "datastream_v1_generated_datastream_delete_private_connection_async.py",
+      "regionTag": "datastream_v1_generated_Datastream_DeletePrivateConnection_async",
       "segments": [
         {
           "end": 48,
@@ -499,8 +499,8 @@
           "shortName": "DeletePrivateConnection"
         }
       },
-      "file": "datastream_generated_datastream_v1_datastream_delete_private_connection_sync.py",
-      "regionTag": "datastream_generated_datastream_v1_Datastream_DeletePrivateConnection_sync",
+      "file": "datastream_v1_generated_datastream_delete_private_connection_sync.py",
+      "regionTag": "datastream_v1_generated_Datastream_DeletePrivateConnection_sync",
       "segments": [
         {
           "end": 48,
@@ -544,8 +544,8 @@
           "shortName": "DeleteRoute"
         }
       },
-      "file": "datastream_generated_datastream_v1_datastream_delete_route_async.py",
-      "regionTag": "datastream_generated_datastream_v1_Datastream_DeleteRoute_async",
+      "file": "datastream_v1_generated_datastream_delete_route_async.py",
+      "regionTag": "datastream_v1_generated_Datastream_DeleteRoute_async",
       "segments": [
         {
           "end": 48,
@@ -588,8 +588,8 @@
           "shortName": "DeleteRoute"
         }
       },
-      "file": "datastream_generated_datastream_v1_datastream_delete_route_sync.py",
-      "regionTag": "datastream_generated_datastream_v1_Datastream_DeleteRoute_sync",
+      "file": "datastream_v1_generated_datastream_delete_route_sync.py",
+      "regionTag": "datastream_v1_generated_Datastream_DeleteRoute_sync",
       "segments": [
         {
           "end": 48,
@@ -633,8 +633,8 @@
           "shortName": "DeleteStream"
         }
       },
-      "file": "datastream_generated_datastream_v1_datastream_delete_stream_async.py",
-      "regionTag": "datastream_generated_datastream_v1_Datastream_DeleteStream_async",
+      "file": "datastream_v1_generated_datastream_delete_stream_async.py",
+      "regionTag": "datastream_v1_generated_Datastream_DeleteStream_async",
       "segments": [
         {
           "end": 48,
@@ -677,8 +677,8 @@
           "shortName": "DeleteStream"
         }
       },
-      "file": "datastream_generated_datastream_v1_datastream_delete_stream_sync.py",
-      "regionTag": "datastream_generated_datastream_v1_Datastream_DeleteStream_sync",
+      "file": "datastream_v1_generated_datastream_delete_stream_sync.py",
+      "regionTag": "datastream_v1_generated_Datastream_DeleteStream_sync",
       "segments": [
         {
           "end": 48,
@@ -722,8 +722,8 @@
           "shortName": "DiscoverConnectionProfile"
         }
       },
-      "file": "datastream_generated_datastream_v1_datastream_discover_connection_profile_async.py",
-      "regionTag": "datastream_generated_datastream_v1_Datastream_DiscoverConnectionProfile_async",
+      "file": "datastream_v1_generated_datastream_discover_connection_profile_async.py",
+      "regionTag": "datastream_v1_generated_Datastream_DiscoverConnectionProfile_async",
       "segments": [
         {
           "end": 53,
@@ -766,8 +766,8 @@
           "shortName": "DiscoverConnectionProfile"
         }
       },
-      "file": "datastream_generated_datastream_v1_datastream_discover_connection_profile_sync.py",
-      "regionTag": "datastream_generated_datastream_v1_Datastream_DiscoverConnectionProfile_sync",
+      "file": "datastream_v1_generated_datastream_discover_connection_profile_sync.py",
+      "regionTag": "datastream_v1_generated_Datastream_DiscoverConnectionProfile_sync",
       "segments": [
         {
           "end": 53,
@@ -811,8 +811,8 @@
           "shortName": "FetchStaticIps"
         }
       },
-      "file": "datastream_generated_datastream_v1_datastream_fetch_static_ips_async.py",
-      "regionTag": "datastream_generated_datastream_v1_Datastream_FetchStaticIps_async",
+      "file": "datastream_v1_generated_datastream_fetch_static_ips_async.py",
+      "regionTag": "datastream_v1_generated_Datastream_FetchStaticIps_async",
       "segments": [
         {
           "end": 45,
@@ -855,8 +855,8 @@
           "shortName": "FetchStaticIps"
         }
       },
-      "file": "datastream_generated_datastream_v1_datastream_fetch_static_ips_sync.py",
-      "regionTag": "datastream_generated_datastream_v1_Datastream_FetchStaticIps_sync",
+      "file": "datastream_v1_generated_datastream_fetch_static_ips_sync.py",
+      "regionTag": "datastream_v1_generated_Datastream_FetchStaticIps_sync",
       "segments": [
         {
           "end": 45,
@@ -900,8 +900,8 @@
           "shortName": "GetConnectionProfile"
         }
       },
-      "file": "datastream_generated_datastream_v1_datastream_get_connection_profile_async.py",
-      "regionTag": "datastream_generated_datastream_v1_Datastream_GetConnectionProfile_async",
+      "file": "datastream_v1_generated_datastream_get_connection_profile_async.py",
+      "regionTag": "datastream_v1_generated_Datastream_GetConnectionProfile_async",
       "segments": [
         {
           "end": 44,
@@ -944,8 +944,8 @@
           "shortName": "GetConnectionProfile"
         }
       },
-      "file": "datastream_generated_datastream_v1_datastream_get_connection_profile_sync.py",
-      "regionTag": "datastream_generated_datastream_v1_Datastream_GetConnectionProfile_sync",
+      "file": "datastream_v1_generated_datastream_get_connection_profile_sync.py",
+      "regionTag": "datastream_v1_generated_Datastream_GetConnectionProfile_sync",
       "segments": [
         {
           "end": 44,
@@ -989,8 +989,8 @@
           "shortName": "GetPrivateConnection"
         }
       },
-      "file": "datastream_generated_datastream_v1_datastream_get_private_connection_async.py",
-      "regionTag": "datastream_generated_datastream_v1_Datastream_GetPrivateConnection_async",
+      "file": "datastream_v1_generated_datastream_get_private_connection_async.py",
+      "regionTag": "datastream_v1_generated_Datastream_GetPrivateConnection_async",
       "segments": [
         {
           "end": 44,
@@ -1033,8 +1033,8 @@
           "shortName": "GetPrivateConnection"
         }
       },
-      "file": "datastream_generated_datastream_v1_datastream_get_private_connection_sync.py",
-      "regionTag": "datastream_generated_datastream_v1_Datastream_GetPrivateConnection_sync",
+      "file": "datastream_v1_generated_datastream_get_private_connection_sync.py",
+      "regionTag": "datastream_v1_generated_Datastream_GetPrivateConnection_sync",
       "segments": [
         {
           "end": 44,
@@ -1078,8 +1078,8 @@
           "shortName": "GetRoute"
         }
       },
-      "file": "datastream_generated_datastream_v1_datastream_get_route_async.py",
-      "regionTag": "datastream_generated_datastream_v1_Datastream_GetRoute_async",
+      "file": "datastream_v1_generated_datastream_get_route_async.py",
+      "regionTag": "datastream_v1_generated_Datastream_GetRoute_async",
       "segments": [
         {
           "end": 44,
@@ -1122,8 +1122,8 @@
           "shortName": "GetRoute"
         }
       },
-      "file": "datastream_generated_datastream_v1_datastream_get_route_sync.py",
-      "regionTag": "datastream_generated_datastream_v1_Datastream_GetRoute_sync",
+      "file": "datastream_v1_generated_datastream_get_route_sync.py",
+      "regionTag": "datastream_v1_generated_Datastream_GetRoute_sync",
       "segments": [
         {
           "end": 44,
@@ -1167,8 +1167,8 @@
           "shortName": "GetStreamObject"
         }
       },
-      "file": "datastream_generated_datastream_v1_datastream_get_stream_object_async.py",
-      "regionTag": "datastream_generated_datastream_v1_Datastream_GetStreamObject_async",
+      "file": "datastream_v1_generated_datastream_get_stream_object_async.py",
+      "regionTag": "datastream_v1_generated_Datastream_GetStreamObject_async",
       "segments": [
         {
           "end": 44,
@@ -1211,8 +1211,8 @@
           "shortName": "GetStreamObject"
         }
       },
-      "file": "datastream_generated_datastream_v1_datastream_get_stream_object_sync.py",
-      "regionTag": "datastream_generated_datastream_v1_Datastream_GetStreamObject_sync",
+      "file": "datastream_v1_generated_datastream_get_stream_object_sync.py",
+      "regionTag": "datastream_v1_generated_Datastream_GetStreamObject_sync",
       "segments": [
         {
           "end": 44,
@@ -1256,8 +1256,8 @@
           "shortName": "GetStream"
         }
       },
-      "file": "datastream_generated_datastream_v1_datastream_get_stream_async.py",
-      "regionTag": "datastream_generated_datastream_v1_Datastream_GetStream_async",
+      "file": "datastream_v1_generated_datastream_get_stream_async.py",
+      "regionTag": "datastream_v1_generated_Datastream_GetStream_async",
       "segments": [
         {
           "end": 44,
@@ -1300,8 +1300,8 @@
           "shortName": "GetStream"
         }
       },
-      "file": "datastream_generated_datastream_v1_datastream_get_stream_sync.py",
-      "regionTag": "datastream_generated_datastream_v1_Datastream_GetStream_sync",
+      "file": "datastream_v1_generated_datastream_get_stream_sync.py",
+      "regionTag": "datastream_v1_generated_Datastream_GetStream_sync",
       "segments": [
         {
           "end": 44,
@@ -1345,8 +1345,8 @@
           "shortName": "ListConnectionProfiles"
         }
       },
-      "file": "datastream_generated_datastream_v1_datastream_list_connection_profiles_async.py",
-      "regionTag": "datastream_generated_datastream_v1_Datastream_ListConnectionProfiles_async",
+      "file": "datastream_v1_generated_datastream_list_connection_profiles_async.py",
+      "regionTag": "datastream_v1_generated_Datastream_ListConnectionProfiles_async",
       "segments": [
         {
           "end": 45,
@@ -1389,8 +1389,8 @@
           "shortName": "ListConnectionProfiles"
         }
       },
-      "file": "datastream_generated_datastream_v1_datastream_list_connection_profiles_sync.py",
-      "regionTag": "datastream_generated_datastream_v1_Datastream_ListConnectionProfiles_sync",
+      "file": "datastream_v1_generated_datastream_list_connection_profiles_sync.py",
+      "regionTag": "datastream_v1_generated_Datastream_ListConnectionProfiles_sync",
       "segments": [
         {
           "end": 45,
@@ -1434,8 +1434,8 @@
           "shortName": "ListPrivateConnections"
         }
       },
-      "file": "datastream_generated_datastream_v1_datastream_list_private_connections_async.py",
-      "regionTag": "datastream_generated_datastream_v1_Datastream_ListPrivateConnections_async",
+      "file": "datastream_v1_generated_datastream_list_private_connections_async.py",
+      "regionTag": "datastream_v1_generated_Datastream_ListPrivateConnections_async",
       "segments": [
         {
           "end": 45,
@@ -1478,8 +1478,8 @@
           "shortName": "ListPrivateConnections"
         }
       },
-      "file": "datastream_generated_datastream_v1_datastream_list_private_connections_sync.py",
-      "regionTag": "datastream_generated_datastream_v1_Datastream_ListPrivateConnections_sync",
+      "file": "datastream_v1_generated_datastream_list_private_connections_sync.py",
+      "regionTag": "datastream_v1_generated_Datastream_ListPrivateConnections_sync",
       "segments": [
         {
           "end": 45,
@@ -1523,8 +1523,8 @@
           "shortName": "ListRoutes"
         }
       },
-      "file": "datastream_generated_datastream_v1_datastream_list_routes_async.py",
-      "regionTag": "datastream_generated_datastream_v1_Datastream_ListRoutes_async",
+      "file": "datastream_v1_generated_datastream_list_routes_async.py",
+      "regionTag": "datastream_v1_generated_Datastream_ListRoutes_async",
       "segments": [
         {
           "end": 45,
@@ -1567,8 +1567,8 @@
           "shortName": "ListRoutes"
         }
       },
-      "file": "datastream_generated_datastream_v1_datastream_list_routes_sync.py",
-      "regionTag": "datastream_generated_datastream_v1_Datastream_ListRoutes_sync",
+      "file": "datastream_v1_generated_datastream_list_routes_sync.py",
+      "regionTag": "datastream_v1_generated_Datastream_ListRoutes_sync",
       "segments": [
         {
           "end": 45,
@@ -1612,8 +1612,8 @@
           "shortName": "ListStreamObjects"
         }
       },
-      "file": "datastream_generated_datastream_v1_datastream_list_stream_objects_async.py",
-      "regionTag": "datastream_generated_datastream_v1_Datastream_ListStreamObjects_async",
+      "file": "datastream_v1_generated_datastream_list_stream_objects_async.py",
+      "regionTag": "datastream_v1_generated_Datastream_ListStreamObjects_async",
       "segments": [
         {
           "end": 45,
@@ -1656,8 +1656,8 @@
           "shortName": "ListStreamObjects"
         }
       },
-      "file": "datastream_generated_datastream_v1_datastream_list_stream_objects_sync.py",
-      "regionTag": "datastream_generated_datastream_v1_Datastream_ListStreamObjects_sync",
+      "file": "datastream_v1_generated_datastream_list_stream_objects_sync.py",
+      "regionTag": "datastream_v1_generated_Datastream_ListStreamObjects_sync",
       "segments": [
         {
           "end": 45,
@@ -1701,8 +1701,8 @@
           "shortName": "ListStreams"
         }
       },
-      "file": "datastream_generated_datastream_v1_datastream_list_streams_async.py",
-      "regionTag": "datastream_generated_datastream_v1_Datastream_ListStreams_async",
+      "file": "datastream_v1_generated_datastream_list_streams_async.py",
+      "regionTag": "datastream_v1_generated_Datastream_ListStreams_async",
       "segments": [
         {
           "end": 45,
@@ -1745,8 +1745,8 @@
           "shortName": "ListStreams"
         }
       },
-      "file": "datastream_generated_datastream_v1_datastream_list_streams_sync.py",
-      "regionTag": "datastream_generated_datastream_v1_Datastream_ListStreams_sync",
+      "file": "datastream_v1_generated_datastream_list_streams_sync.py",
+      "regionTag": "datastream_v1_generated_Datastream_ListStreams_sync",
       "segments": [
         {
           "end": 45,
@@ -1790,8 +1790,8 @@
           "shortName": "LookupStreamObject"
         }
       },
-      "file": "datastream_generated_datastream_v1_datastream_lookup_stream_object_async.py",
-      "regionTag": "datastream_generated_datastream_v1_Datastream_LookupStreamObject_async",
+      "file": "datastream_v1_generated_datastream_lookup_stream_object_async.py",
+      "regionTag": "datastream_v1_generated_Datastream_LookupStreamObject_async",
       "segments": [
         {
           "end": 49,
@@ -1834,8 +1834,8 @@
           "shortName": "LookupStreamObject"
         }
       },
-      "file": "datastream_generated_datastream_v1_datastream_lookup_stream_object_sync.py",
-      "regionTag": "datastream_generated_datastream_v1_Datastream_LookupStreamObject_sync",
+      "file": "datastream_v1_generated_datastream_lookup_stream_object_sync.py",
+      "regionTag": "datastream_v1_generated_Datastream_LookupStreamObject_sync",
       "segments": [
         {
           "end": 49,
@@ -1879,8 +1879,8 @@
           "shortName": "StartBackfillJob"
         }
       },
-      "file": "datastream_generated_datastream_v1_datastream_start_backfill_job_async.py",
-      "regionTag": "datastream_generated_datastream_v1_Datastream_StartBackfillJob_async",
+      "file": "datastream_v1_generated_datastream_start_backfill_job_async.py",
+      "regionTag": "datastream_v1_generated_Datastream_StartBackfillJob_async",
       "segments": [
         {
           "end": 44,
@@ -1923,8 +1923,8 @@
           "shortName": "StartBackfillJob"
         }
       },
-      "file": "datastream_generated_datastream_v1_datastream_start_backfill_job_sync.py",
-      "regionTag": "datastream_generated_datastream_v1_Datastream_StartBackfillJob_sync",
+      "file": "datastream_v1_generated_datastream_start_backfill_job_sync.py",
+      "regionTag": "datastream_v1_generated_Datastream_StartBackfillJob_sync",
       "segments": [
         {
           "end": 44,
@@ -1968,8 +1968,8 @@
           "shortName": "StopBackfillJob"
         }
       },
-      "file": "datastream_generated_datastream_v1_datastream_stop_backfill_job_async.py",
-      "regionTag": "datastream_generated_datastream_v1_Datastream_StopBackfillJob_async",
+      "file": "datastream_v1_generated_datastream_stop_backfill_job_async.py",
+      "regionTag": "datastream_v1_generated_Datastream_StopBackfillJob_async",
       "segments": [
         {
           "end": 44,
@@ -2012,8 +2012,8 @@
           "shortName": "StopBackfillJob"
         }
       },
-      "file": "datastream_generated_datastream_v1_datastream_stop_backfill_job_sync.py",
-      "regionTag": "datastream_generated_datastream_v1_Datastream_StopBackfillJob_sync",
+      "file": "datastream_v1_generated_datastream_stop_backfill_job_sync.py",
+      "regionTag": "datastream_v1_generated_Datastream_StopBackfillJob_sync",
       "segments": [
         {
           "end": 44,
@@ -2057,8 +2057,8 @@
           "shortName": "UpdateConnectionProfile"
         }
       },
-      "file": "datastream_generated_datastream_v1_datastream_update_connection_profile_async.py",
-      "regionTag": "datastream_generated_datastream_v1_Datastream_UpdateConnectionProfile_async",
+      "file": "datastream_v1_generated_datastream_update_connection_profile_async.py",
+      "regionTag": "datastream_v1_generated_Datastream_UpdateConnectionProfile_async",
       "segments": [
         {
           "end": 55,
@@ -2101,8 +2101,8 @@
           "shortName": "UpdateConnectionProfile"
         }
       },
-      "file": "datastream_generated_datastream_v1_datastream_update_connection_profile_sync.py",
-      "regionTag": "datastream_generated_datastream_v1_Datastream_UpdateConnectionProfile_sync",
+      "file": "datastream_v1_generated_datastream_update_connection_profile_sync.py",
+      "regionTag": "datastream_v1_generated_Datastream_UpdateConnectionProfile_sync",
       "segments": [
         {
           "end": 55,
@@ -2146,8 +2146,8 @@
           "shortName": "UpdateStream"
         }
       },
-      "file": "datastream_generated_datastream_v1_datastream_update_stream_async.py",
-      "regionTag": "datastream_generated_datastream_v1_Datastream_UpdateStream_async",
+      "file": "datastream_v1_generated_datastream_update_stream_async.py",
+      "regionTag": "datastream_v1_generated_Datastream_UpdateStream_async",
       "segments": [
         {
           "end": 53,
@@ -2190,8 +2190,8 @@
           "shortName": "UpdateStream"
         }
       },
-      "file": "datastream_generated_datastream_v1_datastream_update_stream_sync.py",
-      "regionTag": "datastream_generated_datastream_v1_Datastream_UpdateStream_sync",
+      "file": "datastream_v1_generated_datastream_update_stream_sync.py",
+      "regionTag": "datastream_v1_generated_Datastream_UpdateStream_sync",
       "segments": [
         {
           "end": 53,

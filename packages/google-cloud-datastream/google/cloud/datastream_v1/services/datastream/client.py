@@ -506,8 +506,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         in a project and location.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datastream_v1
 
@@ -609,8 +608,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         profile.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datastream_v1
 
@@ -705,8 +703,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         project and location.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datastream_v1
 
@@ -842,8 +839,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         connection profile.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datastream_v1
 
@@ -971,8 +967,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
     ) -> operation.Operation:
         r"""Use this method to delete a connection profile.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datastream_v1
 
@@ -1093,8 +1088,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         that's optionally supplied in the request.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datastream_v1
 
@@ -1175,8 +1169,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         location.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datastream_v1
 
@@ -1274,8 +1267,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
     ) -> datastream_resources.Stream:
         r"""Use this method to get details about a stream.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datastream_v1
 
@@ -1367,8 +1359,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
     ) -> operation.Operation:
         r"""Use this method to create a stream.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datastream_v1
 
@@ -1500,8 +1491,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         stream.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datastream_v1
 
@@ -1627,8 +1617,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
     ) -> operation.Operation:
         r"""Use this method to delete a stream.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datastream_v1
 
@@ -1743,8 +1732,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
     ) -> datastream_resources.StreamObject:
         r"""Use this method to get details about a stream object.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datastream_v1
 
@@ -1835,8 +1823,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         source object identifier.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datastream_v1
 
@@ -1913,8 +1900,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         stream.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datastream_v1
 
@@ -2016,8 +2002,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         specified stream object.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datastream_v1
 
@@ -2111,8 +2096,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         specified stream object.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datastream_v1
 
@@ -2205,8 +2189,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         addresses used by Datastream.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datastream_v1
 
@@ -2311,8 +2294,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         configuration.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datastream_v1
 
@@ -2443,8 +2425,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         connectivity configuration.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datastream_v1
 
@@ -2538,8 +2519,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         configurations in a project and location.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datastream_v1
 
@@ -2642,8 +2622,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         configuration.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datastream_v1
 
@@ -2764,8 +2743,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         connectivity configuration in a project and location.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datastream_v1
 
@@ -2890,8 +2868,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
     ) -> datastream_resources.Route:
         r"""Use this method to get details about a route.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datastream_v1
 
@@ -2984,8 +2961,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         connectivity configuration in a project and location.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datastream_v1
 
@@ -3083,8 +3059,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
     ) -> operation.Operation:
         r"""Use this method to delete a route.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datastream_v1
 
