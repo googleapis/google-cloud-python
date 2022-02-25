@@ -23,22 +23,22 @@
 #   python3 -m pip install google-cloud-texttospeech
 
 
-# [START texttospeech_generated_texttospeech_v1beta1_TextToSpeech_ListVoices_async]
-from google.cloud import texttospeech_v1beta1
+# [START texttospeech_v1_generated_TextToSpeech_ListVoices_sync]
+from google.cloud import texttospeech_v1
 
 
-async def sample_list_voices():
+def sample_list_voices():
     # Create a client
-    client = texttospeech_v1beta1.TextToSpeechAsyncClient()
+    client = texttospeech_v1.TextToSpeechClient()
 
     # Initialize request argument(s)
-    request = texttospeech_v1beta1.ListVoicesRequest(
+    request = texttospeech_v1.ListVoicesRequest(
     )
 
     # Make the request
-    response = await client.list_voices(request=request)
+    response = client.list_voices(request=request)
 
     # Handle the response
     print(response)
 
-# [END texttospeech_generated_texttospeech_v1beta1_TextToSpeech_ListVoices_async]
+# [END texttospeech_v1_generated_TextToSpeech_ListVoices_sync]

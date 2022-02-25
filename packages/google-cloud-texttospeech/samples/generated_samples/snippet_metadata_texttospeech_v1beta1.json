@@ -10,8 +10,8 @@
           "shortName": "ListVoices"
         }
       },
-      "file": "texttospeech_generated_texttospeech_v1beta1_text_to_speech_list_voices_async.py",
-      "regionTag": "texttospeech_generated_texttospeech_v1beta1_TextToSpeech_ListVoices_async",
+      "file": "texttospeech_v1beta1_generated_text_to_speech_list_voices_async.py",
+      "regionTag": "texttospeech_v1beta1_generated_TextToSpeech_ListVoices_async",
       "segments": [
         {
           "end": 43,
@@ -54,8 +54,8 @@
           "shortName": "ListVoices"
         }
       },
-      "file": "texttospeech_generated_texttospeech_v1beta1_text_to_speech_list_voices_sync.py",
-      "regionTag": "texttospeech_generated_texttospeech_v1beta1_TextToSpeech_ListVoices_sync",
+      "file": "texttospeech_v1beta1_generated_text_to_speech_list_voices_sync.py",
+      "regionTag": "texttospeech_v1beta1_generated_TextToSpeech_ListVoices_sync",
       "segments": [
         {
           "end": 43,
@@ -99,8 +99,8 @@
           "shortName": "SynthesizeSpeech"
         }
       },
-      "file": "texttospeech_generated_texttospeech_v1beta1_text_to_speech_synthesize_speech_async.py",
-      "regionTag": "texttospeech_generated_texttospeech_v1beta1_TextToSpeech_SynthesizeSpeech_async",
+      "file": "texttospeech_v1beta1_generated_text_to_speech_synthesize_speech_async.py",
+      "regionTag": "texttospeech_v1beta1_generated_TextToSpeech_SynthesizeSpeech_async",
       "segments": [
         {
           "end": 55,
@@ -143,8 +143,8 @@
           "shortName": "SynthesizeSpeech"
         }
       },
-      "file": "texttospeech_generated_texttospeech_v1beta1_text_to_speech_synthesize_speech_sync.py",
-      "regionTag": "texttospeech_generated_texttospeech_v1beta1_TextToSpeech_SynthesizeSpeech_sync",
+      "file": "texttospeech_v1beta1_generated_text_to_speech_synthesize_speech_sync.py",
+      "regionTag": "texttospeech_v1beta1_generated_TextToSpeech_SynthesizeSpeech_sync",
       "segments": [
         {
           "end": 55,

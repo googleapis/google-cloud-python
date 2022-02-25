@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-texttospeech
 
 
-# [START texttospeech_generated_texttospeech_v1_TextToSpeech_SynthesizeSpeech_async]
+# [START texttospeech_v1_generated_TextToSpeech_SynthesizeSpeech_async]
 from google.cloud import texttospeech_v1
 
 
@@ -53,4 +53,4 @@ async def sample_synthesize_speech():
     # Handle the response
     print(response)
 
-# [END texttospeech_generated_texttospeech_v1_TextToSpeech_SynthesizeSpeech_async]
+# [END texttospeech_v1_generated_TextToSpeech_SynthesizeSpeech_async]

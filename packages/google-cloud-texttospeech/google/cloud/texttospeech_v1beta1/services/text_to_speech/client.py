@@ -407,8 +407,7 @@ class TextToSpeechClient(metaclass=TextToSpeechClientMeta):
     ) -> cloud_tts.ListVoicesResponse:
         r"""Returns a list of Voice supported for synthesis.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import texttospeech_v1beta1
 
@@ -502,8 +501,7 @@ class TextToSpeechClient(metaclass=TextToSpeechClientMeta):
         after all text input has been processed.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import texttospeech_v1beta1
 

@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ListVoices
+# Snippet for SynthesizeSpeech
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,22 +23,34 @@
 #   python3 -m pip install google-cloud-texttospeech
 
 
-# [START texttospeech_generated_texttospeech_v1_TextToSpeech_ListVoices_sync]
+# [START texttospeech_v1_generated_TextToSpeech_SynthesizeSpeech_sync]
 from google.cloud import texttospeech_v1
 
 
-def sample_list_voices():
+def sample_synthesize_speech():
     # Create a client
     client = texttospeech_v1.TextToSpeechClient()
 
     # Initialize request argument(s)
-    request = texttospeech_v1.ListVoicesRequest(
+    input = texttospeech_v1.SynthesisInput()
+    input.text = "text_value"
+
+    voice = texttospeech_v1.VoiceSelectionParams()
+    voice.language_code = "language_code_value"
+
+    audio_config = texttospeech_v1.AudioConfig()
+    audio_config.audio_encoding = "ALAW"
+
+    request = texttospeech_v1.SynthesizeSpeechRequest(
+        input=input,
+        voice=voice,
+        audio_config=audio_config,
     )
 
     # Make the request
-    response = client.list_voices(request=request)
+    response = client.synthesize_speech(request=request)
 
     # Handle the response
     print(response)
 
-# [END texttospeech_generated_texttospeech_v1_TextToSpeech_ListVoices_sync]
+# [END texttospeech_v1_generated_TextToSpeech_SynthesizeSpeech_sync]
