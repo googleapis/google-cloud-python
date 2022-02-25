@@ -255,7 +255,7 @@ class VideoStitcherServiceAsyncClient:
     ) -> cdn_keys.CdnKey:
         r"""Creates a new CDN key.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.video import stitcher_v1
 
@@ -376,7 +376,7 @@ class VideoStitcherServiceAsyncClient:
         location.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.video import stitcher_v1
 
@@ -477,7 +477,7 @@ class VideoStitcherServiceAsyncClient:
     ) -> cdn_keys.CdnKey:
         r"""Returns the specified CDN key.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.video import stitcher_v1
 
@@ -570,7 +570,7 @@ class VideoStitcherServiceAsyncClient:
     ) -> None:
         r"""Deletes the specified CDN key.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.video import stitcher_v1
 
@@ -654,7 +654,7 @@ class VideoStitcherServiceAsyncClient:
         specified in the call method body.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.video import stitcher_v1
 
@@ -761,7 +761,7 @@ class VideoStitcherServiceAsyncClient:
         session.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.video import stitcher_v1
 
@@ -866,7 +866,7 @@ class VideoStitcherServiceAsyncClient:
         relevant ad-ops logs for the specified VOD session.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.video import stitcher_v1
 
@@ -957,7 +957,7 @@ class VideoStitcherServiceAsyncClient:
         the specified VOD session.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.video import stitcher_v1
 
@@ -1060,7 +1060,7 @@ class VideoStitcherServiceAsyncClient:
         specified VOD session.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.video import stitcher_v1
 
@@ -1153,7 +1153,7 @@ class VideoStitcherServiceAsyncClient:
         VOD session.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.video import stitcher_v1
 
@@ -1256,7 +1256,7 @@ class VideoStitcherServiceAsyncClient:
         VOD session.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.video import stitcher_v1
 
@@ -1349,7 +1349,7 @@ class VideoStitcherServiceAsyncClient:
         live session.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.video import stitcher_v1
 
@@ -1451,7 +1451,7 @@ class VideoStitcherServiceAsyncClient:
         live session.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.video import stitcher_v1
 
@@ -1543,7 +1543,7 @@ class VideoStitcherServiceAsyncClient:
     ) -> slates.Slate:
         r"""Creates a slate.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.video import stitcher_v1
 
@@ -1655,7 +1655,7 @@ class VideoStitcherServiceAsyncClient:
         location.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.video import stitcher_v1
 
@@ -1755,7 +1755,7 @@ class VideoStitcherServiceAsyncClient:
     ) -> slates.Slate:
         r"""Returns the specified slate.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.video import stitcher_v1
 
@@ -1845,7 +1845,7 @@ class VideoStitcherServiceAsyncClient:
     ) -> slates.Slate:
         r"""Updates the specified slate.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.video import stitcher_v1
 
@@ -1944,7 +1944,7 @@ class VideoStitcherServiceAsyncClient:
     ) -> None:
         r"""Deletes the specified slate.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.video import stitcher_v1
 
@@ -2026,7 +2026,7 @@ class VideoStitcherServiceAsyncClient:
     ) -> sessions.LiveSession:
         r"""Creates a new live session.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.video import stitcher_v1
 
@@ -2133,7 +2133,7 @@ class VideoStitcherServiceAsyncClient:
     ) -> sessions.LiveSession:
         r"""Returns the details for the specified live session.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.video import stitcher_v1
 
