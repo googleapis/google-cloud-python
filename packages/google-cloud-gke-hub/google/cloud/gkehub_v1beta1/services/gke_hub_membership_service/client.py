@@ -427,8 +427,7 @@ class GkeHubMembershipServiceClient(metaclass=GkeHubMembershipServiceClientMeta)
     ) -> pagers.ListMembershipsPager:
         r"""Lists Memberships in a given project and location.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import gkehub_v1beta1
 
@@ -529,8 +528,7 @@ class GkeHubMembershipServiceClient(metaclass=GkeHubMembershipServiceClientMeta)
     ) -> membership.Membership:
         r"""Gets the details of a Membership.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import gkehub_v1beta1
 
@@ -627,8 +625,7 @@ class GkeHubMembershipServiceClient(metaclass=GkeHubMembershipServiceClientMeta)
         https://cloud.google.com/anthos/multicluster-management/connect/registering-a-cluster.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import gkehub_v1beta1
 
@@ -767,8 +764,7 @@ class GkeHubMembershipServiceClient(metaclass=GkeHubMembershipServiceClientMeta)
         https://cloud.google.com/anthos/multicluster-management/connect/unregistering-a-cluster.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import gkehub_v1beta1
 
@@ -885,8 +881,7 @@ class GkeHubMembershipServiceClient(metaclass=GkeHubMembershipServiceClientMeta)
     ) -> operation.Operation:
         r"""Updates an existing Membership.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import gkehub_v1beta1
 
@@ -1020,8 +1015,7 @@ class GkeHubMembershipServiceClient(metaclass=GkeHubMembershipServiceClientMeta)
         Most clients should not need to call this method directly.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import gkehub_v1beta1
 
@@ -1097,8 +1091,7 @@ class GkeHubMembershipServiceClient(metaclass=GkeHubMembershipServiceClientMeta)
         depend on an existing Hub membership resource.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import gkehub_v1beta1
 
@@ -1182,8 +1175,7 @@ class GkeHubMembershipServiceClient(metaclass=GkeHubMembershipServiceClientMeta)
         any differences between the versions.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import gkehub_v1beta1
 

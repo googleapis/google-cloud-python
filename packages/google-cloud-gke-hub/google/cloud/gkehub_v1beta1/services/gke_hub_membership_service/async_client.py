@@ -235,7 +235,7 @@ class GkeHubMembershipServiceAsyncClient:
     ) -> pagers.ListMembershipsAsyncPager:
         r"""Lists Memberships in a given project and location.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import gkehub_v1beta1
 
@@ -336,7 +336,7 @@ class GkeHubMembershipServiceAsyncClient:
     ) -> membership.Membership:
         r"""Gets the details of a Membership.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import gkehub_v1beta1
 
@@ -433,7 +433,7 @@ class GkeHubMembershipServiceAsyncClient:
         https://cloud.google.com/anthos/multicluster-management/connect/registering-a-cluster.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import gkehub_v1beta1
 
@@ -572,7 +572,7 @@ class GkeHubMembershipServiceAsyncClient:
         https://cloud.google.com/anthos/multicluster-management/connect/unregistering-a-cluster.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import gkehub_v1beta1
 
@@ -689,7 +689,7 @@ class GkeHubMembershipServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Updates an existing Membership.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import gkehub_v1beta1
 
@@ -823,7 +823,7 @@ class GkeHubMembershipServiceAsyncClient:
         Most clients should not need to call this method directly.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import gkehub_v1beta1
 
@@ -896,7 +896,7 @@ class GkeHubMembershipServiceAsyncClient:
         depend on an existing Hub membership resource.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import gkehub_v1beta1
 
@@ -979,7 +979,7 @@ class GkeHubMembershipServiceAsyncClient:
         any differences between the versions.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import gkehub_v1beta1
 

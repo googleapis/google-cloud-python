@@ -226,7 +226,7 @@ class GkeHubAsyncClient:
     ) -> pagers.ListMembershipsAsyncPager:
         r"""Lists Memberships in a given project and location.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import gkehub_v1
 
@@ -326,7 +326,7 @@ class GkeHubAsyncClient:
     ) -> pagers.ListFeaturesAsyncPager:
         r"""Lists Features in a given project and location.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import gkehub_v1
 
@@ -425,7 +425,7 @@ class GkeHubAsyncClient:
     ) -> membership.Membership:
         r"""Gets the details of a Membership.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import gkehub_v1
 
@@ -515,7 +515,7 @@ class GkeHubAsyncClient:
     ) -> feature.Feature:
         r"""Gets details of a single Feature.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import gkehub_v1
 
@@ -611,7 +611,7 @@ class GkeHubAsyncClient:
         https://cloud.google.com/anthos/multicluster-management/connect/registering-a-cluster.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import gkehub_v1
 
@@ -746,7 +746,7 @@ class GkeHubAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Adds a new Feature.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import gkehub_v1
 
@@ -871,7 +871,7 @@ class GkeHubAsyncClient:
         https://cloud.google.com/anthos/multicluster-management/connect/unregistering-a-cluster.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import gkehub_v1
 
@@ -986,7 +986,7 @@ class GkeHubAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Removes a Feature.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import gkehub_v1
 
@@ -1102,7 +1102,7 @@ class GkeHubAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Updates an existing Membership.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import gkehub_v1
 
@@ -1232,7 +1232,7 @@ class GkeHubAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Updates an existing Feature.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import gkehub_v1
 
@@ -1362,7 +1362,7 @@ class GkeHubAsyncClient:
         Most clients should not need to call this method directly.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import gkehub_v1
 

@@ -10,8 +10,8 @@
           "shortName": "CreateFeature"
         }
       },
-      "file": "gkehub_generated_gkehub_v1_gke_hub_create_feature_async.py",
-      "regionTag": "gkehub_generated_gkehub_v1_GkeHub_CreateFeature_async",
+      "file": "gkehub_v1_generated_gke_hub_create_feature_async.py",
+      "regionTag": "gkehub_v1_generated_GkeHub_CreateFeature_async",
       "segments": [
         {
           "end": 47,
@@ -54,8 +54,8 @@
           "shortName": "CreateFeature"
         }
       },
-      "file": "gkehub_generated_gkehub_v1_gke_hub_create_feature_sync.py",
-      "regionTag": "gkehub_generated_gkehub_v1_GkeHub_CreateFeature_sync",
+      "file": "gkehub_v1_generated_gke_hub_create_feature_sync.py",
+      "regionTag": "gkehub_v1_generated_GkeHub_CreateFeature_sync",
       "segments": [
         {
           "end": 47,
@@ -99,8 +99,8 @@
           "shortName": "CreateMembership"
         }
       },
-      "file": "gkehub_generated_gkehub_v1_gke_hub_create_membership_async.py",
-      "regionTag": "gkehub_generated_gkehub_v1_GkeHub_CreateMembership_async",
+      "file": "gkehub_v1_generated_gke_hub_create_membership_async.py",
+      "regionTag": "gkehub_v1_generated_GkeHub_CreateMembership_async",
       "segments": [
         {
           "end": 49,
@@ -143,8 +143,8 @@
           "shortName": "CreateMembership"
         }
       },
-      "file": "gkehub_generated_gkehub_v1_gke_hub_create_membership_sync.py",
-      "regionTag": "gkehub_generated_gkehub_v1_GkeHub_CreateMembership_sync",
+      "file": "gkehub_v1_generated_gke_hub_create_membership_sync.py",
+      "regionTag": "gkehub_v1_generated_GkeHub_CreateMembership_sync",
       "segments": [
         {
           "end": 49,
@@ -188,8 +188,8 @@
           "shortName": "DeleteFeature"
         }
       },
-      "file": "gkehub_generated_gkehub_v1_gke_hub_delete_feature_async.py",
-      "regionTag": "gkehub_generated_gkehub_v1_GkeHub_DeleteFeature_async",
+      "file": "gkehub_v1_generated_gke_hub_delete_feature_async.py",
+      "regionTag": "gkehub_v1_generated_GkeHub_DeleteFeature_async",
       "segments": [
         {
           "end": 47,
@@ -232,8 +232,8 @@
           "shortName": "DeleteFeature"
         }
       },
-      "file": "gkehub_generated_gkehub_v1_gke_hub_delete_feature_sync.py",
-      "regionTag": "gkehub_generated_gkehub_v1_GkeHub_DeleteFeature_sync",
+      "file": "gkehub_v1_generated_gke_hub_delete_feature_sync.py",
+      "regionTag": "gkehub_v1_generated_GkeHub_DeleteFeature_sync",
       "segments": [
         {
           "end": 47,
@@ -277,8 +277,8 @@
           "shortName": "DeleteMembership"
         }
       },
-      "file": "gkehub_generated_gkehub_v1_gke_hub_delete_membership_async.py",
-      "regionTag": "gkehub_generated_gkehub_v1_GkeHub_DeleteMembership_async",
+      "file": "gkehub_v1_generated_gke_hub_delete_membership_async.py",
+      "regionTag": "gkehub_v1_generated_GkeHub_DeleteMembership_async",
       "segments": [
         {
           "end": 48,
@@ -321,8 +321,8 @@
           "shortName": "DeleteMembership"
         }
       },
-      "file": "gkehub_generated_gkehub_v1_gke_hub_delete_membership_sync.py",
-      "regionTag": "gkehub_generated_gkehub_v1_GkeHub_DeleteMembership_sync",
+      "file": "gkehub_v1_generated_gke_hub_delete_membership_sync.py",
+      "regionTag": "gkehub_v1_generated_GkeHub_DeleteMembership_sync",
       "segments": [
         {
           "end": 48,
@@ -366,8 +366,8 @@
           "shortName": "GenerateConnectManifest"
         }
       },
-      "file": "gkehub_generated_gkehub_v1_gke_hub_generate_connect_manifest_async.py",
-      "regionTag": "gkehub_generated_gkehub_v1_GkeHub_GenerateConnectManifest_async",
+      "file": "gkehub_v1_generated_gke_hub_generate_connect_manifest_async.py",
+      "regionTag": "gkehub_v1_generated_GkeHub_GenerateConnectManifest_async",
       "segments": [
         {
           "end": 44,
@@ -410,8 +410,8 @@
           "shortName": "GenerateConnectManifest"
         }
       },
-      "file": "gkehub_generated_gkehub_v1_gke_hub_generate_connect_manifest_sync.py",
-      "regionTag": "gkehub_generated_gkehub_v1_GkeHub_GenerateConnectManifest_sync",
+      "file": "gkehub_v1_generated_gke_hub_generate_connect_manifest_sync.py",
+      "regionTag": "gkehub_v1_generated_GkeHub_GenerateConnectManifest_sync",
       "segments": [
         {
           "end": 44,
@@ -455,8 +455,8 @@
           "shortName": "GetFeature"
         }
       },
-      "file": "gkehub_generated_gkehub_v1_gke_hub_get_feature_async.py",
-      "regionTag": "gkehub_generated_gkehub_v1_GkeHub_GetFeature_async",
+      "file": "gkehub_v1_generated_gke_hub_get_feature_async.py",
+      "regionTag": "gkehub_v1_generated_GkeHub_GetFeature_async",
       "segments": [
         {
           "end": 43,
@@ -499,8 +499,8 @@
           "shortName": "GetFeature"
         }
       },
-      "file": "gkehub_generated_gkehub_v1_gke_hub_get_feature_sync.py",
-      "regionTag": "gkehub_generated_gkehub_v1_GkeHub_GetFeature_sync",
+      "file": "gkehub_v1_generated_gke_hub_get_feature_sync.py",
+      "regionTag": "gkehub_v1_generated_GkeHub_GetFeature_sync",
       "segments": [
         {
           "end": 43,
@@ -544,8 +544,8 @@
           "shortName": "GetMembership"
         }
       },
-      "file": "gkehub_generated_gkehub_v1_gke_hub_get_membership_async.py",
-      "regionTag": "gkehub_generated_gkehub_v1_GkeHub_GetMembership_async",
+      "file": "gkehub_v1_generated_gke_hub_get_membership_async.py",
+      "regionTag": "gkehub_v1_generated_GkeHub_GetMembership_async",
       "segments": [
         {
           "end": 44,
@@ -588,8 +588,8 @@
           "shortName": "GetMembership"
         }
       },
-      "file": "gkehub_generated_gkehub_v1_gke_hub_get_membership_sync.py",
-      "regionTag": "gkehub_generated_gkehub_v1_GkeHub_GetMembership_sync",
+      "file": "gkehub_v1_generated_gke_hub_get_membership_sync.py",
+      "regionTag": "gkehub_v1_generated_GkeHub_GetMembership_sync",
       "segments": [
         {
           "end": 44,
@@ -633,8 +633,8 @@
           "shortName": "ListFeatures"
         }
       },
-      "file": "gkehub_generated_gkehub_v1_gke_hub_list_features_async.py",
-      "regionTag": "gkehub_generated_gkehub_v1_GkeHub_ListFeatures_async",
+      "file": "gkehub_v1_generated_gke_hub_list_features_async.py",
+      "regionTag": "gkehub_v1_generated_GkeHub_ListFeatures_async",
       "segments": [
         {
           "end": 44,
@@ -677,8 +677,8 @@
           "shortName": "ListFeatures"
         }
       },
-      "file": "gkehub_generated_gkehub_v1_gke_hub_list_features_sync.py",
-      "regionTag": "gkehub_generated_gkehub_v1_GkeHub_ListFeatures_sync",
+      "file": "gkehub_v1_generated_gke_hub_list_features_sync.py",
+      "regionTag": "gkehub_v1_generated_GkeHub_ListFeatures_sync",
       "segments": [
         {
           "end": 44,
@@ -722,8 +722,8 @@
           "shortName": "ListMemberships"
         }
       },
-      "file": "gkehub_generated_gkehub_v1_gke_hub_list_memberships_async.py",
-      "regionTag": "gkehub_generated_gkehub_v1_GkeHub_ListMemberships_async",
+      "file": "gkehub_v1_generated_gke_hub_list_memberships_async.py",
+      "regionTag": "gkehub_v1_generated_GkeHub_ListMemberships_async",
       "segments": [
         {
           "end": 45,
@@ -766,8 +766,8 @@
           "shortName": "ListMemberships"
         }
       },
-      "file": "gkehub_generated_gkehub_v1_gke_hub_list_memberships_sync.py",
-      "regionTag": "gkehub_generated_gkehub_v1_GkeHub_ListMemberships_sync",
+      "file": "gkehub_v1_generated_gke_hub_list_memberships_sync.py",
+      "regionTag": "gkehub_v1_generated_GkeHub_ListMemberships_sync",
       "segments": [
         {
           "end": 45,
@@ -811,8 +811,8 @@
           "shortName": "UpdateFeature"
         }
       },
-      "file": "gkehub_generated_gkehub_v1_gke_hub_update_feature_async.py",
-      "regionTag": "gkehub_generated_gkehub_v1_GkeHub_UpdateFeature_async",
+      "file": "gkehub_v1_generated_gke_hub_update_feature_async.py",
+      "regionTag": "gkehub_v1_generated_GkeHub_UpdateFeature_async",
       "segments": [
         {
           "end": 47,
@@ -855,8 +855,8 @@
           "shortName": "UpdateFeature"
         }
       },
-      "file": "gkehub_generated_gkehub_v1_gke_hub_update_feature_sync.py",
-      "regionTag": "gkehub_generated_gkehub_v1_GkeHub_UpdateFeature_sync",
+      "file": "gkehub_v1_generated_gke_hub_update_feature_sync.py",
+      "regionTag": "gkehub_v1_generated_GkeHub_UpdateFeature_sync",
       "segments": [
         {
           "end": 47,
@@ -900,8 +900,8 @@
           "shortName": "UpdateMembership"
         }
       },
-      "file": "gkehub_generated_gkehub_v1_gke_hub_update_membership_async.py",
-      "regionTag": "gkehub_generated_gkehub_v1_GkeHub_UpdateMembership_async",
+      "file": "gkehub_v1_generated_gke_hub_update_membership_async.py",
+      "regionTag": "gkehub_v1_generated_GkeHub_UpdateMembership_async",
       "segments": [
         {
           "end": 48,
@@ -944,8 +944,8 @@
           "shortName": "UpdateMembership"
         }
       },
-      "file": "gkehub_generated_gkehub_v1_gke_hub_update_membership_sync.py",
-      "regionTag": "gkehub_generated_gkehub_v1_GkeHub_UpdateMembership_sync",
+      "file": "gkehub_v1_generated_gke_hub_update_membership_sync.py",
+      "regionTag": "gkehub_v1_generated_GkeHub_UpdateMembership_sync",
       "segments": [
         {
           "end": 48,
