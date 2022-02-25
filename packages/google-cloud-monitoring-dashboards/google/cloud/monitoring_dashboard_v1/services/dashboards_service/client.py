@@ -434,8 +434,7 @@ class DashboardsServiceClient(metaclass=DashboardsServiceClientMeta):
         Management <https://cloud.google.com/iam>`__.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.monitoring import dashboard_v1
 
@@ -515,8 +514,7 @@ class DashboardsServiceClient(metaclass=DashboardsServiceClientMeta):
         Management <https://cloud.google.com/iam>`__.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.monitoring import dashboard_v1
 
@@ -599,8 +597,7 @@ class DashboardsServiceClient(metaclass=DashboardsServiceClientMeta):
         Management <https://cloud.google.com/iam>`__.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.monitoring import dashboard_v1
 
@@ -676,8 +673,7 @@ class DashboardsServiceClient(metaclass=DashboardsServiceClientMeta):
         Management <https://cloud.google.com/iam>`__.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.monitoring import dashboard_v1
 
@@ -741,8 +737,7 @@ class DashboardsServiceClient(metaclass=DashboardsServiceClientMeta):
         Management <https://cloud.google.com/iam>`__.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.monitoring import dashboard_v1
 

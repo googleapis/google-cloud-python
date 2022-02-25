@@ -43,6 +43,7 @@ for library in s.get_staging_dirs(default_version):
     s.move(library / "tests")
     s.move(library / "scripts")
     s.move(library / "docs", excludes=["index.rst"])
+    s.move(library / "samples")
 
 s.remove_staging_dirs()
 
