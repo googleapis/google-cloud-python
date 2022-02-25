@@ -228,6 +228,25 @@ class PublisherAsyncClient:
         r"""Publish events to a ChannelConnection in a partner's
         project.
 
+
+        .. code-block:: python
+
+            from google.cloud import eventarc_publishing_v1
+
+            def sample_publish_channel_connection_events():
+                # Create a client
+                client = eventarc_publishing_v1.PublisherClient()
+
+                # Initialize request argument(s)
+                request = eventarc_publishing_v1.PublishChannelConnectionEventsRequest(
+                )
+
+                # Make the request
+                response = client.publish_channel_connection_events(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.eventarc_publishing_v1.types.PublishChannelConnectionEventsRequest, dict]):
                 The request object. The request message for the
