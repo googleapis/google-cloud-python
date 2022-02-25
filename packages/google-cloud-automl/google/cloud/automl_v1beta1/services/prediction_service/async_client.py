@@ -245,7 +245,7 @@ class PredictionServiceAsyncClient:
            UTF-8 encoded.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import automl_v1beta1
 
@@ -400,7 +400,7 @@ class PredictionServiceAsyncClient:
         -  Tables
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import automl_v1beta1
 

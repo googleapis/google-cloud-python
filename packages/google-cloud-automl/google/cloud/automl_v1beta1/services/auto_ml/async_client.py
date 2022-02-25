@@ -257,7 +257,7 @@ class AutoMlAsyncClient:
     ) -> gca_dataset.Dataset:
         r"""Creates a dataset.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import automl_v1beta1
 
@@ -361,7 +361,7 @@ class AutoMlAsyncClient:
     ) -> dataset.Dataset:
         r"""Gets a dataset.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import automl_v1beta1
 
@@ -463,7 +463,7 @@ class AutoMlAsyncClient:
     ) -> pagers.ListDatasetsAsyncPager:
         r"""Lists datasets in a project.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import automl_v1beta1
 
@@ -573,7 +573,7 @@ class AutoMlAsyncClient:
     ) -> gca_dataset.Dataset:
         r"""Updates a dataset.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import automl_v1beta1
 
@@ -676,7 +676,7 @@ class AutoMlAsyncClient:
         [metadata][google.longrunning.Operation.metadata] field.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import automl_v1beta1
 
@@ -812,7 +812,7 @@ class AutoMlAsyncClient:
            field when it completes.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import automl_v1beta1
 
@@ -943,7 +943,7 @@ class AutoMlAsyncClient:
         completes.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import automl_v1beta1
 
@@ -1067,7 +1067,7 @@ class AutoMlAsyncClient:
     ) -> annotation_spec.AnnotationSpec:
         r"""Gets an annotation spec.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import automl_v1beta1
 
@@ -1165,7 +1165,7 @@ class AutoMlAsyncClient:
     ) -> table_spec.TableSpec:
         r"""Gets a table spec.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import automl_v1beta1
 
@@ -1273,7 +1273,7 @@ class AutoMlAsyncClient:
     ) -> pagers.ListTableSpecsAsyncPager:
         r"""Lists table specs in a dataset.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import automl_v1beta1
 
@@ -1383,7 +1383,7 @@ class AutoMlAsyncClient:
     ) -> gca_table_spec.TableSpec:
         r"""Updates a table spec.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import automl_v1beta1
 
@@ -1482,7 +1482,7 @@ class AutoMlAsyncClient:
     ) -> column_spec.ColumnSpec:
         r"""Gets a column spec.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import automl_v1beta1
 
@@ -1582,7 +1582,7 @@ class AutoMlAsyncClient:
     ) -> pagers.ListColumnSpecsAsyncPager:
         r"""Lists column specs in a table spec.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import automl_v1beta1
 
@@ -1692,7 +1692,7 @@ class AutoMlAsyncClient:
     ) -> gca_column_spec.ColumnSpec:
         r"""Updates a column spec.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import automl_v1beta1
 
@@ -1789,7 +1789,7 @@ class AutoMlAsyncClient:
         each annotation spec.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import automl_v1beta1
 
@@ -1902,7 +1902,7 @@ class AutoMlAsyncClient:
     ) -> model.Model:
         r"""Gets a model.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import automl_v1beta1
 
@@ -2000,7 +2000,7 @@ class AutoMlAsyncClient:
     ) -> pagers.ListModelsAsyncPager:
         r"""Lists models.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import automl_v1beta1
 
@@ -2114,7 +2114,7 @@ class AutoMlAsyncClient:
         [metadata][google.longrunning.Operation.metadata] field.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import automl_v1beta1
 
@@ -2254,7 +2254,7 @@ class AutoMlAsyncClient:
         completes.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import automl_v1beta1
 
@@ -2378,7 +2378,7 @@ class AutoMlAsyncClient:
         completes.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import automl_v1beta1
 
@@ -2503,7 +2503,7 @@ class AutoMlAsyncClient:
         completes.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import automl_v1beta1
 
@@ -2645,7 +2645,7 @@ class AutoMlAsyncClient:
         completes.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import automl_v1beta1
 
@@ -2770,7 +2770,7 @@ class AutoMlAsyncClient:
     ) -> model_evaluation.ModelEvaluation:
         r"""Gets a model evaluation.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import automl_v1beta1
 
@@ -2868,7 +2868,7 @@ class AutoMlAsyncClient:
     ) -> pagers.ListModelEvaluationsAsyncPager:
         r"""Lists model evaluations.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import automl_v1beta1
 

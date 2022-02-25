@@ -444,8 +444,7 @@ class PredictionServiceClient(metaclass=PredictionServiceClientMeta):
            UTF-8 encoded.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import automl_v1beta1
 
@@ -599,8 +598,7 @@ class PredictionServiceClient(metaclass=PredictionServiceClientMeta):
         -  Tables
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import automl_v1beta1
 

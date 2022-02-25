@@ -460,8 +460,7 @@ class PredictionServiceClient(metaclass=PredictionServiceClientMeta):
            up to 5MB. Not available for FORECASTING ``prediction_type``.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import automl_v1
 
@@ -625,8 +624,7 @@ class PredictionServiceClient(metaclass=PredictionServiceClientMeta):
         -  AutoML Tables
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import automl_v1
 

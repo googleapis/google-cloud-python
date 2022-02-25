@@ -10,8 +10,8 @@
           "shortName": "CreateDataset"
         }
       },
-      "file": "automl_generated_automl_v1_auto_ml_create_dataset_async.py",
-      "regionTag": "automl_generated_automl_v1_AutoMl_CreateDataset_async",
+      "file": "automl_v1_generated_auto_ml_create_dataset_async.py",
+      "regionTag": "automl_v1_generated_AutoMl_CreateDataset_async",
       "segments": [
         {
           "end": 53,
@@ -54,8 +54,8 @@
           "shortName": "CreateDataset"
         }
       },
-      "file": "automl_generated_automl_v1_auto_ml_create_dataset_sync.py",
-      "regionTag": "automl_generated_automl_v1_AutoMl_CreateDataset_sync",
+      "file": "automl_v1_generated_auto_ml_create_dataset_sync.py",
+      "regionTag": "automl_v1_generated_AutoMl_CreateDataset_sync",
       "segments": [
         {
           "end": 53,
@@ -99,8 +99,8 @@
           "shortName": "CreateModel"
         }
       },
-      "file": "automl_generated_automl_v1_auto_ml_create_model_async.py",
-      "regionTag": "automl_generated_automl_v1_AutoMl_CreateModel_async",
+      "file": "automl_v1_generated_auto_ml_create_model_async.py",
+      "regionTag": "automl_v1_generated_AutoMl_CreateModel_async",
       "segments": [
         {
           "end": 48,
@@ -143,8 +143,8 @@
           "shortName": "CreateModel"
         }
       },
-      "file": "automl_generated_automl_v1_auto_ml_create_model_sync.py",
-      "regionTag": "automl_generated_automl_v1_AutoMl_CreateModel_sync",
+      "file": "automl_v1_generated_auto_ml_create_model_sync.py",
+      "regionTag": "automl_v1_generated_AutoMl_CreateModel_sync",
       "segments": [
         {
           "end": 48,
@@ -188,8 +188,8 @@
           "shortName": "DeleteDataset"
         }
       },
-      "file": "automl_generated_automl_v1_auto_ml_delete_dataset_async.py",
-      "regionTag": "automl_generated_automl_v1_AutoMl_DeleteDataset_async",
+      "file": "automl_v1_generated_auto_ml_delete_dataset_async.py",
+      "regionTag": "automl_v1_generated_AutoMl_DeleteDataset_async",
       "segments": [
         {
           "end": 48,
@@ -232,8 +232,8 @@
           "shortName": "DeleteDataset"
         }
       },
-      "file": "automl_generated_automl_v1_auto_ml_delete_dataset_sync.py",
-      "regionTag": "automl_generated_automl_v1_AutoMl_DeleteDataset_sync",
+      "file": "automl_v1_generated_auto_ml_delete_dataset_sync.py",
+      "regionTag": "automl_v1_generated_AutoMl_DeleteDataset_sync",
       "segments": [
         {
           "end": 48,
@@ -277,8 +277,8 @@
           "shortName": "DeleteModel"
         }
       },
-      "file": "automl_generated_automl_v1_auto_ml_delete_model_async.py",
-      "regionTag": "automl_generated_automl_v1_AutoMl_DeleteModel_async",
+      "file": "automl_v1_generated_auto_ml_delete_model_async.py",
+      "regionTag": "automl_v1_generated_AutoMl_DeleteModel_async",
       "segments": [
         {
           "end": 48,
@@ -321,8 +321,8 @@
           "shortName": "DeleteModel"
         }
       },
-      "file": "automl_generated_automl_v1_auto_ml_delete_model_sync.py",
-      "regionTag": "automl_generated_automl_v1_AutoMl_DeleteModel_sync",
+      "file": "automl_v1_generated_auto_ml_delete_model_sync.py",
+      "regionTag": "automl_v1_generated_AutoMl_DeleteModel_sync",
       "segments": [
         {
           "end": 48,
@@ -366,8 +366,8 @@
           "shortName": "DeployModel"
         }
       },
-      "file": "automl_generated_automl_v1_auto_ml_deploy_model_async.py",
-      "regionTag": "automl_generated_automl_v1_AutoMl_DeployModel_async",
+      "file": "automl_v1_generated_auto_ml_deploy_model_async.py",
+      "regionTag": "automl_v1_generated_AutoMl_DeployModel_async",
       "segments": [
         {
           "end": 48,
@@ -410,8 +410,8 @@
           "shortName": "DeployModel"
         }
       },
-      "file": "automl_generated_automl_v1_auto_ml_deploy_model_sync.py",
-      "regionTag": "automl_generated_automl_v1_AutoMl_DeployModel_sync",
+      "file": "automl_v1_generated_auto_ml_deploy_model_sync.py",
+      "regionTag": "automl_v1_generated_AutoMl_DeployModel_sync",
       "segments": [
         {
           "end": 48,
@@ -455,8 +455,8 @@
           "shortName": "ExportData"
         }
       },
-      "file": "automl_generated_automl_v1_auto_ml_export_data_async.py",
-      "regionTag": "automl_generated_automl_v1_AutoMl_ExportData_async",
+      "file": "automl_v1_generated_auto_ml_export_data_async.py",
+      "regionTag": "automl_v1_generated_AutoMl_ExportData_async",
       "segments": [
         {
           "end": 52,
@@ -499,8 +499,8 @@
           "shortName": "ExportData"
         }
       },
-      "file": "automl_generated_automl_v1_auto_ml_export_data_sync.py",
-      "regionTag": "automl_generated_automl_v1_AutoMl_ExportData_sync",
+      "file": "automl_v1_generated_auto_ml_export_data_sync.py",
+      "regionTag": "automl_v1_generated_AutoMl_ExportData_sync",
       "segments": [
         {
           "end": 52,
@@ -544,8 +544,8 @@
           "shortName": "ExportModel"
         }
       },
-      "file": "automl_generated_automl_v1_auto_ml_export_model_async.py",
-      "regionTag": "automl_generated_automl_v1_AutoMl_ExportModel_async",
+      "file": "automl_v1_generated_auto_ml_export_model_async.py",
+      "regionTag": "automl_v1_generated_AutoMl_ExportModel_async",
       "segments": [
         {
           "end": 52,
@@ -588,8 +588,8 @@
           "shortName": "ExportModel"
         }
       },
-      "file": "automl_generated_automl_v1_auto_ml_export_model_sync.py",
-      "regionTag": "automl_generated_automl_v1_AutoMl_ExportModel_sync",
+      "file": "automl_v1_generated_auto_ml_export_model_sync.py",
+      "regionTag": "automl_v1_generated_AutoMl_ExportModel_sync",
       "segments": [
         {
           "end": 52,
@@ -633,8 +633,8 @@
           "shortName": "GetAnnotationSpec"
         }
       },
-      "file": "automl_generated_automl_v1_auto_ml_get_annotation_spec_async.py",
-      "regionTag": "automl_generated_automl_v1_AutoMl_GetAnnotationSpec_async",
+      "file": "automl_v1_generated_auto_ml_get_annotation_spec_async.py",
+      "regionTag": "automl_v1_generated_AutoMl_GetAnnotationSpec_async",
       "segments": [
         {
           "end": 44,
@@ -677,8 +677,8 @@
           "shortName": "GetAnnotationSpec"
         }
       },
-      "file": "automl_generated_automl_v1_auto_ml_get_annotation_spec_sync.py",
-      "regionTag": "automl_generated_automl_v1_AutoMl_GetAnnotationSpec_sync",
+      "file": "automl_v1_generated_auto_ml_get_annotation_spec_sync.py",
+      "regionTag": "automl_v1_generated_AutoMl_GetAnnotationSpec_sync",
       "segments": [
         {
           "end": 44,
@@ -722,8 +722,8 @@
           "shortName": "GetDataset"
         }
       },
-      "file": "automl_generated_automl_v1_auto_ml_get_dataset_async.py",
-      "regionTag": "automl_generated_automl_v1_AutoMl_GetDataset_async",
+      "file": "automl_v1_generated_auto_ml_get_dataset_async.py",
+      "regionTag": "automl_v1_generated_AutoMl_GetDataset_async",
       "segments": [
         {
           "end": 44,
@@ -766,8 +766,8 @@
           "shortName": "GetDataset"
         }
       },
-      "file": "automl_generated_automl_v1_auto_ml_get_dataset_sync.py",
-      "regionTag": "automl_generated_automl_v1_AutoMl_GetDataset_sync",
+      "file": "automl_v1_generated_auto_ml_get_dataset_sync.py",
+      "regionTag": "automl_v1_generated_AutoMl_GetDataset_sync",
       "segments": [
         {
           "end": 44,
@@ -811,8 +811,8 @@
           "shortName": "GetModelEvaluation"
         }
       },
-      "file": "automl_generated_automl_v1_auto_ml_get_model_evaluation_async.py",
-      "regionTag": "automl_generated_automl_v1_AutoMl_GetModelEvaluation_async",
+      "file": "automl_v1_generated_auto_ml_get_model_evaluation_async.py",
+      "regionTag": "automl_v1_generated_AutoMl_GetModelEvaluation_async",
       "segments": [
         {
           "end": 44,
@@ -855,8 +855,8 @@
           "shortName": "GetModelEvaluation"
         }
       },
-      "file": "automl_generated_automl_v1_auto_ml_get_model_evaluation_sync.py",
-      "regionTag": "automl_generated_automl_v1_AutoMl_GetModelEvaluation_sync",
+      "file": "automl_v1_generated_auto_ml_get_model_evaluation_sync.py",
+      "regionTag": "automl_v1_generated_AutoMl_GetModelEvaluation_sync",
       "segments": [
         {
           "end": 44,
@@ -900,8 +900,8 @@
           "shortName": "GetModel"
         }
       },
-      "file": "automl_generated_automl_v1_auto_ml_get_model_async.py",
-      "regionTag": "automl_generated_automl_v1_AutoMl_GetModel_async",
+      "file": "automl_v1_generated_auto_ml_get_model_async.py",
+      "regionTag": "automl_v1_generated_AutoMl_GetModel_async",
       "segments": [
         {
           "end": 44,
@@ -944,8 +944,8 @@
           "shortName": "GetModel"
         }
       },
-      "file": "automl_generated_automl_v1_auto_ml_get_model_sync.py",
-      "regionTag": "automl_generated_automl_v1_AutoMl_GetModel_sync",
+      "file": "automl_v1_generated_auto_ml_get_model_sync.py",
+      "regionTag": "automl_v1_generated_AutoMl_GetModel_sync",
       "segments": [
         {
           "end": 44,
@@ -989,8 +989,8 @@
           "shortName": "ImportData"
         }
       },
-      "file": "automl_generated_automl_v1_auto_ml_import_data_async.py",
-      "regionTag": "automl_generated_automl_v1_AutoMl_ImportData_async",
+      "file": "automl_v1_generated_auto_ml_import_data_async.py",
+      "regionTag": "automl_v1_generated_AutoMl_ImportData_async",
       "segments": [
         {
           "end": 52,
@@ -1033,8 +1033,8 @@
           "shortName": "ImportData"
         }
       },
-      "file": "automl_generated_automl_v1_auto_ml_import_data_sync.py",
-      "regionTag": "automl_generated_automl_v1_AutoMl_ImportData_sync",
+      "file": "automl_v1_generated_auto_ml_import_data_sync.py",
+      "regionTag": "automl_v1_generated_AutoMl_ImportData_sync",
       "segments": [
         {
           "end": 52,
@@ -1078,8 +1078,8 @@
           "shortName": "ListDatasets"
         }
       },
-      "file": "automl_generated_automl_v1_auto_ml_list_datasets_async.py",
-      "regionTag": "automl_generated_automl_v1_AutoMl_ListDatasets_async",
+      "file": "automl_v1_generated_auto_ml_list_datasets_async.py",
+      "regionTag": "automl_v1_generated_AutoMl_ListDatasets_async",
       "segments": [
         {
           "end": 45,
@@ -1122,8 +1122,8 @@
           "shortName": "ListDatasets"
         }
       },
-      "file": "automl_generated_automl_v1_auto_ml_list_datasets_sync.py",
-      "regionTag": "automl_generated_automl_v1_AutoMl_ListDatasets_sync",
+      "file": "automl_v1_generated_auto_ml_list_datasets_sync.py",
+      "regionTag": "automl_v1_generated_AutoMl_ListDatasets_sync",
       "segments": [
         {
           "end": 45,
@@ -1167,8 +1167,8 @@
           "shortName": "ListModelEvaluations"
         }
       },
-      "file": "automl_generated_automl_v1_auto_ml_list_model_evaluations_async.py",
-      "regionTag": "automl_generated_automl_v1_AutoMl_ListModelEvaluations_async",
+      "file": "automl_v1_generated_auto_ml_list_model_evaluations_async.py",
+      "regionTag": "automl_v1_generated_AutoMl_ListModelEvaluations_async",
       "segments": [
         {
           "end": 46,
@@ -1211,8 +1211,8 @@
           "shortName": "ListModelEvaluations"
         }
       },
-      "file": "automl_generated_automl_v1_auto_ml_list_model_evaluations_sync.py",
-      "regionTag": "automl_generated_automl_v1_AutoMl_ListModelEvaluations_sync",
+      "file": "automl_v1_generated_auto_ml_list_model_evaluations_sync.py",
+      "regionTag": "automl_v1_generated_AutoMl_ListModelEvaluations_sync",
       "segments": [
         {
           "end": 46,
@@ -1256,8 +1256,8 @@
           "shortName": "ListModels"
         }
       },
-      "file": "automl_generated_automl_v1_auto_ml_list_models_async.py",
-      "regionTag": "automl_generated_automl_v1_AutoMl_ListModels_async",
+      "file": "automl_v1_generated_auto_ml_list_models_async.py",
+      "regionTag": "automl_v1_generated_AutoMl_ListModels_async",
       "segments": [
         {
           "end": 45,
@@ -1300,8 +1300,8 @@
           "shortName": "ListModels"
         }
       },
-      "file": "automl_generated_automl_v1_auto_ml_list_models_sync.py",
-      "regionTag": "automl_generated_automl_v1_AutoMl_ListModels_sync",
+      "file": "automl_v1_generated_auto_ml_list_models_sync.py",
+      "regionTag": "automl_v1_generated_AutoMl_ListModels_sync",
       "segments": [
         {
           "end": 45,
@@ -1345,8 +1345,8 @@
           "shortName": "UndeployModel"
         }
       },
-      "file": "automl_generated_automl_v1_auto_ml_undeploy_model_async.py",
-      "regionTag": "automl_generated_automl_v1_AutoMl_UndeployModel_async",
+      "file": "automl_v1_generated_auto_ml_undeploy_model_async.py",
+      "regionTag": "automl_v1_generated_AutoMl_UndeployModel_async",
       "segments": [
         {
           "end": 48,
@@ -1389,8 +1389,8 @@
           "shortName": "UndeployModel"
         }
       },
-      "file": "automl_generated_automl_v1_auto_ml_undeploy_model_sync.py",
-      "regionTag": "automl_generated_automl_v1_AutoMl_UndeployModel_sync",
+      "file": "automl_v1_generated_auto_ml_undeploy_model_sync.py",
+      "regionTag": "automl_v1_generated_AutoMl_UndeployModel_sync",
       "segments": [
         {
           "end": 48,
@@ -1434,8 +1434,8 @@
           "shortName": "UpdateDataset"
         }
       },
-      "file": "automl_generated_automl_v1_auto_ml_update_dataset_async.py",
-      "regionTag": "automl_generated_automl_v1_AutoMl_UpdateDataset_async",
+      "file": "automl_v1_generated_auto_ml_update_dataset_async.py",
+      "regionTag": "automl_v1_generated_AutoMl_UpdateDataset_async",
       "segments": [
         {
           "end": 48,
@@ -1478,8 +1478,8 @@
           "shortName": "UpdateDataset"
         }
       },
-      "file": "automl_generated_automl_v1_auto_ml_update_dataset_sync.py",
-      "regionTag": "automl_generated_automl_v1_AutoMl_UpdateDataset_sync",
+      "file": "automl_v1_generated_auto_ml_update_dataset_sync.py",
+      "regionTag": "automl_v1_generated_AutoMl_UpdateDataset_sync",
       "segments": [
         {
           "end": 48,
@@ -1523,8 +1523,8 @@
           "shortName": "UpdateModel"
         }
       },
-      "file": "automl_generated_automl_v1_auto_ml_update_model_async.py",
-      "regionTag": "automl_generated_automl_v1_AutoMl_UpdateModel_async",
+      "file": "automl_v1_generated_auto_ml_update_model_async.py",
+      "regionTag": "automl_v1_generated_AutoMl_UpdateModel_async",
       "segments": [
         {
           "end": 43,
@@ -1567,8 +1567,8 @@
           "shortName": "UpdateModel"
         }
       },
-      "file": "automl_generated_automl_v1_auto_ml_update_model_sync.py",
-      "regionTag": "automl_generated_automl_v1_AutoMl_UpdateModel_sync",
+      "file": "automl_v1_generated_auto_ml_update_model_sync.py",
+      "regionTag": "automl_v1_generated_AutoMl_UpdateModel_sync",
       "segments": [
         {
           "end": 43,
@@ -1612,8 +1612,8 @@
           "shortName": "BatchPredict"
         }
       },
-      "file": "automl_generated_automl_v1_prediction_service_batch_predict_async.py",
-      "regionTag": "automl_generated_automl_v1_PredictionService_BatchPredict_async",
+      "file": "automl_v1_generated_prediction_service_batch_predict_async.py",
+      "regionTag": "automl_v1_generated_PredictionService_BatchPredict_async",
       "segments": [
         {
           "end": 56,
@@ -1656,8 +1656,8 @@
           "shortName": "BatchPredict"
         }
       },
-      "file": "automl_generated_automl_v1_prediction_service_batch_predict_sync.py",
-      "regionTag": "automl_generated_automl_v1_PredictionService_BatchPredict_sync",
+      "file": "automl_v1_generated_prediction_service_batch_predict_sync.py",
+      "regionTag": "automl_v1_generated_PredictionService_BatchPredict_sync",
       "segments": [
         {
           "end": 56,
@@ -1701,8 +1701,8 @@
           "shortName": "Predict"
         }
       },
-      "file": "automl_generated_automl_v1_prediction_service_predict_async.py",
-      "regionTag": "automl_generated_automl_v1_PredictionService_Predict_async",
+      "file": "automl_v1_generated_prediction_service_predict_async.py",
+      "regionTag": "automl_v1_generated_PredictionService_Predict_async",
       "segments": [
         {
           "end": 48,
@@ -1745,8 +1745,8 @@
           "shortName": "Predict"
         }
       },
-      "file": "automl_generated_automl_v1_prediction_service_predict_sync.py",
-      "regionTag": "automl_generated_automl_v1_PredictionService_Predict_sync",
+      "file": "automl_v1_generated_prediction_service_predict_sync.py",
+      "regionTag": "automl_v1_generated_PredictionService_Predict_sync",
       "segments": [
         {
           "end": 48,

@@ -502,8 +502,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
     ) -> operation.Operation:
         r"""Creates a dataset.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import automl_v1
 
@@ -619,8 +618,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
     ) -> dataset.Dataset:
         r"""Gets a dataset.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import automl_v1
 
@@ -712,8 +710,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
     ) -> pagers.ListDatasetsPager:
         r"""Lists datasets in a project.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import automl_v1
 
@@ -814,8 +811,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
     ) -> gca_dataset.Dataset:
         r"""Updates a dataset.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import automl_v1
 
@@ -927,8 +923,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         [metadata][google.longrunning.Operation.metadata] field.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import automl_v1
 
@@ -1054,8 +1049,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
            field when it completes.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import automl_v1
 
@@ -1190,8 +1184,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         completes.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import automl_v1
 
@@ -1319,8 +1312,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
     ) -> annotation_spec.AnnotationSpec:
         r"""Gets an annotation spec.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import automl_v1
 
@@ -1414,8 +1406,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         each annotation spec.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import automl_v1
 
@@ -1528,8 +1519,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
     ) -> model.Model:
         r"""Gets a model.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import automl_v1
 
@@ -1617,8 +1607,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
     ) -> pagers.ListModelsPager:
         r"""Lists models.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import automl_v1
 
@@ -1722,8 +1711,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         [metadata][google.longrunning.Operation.metadata] field.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import automl_v1
 
@@ -1839,8 +1827,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
     ) -> gca_model.Model:
         r"""Updates a model.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import automl_v1
 
@@ -1954,8 +1941,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         completes.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import automl_v1
 
@@ -2079,8 +2065,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         completes.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import automl_v1
 
@@ -2204,8 +2189,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         completes.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import automl_v1
 
@@ -2335,8 +2319,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
     ) -> model_evaluation.ModelEvaluation:
         r"""Gets a model evaluation.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import automl_v1
 
@@ -2425,8 +2408,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
     ) -> pagers.ListModelEvaluationsPager:
         r"""Lists model evaluations.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import automl_v1
 
