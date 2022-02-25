@@ -240,7 +240,7 @@ class BigQueryWriteAsyncClient:
         received.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_storage_v1
 
@@ -382,7 +382,7 @@ class BigQueryWriteAsyncClient:
            ``BatchCommitWriteStreams`` rpc.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_storage_v1
 
@@ -468,7 +468,7 @@ class BigQueryWriteAsyncClient:
     ) -> stream.WriteStream:
         r"""Gets information about a write stream.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_storage_v1
 
@@ -571,7 +571,7 @@ class BigQueryWriteAsyncClient:
         the stream. Finalize is not supported on the '_default' stream.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_storage_v1
 
@@ -675,7 +675,7 @@ class BigQueryWriteAsyncClient:
         becomes available for read operations.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_storage_v1
 
@@ -785,7 +785,7 @@ class BigQueryWriteAsyncClient:
         BUFFERED.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_storage_v1
 

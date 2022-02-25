@@ -437,8 +437,7 @@ class BigQueryWriteClient(metaclass=BigQueryWriteClientMeta):
         received.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_storage_v1beta2
 
@@ -557,8 +556,7 @@ class BigQueryWriteClient(metaclass=BigQueryWriteClientMeta):
         available for read operations after the stream is committed.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_storage_v1beta2
 
@@ -627,8 +625,7 @@ class BigQueryWriteClient(metaclass=BigQueryWriteClientMeta):
     ) -> stream.WriteStream:
         r"""Gets a write stream.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_storage_v1beta2
 
@@ -721,8 +718,7 @@ class BigQueryWriteClient(metaclass=BigQueryWriteClientMeta):
         the stream. Finalize is not supported on the '_default' stream.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_storage_v1beta2
 
@@ -815,8 +811,7 @@ class BigQueryWriteClient(metaclass=BigQueryWriteClientMeta):
         operations.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_storage_v1beta2
 
@@ -914,8 +909,7 @@ class BigQueryWriteClient(metaclass=BigQueryWriteClientMeta):
         \_default stream, since it is not BUFFERED.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_storage_v1beta2
 

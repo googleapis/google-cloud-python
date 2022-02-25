@@ -254,7 +254,7 @@ class BigQueryReadAsyncClient:
         caller.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_storage_v1beta2
 
@@ -391,7 +391,7 @@ class BigQueryReadAsyncClient:
         reflecting the current state of the stream.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_storage_v1beta2
 
@@ -514,7 +514,7 @@ class BigQueryReadAsyncClient:
         once the streams have been read to completion.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_storage_v1beta2
 

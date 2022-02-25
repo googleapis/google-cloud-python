@@ -472,8 +472,7 @@ class BigQueryReadClient(metaclass=BigQueryReadClientMeta):
         caller.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_storage_v1
 
@@ -600,8 +599,7 @@ class BigQueryReadClient(metaclass=BigQueryReadClientMeta):
         reflecting the current state of the stream.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_storage_v1
 
@@ -715,8 +713,7 @@ class BigQueryReadClient(metaclass=BigQueryReadClientMeta):
         once the streams have been read to completion.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_storage_v1
 
