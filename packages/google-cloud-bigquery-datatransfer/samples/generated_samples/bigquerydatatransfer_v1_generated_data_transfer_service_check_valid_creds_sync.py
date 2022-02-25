@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ListTransferRuns
+# Snippet for CheckValidCreds
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,24 +23,23 @@
 #   python3 -m pip install google-cloud-bigquery-datatransfer
 
 
-# [START bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_ListTransferRuns_async]
+# [START bigquerydatatransfer_v1_generated_DataTransferService_CheckValidCreds_sync]
 from google.cloud import bigquery_datatransfer_v1
 
 
-async def sample_list_transfer_runs():
+def sample_check_valid_creds():
     # Create a client
-    client = bigquery_datatransfer_v1.DataTransferServiceAsyncClient()
+    client = bigquery_datatransfer_v1.DataTransferServiceClient()
 
     # Initialize request argument(s)
-    request = bigquery_datatransfer_v1.ListTransferRunsRequest(
-        parent="parent_value",
+    request = bigquery_datatransfer_v1.CheckValidCredsRequest(
+        name="name_value",
     )
 
     # Make the request
-    page_result = client.list_transfer_runs(request=request)
+    response = client.check_valid_creds(request=request)
 
     # Handle the response
-    async for response in page_result:
-        print(response)
+    print(response)
 
-# [END bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_ListTransferRuns_async]
+# [END bigquerydatatransfer_v1_generated_DataTransferService_CheckValidCreds_sync]

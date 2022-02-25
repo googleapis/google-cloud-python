@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for StartManualTransferRuns
+# Snippet for ListTransferLogs
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,22 +23,24 @@
 #   python3 -m pip install google-cloud-bigquery-datatransfer
 
 
-# [START bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_StartManualTransferRuns_async]
+# [START bigquerydatatransfer_v1_generated_DataTransferService_ListTransferLogs_sync]
 from google.cloud import bigquery_datatransfer_v1
 
 
-async def sample_start_manual_transfer_runs():
+def sample_list_transfer_logs():
     # Create a client
-    client = bigquery_datatransfer_v1.DataTransferServiceAsyncClient()
+    client = bigquery_datatransfer_v1.DataTransferServiceClient()
 
     # Initialize request argument(s)
-    request = bigquery_datatransfer_v1.StartManualTransferRunsRequest(
+    request = bigquery_datatransfer_v1.ListTransferLogsRequest(
+        parent="parent_value",
     )
 
     # Make the request
-    response = await client.start_manual_transfer_runs(request=request)
+    page_result = client.list_transfer_logs(request=request)
 
     # Handle the response
-    print(response)
+    for response in page_result:
+        print(response)
 
-# [END bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_StartManualTransferRuns_async]
+# [END bigquerydatatransfer_v1_generated_DataTransferService_ListTransferLogs_sync]

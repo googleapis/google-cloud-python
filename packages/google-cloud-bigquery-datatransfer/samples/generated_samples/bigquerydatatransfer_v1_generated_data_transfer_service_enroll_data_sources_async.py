@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for CheckValidCreds
+# Snippet for EnrollDataSources
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,23 +23,20 @@
 #   python3 -m pip install google-cloud-bigquery-datatransfer
 
 
-# [START bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_CheckValidCreds_sync]
+# [START bigquerydatatransfer_v1_generated_DataTransferService_EnrollDataSources_async]
 from google.cloud import bigquery_datatransfer_v1
 
 
-def sample_check_valid_creds():
+async def sample_enroll_data_sources():
     # Create a client
-    client = bigquery_datatransfer_v1.DataTransferServiceClient()
+    client = bigquery_datatransfer_v1.DataTransferServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = bigquery_datatransfer_v1.CheckValidCredsRequest(
-        name="name_value",
+    request = bigquery_datatransfer_v1.EnrollDataSourcesRequest(
     )
 
     # Make the request
-    response = client.check_valid_creds(request=request)
+    await client.enroll_data_sources(request=request)
 
-    # Handle the response
-    print(response)
 
-# [END bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_CheckValidCreds_sync]
+# [END bigquerydatatransfer_v1_generated_DataTransferService_EnrollDataSources_async]

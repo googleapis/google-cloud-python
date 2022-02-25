@@ -233,7 +233,7 @@ class DataTransferServiceAsyncClient:
         settings.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_datatransfer_v1
 
@@ -337,7 +337,7 @@ class DataTransferServiceAsyncClient:
         settings.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_datatransfer_v1
 
@@ -450,7 +450,7 @@ class DataTransferServiceAsyncClient:
     ) -> transfer.TransferConfig:
         r"""Creates a new data transfer configuration.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_datatransfer_v1
 
@@ -572,7 +572,7 @@ class DataTransferServiceAsyncClient:
         All fields must be set, even if they are not updated.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_datatransfer_v1
 
@@ -686,7 +686,7 @@ class DataTransferServiceAsyncClient:
         associated transfer runs and logs.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_datatransfer_v1
 
@@ -779,7 +779,7 @@ class DataTransferServiceAsyncClient:
     ) -> transfer.TransferConfig:
         r"""Returns information about a data transfer config.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_datatransfer_v1
 
@@ -889,7 +889,7 @@ class DataTransferServiceAsyncClient:
         by a project in the specified location.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_datatransfer_v1
 
@@ -1007,7 +1007,7 @@ class DataTransferServiceAsyncClient:
         StartManualTransferRuns instead.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_datatransfer_v1
 
@@ -1124,7 +1124,7 @@ class DataTransferServiceAsyncClient:
         and end_time (exclusive), or for a specific run_time.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_datatransfer_v1
 
@@ -1194,7 +1194,7 @@ class DataTransferServiceAsyncClient:
         run.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_datatransfer_v1
 
@@ -1295,7 +1295,7 @@ class DataTransferServiceAsyncClient:
     ) -> None:
         r"""Deletes the specified transfer run.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_datatransfer_v1
 
@@ -1390,7 +1390,7 @@ class DataTransferServiceAsyncClient:
         transfer runs.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_datatransfer_v1
 
@@ -1503,7 +1503,7 @@ class DataTransferServiceAsyncClient:
     ) -> pagers.ListTransferLogsAsyncPager:
         r"""Returns log messages for the transfer run.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_datatransfer_v1
 
@@ -1617,7 +1617,7 @@ class DataTransferServiceAsyncClient:
         data source and requesting user.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_datatransfer_v1
 
@@ -1732,7 +1732,7 @@ class DataTransferServiceAsyncClient:
         https://cloud.google.com/bigquery/docs/working-with-transfers).
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_datatransfer_v1
 

@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for GetTransferConfig
+# Snippet for CheckValidCreds
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,23 +23,23 @@
 #   python3 -m pip install google-cloud-bigquery-datatransfer
 
 
-# [START bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_GetTransferConfig_sync]
+# [START bigquerydatatransfer_v1_generated_DataTransferService_CheckValidCreds_async]
 from google.cloud import bigquery_datatransfer_v1
 
 
-def sample_get_transfer_config():
+async def sample_check_valid_creds():
     # Create a client
-    client = bigquery_datatransfer_v1.DataTransferServiceClient()
+    client = bigquery_datatransfer_v1.DataTransferServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = bigquery_datatransfer_v1.GetTransferConfigRequest(
+    request = bigquery_datatransfer_v1.CheckValidCredsRequest(
         name="name_value",
     )
 
     # Make the request
-    response = client.get_transfer_config(request=request)
+    response = await client.check_valid_creds(request=request)
 
     # Handle the response
     print(response)
 
-# [END bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_GetTransferConfig_sync]
+# [END bigquerydatatransfer_v1_generated_DataTransferService_CheckValidCreds_async]

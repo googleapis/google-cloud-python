@@ -10,8 +10,8 @@
           "shortName": "CheckValidCreds"
         }
       },
-      "file": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_data_transfer_service_check_valid_creds_async.py",
-      "regionTag": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_CheckValidCreds_async",
+      "file": "bigquerydatatransfer_v1_generated_data_transfer_service_check_valid_creds_async.py",
+      "regionTag": "bigquerydatatransfer_v1_generated_DataTransferService_CheckValidCreds_async",
       "segments": [
         {
           "end": 44,
@@ -54,8 +54,8 @@
           "shortName": "CheckValidCreds"
         }
       },
-      "file": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_data_transfer_service_check_valid_creds_sync.py",
-      "regionTag": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_CheckValidCreds_sync",
+      "file": "bigquerydatatransfer_v1_generated_data_transfer_service_check_valid_creds_sync.py",
+      "regionTag": "bigquerydatatransfer_v1_generated_DataTransferService_CheckValidCreds_sync",
       "segments": [
         {
           "end": 44,
@@ -99,8 +99,8 @@
           "shortName": "CreateTransferConfig"
         }
       },
-      "file": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_data_transfer_service_create_transfer_config_async.py",
-      "regionTag": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_CreateTransferConfig_async",
+      "file": "bigquerydatatransfer_v1_generated_data_transfer_service_create_transfer_config_async.py",
+      "regionTag": "bigquerydatatransfer_v1_generated_DataTransferService_CreateTransferConfig_async",
       "segments": [
         {
           "end": 48,
@@ -143,8 +143,8 @@
           "shortName": "CreateTransferConfig"
         }
       },
-      "file": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_data_transfer_service_create_transfer_config_sync.py",
-      "regionTag": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_CreateTransferConfig_sync",
+      "file": "bigquerydatatransfer_v1_generated_data_transfer_service_create_transfer_config_sync.py",
+      "regionTag": "bigquerydatatransfer_v1_generated_DataTransferService_CreateTransferConfig_sync",
       "segments": [
         {
           "end": 48,
@@ -188,8 +188,8 @@
           "shortName": "DeleteTransferConfig"
         }
       },
-      "file": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_data_transfer_service_delete_transfer_config_async.py",
-      "regionTag": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_DeleteTransferConfig_async",
+      "file": "bigquerydatatransfer_v1_generated_data_transfer_service_delete_transfer_config_async.py",
+      "regionTag": "bigquerydatatransfer_v1_generated_DataTransferService_DeleteTransferConfig_async",
       "segments": [
         {
           "end": 42,
@@ -230,8 +230,8 @@
           "shortName": "DeleteTransferConfig"
         }
       },
-      "file": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_data_transfer_service_delete_transfer_config_sync.py",
-      "regionTag": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_DeleteTransferConfig_sync",
+      "file": "bigquerydatatransfer_v1_generated_data_transfer_service_delete_transfer_config_sync.py",
+      "regionTag": "bigquerydatatransfer_v1_generated_DataTransferService_DeleteTransferConfig_sync",
       "segments": [
         {
           "end": 42,
@@ -273,8 +273,8 @@
           "shortName": "DeleteTransferRun"
         }
       },
-      "file": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_data_transfer_service_delete_transfer_run_async.py",
-      "regionTag": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_DeleteTransferRun_async",
+      "file": "bigquerydatatransfer_v1_generated_data_transfer_service_delete_transfer_run_async.py",
+      "regionTag": "bigquerydatatransfer_v1_generated_DataTransferService_DeleteTransferRun_async",
       "segments": [
         {
           "end": 42,
@@ -315,8 +315,8 @@
           "shortName": "DeleteTransferRun"
         }
       },
-      "file": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_data_transfer_service_delete_transfer_run_sync.py",
-      "regionTag": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_DeleteTransferRun_sync",
+      "file": "bigquerydatatransfer_v1_generated_data_transfer_service_delete_transfer_run_sync.py",
+      "regionTag": "bigquerydatatransfer_v1_generated_DataTransferService_DeleteTransferRun_sync",
       "segments": [
         {
           "end": 42,
@@ -358,8 +358,8 @@
           "shortName": "EnrollDataSources"
         }
       },
-      "file": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_data_transfer_service_enroll_data_sources_async.py",
-      "regionTag": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_EnrollDataSources_async",
+      "file": "bigquerydatatransfer_v1_generated_data_transfer_service_enroll_data_sources_async.py",
+      "regionTag": "bigquerydatatransfer_v1_generated_DataTransferService_EnrollDataSources_async",
       "segments": [
         {
           "end": 41,
@@ -400,8 +400,8 @@
           "shortName": "EnrollDataSources"
         }
       },
-      "file": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_data_transfer_service_enroll_data_sources_sync.py",
-      "regionTag": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_EnrollDataSources_sync",
+      "file": "bigquerydatatransfer_v1_generated_data_transfer_service_enroll_data_sources_sync.py",
+      "regionTag": "bigquerydatatransfer_v1_generated_DataTransferService_EnrollDataSources_sync",
       "segments": [
         {
           "end": 41,
@@ -443,8 +443,8 @@
           "shortName": "GetDataSource"
         }
       },
-      "file": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_data_transfer_service_get_data_source_async.py",
-      "regionTag": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_GetDataSource_async",
+      "file": "bigquerydatatransfer_v1_generated_data_transfer_service_get_data_source_async.py",
+      "regionTag": "bigquerydatatransfer_v1_generated_DataTransferService_GetDataSource_async",
       "segments": [
         {
           "end": 44,
@@ -487,8 +487,8 @@
           "shortName": "GetDataSource"
         }
       },
-      "file": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_data_transfer_service_get_data_source_sync.py",
-      "regionTag": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_GetDataSource_sync",
+      "file": "bigquerydatatransfer_v1_generated_data_transfer_service_get_data_source_sync.py",
+      "regionTag": "bigquerydatatransfer_v1_generated_DataTransferService_GetDataSource_sync",
       "segments": [
         {
           "end": 44,
@@ -532,8 +532,8 @@
           "shortName": "GetTransferConfig"
         }
       },
-      "file": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_data_transfer_service_get_transfer_config_async.py",
-      "regionTag": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_GetTransferConfig_async",
+      "file": "bigquerydatatransfer_v1_generated_data_transfer_service_get_transfer_config_async.py",
+      "regionTag": "bigquerydatatransfer_v1_generated_DataTransferService_GetTransferConfig_async",
       "segments": [
         {
           "end": 44,
@@ -576,8 +576,8 @@
           "shortName": "GetTransferConfig"
         }
       },
-      "file": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_data_transfer_service_get_transfer_config_sync.py",
-      "regionTag": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_GetTransferConfig_sync",
+      "file": "bigquerydatatransfer_v1_generated_data_transfer_service_get_transfer_config_sync.py",
+      "regionTag": "bigquerydatatransfer_v1_generated_DataTransferService_GetTransferConfig_sync",
       "segments": [
         {
           "end": 44,
@@ -621,8 +621,8 @@
           "shortName": "GetTransferRun"
         }
       },
-      "file": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_data_transfer_service_get_transfer_run_async.py",
-      "regionTag": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_GetTransferRun_async",
+      "file": "bigquerydatatransfer_v1_generated_data_transfer_service_get_transfer_run_async.py",
+      "regionTag": "bigquerydatatransfer_v1_generated_DataTransferService_GetTransferRun_async",
       "segments": [
         {
           "end": 44,
@@ -665,8 +665,8 @@
           "shortName": "GetTransferRun"
         }
       },
-      "file": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_data_transfer_service_get_transfer_run_sync.py",
-      "regionTag": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_GetTransferRun_sync",
+      "file": "bigquerydatatransfer_v1_generated_data_transfer_service_get_transfer_run_sync.py",
+      "regionTag": "bigquerydatatransfer_v1_generated_DataTransferService_GetTransferRun_sync",
       "segments": [
         {
           "end": 44,
@@ -710,8 +710,8 @@
           "shortName": "ListDataSources"
         }
       },
-      "file": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_data_transfer_service_list_data_sources_async.py",
-      "regionTag": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_ListDataSources_async",
+      "file": "bigquerydatatransfer_v1_generated_data_transfer_service_list_data_sources_async.py",
+      "regionTag": "bigquerydatatransfer_v1_generated_DataTransferService_ListDataSources_async",
       "segments": [
         {
           "end": 45,
@@ -754,8 +754,8 @@
           "shortName": "ListDataSources"
         }
       },
-      "file": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_data_transfer_service_list_data_sources_sync.py",
-      "regionTag": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_ListDataSources_sync",
+      "file": "bigquerydatatransfer_v1_generated_data_transfer_service_list_data_sources_sync.py",
+      "regionTag": "bigquerydatatransfer_v1_generated_DataTransferService_ListDataSources_sync",
       "segments": [
         {
           "end": 45,
@@ -799,8 +799,8 @@
           "shortName": "ListTransferConfigs"
         }
       },
-      "file": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_data_transfer_service_list_transfer_configs_async.py",
-      "regionTag": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_ListTransferConfigs_async",
+      "file": "bigquerydatatransfer_v1_generated_data_transfer_service_list_transfer_configs_async.py",
+      "regionTag": "bigquerydatatransfer_v1_generated_DataTransferService_ListTransferConfigs_async",
       "segments": [
         {
           "end": 45,
@@ -843,8 +843,8 @@
           "shortName": "ListTransferConfigs"
         }
       },
-      "file": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_data_transfer_service_list_transfer_configs_sync.py",
-      "regionTag": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_ListTransferConfigs_sync",
+      "file": "bigquerydatatransfer_v1_generated_data_transfer_service_list_transfer_configs_sync.py",
+      "regionTag": "bigquerydatatransfer_v1_generated_DataTransferService_ListTransferConfigs_sync",
       "segments": [
         {
           "end": 45,
@@ -888,8 +888,8 @@
           "shortName": "ListTransferLogs"
         }
       },
-      "file": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_data_transfer_service_list_transfer_logs_async.py",
-      "regionTag": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_ListTransferLogs_async",
+      "file": "bigquerydatatransfer_v1_generated_data_transfer_service_list_transfer_logs_async.py",
+      "regionTag": "bigquerydatatransfer_v1_generated_DataTransferService_ListTransferLogs_async",
       "segments": [
         {
           "end": 45,
@@ -932,8 +932,8 @@
           "shortName": "ListTransferLogs"
         }
       },
-      "file": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_data_transfer_service_list_transfer_logs_sync.py",
-      "regionTag": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_ListTransferLogs_sync",
+      "file": "bigquerydatatransfer_v1_generated_data_transfer_service_list_transfer_logs_sync.py",
+      "regionTag": "bigquerydatatransfer_v1_generated_DataTransferService_ListTransferLogs_sync",
       "segments": [
         {
           "end": 45,
@@ -977,8 +977,8 @@
           "shortName": "ListTransferRuns"
         }
       },
-      "file": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_data_transfer_service_list_transfer_runs_async.py",
-      "regionTag": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_ListTransferRuns_async",
+      "file": "bigquerydatatransfer_v1_generated_data_transfer_service_list_transfer_runs_async.py",
+      "regionTag": "bigquerydatatransfer_v1_generated_DataTransferService_ListTransferRuns_async",
       "segments": [
         {
           "end": 45,
@@ -1021,8 +1021,8 @@
           "shortName": "ListTransferRuns"
         }
       },
-      "file": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_data_transfer_service_list_transfer_runs_sync.py",
-      "regionTag": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_ListTransferRuns_sync",
+      "file": "bigquerydatatransfer_v1_generated_data_transfer_service_list_transfer_runs_sync.py",
+      "regionTag": "bigquerydatatransfer_v1_generated_DataTransferService_ListTransferRuns_sync",
       "segments": [
         {
           "end": 45,
@@ -1066,8 +1066,8 @@
           "shortName": "ScheduleTransferRuns"
         }
       },
-      "file": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_data_transfer_service_schedule_transfer_runs_async.py",
-      "regionTag": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_ScheduleTransferRuns_async",
+      "file": "bigquerydatatransfer_v1_generated_data_transfer_service_schedule_transfer_runs_async.py",
+      "regionTag": "bigquerydatatransfer_v1_generated_DataTransferService_ScheduleTransferRuns_async",
       "segments": [
         {
           "end": 44,
@@ -1110,8 +1110,8 @@
           "shortName": "ScheduleTransferRuns"
         }
       },
-      "file": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_data_transfer_service_schedule_transfer_runs_sync.py",
-      "regionTag": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_ScheduleTransferRuns_sync",
+      "file": "bigquerydatatransfer_v1_generated_data_transfer_service_schedule_transfer_runs_sync.py",
+      "regionTag": "bigquerydatatransfer_v1_generated_DataTransferService_ScheduleTransferRuns_sync",
       "segments": [
         {
           "end": 44,
@@ -1155,8 +1155,8 @@
           "shortName": "StartManualTransferRuns"
         }
       },
-      "file": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_data_transfer_service_start_manual_transfer_runs_async.py",
-      "regionTag": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_StartManualTransferRuns_async",
+      "file": "bigquerydatatransfer_v1_generated_data_transfer_service_start_manual_transfer_runs_async.py",
+      "regionTag": "bigquerydatatransfer_v1_generated_DataTransferService_StartManualTransferRuns_async",
       "segments": [
         {
           "end": 43,
@@ -1199,8 +1199,8 @@
           "shortName": "StartManualTransferRuns"
         }
       },
-      "file": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_data_transfer_service_start_manual_transfer_runs_sync.py",
-      "regionTag": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_StartManualTransferRuns_sync",
+      "file": "bigquerydatatransfer_v1_generated_data_transfer_service_start_manual_transfer_runs_sync.py",
+      "regionTag": "bigquerydatatransfer_v1_generated_DataTransferService_StartManualTransferRuns_sync",
       "segments": [
         {
           "end": 43,
@@ -1244,8 +1244,8 @@
           "shortName": "UpdateTransferConfig"
         }
       },
-      "file": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_data_transfer_service_update_transfer_config_async.py",
-      "regionTag": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_UpdateTransferConfig_async",
+      "file": "bigquerydatatransfer_v1_generated_data_transfer_service_update_transfer_config_async.py",
+      "regionTag": "bigquerydatatransfer_v1_generated_DataTransferService_UpdateTransferConfig_async",
       "segments": [
         {
           "end": 47,
@@ -1288,8 +1288,8 @@
           "shortName": "UpdateTransferConfig"
         }
       },
-      "file": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_data_transfer_service_update_transfer_config_sync.py",
-      "regionTag": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_UpdateTransferConfig_sync",
+      "file": "bigquerydatatransfer_v1_generated_data_transfer_service_update_transfer_config_sync.py",
+      "regionTag": "bigquerydatatransfer_v1_generated_DataTransferService_UpdateTransferConfig_sync",
       "segments": [
         {
           "end": 47,

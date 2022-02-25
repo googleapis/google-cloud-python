@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for UpdateTransferConfig
+# Snippet for EnrollDataSources
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,26 +23,20 @@
 #   python3 -m pip install google-cloud-bigquery-datatransfer
 
 
-# [START bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_UpdateTransferConfig_async]
+# [START bigquerydatatransfer_v1_generated_DataTransferService_EnrollDataSources_sync]
 from google.cloud import bigquery_datatransfer_v1
 
 
-async def sample_update_transfer_config():
+def sample_enroll_data_sources():
     # Create a client
-    client = bigquery_datatransfer_v1.DataTransferServiceAsyncClient()
+    client = bigquery_datatransfer_v1.DataTransferServiceClient()
 
     # Initialize request argument(s)
-    transfer_config = bigquery_datatransfer_v1.TransferConfig()
-    transfer_config.destination_dataset_id = "destination_dataset_id_value"
-
-    request = bigquery_datatransfer_v1.UpdateTransferConfigRequest(
-        transfer_config=transfer_config,
+    request = bigquery_datatransfer_v1.EnrollDataSourcesRequest(
     )
 
     # Make the request
-    response = await client.update_transfer_config(request=request)
+    client.enroll_data_sources(request=request)
 
-    # Handle the response
-    print(response)
 
-# [END bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_UpdateTransferConfig_async]
+# [END bigquerydatatransfer_v1_generated_DataTransferService_EnrollDataSources_sync]

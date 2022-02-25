@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for DeleteTransferRun
+# Snippet for ListTransferRuns
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,21 +23,24 @@
 #   python3 -m pip install google-cloud-bigquery-datatransfer
 
 
-# [START bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_DeleteTransferRun_async]
+# [START bigquerydatatransfer_v1_generated_DataTransferService_ListTransferRuns_async]
 from google.cloud import bigquery_datatransfer_v1
 
 
-async def sample_delete_transfer_run():
+async def sample_list_transfer_runs():
     # Create a client
     client = bigquery_datatransfer_v1.DataTransferServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = bigquery_datatransfer_v1.DeleteTransferRunRequest(
-        name="name_value",
+    request = bigquery_datatransfer_v1.ListTransferRunsRequest(
+        parent="parent_value",
     )
 
     # Make the request
-    await client.delete_transfer_run(request=request)
+    page_result = client.list_transfer_runs(request=request)
 
+    # Handle the response
+    async for response in page_result:
+        print(response)
 
-# [END bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_DeleteTransferRun_async]
+# [END bigquerydatatransfer_v1_generated_DataTransferService_ListTransferRuns_async]

@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for CreateTransferConfig
+# Snippet for ListTransferRuns
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,27 +23,24 @@
 #   python3 -m pip install google-cloud-bigquery-datatransfer
 
 
-# [START bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_CreateTransferConfig_sync]
+# [START bigquerydatatransfer_v1_generated_DataTransferService_ListTransferRuns_sync]
 from google.cloud import bigquery_datatransfer_v1
 
 
-def sample_create_transfer_config():
+def sample_list_transfer_runs():
     # Create a client
     client = bigquery_datatransfer_v1.DataTransferServiceClient()
 
     # Initialize request argument(s)
-    transfer_config = bigquery_datatransfer_v1.TransferConfig()
-    transfer_config.destination_dataset_id = "destination_dataset_id_value"
-
-    request = bigquery_datatransfer_v1.CreateTransferConfigRequest(
+    request = bigquery_datatransfer_v1.ListTransferRunsRequest(
         parent="parent_value",
-        transfer_config=transfer_config,
     )
 
     # Make the request
-    response = client.create_transfer_config(request=request)
+    page_result = client.list_transfer_runs(request=request)
 
     # Handle the response
-    print(response)
+    for response in page_result:
+        print(response)
 
-# [END bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_CreateTransferConfig_sync]
+# [END bigquerydatatransfer_v1_generated_DataTransferService_ListTransferRuns_sync]

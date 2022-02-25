@@ -454,8 +454,7 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         settings.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_datatransfer_v1
 
@@ -549,8 +548,7 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         settings.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_datatransfer_v1
 
@@ -653,8 +651,7 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
     ) -> transfer.TransferConfig:
         r"""Creates a new data transfer configuration.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_datatransfer_v1
 
@@ -776,8 +773,7 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         All fields must be set, even if they are not updated.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_datatransfer_v1
 
@@ -891,8 +887,7 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         associated transfer runs and logs.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_datatransfer_v1
 
@@ -975,8 +970,7 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
     ) -> transfer.TransferConfig:
         r"""Returns information about a data transfer config.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_datatransfer_v1
 
@@ -1076,8 +1070,7 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         by a project in the specified location.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_datatransfer_v1
 
@@ -1185,8 +1178,7 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         StartManualTransferRuns instead.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_datatransfer_v1
 
@@ -1303,8 +1295,7 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         and end_time (exclusive), or for a specific run_time.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_datatransfer_v1
 
@@ -1377,8 +1368,7 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         run.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_datatransfer_v1
 
@@ -1469,8 +1459,7 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
     ) -> None:
         r"""Deletes the specified transfer run.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_datatransfer_v1
 
@@ -1555,8 +1544,7 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         transfer runs.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_datatransfer_v1
 
@@ -1659,8 +1647,7 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
     ) -> pagers.ListTransferLogsPager:
         r"""Returns log messages for the transfer run.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_datatransfer_v1
 
@@ -1764,8 +1751,7 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         data source and requesting user.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_datatransfer_v1
 
@@ -1870,8 +1856,7 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         https://cloud.google.com/bigquery/docs/working-with-transfers).
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_datatransfer_v1
 

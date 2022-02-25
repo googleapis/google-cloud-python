@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ListTransferLogs
+# Snippet for UpdateTransferConfig
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,24 +23,26 @@
 #   python3 -m pip install google-cloud-bigquery-datatransfer
 
 
-# [START bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_ListTransferLogs_sync]
+# [START bigquerydatatransfer_v1_generated_DataTransferService_UpdateTransferConfig_async]
 from google.cloud import bigquery_datatransfer_v1
 
 
-def sample_list_transfer_logs():
+async def sample_update_transfer_config():
     # Create a client
-    client = bigquery_datatransfer_v1.DataTransferServiceClient()
+    client = bigquery_datatransfer_v1.DataTransferServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = bigquery_datatransfer_v1.ListTransferLogsRequest(
-        parent="parent_value",
+    transfer_config = bigquery_datatransfer_v1.TransferConfig()
+    transfer_config.destination_dataset_id = "destination_dataset_id_value"
+
+    request = bigquery_datatransfer_v1.UpdateTransferConfigRequest(
+        transfer_config=transfer_config,
     )
 
     # Make the request
-    page_result = client.list_transfer_logs(request=request)
+    response = await client.update_transfer_config(request=request)
 
     # Handle the response
-    for response in page_result:
-        print(response)
+    print(response)
 
-# [END bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_ListTransferLogs_sync]
+# [END bigquerydatatransfer_v1_generated_DataTransferService_UpdateTransferConfig_async]

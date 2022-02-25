@@ -23,13 +23,13 @@
 #   python3 -m pip install google-cloud-bigquery-datatransfer
 
 
-# [START bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_GetTransferRun_sync]
+# [START bigquerydatatransfer_v1_generated_DataTransferService_GetTransferRun_async]
 from google.cloud import bigquery_datatransfer_v1
 
 
-def sample_get_transfer_run():
+async def sample_get_transfer_run():
     # Create a client
-    client = bigquery_datatransfer_v1.DataTransferServiceClient()
+    client = bigquery_datatransfer_v1.DataTransferServiceAsyncClient()
 
     # Initialize request argument(s)
     request = bigquery_datatransfer_v1.GetTransferRunRequest(
@@ -37,9 +37,9 @@ def sample_get_transfer_run():
     )
 
     # Make the request
-    response = client.get_transfer_run(request=request)
+    response = await client.get_transfer_run(request=request)
 
     # Handle the response
     print(response)
 
-# [END bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_GetTransferRun_sync]
+# [END bigquerydatatransfer_v1_generated_DataTransferService_GetTransferRun_async]

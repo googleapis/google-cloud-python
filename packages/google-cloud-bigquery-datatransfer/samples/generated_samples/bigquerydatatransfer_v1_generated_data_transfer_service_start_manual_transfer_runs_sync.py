@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ScheduleTransferRuns
+# Snippet for StartManualTransferRuns
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,23 +23,22 @@
 #   python3 -m pip install google-cloud-bigquery-datatransfer
 
 
-# [START bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_ScheduleTransferRuns_async]
+# [START bigquerydatatransfer_v1_generated_DataTransferService_StartManualTransferRuns_sync]
 from google.cloud import bigquery_datatransfer_v1
 
 
-async def sample_schedule_transfer_runs():
+def sample_start_manual_transfer_runs():
     # Create a client
-    client = bigquery_datatransfer_v1.DataTransferServiceAsyncClient()
+    client = bigquery_datatransfer_v1.DataTransferServiceClient()
 
     # Initialize request argument(s)
-    request = bigquery_datatransfer_v1.ScheduleTransferRunsRequest(
-        parent="parent_value",
+    request = bigquery_datatransfer_v1.StartManualTransferRunsRequest(
     )
 
     # Make the request
-    response = await client.schedule_transfer_runs(request=request)
+    response = client.start_manual_transfer_runs(request=request)
 
     # Handle the response
     print(response)
 
-# [END bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_ScheduleTransferRuns_async]
+# [END bigquerydatatransfer_v1_generated_DataTransferService_StartManualTransferRuns_sync]

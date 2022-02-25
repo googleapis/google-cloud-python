@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for EnrollDataSources
+# Snippet for ListDataSources
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,20 +23,24 @@
 #   python3 -m pip install google-cloud-bigquery-datatransfer
 
 
-# [START bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_EnrollDataSources_sync]
+# [START bigquerydatatransfer_v1_generated_DataTransferService_ListDataSources_sync]
 from google.cloud import bigquery_datatransfer_v1
 
 
-def sample_enroll_data_sources():
+def sample_list_data_sources():
     # Create a client
     client = bigquery_datatransfer_v1.DataTransferServiceClient()
 
     # Initialize request argument(s)
-    request = bigquery_datatransfer_v1.EnrollDataSourcesRequest(
+    request = bigquery_datatransfer_v1.ListDataSourcesRequest(
+        parent="parent_value",
     )
 
     # Make the request
-    client.enroll_data_sources(request=request)
+    page_result = client.list_data_sources(request=request)
 
+    # Handle the response
+    for response in page_result:
+        print(response)
 
-# [END bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_EnrollDataSources_sync]
+# [END bigquerydatatransfer_v1_generated_DataTransferService_ListDataSources_sync]
