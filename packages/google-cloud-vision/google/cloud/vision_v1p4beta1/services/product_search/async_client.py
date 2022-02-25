@@ -254,7 +254,7 @@ class ProductSearchAsyncClient:
            longer than 4096 characters.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vision_v1p4beta1
 
@@ -381,7 +381,7 @@ class ProductSearchAsyncClient:
            less than 1.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vision_v1p4beta1
 
@@ -497,7 +497,7 @@ class ProductSearchAsyncClient:
         -  Returns NOT_FOUND if the ProductSet does not exist.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vision_v1p4beta1
 
@@ -612,7 +612,7 @@ class ProductSearchAsyncClient:
            characters.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vision_v1p4beta1
 
@@ -728,7 +728,7 @@ class ProductSearchAsyncClient:
         Storage.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vision_v1p4beta1
 
@@ -832,7 +832,7 @@ class ProductSearchAsyncClient:
            invalid.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vision_v1p4beta1
 
@@ -954,7 +954,7 @@ class ProductSearchAsyncClient:
            less than 1.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vision_v1p4beta1
 
@@ -1070,7 +1070,7 @@ class ProductSearchAsyncClient:
         -  Returns NOT_FOUND if the Product does not exist.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vision_v1p4beta1
 
@@ -1187,7 +1187,7 @@ class ProductSearchAsyncClient:
            update_mask.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vision_v1p4beta1
 
@@ -1302,7 +1302,7 @@ class ProductSearchAsyncClient:
         all related caches are refreshed.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vision_v1p4beta1
 
@@ -1418,7 +1418,7 @@ class ProductSearchAsyncClient:
            10 polygons.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vision_v1p4beta1
 
@@ -1551,7 +1551,7 @@ class ProductSearchAsyncClient:
         Storage.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vision_v1p4beta1
 
@@ -1652,7 +1652,7 @@ class ProductSearchAsyncClient:
            100, or less than 1.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vision_v1p4beta1
 
@@ -1769,7 +1769,7 @@ class ProductSearchAsyncClient:
         -  Returns NOT_FOUND if the specified image does not exist.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vision_v1p4beta1
 
@@ -1885,7 +1885,7 @@ class ProductSearchAsyncClient:
            exist.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vision_v1p4beta1
 
@@ -1991,7 +1991,7 @@ class ProductSearchAsyncClient:
     ) -> None:
         r"""Removes a Product from the specified ProductSet.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vision_v1p4beta1
 
@@ -2104,7 +2104,7 @@ class ProductSearchAsyncClient:
            less than 1.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vision_v1p4beta1
 
@@ -2230,7 +2230,7 @@ class ProductSearchAsyncClient:
         [ImportProductSetsGcsSource.csv_file_uri][google.cloud.vision.v1p4beta1.ImportProductSetsGcsSource.csv_file_uri].
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vision_v1p4beta1
 
@@ -2386,7 +2386,7 @@ class ProductSearchAsyncClient:
         ``BatchOperationMetadata``. (progress)
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vision_v1p4beta1
 

@@ -222,7 +222,7 @@ class ImageAnnotatorAsyncClient:
         images.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vision_v1p3beta1
 
@@ -322,7 +322,7 @@ class ImageAnnotatorAsyncClient:
         ``AsyncBatchAnnotateFilesResponse`` (results).
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vision_v1p3beta1
 

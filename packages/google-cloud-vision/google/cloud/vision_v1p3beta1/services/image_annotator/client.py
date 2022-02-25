@@ -433,8 +433,7 @@ class ImageAnnotatorClient(metaclass=ImageAnnotatorClientMeta):
         images.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vision_v1p3beta1
 
@@ -527,8 +526,7 @@ class ImageAnnotatorClient(metaclass=ImageAnnotatorClientMeta):
         ``AsyncBatchAnnotateFilesResponse`` (results).
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vision_v1p3beta1
 

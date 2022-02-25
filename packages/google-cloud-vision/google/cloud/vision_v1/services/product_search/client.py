@@ -478,8 +478,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
            longer than 4096 characters.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vision_v1
 
@@ -599,8 +598,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
            less than 1.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vision_v1
 
@@ -706,8 +704,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         -  Returns NOT_FOUND if the ProductSet does not exist.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vision_v1
 
@@ -812,8 +809,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
            characters.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vision_v1
 
@@ -922,8 +918,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         Storage.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vision_v1
 
@@ -1017,8 +1012,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
            invalid.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vision_v1
 
@@ -1133,8 +1127,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
            less than 1.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vision_v1
 
@@ -1240,8 +1233,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         -  Returns NOT_FOUND if the Product does not exist.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vision_v1
 
@@ -1348,8 +1340,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
            update_mask.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vision_v1
 
@@ -1457,8 +1448,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         all related caches are refreshed.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vision_v1
 
@@ -1564,8 +1554,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
            10 polygons.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vision_v1
 
@@ -1691,8 +1680,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         Storage.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vision_v1
 
@@ -1782,8 +1770,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
            100, or less than 1.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vision_v1
 
@@ -1890,8 +1877,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         -  Returns NOT_FOUND if the specified image does not exist.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vision_v1
 
@@ -1996,8 +1982,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
            exist.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vision_v1
 
@@ -2100,8 +2085,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
     ) -> None:
         r"""Removes a Product from the specified ProductSet.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vision_v1
 
@@ -2211,8 +2195,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
            less than 1.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vision_v1
 
@@ -2332,8 +2315,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         [ImportProductSetsGcsSource.csv_file_uri][google.cloud.vision.v1.ImportProductSetsGcsSource.csv_file_uri].
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vision_v1
 
@@ -2482,8 +2464,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         ``BatchOperationMetadata``. (progress)
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import vision_v1
 
