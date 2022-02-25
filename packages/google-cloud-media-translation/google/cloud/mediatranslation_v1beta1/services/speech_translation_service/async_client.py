@@ -230,7 +230,7 @@ class SpeechTranslationServiceAsyncClient:
         available via the gRPC API (not REST).
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import mediatranslation_v1beta1
 

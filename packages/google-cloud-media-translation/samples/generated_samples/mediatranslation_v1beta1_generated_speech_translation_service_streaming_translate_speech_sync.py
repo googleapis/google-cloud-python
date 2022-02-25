@@ -23,13 +23,13 @@
 #   python3 -m pip install google-cloud-media-translation
 
 
-# [START mediatranslation_generated_mediatranslation_v1beta1_SpeechTranslationService_StreamingTranslateSpeech_async]
+# [START mediatranslation_v1beta1_generated_SpeechTranslationService_StreamingTranslateSpeech_sync]
 from google.cloud import mediatranslation_v1beta1
 
 
-async def sample_streaming_translate_speech():
+def sample_streaming_translate_speech():
     # Create a client
-    client = mediatranslation_v1beta1.SpeechTranslationServiceAsyncClient()
+    client = mediatranslation_v1beta1.SpeechTranslationServiceClient()
 
     # Initialize request argument(s)
     streaming_config = mediatranslation_v1beta1.StreamingTranslateSpeechConfig()
@@ -52,10 +52,10 @@ async def sample_streaming_translate_speech():
             yield request
 
     # Make the request
-    stream = await client.streaming_translate_speech(requests=request_generator())
+    stream = client.streaming_translate_speech(requests=request_generator())
 
     # Handle the response
-    async for response in stream:
+    for response in stream:
         print(response)
 
-# [END mediatranslation_generated_mediatranslation_v1beta1_SpeechTranslationService_StreamingTranslateSpeech_async]
+# [END mediatranslation_v1beta1_generated_SpeechTranslationService_StreamingTranslateSpeech_sync]
