@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ListSettings
+# Snippet for UpdateSetting
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,24 +23,22 @@
 #   python3 -m pip install google-cloud-resource-settings
 
 
-# [START resourcesettings_generated_resourcesettings_v1_ResourceSettingsService_ListSettings_sync]
+# [START resourcesettings_v1_generated_ResourceSettingsService_UpdateSetting_async]
 from google.cloud import resourcesettings_v1
 
 
-def sample_list_settings():
+async def sample_update_setting():
     # Create a client
-    client = resourcesettings_v1.ResourceSettingsServiceClient()
+    client = resourcesettings_v1.ResourceSettingsServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = resourcesettings_v1.ListSettingsRequest(
-        parent="parent_value",
+    request = resourcesettings_v1.UpdateSettingRequest(
     )
 
     # Make the request
-    page_result = client.list_settings(request=request)
+    response = await client.update_setting(request=request)
 
     # Handle the response
-    for response in page_result:
-        print(response)
+    print(response)
 
-# [END resourcesettings_generated_resourcesettings_v1_ResourceSettingsService_ListSettings_sync]
+# [END resourcesettings_v1_generated_ResourceSettingsService_UpdateSetting_async]

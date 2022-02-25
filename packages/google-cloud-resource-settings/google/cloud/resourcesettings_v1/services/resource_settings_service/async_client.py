@@ -233,7 +233,7 @@ class ResourceSettingsServiceAsyncClient:
         ``parent``.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcesettings_v1
 
@@ -350,7 +350,7 @@ class ResourceSettingsServiceAsyncClient:
         ``google.rpc.Code.NOT_FOUND`` if the setting does not exist.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcesettings_v1
 
@@ -463,7 +463,7 @@ class ResourceSettingsServiceAsyncClient:
         ``local_value`` field.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcesettings_v1
 

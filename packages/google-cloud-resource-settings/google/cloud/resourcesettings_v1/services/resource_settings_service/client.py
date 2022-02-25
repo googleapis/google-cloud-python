@@ -426,8 +426,7 @@ class ResourceSettingsServiceClient(metaclass=ResourceSettingsServiceClientMeta)
         ``parent``.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcesettings_v1
 
@@ -534,8 +533,7 @@ class ResourceSettingsServiceClient(metaclass=ResourceSettingsServiceClientMeta)
         ``google.rpc.Code.NOT_FOUND`` if the setting does not exist.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcesettings_v1
 
@@ -638,8 +636,7 @@ class ResourceSettingsServiceClient(metaclass=ResourceSettingsServiceClientMeta)
         ``local_value`` field.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcesettings_v1
 

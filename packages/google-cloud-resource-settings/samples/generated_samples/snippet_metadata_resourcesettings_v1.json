@@ -10,8 +10,8 @@
           "shortName": "GetSetting"
         }
       },
-      "file": "resourcesettings_generated_resourcesettings_v1_resource_settings_service_get_setting_async.py",
-      "regionTag": "resourcesettings_generated_resourcesettings_v1_ResourceSettingsService_GetSetting_async",
+      "file": "resourcesettings_v1_generated_resource_settings_service_get_setting_async.py",
+      "regionTag": "resourcesettings_v1_generated_ResourceSettingsService_GetSetting_async",
       "segments": [
         {
           "end": 44,
@@ -54,8 +54,8 @@
           "shortName": "GetSetting"
         }
       },
-      "file": "resourcesettings_generated_resourcesettings_v1_resource_settings_service_get_setting_sync.py",
-      "regionTag": "resourcesettings_generated_resourcesettings_v1_ResourceSettingsService_GetSetting_sync",
+      "file": "resourcesettings_v1_generated_resource_settings_service_get_setting_sync.py",
+      "regionTag": "resourcesettings_v1_generated_ResourceSettingsService_GetSetting_sync",
       "segments": [
         {
           "end": 44,
@@ -99,8 +99,8 @@
           "shortName": "ListSettings"
         }
       },
-      "file": "resourcesettings_generated_resourcesettings_v1_resource_settings_service_list_settings_async.py",
-      "regionTag": "resourcesettings_generated_resourcesettings_v1_ResourceSettingsService_ListSettings_async",
+      "file": "resourcesettings_v1_generated_resource_settings_service_list_settings_async.py",
+      "regionTag": "resourcesettings_v1_generated_ResourceSettingsService_ListSettings_async",
       "segments": [
         {
           "end": 45,
@@ -143,8 +143,8 @@
           "shortName": "ListSettings"
         }
       },
-      "file": "resourcesettings_generated_resourcesettings_v1_resource_settings_service_list_settings_sync.py",
-      "regionTag": "resourcesettings_generated_resourcesettings_v1_ResourceSettingsService_ListSettings_sync",
+      "file": "resourcesettings_v1_generated_resource_settings_service_list_settings_sync.py",
+      "regionTag": "resourcesettings_v1_generated_ResourceSettingsService_ListSettings_sync",
       "segments": [
         {
           "end": 45,
@@ -188,8 +188,8 @@
           "shortName": "UpdateSetting"
         }
       },
-      "file": "resourcesettings_generated_resourcesettings_v1_resource_settings_service_update_setting_async.py",
-      "regionTag": "resourcesettings_generated_resourcesettings_v1_ResourceSettingsService_UpdateSetting_async",
+      "file": "resourcesettings_v1_generated_resource_settings_service_update_setting_async.py",
+      "regionTag": "resourcesettings_v1_generated_ResourceSettingsService_UpdateSetting_async",
       "segments": [
         {
           "end": 43,
@@ -232,8 +232,8 @@
           "shortName": "UpdateSetting"
         }
       },
-      "file": "resourcesettings_generated_resourcesettings_v1_resource_settings_service_update_setting_sync.py",
-      "regionTag": "resourcesettings_generated_resourcesettings_v1_ResourceSettingsService_UpdateSetting_sync",
+      "file": "resourcesettings_v1_generated_resource_settings_service_update_setting_sync.py",
+      "regionTag": "resourcesettings_v1_generated_ResourceSettingsService_UpdateSetting_sync",
       "segments": [
         {
           "end": 43,

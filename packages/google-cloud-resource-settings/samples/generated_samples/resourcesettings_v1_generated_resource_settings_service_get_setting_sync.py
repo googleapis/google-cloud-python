@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for UpdateSetting
+# Snippet for GetSetting
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,22 +23,23 @@
 #   python3 -m pip install google-cloud-resource-settings
 
 
-# [START resourcesettings_generated_resourcesettings_v1_ResourceSettingsService_UpdateSetting_sync]
+# [START resourcesettings_v1_generated_ResourceSettingsService_GetSetting_sync]
 from google.cloud import resourcesettings_v1
 
 
-def sample_update_setting():
+def sample_get_setting():
     # Create a client
     client = resourcesettings_v1.ResourceSettingsServiceClient()
 
     # Initialize request argument(s)
-    request = resourcesettings_v1.UpdateSettingRequest(
+    request = resourcesettings_v1.GetSettingRequest(
+        name="name_value",
     )
 
     # Make the request
-    response = client.update_setting(request=request)
+    response = client.get_setting(request=request)
 
     # Handle the response
     print(response)
 
-# [END resourcesettings_generated_resourcesettings_v1_ResourceSettingsService_UpdateSetting_sync]
+# [END resourcesettings_v1_generated_ResourceSettingsService_GetSetting_sync]
