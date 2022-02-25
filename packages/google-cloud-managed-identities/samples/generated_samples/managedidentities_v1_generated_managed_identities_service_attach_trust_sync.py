@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ValidateTrust
+# Snippet for AttachTrust
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,11 +23,11 @@
 #   python3 -m pip install google-cloud-managed-identities
 
 
-# [START managedidentities_generated_managedidentities_v1_ManagedIdentitiesService_ValidateTrust_sync]
+# [START managedidentities_v1_generated_ManagedIdentitiesService_AttachTrust_sync]
 from google.cloud import managedidentities_v1
 
 
-def sample_validate_trust():
+def sample_attach_trust():
     # Create a client
     client = managedidentities_v1.ManagedIdentitiesServiceClient()
 
@@ -39,13 +39,13 @@ def sample_validate_trust():
     trust.target_dns_ip_addresses = ['target_dns_ip_addresses_value_1', 'target_dns_ip_addresses_value_2']
     trust.trust_handshake_secret = "trust_handshake_secret_value"
 
-    request = managedidentities_v1.ValidateTrustRequest(
+    request = managedidentities_v1.AttachTrustRequest(
         name="name_value",
         trust=trust,
     )
 
     # Make the request
-    operation = client.validate_trust(request=request)
+    operation = client.attach_trust(request=request)
 
     print("Waiting for operation to complete...")
 
@@ -54,4 +54,4 @@ def sample_validate_trust():
     # Handle the response
     print(response)
 
-# [END managedidentities_generated_managedidentities_v1_ManagedIdentitiesService_ValidateTrust_sync]
+# [END managedidentities_v1_generated_ManagedIdentitiesService_AttachTrust_sync]

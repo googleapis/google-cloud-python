@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ResetAdminPassword
+# Snippet for ReconfigureTrust
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,23 +23,29 @@
 #   python3 -m pip install google-cloud-managed-identities
 
 
-# [START managedidentities_generated_managedidentities_v1_ManagedIdentitiesService_ResetAdminPassword_sync]
+# [START managedidentities_v1_generated_ManagedIdentitiesService_ReconfigureTrust_async]
 from google.cloud import managedidentities_v1
 
 
-def sample_reset_admin_password():
+async def sample_reconfigure_trust():
     # Create a client
-    client = managedidentities_v1.ManagedIdentitiesServiceClient()
+    client = managedidentities_v1.ManagedIdentitiesServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = managedidentities_v1.ResetAdminPasswordRequest(
+    request = managedidentities_v1.ReconfigureTrustRequest(
         name="name_value",
+        target_domain_name="target_domain_name_value",
+        target_dns_ip_addresses=['target_dns_ip_addresses_value_1', 'target_dns_ip_addresses_value_2'],
     )
 
     # Make the request
-    response = client.reset_admin_password(request=request)
+    operation = client.reconfigure_trust(request=request)
+
+    print("Waiting for operation to complete...")
+
+    response = await operation.result()
 
     # Handle the response
     print(response)
 
-# [END managedidentities_generated_managedidentities_v1_ManagedIdentitiesService_ResetAdminPassword_sync]
+# [END managedidentities_v1_generated_ManagedIdentitiesService_ReconfigureTrust_async]

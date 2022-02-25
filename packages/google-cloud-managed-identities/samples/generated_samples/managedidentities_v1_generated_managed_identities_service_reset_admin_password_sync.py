@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for CreateMicrosoftAdDomain
+# Snippet for ResetAdminPassword
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,34 +23,23 @@
 #   python3 -m pip install google-cloud-managed-identities
 
 
-# [START managedidentities_generated_managedidentities_v1_ManagedIdentitiesService_CreateMicrosoftAdDomain_async]
+# [START managedidentities_v1_generated_ManagedIdentitiesService_ResetAdminPassword_sync]
 from google.cloud import managedidentities_v1
 
 
-async def sample_create_microsoft_ad_domain():
+def sample_reset_admin_password():
     # Create a client
-    client = managedidentities_v1.ManagedIdentitiesServiceAsyncClient()
+    client = managedidentities_v1.ManagedIdentitiesServiceClient()
 
     # Initialize request argument(s)
-    domain = managedidentities_v1.Domain()
-    domain.name = "name_value"
-    domain.reserved_ip_range = "reserved_ip_range_value"
-    domain.locations = ['locations_value_1', 'locations_value_2']
-
-    request = managedidentities_v1.CreateMicrosoftAdDomainRequest(
-        parent="parent_value",
-        domain_name="domain_name_value",
-        domain=domain,
+    request = managedidentities_v1.ResetAdminPasswordRequest(
+        name="name_value",
     )
 
     # Make the request
-    operation = client.create_microsoft_ad_domain(request=request)
-
-    print("Waiting for operation to complete...")
-
-    response = await operation.result()
+    response = client.reset_admin_password(request=request)
 
     # Handle the response
     print(response)
 
-# [END managedidentities_generated_managedidentities_v1_ManagedIdentitiesService_CreateMicrosoftAdDomain_async]
+# [END managedidentities_v1_generated_ManagedIdentitiesService_ResetAdminPassword_sync]

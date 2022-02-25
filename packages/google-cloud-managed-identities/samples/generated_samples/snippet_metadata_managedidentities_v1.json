@@ -10,8 +10,8 @@
           "shortName": "AttachTrust"
         }
       },
-      "file": "managedidentities_generated_managedidentities_v1_managed_identities_service_attach_trust_async.py",
-      "regionTag": "managedidentities_generated_managedidentities_v1_ManagedIdentitiesService_AttachTrust_async",
+      "file": "managedidentities_v1_generated_managed_identities_service_attach_trust_async.py",
+      "regionTag": "managedidentities_v1_generated_ManagedIdentitiesService_AttachTrust_async",
       "segments": [
         {
           "end": 56,
@@ -54,8 +54,8 @@
           "shortName": "AttachTrust"
         }
       },
-      "file": "managedidentities_generated_managedidentities_v1_managed_identities_service_attach_trust_sync.py",
-      "regionTag": "managedidentities_generated_managedidentities_v1_ManagedIdentitiesService_AttachTrust_sync",
+      "file": "managedidentities_v1_generated_managed_identities_service_attach_trust_sync.py",
+      "regionTag": "managedidentities_v1_generated_ManagedIdentitiesService_AttachTrust_sync",
       "segments": [
         {
           "end": 56,
@@ -99,8 +99,8 @@
           "shortName": "CreateMicrosoftAdDomain"
         }
       },
-      "file": "managedidentities_generated_managedidentities_v1_managed_identities_service_create_microsoft_ad_domain_async.py",
-      "regionTag": "managedidentities_generated_managedidentities_v1_ManagedIdentitiesService_CreateMicrosoftAdDomain_async",
+      "file": "managedidentities_v1_generated_managed_identities_service_create_microsoft_ad_domain_async.py",
+      "regionTag": "managedidentities_v1_generated_ManagedIdentitiesService_CreateMicrosoftAdDomain_async",
       "segments": [
         {
           "end": 55,
@@ -143,8 +143,8 @@
           "shortName": "CreateMicrosoftAdDomain"
         }
       },
-      "file": "managedidentities_generated_managedidentities_v1_managed_identities_service_create_microsoft_ad_domain_sync.py",
-      "regionTag": "managedidentities_generated_managedidentities_v1_ManagedIdentitiesService_CreateMicrosoftAdDomain_sync",
+      "file": "managedidentities_v1_generated_managed_identities_service_create_microsoft_ad_domain_sync.py",
+      "regionTag": "managedidentities_v1_generated_ManagedIdentitiesService_CreateMicrosoftAdDomain_sync",
       "segments": [
         {
           "end": 55,
@@ -188,8 +188,8 @@
           "shortName": "DeleteDomain"
         }
       },
-      "file": "managedidentities_generated_managedidentities_v1_managed_identities_service_delete_domain_async.py",
-      "regionTag": "managedidentities_generated_managedidentities_v1_ManagedIdentitiesService_DeleteDomain_async",
+      "file": "managedidentities_v1_generated_managed_identities_service_delete_domain_async.py",
+      "regionTag": "managedidentities_v1_generated_ManagedIdentitiesService_DeleteDomain_async",
       "segments": [
         {
           "end": 48,
@@ -232,8 +232,8 @@
           "shortName": "DeleteDomain"
         }
       },
-      "file": "managedidentities_generated_managedidentities_v1_managed_identities_service_delete_domain_sync.py",
-      "regionTag": "managedidentities_generated_managedidentities_v1_ManagedIdentitiesService_DeleteDomain_sync",
+      "file": "managedidentities_v1_generated_managed_identities_service_delete_domain_sync.py",
+      "regionTag": "managedidentities_v1_generated_ManagedIdentitiesService_DeleteDomain_sync",
       "segments": [
         {
           "end": 48,
@@ -277,8 +277,8 @@
           "shortName": "DetachTrust"
         }
       },
-      "file": "managedidentities_generated_managedidentities_v1_managed_identities_service_detach_trust_async.py",
-      "regionTag": "managedidentities_generated_managedidentities_v1_ManagedIdentitiesService_DetachTrust_async",
+      "file": "managedidentities_v1_generated_managed_identities_service_detach_trust_async.py",
+      "regionTag": "managedidentities_v1_generated_ManagedIdentitiesService_DetachTrust_async",
       "segments": [
         {
           "end": 56,
@@ -321,8 +321,8 @@
           "shortName": "DetachTrust"
         }
       },
-      "file": "managedidentities_generated_managedidentities_v1_managed_identities_service_detach_trust_sync.py",
-      "regionTag": "managedidentities_generated_managedidentities_v1_ManagedIdentitiesService_DetachTrust_sync",
+      "file": "managedidentities_v1_generated_managed_identities_service_detach_trust_sync.py",
+      "regionTag": "managedidentities_v1_generated_ManagedIdentitiesService_DetachTrust_sync",
       "segments": [
         {
           "end": 56,
@@ -366,8 +366,8 @@
           "shortName": "GetDomain"
         }
       },
-      "file": "managedidentities_generated_managedidentities_v1_managed_identities_service_get_domain_async.py",
-      "regionTag": "managedidentities_generated_managedidentities_v1_ManagedIdentitiesService_GetDomain_async",
+      "file": "managedidentities_v1_generated_managed_identities_service_get_domain_async.py",
+      "regionTag": "managedidentities_v1_generated_ManagedIdentitiesService_GetDomain_async",
       "segments": [
         {
           "end": 44,
@@ -410,8 +410,8 @@
           "shortName": "GetDomain"
         }
       },
-      "file": "managedidentities_generated_managedidentities_v1_managed_identities_service_get_domain_sync.py",
-      "regionTag": "managedidentities_generated_managedidentities_v1_ManagedIdentitiesService_GetDomain_sync",
+      "file": "managedidentities_v1_generated_managed_identities_service_get_domain_sync.py",
+      "regionTag": "managedidentities_v1_generated_ManagedIdentitiesService_GetDomain_sync",
       "segments": [
         {
           "end": 44,
@@ -455,8 +455,8 @@
           "shortName": "ListDomains"
         }
       },
-      "file": "managedidentities_generated_managedidentities_v1_managed_identities_service_list_domains_async.py",
-      "regionTag": "managedidentities_generated_managedidentities_v1_ManagedIdentitiesService_ListDomains_async",
+      "file": "managedidentities_v1_generated_managed_identities_service_list_domains_async.py",
+      "regionTag": "managedidentities_v1_generated_ManagedIdentitiesService_ListDomains_async",
       "segments": [
         {
           "end": 45,
@@ -499,8 +499,8 @@
           "shortName": "ListDomains"
         }
       },
-      "file": "managedidentities_generated_managedidentities_v1_managed_identities_service_list_domains_sync.py",
-      "regionTag": "managedidentities_generated_managedidentities_v1_ManagedIdentitiesService_ListDomains_sync",
+      "file": "managedidentities_v1_generated_managed_identities_service_list_domains_sync.py",
+      "regionTag": "managedidentities_v1_generated_ManagedIdentitiesService_ListDomains_sync",
       "segments": [
         {
           "end": 45,
@@ -544,8 +544,8 @@
           "shortName": "ReconfigureTrust"
         }
       },
-      "file": "managedidentities_generated_managedidentities_v1_managed_identities_service_reconfigure_trust_async.py",
-      "regionTag": "managedidentities_generated_managedidentities_v1_ManagedIdentitiesService_ReconfigureTrust_async",
+      "file": "managedidentities_v1_generated_managed_identities_service_reconfigure_trust_async.py",
+      "regionTag": "managedidentities_v1_generated_ManagedIdentitiesService_ReconfigureTrust_async",
       "segments": [
         {
           "end": 50,
@@ -588,8 +588,8 @@
           "shortName": "ReconfigureTrust"
         }
       },
-      "file": "managedidentities_generated_managedidentities_v1_managed_identities_service_reconfigure_trust_sync.py",
-      "regionTag": "managedidentities_generated_managedidentities_v1_ManagedIdentitiesService_ReconfigureTrust_sync",
+      "file": "managedidentities_v1_generated_managed_identities_service_reconfigure_trust_sync.py",
+      "regionTag": "managedidentities_v1_generated_ManagedIdentitiesService_ReconfigureTrust_sync",
       "segments": [
         {
           "end": 50,
@@ -633,8 +633,8 @@
           "shortName": "ResetAdminPassword"
         }
       },
-      "file": "managedidentities_generated_managedidentities_v1_managed_identities_service_reset_admin_password_async.py",
-      "regionTag": "managedidentities_generated_managedidentities_v1_ManagedIdentitiesService_ResetAdminPassword_async",
+      "file": "managedidentities_v1_generated_managed_identities_service_reset_admin_password_async.py",
+      "regionTag": "managedidentities_v1_generated_ManagedIdentitiesService_ResetAdminPassword_async",
       "segments": [
         {
           "end": 44,
@@ -677,8 +677,8 @@
           "shortName": "ResetAdminPassword"
         }
       },
-      "file": "managedidentities_generated_managedidentities_v1_managed_identities_service_reset_admin_password_sync.py",
-      "regionTag": "managedidentities_generated_managedidentities_v1_ManagedIdentitiesService_ResetAdminPassword_sync",
+      "file": "managedidentities_v1_generated_managed_identities_service_reset_admin_password_sync.py",
+      "regionTag": "managedidentities_v1_generated_ManagedIdentitiesService_ResetAdminPassword_sync",
       "segments": [
         {
           "end": 44,
@@ -722,8 +722,8 @@
           "shortName": "UpdateDomain"
         }
       },
-      "file": "managedidentities_generated_managedidentities_v1_managed_identities_service_update_domain_async.py",
-      "regionTag": "managedidentities_generated_managedidentities_v1_ManagedIdentitiesService_UpdateDomain_async",
+      "file": "managedidentities_v1_generated_managed_identities_service_update_domain_async.py",
+      "regionTag": "managedidentities_v1_generated_ManagedIdentitiesService_UpdateDomain_async",
       "segments": [
         {
           "end": 53,
@@ -766,8 +766,8 @@
           "shortName": "UpdateDomain"
         }
       },
-      "file": "managedidentities_generated_managedidentities_v1_managed_identities_service_update_domain_sync.py",
-      "regionTag": "managedidentities_generated_managedidentities_v1_ManagedIdentitiesService_UpdateDomain_sync",
+      "file": "managedidentities_v1_generated_managed_identities_service_update_domain_sync.py",
+      "regionTag": "managedidentities_v1_generated_ManagedIdentitiesService_UpdateDomain_sync",
       "segments": [
         {
           "end": 53,
@@ -811,8 +811,8 @@
           "shortName": "ValidateTrust"
         }
       },
-      "file": "managedidentities_generated_managedidentities_v1_managed_identities_service_validate_trust_async.py",
-      "regionTag": "managedidentities_generated_managedidentities_v1_ManagedIdentitiesService_ValidateTrust_async",
+      "file": "managedidentities_v1_generated_managed_identities_service_validate_trust_async.py",
+      "regionTag": "managedidentities_v1_generated_ManagedIdentitiesService_ValidateTrust_async",
       "segments": [
         {
           "end": 56,
@@ -855,8 +855,8 @@
           "shortName": "ValidateTrust"
         }
       },
-      "file": "managedidentities_generated_managedidentities_v1_managed_identities_service_validate_trust_sync.py",
-      "regionTag": "managedidentities_generated_managedidentities_v1_ManagedIdentitiesService_ValidateTrust_sync",
+      "file": "managedidentities_v1_generated_managed_identities_service_validate_trust_sync.py",
+      "regionTag": "managedidentities_v1_generated_ManagedIdentitiesService_ValidateTrust_sync",
       "segments": [
         {
           "end": 56,

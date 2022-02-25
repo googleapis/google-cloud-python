@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for DeleteDomain
+# Snippet for CreateMicrosoftAdDomain
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,21 +23,28 @@
 #   python3 -m pip install google-cloud-managed-identities
 
 
-# [START managedidentities_generated_managedidentities_v1_ManagedIdentitiesService_DeleteDomain_sync]
+# [START managedidentities_v1_generated_ManagedIdentitiesService_CreateMicrosoftAdDomain_sync]
 from google.cloud import managedidentities_v1
 
 
-def sample_delete_domain():
+def sample_create_microsoft_ad_domain():
     # Create a client
     client = managedidentities_v1.ManagedIdentitiesServiceClient()
 
     # Initialize request argument(s)
-    request = managedidentities_v1.DeleteDomainRequest(
-        name="name_value",
+    domain = managedidentities_v1.Domain()
+    domain.name = "name_value"
+    domain.reserved_ip_range = "reserved_ip_range_value"
+    domain.locations = ['locations_value_1', 'locations_value_2']
+
+    request = managedidentities_v1.CreateMicrosoftAdDomainRequest(
+        parent="parent_value",
+        domain_name="domain_name_value",
+        domain=domain,
     )
 
     # Make the request
-    operation = client.delete_domain(request=request)
+    operation = client.create_microsoft_ad_domain(request=request)
 
     print("Waiting for operation to complete...")
 
@@ -46,4 +53,4 @@ def sample_delete_domain():
     # Handle the response
     print(response)
 
-# [END managedidentities_generated_managedidentities_v1_ManagedIdentitiesService_DeleteDomain_sync]
+# [END managedidentities_v1_generated_ManagedIdentitiesService_CreateMicrosoftAdDomain_sync]

@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for AttachTrust
+# Snippet for DeleteDomain
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,35 +23,27 @@
 #   python3 -m pip install google-cloud-managed-identities
 
 
-# [START managedidentities_generated_managedidentities_v1_ManagedIdentitiesService_AttachTrust_async]
+# [START managedidentities_v1_generated_ManagedIdentitiesService_DeleteDomain_sync]
 from google.cloud import managedidentities_v1
 
 
-async def sample_attach_trust():
+def sample_delete_domain():
     # Create a client
-    client = managedidentities_v1.ManagedIdentitiesServiceAsyncClient()
+    client = managedidentities_v1.ManagedIdentitiesServiceClient()
 
     # Initialize request argument(s)
-    trust = managedidentities_v1.Trust()
-    trust.target_domain_name = "target_domain_name_value"
-    trust.trust_type = "EXTERNAL"
-    trust.trust_direction = "BIDIRECTIONAL"
-    trust.target_dns_ip_addresses = ['target_dns_ip_addresses_value_1', 'target_dns_ip_addresses_value_2']
-    trust.trust_handshake_secret = "trust_handshake_secret_value"
-
-    request = managedidentities_v1.AttachTrustRequest(
+    request = managedidentities_v1.DeleteDomainRequest(
         name="name_value",
-        trust=trust,
     )
 
     # Make the request
-    operation = client.attach_trust(request=request)
+    operation = client.delete_domain(request=request)
 
     print("Waiting for operation to complete...")
 
-    response = await operation.result()
+    response = operation.result()
 
     # Handle the response
     print(response)
 
-# [END managedidentities_generated_managedidentities_v1_ManagedIdentitiesService_AttachTrust_async]
+# [END managedidentities_v1_generated_ManagedIdentitiesService_DeleteDomain_sync]

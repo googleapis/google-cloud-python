@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-managed-identities
 
 
-# [START managedidentities_generated_managedidentities_v1_ManagedIdentitiesService_ResetAdminPassword_async]
+# [START managedidentities_v1_generated_ManagedIdentitiesService_ResetAdminPassword_async]
 from google.cloud import managedidentities_v1
 
 
@@ -42,4 +42,4 @@ async def sample_reset_admin_password():
     # Handle the response
     print(response)
 
-# [END managedidentities_generated_managedidentities_v1_ManagedIdentitiesService_ResetAdminPassword_async]
+# [END managedidentities_v1_generated_ManagedIdentitiesService_ResetAdminPassword_async]

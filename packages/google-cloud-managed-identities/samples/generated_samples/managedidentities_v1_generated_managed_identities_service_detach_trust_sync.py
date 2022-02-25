@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for UpdateDomain
+# Snippet for DetachTrust
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,26 +23,29 @@
 #   python3 -m pip install google-cloud-managed-identities
 
 
-# [START managedidentities_generated_managedidentities_v1_ManagedIdentitiesService_UpdateDomain_sync]
+# [START managedidentities_v1_generated_ManagedIdentitiesService_DetachTrust_sync]
 from google.cloud import managedidentities_v1
 
 
-def sample_update_domain():
+def sample_detach_trust():
     # Create a client
     client = managedidentities_v1.ManagedIdentitiesServiceClient()
 
     # Initialize request argument(s)
-    domain = managedidentities_v1.Domain()
-    domain.name = "name_value"
-    domain.reserved_ip_range = "reserved_ip_range_value"
-    domain.locations = ['locations_value_1', 'locations_value_2']
+    trust = managedidentities_v1.Trust()
+    trust.target_domain_name = "target_domain_name_value"
+    trust.trust_type = "EXTERNAL"
+    trust.trust_direction = "BIDIRECTIONAL"
+    trust.target_dns_ip_addresses = ['target_dns_ip_addresses_value_1', 'target_dns_ip_addresses_value_2']
+    trust.trust_handshake_secret = "trust_handshake_secret_value"
 
-    request = managedidentities_v1.UpdateDomainRequest(
-        domain=domain,
+    request = managedidentities_v1.DetachTrustRequest(
+        name="name_value",
+        trust=trust,
     )
 
     # Make the request
-    operation = client.update_domain(request=request)
+    operation = client.detach_trust(request=request)
 
     print("Waiting for operation to complete...")
 
@@ -51,4 +54,4 @@ def sample_update_domain():
     # Handle the response
     print(response)
 
-# [END managedidentities_generated_managedidentities_v1_ManagedIdentitiesService_UpdateDomain_sync]
+# [END managedidentities_v1_generated_ManagedIdentitiesService_DetachTrust_sync]

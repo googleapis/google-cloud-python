@@ -263,7 +263,7 @@ class ManagedIdentitiesServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Creates a Microsoft AD domain.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import managedidentities_v1
 
@@ -407,7 +407,7 @@ class ManagedIdentitiesServiceAsyncClient:
     ) -> managed_identities_service.ResetAdminPasswordResponse:
         r"""Resets a domain's administrator password.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import managedidentities_v1
 
@@ -497,7 +497,7 @@ class ManagedIdentitiesServiceAsyncClient:
     ) -> pagers.ListDomainsAsyncPager:
         r"""Lists domains in a project.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import managedidentities_v1
 
@@ -597,7 +597,7 @@ class ManagedIdentitiesServiceAsyncClient:
     ) -> resource.Domain:
         r"""Gets information about a domain.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import managedidentities_v1
 
@@ -688,7 +688,7 @@ class ManagedIdentitiesServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Updates the metadata and configuration of a domain.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import managedidentities_v1
 
@@ -815,7 +815,7 @@ class ManagedIdentitiesServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Deletes a domain.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import managedidentities_v1
 
@@ -931,7 +931,7 @@ class ManagedIdentitiesServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Adds an AD trust to a domain.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import managedidentities_v1
 
@@ -1054,7 +1054,7 @@ class ManagedIdentitiesServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Updates the DNS conditional forwarder.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import managedidentities_v1
 
@@ -1183,7 +1183,7 @@ class ManagedIdentitiesServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Removes an AD trust.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import managedidentities_v1
 
@@ -1310,7 +1310,7 @@ class ManagedIdentitiesServiceAsyncClient:
         incoming trust requests.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import managedidentities_v1
 

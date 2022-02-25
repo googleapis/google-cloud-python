@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ReconfigureTrust
+# Snippet for DeleteDomain
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,29 +23,27 @@
 #   python3 -m pip install google-cloud-managed-identities
 
 
-# [START managedidentities_generated_managedidentities_v1_ManagedIdentitiesService_ReconfigureTrust_sync]
+# [START managedidentities_v1_generated_ManagedIdentitiesService_DeleteDomain_async]
 from google.cloud import managedidentities_v1
 
 
-def sample_reconfigure_trust():
+async def sample_delete_domain():
     # Create a client
-    client = managedidentities_v1.ManagedIdentitiesServiceClient()
+    client = managedidentities_v1.ManagedIdentitiesServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = managedidentities_v1.ReconfigureTrustRequest(
+    request = managedidentities_v1.DeleteDomainRequest(
         name="name_value",
-        target_domain_name="target_domain_name_value",
-        target_dns_ip_addresses=['target_dns_ip_addresses_value_1', 'target_dns_ip_addresses_value_2'],
     )
 
     # Make the request
-    operation = client.reconfigure_trust(request=request)
+    operation = client.delete_domain(request=request)
 
     print("Waiting for operation to complete...")
 
-    response = operation.result()
+    response = await operation.result()
 
     # Handle the response
     print(response)
 
-# [END managedidentities_generated_managedidentities_v1_ManagedIdentitiesService_ReconfigureTrust_sync]
+# [END managedidentities_v1_generated_ManagedIdentitiesService_DeleteDomain_async]

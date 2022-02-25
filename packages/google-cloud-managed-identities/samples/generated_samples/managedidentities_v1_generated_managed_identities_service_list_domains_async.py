@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for DetachTrust
+# Snippet for ListDomains
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,35 +23,24 @@
 #   python3 -m pip install google-cloud-managed-identities
 
 
-# [START managedidentities_generated_managedidentities_v1_ManagedIdentitiesService_DetachTrust_sync]
+# [START managedidentities_v1_generated_ManagedIdentitiesService_ListDomains_async]
 from google.cloud import managedidentities_v1
 
 
-def sample_detach_trust():
+async def sample_list_domains():
     # Create a client
-    client = managedidentities_v1.ManagedIdentitiesServiceClient()
+    client = managedidentities_v1.ManagedIdentitiesServiceAsyncClient()
 
     # Initialize request argument(s)
-    trust = managedidentities_v1.Trust()
-    trust.target_domain_name = "target_domain_name_value"
-    trust.trust_type = "EXTERNAL"
-    trust.trust_direction = "BIDIRECTIONAL"
-    trust.target_dns_ip_addresses = ['target_dns_ip_addresses_value_1', 'target_dns_ip_addresses_value_2']
-    trust.trust_handshake_secret = "trust_handshake_secret_value"
-
-    request = managedidentities_v1.DetachTrustRequest(
-        name="name_value",
-        trust=trust,
+    request = managedidentities_v1.ListDomainsRequest(
+        parent="parent_value",
     )
 
     # Make the request
-    operation = client.detach_trust(request=request)
-
-    print("Waiting for operation to complete...")
-
-    response = operation.result()
+    page_result = client.list_domains(request=request)
 
     # Handle the response
-    print(response)
+    async for response in page_result:
+        print(response)
 
-# [END managedidentities_generated_managedidentities_v1_ManagedIdentitiesService_DetachTrust_sync]
+# [END managedidentities_v1_generated_ManagedIdentitiesService_ListDomains_async]

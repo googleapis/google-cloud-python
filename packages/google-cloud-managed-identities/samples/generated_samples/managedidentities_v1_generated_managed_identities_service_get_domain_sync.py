@@ -23,13 +23,13 @@
 #   python3 -m pip install google-cloud-managed-identities
 
 
-# [START managedidentities_generated_managedidentities_v1_ManagedIdentitiesService_GetDomain_async]
+# [START managedidentities_v1_generated_ManagedIdentitiesService_GetDomain_sync]
 from google.cloud import managedidentities_v1
 
 
-async def sample_get_domain():
+def sample_get_domain():
     # Create a client
-    client = managedidentities_v1.ManagedIdentitiesServiceAsyncClient()
+    client = managedidentities_v1.ManagedIdentitiesServiceClient()
 
     # Initialize request argument(s)
     request = managedidentities_v1.GetDomainRequest(
@@ -37,9 +37,9 @@ async def sample_get_domain():
     )
 
     # Make the request
-    response = await client.get_domain(request=request)
+    response = client.get_domain(request=request)
 
     # Handle the response
     print(response)
 
-# [END managedidentities_generated_managedidentities_v1_ManagedIdentitiesService_GetDomain_async]
+# [END managedidentities_v1_generated_ManagedIdentitiesService_GetDomain_sync]

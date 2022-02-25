@@ -457,8 +457,7 @@ class ManagedIdentitiesServiceClient(metaclass=ManagedIdentitiesServiceClientMet
     ) -> operation.Operation:
         r"""Creates a Microsoft AD domain.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import managedidentities_v1
 
@@ -606,8 +605,7 @@ class ManagedIdentitiesServiceClient(metaclass=ManagedIdentitiesServiceClientMet
     ) -> managed_identities_service.ResetAdminPasswordResponse:
         r"""Resets a domain's administrator password.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import managedidentities_v1
 
@@ -699,8 +697,7 @@ class ManagedIdentitiesServiceClient(metaclass=ManagedIdentitiesServiceClientMet
     ) -> pagers.ListDomainsPager:
         r"""Lists domains in a project.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import managedidentities_v1
 
@@ -800,8 +797,7 @@ class ManagedIdentitiesServiceClient(metaclass=ManagedIdentitiesServiceClientMet
     ) -> resource.Domain:
         r"""Gets information about a domain.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import managedidentities_v1
 
@@ -892,8 +888,7 @@ class ManagedIdentitiesServiceClient(metaclass=ManagedIdentitiesServiceClientMet
     ) -> operation.Operation:
         r"""Updates the metadata and configuration of a domain.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import managedidentities_v1
 
@@ -1020,8 +1015,7 @@ class ManagedIdentitiesServiceClient(metaclass=ManagedIdentitiesServiceClientMet
     ) -> operation.Operation:
         r"""Deletes a domain.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import managedidentities_v1
 
@@ -1137,8 +1131,7 @@ class ManagedIdentitiesServiceClient(metaclass=ManagedIdentitiesServiceClientMet
     ) -> operation.Operation:
         r"""Adds an AD trust to a domain.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import managedidentities_v1
 
@@ -1261,8 +1254,7 @@ class ManagedIdentitiesServiceClient(metaclass=ManagedIdentitiesServiceClientMet
     ) -> operation.Operation:
         r"""Updates the DNS conditional forwarder.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import managedidentities_v1
 
@@ -1391,8 +1383,7 @@ class ManagedIdentitiesServiceClient(metaclass=ManagedIdentitiesServiceClientMet
     ) -> operation.Operation:
         r"""Removes an AD trust.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import managedidentities_v1
 
@@ -1519,8 +1510,7 @@ class ManagedIdentitiesServiceClient(metaclass=ManagedIdentitiesServiceClientMet
         incoming trust requests.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import managedidentities_v1
 
