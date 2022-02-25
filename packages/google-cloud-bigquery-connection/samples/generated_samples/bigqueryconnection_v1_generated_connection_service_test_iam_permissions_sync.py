@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for CreateConnection
+# Snippet for TestIamPermissions
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,23 +23,24 @@
 #   python3 -m pip install google-cloud-bigquery-connection
 
 
-# [START bigqueryconnection_generated_bigquery_connection_v1_ConnectionService_CreateConnection_sync]
+# [START bigqueryconnection_v1_generated_ConnectionService_TestIamPermissions_sync]
 from google.cloud import bigquery_connection_v1
 
 
-def sample_create_connection():
+def sample_test_iam_permissions():
     # Create a client
     client = bigquery_connection_v1.ConnectionServiceClient()
 
     # Initialize request argument(s)
-    request = bigquery_connection_v1.CreateConnectionRequest(
-        parent="parent_value",
+    request = bigquery_connection_v1.TestIamPermissionsRequest(
+        resource="resource_value",
+        permissions=['permissions_value_1', 'permissions_value_2'],
     )
 
     # Make the request
-    response = client.create_connection(request=request)
+    response = client.test_iam_permissions(request=request)
 
     # Handle the response
     print(response)
 
-# [END bigqueryconnection_generated_bigquery_connection_v1_ConnectionService_CreateConnection_sync]
+# [END bigqueryconnection_v1_generated_ConnectionService_TestIamPermissions_sync]

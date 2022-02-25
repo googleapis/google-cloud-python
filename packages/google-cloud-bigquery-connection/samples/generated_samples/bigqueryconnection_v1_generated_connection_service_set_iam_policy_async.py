@@ -23,13 +23,13 @@
 #   python3 -m pip install google-cloud-bigquery-connection
 
 
-# [START bigqueryconnection_generated_bigquery_connection_v1_ConnectionService_SetIamPolicy_sync]
+# [START bigqueryconnection_v1_generated_ConnectionService_SetIamPolicy_async]
 from google.cloud import bigquery_connection_v1
 
 
-def sample_set_iam_policy():
+async def sample_set_iam_policy():
     # Create a client
-    client = bigquery_connection_v1.ConnectionServiceClient()
+    client = bigquery_connection_v1.ConnectionServiceAsyncClient()
 
     # Initialize request argument(s)
     request = bigquery_connection_v1.SetIamPolicyRequest(
@@ -37,9 +37,9 @@ def sample_set_iam_policy():
     )
 
     # Make the request
-    response = client.set_iam_policy(request=request)
+    response = await client.set_iam_policy(request=request)
 
     # Handle the response
     print(response)
 
-# [END bigqueryconnection_generated_bigquery_connection_v1_ConnectionService_SetIamPolicy_sync]
+# [END bigqueryconnection_v1_generated_ConnectionService_SetIamPolicy_async]

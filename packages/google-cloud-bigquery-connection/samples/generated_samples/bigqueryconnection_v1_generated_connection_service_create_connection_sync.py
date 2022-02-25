@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ListConnections
+# Snippet for CreateConnection
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,25 +23,23 @@
 #   python3 -m pip install google-cloud-bigquery-connection
 
 
-# [START bigqueryconnection_generated_bigquery_connection_v1_ConnectionService_ListConnections_sync]
+# [START bigqueryconnection_v1_generated_ConnectionService_CreateConnection_sync]
 from google.cloud import bigquery_connection_v1
 
 
-def sample_list_connections():
+def sample_create_connection():
     # Create a client
     client = bigquery_connection_v1.ConnectionServiceClient()
 
     # Initialize request argument(s)
-    request = bigquery_connection_v1.ListConnectionsRequest(
+    request = bigquery_connection_v1.CreateConnectionRequest(
         parent="parent_value",
-        page_size=951,
     )
 
     # Make the request
-    page_result = client.list_connections(request=request)
+    response = client.create_connection(request=request)
 
     # Handle the response
-    for response in page_result:
-        print(response)
+    print(response)
 
-# [END bigqueryconnection_generated_bigquery_connection_v1_ConnectionService_ListConnections_sync]
+# [END bigqueryconnection_v1_generated_ConnectionService_CreateConnection_sync]

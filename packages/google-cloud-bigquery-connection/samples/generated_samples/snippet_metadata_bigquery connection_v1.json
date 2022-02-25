@@ -10,8 +10,8 @@
           "shortName": "CreateConnection"
         }
       },
-      "file": "bigqueryconnection_generated_bigquery_connection_v1_connection_service_create_connection_async.py",
-      "regionTag": "bigqueryconnection_generated_bigquery_connection_v1_ConnectionService_CreateConnection_async",
+      "file": "bigqueryconnection_v1_generated_connection_service_create_connection_async.py",
+      "regionTag": "bigqueryconnection_v1_generated_ConnectionService_CreateConnection_async",
       "segments": [
         {
           "end": 44,
@@ -54,8 +54,8 @@
           "shortName": "CreateConnection"
         }
       },
-      "file": "bigqueryconnection_generated_bigquery_connection_v1_connection_service_create_connection_sync.py",
-      "regionTag": "bigqueryconnection_generated_bigquery_connection_v1_ConnectionService_CreateConnection_sync",
+      "file": "bigqueryconnection_v1_generated_connection_service_create_connection_sync.py",
+      "regionTag": "bigqueryconnection_v1_generated_ConnectionService_CreateConnection_sync",
       "segments": [
         {
           "end": 44,
@@ -99,8 +99,8 @@
           "shortName": "DeleteConnection"
         }
       },
-      "file": "bigqueryconnection_generated_bigquery_connection_v1_connection_service_delete_connection_async.py",
-      "regionTag": "bigqueryconnection_generated_bigquery_connection_v1_ConnectionService_DeleteConnection_async",
+      "file": "bigqueryconnection_v1_generated_connection_service_delete_connection_async.py",
+      "regionTag": "bigqueryconnection_v1_generated_ConnectionService_DeleteConnection_async",
       "segments": [
         {
           "end": 42,
@@ -141,8 +141,8 @@
           "shortName": "DeleteConnection"
         }
       },
-      "file": "bigqueryconnection_generated_bigquery_connection_v1_connection_service_delete_connection_sync.py",
-      "regionTag": "bigqueryconnection_generated_bigquery_connection_v1_ConnectionService_DeleteConnection_sync",
+      "file": "bigqueryconnection_v1_generated_connection_service_delete_connection_sync.py",
+      "regionTag": "bigqueryconnection_v1_generated_ConnectionService_DeleteConnection_sync",
       "segments": [
         {
           "end": 42,
@@ -184,8 +184,8 @@
           "shortName": "GetConnection"
         }
       },
-      "file": "bigqueryconnection_generated_bigquery_connection_v1_connection_service_get_connection_async.py",
-      "regionTag": "bigqueryconnection_generated_bigquery_connection_v1_ConnectionService_GetConnection_async",
+      "file": "bigqueryconnection_v1_generated_connection_service_get_connection_async.py",
+      "regionTag": "bigqueryconnection_v1_generated_ConnectionService_GetConnection_async",
       "segments": [
         {
           "end": 44,
@@ -228,8 +228,8 @@
           "shortName": "GetConnection"
         }
       },
-      "file": "bigqueryconnection_generated_bigquery_connection_v1_connection_service_get_connection_sync.py",
-      "regionTag": "bigqueryconnection_generated_bigquery_connection_v1_ConnectionService_GetConnection_sync",
+      "file": "bigqueryconnection_v1_generated_connection_service_get_connection_sync.py",
+      "regionTag": "bigqueryconnection_v1_generated_ConnectionService_GetConnection_sync",
       "segments": [
         {
           "end": 44,
@@ -273,8 +273,8 @@
           "shortName": "GetIamPolicy"
         }
       },
-      "file": "bigqueryconnection_generated_bigquery_connection_v1_connection_service_get_iam_policy_async.py",
-      "regionTag": "bigqueryconnection_generated_bigquery_connection_v1_ConnectionService_GetIamPolicy_async",
+      "file": "bigqueryconnection_v1_generated_connection_service_get_iam_policy_async.py",
+      "regionTag": "bigqueryconnection_v1_generated_ConnectionService_GetIamPolicy_async",
       "segments": [
         {
           "end": 44,
@@ -317,8 +317,8 @@
           "shortName": "GetIamPolicy"
         }
       },
-      "file": "bigqueryconnection_generated_bigquery_connection_v1_connection_service_get_iam_policy_sync.py",
-      "regionTag": "bigqueryconnection_generated_bigquery_connection_v1_ConnectionService_GetIamPolicy_sync",
+      "file": "bigqueryconnection_v1_generated_connection_service_get_iam_policy_sync.py",
+      "regionTag": "bigqueryconnection_v1_generated_ConnectionService_GetIamPolicy_sync",
       "segments": [
         {
           "end": 44,
@@ -362,8 +362,8 @@
           "shortName": "ListConnections"
         }
       },
-      "file": "bigqueryconnection_generated_bigquery_connection_v1_connection_service_list_connections_async.py",
-      "regionTag": "bigqueryconnection_generated_bigquery_connection_v1_ConnectionService_ListConnections_async",
+      "file": "bigqueryconnection_v1_generated_connection_service_list_connections_async.py",
+      "regionTag": "bigqueryconnection_v1_generated_ConnectionService_ListConnections_async",
       "segments": [
         {
           "end": 46,
@@ -406,8 +406,8 @@
           "shortName": "ListConnections"
         }
       },
-      "file": "bigqueryconnection_generated_bigquery_connection_v1_connection_service_list_connections_sync.py",
-      "regionTag": "bigqueryconnection_generated_bigquery_connection_v1_ConnectionService_ListConnections_sync",
+      "file": "bigqueryconnection_v1_generated_connection_service_list_connections_sync.py",
+      "regionTag": "bigqueryconnection_v1_generated_ConnectionService_ListConnections_sync",
       "segments": [
         {
           "end": 46,
@@ -451,8 +451,8 @@
           "shortName": "SetIamPolicy"
         }
       },
-      "file": "bigqueryconnection_generated_bigquery_connection_v1_connection_service_set_iam_policy_async.py",
-      "regionTag": "bigqueryconnection_generated_bigquery_connection_v1_ConnectionService_SetIamPolicy_async",
+      "file": "bigqueryconnection_v1_generated_connection_service_set_iam_policy_async.py",
+      "regionTag": "bigqueryconnection_v1_generated_ConnectionService_SetIamPolicy_async",
       "segments": [
         {
           "end": 44,
@@ -495,8 +495,8 @@
           "shortName": "SetIamPolicy"
         }
       },
-      "file": "bigqueryconnection_generated_bigquery_connection_v1_connection_service_set_iam_policy_sync.py",
-      "regionTag": "bigqueryconnection_generated_bigquery_connection_v1_ConnectionService_SetIamPolicy_sync",
+      "file": "bigqueryconnection_v1_generated_connection_service_set_iam_policy_sync.py",
+      "regionTag": "bigqueryconnection_v1_generated_ConnectionService_SetIamPolicy_sync",
       "segments": [
         {
           "end": 44,
@@ -540,8 +540,8 @@
           "shortName": "TestIamPermissions"
         }
       },
-      "file": "bigqueryconnection_generated_bigquery_connection_v1_connection_service_test_iam_permissions_async.py",
-      "regionTag": "bigqueryconnection_generated_bigquery_connection_v1_ConnectionService_TestIamPermissions_async",
+      "file": "bigqueryconnection_v1_generated_connection_service_test_iam_permissions_async.py",
+      "regionTag": "bigqueryconnection_v1_generated_ConnectionService_TestIamPermissions_async",
       "segments": [
         {
           "end": 45,
@@ -584,8 +584,8 @@
           "shortName": "TestIamPermissions"
         }
       },
-      "file": "bigqueryconnection_generated_bigquery_connection_v1_connection_service_test_iam_permissions_sync.py",
-      "regionTag": "bigqueryconnection_generated_bigquery_connection_v1_ConnectionService_TestIamPermissions_sync",
+      "file": "bigqueryconnection_v1_generated_connection_service_test_iam_permissions_sync.py",
+      "regionTag": "bigqueryconnection_v1_generated_ConnectionService_TestIamPermissions_sync",
       "segments": [
         {
           "end": 45,
@@ -629,8 +629,8 @@
           "shortName": "UpdateConnection"
         }
       },
-      "file": "bigqueryconnection_generated_bigquery_connection_v1_connection_service_update_connection_async.py",
-      "regionTag": "bigqueryconnection_generated_bigquery_connection_v1_ConnectionService_UpdateConnection_async",
+      "file": "bigqueryconnection_v1_generated_connection_service_update_connection_async.py",
+      "regionTag": "bigqueryconnection_v1_generated_ConnectionService_UpdateConnection_async",
       "segments": [
         {
           "end": 44,
@@ -673,8 +673,8 @@
           "shortName": "UpdateConnection"
         }
       },
-      "file": "bigqueryconnection_generated_bigquery_connection_v1_connection_service_update_connection_sync.py",
-      "regionTag": "bigqueryconnection_generated_bigquery_connection_v1_ConnectionService_UpdateConnection_sync",
+      "file": "bigqueryconnection_v1_generated_connection_service_update_connection_sync.py",
+      "regionTag": "bigqueryconnection_v1_generated_ConnectionService_UpdateConnection_sync",
       "segments": [
         {
           "end": 44,

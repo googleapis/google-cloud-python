@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for CreateConnection
+# Snippet for GetIamPolicy
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,23 +23,23 @@
 #   python3 -m pip install google-cloud-bigquery-connection
 
 
-# [START bigqueryconnection_generated_bigquery_connection_v1_ConnectionService_CreateConnection_async]
+# [START bigqueryconnection_v1_generated_ConnectionService_GetIamPolicy_sync]
 from google.cloud import bigquery_connection_v1
 
 
-async def sample_create_connection():
+def sample_get_iam_policy():
     # Create a client
-    client = bigquery_connection_v1.ConnectionServiceAsyncClient()
+    client = bigquery_connection_v1.ConnectionServiceClient()
 
     # Initialize request argument(s)
-    request = bigquery_connection_v1.CreateConnectionRequest(
-        parent="parent_value",
+    request = bigquery_connection_v1.GetIamPolicyRequest(
+        resource="resource_value",
     )
 
     # Make the request
-    response = await client.create_connection(request=request)
+    response = client.get_iam_policy(request=request)
 
     # Handle the response
     print(response)
 
-# [END bigqueryconnection_generated_bigquery_connection_v1_ConnectionService_CreateConnection_async]
+# [END bigqueryconnection_v1_generated_ConnectionService_GetIamPolicy_sync]

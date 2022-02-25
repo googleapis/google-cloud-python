@@ -418,8 +418,7 @@ class ConnectionServiceClient(metaclass=ConnectionServiceClientMeta):
     ) -> gcbc_connection.Connection:
         r"""Creates a new connection.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_connection_v1
 
@@ -526,8 +525,7 @@ class ConnectionServiceClient(metaclass=ConnectionServiceClientMeta):
     ) -> connection.Connection:
         r"""Returns specified connection.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_connection_v1
 
@@ -618,8 +616,7 @@ class ConnectionServiceClient(metaclass=ConnectionServiceClientMeta):
     ) -> pagers.ListConnectionsPager:
         r"""Returns a list of connections in the given project.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_connection_v1
 
@@ -725,8 +722,7 @@ class ConnectionServiceClient(metaclass=ConnectionServiceClientMeta):
         are in the update field mask.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_connection_v1
 
@@ -835,8 +831,7 @@ class ConnectionServiceClient(metaclass=ConnectionServiceClientMeta):
     ) -> None:
         r"""Deletes connection and associated credential.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_connection_v1
 
@@ -919,8 +914,7 @@ class ConnectionServiceClient(metaclass=ConnectionServiceClientMeta):
         not have a policy set.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_connection_v1
 
@@ -1069,8 +1063,7 @@ class ConnectionServiceClient(metaclass=ConnectionServiceClientMeta):
         ``PERMISSION_DENIED`` errors.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_connection_v1
 
@@ -1223,8 +1216,7 @@ class ConnectionServiceClient(metaclass=ConnectionServiceClientMeta):
         warning.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_connection_v1
 

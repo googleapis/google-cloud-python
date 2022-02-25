@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for DeleteConnection
+# Snippet for TestIamPermissions
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,21 +23,24 @@
 #   python3 -m pip install google-cloud-bigquery-connection
 
 
-# [START bigqueryconnection_generated_bigquery_connection_v1_ConnectionService_DeleteConnection_sync]
+# [START bigqueryconnection_v1_generated_ConnectionService_TestIamPermissions_async]
 from google.cloud import bigquery_connection_v1
 
 
-def sample_delete_connection():
+async def sample_test_iam_permissions():
     # Create a client
-    client = bigquery_connection_v1.ConnectionServiceClient()
+    client = bigquery_connection_v1.ConnectionServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = bigquery_connection_v1.DeleteConnectionRequest(
-        name="name_value",
+    request = bigquery_connection_v1.TestIamPermissionsRequest(
+        resource="resource_value",
+        permissions=['permissions_value_1', 'permissions_value_2'],
     )
 
     # Make the request
-    client.delete_connection(request=request)
+    response = await client.test_iam_permissions(request=request)
 
+    # Handle the response
+    print(response)
 
-# [END bigqueryconnection_generated_bigquery_connection_v1_ConnectionService_DeleteConnection_sync]
+# [END bigqueryconnection_v1_generated_ConnectionService_TestIamPermissions_async]

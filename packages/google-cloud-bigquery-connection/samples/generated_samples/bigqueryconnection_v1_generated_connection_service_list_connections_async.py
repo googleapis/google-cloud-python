@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for SetIamPolicy
+# Snippet for ListConnections
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,23 +23,25 @@
 #   python3 -m pip install google-cloud-bigquery-connection
 
 
-# [START bigqueryconnection_generated_bigquery_connection_v1_ConnectionService_SetIamPolicy_async]
+# [START bigqueryconnection_v1_generated_ConnectionService_ListConnections_async]
 from google.cloud import bigquery_connection_v1
 
 
-async def sample_set_iam_policy():
+async def sample_list_connections():
     # Create a client
     client = bigquery_connection_v1.ConnectionServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = bigquery_connection_v1.SetIamPolicyRequest(
-        resource="resource_value",
+    request = bigquery_connection_v1.ListConnectionsRequest(
+        parent="parent_value",
+        page_size=951,
     )
 
     # Make the request
-    response = await client.set_iam_policy(request=request)
+    page_result = client.list_connections(request=request)
 
     # Handle the response
-    print(response)
+    async for response in page_result:
+        print(response)
 
-# [END bigqueryconnection_generated_bigquery_connection_v1_ConnectionService_SetIamPolicy_async]
+# [END bigqueryconnection_v1_generated_ConnectionService_ListConnections_async]

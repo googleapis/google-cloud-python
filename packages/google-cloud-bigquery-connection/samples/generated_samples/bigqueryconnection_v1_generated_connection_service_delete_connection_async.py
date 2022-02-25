@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for UpdateConnection
+# Snippet for DeleteConnection
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,23 +23,21 @@
 #   python3 -m pip install google-cloud-bigquery-connection
 
 
-# [START bigqueryconnection_generated_bigquery_connection_v1_ConnectionService_UpdateConnection_async]
+# [START bigqueryconnection_v1_generated_ConnectionService_DeleteConnection_async]
 from google.cloud import bigquery_connection_v1
 
 
-async def sample_update_connection():
+async def sample_delete_connection():
     # Create a client
     client = bigquery_connection_v1.ConnectionServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = bigquery_connection_v1.UpdateConnectionRequest(
+    request = bigquery_connection_v1.DeleteConnectionRequest(
         name="name_value",
     )
 
     # Make the request
-    response = await client.update_connection(request=request)
+    await client.delete_connection(request=request)
 
-    # Handle the response
-    print(response)
 
-# [END bigqueryconnection_generated_bigquery_connection_v1_ConnectionService_UpdateConnection_async]
+# [END bigqueryconnection_v1_generated_ConnectionService_DeleteConnection_async]

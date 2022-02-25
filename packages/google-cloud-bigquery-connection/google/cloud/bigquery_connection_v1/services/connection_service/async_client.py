@@ -219,7 +219,7 @@ class ConnectionServiceAsyncClient:
     ) -> gcbc_connection.Connection:
         r"""Creates a new connection.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_connection_v1
 
@@ -326,7 +326,7 @@ class ConnectionServiceAsyncClient:
     ) -> connection.Connection:
         r"""Returns specified connection.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_connection_v1
 
@@ -427,7 +427,7 @@ class ConnectionServiceAsyncClient:
     ) -> pagers.ListConnectionsAsyncPager:
         r"""Returns a list of connections in the given project.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_connection_v1
 
@@ -543,7 +543,7 @@ class ConnectionServiceAsyncClient:
         are in the update field mask.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_connection_v1
 
@@ -652,7 +652,7 @@ class ConnectionServiceAsyncClient:
     ) -> None:
         r"""Deletes connection and associated credential.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_connection_v1
 
@@ -745,7 +745,7 @@ class ConnectionServiceAsyncClient:
         not have a policy set.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_connection_v1
 
@@ -895,7 +895,7 @@ class ConnectionServiceAsyncClient:
         ``PERMISSION_DENIED`` errors.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_connection_v1
 
@@ -1049,7 +1049,7 @@ class ConnectionServiceAsyncClient:
         warning.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_connection_v1
 

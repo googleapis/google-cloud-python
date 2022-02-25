@@ -23,13 +23,13 @@
 #   python3 -m pip install google-cloud-bigquery-connection
 
 
-# [START bigqueryconnection_generated_bigquery_connection_v1_ConnectionService_GetConnection_sync]
+# [START bigqueryconnection_v1_generated_ConnectionService_GetConnection_async]
 from google.cloud import bigquery_connection_v1
 
 
-def sample_get_connection():
+async def sample_get_connection():
     # Create a client
-    client = bigquery_connection_v1.ConnectionServiceClient()
+    client = bigquery_connection_v1.ConnectionServiceAsyncClient()
 
     # Initialize request argument(s)
     request = bigquery_connection_v1.GetConnectionRequest(
@@ -37,9 +37,9 @@ def sample_get_connection():
     )
 
     # Make the request
-    response = client.get_connection(request=request)
+    response = await client.get_connection(request=request)
 
     # Handle the response
     print(response)
 
-# [END bigqueryconnection_generated_bigquery_connection_v1_ConnectionService_GetConnection_sync]
+# [END bigqueryconnection_v1_generated_ConnectionService_GetConnection_async]
