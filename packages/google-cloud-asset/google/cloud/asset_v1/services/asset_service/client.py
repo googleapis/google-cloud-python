@@ -483,8 +483,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         the export operation usually finishes within 5 minutes.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import asset_v1
 
@@ -576,8 +575,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         paged results in response.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import asset_v1
 
@@ -684,8 +682,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         INVALID_ARGUMENT error.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import asset_v1
 
@@ -755,8 +752,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         updates.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import asset_v1
 
@@ -862,8 +858,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
     ) -> asset_service.Feed:
         r"""Gets details about an asset feed.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import asset_v1
 
@@ -961,8 +956,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         project/folder/organization.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import asset_v1
 
@@ -1053,8 +1047,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
     ) -> asset_service.Feed:
         r"""Updates an asset feed configuration.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import asset_v1
 
@@ -1156,8 +1149,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
     ) -> None:
         r"""Deletes an asset feed.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import asset_v1
 
@@ -1244,8 +1236,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         desired scope, otherwise the request will be rejected.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import asset_v1
 
@@ -1438,8 +1429,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         desired scope, otherwise the request will be rejected.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import asset_v1
 
@@ -1608,8 +1598,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         what accesses on which resources.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import asset_v1
 
@@ -1695,8 +1684,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         for the long-running operation.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import asset_v1
 
@@ -1799,8 +1787,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         takes place.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import asset_v1
 

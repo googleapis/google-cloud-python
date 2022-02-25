@@ -402,8 +402,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         requested scope, otherwise it will be rejected.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import asset_v1p1beta1
 
@@ -534,8 +533,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         requested scope, otherwise it will be rejected.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import asset_v1p1beta1
 

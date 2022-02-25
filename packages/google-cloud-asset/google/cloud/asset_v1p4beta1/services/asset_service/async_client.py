@@ -212,7 +212,7 @@ class AssetServiceAsyncClient:
         matching the request.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import asset_v1p4beta1
 
@@ -299,7 +299,7 @@ class AssetServiceAsyncClient:
         the request to help callers to map responses to requests.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import asset_v1p4beta1
 

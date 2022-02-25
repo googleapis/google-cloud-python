@@ -211,7 +211,7 @@ class AssetServiceAsyncClient:
         updates.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import asset_v1p2beta1
 
@@ -317,7 +317,7 @@ class AssetServiceAsyncClient:
     ) -> asset_service.Feed:
         r"""Gets details about an asset feed.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import asset_v1p2beta1
 
@@ -425,7 +425,7 @@ class AssetServiceAsyncClient:
         project/folder/organization.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import asset_v1p2beta1
 
@@ -526,7 +526,7 @@ class AssetServiceAsyncClient:
     ) -> asset_service.Feed:
         r"""Updates an asset feed configuration.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import asset_v1p2beta1
 
@@ -628,7 +628,7 @@ class AssetServiceAsyncClient:
     ) -> None:
         r"""Deletes an asset feed.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import asset_v1p2beta1
 

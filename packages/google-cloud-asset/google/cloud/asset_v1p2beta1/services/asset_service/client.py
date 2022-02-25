@@ -405,8 +405,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         updates.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import asset_v1p2beta1
 
@@ -512,8 +511,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
     ) -> asset_service.Feed:
         r"""Gets details about an asset feed.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import asset_v1p2beta1
 
@@ -611,8 +609,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         project/folder/organization.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import asset_v1p2beta1
 
@@ -703,8 +700,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
     ) -> asset_service.Feed:
         r"""Updates an asset feed configuration.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import asset_v1p2beta1
 
@@ -806,8 +802,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
     ) -> None:
         r"""Deletes an asset feed.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import asset_v1p2beta1
 

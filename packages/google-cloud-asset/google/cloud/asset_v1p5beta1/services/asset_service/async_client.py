@@ -219,7 +219,7 @@ class AssetServiceAsyncClient:
         paged results in response.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import asset_v1p5beta1
 
