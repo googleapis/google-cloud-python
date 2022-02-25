@@ -23,13 +23,13 @@
 #   python3 -m pip install google-cloud-apigee-connect
 
 
-# [START apigeeconnect_generated_apigeeconnect_v1_ConnectionService_ListConnections_async]
+# [START apigeeconnect_v1_generated_ConnectionService_ListConnections_sync]
 from google.cloud import apigeeconnect_v1
 
 
-async def sample_list_connections():
+def sample_list_connections():
     # Create a client
-    client = apigeeconnect_v1.ConnectionServiceAsyncClient()
+    client = apigeeconnect_v1.ConnectionServiceClient()
 
     # Initialize request argument(s)
     request = apigeeconnect_v1.ListConnectionsRequest(
@@ -40,7 +40,7 @@ async def sample_list_connections():
     page_result = client.list_connections(request=request)
 
     # Handle the response
-    async for response in page_result:
+    for response in page_result:
         print(response)
 
-# [END apigeeconnect_generated_apigeeconnect_v1_ConnectionService_ListConnections_async]
+# [END apigeeconnect_v1_generated_ConnectionService_ListConnections_sync]

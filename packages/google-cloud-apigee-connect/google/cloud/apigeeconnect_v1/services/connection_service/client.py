@@ -413,8 +413,7 @@ class ConnectionServiceClient(metaclass=ConnectionServiceClientMeta):
         given Apigee Connect endpoint.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import apigeeconnect_v1
 

@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ListConnections
+# Snippet for Egress
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,24 +23,33 @@
 #   python3 -m pip install google-cloud-apigee-connect
 
 
-# [START apigeeconnect_generated_apigeeconnect_v1_ConnectionService_ListConnections_sync]
+# [START apigeeconnect_v1_generated_Tether_Egress_sync]
 from google.cloud import apigeeconnect_v1
 
 
-def sample_list_connections():
+def sample_egress():
     # Create a client
-    client = apigeeconnect_v1.ConnectionServiceClient()
+    client = apigeeconnect_v1.TetherClient()
 
     # Initialize request argument(s)
-    request = apigeeconnect_v1.ListConnectionsRequest(
-        parent="parent_value",
+    request = apigeeconnect_v1.EgressResponse(
     )
 
+    # This method expects an iterator which contains
+    # 'apigeeconnect_v1.EgressResponse' objects
+    # Here we create a generator that yields a single `request` for
+    # demonstrative purposes.
+    requests = [request]
+
+    def request_generator():
+        for request in requests:
+            yield request
+
     # Make the request
-    page_result = client.list_connections(request=request)
+    stream = client.egress(requests=request_generator())
 
     # Handle the response
-    for response in page_result:
+    for response in stream:
         print(response)
 
-# [END apigeeconnect_generated_apigeeconnect_v1_ConnectionService_ListConnections_sync]
+# [END apigeeconnect_v1_generated_Tether_Egress_sync]

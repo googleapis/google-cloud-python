@@ -404,8 +404,7 @@ class TetherClient(metaclass=TetherClientMeta):
         streams http responses.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import apigeeconnect_v1
 

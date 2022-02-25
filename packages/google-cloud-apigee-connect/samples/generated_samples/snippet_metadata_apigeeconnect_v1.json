@@ -10,8 +10,8 @@
           "shortName": "ListConnections"
         }
       },
-      "file": "apigeeconnect_generated_apigeeconnect_v1_connection_service_list_connections_async.py",
-      "regionTag": "apigeeconnect_generated_apigeeconnect_v1_ConnectionService_ListConnections_async",
+      "file": "apigeeconnect_v1_generated_connection_service_list_connections_async.py",
+      "regionTag": "apigeeconnect_v1_generated_ConnectionService_ListConnections_async",
       "segments": [
         {
           "end": 45,
@@ -54,8 +54,8 @@
           "shortName": "ListConnections"
         }
       },
-      "file": "apigeeconnect_generated_apigeeconnect_v1_connection_service_list_connections_sync.py",
-      "regionTag": "apigeeconnect_generated_apigeeconnect_v1_ConnectionService_ListConnections_sync",
+      "file": "apigeeconnect_v1_generated_connection_service_list_connections_sync.py",
+      "regionTag": "apigeeconnect_v1_generated_ConnectionService_ListConnections_sync",
       "segments": [
         {
           "end": 45,
@@ -99,8 +99,8 @@
           "shortName": "Egress"
         }
       },
-      "file": "apigeeconnect_generated_apigeeconnect_v1_tether_egress_async.py",
-      "regionTag": "apigeeconnect_generated_apigeeconnect_v1_Tether_Egress_async",
+      "file": "apigeeconnect_v1_generated_tether_egress_async.py",
+      "regionTag": "apigeeconnect_v1_generated_Tether_Egress_async",
       "segments": [
         {
           "end": 54,
@@ -143,8 +143,8 @@
           "shortName": "Egress"
         }
       },
-      "file": "apigeeconnect_generated_apigeeconnect_v1_tether_egress_sync.py",
-      "regionTag": "apigeeconnect_generated_apigeeconnect_v1_Tether_Egress_sync",
+      "file": "apigeeconnect_v1_generated_tether_egress_sync.py",
+      "regionTag": "apigeeconnect_v1_generated_Tether_Egress_sync",
       "segments": [
         {
           "end": 54,

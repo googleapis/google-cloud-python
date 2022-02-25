@@ -23,13 +23,13 @@
 #   python3 -m pip install google-cloud-apigee-connect
 
 
-# [START apigeeconnect_generated_apigeeconnect_v1_Tether_Egress_sync]
+# [START apigeeconnect_v1_generated_Tether_Egress_async]
 from google.cloud import apigeeconnect_v1
 
 
-def sample_egress():
+async def sample_egress():
     # Create a client
-    client = apigeeconnect_v1.TetherClient()
+    client = apigeeconnect_v1.TetherAsyncClient()
 
     # Initialize request argument(s)
     request = apigeeconnect_v1.EgressResponse(
@@ -46,10 +46,10 @@ def sample_egress():
             yield request
 
     # Make the request
-    stream = client.egress(requests=request_generator())
+    stream = await client.egress(requests=request_generator())
 
     # Handle the response
-    for response in stream:
+    async for response in stream:
         print(response)
 
-# [END apigeeconnect_generated_apigeeconnect_v1_Tether_Egress_sync]
+# [END apigeeconnect_v1_generated_Tether_Egress_async]
