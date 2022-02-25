@@ -224,7 +224,7 @@ class CloudSchedulerAsyncClient:
     ) -> pagers.ListJobsAsyncPager:
         r"""Lists jobs.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import scheduler_v1beta1
 
@@ -335,7 +335,7 @@ class CloudSchedulerAsyncClient:
     ) -> job.Job:
         r"""Gets a job.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import scheduler_v1beta1
 
@@ -437,7 +437,7 @@ class CloudSchedulerAsyncClient:
     ) -> gcs_job.Job:
         r"""Creates a job.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import scheduler_v1beta1
 
@@ -557,7 +557,7 @@ class CloudSchedulerAsyncClient:
         received.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import scheduler_v1beta1
 
@@ -661,7 +661,7 @@ class CloudSchedulerAsyncClient:
     ) -> None:
         r"""Deletes a job.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import scheduler_v1beta1
 
@@ -764,7 +764,7 @@ class CloudSchedulerAsyncClient:
         to be paused.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import scheduler_v1beta1
 
@@ -876,7 +876,7 @@ class CloudSchedulerAsyncClient:
         to be resumed.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import scheduler_v1beta1
 
@@ -980,7 +980,7 @@ class CloudSchedulerAsyncClient:
         dispatch the job, even if the job is already running.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import scheduler_v1beta1
 

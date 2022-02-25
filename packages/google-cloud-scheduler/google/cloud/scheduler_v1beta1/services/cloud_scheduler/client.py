@@ -430,8 +430,7 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
     ) -> pagers.ListJobsPager:
         r"""Lists jobs.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import scheduler_v1beta1
 
@@ -532,8 +531,7 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
     ) -> job.Job:
         r"""Gets a job.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import scheduler_v1beta1
 
@@ -625,8 +623,7 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
     ) -> gcs_job.Job:
         r"""Creates a job.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import scheduler_v1beta1
 
@@ -746,8 +743,7 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
         received.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import scheduler_v1beta1
 
@@ -851,8 +847,7 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
     ) -> None:
         r"""Deletes a job.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import scheduler_v1beta1
 
@@ -945,8 +940,7 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
         to be paused.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import scheduler_v1beta1
 
@@ -1048,8 +1042,7 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
         to be resumed.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import scheduler_v1beta1
 
@@ -1143,8 +1136,7 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
         dispatch the job, even if the job is already running.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import scheduler_v1beta1
 
