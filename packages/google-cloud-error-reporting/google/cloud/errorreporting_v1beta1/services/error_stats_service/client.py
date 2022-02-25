@@ -411,8 +411,7 @@ class ErrorStatsServiceClient(metaclass=ErrorStatsServiceClientMeta):
     ) -> pagers.ListGroupStatsPager:
         r"""Lists the specified groups.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import errorreporting_v1beta1
 
@@ -536,8 +535,7 @@ class ErrorStatsServiceClient(metaclass=ErrorStatsServiceClientMeta):
     ) -> pagers.ListEventsPager:
         r"""Lists the specified events.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import errorreporting_v1beta1
 
@@ -653,8 +651,7 @@ class ErrorStatsServiceClient(metaclass=ErrorStatsServiceClientMeta):
     ) -> error_stats_service.DeleteEventsResponse:
         r"""Deletes all error events of a given project.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import errorreporting_v1beta1
 

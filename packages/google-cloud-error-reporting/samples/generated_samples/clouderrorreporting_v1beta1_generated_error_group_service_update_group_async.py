@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for GetGroup
+# Snippet for UpdateGroup
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,23 +23,22 @@
 #   python3 -m pip install google-cloud-errorreporting
 
 
-# [START clouderrorreporting_generated_errorreporting_v1beta1_ErrorGroupService_GetGroup_async]
+# [START clouderrorreporting_v1beta1_generated_ErrorGroupService_UpdateGroup_async]
 from google.cloud import errorreporting_v1beta1
 
 
-async def sample_get_group():
+async def sample_update_group():
     # Create a client
     client = errorreporting_v1beta1.ErrorGroupServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = errorreporting_v1beta1.GetGroupRequest(
-        group_name="group_name_value",
+    request = errorreporting_v1beta1.UpdateGroupRequest(
     )
 
     # Make the request
-    response = await client.get_group(request=request)
+    response = await client.update_group(request=request)
 
     # Handle the response
     print(response)
 
-# [END clouderrorreporting_generated_errorreporting_v1beta1_ErrorGroupService_GetGroup_async]
+# [END clouderrorreporting_v1beta1_generated_ErrorGroupService_UpdateGroup_async]

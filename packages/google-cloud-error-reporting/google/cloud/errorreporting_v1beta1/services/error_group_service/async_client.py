@@ -215,7 +215,7 @@ class ErrorGroupServiceAsyncClient:
     ) -> common.ErrorGroup:
         r"""Get the specified group.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import errorreporting_v1beta1
 
@@ -313,7 +313,7 @@ class ErrorGroupServiceAsyncClient:
         Fails if the group does not exist.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import errorreporting_v1beta1
 

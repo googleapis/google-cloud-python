@@ -219,7 +219,7 @@ class ErrorStatsServiceAsyncClient:
     ) -> pagers.ListGroupStatsAsyncPager:
         r"""Lists the specified groups.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import errorreporting_v1beta1
 
@@ -343,7 +343,7 @@ class ErrorStatsServiceAsyncClient:
     ) -> pagers.ListEventsAsyncPager:
         r"""Lists the specified events.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import errorreporting_v1beta1
 
@@ -459,7 +459,7 @@ class ErrorStatsServiceAsyncClient:
     ) -> error_stats_service.DeleteEventsResponse:
         r"""Deletes all error events of a given project.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import errorreporting_v1beta1
 

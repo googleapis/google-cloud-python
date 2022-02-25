@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ReportErrorEvent
+# Snippet for DeleteEvents
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,27 +23,23 @@
 #   python3 -m pip install google-cloud-errorreporting
 
 
-# [START clouderrorreporting_generated_errorreporting_v1beta1_ReportErrorsService_ReportErrorEvent_sync]
+# [START clouderrorreporting_v1beta1_generated_ErrorStatsService_DeleteEvents_async]
 from google.cloud import errorreporting_v1beta1
 
 
-def sample_report_error_event():
+async def sample_delete_events():
     # Create a client
-    client = errorreporting_v1beta1.ReportErrorsServiceClient()
+    client = errorreporting_v1beta1.ErrorStatsServiceAsyncClient()
 
     # Initialize request argument(s)
-    event = errorreporting_v1beta1.ReportedErrorEvent()
-    event.message = "message_value"
-
-    request = errorreporting_v1beta1.ReportErrorEventRequest(
+    request = errorreporting_v1beta1.DeleteEventsRequest(
         project_name="project_name_value",
-        event=event,
     )
 
     # Make the request
-    response = client.report_error_event(request=request)
+    response = await client.delete_events(request=request)
 
     # Handle the response
     print(response)
 
-# [END clouderrorreporting_generated_errorreporting_v1beta1_ReportErrorsService_ReportErrorEvent_sync]
+# [END clouderrorreporting_v1beta1_generated_ErrorStatsService_DeleteEvents_async]

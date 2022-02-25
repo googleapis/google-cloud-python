@@ -412,8 +412,7 @@ class ReportErrorsServiceClient(metaclass=ReportErrorsServiceClientMeta):
         regionalized logs </error-reporting/docs/regionalization>`__.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import errorreporting_v1beta1
 

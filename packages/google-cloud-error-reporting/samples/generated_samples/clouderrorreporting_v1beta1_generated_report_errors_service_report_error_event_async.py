@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for UpdateGroup
+# Snippet for ReportErrorEvent
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,22 +23,27 @@
 #   python3 -m pip install google-cloud-errorreporting
 
 
-# [START clouderrorreporting_generated_errorreporting_v1beta1_ErrorGroupService_UpdateGroup_sync]
+# [START clouderrorreporting_v1beta1_generated_ReportErrorsService_ReportErrorEvent_async]
 from google.cloud import errorreporting_v1beta1
 
 
-def sample_update_group():
+async def sample_report_error_event():
     # Create a client
-    client = errorreporting_v1beta1.ErrorGroupServiceClient()
+    client = errorreporting_v1beta1.ReportErrorsServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = errorreporting_v1beta1.UpdateGroupRequest(
+    event = errorreporting_v1beta1.ReportedErrorEvent()
+    event.message = "message_value"
+
+    request = errorreporting_v1beta1.ReportErrorEventRequest(
+        project_name="project_name_value",
+        event=event,
     )
 
     # Make the request
-    response = client.update_group(request=request)
+    response = await client.report_error_event(request=request)
 
     # Handle the response
     print(response)
 
-# [END clouderrorreporting_generated_errorreporting_v1beta1_ErrorGroupService_UpdateGroup_sync]
+# [END clouderrorreporting_v1beta1_generated_ReportErrorsService_ReportErrorEvent_async]

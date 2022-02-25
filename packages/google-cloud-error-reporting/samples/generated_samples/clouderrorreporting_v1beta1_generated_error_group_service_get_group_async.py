@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ListEvents
+# Snippet for GetGroup
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,25 +23,23 @@
 #   python3 -m pip install google-cloud-errorreporting
 
 
-# [START clouderrorreporting_generated_errorreporting_v1beta1_ErrorStatsService_ListEvents_sync]
+# [START clouderrorreporting_v1beta1_generated_ErrorGroupService_GetGroup_async]
 from google.cloud import errorreporting_v1beta1
 
 
-def sample_list_events():
+async def sample_get_group():
     # Create a client
-    client = errorreporting_v1beta1.ErrorStatsServiceClient()
+    client = errorreporting_v1beta1.ErrorGroupServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = errorreporting_v1beta1.ListEventsRequest(
-        project_name="project_name_value",
-        group_id="group_id_value",
+    request = errorreporting_v1beta1.GetGroupRequest(
+        group_name="group_name_value",
     )
 
     # Make the request
-    page_result = client.list_events(request=request)
+    response = await client.get_group(request=request)
 
     # Handle the response
-    for response in page_result:
-        print(response)
+    print(response)
 
-# [END clouderrorreporting_generated_errorreporting_v1beta1_ErrorStatsService_ListEvents_sync]
+# [END clouderrorreporting_v1beta1_generated_ErrorGroupService_GetGroup_async]

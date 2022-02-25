@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ListGroupStats
+# Snippet for DeleteEvents
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,24 +23,23 @@
 #   python3 -m pip install google-cloud-errorreporting
 
 
-# [START clouderrorreporting_generated_errorreporting_v1beta1_ErrorStatsService_ListGroupStats_sync]
+# [START clouderrorreporting_v1beta1_generated_ErrorStatsService_DeleteEvents_sync]
 from google.cloud import errorreporting_v1beta1
 
 
-def sample_list_group_stats():
+def sample_delete_events():
     # Create a client
     client = errorreporting_v1beta1.ErrorStatsServiceClient()
 
     # Initialize request argument(s)
-    request = errorreporting_v1beta1.ListGroupStatsRequest(
+    request = errorreporting_v1beta1.DeleteEventsRequest(
         project_name="project_name_value",
     )
 
     # Make the request
-    page_result = client.list_group_stats(request=request)
+    response = client.delete_events(request=request)
 
     # Handle the response
-    for response in page_result:
-        print(response)
+    print(response)
 
-# [END clouderrorreporting_generated_errorreporting_v1beta1_ErrorStatsService_ListGroupStats_sync]
+# [END clouderrorreporting_v1beta1_generated_ErrorStatsService_DeleteEvents_sync]

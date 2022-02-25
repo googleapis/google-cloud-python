@@ -407,8 +407,7 @@ class ErrorGroupServiceClient(metaclass=ErrorGroupServiceClientMeta):
     ) -> common.ErrorGroup:
         r"""Get the specified group.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import errorreporting_v1beta1
 
@@ -506,8 +505,7 @@ class ErrorGroupServiceClient(metaclass=ErrorGroupServiceClientMeta):
         Fails if the group does not exist.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import errorreporting_v1beta1
 

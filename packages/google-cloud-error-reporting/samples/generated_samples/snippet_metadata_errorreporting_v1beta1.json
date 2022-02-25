@@ -10,8 +10,8 @@
           "shortName": "GetGroup"
         }
       },
-      "file": "clouderrorreporting_generated_errorreporting_v1beta1_error_group_service_get_group_async.py",
-      "regionTag": "clouderrorreporting_generated_errorreporting_v1beta1_ErrorGroupService_GetGroup_async",
+      "file": "clouderrorreporting_v1beta1_generated_error_group_service_get_group_async.py",
+      "regionTag": "clouderrorreporting_v1beta1_generated_ErrorGroupService_GetGroup_async",
       "segments": [
         {
           "end": 44,
@@ -54,8 +54,8 @@
           "shortName": "GetGroup"
         }
       },
-      "file": "clouderrorreporting_generated_errorreporting_v1beta1_error_group_service_get_group_sync.py",
-      "regionTag": "clouderrorreporting_generated_errorreporting_v1beta1_ErrorGroupService_GetGroup_sync",
+      "file": "clouderrorreporting_v1beta1_generated_error_group_service_get_group_sync.py",
+      "regionTag": "clouderrorreporting_v1beta1_generated_ErrorGroupService_GetGroup_sync",
       "segments": [
         {
           "end": 44,
@@ -99,8 +99,8 @@
           "shortName": "UpdateGroup"
         }
       },
-      "file": "clouderrorreporting_generated_errorreporting_v1beta1_error_group_service_update_group_async.py",
-      "regionTag": "clouderrorreporting_generated_errorreporting_v1beta1_ErrorGroupService_UpdateGroup_async",
+      "file": "clouderrorreporting_v1beta1_generated_error_group_service_update_group_async.py",
+      "regionTag": "clouderrorreporting_v1beta1_generated_ErrorGroupService_UpdateGroup_async",
       "segments": [
         {
           "end": 43,
@@ -143,8 +143,8 @@
           "shortName": "UpdateGroup"
         }
       },
-      "file": "clouderrorreporting_generated_errorreporting_v1beta1_error_group_service_update_group_sync.py",
-      "regionTag": "clouderrorreporting_generated_errorreporting_v1beta1_ErrorGroupService_UpdateGroup_sync",
+      "file": "clouderrorreporting_v1beta1_generated_error_group_service_update_group_sync.py",
+      "regionTag": "clouderrorreporting_v1beta1_generated_ErrorGroupService_UpdateGroup_sync",
       "segments": [
         {
           "end": 43,
@@ -188,8 +188,8 @@
           "shortName": "DeleteEvents"
         }
       },
-      "file": "clouderrorreporting_generated_errorreporting_v1beta1_error_stats_service_delete_events_async.py",
-      "regionTag": "clouderrorreporting_generated_errorreporting_v1beta1_ErrorStatsService_DeleteEvents_async",
+      "file": "clouderrorreporting_v1beta1_generated_error_stats_service_delete_events_async.py",
+      "regionTag": "clouderrorreporting_v1beta1_generated_ErrorStatsService_DeleteEvents_async",
       "segments": [
         {
           "end": 44,
@@ -232,8 +232,8 @@
           "shortName": "DeleteEvents"
         }
       },
-      "file": "clouderrorreporting_generated_errorreporting_v1beta1_error_stats_service_delete_events_sync.py",
-      "regionTag": "clouderrorreporting_generated_errorreporting_v1beta1_ErrorStatsService_DeleteEvents_sync",
+      "file": "clouderrorreporting_v1beta1_generated_error_stats_service_delete_events_sync.py",
+      "regionTag": "clouderrorreporting_v1beta1_generated_ErrorStatsService_DeleteEvents_sync",
       "segments": [
         {
           "end": 44,
@@ -277,8 +277,8 @@
           "shortName": "ListEvents"
         }
       },
-      "file": "clouderrorreporting_generated_errorreporting_v1beta1_error_stats_service_list_events_async.py",
-      "regionTag": "clouderrorreporting_generated_errorreporting_v1beta1_ErrorStatsService_ListEvents_async",
+      "file": "clouderrorreporting_v1beta1_generated_error_stats_service_list_events_async.py",
+      "regionTag": "clouderrorreporting_v1beta1_generated_ErrorStatsService_ListEvents_async",
       "segments": [
         {
           "end": 46,
@@ -321,8 +321,8 @@
           "shortName": "ListEvents"
         }
       },
-      "file": "clouderrorreporting_generated_errorreporting_v1beta1_error_stats_service_list_events_sync.py",
-      "regionTag": "clouderrorreporting_generated_errorreporting_v1beta1_ErrorStatsService_ListEvents_sync",
+      "file": "clouderrorreporting_v1beta1_generated_error_stats_service_list_events_sync.py",
+      "regionTag": "clouderrorreporting_v1beta1_generated_ErrorStatsService_ListEvents_sync",
       "segments": [
         {
           "end": 46,
@@ -366,8 +366,8 @@
           "shortName": "ListGroupStats"
         }
       },
-      "file": "clouderrorreporting_generated_errorreporting_v1beta1_error_stats_service_list_group_stats_async.py",
-      "regionTag": "clouderrorreporting_generated_errorreporting_v1beta1_ErrorStatsService_ListGroupStats_async",
+      "file": "clouderrorreporting_v1beta1_generated_error_stats_service_list_group_stats_async.py",
+      "regionTag": "clouderrorreporting_v1beta1_generated_ErrorStatsService_ListGroupStats_async",
       "segments": [
         {
           "end": 45,
@@ -410,8 +410,8 @@
           "shortName": "ListGroupStats"
         }
       },
-      "file": "clouderrorreporting_generated_errorreporting_v1beta1_error_stats_service_list_group_stats_sync.py",
-      "regionTag": "clouderrorreporting_generated_errorreporting_v1beta1_ErrorStatsService_ListGroupStats_sync",
+      "file": "clouderrorreporting_v1beta1_generated_error_stats_service_list_group_stats_sync.py",
+      "regionTag": "clouderrorreporting_v1beta1_generated_ErrorStatsService_ListGroupStats_sync",
       "segments": [
         {
           "end": 45,
@@ -455,8 +455,8 @@
           "shortName": "ReportErrorEvent"
         }
       },
-      "file": "clouderrorreporting_generated_errorreporting_v1beta1_report_errors_service_report_error_event_async.py",
-      "regionTag": "clouderrorreporting_generated_errorreporting_v1beta1_ReportErrorsService_ReportErrorEvent_async",
+      "file": "clouderrorreporting_v1beta1_generated_report_errors_service_report_error_event_async.py",
+      "regionTag": "clouderrorreporting_v1beta1_generated_ReportErrorsService_ReportErrorEvent_async",
       "segments": [
         {
           "end": 48,
@@ -499,8 +499,8 @@
           "shortName": "ReportErrorEvent"
         }
       },
-      "file": "clouderrorreporting_generated_errorreporting_v1beta1_report_errors_service_report_error_event_sync.py",
-      "regionTag": "clouderrorreporting_generated_errorreporting_v1beta1_ReportErrorsService_ReportErrorEvent_sync",
+      "file": "clouderrorreporting_v1beta1_generated_report_errors_service_report_error_event_sync.py",
+      "regionTag": "clouderrorreporting_v1beta1_generated_ReportErrorsService_ReportErrorEvent_sync",
       "segments": [
         {
           "end": 48,
