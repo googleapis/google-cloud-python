@@ -423,8 +423,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
         confirm availability.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import domains_v1beta1
 
@@ -526,8 +525,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
         call ``RegisterDomain``.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import domains_v1beta1
 
@@ -644,8 +642,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
         and retry registration.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import domains_v1beta1
 
@@ -807,8 +804,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
         Use the returned values to call ``TransferDomain``.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import domains_v1beta1
 
@@ -936,8 +932,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
         the resource and retry the transfer.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import domains_v1beta1
 
@@ -1111,8 +1106,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
     ) -> pagers.ListRegistrationsPager:
         r"""Lists the ``Registration`` resources in a project.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import domains_v1beta1
 
@@ -1212,8 +1206,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
     ) -> domains.Registration:
         r"""Gets the details of a ``Registration`` resource.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import domains_v1beta1
 
@@ -1333,8 +1326,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
            ``ConfigureContactSettings``
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import domains_v1beta1
 
@@ -1470,8 +1462,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
     ) -> operation.Operation:
         r"""Updates a ``Registration``'s management settings.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import domains_v1beta1
 
@@ -1620,8 +1611,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
     ) -> operation.Operation:
         r"""Updates a ``Registration``'s DNS settings.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import domains_v1beta1
 
@@ -1777,8 +1767,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
         require confirmation by the domain's registrant contact .
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import domains_v1beta1
 
@@ -1935,8 +1924,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
         sets up billing in Google Domains.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import domains_v1beta1
 
@@ -2082,8 +2070,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
         sets up billing in Google Domains.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import domains_v1beta1
 
@@ -2203,8 +2190,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
         the initial domain registration.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import domains_v1beta1
 
@@ -2302,8 +2288,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
         the initial domain registration.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import domains_v1beta1
 

@@ -10,8 +10,8 @@
           "shortName": "ConfigureContactSettings"
         }
       },
-      "file": "domains_generated_domains_v1_domains_configure_contact_settings_async.py",
-      "regionTag": "domains_generated_domains_v1_Domains_ConfigureContactSettings_async",
+      "file": "domains_v1_generated_domains_configure_contact_settings_async.py",
+      "regionTag": "domains_v1_generated_Domains_ConfigureContactSettings_async",
       "segments": [
         {
           "end": 48,
@@ -54,8 +54,8 @@
           "shortName": "ConfigureContactSettings"
         }
       },
-      "file": "domains_generated_domains_v1_domains_configure_contact_settings_sync.py",
-      "regionTag": "domains_generated_domains_v1_Domains_ConfigureContactSettings_sync",
+      "file": "domains_v1_generated_domains_configure_contact_settings_sync.py",
+      "regionTag": "domains_v1_generated_Domains_ConfigureContactSettings_sync",
       "segments": [
         {
           "end": 48,
@@ -99,8 +99,8 @@
           "shortName": "ConfigureDnsSettings"
         }
       },
-      "file": "domains_generated_domains_v1_domains_configure_dns_settings_async.py",
-      "regionTag": "domains_generated_domains_v1_Domains_ConfigureDnsSettings_async",
+      "file": "domains_v1_generated_domains_configure_dns_settings_async.py",
+      "regionTag": "domains_v1_generated_Domains_ConfigureDnsSettings_async",
       "segments": [
         {
           "end": 48,
@@ -143,8 +143,8 @@
           "shortName": "ConfigureDnsSettings"
         }
       },
-      "file": "domains_generated_domains_v1_domains_configure_dns_settings_sync.py",
-      "regionTag": "domains_generated_domains_v1_Domains_ConfigureDnsSettings_sync",
+      "file": "domains_v1_generated_domains_configure_dns_settings_sync.py",
+      "regionTag": "domains_v1_generated_Domains_ConfigureDnsSettings_sync",
       "segments": [
         {
           "end": 48,
@@ -188,8 +188,8 @@
           "shortName": "ConfigureManagementSettings"
         }
       },
-      "file": "domains_generated_domains_v1_domains_configure_management_settings_async.py",
-      "regionTag": "domains_generated_domains_v1_Domains_ConfigureManagementSettings_async",
+      "file": "domains_v1_generated_domains_configure_management_settings_async.py",
+      "regionTag": "domains_v1_generated_Domains_ConfigureManagementSettings_async",
       "segments": [
         {
           "end": 48,
@@ -232,8 +232,8 @@
           "shortName": "ConfigureManagementSettings"
         }
       },
-      "file": "domains_generated_domains_v1_domains_configure_management_settings_sync.py",
-      "regionTag": "domains_generated_domains_v1_Domains_ConfigureManagementSettings_sync",
+      "file": "domains_v1_generated_domains_configure_management_settings_sync.py",
+      "regionTag": "domains_v1_generated_Domains_ConfigureManagementSettings_sync",
       "segments": [
         {
           "end": 48,
@@ -277,8 +277,8 @@
           "shortName": "DeleteRegistration"
         }
       },
-      "file": "domains_generated_domains_v1_domains_delete_registration_async.py",
-      "regionTag": "domains_generated_domains_v1_Domains_DeleteRegistration_async",
+      "file": "domains_v1_generated_domains_delete_registration_async.py",
+      "regionTag": "domains_v1_generated_Domains_DeleteRegistration_async",
       "segments": [
         {
           "end": 48,
@@ -321,8 +321,8 @@
           "shortName": "DeleteRegistration"
         }
       },
-      "file": "domains_generated_domains_v1_domains_delete_registration_sync.py",
-      "regionTag": "domains_generated_domains_v1_Domains_DeleteRegistration_sync",
+      "file": "domains_v1_generated_domains_delete_registration_sync.py",
+      "regionTag": "domains_v1_generated_Domains_DeleteRegistration_sync",
       "segments": [
         {
           "end": 48,
@@ -366,8 +366,8 @@
           "shortName": "ExportRegistration"
         }
       },
-      "file": "domains_generated_domains_v1_domains_export_registration_async.py",
-      "regionTag": "domains_generated_domains_v1_Domains_ExportRegistration_async",
+      "file": "domains_v1_generated_domains_export_registration_async.py",
+      "regionTag": "domains_v1_generated_Domains_ExportRegistration_async",
       "segments": [
         {
           "end": 48,
@@ -410,8 +410,8 @@
           "shortName": "ExportRegistration"
         }
       },
-      "file": "domains_generated_domains_v1_domains_export_registration_sync.py",
-      "regionTag": "domains_generated_domains_v1_Domains_ExportRegistration_sync",
+      "file": "domains_v1_generated_domains_export_registration_sync.py",
+      "regionTag": "domains_v1_generated_Domains_ExportRegistration_sync",
       "segments": [
         {
           "end": 48,
@@ -455,8 +455,8 @@
           "shortName": "GetRegistration"
         }
       },
-      "file": "domains_generated_domains_v1_domains_get_registration_async.py",
-      "regionTag": "domains_generated_domains_v1_Domains_GetRegistration_async",
+      "file": "domains_v1_generated_domains_get_registration_async.py",
+      "regionTag": "domains_v1_generated_Domains_GetRegistration_async",
       "segments": [
         {
           "end": 44,
@@ -499,8 +499,8 @@
           "shortName": "GetRegistration"
         }
       },
-      "file": "domains_generated_domains_v1_domains_get_registration_sync.py",
-      "regionTag": "domains_generated_domains_v1_Domains_GetRegistration_sync",
+      "file": "domains_v1_generated_domains_get_registration_sync.py",
+      "regionTag": "domains_v1_generated_Domains_GetRegistration_sync",
       "segments": [
         {
           "end": 44,
@@ -544,8 +544,8 @@
           "shortName": "ListRegistrations"
         }
       },
-      "file": "domains_generated_domains_v1_domains_list_registrations_async.py",
-      "regionTag": "domains_generated_domains_v1_Domains_ListRegistrations_async",
+      "file": "domains_v1_generated_domains_list_registrations_async.py",
+      "regionTag": "domains_v1_generated_Domains_ListRegistrations_async",
       "segments": [
         {
           "end": 45,
@@ -588,8 +588,8 @@
           "shortName": "ListRegistrations"
         }
       },
-      "file": "domains_generated_domains_v1_domains_list_registrations_sync.py",
-      "regionTag": "domains_generated_domains_v1_Domains_ListRegistrations_sync",
+      "file": "domains_v1_generated_domains_list_registrations_sync.py",
+      "regionTag": "domains_v1_generated_Domains_ListRegistrations_sync",
       "segments": [
         {
           "end": 45,
@@ -633,8 +633,8 @@
           "shortName": "RegisterDomain"
         }
       },
-      "file": "domains_generated_domains_v1_domains_register_domain_async.py",
-      "regionTag": "domains_generated_domains_v1_Domains_RegisterDomain_async",
+      "file": "domains_v1_generated_domains_register_domain_async.py",
+      "regionTag": "domains_v1_generated_Domains_RegisterDomain_async",
       "segments": [
         {
           "end": 59,
@@ -677,8 +677,8 @@
           "shortName": "RegisterDomain"
         }
       },
-      "file": "domains_generated_domains_v1_domains_register_domain_sync.py",
-      "regionTag": "domains_generated_domains_v1_Domains_RegisterDomain_sync",
+      "file": "domains_v1_generated_domains_register_domain_sync.py",
+      "regionTag": "domains_v1_generated_Domains_RegisterDomain_sync",
       "segments": [
         {
           "end": 59,
@@ -722,8 +722,8 @@
           "shortName": "ResetAuthorizationCode"
         }
       },
-      "file": "domains_generated_domains_v1_domains_reset_authorization_code_async.py",
-      "regionTag": "domains_generated_domains_v1_Domains_ResetAuthorizationCode_async",
+      "file": "domains_v1_generated_domains_reset_authorization_code_async.py",
+      "regionTag": "domains_v1_generated_Domains_ResetAuthorizationCode_async",
       "segments": [
         {
           "end": 44,
@@ -766,8 +766,8 @@
           "shortName": "ResetAuthorizationCode"
         }
       },
-      "file": "domains_generated_domains_v1_domains_reset_authorization_code_sync.py",
-      "regionTag": "domains_generated_domains_v1_Domains_ResetAuthorizationCode_sync",
+      "file": "domains_v1_generated_domains_reset_authorization_code_sync.py",
+      "regionTag": "domains_v1_generated_Domains_ResetAuthorizationCode_sync",
       "segments": [
         {
           "end": 44,
@@ -811,8 +811,8 @@
           "shortName": "RetrieveAuthorizationCode"
         }
       },
-      "file": "domains_generated_domains_v1_domains_retrieve_authorization_code_async.py",
-      "regionTag": "domains_generated_domains_v1_Domains_RetrieveAuthorizationCode_async",
+      "file": "domains_v1_generated_domains_retrieve_authorization_code_async.py",
+      "regionTag": "domains_v1_generated_Domains_RetrieveAuthorizationCode_async",
       "segments": [
         {
           "end": 44,
@@ -855,8 +855,8 @@
           "shortName": "RetrieveAuthorizationCode"
         }
       },
-      "file": "domains_generated_domains_v1_domains_retrieve_authorization_code_sync.py",
-      "regionTag": "domains_generated_domains_v1_Domains_RetrieveAuthorizationCode_sync",
+      "file": "domains_v1_generated_domains_retrieve_authorization_code_sync.py",
+      "regionTag": "domains_v1_generated_Domains_RetrieveAuthorizationCode_sync",
       "segments": [
         {
           "end": 44,
@@ -900,8 +900,8 @@
           "shortName": "RetrieveRegisterParameters"
         }
       },
-      "file": "domains_generated_domains_v1_domains_retrieve_register_parameters_async.py",
-      "regionTag": "domains_generated_domains_v1_Domains_RetrieveRegisterParameters_async",
+      "file": "domains_v1_generated_domains_retrieve_register_parameters_async.py",
+      "regionTag": "domains_v1_generated_Domains_RetrieveRegisterParameters_async",
       "segments": [
         {
           "end": 45,
@@ -944,8 +944,8 @@
           "shortName": "RetrieveRegisterParameters"
         }
       },
-      "file": "domains_generated_domains_v1_domains_retrieve_register_parameters_sync.py",
-      "regionTag": "domains_generated_domains_v1_Domains_RetrieveRegisterParameters_sync",
+      "file": "domains_v1_generated_domains_retrieve_register_parameters_sync.py",
+      "regionTag": "domains_v1_generated_Domains_RetrieveRegisterParameters_sync",
       "segments": [
         {
           "end": 45,
@@ -989,8 +989,8 @@
           "shortName": "RetrieveTransferParameters"
         }
       },
-      "file": "domains_generated_domains_v1_domains_retrieve_transfer_parameters_async.py",
-      "regionTag": "domains_generated_domains_v1_Domains_RetrieveTransferParameters_async",
+      "file": "domains_v1_generated_domains_retrieve_transfer_parameters_async.py",
+      "regionTag": "domains_v1_generated_Domains_RetrieveTransferParameters_async",
       "segments": [
         {
           "end": 45,
@@ -1033,8 +1033,8 @@
           "shortName": "RetrieveTransferParameters"
         }
       },
-      "file": "domains_generated_domains_v1_domains_retrieve_transfer_parameters_sync.py",
-      "regionTag": "domains_generated_domains_v1_Domains_RetrieveTransferParameters_sync",
+      "file": "domains_v1_generated_domains_retrieve_transfer_parameters_sync.py",
+      "regionTag": "domains_v1_generated_Domains_RetrieveTransferParameters_sync",
       "segments": [
         {
           "end": 45,
@@ -1078,8 +1078,8 @@
           "shortName": "SearchDomains"
         }
       },
-      "file": "domains_generated_domains_v1_domains_search_domains_async.py",
-      "regionTag": "domains_generated_domains_v1_Domains_SearchDomains_async",
+      "file": "domains_v1_generated_domains_search_domains_async.py",
+      "regionTag": "domains_v1_generated_Domains_SearchDomains_async",
       "segments": [
         {
           "end": 45,
@@ -1122,8 +1122,8 @@
           "shortName": "SearchDomains"
         }
       },
-      "file": "domains_generated_domains_v1_domains_search_domains_sync.py",
-      "regionTag": "domains_generated_domains_v1_Domains_SearchDomains_sync",
+      "file": "domains_v1_generated_domains_search_domains_sync.py",
+      "regionTag": "domains_v1_generated_Domains_SearchDomains_sync",
       "segments": [
         {
           "end": 45,
@@ -1167,8 +1167,8 @@
           "shortName": "TransferDomain"
         }
       },
-      "file": "domains_generated_domains_v1_domains_transfer_domain_async.py",
-      "regionTag": "domains_generated_domains_v1_Domains_TransferDomain_async",
+      "file": "domains_v1_generated_domains_transfer_domain_async.py",
+      "regionTag": "domains_v1_generated_Domains_TransferDomain_async",
       "segments": [
         {
           "end": 59,
@@ -1211,8 +1211,8 @@
           "shortName": "TransferDomain"
         }
       },
-      "file": "domains_generated_domains_v1_domains_transfer_domain_sync.py",
-      "regionTag": "domains_generated_domains_v1_Domains_TransferDomain_sync",
+      "file": "domains_v1_generated_domains_transfer_domain_sync.py",
+      "regionTag": "domains_v1_generated_Domains_TransferDomain_sync",
       "segments": [
         {
           "end": 59,
@@ -1256,8 +1256,8 @@
           "shortName": "UpdateRegistration"
         }
       },
-      "file": "domains_generated_domains_v1_domains_update_registration_async.py",
-      "regionTag": "domains_generated_domains_v1_Domains_UpdateRegistration_async",
+      "file": "domains_v1_generated_domains_update_registration_async.py",
+      "regionTag": "domains_v1_generated_Domains_UpdateRegistration_async",
       "segments": [
         {
           "end": 47,
@@ -1300,8 +1300,8 @@
           "shortName": "UpdateRegistration"
         }
       },
-      "file": "domains_generated_domains_v1_domains_update_registration_sync.py",
-      "regionTag": "domains_generated_domains_v1_Domains_UpdateRegistration_sync",
+      "file": "domains_v1_generated_domains_update_registration_sync.py",
+      "regionTag": "domains_v1_generated_Domains_UpdateRegistration_sync",
       "segments": [
         {
           "end": 47,

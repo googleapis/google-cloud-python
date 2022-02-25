@@ -220,7 +220,7 @@ class DomainsAsyncClient:
         confirm availability.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import domains_v1beta1
 
@@ -322,7 +322,7 @@ class DomainsAsyncClient:
         call ``RegisterDomain``.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import domains_v1beta1
 
@@ -437,7 +437,7 @@ class DomainsAsyncClient:
         and retry registration.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import domains_v1beta1
 
@@ -599,7 +599,7 @@ class DomainsAsyncClient:
         Use the returned values to call ``TransferDomain``.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import domains_v1beta1
 
@@ -725,7 +725,7 @@ class DomainsAsyncClient:
         the resource and retry the transfer.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import domains_v1beta1
 
@@ -899,7 +899,7 @@ class DomainsAsyncClient:
     ) -> pagers.ListRegistrationsAsyncPager:
         r"""Lists the ``Registration`` resources in a project.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import domains_v1beta1
 
@@ -999,7 +999,7 @@ class DomainsAsyncClient:
     ) -> domains.Registration:
         r"""Gets the details of a ``Registration`` resource.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import domains_v1beta1
 
@@ -1119,7 +1119,7 @@ class DomainsAsyncClient:
            ``ConfigureContactSettings``
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import domains_v1beta1
 
@@ -1255,7 +1255,7 @@ class DomainsAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Updates a ``Registration``'s management settings.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import domains_v1beta1
 
@@ -1402,7 +1402,7 @@ class DomainsAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Updates a ``Registration``'s DNS settings.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import domains_v1beta1
 
@@ -1558,7 +1558,7 @@ class DomainsAsyncClient:
         require confirmation by the domain's registrant contact .
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import domains_v1beta1
 
@@ -1713,7 +1713,7 @@ class DomainsAsyncClient:
         sets up billing in Google Domains.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import domains_v1beta1
 
@@ -1859,7 +1859,7 @@ class DomainsAsyncClient:
         sets up billing in Google Domains.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import domains_v1beta1
 
@@ -1979,7 +1979,7 @@ class DomainsAsyncClient:
         the initial domain registration.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import domains_v1beta1
 
@@ -2075,7 +2075,7 @@ class DomainsAsyncClient:
         the initial domain registration.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import domains_v1beta1
 
