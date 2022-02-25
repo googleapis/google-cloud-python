@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for DeleteConnectivityTest
+# Snippet for RerunConnectivityTest
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,21 +23,21 @@
 #   python3 -m pip install google-cloud-network-management
 
 
-# [START networkmanagement_generated_network_management_v1_ReachabilityService_DeleteConnectivityTest_async]
+# [START networkmanagement_v1_generated_ReachabilityService_RerunConnectivityTest_async]
 from google.cloud import network_management_v1
 
 
-async def sample_delete_connectivity_test():
+async def sample_rerun_connectivity_test():
     # Create a client
     client = network_management_v1.ReachabilityServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = network_management_v1.DeleteConnectivityTestRequest(
+    request = network_management_v1.RerunConnectivityTestRequest(
         name="name_value",
     )
 
     # Make the request
-    operation = client.delete_connectivity_test(request=request)
+    operation = client.rerun_connectivity_test(request=request)
 
     print("Waiting for operation to complete...")
 
@@ -46,4 +46,4 @@ async def sample_delete_connectivity_test():
     # Handle the response
     print(response)
 
-# [END networkmanagement_generated_network_management_v1_ReachabilityService_DeleteConnectivityTest_async]
+# [END networkmanagement_v1_generated_ReachabilityService_RerunConnectivityTest_async]

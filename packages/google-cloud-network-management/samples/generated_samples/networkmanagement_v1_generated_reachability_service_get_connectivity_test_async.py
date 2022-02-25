@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for RerunConnectivityTest
+# Snippet for GetConnectivityTest
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,27 +23,23 @@
 #   python3 -m pip install google-cloud-network-management
 
 
-# [START networkmanagement_generated_network_management_v1_ReachabilityService_RerunConnectivityTest_async]
+# [START networkmanagement_v1_generated_ReachabilityService_GetConnectivityTest_async]
 from google.cloud import network_management_v1
 
 
-async def sample_rerun_connectivity_test():
+async def sample_get_connectivity_test():
     # Create a client
     client = network_management_v1.ReachabilityServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = network_management_v1.RerunConnectivityTestRequest(
+    request = network_management_v1.GetConnectivityTestRequest(
         name="name_value",
     )
 
     # Make the request
-    operation = client.rerun_connectivity_test(request=request)
-
-    print("Waiting for operation to complete...")
-
-    response = await operation.result()
+    response = await client.get_connectivity_test(request=request)
 
     # Handle the response
     print(response)
 
-# [END networkmanagement_generated_network_management_v1_ReachabilityService_RerunConnectivityTest_async]
+# [END networkmanagement_v1_generated_ReachabilityService_GetConnectivityTest_async]

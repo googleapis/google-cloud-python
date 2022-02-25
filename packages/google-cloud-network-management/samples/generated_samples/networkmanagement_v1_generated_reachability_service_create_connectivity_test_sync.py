@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for GetConnectivityTest
+# Snippet for CreateConnectivityTest
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,23 +23,32 @@
 #   python3 -m pip install google-cloud-network-management
 
 
-# [START networkmanagement_generated_network_management_v1_ReachabilityService_GetConnectivityTest_async]
+# [START networkmanagement_v1_generated_ReachabilityService_CreateConnectivityTest_sync]
 from google.cloud import network_management_v1
 
 
-async def sample_get_connectivity_test():
+def sample_create_connectivity_test():
     # Create a client
-    client = network_management_v1.ReachabilityServiceAsyncClient()
+    client = network_management_v1.ReachabilityServiceClient()
 
     # Initialize request argument(s)
-    request = network_management_v1.GetConnectivityTestRequest(
-        name="name_value",
+    resource = network_management_v1.ConnectivityTest()
+    resource.name = "name_value"
+
+    request = network_management_v1.CreateConnectivityTestRequest(
+        parent="parent_value",
+        test_id="test_id_value",
+        resource=resource,
     )
 
     # Make the request
-    response = await client.get_connectivity_test(request=request)
+    operation = client.create_connectivity_test(request=request)
+
+    print("Waiting for operation to complete...")
+
+    response = operation.result()
 
     # Handle the response
     print(response)
 
-# [END networkmanagement_generated_network_management_v1_ReachabilityService_GetConnectivityTest_async]
+# [END networkmanagement_v1_generated_ReachabilityService_CreateConnectivityTest_sync]

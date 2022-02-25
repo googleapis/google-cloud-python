@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ListConnectivityTests
+# Snippet for RerunConnectivityTest
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,24 +23,27 @@
 #   python3 -m pip install google-cloud-network-management
 
 
-# [START networkmanagement_generated_network_management_v1_ReachabilityService_ListConnectivityTests_sync]
+# [START networkmanagement_v1_generated_ReachabilityService_RerunConnectivityTest_sync]
 from google.cloud import network_management_v1
 
 
-def sample_list_connectivity_tests():
+def sample_rerun_connectivity_test():
     # Create a client
     client = network_management_v1.ReachabilityServiceClient()
 
     # Initialize request argument(s)
-    request = network_management_v1.ListConnectivityTestsRequest(
-        parent="parent_value",
+    request = network_management_v1.RerunConnectivityTestRequest(
+        name="name_value",
     )
 
     # Make the request
-    page_result = client.list_connectivity_tests(request=request)
+    operation = client.rerun_connectivity_test(request=request)
+
+    print("Waiting for operation to complete...")
+
+    response = operation.result()
 
     # Handle the response
-    for response in page_result:
-        print(response)
+    print(response)
 
-# [END networkmanagement_generated_network_management_v1_ReachabilityService_ListConnectivityTests_sync]
+# [END networkmanagement_v1_generated_ReachabilityService_RerunConnectivityTest_sync]

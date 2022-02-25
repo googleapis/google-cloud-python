@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-network-management
 
 
-# [START networkmanagement_generated_network_management_v1_ReachabilityService_UpdateConnectivityTest_async]
+# [START networkmanagement_v1_generated_ReachabilityService_UpdateConnectivityTest_async]
 from google.cloud import network_management_v1
 
 
@@ -49,4 +49,4 @@ async def sample_update_connectivity_test():
     # Handle the response
     print(response)
 
-# [END networkmanagement_generated_network_management_v1_ReachabilityService_UpdateConnectivityTest_async]
+# [END networkmanagement_v1_generated_ReachabilityService_UpdateConnectivityTest_async]

@@ -428,8 +428,7 @@ class ReachabilityServiceClient(metaclass=ReachabilityServiceClientMeta):
     ) -> pagers.ListConnectivityTestsPager:
         r"""Lists all Connectivity Tests owned by a project.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import network_management_v1
 
@@ -528,8 +527,7 @@ class ReachabilityServiceClient(metaclass=ReachabilityServiceClientMeta):
     ) -> connectivity_test.ConnectivityTest:
         r"""Gets the details of a specific Connectivity Test.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import network_management_v1
 
@@ -636,8 +634,7 @@ class ReachabilityServiceClient(metaclass=ReachabilityServiceClientMeta):
         documentation.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import network_management_v1
 
@@ -787,8 +784,7 @@ class ReachabilityServiceClient(metaclass=ReachabilityServiceClientMeta):
         for more details.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import network_management_v1
 
@@ -921,8 +917,7 @@ class ReachabilityServiceClient(metaclass=ReachabilityServiceClientMeta):
         returns a value of ``UNKNOWN``.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import network_management_v1
 
@@ -1007,8 +1002,7 @@ class ReachabilityServiceClient(metaclass=ReachabilityServiceClientMeta):
     ) -> operation.Operation:
         r"""Deletes a specific ``ConnectivityTest``.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import network_management_v1
 

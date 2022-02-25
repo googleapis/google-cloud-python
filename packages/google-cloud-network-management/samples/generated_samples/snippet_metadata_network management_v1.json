@@ -10,8 +10,8 @@
           "shortName": "CreateConnectivityTest"
         }
       },
-      "file": "networkmanagement_generated_network_management_v1_reachability_service_create_connectivity_test_async.py",
-      "regionTag": "networkmanagement_generated_network_management_v1_ReachabilityService_CreateConnectivityTest_async",
+      "file": "networkmanagement_v1_generated_reachability_service_create_connectivity_test_async.py",
+      "regionTag": "networkmanagement_v1_generated_ReachabilityService_CreateConnectivityTest_async",
       "segments": [
         {
           "end": 53,
@@ -54,8 +54,8 @@
           "shortName": "CreateConnectivityTest"
         }
       },
-      "file": "networkmanagement_generated_network_management_v1_reachability_service_create_connectivity_test_sync.py",
-      "regionTag": "networkmanagement_generated_network_management_v1_ReachabilityService_CreateConnectivityTest_sync",
+      "file": "networkmanagement_v1_generated_reachability_service_create_connectivity_test_sync.py",
+      "regionTag": "networkmanagement_v1_generated_ReachabilityService_CreateConnectivityTest_sync",
       "segments": [
         {
           "end": 53,
@@ -99,8 +99,8 @@
           "shortName": "DeleteConnectivityTest"
         }
       },
-      "file": "networkmanagement_generated_network_management_v1_reachability_service_delete_connectivity_test_async.py",
-      "regionTag": "networkmanagement_generated_network_management_v1_ReachabilityService_DeleteConnectivityTest_async",
+      "file": "networkmanagement_v1_generated_reachability_service_delete_connectivity_test_async.py",
+      "regionTag": "networkmanagement_v1_generated_ReachabilityService_DeleteConnectivityTest_async",
       "segments": [
         {
           "end": 48,
@@ -143,8 +143,8 @@
           "shortName": "DeleteConnectivityTest"
         }
       },
-      "file": "networkmanagement_generated_network_management_v1_reachability_service_delete_connectivity_test_sync.py",
-      "regionTag": "networkmanagement_generated_network_management_v1_ReachabilityService_DeleteConnectivityTest_sync",
+      "file": "networkmanagement_v1_generated_reachability_service_delete_connectivity_test_sync.py",
+      "regionTag": "networkmanagement_v1_generated_ReachabilityService_DeleteConnectivityTest_sync",
       "segments": [
         {
           "end": 48,
@@ -188,8 +188,8 @@
           "shortName": "GetConnectivityTest"
         }
       },
-      "file": "networkmanagement_generated_network_management_v1_reachability_service_get_connectivity_test_async.py",
-      "regionTag": "networkmanagement_generated_network_management_v1_ReachabilityService_GetConnectivityTest_async",
+      "file": "networkmanagement_v1_generated_reachability_service_get_connectivity_test_async.py",
+      "regionTag": "networkmanagement_v1_generated_ReachabilityService_GetConnectivityTest_async",
       "segments": [
         {
           "end": 44,
@@ -232,8 +232,8 @@
           "shortName": "GetConnectivityTest"
         }
       },
-      "file": "networkmanagement_generated_network_management_v1_reachability_service_get_connectivity_test_sync.py",
-      "regionTag": "networkmanagement_generated_network_management_v1_ReachabilityService_GetConnectivityTest_sync",
+      "file": "networkmanagement_v1_generated_reachability_service_get_connectivity_test_sync.py",
+      "regionTag": "networkmanagement_v1_generated_ReachabilityService_GetConnectivityTest_sync",
       "segments": [
         {
           "end": 44,
@@ -277,8 +277,8 @@
           "shortName": "ListConnectivityTests"
         }
       },
-      "file": "networkmanagement_generated_network_management_v1_reachability_service_list_connectivity_tests_async.py",
-      "regionTag": "networkmanagement_generated_network_management_v1_ReachabilityService_ListConnectivityTests_async",
+      "file": "networkmanagement_v1_generated_reachability_service_list_connectivity_tests_async.py",
+      "regionTag": "networkmanagement_v1_generated_ReachabilityService_ListConnectivityTests_async",
       "segments": [
         {
           "end": 45,
@@ -321,8 +321,8 @@
           "shortName": "ListConnectivityTests"
         }
       },
-      "file": "networkmanagement_generated_network_management_v1_reachability_service_list_connectivity_tests_sync.py",
-      "regionTag": "networkmanagement_generated_network_management_v1_ReachabilityService_ListConnectivityTests_sync",
+      "file": "networkmanagement_v1_generated_reachability_service_list_connectivity_tests_sync.py",
+      "regionTag": "networkmanagement_v1_generated_ReachabilityService_ListConnectivityTests_sync",
       "segments": [
         {
           "end": 45,
@@ -366,8 +366,8 @@
           "shortName": "RerunConnectivityTest"
         }
       },
-      "file": "networkmanagement_generated_network_management_v1_reachability_service_rerun_connectivity_test_async.py",
-      "regionTag": "networkmanagement_generated_network_management_v1_ReachabilityService_RerunConnectivityTest_async",
+      "file": "networkmanagement_v1_generated_reachability_service_rerun_connectivity_test_async.py",
+      "regionTag": "networkmanagement_v1_generated_ReachabilityService_RerunConnectivityTest_async",
       "segments": [
         {
           "end": 48,
@@ -410,8 +410,8 @@
           "shortName": "RerunConnectivityTest"
         }
       },
-      "file": "networkmanagement_generated_network_management_v1_reachability_service_rerun_connectivity_test_sync.py",
-      "regionTag": "networkmanagement_generated_network_management_v1_ReachabilityService_RerunConnectivityTest_sync",
+      "file": "networkmanagement_v1_generated_reachability_service_rerun_connectivity_test_sync.py",
+      "regionTag": "networkmanagement_v1_generated_ReachabilityService_RerunConnectivityTest_sync",
       "segments": [
         {
           "end": 48,
@@ -455,8 +455,8 @@
           "shortName": "UpdateConnectivityTest"
         }
       },
-      "file": "networkmanagement_generated_network_management_v1_reachability_service_update_connectivity_test_async.py",
-      "regionTag": "networkmanagement_generated_network_management_v1_ReachabilityService_UpdateConnectivityTest_async",
+      "file": "networkmanagement_v1_generated_reachability_service_update_connectivity_test_async.py",
+      "regionTag": "networkmanagement_v1_generated_ReachabilityService_UpdateConnectivityTest_async",
       "segments": [
         {
           "end": 51,
@@ -499,8 +499,8 @@
           "shortName": "UpdateConnectivityTest"
         }
       },
-      "file": "networkmanagement_generated_network_management_v1_reachability_service_update_connectivity_test_sync.py",
-      "regionTag": "networkmanagement_generated_network_management_v1_ReachabilityService_UpdateConnectivityTest_sync",
+      "file": "networkmanagement_v1_generated_reachability_service_update_connectivity_test_sync.py",
+      "regionTag": "networkmanagement_v1_generated_ReachabilityService_UpdateConnectivityTest_sync",
       "segments": [
         {
           "end": 51,
