@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-language
 
 
-# [START language_generated_language_v1beta2_LanguageService_AnalyzeSyntax_async]
+# [START language_v1beta2_generated_LanguageService_AnalyzeSyntax_async]
 from google.cloud import language_v1beta2
 
 
@@ -45,4 +45,4 @@ async def sample_analyze_syntax():
     # Handle the response
     print(response)
 
-# [END language_generated_language_v1beta2_LanguageService_AnalyzeSyntax_async]
+# [END language_v1beta2_generated_LanguageService_AnalyzeSyntax_async]

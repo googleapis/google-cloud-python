@@ -213,7 +213,7 @@ class LanguageServiceAsyncClient:
     ) -> language_service.AnalyzeSentimentResponse:
         r"""Analyzes the sentiment of the provided text.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import language_v1
 
@@ -322,7 +322,7 @@ class LanguageServiceAsyncClient:
         properties.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import language_v1
 
@@ -428,7 +428,7 @@ class LanguageServiceAsyncClient:
         and its mentions.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import language_v1
 
@@ -536,7 +536,7 @@ class LanguageServiceAsyncClient:
         tags, dependency trees, and other properties.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import language_v1
 
@@ -637,7 +637,7 @@ class LanguageServiceAsyncClient:
     ) -> language_service.ClassifyTextResponse:
         r"""Classifies a document into categories.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import language_v1
 
@@ -737,7 +737,7 @@ class LanguageServiceAsyncClient:
         analyzeSyntax provide in one call.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import language_v1
 

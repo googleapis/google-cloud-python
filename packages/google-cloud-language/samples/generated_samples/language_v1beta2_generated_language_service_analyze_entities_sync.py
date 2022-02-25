@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for AnnotateText
+# Snippet for AnalyzeEntities
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,26 +23,26 @@
 #   python3 -m pip install google-cloud-language
 
 
-# [START language_generated_language_v1_LanguageService_AnnotateText_async]
-from google.cloud import language_v1
+# [START language_v1beta2_generated_LanguageService_AnalyzeEntities_sync]
+from google.cloud import language_v1beta2
 
 
-async def sample_annotate_text():
+def sample_analyze_entities():
     # Create a client
-    client = language_v1.LanguageServiceAsyncClient()
+    client = language_v1beta2.LanguageServiceClient()
 
     # Initialize request argument(s)
-    document = language_v1.Document()
+    document = language_v1beta2.Document()
     document.content = "content_value"
 
-    request = language_v1.AnnotateTextRequest(
+    request = language_v1beta2.AnalyzeEntitiesRequest(
         document=document,
     )
 
     # Make the request
-    response = await client.annotate_text(request=request)
+    response = client.analyze_entities(request=request)
 
     # Handle the response
     print(response)
 
-# [END language_generated_language_v1_LanguageService_AnnotateText_async]
+# [END language_v1beta2_generated_LanguageService_AnalyzeEntities_sync]

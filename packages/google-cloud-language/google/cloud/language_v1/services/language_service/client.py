@@ -396,8 +396,7 @@ class LanguageServiceClient(metaclass=LanguageServiceClientMeta):
     ) -> language_service.AnalyzeSentimentResponse:
         r"""Analyzes the sentiment of the provided text.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import language_v1
 
@@ -496,8 +495,7 @@ class LanguageServiceClient(metaclass=LanguageServiceClientMeta):
         properties.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import language_v1
 
@@ -593,8 +591,7 @@ class LanguageServiceClient(metaclass=LanguageServiceClientMeta):
         and its mentions.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import language_v1
 
@@ -692,8 +689,7 @@ class LanguageServiceClient(metaclass=LanguageServiceClientMeta):
         tags, dependency trees, and other properties.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import language_v1
 
@@ -784,8 +780,7 @@ class LanguageServiceClient(metaclass=LanguageServiceClientMeta):
     ) -> language_service.ClassifyTextResponse:
         r"""Classifies a document into categories.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import language_v1
 
@@ -875,8 +870,7 @@ class LanguageServiceClient(metaclass=LanguageServiceClientMeta):
         analyzeSyntax provide in one call.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import language_v1
 

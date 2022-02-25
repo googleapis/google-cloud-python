@@ -10,8 +10,8 @@
           "shortName": "AnalyzeEntities"
         }
       },
-      "file": "language_generated_language_v1beta2_language_service_analyze_entities_async.py",
-      "regionTag": "language_generated_language_v1beta2_LanguageService_AnalyzeEntities_async",
+      "file": "language_v1beta2_generated_language_service_analyze_entities_async.py",
+      "regionTag": "language_v1beta2_generated_LanguageService_AnalyzeEntities_async",
       "segments": [
         {
           "end": 47,
@@ -54,8 +54,8 @@
           "shortName": "AnalyzeEntities"
         }
       },
-      "file": "language_generated_language_v1beta2_language_service_analyze_entities_sync.py",
-      "regionTag": "language_generated_language_v1beta2_LanguageService_AnalyzeEntities_sync",
+      "file": "language_v1beta2_generated_language_service_analyze_entities_sync.py",
+      "regionTag": "language_v1beta2_generated_LanguageService_AnalyzeEntities_sync",
       "segments": [
         {
           "end": 47,
@@ -99,8 +99,8 @@
           "shortName": "AnalyzeEntitySentiment"
         }
       },
-      "file": "language_generated_language_v1beta2_language_service_analyze_entity_sentiment_async.py",
-      "regionTag": "language_generated_language_v1beta2_LanguageService_AnalyzeEntitySentiment_async",
+      "file": "language_v1beta2_generated_language_service_analyze_entity_sentiment_async.py",
+      "regionTag": "language_v1beta2_generated_LanguageService_AnalyzeEntitySentiment_async",
       "segments": [
         {
           "end": 47,
@@ -143,8 +143,8 @@
           "shortName": "AnalyzeEntitySentiment"
         }
       },
-      "file": "language_generated_language_v1beta2_language_service_analyze_entity_sentiment_sync.py",
-      "regionTag": "language_generated_language_v1beta2_LanguageService_AnalyzeEntitySentiment_sync",
+      "file": "language_v1beta2_generated_language_service_analyze_entity_sentiment_sync.py",
+      "regionTag": "language_v1beta2_generated_LanguageService_AnalyzeEntitySentiment_sync",
       "segments": [
         {
           "end": 47,
@@ -188,8 +188,8 @@
           "shortName": "AnalyzeSentiment"
         }
       },
-      "file": "language_generated_language_v1beta2_language_service_analyze_sentiment_async.py",
-      "regionTag": "language_generated_language_v1beta2_LanguageService_AnalyzeSentiment_async",
+      "file": "language_v1beta2_generated_language_service_analyze_sentiment_async.py",
+      "regionTag": "language_v1beta2_generated_LanguageService_AnalyzeSentiment_async",
       "segments": [
         {
           "end": 47,
@@ -232,8 +232,8 @@
           "shortName": "AnalyzeSentiment"
         }
       },
-      "file": "language_generated_language_v1beta2_language_service_analyze_sentiment_sync.py",
-      "regionTag": "language_generated_language_v1beta2_LanguageService_AnalyzeSentiment_sync",
+      "file": "language_v1beta2_generated_language_service_analyze_sentiment_sync.py",
+      "regionTag": "language_v1beta2_generated_LanguageService_AnalyzeSentiment_sync",
       "segments": [
         {
           "end": 47,
@@ -277,8 +277,8 @@
           "shortName": "AnalyzeSyntax"
         }
       },
-      "file": "language_generated_language_v1beta2_language_service_analyze_syntax_async.py",
-      "regionTag": "language_generated_language_v1beta2_LanguageService_AnalyzeSyntax_async",
+      "file": "language_v1beta2_generated_language_service_analyze_syntax_async.py",
+      "regionTag": "language_v1beta2_generated_LanguageService_AnalyzeSyntax_async",
       "segments": [
         {
           "end": 47,
@@ -321,8 +321,8 @@
           "shortName": "AnalyzeSyntax"
         }
       },
-      "file": "language_generated_language_v1beta2_language_service_analyze_syntax_sync.py",
-      "regionTag": "language_generated_language_v1beta2_LanguageService_AnalyzeSyntax_sync",
+      "file": "language_v1beta2_generated_language_service_analyze_syntax_sync.py",
+      "regionTag": "language_v1beta2_generated_LanguageService_AnalyzeSyntax_sync",
       "segments": [
         {
           "end": 47,
@@ -366,8 +366,8 @@
           "shortName": "AnnotateText"
         }
       },
-      "file": "language_generated_language_v1beta2_language_service_annotate_text_async.py",
-      "regionTag": "language_generated_language_v1beta2_LanguageService_AnnotateText_async",
+      "file": "language_v1beta2_generated_language_service_annotate_text_async.py",
+      "regionTag": "language_v1beta2_generated_LanguageService_AnnotateText_async",
       "segments": [
         {
           "end": 47,
@@ -410,8 +410,8 @@
           "shortName": "AnnotateText"
         }
       },
-      "file": "language_generated_language_v1beta2_language_service_annotate_text_sync.py",
-      "regionTag": "language_generated_language_v1beta2_LanguageService_AnnotateText_sync",
+      "file": "language_v1beta2_generated_language_service_annotate_text_sync.py",
+      "regionTag": "language_v1beta2_generated_LanguageService_AnnotateText_sync",
       "segments": [
         {
           "end": 47,
@@ -455,8 +455,8 @@
           "shortName": "ClassifyText"
         }
       },
-      "file": "language_generated_language_v1beta2_language_service_classify_text_async.py",
-      "regionTag": "language_generated_language_v1beta2_LanguageService_ClassifyText_async",
+      "file": "language_v1beta2_generated_language_service_classify_text_async.py",
+      "regionTag": "language_v1beta2_generated_LanguageService_ClassifyText_async",
       "segments": [
         {
           "end": 47,
@@ -499,8 +499,8 @@
           "shortName": "ClassifyText"
         }
       },
-      "file": "language_generated_language_v1beta2_language_service_classify_text_sync.py",
-      "regionTag": "language_generated_language_v1beta2_LanguageService_ClassifyText_sync",
+      "file": "language_v1beta2_generated_language_service_classify_text_sync.py",
+      "regionTag": "language_v1beta2_generated_LanguageService_ClassifyText_sync",
       "segments": [
         {
           "end": 47,

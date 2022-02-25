@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for AnalyzeSyntax
+# Snippet for ClassifyText
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,26 +23,26 @@
 #   python3 -m pip install google-cloud-language
 
 
-# [START language_generated_language_v1beta2_LanguageService_AnalyzeSyntax_sync]
-from google.cloud import language_v1beta2
+# [START language_v1_generated_LanguageService_ClassifyText_async]
+from google.cloud import language_v1
 
 
-def sample_analyze_syntax():
+async def sample_classify_text():
     # Create a client
-    client = language_v1beta2.LanguageServiceClient()
+    client = language_v1.LanguageServiceAsyncClient()
 
     # Initialize request argument(s)
-    document = language_v1beta2.Document()
+    document = language_v1.Document()
     document.content = "content_value"
 
-    request = language_v1beta2.AnalyzeSyntaxRequest(
+    request = language_v1.ClassifyTextRequest(
         document=document,
     )
 
     # Make the request
-    response = client.analyze_syntax(request=request)
+    response = await client.classify_text(request=request)
 
     # Handle the response
     print(response)
 
-# [END language_generated_language_v1beta2_LanguageService_AnalyzeSyntax_sync]
+# [END language_v1_generated_LanguageService_ClassifyText_async]

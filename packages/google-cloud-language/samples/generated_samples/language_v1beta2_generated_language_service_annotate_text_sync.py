@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for AnalyzeSentiment
+# Snippet for AnnotateText
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,11 +23,11 @@
 #   python3 -m pip install google-cloud-language
 
 
-# [START language_generated_language_v1beta2_LanguageService_AnalyzeSentiment_sync]
+# [START language_v1beta2_generated_LanguageService_AnnotateText_sync]
 from google.cloud import language_v1beta2
 
 
-def sample_analyze_sentiment():
+def sample_annotate_text():
     # Create a client
     client = language_v1beta2.LanguageServiceClient()
 
@@ -35,14 +35,14 @@ def sample_analyze_sentiment():
     document = language_v1beta2.Document()
     document.content = "content_value"
 
-    request = language_v1beta2.AnalyzeSentimentRequest(
+    request = language_v1beta2.AnnotateTextRequest(
         document=document,
     )
 
     # Make the request
-    response = client.analyze_sentiment(request=request)
+    response = client.annotate_text(request=request)
 
     # Handle the response
     print(response)
 
-# [END language_generated_language_v1beta2_LanguageService_AnalyzeSentiment_sync]
+# [END language_v1beta2_generated_LanguageService_AnnotateText_sync]
