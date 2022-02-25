@@ -252,7 +252,7 @@ class ReservationServiceAsyncClient:
     ) -> gcbr_reservation.Reservation:
         r"""Creates a new reservation resource.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_reservation_v1
 
@@ -364,7 +364,7 @@ class ReservationServiceAsyncClient:
         specified location.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_reservation_v1
 
@@ -474,7 +474,7 @@ class ReservationServiceAsyncClient:
     ) -> reservation.Reservation:
         r"""Returns information about the reservation.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_reservation_v1
 
@@ -578,7 +578,7 @@ class ReservationServiceAsyncClient:
         assignments.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_reservation_v1
 
@@ -670,7 +670,7 @@ class ReservationServiceAsyncClient:
     ) -> gcbr_reservation.Reservation:
         r"""Updates an existing reservation resource.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_reservation_v1
 
@@ -769,7 +769,7 @@ class ReservationServiceAsyncClient:
     ) -> reservation.CapacityCommitment:
         r"""Creates a new capacity commitment resource.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_reservation_v1
 
@@ -882,7 +882,7 @@ class ReservationServiceAsyncClient:
         project.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_reservation_v1
 
@@ -992,7 +992,7 @@ class ReservationServiceAsyncClient:
     ) -> reservation.CapacityCommitment:
         r"""Returns information about the capacity commitment.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_reservation_v1
 
@@ -1108,7 +1108,7 @@ class ReservationServiceAsyncClient:
         error code ``google.rpc.Code.FAILED_PRECONDITION``.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_reservation_v1
 
@@ -1208,7 +1208,7 @@ class ReservationServiceAsyncClient:
         ``google.rpc.Code.FAILED_PRECONDITION``.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_reservation_v1
 
@@ -1330,7 +1330,7 @@ class ReservationServiceAsyncClient:
         ``FLEX`` and then delete it.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_reservation_v1
 
@@ -1440,7 +1440,7 @@ class ReservationServiceAsyncClient:
         ``google.rpc.Code.FAILED_PRECONDITION``.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_reservation_v1
 
@@ -1594,7 +1594,7 @@ class ReservationServiceAsyncClient:
         the assignment does not match location of the reservation.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_reservation_v1
 
@@ -1717,7 +1717,7 @@ class ReservationServiceAsyncClient:
         **Note** "-" cannot be used for projects nor locations.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_reservation_v1
 
@@ -1848,7 +1848,7 @@ class ReservationServiceAsyncClient:
         ``project2`` will switch to use on-demand mode.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_reservation_v1
 
@@ -1966,7 +1966,7 @@ class ReservationServiceAsyncClient:
         **Note** "-" cannot be used for projects nor locations.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_reservation_v1
 
@@ -2122,7 +2122,7 @@ class ReservationServiceAsyncClient:
            ``projects/*/locations/*reservations/*``.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_reservation_v1
 
@@ -2245,7 +2245,7 @@ class ReservationServiceAsyncClient:
         reservation.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_reservation_v1
 
@@ -2351,7 +2351,7 @@ class ReservationServiceAsyncClient:
     ) -> reservation.BiReservation:
         r"""Retrieves a BI reservation.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_reservation_v1
 
@@ -2459,7 +2459,7 @@ class ReservationServiceAsyncClient:
         must be set to 0.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_reservation_v1
 

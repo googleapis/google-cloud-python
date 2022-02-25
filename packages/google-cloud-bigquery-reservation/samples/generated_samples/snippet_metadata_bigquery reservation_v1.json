@@ -10,8 +10,8 @@
           "shortName": "CreateAssignment"
         }
       },
-      "file": "bigqueryreservation_generated_bigquery_reservation_v1_reservation_service_create_assignment_async.py",
-      "regionTag": "bigqueryreservation_generated_bigquery_reservation_v1_ReservationService_CreateAssignment_async",
+      "file": "bigqueryreservation_v1_generated_reservation_service_create_assignment_async.py",
+      "regionTag": "bigqueryreservation_v1_generated_ReservationService_CreateAssignment_async",
       "segments": [
         {
           "end": 44,
@@ -54,8 +54,8 @@
           "shortName": "CreateAssignment"
         }
       },
-      "file": "bigqueryreservation_generated_bigquery_reservation_v1_reservation_service_create_assignment_sync.py",
-      "regionTag": "bigqueryreservation_generated_bigquery_reservation_v1_ReservationService_CreateAssignment_sync",
+      "file": "bigqueryreservation_v1_generated_reservation_service_create_assignment_sync.py",
+      "regionTag": "bigqueryreservation_v1_generated_ReservationService_CreateAssignment_sync",
       "segments": [
         {
           "end": 44,
@@ -99,8 +99,8 @@
           "shortName": "CreateCapacityCommitment"
         }
       },
-      "file": "bigqueryreservation_generated_bigquery_reservation_v1_reservation_service_create_capacity_commitment_async.py",
-      "regionTag": "bigqueryreservation_generated_bigquery_reservation_v1_ReservationService_CreateCapacityCommitment_async",
+      "file": "bigqueryreservation_v1_generated_reservation_service_create_capacity_commitment_async.py",
+      "regionTag": "bigqueryreservation_v1_generated_ReservationService_CreateCapacityCommitment_async",
       "segments": [
         {
           "end": 44,
@@ -143,8 +143,8 @@
           "shortName": "CreateCapacityCommitment"
         }
       },
-      "file": "bigqueryreservation_generated_bigquery_reservation_v1_reservation_service_create_capacity_commitment_sync.py",
-      "regionTag": "bigqueryreservation_generated_bigquery_reservation_v1_ReservationService_CreateCapacityCommitment_sync",
+      "file": "bigqueryreservation_v1_generated_reservation_service_create_capacity_commitment_sync.py",
+      "regionTag": "bigqueryreservation_v1_generated_ReservationService_CreateCapacityCommitment_sync",
       "segments": [
         {
           "end": 44,
@@ -188,8 +188,8 @@
           "shortName": "CreateReservation"
         }
       },
-      "file": "bigqueryreservation_generated_bigquery_reservation_v1_reservation_service_create_reservation_async.py",
-      "regionTag": "bigqueryreservation_generated_bigquery_reservation_v1_ReservationService_CreateReservation_async",
+      "file": "bigqueryreservation_v1_generated_reservation_service_create_reservation_async.py",
+      "regionTag": "bigqueryreservation_v1_generated_ReservationService_CreateReservation_async",
       "segments": [
         {
           "end": 44,
@@ -232,8 +232,8 @@
           "shortName": "CreateReservation"
         }
       },
-      "file": "bigqueryreservation_generated_bigquery_reservation_v1_reservation_service_create_reservation_sync.py",
-      "regionTag": "bigqueryreservation_generated_bigquery_reservation_v1_ReservationService_CreateReservation_sync",
+      "file": "bigqueryreservation_v1_generated_reservation_service_create_reservation_sync.py",
+      "regionTag": "bigqueryreservation_v1_generated_ReservationService_CreateReservation_sync",
       "segments": [
         {
           "end": 44,
@@ -277,8 +277,8 @@
           "shortName": "DeleteAssignment"
         }
       },
-      "file": "bigqueryreservation_generated_bigquery_reservation_v1_reservation_service_delete_assignment_async.py",
-      "regionTag": "bigqueryreservation_generated_bigquery_reservation_v1_ReservationService_DeleteAssignment_async",
+      "file": "bigqueryreservation_v1_generated_reservation_service_delete_assignment_async.py",
+      "regionTag": "bigqueryreservation_v1_generated_ReservationService_DeleteAssignment_async",
       "segments": [
         {
           "end": 42,
@@ -319,8 +319,8 @@
           "shortName": "DeleteAssignment"
         }
       },
-      "file": "bigqueryreservation_generated_bigquery_reservation_v1_reservation_service_delete_assignment_sync.py",
-      "regionTag": "bigqueryreservation_generated_bigquery_reservation_v1_ReservationService_DeleteAssignment_sync",
+      "file": "bigqueryreservation_v1_generated_reservation_service_delete_assignment_sync.py",
+      "regionTag": "bigqueryreservation_v1_generated_ReservationService_DeleteAssignment_sync",
       "segments": [
         {
           "end": 42,
@@ -362,8 +362,8 @@
           "shortName": "DeleteCapacityCommitment"
         }
       },
-      "file": "bigqueryreservation_generated_bigquery_reservation_v1_reservation_service_delete_capacity_commitment_async.py",
-      "regionTag": "bigqueryreservation_generated_bigquery_reservation_v1_ReservationService_DeleteCapacityCommitment_async",
+      "file": "bigqueryreservation_v1_generated_reservation_service_delete_capacity_commitment_async.py",
+      "regionTag": "bigqueryreservation_v1_generated_ReservationService_DeleteCapacityCommitment_async",
       "segments": [
         {
           "end": 42,
@@ -404,8 +404,8 @@
           "shortName": "DeleteCapacityCommitment"
         }
       },
-      "file": "bigqueryreservation_generated_bigquery_reservation_v1_reservation_service_delete_capacity_commitment_sync.py",
-      "regionTag": "bigqueryreservation_generated_bigquery_reservation_v1_ReservationService_DeleteCapacityCommitment_sync",
+      "file": "bigqueryreservation_v1_generated_reservation_service_delete_capacity_commitment_sync.py",
+      "regionTag": "bigqueryreservation_v1_generated_ReservationService_DeleteCapacityCommitment_sync",
       "segments": [
         {
           "end": 42,
@@ -447,8 +447,8 @@
           "shortName": "DeleteReservation"
         }
       },
-      "file": "bigqueryreservation_generated_bigquery_reservation_v1_reservation_service_delete_reservation_async.py",
-      "regionTag": "bigqueryreservation_generated_bigquery_reservation_v1_ReservationService_DeleteReservation_async",
+      "file": "bigqueryreservation_v1_generated_reservation_service_delete_reservation_async.py",
+      "regionTag": "bigqueryreservation_v1_generated_ReservationService_DeleteReservation_async",
       "segments": [
         {
           "end": 42,
@@ -489,8 +489,8 @@
           "shortName": "DeleteReservation"
         }
       },
-      "file": "bigqueryreservation_generated_bigquery_reservation_v1_reservation_service_delete_reservation_sync.py",
-      "regionTag": "bigqueryreservation_generated_bigquery_reservation_v1_ReservationService_DeleteReservation_sync",
+      "file": "bigqueryreservation_v1_generated_reservation_service_delete_reservation_sync.py",
+      "regionTag": "bigqueryreservation_v1_generated_ReservationService_DeleteReservation_sync",
       "segments": [
         {
           "end": 42,
@@ -532,8 +532,8 @@
           "shortName": "GetBiReservation"
         }
       },
-      "file": "bigqueryreservation_generated_bigquery_reservation_v1_reservation_service_get_bi_reservation_async.py",
-      "regionTag": "bigqueryreservation_generated_bigquery_reservation_v1_ReservationService_GetBiReservation_async",
+      "file": "bigqueryreservation_v1_generated_reservation_service_get_bi_reservation_async.py",
+      "regionTag": "bigqueryreservation_v1_generated_ReservationService_GetBiReservation_async",
       "segments": [
         {
           "end": 44,
@@ -576,8 +576,8 @@
           "shortName": "GetBiReservation"
         }
       },
-      "file": "bigqueryreservation_generated_bigquery_reservation_v1_reservation_service_get_bi_reservation_sync.py",
-      "regionTag": "bigqueryreservation_generated_bigquery_reservation_v1_ReservationService_GetBiReservation_sync",
+      "file": "bigqueryreservation_v1_generated_reservation_service_get_bi_reservation_sync.py",
+      "regionTag": "bigqueryreservation_v1_generated_ReservationService_GetBiReservation_sync",
       "segments": [
         {
           "end": 44,
@@ -621,8 +621,8 @@
           "shortName": "GetCapacityCommitment"
         }
       },
-      "file": "bigqueryreservation_generated_bigquery_reservation_v1_reservation_service_get_capacity_commitment_async.py",
-      "regionTag": "bigqueryreservation_generated_bigquery_reservation_v1_ReservationService_GetCapacityCommitment_async",
+      "file": "bigqueryreservation_v1_generated_reservation_service_get_capacity_commitment_async.py",
+      "regionTag": "bigqueryreservation_v1_generated_ReservationService_GetCapacityCommitment_async",
       "segments": [
         {
           "end": 44,
@@ -665,8 +665,8 @@
           "shortName": "GetCapacityCommitment"
         }
       },
-      "file": "bigqueryreservation_generated_bigquery_reservation_v1_reservation_service_get_capacity_commitment_sync.py",
-      "regionTag": "bigqueryreservation_generated_bigquery_reservation_v1_ReservationService_GetCapacityCommitment_sync",
+      "file": "bigqueryreservation_v1_generated_reservation_service_get_capacity_commitment_sync.py",
+      "regionTag": "bigqueryreservation_v1_generated_ReservationService_GetCapacityCommitment_sync",
       "segments": [
         {
           "end": 44,
@@ -710,8 +710,8 @@
           "shortName": "GetReservation"
         }
       },
-      "file": "bigqueryreservation_generated_bigquery_reservation_v1_reservation_service_get_reservation_async.py",
-      "regionTag": "bigqueryreservation_generated_bigquery_reservation_v1_ReservationService_GetReservation_async",
+      "file": "bigqueryreservation_v1_generated_reservation_service_get_reservation_async.py",
+      "regionTag": "bigqueryreservation_v1_generated_ReservationService_GetReservation_async",
       "segments": [
         {
           "end": 44,
@@ -754,8 +754,8 @@
           "shortName": "GetReservation"
         }
       },
-      "file": "bigqueryreservation_generated_bigquery_reservation_v1_reservation_service_get_reservation_sync.py",
-      "regionTag": "bigqueryreservation_generated_bigquery_reservation_v1_ReservationService_GetReservation_sync",
+      "file": "bigqueryreservation_v1_generated_reservation_service_get_reservation_sync.py",
+      "regionTag": "bigqueryreservation_v1_generated_ReservationService_GetReservation_sync",
       "segments": [
         {
           "end": 44,
@@ -799,8 +799,8 @@
           "shortName": "ListAssignments"
         }
       },
-      "file": "bigqueryreservation_generated_bigquery_reservation_v1_reservation_service_list_assignments_async.py",
-      "regionTag": "bigqueryreservation_generated_bigquery_reservation_v1_ReservationService_ListAssignments_async",
+      "file": "bigqueryreservation_v1_generated_reservation_service_list_assignments_async.py",
+      "regionTag": "bigqueryreservation_v1_generated_ReservationService_ListAssignments_async",
       "segments": [
         {
           "end": 45,
@@ -843,8 +843,8 @@
           "shortName": "ListAssignments"
         }
       },
-      "file": "bigqueryreservation_generated_bigquery_reservation_v1_reservation_service_list_assignments_sync.py",
-      "regionTag": "bigqueryreservation_generated_bigquery_reservation_v1_ReservationService_ListAssignments_sync",
+      "file": "bigqueryreservation_v1_generated_reservation_service_list_assignments_sync.py",
+      "regionTag": "bigqueryreservation_v1_generated_ReservationService_ListAssignments_sync",
       "segments": [
         {
           "end": 45,
@@ -888,8 +888,8 @@
           "shortName": "ListCapacityCommitments"
         }
       },
-      "file": "bigqueryreservation_generated_bigquery_reservation_v1_reservation_service_list_capacity_commitments_async.py",
-      "regionTag": "bigqueryreservation_generated_bigquery_reservation_v1_ReservationService_ListCapacityCommitments_async",
+      "file": "bigqueryreservation_v1_generated_reservation_service_list_capacity_commitments_async.py",
+      "regionTag": "bigqueryreservation_v1_generated_ReservationService_ListCapacityCommitments_async",
       "segments": [
         {
           "end": 45,
@@ -932,8 +932,8 @@
           "shortName": "ListCapacityCommitments"
         }
       },
-      "file": "bigqueryreservation_generated_bigquery_reservation_v1_reservation_service_list_capacity_commitments_sync.py",
-      "regionTag": "bigqueryreservation_generated_bigquery_reservation_v1_ReservationService_ListCapacityCommitments_sync",
+      "file": "bigqueryreservation_v1_generated_reservation_service_list_capacity_commitments_sync.py",
+      "regionTag": "bigqueryreservation_v1_generated_ReservationService_ListCapacityCommitments_sync",
       "segments": [
         {
           "end": 45,
@@ -977,8 +977,8 @@
           "shortName": "ListReservations"
         }
       },
-      "file": "bigqueryreservation_generated_bigquery_reservation_v1_reservation_service_list_reservations_async.py",
-      "regionTag": "bigqueryreservation_generated_bigquery_reservation_v1_ReservationService_ListReservations_async",
+      "file": "bigqueryreservation_v1_generated_reservation_service_list_reservations_async.py",
+      "regionTag": "bigqueryreservation_v1_generated_ReservationService_ListReservations_async",
       "segments": [
         {
           "end": 45,
@@ -1021,8 +1021,8 @@
           "shortName": "ListReservations"
         }
       },
-      "file": "bigqueryreservation_generated_bigquery_reservation_v1_reservation_service_list_reservations_sync.py",
-      "regionTag": "bigqueryreservation_generated_bigquery_reservation_v1_ReservationService_ListReservations_sync",
+      "file": "bigqueryreservation_v1_generated_reservation_service_list_reservations_sync.py",
+      "regionTag": "bigqueryreservation_v1_generated_ReservationService_ListReservations_sync",
       "segments": [
         {
           "end": 45,
@@ -1066,8 +1066,8 @@
           "shortName": "MergeCapacityCommitments"
         }
       },
-      "file": "bigqueryreservation_generated_bigquery_reservation_v1_reservation_service_merge_capacity_commitments_async.py",
-      "regionTag": "bigqueryreservation_generated_bigquery_reservation_v1_ReservationService_MergeCapacityCommitments_async",
+      "file": "bigqueryreservation_v1_generated_reservation_service_merge_capacity_commitments_async.py",
+      "regionTag": "bigqueryreservation_v1_generated_ReservationService_MergeCapacityCommitments_async",
       "segments": [
         {
           "end": 43,
@@ -1110,8 +1110,8 @@
           "shortName": "MergeCapacityCommitments"
         }
       },
-      "file": "bigqueryreservation_generated_bigquery_reservation_v1_reservation_service_merge_capacity_commitments_sync.py",
-      "regionTag": "bigqueryreservation_generated_bigquery_reservation_v1_ReservationService_MergeCapacityCommitments_sync",
+      "file": "bigqueryreservation_v1_generated_reservation_service_merge_capacity_commitments_sync.py",
+      "regionTag": "bigqueryreservation_v1_generated_ReservationService_MergeCapacityCommitments_sync",
       "segments": [
         {
           "end": 43,
@@ -1155,8 +1155,8 @@
           "shortName": "MoveAssignment"
         }
       },
-      "file": "bigqueryreservation_generated_bigquery_reservation_v1_reservation_service_move_assignment_async.py",
-      "regionTag": "bigqueryreservation_generated_bigquery_reservation_v1_ReservationService_MoveAssignment_async",
+      "file": "bigqueryreservation_v1_generated_reservation_service_move_assignment_async.py",
+      "regionTag": "bigqueryreservation_v1_generated_ReservationService_MoveAssignment_async",
       "segments": [
         {
           "end": 44,
@@ -1199,8 +1199,8 @@
           "shortName": "MoveAssignment"
         }
       },
-      "file": "bigqueryreservation_generated_bigquery_reservation_v1_reservation_service_move_assignment_sync.py",
-      "regionTag": "bigqueryreservation_generated_bigquery_reservation_v1_ReservationService_MoveAssignment_sync",
+      "file": "bigqueryreservation_v1_generated_reservation_service_move_assignment_sync.py",
+      "regionTag": "bigqueryreservation_v1_generated_ReservationService_MoveAssignment_sync",
       "segments": [
         {
           "end": 44,
@@ -1244,8 +1244,8 @@
           "shortName": "SearchAllAssignments"
         }
       },
-      "file": "bigqueryreservation_generated_bigquery_reservation_v1_reservation_service_search_all_assignments_async.py",
-      "regionTag": "bigqueryreservation_generated_bigquery_reservation_v1_ReservationService_SearchAllAssignments_async",
+      "file": "bigqueryreservation_v1_generated_reservation_service_search_all_assignments_async.py",
+      "regionTag": "bigqueryreservation_v1_generated_ReservationService_SearchAllAssignments_async",
       "segments": [
         {
           "end": 45,
@@ -1288,8 +1288,8 @@
           "shortName": "SearchAllAssignments"
         }
       },
-      "file": "bigqueryreservation_generated_bigquery_reservation_v1_reservation_service_search_all_assignments_sync.py",
-      "regionTag": "bigqueryreservation_generated_bigquery_reservation_v1_ReservationService_SearchAllAssignments_sync",
+      "file": "bigqueryreservation_v1_generated_reservation_service_search_all_assignments_sync.py",
+      "regionTag": "bigqueryreservation_v1_generated_ReservationService_SearchAllAssignments_sync",
       "segments": [
         {
           "end": 45,
@@ -1333,8 +1333,8 @@
           "shortName": "SearchAssignments"
         }
       },
-      "file": "bigqueryreservation_generated_bigquery_reservation_v1_reservation_service_search_assignments_async.py",
-      "regionTag": "bigqueryreservation_generated_bigquery_reservation_v1_ReservationService_SearchAssignments_async",
+      "file": "bigqueryreservation_v1_generated_reservation_service_search_assignments_async.py",
+      "regionTag": "bigqueryreservation_v1_generated_ReservationService_SearchAssignments_async",
       "segments": [
         {
           "end": 45,
@@ -1377,8 +1377,8 @@
           "shortName": "SearchAssignments"
         }
       },
-      "file": "bigqueryreservation_generated_bigquery_reservation_v1_reservation_service_search_assignments_sync.py",
-      "regionTag": "bigqueryreservation_generated_bigquery_reservation_v1_ReservationService_SearchAssignments_sync",
+      "file": "bigqueryreservation_v1_generated_reservation_service_search_assignments_sync.py",
+      "regionTag": "bigqueryreservation_v1_generated_ReservationService_SearchAssignments_sync",
       "segments": [
         {
           "end": 45,
@@ -1422,8 +1422,8 @@
           "shortName": "SplitCapacityCommitment"
         }
       },
-      "file": "bigqueryreservation_generated_bigquery_reservation_v1_reservation_service_split_capacity_commitment_async.py",
-      "regionTag": "bigqueryreservation_generated_bigquery_reservation_v1_ReservationService_SplitCapacityCommitment_async",
+      "file": "bigqueryreservation_v1_generated_reservation_service_split_capacity_commitment_async.py",
+      "regionTag": "bigqueryreservation_v1_generated_ReservationService_SplitCapacityCommitment_async",
       "segments": [
         {
           "end": 44,
@@ -1466,8 +1466,8 @@
           "shortName": "SplitCapacityCommitment"
         }
       },
-      "file": "bigqueryreservation_generated_bigquery_reservation_v1_reservation_service_split_capacity_commitment_sync.py",
-      "regionTag": "bigqueryreservation_generated_bigquery_reservation_v1_ReservationService_SplitCapacityCommitment_sync",
+      "file": "bigqueryreservation_v1_generated_reservation_service_split_capacity_commitment_sync.py",
+      "regionTag": "bigqueryreservation_v1_generated_ReservationService_SplitCapacityCommitment_sync",
       "segments": [
         {
           "end": 44,
@@ -1511,8 +1511,8 @@
           "shortName": "UpdateBiReservation"
         }
       },
-      "file": "bigqueryreservation_generated_bigquery_reservation_v1_reservation_service_update_bi_reservation_async.py",
-      "regionTag": "bigqueryreservation_generated_bigquery_reservation_v1_ReservationService_UpdateBiReservation_async",
+      "file": "bigqueryreservation_v1_generated_reservation_service_update_bi_reservation_async.py",
+      "regionTag": "bigqueryreservation_v1_generated_ReservationService_UpdateBiReservation_async",
       "segments": [
         {
           "end": 43,
@@ -1555,8 +1555,8 @@
           "shortName": "UpdateBiReservation"
         }
       },
-      "file": "bigqueryreservation_generated_bigquery_reservation_v1_reservation_service_update_bi_reservation_sync.py",
-      "regionTag": "bigqueryreservation_generated_bigquery_reservation_v1_ReservationService_UpdateBiReservation_sync",
+      "file": "bigqueryreservation_v1_generated_reservation_service_update_bi_reservation_sync.py",
+      "regionTag": "bigqueryreservation_v1_generated_ReservationService_UpdateBiReservation_sync",
       "segments": [
         {
           "end": 43,
@@ -1600,8 +1600,8 @@
           "shortName": "UpdateCapacityCommitment"
         }
       },
-      "file": "bigqueryreservation_generated_bigquery_reservation_v1_reservation_service_update_capacity_commitment_async.py",
-      "regionTag": "bigqueryreservation_generated_bigquery_reservation_v1_ReservationService_UpdateCapacityCommitment_async",
+      "file": "bigqueryreservation_v1_generated_reservation_service_update_capacity_commitment_async.py",
+      "regionTag": "bigqueryreservation_v1_generated_ReservationService_UpdateCapacityCommitment_async",
       "segments": [
         {
           "end": 43,
@@ -1644,8 +1644,8 @@
           "shortName": "UpdateCapacityCommitment"
         }
       },
-      "file": "bigqueryreservation_generated_bigquery_reservation_v1_reservation_service_update_capacity_commitment_sync.py",
-      "regionTag": "bigqueryreservation_generated_bigquery_reservation_v1_ReservationService_UpdateCapacityCommitment_sync",
+      "file": "bigqueryreservation_v1_generated_reservation_service_update_capacity_commitment_sync.py",
+      "regionTag": "bigqueryreservation_v1_generated_ReservationService_UpdateCapacityCommitment_sync",
       "segments": [
         {
           "end": 43,
@@ -1689,8 +1689,8 @@
           "shortName": "UpdateReservation"
         }
       },
-      "file": "bigqueryreservation_generated_bigquery_reservation_v1_reservation_service_update_reservation_async.py",
-      "regionTag": "bigqueryreservation_generated_bigquery_reservation_v1_ReservationService_UpdateReservation_async",
+      "file": "bigqueryreservation_v1_generated_reservation_service_update_reservation_async.py",
+      "regionTag": "bigqueryreservation_v1_generated_ReservationService_UpdateReservation_async",
       "segments": [
         {
           "end": 43,
@@ -1733,8 +1733,8 @@
           "shortName": "UpdateReservation"
         }
       },
-      "file": "bigqueryreservation_generated_bigquery_reservation_v1_reservation_service_update_reservation_sync.py",
-      "regionTag": "bigqueryreservation_generated_bigquery_reservation_v1_ReservationService_UpdateReservation_sync",
+      "file": "bigqueryreservation_v1_generated_reservation_service_update_reservation_sync.py",
+      "regionTag": "bigqueryreservation_v1_generated_ReservationService_UpdateReservation_sync",
       "segments": [
         {
           "end": 43,

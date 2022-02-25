@@ -491,8 +491,7 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
     ) -> gcbr_reservation.Reservation:
         r"""Creates a new reservation resource.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_reservation_v1
 
@@ -604,8 +603,7 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
         specified location.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_reservation_v1
 
@@ -705,8 +703,7 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
     ) -> reservation.Reservation:
         r"""Returns information about the reservation.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_reservation_v1
 
@@ -800,8 +797,7 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
         assignments.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_reservation_v1
 
@@ -883,8 +879,7 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
     ) -> gcbr_reservation.Reservation:
         r"""Updates an existing reservation resource.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_reservation_v1
 
@@ -983,8 +978,7 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
     ) -> reservation.CapacityCommitment:
         r"""Creates a new capacity commitment resource.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_reservation_v1
 
@@ -1099,8 +1093,7 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
         project.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_reservation_v1
 
@@ -1202,8 +1195,7 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
     ) -> reservation.CapacityCommitment:
         r"""Returns information about the capacity commitment.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_reservation_v1
 
@@ -1309,8 +1301,7 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
         error code ``google.rpc.Code.FAILED_PRECONDITION``.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_reservation_v1
 
@@ -1402,8 +1393,7 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
         ``google.rpc.Code.FAILED_PRECONDITION``.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_reservation_v1
 
@@ -1527,8 +1517,7 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
         ``FLEX`` and then delete it.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_reservation_v1
 
@@ -1640,8 +1629,7 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
         ``google.rpc.Code.FAILED_PRECONDITION``.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_reservation_v1
 
@@ -1797,8 +1785,7 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
         the assignment does not match location of the reservation.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_reservation_v1
 
@@ -1921,8 +1908,7 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
         **Note** "-" cannot be used for projects nor locations.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_reservation_v1
 
@@ -2043,8 +2029,7 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
         ``project2`` will switch to use on-demand mode.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_reservation_v1
 
@@ -2152,8 +2137,7 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
         **Note** "-" cannot be used for projects nor locations.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_reservation_v1
 
@@ -2299,8 +2283,7 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
            ``projects/*/locations/*reservations/*``.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_reservation_v1
 
@@ -2423,8 +2406,7 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
         reservation.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_reservation_v1
 
@@ -2530,8 +2512,7 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
     ) -> reservation.BiReservation:
         r"""Retrieves a BI reservation.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_reservation_v1
 
@@ -2629,8 +2610,7 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
         must be set to 0.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import bigquery_reservation_v1
 
