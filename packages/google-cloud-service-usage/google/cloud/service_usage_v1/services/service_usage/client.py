@@ -402,8 +402,7 @@ class ServiceUsageClient(metaclass=ServiceUsageClientMeta):
         project.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import service_usage_v1
 
@@ -495,8 +494,7 @@ class ServiceUsageClient(metaclass=ServiceUsageClientMeta):
         currently enabled.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import service_usage_v1
 
@@ -582,8 +580,7 @@ class ServiceUsageClient(metaclass=ServiceUsageClientMeta):
         for a given service.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import service_usage_v1
 
@@ -665,8 +662,7 @@ class ServiceUsageClient(metaclass=ServiceUsageClientMeta):
         capability.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import service_usage_v1
 
@@ -747,8 +743,7 @@ class ServiceUsageClient(metaclass=ServiceUsageClientMeta):
         ``EnableService`` method instead.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import service_usage_v1
 
@@ -834,8 +829,7 @@ class ServiceUsageClient(metaclass=ServiceUsageClientMeta):
         for a given list of services.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import service_usage_v1
 

@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for BatchGetServices
+# Snippet for BatchEnableServices
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,22 +23,26 @@
 #   python3 -m pip install google-cloud-service-usage
 
 
-# [START serviceusage_generated_service_usage_v1_ServiceUsage_BatchGetServices_sync]
+# [START serviceusage_v1_generated_ServiceUsage_BatchEnableServices_async]
 from google.cloud import service_usage_v1
 
 
-def sample_batch_get_services():
+async def sample_batch_enable_services():
     # Create a client
-    client = service_usage_v1.ServiceUsageClient()
+    client = service_usage_v1.ServiceUsageAsyncClient()
 
     # Initialize request argument(s)
-    request = service_usage_v1.BatchGetServicesRequest(
+    request = service_usage_v1.BatchEnableServicesRequest(
     )
 
     # Make the request
-    response = client.batch_get_services(request=request)
+    operation = client.batch_enable_services(request=request)
+
+    print("Waiting for operation to complete...")
+
+    response = await operation.result()
 
     # Handle the response
     print(response)
 
-# [END serviceusage_generated_service_usage_v1_ServiceUsage_BatchGetServices_sync]
+# [END serviceusage_v1_generated_ServiceUsage_BatchEnableServices_async]

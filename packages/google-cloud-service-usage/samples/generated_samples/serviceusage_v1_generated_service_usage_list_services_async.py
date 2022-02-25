@@ -23,13 +23,13 @@
 #   python3 -m pip install google-cloud-service-usage
 
 
-# [START serviceusage_generated_service_usage_v1_ServiceUsage_ListServices_sync]
+# [START serviceusage_v1_generated_ServiceUsage_ListServices_async]
 from google.cloud import service_usage_v1
 
 
-def sample_list_services():
+async def sample_list_services():
     # Create a client
-    client = service_usage_v1.ServiceUsageClient()
+    client = service_usage_v1.ServiceUsageAsyncClient()
 
     # Initialize request argument(s)
     request = service_usage_v1.ListServicesRequest(
@@ -39,7 +39,7 @@ def sample_list_services():
     page_result = client.list_services(request=request)
 
     # Handle the response
-    for response in page_result:
+    async for response in page_result:
         print(response)
 
-# [END serviceusage_generated_service_usage_v1_ServiceUsage_ListServices_sync]
+# [END serviceusage_v1_generated_ServiceUsage_ListServices_async]

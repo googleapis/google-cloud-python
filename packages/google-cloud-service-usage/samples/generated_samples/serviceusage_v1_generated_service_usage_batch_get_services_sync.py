@@ -23,22 +23,22 @@
 #   python3 -m pip install google-cloud-service-usage
 
 
-# [START serviceusage_generated_service_usage_v1_ServiceUsage_BatchGetServices_async]
+# [START serviceusage_v1_generated_ServiceUsage_BatchGetServices_sync]
 from google.cloud import service_usage_v1
 
 
-async def sample_batch_get_services():
+def sample_batch_get_services():
     # Create a client
-    client = service_usage_v1.ServiceUsageAsyncClient()
+    client = service_usage_v1.ServiceUsageClient()
 
     # Initialize request argument(s)
     request = service_usage_v1.BatchGetServicesRequest(
     )
 
     # Make the request
-    response = await client.batch_get_services(request=request)
+    response = client.batch_get_services(request=request)
 
     # Handle the response
     print(response)
 
-# [END serviceusage_generated_service_usage_v1_ServiceUsage_BatchGetServices_async]
+# [END serviceusage_v1_generated_ServiceUsage_BatchGetServices_sync]

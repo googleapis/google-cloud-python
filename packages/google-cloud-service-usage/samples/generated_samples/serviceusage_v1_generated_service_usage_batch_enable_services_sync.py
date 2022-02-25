@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for DisableService
+# Snippet for BatchEnableServices
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,20 +23,20 @@
 #   python3 -m pip install google-cloud-service-usage
 
 
-# [START serviceusage_generated_service_usage_v1_ServiceUsage_DisableService_sync]
+# [START serviceusage_v1_generated_ServiceUsage_BatchEnableServices_sync]
 from google.cloud import service_usage_v1
 
 
-def sample_disable_service():
+def sample_batch_enable_services():
     # Create a client
     client = service_usage_v1.ServiceUsageClient()
 
     # Initialize request argument(s)
-    request = service_usage_v1.DisableServiceRequest(
+    request = service_usage_v1.BatchEnableServicesRequest(
     )
 
     # Make the request
-    operation = client.disable_service(request=request)
+    operation = client.batch_enable_services(request=request)
 
     print("Waiting for operation to complete...")
 
@@ -45,4 +45,4 @@ def sample_disable_service():
     # Handle the response
     print(response)
 
-# [END serviceusage_generated_service_usage_v1_ServiceUsage_DisableService_sync]
+# [END serviceusage_v1_generated_ServiceUsage_BatchEnableServices_sync]

@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for DisableService
+# Snippet for EnableService
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,26 +23,26 @@
 #   python3 -m pip install google-cloud-service-usage
 
 
-# [START serviceusage_generated_service_usage_v1_ServiceUsage_DisableService_async]
+# [START serviceusage_v1_generated_ServiceUsage_EnableService_sync]
 from google.cloud import service_usage_v1
 
 
-async def sample_disable_service():
+def sample_enable_service():
     # Create a client
-    client = service_usage_v1.ServiceUsageAsyncClient()
+    client = service_usage_v1.ServiceUsageClient()
 
     # Initialize request argument(s)
-    request = service_usage_v1.DisableServiceRequest(
+    request = service_usage_v1.EnableServiceRequest(
     )
 
     # Make the request
-    operation = client.disable_service(request=request)
+    operation = client.enable_service(request=request)
 
     print("Waiting for operation to complete...")
 
-    response = await operation.result()
+    response = operation.result()
 
     # Handle the response
     print(response)
 
-# [END serviceusage_generated_service_usage_v1_ServiceUsage_DisableService_async]
+# [END serviceusage_v1_generated_ServiceUsage_EnableService_sync]

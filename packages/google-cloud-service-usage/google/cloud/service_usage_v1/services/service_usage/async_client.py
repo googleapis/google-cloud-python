@@ -217,7 +217,7 @@ class ServiceUsageAsyncClient:
         project.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import service_usage_v1
 
@@ -308,7 +308,7 @@ class ServiceUsageAsyncClient:
         currently enabled.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import service_usage_v1
 
@@ -393,7 +393,7 @@ class ServiceUsageAsyncClient:
         for a given service.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import service_usage_v1
 
@@ -474,7 +474,7 @@ class ServiceUsageAsyncClient:
         capability.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import service_usage_v1
 
@@ -554,7 +554,7 @@ class ServiceUsageAsyncClient:
         ``EnableService`` method instead.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import service_usage_v1
 
@@ -639,7 +639,7 @@ class ServiceUsageAsyncClient:
         for a given list of services.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import service_usage_v1
 
