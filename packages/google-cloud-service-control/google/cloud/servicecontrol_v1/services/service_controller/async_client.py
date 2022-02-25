@@ -233,7 +233,7 @@ class ServiceControllerAsyncClient:
         `Cloud IAM <https://cloud.google.com/iam>`__.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import servicecontrol_v1
 
@@ -321,7 +321,7 @@ class ServiceControllerAsyncClient:
         `Google Cloud IAM <https://cloud.google.com/iam>`__.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import servicecontrol_v1
 

@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-service-control
 
 
-# [START servicecontrol_generated_servicecontrol_v1_QuotaController_AllocateQuota_sync]
+# [START servicecontrol_v1_generated_QuotaController_AllocateQuota_sync]
 from google.cloud import servicecontrol_v1
 
 
@@ -41,4 +41,4 @@ def sample_allocate_quota():
     # Handle the response
     print(response)
 
-# [END servicecontrol_generated_servicecontrol_v1_QuotaController_AllocateQuota_sync]
+# [END servicecontrol_v1_generated_QuotaController_AllocateQuota_sync]

@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for AllocateQuota
+# Snippet for Report
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,22 +23,22 @@
 #   python3 -m pip install google-cloud-service-control
 
 
-# [START servicecontrol_generated_servicecontrol_v1_QuotaController_AllocateQuota_async]
+# [START servicecontrol_v1_generated_ServiceController_Report_async]
 from google.cloud import servicecontrol_v1
 
 
-async def sample_allocate_quota():
+async def sample_report():
     # Create a client
-    client = servicecontrol_v1.QuotaControllerAsyncClient()
+    client = servicecontrol_v1.ServiceControllerAsyncClient()
 
     # Initialize request argument(s)
-    request = servicecontrol_v1.AllocateQuotaRequest(
+    request = servicecontrol_v1.ReportRequest(
     )
 
     # Make the request
-    response = await client.allocate_quota(request=request)
+    response = await client.report(request=request)
 
     # Handle the response
     print(response)
 
-# [END servicecontrol_generated_servicecontrol_v1_QuotaController_AllocateQuota_async]
+# [END servicecontrol_v1_generated_ServiceController_Report_async]

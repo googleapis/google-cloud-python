@@ -10,8 +10,8 @@
           "shortName": "AllocateQuota"
         }
       },
-      "file": "servicecontrol_generated_servicecontrol_v1_quota_controller_allocate_quota_async.py",
-      "regionTag": "servicecontrol_generated_servicecontrol_v1_QuotaController_AllocateQuota_async",
+      "file": "servicecontrol_v1_generated_quota_controller_allocate_quota_async.py",
+      "regionTag": "servicecontrol_v1_generated_QuotaController_AllocateQuota_async",
       "segments": [
         {
           "end": 43,
@@ -54,8 +54,8 @@
           "shortName": "AllocateQuota"
         }
       },
-      "file": "servicecontrol_generated_servicecontrol_v1_quota_controller_allocate_quota_sync.py",
-      "regionTag": "servicecontrol_generated_servicecontrol_v1_QuotaController_AllocateQuota_sync",
+      "file": "servicecontrol_v1_generated_quota_controller_allocate_quota_sync.py",
+      "regionTag": "servicecontrol_v1_generated_QuotaController_AllocateQuota_sync",
       "segments": [
         {
           "end": 43,
@@ -99,8 +99,8 @@
           "shortName": "Check"
         }
       },
-      "file": "servicecontrol_generated_servicecontrol_v1_service_controller_check_async.py",
-      "regionTag": "servicecontrol_generated_servicecontrol_v1_ServiceController_Check_async",
+      "file": "servicecontrol_v1_generated_service_controller_check_async.py",
+      "regionTag": "servicecontrol_v1_generated_ServiceController_Check_async",
       "segments": [
         {
           "end": 43,
@@ -143,8 +143,8 @@
           "shortName": "Check"
         }
       },
-      "file": "servicecontrol_generated_servicecontrol_v1_service_controller_check_sync.py",
-      "regionTag": "servicecontrol_generated_servicecontrol_v1_ServiceController_Check_sync",
+      "file": "servicecontrol_v1_generated_service_controller_check_sync.py",
+      "regionTag": "servicecontrol_v1_generated_ServiceController_Check_sync",
       "segments": [
         {
           "end": 43,
@@ -188,8 +188,8 @@
           "shortName": "Report"
         }
       },
-      "file": "servicecontrol_generated_servicecontrol_v1_service_controller_report_async.py",
-      "regionTag": "servicecontrol_generated_servicecontrol_v1_ServiceController_Report_async",
+      "file": "servicecontrol_v1_generated_service_controller_report_async.py",
+      "regionTag": "servicecontrol_v1_generated_ServiceController_Report_async",
       "segments": [
         {
           "end": 43,
@@ -232,8 +232,8 @@
           "shortName": "Report"
         }
       },
-      "file": "servicecontrol_generated_servicecontrol_v1_service_controller_report_sync.py",
-      "regionTag": "servicecontrol_generated_servicecontrol_v1_ServiceController_Report_sync",
+      "file": "servicecontrol_v1_generated_service_controller_report_sync.py",
+      "regionTag": "servicecontrol_v1_generated_ServiceController_Report_sync",
       "segments": [
         {
           "end": 43,

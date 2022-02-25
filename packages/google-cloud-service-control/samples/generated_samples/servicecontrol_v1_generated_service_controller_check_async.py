@@ -23,22 +23,22 @@
 #   python3 -m pip install google-cloud-service-control
 
 
-# [START servicecontrol_generated_servicecontrol_v1_ServiceController_Check_sync]
+# [START servicecontrol_v1_generated_ServiceController_Check_async]
 from google.cloud import servicecontrol_v1
 
 
-def sample_check():
+async def sample_check():
     # Create a client
-    client = servicecontrol_v1.ServiceControllerClient()
+    client = servicecontrol_v1.ServiceControllerAsyncClient()
 
     # Initialize request argument(s)
     request = servicecontrol_v1.CheckRequest(
     )
 
     # Make the request
-    response = client.check(request=request)
+    response = await client.check(request=request)
 
     # Handle the response
     print(response)
 
-# [END servicecontrol_generated_servicecontrol_v1_ServiceController_Check_sync]
+# [END servicecontrol_v1_generated_ServiceController_Check_async]

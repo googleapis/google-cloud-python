@@ -409,8 +409,7 @@ class QuotaControllerClient(metaclass=QuotaControllerClientMeta):
         functionality.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import servicecontrol_v1
 
