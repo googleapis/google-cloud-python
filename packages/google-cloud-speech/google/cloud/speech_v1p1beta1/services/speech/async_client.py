@@ -221,7 +221,7 @@ class SpeechAsyncClient:
         results after all audio has been sent and processed.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import speech_v1p1beta1
 
@@ -340,7 +340,7 @@ class SpeechAsyncClient:
         `how-to <https://cloud.google.com/speech-to-text/docs/async-recognize>`__.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import speech_v1p1beta1
 
@@ -461,7 +461,7 @@ class SpeechAsyncClient:
         available via the gRPC API (not REST).
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import speech_v1p1beta1
 
