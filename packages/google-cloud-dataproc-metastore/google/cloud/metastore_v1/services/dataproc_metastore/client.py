@@ -491,8 +491,7 @@ class DataprocMetastoreClient(metaclass=DataprocMetastoreClientMeta):
     ) -> pagers.ListServicesPager:
         r"""Lists services in a project and location.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import metastore_v1
 
@@ -594,8 +593,7 @@ class DataprocMetastoreClient(metaclass=DataprocMetastoreClientMeta):
     ) -> metastore.Service:
         r"""Gets the details of a single service.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import metastore_v1
 
@@ -691,8 +689,7 @@ class DataprocMetastoreClient(metaclass=DataprocMetastoreClientMeta):
         location.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import metastore_v1
 
@@ -829,8 +826,7 @@ class DataprocMetastoreClient(metaclass=DataprocMetastoreClientMeta):
     ) -> operation.Operation:
         r"""Updates the parameters of a single service.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import metastore_v1
 
@@ -952,8 +948,7 @@ class DataprocMetastoreClient(metaclass=DataprocMetastoreClientMeta):
     ) -> operation.Operation:
         r"""Deletes a single service.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import metastore_v1
 
@@ -1070,8 +1065,7 @@ class DataprocMetastoreClient(metaclass=DataprocMetastoreClientMeta):
     ) -> pagers.ListMetadataImportsPager:
         r"""Lists imports in a service.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import metastore_v1
 
@@ -1173,8 +1167,7 @@ class DataprocMetastoreClient(metaclass=DataprocMetastoreClientMeta):
     ) -> metastore.MetadataImport:
         r"""Gets details of a single import.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import metastore_v1
 
@@ -1270,8 +1263,7 @@ class DataprocMetastoreClient(metaclass=DataprocMetastoreClientMeta):
         location.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import metastore_v1
 
@@ -1410,8 +1402,7 @@ class DataprocMetastoreClient(metaclass=DataprocMetastoreClientMeta):
         supported to be updated.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import metastore_v1
 
@@ -1532,8 +1523,7 @@ class DataprocMetastoreClient(metaclass=DataprocMetastoreClientMeta):
     ) -> operation.Operation:
         r"""Exports metadata from a service.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import metastore_v1
 
@@ -1620,8 +1610,7 @@ class DataprocMetastoreClient(metaclass=DataprocMetastoreClientMeta):
     ) -> operation.Operation:
         r"""Restores a service from a backup.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import metastore_v1
 
@@ -1740,8 +1729,7 @@ class DataprocMetastoreClient(metaclass=DataprocMetastoreClientMeta):
     ) -> pagers.ListBackupsPager:
         r"""Lists backups in a service.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import metastore_v1
 
@@ -1843,8 +1831,7 @@ class DataprocMetastoreClient(metaclass=DataprocMetastoreClientMeta):
     ) -> metastore.Backup:
         r"""Gets details of a single backup.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import metastore_v1
 
@@ -1936,8 +1923,7 @@ class DataprocMetastoreClient(metaclass=DataprocMetastoreClientMeta):
     ) -> operation.Operation:
         r"""Creates a new backup in a given project and location.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import metastore_v1
 
@@ -2070,8 +2056,7 @@ class DataprocMetastoreClient(metaclass=DataprocMetastoreClientMeta):
     ) -> operation.Operation:
         r"""Deletes a single backup.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import metastore_v1
 

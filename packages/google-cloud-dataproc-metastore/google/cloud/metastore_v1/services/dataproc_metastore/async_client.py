@@ -248,7 +248,7 @@ class DataprocMetastoreAsyncClient:
     ) -> pagers.ListServicesAsyncPager:
         r"""Lists services in a project and location.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import metastore_v1
 
@@ -350,7 +350,7 @@ class DataprocMetastoreAsyncClient:
     ) -> metastore.Service:
         r"""Gets the details of a single service.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import metastore_v1
 
@@ -446,7 +446,7 @@ class DataprocMetastoreAsyncClient:
         location.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import metastore_v1
 
@@ -583,7 +583,7 @@ class DataprocMetastoreAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Updates the parameters of a single service.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import metastore_v1
 
@@ -705,7 +705,7 @@ class DataprocMetastoreAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Deletes a single service.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import metastore_v1
 
@@ -822,7 +822,7 @@ class DataprocMetastoreAsyncClient:
     ) -> pagers.ListMetadataImportsAsyncPager:
         r"""Lists imports in a service.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import metastore_v1
 
@@ -924,7 +924,7 @@ class DataprocMetastoreAsyncClient:
     ) -> metastore.MetadataImport:
         r"""Gets details of a single import.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import metastore_v1
 
@@ -1020,7 +1020,7 @@ class DataprocMetastoreAsyncClient:
         location.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import metastore_v1
 
@@ -1159,7 +1159,7 @@ class DataprocMetastoreAsyncClient:
         supported to be updated.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import metastore_v1
 
@@ -1280,7 +1280,7 @@ class DataprocMetastoreAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Exports metadata from a service.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import metastore_v1
 
@@ -1366,7 +1366,7 @@ class DataprocMetastoreAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Restores a service from a backup.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import metastore_v1
 
@@ -1485,7 +1485,7 @@ class DataprocMetastoreAsyncClient:
     ) -> pagers.ListBackupsAsyncPager:
         r"""Lists backups in a service.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import metastore_v1
 
@@ -1587,7 +1587,7 @@ class DataprocMetastoreAsyncClient:
     ) -> metastore.Backup:
         r"""Gets details of a single backup.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import metastore_v1
 
@@ -1679,7 +1679,7 @@ class DataprocMetastoreAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Creates a new backup in a given project and location.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import metastore_v1
 
@@ -1812,7 +1812,7 @@ class DataprocMetastoreAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Deletes a single backup.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import metastore_v1
 

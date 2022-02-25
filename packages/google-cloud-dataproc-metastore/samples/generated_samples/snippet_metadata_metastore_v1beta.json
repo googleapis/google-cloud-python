@@ -10,8 +10,8 @@
           "shortName": "CreateBackup"
         }
       },
-      "file": "metastore_generated_metastore_v1beta_dataproc_metastore_create_backup_async.py",
-      "regionTag": "metastore_generated_metastore_v1beta_DataprocMetastore_CreateBackup_async",
+      "file": "metastore_v1beta_generated_dataproc_metastore_create_backup_async.py",
+      "regionTag": "metastore_v1beta_generated_DataprocMetastore_CreateBackup_async",
       "segments": [
         {
           "end": 49,
@@ -54,8 +54,8 @@
           "shortName": "CreateBackup"
         }
       },
-      "file": "metastore_generated_metastore_v1beta_dataproc_metastore_create_backup_sync.py",
-      "regionTag": "metastore_generated_metastore_v1beta_DataprocMetastore_CreateBackup_sync",
+      "file": "metastore_v1beta_generated_dataproc_metastore_create_backup_sync.py",
+      "regionTag": "metastore_v1beta_generated_DataprocMetastore_CreateBackup_sync",
       "segments": [
         {
           "end": 49,
@@ -99,8 +99,8 @@
           "shortName": "CreateMetadataImport"
         }
       },
-      "file": "metastore_generated_metastore_v1beta_dataproc_metastore_create_metadata_import_async.py",
-      "regionTag": "metastore_generated_metastore_v1beta_DataprocMetastore_CreateMetadataImport_async",
+      "file": "metastore_v1beta_generated_dataproc_metastore_create_metadata_import_async.py",
+      "regionTag": "metastore_v1beta_generated_DataprocMetastore_CreateMetadataImport_async",
       "segments": [
         {
           "end": 49,
@@ -143,8 +143,8 @@
           "shortName": "CreateMetadataImport"
         }
       },
-      "file": "metastore_generated_metastore_v1beta_dataproc_metastore_create_metadata_import_sync.py",
-      "regionTag": "metastore_generated_metastore_v1beta_DataprocMetastore_CreateMetadataImport_sync",
+      "file": "metastore_v1beta_generated_dataproc_metastore_create_metadata_import_sync.py",
+      "regionTag": "metastore_v1beta_generated_DataprocMetastore_CreateMetadataImport_sync",
       "segments": [
         {
           "end": 49,
@@ -188,8 +188,8 @@
           "shortName": "CreateService"
         }
       },
-      "file": "metastore_generated_metastore_v1beta_dataproc_metastore_create_service_async.py",
-      "regionTag": "metastore_generated_metastore_v1beta_DataprocMetastore_CreateService_async",
+      "file": "metastore_v1beta_generated_dataproc_metastore_create_service_async.py",
+      "regionTag": "metastore_v1beta_generated_DataprocMetastore_CreateService_async",
       "segments": [
         {
           "end": 49,
@@ -232,8 +232,8 @@
           "shortName": "CreateService"
         }
       },
-      "file": "metastore_generated_metastore_v1beta_dataproc_metastore_create_service_sync.py",
-      "regionTag": "metastore_generated_metastore_v1beta_DataprocMetastore_CreateService_sync",
+      "file": "metastore_v1beta_generated_dataproc_metastore_create_service_sync.py",
+      "regionTag": "metastore_v1beta_generated_DataprocMetastore_CreateService_sync",
       "segments": [
         {
           "end": 49,
@@ -277,8 +277,8 @@
           "shortName": "DeleteBackup"
         }
       },
-      "file": "metastore_generated_metastore_v1beta_dataproc_metastore_delete_backup_async.py",
-      "regionTag": "metastore_generated_metastore_v1beta_DataprocMetastore_DeleteBackup_async",
+      "file": "metastore_v1beta_generated_dataproc_metastore_delete_backup_async.py",
+      "regionTag": "metastore_v1beta_generated_DataprocMetastore_DeleteBackup_async",
       "segments": [
         {
           "end": 48,
@@ -321,8 +321,8 @@
           "shortName": "DeleteBackup"
         }
       },
-      "file": "metastore_generated_metastore_v1beta_dataproc_metastore_delete_backup_sync.py",
-      "regionTag": "metastore_generated_metastore_v1beta_DataprocMetastore_DeleteBackup_sync",
+      "file": "metastore_v1beta_generated_dataproc_metastore_delete_backup_sync.py",
+      "regionTag": "metastore_v1beta_generated_DataprocMetastore_DeleteBackup_sync",
       "segments": [
         {
           "end": 48,
@@ -366,8 +366,8 @@
           "shortName": "DeleteService"
         }
       },
-      "file": "metastore_generated_metastore_v1beta_dataproc_metastore_delete_service_async.py",
-      "regionTag": "metastore_generated_metastore_v1beta_DataprocMetastore_DeleteService_async",
+      "file": "metastore_v1beta_generated_dataproc_metastore_delete_service_async.py",
+      "regionTag": "metastore_v1beta_generated_DataprocMetastore_DeleteService_async",
       "segments": [
         {
           "end": 48,
@@ -410,8 +410,8 @@
           "shortName": "DeleteService"
         }
       },
-      "file": "metastore_generated_metastore_v1beta_dataproc_metastore_delete_service_sync.py",
-      "regionTag": "metastore_generated_metastore_v1beta_DataprocMetastore_DeleteService_sync",
+      "file": "metastore_v1beta_generated_dataproc_metastore_delete_service_sync.py",
+      "regionTag": "metastore_v1beta_generated_DataprocMetastore_DeleteService_sync",
       "segments": [
         {
           "end": 48,
@@ -455,8 +455,8 @@
           "shortName": "ExportMetadata"
         }
       },
-      "file": "metastore_generated_metastore_v1beta_dataproc_metastore_export_metadata_async.py",
-      "regionTag": "metastore_generated_metastore_v1beta_DataprocMetastore_ExportMetadata_async",
+      "file": "metastore_v1beta_generated_dataproc_metastore_export_metadata_async.py",
+      "regionTag": "metastore_v1beta_generated_DataprocMetastore_ExportMetadata_async",
       "segments": [
         {
           "end": 49,
@@ -499,8 +499,8 @@
           "shortName": "ExportMetadata"
         }
       },
-      "file": "metastore_generated_metastore_v1beta_dataproc_metastore_export_metadata_sync.py",
-      "regionTag": "metastore_generated_metastore_v1beta_DataprocMetastore_ExportMetadata_sync",
+      "file": "metastore_v1beta_generated_dataproc_metastore_export_metadata_sync.py",
+      "regionTag": "metastore_v1beta_generated_DataprocMetastore_ExportMetadata_sync",
       "segments": [
         {
           "end": 49,
@@ -544,8 +544,8 @@
           "shortName": "GetBackup"
         }
       },
-      "file": "metastore_generated_metastore_v1beta_dataproc_metastore_get_backup_async.py",
-      "regionTag": "metastore_generated_metastore_v1beta_DataprocMetastore_GetBackup_async",
+      "file": "metastore_v1beta_generated_dataproc_metastore_get_backup_async.py",
+      "regionTag": "metastore_v1beta_generated_DataprocMetastore_GetBackup_async",
       "segments": [
         {
           "end": 44,
@@ -588,8 +588,8 @@
           "shortName": "GetBackup"
         }
       },
-      "file": "metastore_generated_metastore_v1beta_dataproc_metastore_get_backup_sync.py",
-      "regionTag": "metastore_generated_metastore_v1beta_DataprocMetastore_GetBackup_sync",
+      "file": "metastore_v1beta_generated_dataproc_metastore_get_backup_sync.py",
+      "regionTag": "metastore_v1beta_generated_DataprocMetastore_GetBackup_sync",
       "segments": [
         {
           "end": 44,
@@ -633,8 +633,8 @@
           "shortName": "GetMetadataImport"
         }
       },
-      "file": "metastore_generated_metastore_v1beta_dataproc_metastore_get_metadata_import_async.py",
-      "regionTag": "metastore_generated_metastore_v1beta_DataprocMetastore_GetMetadataImport_async",
+      "file": "metastore_v1beta_generated_dataproc_metastore_get_metadata_import_async.py",
+      "regionTag": "metastore_v1beta_generated_DataprocMetastore_GetMetadataImport_async",
       "segments": [
         {
           "end": 44,
@@ -677,8 +677,8 @@
           "shortName": "GetMetadataImport"
         }
       },
-      "file": "metastore_generated_metastore_v1beta_dataproc_metastore_get_metadata_import_sync.py",
-      "regionTag": "metastore_generated_metastore_v1beta_DataprocMetastore_GetMetadataImport_sync",
+      "file": "metastore_v1beta_generated_dataproc_metastore_get_metadata_import_sync.py",
+      "regionTag": "metastore_v1beta_generated_DataprocMetastore_GetMetadataImport_sync",
       "segments": [
         {
           "end": 44,
@@ -722,8 +722,8 @@
           "shortName": "GetService"
         }
       },
-      "file": "metastore_generated_metastore_v1beta_dataproc_metastore_get_service_async.py",
-      "regionTag": "metastore_generated_metastore_v1beta_DataprocMetastore_GetService_async",
+      "file": "metastore_v1beta_generated_dataproc_metastore_get_service_async.py",
+      "regionTag": "metastore_v1beta_generated_DataprocMetastore_GetService_async",
       "segments": [
         {
           "end": 44,
@@ -766,8 +766,8 @@
           "shortName": "GetService"
         }
       },
-      "file": "metastore_generated_metastore_v1beta_dataproc_metastore_get_service_sync.py",
-      "regionTag": "metastore_generated_metastore_v1beta_DataprocMetastore_GetService_sync",
+      "file": "metastore_v1beta_generated_dataproc_metastore_get_service_sync.py",
+      "regionTag": "metastore_v1beta_generated_DataprocMetastore_GetService_sync",
       "segments": [
         {
           "end": 44,
@@ -811,8 +811,8 @@
           "shortName": "ListBackups"
         }
       },
-      "file": "metastore_generated_metastore_v1beta_dataproc_metastore_list_backups_async.py",
-      "regionTag": "metastore_generated_metastore_v1beta_DataprocMetastore_ListBackups_async",
+      "file": "metastore_v1beta_generated_dataproc_metastore_list_backups_async.py",
+      "regionTag": "metastore_v1beta_generated_DataprocMetastore_ListBackups_async",
       "segments": [
         {
           "end": 45,
@@ -855,8 +855,8 @@
           "shortName": "ListBackups"
         }
       },
-      "file": "metastore_generated_metastore_v1beta_dataproc_metastore_list_backups_sync.py",
-      "regionTag": "metastore_generated_metastore_v1beta_DataprocMetastore_ListBackups_sync",
+      "file": "metastore_v1beta_generated_dataproc_metastore_list_backups_sync.py",
+      "regionTag": "metastore_v1beta_generated_DataprocMetastore_ListBackups_sync",
       "segments": [
         {
           "end": 45,
@@ -900,8 +900,8 @@
           "shortName": "ListMetadataImports"
         }
       },
-      "file": "metastore_generated_metastore_v1beta_dataproc_metastore_list_metadata_imports_async.py",
-      "regionTag": "metastore_generated_metastore_v1beta_DataprocMetastore_ListMetadataImports_async",
+      "file": "metastore_v1beta_generated_dataproc_metastore_list_metadata_imports_async.py",
+      "regionTag": "metastore_v1beta_generated_DataprocMetastore_ListMetadataImports_async",
       "segments": [
         {
           "end": 45,
@@ -944,8 +944,8 @@
           "shortName": "ListMetadataImports"
         }
       },
-      "file": "metastore_generated_metastore_v1beta_dataproc_metastore_list_metadata_imports_sync.py",
-      "regionTag": "metastore_generated_metastore_v1beta_DataprocMetastore_ListMetadataImports_sync",
+      "file": "metastore_v1beta_generated_dataproc_metastore_list_metadata_imports_sync.py",
+      "regionTag": "metastore_v1beta_generated_DataprocMetastore_ListMetadataImports_sync",
       "segments": [
         {
           "end": 45,
@@ -989,8 +989,8 @@
           "shortName": "ListServices"
         }
       },
-      "file": "metastore_generated_metastore_v1beta_dataproc_metastore_list_services_async.py",
-      "regionTag": "metastore_generated_metastore_v1beta_DataprocMetastore_ListServices_async",
+      "file": "metastore_v1beta_generated_dataproc_metastore_list_services_async.py",
+      "regionTag": "metastore_v1beta_generated_DataprocMetastore_ListServices_async",
       "segments": [
         {
           "end": 45,
@@ -1033,8 +1033,8 @@
           "shortName": "ListServices"
         }
       },
-      "file": "metastore_generated_metastore_v1beta_dataproc_metastore_list_services_sync.py",
-      "regionTag": "metastore_generated_metastore_v1beta_DataprocMetastore_ListServices_sync",
+      "file": "metastore_v1beta_generated_dataproc_metastore_list_services_sync.py",
+      "regionTag": "metastore_v1beta_generated_DataprocMetastore_ListServices_sync",
       "segments": [
         {
           "end": 45,
@@ -1078,8 +1078,8 @@
           "shortName": "RestoreService"
         }
       },
-      "file": "metastore_generated_metastore_v1beta_dataproc_metastore_restore_service_async.py",
-      "regionTag": "metastore_generated_metastore_v1beta_DataprocMetastore_RestoreService_async",
+      "file": "metastore_v1beta_generated_dataproc_metastore_restore_service_async.py",
+      "regionTag": "metastore_v1beta_generated_DataprocMetastore_RestoreService_async",
       "segments": [
         {
           "end": 49,
@@ -1122,8 +1122,8 @@
           "shortName": "RestoreService"
         }
       },
-      "file": "metastore_generated_metastore_v1beta_dataproc_metastore_restore_service_sync.py",
-      "regionTag": "metastore_generated_metastore_v1beta_DataprocMetastore_RestoreService_sync",
+      "file": "metastore_v1beta_generated_dataproc_metastore_restore_service_sync.py",
+      "regionTag": "metastore_v1beta_generated_DataprocMetastore_RestoreService_sync",
       "segments": [
         {
           "end": 49,
@@ -1167,8 +1167,8 @@
           "shortName": "UpdateMetadataImport"
         }
       },
-      "file": "metastore_generated_metastore_v1beta_dataproc_metastore_update_metadata_import_async.py",
-      "regionTag": "metastore_generated_metastore_v1beta_DataprocMetastore_UpdateMetadataImport_async",
+      "file": "metastore_v1beta_generated_dataproc_metastore_update_metadata_import_async.py",
+      "regionTag": "metastore_v1beta_generated_DataprocMetastore_UpdateMetadataImport_async",
       "segments": [
         {
           "end": 47,
@@ -1211,8 +1211,8 @@
           "shortName": "UpdateMetadataImport"
         }
       },
-      "file": "metastore_generated_metastore_v1beta_dataproc_metastore_update_metadata_import_sync.py",
-      "regionTag": "metastore_generated_metastore_v1beta_DataprocMetastore_UpdateMetadataImport_sync",
+      "file": "metastore_v1beta_generated_dataproc_metastore_update_metadata_import_sync.py",
+      "regionTag": "metastore_v1beta_generated_DataprocMetastore_UpdateMetadataImport_sync",
       "segments": [
         {
           "end": 47,
@@ -1256,8 +1256,8 @@
           "shortName": "UpdateService"
         }
       },
-      "file": "metastore_generated_metastore_v1beta_dataproc_metastore_update_service_async.py",
-      "regionTag": "metastore_generated_metastore_v1beta_DataprocMetastore_UpdateService_async",
+      "file": "metastore_v1beta_generated_dataproc_metastore_update_service_async.py",
+      "regionTag": "metastore_v1beta_generated_DataprocMetastore_UpdateService_async",
       "segments": [
         {
           "end": 47,
@@ -1300,8 +1300,8 @@
           "shortName": "UpdateService"
         }
       },
-      "file": "metastore_generated_metastore_v1beta_dataproc_metastore_update_service_sync.py",
-      "regionTag": "metastore_generated_metastore_v1beta_DataprocMetastore_UpdateService_sync",
+      "file": "metastore_v1beta_generated_dataproc_metastore_update_service_sync.py",
+      "regionTag": "metastore_v1beta_generated_DataprocMetastore_UpdateService_sync",
       "segments": [
         {
           "end": 47,
