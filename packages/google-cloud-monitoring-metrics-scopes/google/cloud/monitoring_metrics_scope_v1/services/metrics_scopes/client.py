@@ -427,8 +427,7 @@ class MetricsScopesClient(metaclass=MetricsScopesClientMeta):
     ) -> metrics_scope.MetricsScope:
         r"""Returns a specific ``Metrics Scope``.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import monitoring_metrics_scope_v1
 
@@ -527,8 +526,7 @@ class MetricsScopesClient(metaclass=MetricsScopesClientMeta):
         first entry in the response.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import monitoring_metrics_scope_v1
 
@@ -599,8 +597,7 @@ class MetricsScopesClient(metaclass=MetricsScopesClientMeta):
         specified ``Metrics Scope``.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import monitoring_metrics_scope_v1
 
@@ -722,8 +719,7 @@ class MetricsScopesClient(metaclass=MetricsScopesClientMeta):
         ``Metrics Scope``.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import monitoring_metrics_scope_v1
 

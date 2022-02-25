@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for CreateMonitoredProject
+# Snippet for GetMetricsScope
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,27 +23,23 @@
 #   python3 -m pip install google-cloud-monitoring-metrics-scope
 
 
-# [START monitoring_generated_monitoring_metrics_scope_v1_MetricsScopes_CreateMonitoredProject_async]
+# [START monitoring_v1_generated_MetricsScopes_GetMetricsScope_async]
 from google.cloud import monitoring_metrics_scope_v1
 
 
-async def sample_create_monitored_project():
+async def sample_get_metrics_scope():
     # Create a client
     client = monitoring_metrics_scope_v1.MetricsScopesAsyncClient()
 
     # Initialize request argument(s)
-    request = monitoring_metrics_scope_v1.CreateMonitoredProjectRequest(
-        parent="parent_value",
+    request = monitoring_metrics_scope_v1.GetMetricsScopeRequest(
+        name="name_value",
     )
 
     # Make the request
-    operation = client.create_monitored_project(request=request)
-
-    print("Waiting for operation to complete...")
-
-    response = await operation.result()
+    response = await client.get_metrics_scope(request=request)
 
     # Handle the response
     print(response)
 
-# [END monitoring_generated_monitoring_metrics_scope_v1_MetricsScopes_CreateMonitoredProject_async]
+# [END monitoring_v1_generated_MetricsScopes_GetMetricsScope_async]

@@ -225,7 +225,7 @@ class MetricsScopesAsyncClient:
     ) -> metrics_scope.MetricsScope:
         r"""Returns a specific ``Metrics Scope``.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import monitoring_metrics_scope_v1
 
@@ -324,7 +324,7 @@ class MetricsScopesAsyncClient:
         first entry in the response.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import monitoring_metrics_scope_v1
 
@@ -390,7 +390,7 @@ class MetricsScopesAsyncClient:
         specified ``Metrics Scope``.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import monitoring_metrics_scope_v1
 
@@ -512,7 +512,7 @@ class MetricsScopesAsyncClient:
         ``Metrics Scope``.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import monitoring_metrics_scope_v1
 

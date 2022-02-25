@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-monitoring-metrics-scope
 
 
-# [START monitoring_generated_monitoring_metrics_scope_v1_MetricsScopes_ListMetricsScopesByMonitoredProject_async]
+# [START monitoring_v1_generated_MetricsScopes_ListMetricsScopesByMonitoredProject_async]
 from google.cloud import monitoring_metrics_scope_v1
 
 
@@ -42,4 +42,4 @@ async def sample_list_metrics_scopes_by_monitored_project():
     # Handle the response
     print(response)
 
-# [END monitoring_generated_monitoring_metrics_scope_v1_MetricsScopes_ListMetricsScopesByMonitoredProject_async]
+# [END monitoring_v1_generated_MetricsScopes_ListMetricsScopesByMonitoredProject_async]

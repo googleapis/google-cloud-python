@@ -10,8 +10,8 @@
           "shortName": "CreateMonitoredProject"
         }
       },
-      "file": "monitoring_generated_monitoring_metrics_scope_v1_metrics_scopes_create_monitored_project_async.py",
-      "regionTag": "monitoring_generated_monitoring_metrics_scope_v1_MetricsScopes_CreateMonitoredProject_async",
+      "file": "monitoring_v1_generated_metrics_scopes_create_monitored_project_async.py",
+      "regionTag": "monitoring_v1_generated_MetricsScopes_CreateMonitoredProject_async",
       "segments": [
         {
           "end": 48,
@@ -54,8 +54,8 @@
           "shortName": "CreateMonitoredProject"
         }
       },
-      "file": "monitoring_generated_monitoring_metrics_scope_v1_metrics_scopes_create_monitored_project_sync.py",
-      "regionTag": "monitoring_generated_monitoring_metrics_scope_v1_MetricsScopes_CreateMonitoredProject_sync",
+      "file": "monitoring_v1_generated_metrics_scopes_create_monitored_project_sync.py",
+      "regionTag": "monitoring_v1_generated_MetricsScopes_CreateMonitoredProject_sync",
       "segments": [
         {
           "end": 48,
@@ -99,8 +99,8 @@
           "shortName": "DeleteMonitoredProject"
         }
       },
-      "file": "monitoring_generated_monitoring_metrics_scope_v1_metrics_scopes_delete_monitored_project_async.py",
-      "regionTag": "monitoring_generated_monitoring_metrics_scope_v1_MetricsScopes_DeleteMonitoredProject_async",
+      "file": "monitoring_v1_generated_metrics_scopes_delete_monitored_project_async.py",
+      "regionTag": "monitoring_v1_generated_MetricsScopes_DeleteMonitoredProject_async",
       "segments": [
         {
           "end": 48,
@@ -143,8 +143,8 @@
           "shortName": "DeleteMonitoredProject"
         }
       },
-      "file": "monitoring_generated_monitoring_metrics_scope_v1_metrics_scopes_delete_monitored_project_sync.py",
-      "regionTag": "monitoring_generated_monitoring_metrics_scope_v1_MetricsScopes_DeleteMonitoredProject_sync",
+      "file": "monitoring_v1_generated_metrics_scopes_delete_monitored_project_sync.py",
+      "regionTag": "monitoring_v1_generated_MetricsScopes_DeleteMonitoredProject_sync",
       "segments": [
         {
           "end": 48,
@@ -188,8 +188,8 @@
           "shortName": "GetMetricsScope"
         }
       },
-      "file": "monitoring_generated_monitoring_metrics_scope_v1_metrics_scopes_get_metrics_scope_async.py",
-      "regionTag": "monitoring_generated_monitoring_metrics_scope_v1_MetricsScopes_GetMetricsScope_async",
+      "file": "monitoring_v1_generated_metrics_scopes_get_metrics_scope_async.py",
+      "regionTag": "monitoring_v1_generated_MetricsScopes_GetMetricsScope_async",
       "segments": [
         {
           "end": 44,
@@ -232,8 +232,8 @@
           "shortName": "GetMetricsScope"
         }
       },
-      "file": "monitoring_generated_monitoring_metrics_scope_v1_metrics_scopes_get_metrics_scope_sync.py",
-      "regionTag": "monitoring_generated_monitoring_metrics_scope_v1_MetricsScopes_GetMetricsScope_sync",
+      "file": "monitoring_v1_generated_metrics_scopes_get_metrics_scope_sync.py",
+      "regionTag": "monitoring_v1_generated_MetricsScopes_GetMetricsScope_sync",
       "segments": [
         {
           "end": 44,
@@ -277,8 +277,8 @@
           "shortName": "ListMetricsScopesByMonitoredProject"
         }
       },
-      "file": "monitoring_generated_monitoring_metrics_scope_v1_metrics_scopes_list_metrics_scopes_by_monitored_project_async.py",
-      "regionTag": "monitoring_generated_monitoring_metrics_scope_v1_MetricsScopes_ListMetricsScopesByMonitoredProject_async",
+      "file": "monitoring_v1_generated_metrics_scopes_list_metrics_scopes_by_monitored_project_async.py",
+      "regionTag": "monitoring_v1_generated_MetricsScopes_ListMetricsScopesByMonitoredProject_async",
       "segments": [
         {
           "end": 44,
@@ -321,8 +321,8 @@
           "shortName": "ListMetricsScopesByMonitoredProject"
         }
       },
-      "file": "monitoring_generated_monitoring_metrics_scope_v1_metrics_scopes_list_metrics_scopes_by_monitored_project_sync.py",
-      "regionTag": "monitoring_generated_monitoring_metrics_scope_v1_MetricsScopes_ListMetricsScopesByMonitoredProject_sync",
+      "file": "monitoring_v1_generated_metrics_scopes_list_metrics_scopes_by_monitored_project_sync.py",
+      "regionTag": "monitoring_v1_generated_MetricsScopes_ListMetricsScopesByMonitoredProject_sync",
       "segments": [
         {
           "end": 44,

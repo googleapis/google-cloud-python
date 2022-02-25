@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ListMetricsScopesByMonitoredProject
+# Snippet for CreateMonitoredProject
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,23 +23,27 @@
 #   python3 -m pip install google-cloud-monitoring-metrics-scope
 
 
-# [START monitoring_generated_monitoring_metrics_scope_v1_MetricsScopes_ListMetricsScopesByMonitoredProject_sync]
+# [START monitoring_v1_generated_MetricsScopes_CreateMonitoredProject_sync]
 from google.cloud import monitoring_metrics_scope_v1
 
 
-def sample_list_metrics_scopes_by_monitored_project():
+def sample_create_monitored_project():
     # Create a client
     client = monitoring_metrics_scope_v1.MetricsScopesClient()
 
     # Initialize request argument(s)
-    request = monitoring_metrics_scope_v1.ListMetricsScopesByMonitoredProjectRequest(
-        monitored_resource_container="monitored_resource_container_value",
+    request = monitoring_metrics_scope_v1.CreateMonitoredProjectRequest(
+        parent="parent_value",
     )
 
     # Make the request
-    response = client.list_metrics_scopes_by_monitored_project(request=request)
+    operation = client.create_monitored_project(request=request)
+
+    print("Waiting for operation to complete...")
+
+    response = operation.result()
 
     # Handle the response
     print(response)
 
-# [END monitoring_generated_monitoring_metrics_scope_v1_MetricsScopes_ListMetricsScopesByMonitoredProject_sync]
+# [END monitoring_v1_generated_MetricsScopes_CreateMonitoredProject_sync]

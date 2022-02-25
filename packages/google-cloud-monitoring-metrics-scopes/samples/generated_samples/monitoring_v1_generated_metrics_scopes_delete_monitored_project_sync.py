@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for GetMetricsScope
+# Snippet for DeleteMonitoredProject
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,23 +23,27 @@
 #   python3 -m pip install google-cloud-monitoring-metrics-scope
 
 
-# [START monitoring_generated_monitoring_metrics_scope_v1_MetricsScopes_GetMetricsScope_sync]
+# [START monitoring_v1_generated_MetricsScopes_DeleteMonitoredProject_sync]
 from google.cloud import monitoring_metrics_scope_v1
 
 
-def sample_get_metrics_scope():
+def sample_delete_monitored_project():
     # Create a client
     client = monitoring_metrics_scope_v1.MetricsScopesClient()
 
     # Initialize request argument(s)
-    request = monitoring_metrics_scope_v1.GetMetricsScopeRequest(
+    request = monitoring_metrics_scope_v1.DeleteMonitoredProjectRequest(
         name="name_value",
     )
 
     # Make the request
-    response = client.get_metrics_scope(request=request)
+    operation = client.delete_monitored_project(request=request)
+
+    print("Waiting for operation to complete...")
+
+    response = operation.result()
 
     # Handle the response
     print(response)
 
-# [END monitoring_generated_monitoring_metrics_scope_v1_MetricsScopes_GetMetricsScope_sync]
+# [END monitoring_v1_generated_MetricsScopes_DeleteMonitoredProject_sync]
