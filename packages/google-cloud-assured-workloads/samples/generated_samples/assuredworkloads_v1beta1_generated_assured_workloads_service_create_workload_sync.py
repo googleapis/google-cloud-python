@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for DeleteWorkload
+# Snippet for CreateWorkload
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,21 +23,32 @@
 #   python3 -m pip install google-cloud-assured-workloads
 
 
-# [START assuredworkloads_generated_assuredworkloads_v1beta1_AssuredWorkloadsService_DeleteWorkload_async]
+# [START assuredworkloads_v1beta1_generated_AssuredWorkloadsService_CreateWorkload_sync]
 from google.cloud import assuredworkloads_v1beta1
 
 
-async def sample_delete_workload():
+def sample_create_workload():
     # Create a client
-    client = assuredworkloads_v1beta1.AssuredWorkloadsServiceAsyncClient()
+    client = assuredworkloads_v1beta1.AssuredWorkloadsServiceClient()
 
     # Initialize request argument(s)
-    request = assuredworkloads_v1beta1.DeleteWorkloadRequest(
-        name="name_value",
+    workload = assuredworkloads_v1beta1.Workload()
+    workload.display_name = "display_name_value"
+    workload.compliance_regime = "CA_REGIONS_AND_SUPPORT"
+
+    request = assuredworkloads_v1beta1.CreateWorkloadRequest(
+        parent="parent_value",
+        workload=workload,
     )
 
     # Make the request
-    await client.delete_workload(request=request)
+    operation = client.create_workload(request=request)
 
+    print("Waiting for operation to complete...")
 
-# [END assuredworkloads_generated_assuredworkloads_v1beta1_AssuredWorkloadsService_DeleteWorkload_async]
+    response = operation.result()
+
+    # Handle the response
+    print(response)
+
+# [END assuredworkloads_v1beta1_generated_AssuredWorkloadsService_CreateWorkload_sync]

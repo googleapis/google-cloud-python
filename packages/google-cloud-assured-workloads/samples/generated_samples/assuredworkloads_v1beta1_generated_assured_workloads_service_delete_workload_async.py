@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for GetWorkload
+# Snippet for DeleteWorkload
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,23 +23,21 @@
 #   python3 -m pip install google-cloud-assured-workloads
 
 
-# [START assuredworkloads_generated_assuredworkloads_v1_AssuredWorkloadsService_GetWorkload_sync]
-from google.cloud import assuredworkloads_v1
+# [START assuredworkloads_v1beta1_generated_AssuredWorkloadsService_DeleteWorkload_async]
+from google.cloud import assuredworkloads_v1beta1
 
 
-def sample_get_workload():
+async def sample_delete_workload():
     # Create a client
-    client = assuredworkloads_v1.AssuredWorkloadsServiceClient()
+    client = assuredworkloads_v1beta1.AssuredWorkloadsServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = assuredworkloads_v1.GetWorkloadRequest(
+    request = assuredworkloads_v1beta1.DeleteWorkloadRequest(
         name="name_value",
     )
 
     # Make the request
-    response = client.get_workload(request=request)
+    await client.delete_workload(request=request)
 
-    # Handle the response
-    print(response)
 
-# [END assuredworkloads_generated_assuredworkloads_v1_AssuredWorkloadsService_GetWorkload_sync]
+# [END assuredworkloads_v1beta1_generated_AssuredWorkloadsService_DeleteWorkload_async]

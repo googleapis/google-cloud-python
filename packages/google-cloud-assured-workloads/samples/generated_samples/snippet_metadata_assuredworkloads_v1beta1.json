@@ -10,8 +10,8 @@
           "shortName": "CreateWorkload"
         }
       },
-      "file": "assuredworkloads_generated_assuredworkloads_v1beta1_assured_workloads_service_create_workload_async.py",
-      "regionTag": "assuredworkloads_generated_assuredworkloads_v1beta1_AssuredWorkloadsService_CreateWorkload_async",
+      "file": "assuredworkloads_v1beta1_generated_assured_workloads_service_create_workload_async.py",
+      "regionTag": "assuredworkloads_v1beta1_generated_AssuredWorkloadsService_CreateWorkload_async",
       "segments": [
         {
           "end": 53,
@@ -54,8 +54,8 @@
           "shortName": "CreateWorkload"
         }
       },
-      "file": "assuredworkloads_generated_assuredworkloads_v1beta1_assured_workloads_service_create_workload_sync.py",
-      "regionTag": "assuredworkloads_generated_assuredworkloads_v1beta1_AssuredWorkloadsService_CreateWorkload_sync",
+      "file": "assuredworkloads_v1beta1_generated_assured_workloads_service_create_workload_sync.py",
+      "regionTag": "assuredworkloads_v1beta1_generated_AssuredWorkloadsService_CreateWorkload_sync",
       "segments": [
         {
           "end": 53,
@@ -99,8 +99,8 @@
           "shortName": "DeleteWorkload"
         }
       },
-      "file": "assuredworkloads_generated_assuredworkloads_v1beta1_assured_workloads_service_delete_workload_async.py",
-      "regionTag": "assuredworkloads_generated_assuredworkloads_v1beta1_AssuredWorkloadsService_DeleteWorkload_async",
+      "file": "assuredworkloads_v1beta1_generated_assured_workloads_service_delete_workload_async.py",
+      "regionTag": "assuredworkloads_v1beta1_generated_AssuredWorkloadsService_DeleteWorkload_async",
       "segments": [
         {
           "end": 42,
@@ -141,8 +141,8 @@
           "shortName": "DeleteWorkload"
         }
       },
-      "file": "assuredworkloads_generated_assuredworkloads_v1beta1_assured_workloads_service_delete_workload_sync.py",
-      "regionTag": "assuredworkloads_generated_assuredworkloads_v1beta1_AssuredWorkloadsService_DeleteWorkload_sync",
+      "file": "assuredworkloads_v1beta1_generated_assured_workloads_service_delete_workload_sync.py",
+      "regionTag": "assuredworkloads_v1beta1_generated_AssuredWorkloadsService_DeleteWorkload_sync",
       "segments": [
         {
           "end": 42,
@@ -184,8 +184,8 @@
           "shortName": "GetWorkload"
         }
       },
-      "file": "assuredworkloads_generated_assuredworkloads_v1beta1_assured_workloads_service_get_workload_async.py",
-      "regionTag": "assuredworkloads_generated_assuredworkloads_v1beta1_AssuredWorkloadsService_GetWorkload_async",
+      "file": "assuredworkloads_v1beta1_generated_assured_workloads_service_get_workload_async.py",
+      "regionTag": "assuredworkloads_v1beta1_generated_AssuredWorkloadsService_GetWorkload_async",
       "segments": [
         {
           "end": 44,
@@ -228,8 +228,8 @@
           "shortName": "GetWorkload"
         }
       },
-      "file": "assuredworkloads_generated_assuredworkloads_v1beta1_assured_workloads_service_get_workload_sync.py",
-      "regionTag": "assuredworkloads_generated_assuredworkloads_v1beta1_AssuredWorkloadsService_GetWorkload_sync",
+      "file": "assuredworkloads_v1beta1_generated_assured_workloads_service_get_workload_sync.py",
+      "regionTag": "assuredworkloads_v1beta1_generated_AssuredWorkloadsService_GetWorkload_sync",
       "segments": [
         {
           "end": 44,
@@ -273,8 +273,8 @@
           "shortName": "ListWorkloads"
         }
       },
-      "file": "assuredworkloads_generated_assuredworkloads_v1beta1_assured_workloads_service_list_workloads_async.py",
-      "regionTag": "assuredworkloads_generated_assuredworkloads_v1beta1_AssuredWorkloadsService_ListWorkloads_async",
+      "file": "assuredworkloads_v1beta1_generated_assured_workloads_service_list_workloads_async.py",
+      "regionTag": "assuredworkloads_v1beta1_generated_AssuredWorkloadsService_ListWorkloads_async",
       "segments": [
         {
           "end": 45,
@@ -317,8 +317,8 @@
           "shortName": "ListWorkloads"
         }
       },
-      "file": "assuredworkloads_generated_assuredworkloads_v1beta1_assured_workloads_service_list_workloads_sync.py",
-      "regionTag": "assuredworkloads_generated_assuredworkloads_v1beta1_AssuredWorkloadsService_ListWorkloads_sync",
+      "file": "assuredworkloads_v1beta1_generated_assured_workloads_service_list_workloads_sync.py",
+      "regionTag": "assuredworkloads_v1beta1_generated_AssuredWorkloadsService_ListWorkloads_sync",
       "segments": [
         {
           "end": 45,
@@ -362,8 +362,8 @@
           "shortName": "UpdateWorkload"
         }
       },
-      "file": "assuredworkloads_generated_assuredworkloads_v1beta1_assured_workloads_service_update_workload_async.py",
-      "regionTag": "assuredworkloads_generated_assuredworkloads_v1beta1_AssuredWorkloadsService_UpdateWorkload_async",
+      "file": "assuredworkloads_v1beta1_generated_assured_workloads_service_update_workload_async.py",
+      "regionTag": "assuredworkloads_v1beta1_generated_AssuredWorkloadsService_UpdateWorkload_async",
       "segments": [
         {
           "end": 48,
@@ -406,8 +406,8 @@
           "shortName": "UpdateWorkload"
         }
       },
-      "file": "assuredworkloads_generated_assuredworkloads_v1beta1_assured_workloads_service_update_workload_sync.py",
-      "regionTag": "assuredworkloads_generated_assuredworkloads_v1beta1_AssuredWorkloadsService_UpdateWorkload_sync",
+      "file": "assuredworkloads_v1beta1_generated_assured_workloads_service_update_workload_sync.py",
+      "regionTag": "assuredworkloads_v1beta1_generated_AssuredWorkloadsService_UpdateWorkload_sync",
       "segments": [
         {
           "end": 48,

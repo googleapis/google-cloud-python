@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for GetWorkload
+# Snippet for UpdateWorkload
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,23 +23,28 @@
 #   python3 -m pip install google-cloud-assured-workloads
 
 
-# [START assuredworkloads_generated_assuredworkloads_v1beta1_AssuredWorkloadsService_GetWorkload_async]
-from google.cloud import assuredworkloads_v1beta1
+# [START assuredworkloads_v1_generated_AssuredWorkloadsService_UpdateWorkload_async]
+from google.cloud import assuredworkloads_v1
 
 
-async def sample_get_workload():
+async def sample_update_workload():
     # Create a client
-    client = assuredworkloads_v1beta1.AssuredWorkloadsServiceAsyncClient()
+    client = assuredworkloads_v1.AssuredWorkloadsServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = assuredworkloads_v1beta1.GetWorkloadRequest(
-        name="name_value",
+    workload = assuredworkloads_v1.Workload()
+    workload.display_name = "display_name_value"
+    workload.compliance_regime = "CA_REGIONS_AND_SUPPORT"
+    workload.billing_account = "billing_account_value"
+
+    request = assuredworkloads_v1.UpdateWorkloadRequest(
+        workload=workload,
     )
 
     # Make the request
-    response = await client.get_workload(request=request)
+    response = await client.update_workload(request=request)
 
     # Handle the response
     print(response)
 
-# [END assuredworkloads_generated_assuredworkloads_v1beta1_AssuredWorkloadsService_GetWorkload_async]
+# [END assuredworkloads_v1_generated_AssuredWorkloadsService_UpdateWorkload_async]

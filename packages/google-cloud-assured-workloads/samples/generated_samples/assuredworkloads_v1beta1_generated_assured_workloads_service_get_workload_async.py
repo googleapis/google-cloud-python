@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ListWorkloads
+# Snippet for GetWorkload
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,24 +23,23 @@
 #   python3 -m pip install google-cloud-assured-workloads
 
 
-# [START assuredworkloads_generated_assuredworkloads_v1_AssuredWorkloadsService_ListWorkloads_async]
-from google.cloud import assuredworkloads_v1
+# [START assuredworkloads_v1beta1_generated_AssuredWorkloadsService_GetWorkload_async]
+from google.cloud import assuredworkloads_v1beta1
 
 
-async def sample_list_workloads():
+async def sample_get_workload():
     # Create a client
-    client = assuredworkloads_v1.AssuredWorkloadsServiceAsyncClient()
+    client = assuredworkloads_v1beta1.AssuredWorkloadsServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = assuredworkloads_v1.ListWorkloadsRequest(
-        parent="parent_value",
+    request = assuredworkloads_v1beta1.GetWorkloadRequest(
+        name="name_value",
     )
 
     # Make the request
-    page_result = client.list_workloads(request=request)
+    response = await client.get_workload(request=request)
 
     # Handle the response
-    async for response in page_result:
-        print(response)
+    print(response)
 
-# [END assuredworkloads_generated_assuredworkloads_v1_AssuredWorkloadsService_ListWorkloads_async]
+# [END assuredworkloads_v1beta1_generated_AssuredWorkloadsService_GetWorkload_async]

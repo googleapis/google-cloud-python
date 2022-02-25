@@ -23,21 +23,20 @@
 #   python3 -m pip install google-cloud-assured-workloads
 
 
-# [START assuredworkloads_generated_assuredworkloads_v1_AssuredWorkloadsService_UpdateWorkload_sync]
-from google.cloud import assuredworkloads_v1
+# [START assuredworkloads_v1beta1_generated_AssuredWorkloadsService_UpdateWorkload_sync]
+from google.cloud import assuredworkloads_v1beta1
 
 
 def sample_update_workload():
     # Create a client
-    client = assuredworkloads_v1.AssuredWorkloadsServiceClient()
+    client = assuredworkloads_v1beta1.AssuredWorkloadsServiceClient()
 
     # Initialize request argument(s)
-    workload = assuredworkloads_v1.Workload()
+    workload = assuredworkloads_v1beta1.Workload()
     workload.display_name = "display_name_value"
     workload.compliance_regime = "CA_REGIONS_AND_SUPPORT"
-    workload.billing_account = "billing_account_value"
 
-    request = assuredworkloads_v1.UpdateWorkloadRequest(
+    request = assuredworkloads_v1beta1.UpdateWorkloadRequest(
         workload=workload,
     )
 
@@ -47,4 +46,4 @@ def sample_update_workload():
     # Handle the response
     print(response)
 
-# [END assuredworkloads_generated_assuredworkloads_v1_AssuredWorkloadsService_UpdateWorkload_sync]
+# [END assuredworkloads_v1beta1_generated_AssuredWorkloadsService_UpdateWorkload_sync]

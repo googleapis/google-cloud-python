@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for CreateWorkload
+# Snippet for ListWorkloads
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,32 +23,24 @@
 #   python3 -m pip install google-cloud-assured-workloads
 
 
-# [START assuredworkloads_generated_assuredworkloads_v1beta1_AssuredWorkloadsService_CreateWorkload_sync]
+# [START assuredworkloads_v1beta1_generated_AssuredWorkloadsService_ListWorkloads_async]
 from google.cloud import assuredworkloads_v1beta1
 
 
-def sample_create_workload():
+async def sample_list_workloads():
     # Create a client
-    client = assuredworkloads_v1beta1.AssuredWorkloadsServiceClient()
+    client = assuredworkloads_v1beta1.AssuredWorkloadsServiceAsyncClient()
 
     # Initialize request argument(s)
-    workload = assuredworkloads_v1beta1.Workload()
-    workload.display_name = "display_name_value"
-    workload.compliance_regime = "CA_REGIONS_AND_SUPPORT"
-
-    request = assuredworkloads_v1beta1.CreateWorkloadRequest(
+    request = assuredworkloads_v1beta1.ListWorkloadsRequest(
         parent="parent_value",
-        workload=workload,
     )
 
     # Make the request
-    operation = client.create_workload(request=request)
-
-    print("Waiting for operation to complete...")
-
-    response = operation.result()
+    page_result = client.list_workloads(request=request)
 
     # Handle the response
-    print(response)
+    async for response in page_result:
+        print(response)
 
-# [END assuredworkloads_generated_assuredworkloads_v1beta1_AssuredWorkloadsService_CreateWorkload_sync]
+# [END assuredworkloads_v1beta1_generated_AssuredWorkloadsService_ListWorkloads_async]

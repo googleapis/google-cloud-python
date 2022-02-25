@@ -227,7 +227,7 @@ class AssuredWorkloadsServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Creates Assured Workload.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import assuredworkloads_v1beta1
 
@@ -348,7 +348,7 @@ class AssuredWorkloadsServiceAsyncClient:
         workload can be in progress.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import assuredworkloads_v1beta1
 
@@ -458,7 +458,7 @@ class AssuredWorkloadsServiceAsyncClient:
         with a FAILED_PRECONDITION error.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import assuredworkloads_v1beta1
 
@@ -547,7 +547,7 @@ class AssuredWorkloadsServiceAsyncClient:
     ) -> assuredworkloads_v1beta1.Workload:
         r"""Gets Assured Workload associated with a CRM Node
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import assuredworkloads_v1beta1
 
@@ -650,7 +650,7 @@ class AssuredWorkloadsServiceAsyncClient:
     ) -> pagers.ListWorkloadsAsyncPager:
         r"""Lists Assured Workloads under a CRM Node.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import assuredworkloads_v1beta1
 

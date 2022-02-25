@@ -417,8 +417,7 @@ class AssuredWorkloadsServiceClient(metaclass=AssuredWorkloadsServiceClientMeta)
     ) -> operation.Operation:
         r"""Creates Assured Workload.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import assuredworkloads_v1
 
@@ -540,8 +539,7 @@ class AssuredWorkloadsServiceClient(metaclass=AssuredWorkloadsServiceClientMeta)
         workload can be in progress.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import assuredworkloads_v1
 
@@ -652,8 +650,7 @@ class AssuredWorkloadsServiceClient(metaclass=AssuredWorkloadsServiceClientMeta)
         with a FAILED_PRECONDITION error.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import assuredworkloads_v1
 
@@ -733,8 +730,7 @@ class AssuredWorkloadsServiceClient(metaclass=AssuredWorkloadsServiceClientMeta)
     ) -> assuredworkloads.Workload:
         r"""Gets Assured Workload associated with a CRM Node
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import assuredworkloads_v1
 
@@ -828,8 +824,7 @@ class AssuredWorkloadsServiceClient(metaclass=AssuredWorkloadsServiceClientMeta)
     ) -> pagers.ListWorkloadsPager:
         r"""Lists Assured Workloads under a CRM Node.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import assuredworkloads_v1
 

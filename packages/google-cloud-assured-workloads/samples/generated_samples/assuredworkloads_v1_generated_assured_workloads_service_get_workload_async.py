@@ -23,23 +23,23 @@
 #   python3 -m pip install google-cloud-assured-workloads
 
 
-# [START assuredworkloads_generated_assuredworkloads_v1beta1_AssuredWorkloadsService_GetWorkload_sync]
-from google.cloud import assuredworkloads_v1beta1
+# [START assuredworkloads_v1_generated_AssuredWorkloadsService_GetWorkload_async]
+from google.cloud import assuredworkloads_v1
 
 
-def sample_get_workload():
+async def sample_get_workload():
     # Create a client
-    client = assuredworkloads_v1beta1.AssuredWorkloadsServiceClient()
+    client = assuredworkloads_v1.AssuredWorkloadsServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = assuredworkloads_v1beta1.GetWorkloadRequest(
+    request = assuredworkloads_v1.GetWorkloadRequest(
         name="name_value",
     )
 
     # Make the request
-    response = client.get_workload(request=request)
+    response = await client.get_workload(request=request)
 
     # Handle the response
     print(response)
 
-# [END assuredworkloads_generated_assuredworkloads_v1beta1_AssuredWorkloadsService_GetWorkload_sync]
+# [END assuredworkloads_v1_generated_AssuredWorkloadsService_GetWorkload_async]
