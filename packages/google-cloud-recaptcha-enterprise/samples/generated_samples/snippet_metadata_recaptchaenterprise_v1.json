@@ -10,8 +10,8 @@
           "shortName": "AnnotateAssessment"
         }
       },
-      "file": "recaptchaenterprise_generated_recaptchaenterprise_v1_recaptcha_enterprise_service_annotate_assessment_async.py",
-      "regionTag": "recaptchaenterprise_generated_recaptchaenterprise_v1_RecaptchaEnterpriseService_AnnotateAssessment_async",
+      "file": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_annotate_assessment_async.py",
+      "regionTag": "recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_AnnotateAssessment_async",
       "segments": [
         {
           "end": 44,
@@ -54,8 +54,8 @@
           "shortName": "AnnotateAssessment"
         }
       },
-      "file": "recaptchaenterprise_generated_recaptchaenterprise_v1_recaptcha_enterprise_service_annotate_assessment_sync.py",
-      "regionTag": "recaptchaenterprise_generated_recaptchaenterprise_v1_RecaptchaEnterpriseService_AnnotateAssessment_sync",
+      "file": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_annotate_assessment_sync.py",
+      "regionTag": "recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_AnnotateAssessment_sync",
       "segments": [
         {
           "end": 44,
@@ -99,8 +99,8 @@
           "shortName": "CreateAssessment"
         }
       },
-      "file": "recaptchaenterprise_generated_recaptchaenterprise_v1_recaptcha_enterprise_service_create_assessment_async.py",
-      "regionTag": "recaptchaenterprise_generated_recaptchaenterprise_v1_RecaptchaEnterpriseService_CreateAssessment_async",
+      "file": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_create_assessment_async.py",
+      "regionTag": "recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_CreateAssessment_async",
       "segments": [
         {
           "end": 44,
@@ -143,8 +143,8 @@
           "shortName": "CreateAssessment"
         }
       },
-      "file": "recaptchaenterprise_generated_recaptchaenterprise_v1_recaptcha_enterprise_service_create_assessment_sync.py",
-      "regionTag": "recaptchaenterprise_generated_recaptchaenterprise_v1_RecaptchaEnterpriseService_CreateAssessment_sync",
+      "file": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_create_assessment_sync.py",
+      "regionTag": "recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_CreateAssessment_sync",
       "segments": [
         {
           "end": 44,
@@ -188,8 +188,8 @@
           "shortName": "CreateKey"
         }
       },
-      "file": "recaptchaenterprise_generated_recaptchaenterprise_v1_recaptcha_enterprise_service_create_key_async.py",
-      "regionTag": "recaptchaenterprise_generated_recaptchaenterprise_v1_RecaptchaEnterpriseService_CreateKey_async",
+      "file": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_create_key_async.py",
+      "regionTag": "recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_CreateKey_async",
       "segments": [
         {
           "end": 48,
@@ -232,8 +232,8 @@
           "shortName": "CreateKey"
         }
       },
-      "file": "recaptchaenterprise_generated_recaptchaenterprise_v1_recaptcha_enterprise_service_create_key_sync.py",
-      "regionTag": "recaptchaenterprise_generated_recaptchaenterprise_v1_RecaptchaEnterpriseService_CreateKey_sync",
+      "file": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_create_key_sync.py",
+      "regionTag": "recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_CreateKey_sync",
       "segments": [
         {
           "end": 48,
@@ -277,8 +277,8 @@
           "shortName": "DeleteKey"
         }
       },
-      "file": "recaptchaenterprise_generated_recaptchaenterprise_v1_recaptcha_enterprise_service_delete_key_async.py",
-      "regionTag": "recaptchaenterprise_generated_recaptchaenterprise_v1_RecaptchaEnterpriseService_DeleteKey_async",
+      "file": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_delete_key_async.py",
+      "regionTag": "recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_DeleteKey_async",
       "segments": [
         {
           "end": 42,
@@ -319,8 +319,8 @@
           "shortName": "DeleteKey"
         }
       },
-      "file": "recaptchaenterprise_generated_recaptchaenterprise_v1_recaptcha_enterprise_service_delete_key_sync.py",
-      "regionTag": "recaptchaenterprise_generated_recaptchaenterprise_v1_RecaptchaEnterpriseService_DeleteKey_sync",
+      "file": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_delete_key_sync.py",
+      "regionTag": "recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_DeleteKey_sync",
       "segments": [
         {
           "end": 42,
@@ -362,8 +362,8 @@
           "shortName": "GetKey"
         }
       },
-      "file": "recaptchaenterprise_generated_recaptchaenterprise_v1_recaptcha_enterprise_service_get_key_async.py",
-      "regionTag": "recaptchaenterprise_generated_recaptchaenterprise_v1_RecaptchaEnterpriseService_GetKey_async",
+      "file": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_get_key_async.py",
+      "regionTag": "recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_GetKey_async",
       "segments": [
         {
           "end": 44,
@@ -406,8 +406,8 @@
           "shortName": "GetKey"
         }
       },
-      "file": "recaptchaenterprise_generated_recaptchaenterprise_v1_recaptcha_enterprise_service_get_key_sync.py",
-      "regionTag": "recaptchaenterprise_generated_recaptchaenterprise_v1_RecaptchaEnterpriseService_GetKey_sync",
+      "file": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_get_key_sync.py",
+      "regionTag": "recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_GetKey_sync",
       "segments": [
         {
           "end": 44,
@@ -451,8 +451,8 @@
           "shortName": "GetMetrics"
         }
       },
-      "file": "recaptchaenterprise_generated_recaptchaenterprise_v1_recaptcha_enterprise_service_get_metrics_async.py",
-      "regionTag": "recaptchaenterprise_generated_recaptchaenterprise_v1_RecaptchaEnterpriseService_GetMetrics_async",
+      "file": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_get_metrics_async.py",
+      "regionTag": "recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_GetMetrics_async",
       "segments": [
         {
           "end": 44,
@@ -495,8 +495,8 @@
           "shortName": "GetMetrics"
         }
       },
-      "file": "recaptchaenterprise_generated_recaptchaenterprise_v1_recaptcha_enterprise_service_get_metrics_sync.py",
-      "regionTag": "recaptchaenterprise_generated_recaptchaenterprise_v1_RecaptchaEnterpriseService_GetMetrics_sync",
+      "file": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_get_metrics_sync.py",
+      "regionTag": "recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_GetMetrics_sync",
       "segments": [
         {
           "end": 44,
@@ -540,8 +540,8 @@
           "shortName": "ListKeys"
         }
       },
-      "file": "recaptchaenterprise_generated_recaptchaenterprise_v1_recaptcha_enterprise_service_list_keys_async.py",
-      "regionTag": "recaptchaenterprise_generated_recaptchaenterprise_v1_RecaptchaEnterpriseService_ListKeys_async",
+      "file": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_list_keys_async.py",
+      "regionTag": "recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_ListKeys_async",
       "segments": [
         {
           "end": 45,
@@ -584,8 +584,8 @@
           "shortName": "ListKeys"
         }
       },
-      "file": "recaptchaenterprise_generated_recaptchaenterprise_v1_recaptcha_enterprise_service_list_keys_sync.py",
-      "regionTag": "recaptchaenterprise_generated_recaptchaenterprise_v1_RecaptchaEnterpriseService_ListKeys_sync",
+      "file": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_list_keys_sync.py",
+      "regionTag": "recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_ListKeys_sync",
       "segments": [
         {
           "end": 45,
@@ -629,8 +629,8 @@
           "shortName": "ListRelatedAccountGroupMemberships"
         }
       },
-      "file": "recaptchaenterprise_generated_recaptchaenterprise_v1_recaptcha_enterprise_service_list_related_account_group_memberships_async.py",
-      "regionTag": "recaptchaenterprise_generated_recaptchaenterprise_v1_RecaptchaEnterpriseService_ListRelatedAccountGroupMemberships_async",
+      "file": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_list_related_account_group_memberships_async.py",
+      "regionTag": "recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_ListRelatedAccountGroupMemberships_async",
       "segments": [
         {
           "end": 45,
@@ -673,8 +673,8 @@
           "shortName": "ListRelatedAccountGroupMemberships"
         }
       },
-      "file": "recaptchaenterprise_generated_recaptchaenterprise_v1_recaptcha_enterprise_service_list_related_account_group_memberships_sync.py",
-      "regionTag": "recaptchaenterprise_generated_recaptchaenterprise_v1_RecaptchaEnterpriseService_ListRelatedAccountGroupMemberships_sync",
+      "file": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_list_related_account_group_memberships_sync.py",
+      "regionTag": "recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_ListRelatedAccountGroupMemberships_sync",
       "segments": [
         {
           "end": 45,
@@ -718,8 +718,8 @@
           "shortName": "ListRelatedAccountGroups"
         }
       },
-      "file": "recaptchaenterprise_generated_recaptchaenterprise_v1_recaptcha_enterprise_service_list_related_account_groups_async.py",
-      "regionTag": "recaptchaenterprise_generated_recaptchaenterprise_v1_RecaptchaEnterpriseService_ListRelatedAccountGroups_async",
+      "file": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_list_related_account_groups_async.py",
+      "regionTag": "recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_ListRelatedAccountGroups_async",
       "segments": [
         {
           "end": 45,
@@ -762,8 +762,8 @@
           "shortName": "ListRelatedAccountGroups"
         }
       },
-      "file": "recaptchaenterprise_generated_recaptchaenterprise_v1_recaptcha_enterprise_service_list_related_account_groups_sync.py",
-      "regionTag": "recaptchaenterprise_generated_recaptchaenterprise_v1_RecaptchaEnterpriseService_ListRelatedAccountGroups_sync",
+      "file": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_list_related_account_groups_sync.py",
+      "regionTag": "recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_ListRelatedAccountGroups_sync",
       "segments": [
         {
           "end": 45,
@@ -807,8 +807,8 @@
           "shortName": "MigrateKey"
         }
       },
-      "file": "recaptchaenterprise_generated_recaptchaenterprise_v1_recaptcha_enterprise_service_migrate_key_async.py",
-      "regionTag": "recaptchaenterprise_generated_recaptchaenterprise_v1_RecaptchaEnterpriseService_MigrateKey_async",
+      "file": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_migrate_key_async.py",
+      "regionTag": "recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_MigrateKey_async",
       "segments": [
         {
           "end": 44,
@@ -851,8 +851,8 @@
           "shortName": "MigrateKey"
         }
       },
-      "file": "recaptchaenterprise_generated_recaptchaenterprise_v1_recaptcha_enterprise_service_migrate_key_sync.py",
-      "regionTag": "recaptchaenterprise_generated_recaptchaenterprise_v1_RecaptchaEnterpriseService_MigrateKey_sync",
+      "file": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_migrate_key_sync.py",
+      "regionTag": "recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_MigrateKey_sync",
       "segments": [
         {
           "end": 44,
@@ -896,8 +896,8 @@
           "shortName": "SearchRelatedAccountGroupMemberships"
         }
       },
-      "file": "recaptchaenterprise_generated_recaptchaenterprise_v1_recaptcha_enterprise_service_search_related_account_group_memberships_async.py",
-      "regionTag": "recaptchaenterprise_generated_recaptchaenterprise_v1_RecaptchaEnterpriseService_SearchRelatedAccountGroupMemberships_async",
+      "file": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_search_related_account_group_memberships_async.py",
+      "regionTag": "recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_SearchRelatedAccountGroupMemberships_async",
       "segments": [
         {
           "end": 45,
@@ -940,8 +940,8 @@
           "shortName": "SearchRelatedAccountGroupMemberships"
         }
       },
-      "file": "recaptchaenterprise_generated_recaptchaenterprise_v1_recaptcha_enterprise_service_search_related_account_group_memberships_sync.py",
-      "regionTag": "recaptchaenterprise_generated_recaptchaenterprise_v1_RecaptchaEnterpriseService_SearchRelatedAccountGroupMemberships_sync",
+      "file": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_search_related_account_group_memberships_sync.py",
+      "regionTag": "recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_SearchRelatedAccountGroupMemberships_sync",
       "segments": [
         {
           "end": 45,
@@ -985,8 +985,8 @@
           "shortName": "UpdateKey"
         }
       },
-      "file": "recaptchaenterprise_generated_recaptchaenterprise_v1_recaptcha_enterprise_service_update_key_async.py",
-      "regionTag": "recaptchaenterprise_generated_recaptchaenterprise_v1_RecaptchaEnterpriseService_UpdateKey_async",
+      "file": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_update_key_async.py",
+      "regionTag": "recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_UpdateKey_async",
       "segments": [
         {
           "end": 47,
@@ -1029,8 +1029,8 @@
           "shortName": "UpdateKey"
         }
       },
-      "file": "recaptchaenterprise_generated_recaptchaenterprise_v1_recaptcha_enterprise_service_update_key_sync.py",
-      "regionTag": "recaptchaenterprise_generated_recaptchaenterprise_v1_RecaptchaEnterpriseService_UpdateKey_sync",
+      "file": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_update_key_sync.py",
+      "regionTag": "recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_UpdateKey_sync",
       "segments": [
         {
           "end": 47,

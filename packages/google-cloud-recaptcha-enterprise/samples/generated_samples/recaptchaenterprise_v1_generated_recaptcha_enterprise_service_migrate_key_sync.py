@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for CreateKey
+# Snippet for MigrateKey
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,27 +23,23 @@
 #   python3 -m pip install google-cloud-recaptcha-enterprise
 
 
-# [START recaptchaenterprise_generated_recaptchaenterprise_v1_RecaptchaEnterpriseService_CreateKey_async]
+# [START recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_MigrateKey_sync]
 from google.cloud import recaptchaenterprise_v1
 
 
-async def sample_create_key():
+def sample_migrate_key():
     # Create a client
-    client = recaptchaenterprise_v1.RecaptchaEnterpriseServiceAsyncClient()
+    client = recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient()
 
     # Initialize request argument(s)
-    key = recaptchaenterprise_v1.Key()
-    key.web_settings.integration_type = "INVISIBLE"
-
-    request = recaptchaenterprise_v1.CreateKeyRequest(
-        parent="parent_value",
-        key=key,
+    request = recaptchaenterprise_v1.MigrateKeyRequest(
+        name="name_value",
     )
 
     # Make the request
-    response = await client.create_key(request=request)
+    response = client.migrate_key(request=request)
 
     # Handle the response
     print(response)
 
-# [END recaptchaenterprise_generated_recaptchaenterprise_v1_RecaptchaEnterpriseService_CreateKey_async]
+# [END recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_MigrateKey_sync]

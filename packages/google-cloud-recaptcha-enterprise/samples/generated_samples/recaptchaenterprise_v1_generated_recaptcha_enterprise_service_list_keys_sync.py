@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for UpdateKey
+# Snippet for ListKeys
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,26 +23,24 @@
 #   python3 -m pip install google-cloud-recaptcha-enterprise
 
 
-# [START recaptchaenterprise_generated_recaptchaenterprise_v1_RecaptchaEnterpriseService_UpdateKey_sync]
+# [START recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_ListKeys_sync]
 from google.cloud import recaptchaenterprise_v1
 
 
-def sample_update_key():
+def sample_list_keys():
     # Create a client
     client = recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient()
 
     # Initialize request argument(s)
-    key = recaptchaenterprise_v1.Key()
-    key.web_settings.integration_type = "INVISIBLE"
-
-    request = recaptchaenterprise_v1.UpdateKeyRequest(
-        key=key,
+    request = recaptchaenterprise_v1.ListKeysRequest(
+        parent="parent_value",
     )
 
     # Make the request
-    response = client.update_key(request=request)
+    page_result = client.list_keys(request=request)
 
     # Handle the response
-    print(response)
+    for response in page_result:
+        print(response)
 
-# [END recaptchaenterprise_generated_recaptchaenterprise_v1_RecaptchaEnterpriseService_UpdateKey_sync]
+# [END recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_ListKeys_sync]

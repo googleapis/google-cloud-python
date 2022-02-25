@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for SearchRelatedAccountGroupMemberships
+# Snippet for AnnotateAssessment
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,24 +23,23 @@
 #   python3 -m pip install google-cloud-recaptcha-enterprise
 
 
-# [START recaptchaenterprise_generated_recaptchaenterprise_v1_RecaptchaEnterpriseService_SearchRelatedAccountGroupMemberships_async]
+# [START recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_AnnotateAssessment_sync]
 from google.cloud import recaptchaenterprise_v1
 
 
-async def sample_search_related_account_group_memberships():
+def sample_annotate_assessment():
     # Create a client
-    client = recaptchaenterprise_v1.RecaptchaEnterpriseServiceAsyncClient()
+    client = recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient()
 
     # Initialize request argument(s)
-    request = recaptchaenterprise_v1.SearchRelatedAccountGroupMembershipsRequest(
-        parent="parent_value",
+    request = recaptchaenterprise_v1.AnnotateAssessmentRequest(
+        name="name_value",
     )
 
     # Make the request
-    page_result = client.search_related_account_group_memberships(request=request)
+    response = client.annotate_assessment(request=request)
 
     # Handle the response
-    async for response in page_result:
-        print(response)
+    print(response)
 
-# [END recaptchaenterprise_generated_recaptchaenterprise_v1_RecaptchaEnterpriseService_SearchRelatedAccountGroupMemberships_async]
+# [END recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_AnnotateAssessment_sync]

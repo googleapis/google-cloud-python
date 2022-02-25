@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for GetKey
+# Snippet for CreateAssessment
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,23 +23,23 @@
 #   python3 -m pip install google-cloud-recaptcha-enterprise
 
 
-# [START recaptchaenterprise_generated_recaptchaenterprise_v1_RecaptchaEnterpriseService_GetKey_async]
+# [START recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_CreateAssessment_async]
 from google.cloud import recaptchaenterprise_v1
 
 
-async def sample_get_key():
+async def sample_create_assessment():
     # Create a client
     client = recaptchaenterprise_v1.RecaptchaEnterpriseServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = recaptchaenterprise_v1.GetKeyRequest(
-        name="name_value",
+    request = recaptchaenterprise_v1.CreateAssessmentRequest(
+        parent="parent_value",
     )
 
     # Make the request
-    response = await client.get_key(request=request)
+    response = await client.create_assessment(request=request)
 
     # Handle the response
     print(response)
 
-# [END recaptchaenterprise_generated_recaptchaenterprise_v1_RecaptchaEnterpriseService_GetKey_async]
+# [END recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_CreateAssessment_async]

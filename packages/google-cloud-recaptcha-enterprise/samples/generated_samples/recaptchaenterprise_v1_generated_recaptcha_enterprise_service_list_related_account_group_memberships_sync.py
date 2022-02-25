@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for MigrateKey
+# Snippet for ListRelatedAccountGroupMemberships
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,23 +23,24 @@
 #   python3 -m pip install google-cloud-recaptcha-enterprise
 
 
-# [START recaptchaenterprise_generated_recaptchaenterprise_v1_RecaptchaEnterpriseService_MigrateKey_async]
+# [START recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_ListRelatedAccountGroupMemberships_sync]
 from google.cloud import recaptchaenterprise_v1
 
 
-async def sample_migrate_key():
+def sample_list_related_account_group_memberships():
     # Create a client
-    client = recaptchaenterprise_v1.RecaptchaEnterpriseServiceAsyncClient()
+    client = recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient()
 
     # Initialize request argument(s)
-    request = recaptchaenterprise_v1.MigrateKeyRequest(
-        name="name_value",
+    request = recaptchaenterprise_v1.ListRelatedAccountGroupMembershipsRequest(
+        parent="parent_value",
     )
 
     # Make the request
-    response = await client.migrate_key(request=request)
+    page_result = client.list_related_account_group_memberships(request=request)
 
     # Handle the response
-    print(response)
+    for response in page_result:
+        print(response)
 
-# [END recaptchaenterprise_generated_recaptchaenterprise_v1_RecaptchaEnterpriseService_MigrateKey_async]
+# [END recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_ListRelatedAccountGroupMemberships_sync]

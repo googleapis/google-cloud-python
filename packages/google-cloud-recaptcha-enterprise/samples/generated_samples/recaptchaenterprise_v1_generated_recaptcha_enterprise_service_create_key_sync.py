@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for DeleteKey
+# Snippet for CreateKey
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,21 +23,27 @@
 #   python3 -m pip install google-cloud-recaptcha-enterprise
 
 
-# [START recaptchaenterprise_generated_recaptchaenterprise_v1_RecaptchaEnterpriseService_DeleteKey_sync]
+# [START recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_CreateKey_sync]
 from google.cloud import recaptchaenterprise_v1
 
 
-def sample_delete_key():
+def sample_create_key():
     # Create a client
     client = recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient()
 
     # Initialize request argument(s)
-    request = recaptchaenterprise_v1.DeleteKeyRequest(
-        name="name_value",
+    key = recaptchaenterprise_v1.Key()
+    key.web_settings.integration_type = "INVISIBLE"
+
+    request = recaptchaenterprise_v1.CreateKeyRequest(
+        parent="parent_value",
+        key=key,
     )
 
     # Make the request
-    client.delete_key(request=request)
+    response = client.create_key(request=request)
 
+    # Handle the response
+    print(response)
 
-# [END recaptchaenterprise_generated_recaptchaenterprise_v1_RecaptchaEnterpriseService_DeleteKey_sync]
+# [END recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_CreateKey_sync]

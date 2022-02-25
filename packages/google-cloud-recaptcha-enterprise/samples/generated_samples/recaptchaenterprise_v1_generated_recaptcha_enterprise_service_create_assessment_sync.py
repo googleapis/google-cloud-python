@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for GetMetrics
+# Snippet for CreateAssessment
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,23 +23,23 @@
 #   python3 -m pip install google-cloud-recaptcha-enterprise
 
 
-# [START recaptchaenterprise_generated_recaptchaenterprise_v1_RecaptchaEnterpriseService_GetMetrics_sync]
+# [START recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_CreateAssessment_sync]
 from google.cloud import recaptchaenterprise_v1
 
 
-def sample_get_metrics():
+def sample_create_assessment():
     # Create a client
     client = recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient()
 
     # Initialize request argument(s)
-    request = recaptchaenterprise_v1.GetMetricsRequest(
-        name="name_value",
+    request = recaptchaenterprise_v1.CreateAssessmentRequest(
+        parent="parent_value",
     )
 
     # Make the request
-    response = client.get_metrics(request=request)
+    response = client.create_assessment(request=request)
 
     # Handle the response
     print(response)
 
-# [END recaptchaenterprise_generated_recaptchaenterprise_v1_RecaptchaEnterpriseService_GetMetrics_sync]
+# [END recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_CreateAssessment_sync]

@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for AnnotateAssessment
+# Snippet for GetKey
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,23 +23,23 @@
 #   python3 -m pip install google-cloud-recaptcha-enterprise
 
 
-# [START recaptchaenterprise_generated_recaptchaenterprise_v1_RecaptchaEnterpriseService_AnnotateAssessment_sync]
+# [START recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_GetKey_sync]
 from google.cloud import recaptchaenterprise_v1
 
 
-def sample_annotate_assessment():
+def sample_get_key():
     # Create a client
     client = recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient()
 
     # Initialize request argument(s)
-    request = recaptchaenterprise_v1.AnnotateAssessmentRequest(
+    request = recaptchaenterprise_v1.GetKeyRequest(
         name="name_value",
     )
 
     # Make the request
-    response = client.annotate_assessment(request=request)
+    response = client.get_key(request=request)
 
     # Handle the response
     print(response)
 
-# [END recaptchaenterprise_generated_recaptchaenterprise_v1_RecaptchaEnterpriseService_AnnotateAssessment_sync]
+# [END recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_GetKey_sync]

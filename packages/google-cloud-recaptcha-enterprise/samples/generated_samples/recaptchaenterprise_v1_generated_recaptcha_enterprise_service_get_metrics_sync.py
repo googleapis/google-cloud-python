@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ListKeys
+# Snippet for GetMetrics
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,24 +23,23 @@
 #   python3 -m pip install google-cloud-recaptcha-enterprise
 
 
-# [START recaptchaenterprise_generated_recaptchaenterprise_v1_RecaptchaEnterpriseService_ListKeys_sync]
+# [START recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_GetMetrics_sync]
 from google.cloud import recaptchaenterprise_v1
 
 
-def sample_list_keys():
+def sample_get_metrics():
     # Create a client
     client = recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient()
 
     # Initialize request argument(s)
-    request = recaptchaenterprise_v1.ListKeysRequest(
-        parent="parent_value",
+    request = recaptchaenterprise_v1.GetMetricsRequest(
+        name="name_value",
     )
 
     # Make the request
-    page_result = client.list_keys(request=request)
+    response = client.get_metrics(request=request)
 
     # Handle the response
-    for response in page_result:
-        print(response)
+    print(response)
 
-# [END recaptchaenterprise_generated_recaptchaenterprise_v1_RecaptchaEnterpriseService_ListKeys_sync]
+# [END recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_GetMetrics_sync]

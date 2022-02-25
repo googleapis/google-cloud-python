@@ -475,8 +475,7 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
         legitimate.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recaptchaenterprise_v1
 
@@ -576,8 +575,7 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
         to be authentic or fraudulent.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recaptchaenterprise_v1
 
@@ -679,8 +677,7 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
     ) -> recaptchaenterprise.Key:
         r"""Creates a new reCAPTCHA Enterprise key.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recaptchaenterprise_v1
 
@@ -755,8 +752,7 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
         project.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recaptchaenterprise_v1
 
@@ -834,8 +830,7 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
     ) -> recaptchaenterprise.Key:
         r"""Returns the specified key.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recaptchaenterprise_v1
 
@@ -904,8 +899,7 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
     ) -> recaptchaenterprise.Key:
         r"""Updates the specified key.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recaptchaenterprise_v1
 
@@ -977,8 +971,7 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
     ) -> None:
         r"""Deletes the specified key.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recaptchaenterprise_v1
 
@@ -1043,8 +1036,7 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
         role in the destination project.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recaptchaenterprise_v1
 
@@ -1116,8 +1108,7 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
         be used to build dashboards.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recaptchaenterprise_v1
 
@@ -1207,8 +1198,7 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
     ) -> pagers.ListRelatedAccountGroupsPager:
         r"""List groups of related accounts.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recaptchaenterprise_v1
 
@@ -1312,8 +1302,7 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
     ) -> pagers.ListRelatedAccountGroupMembershipsPager:
         r"""Get the memberships in a group of related accounts.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recaptchaenterprise_v1
 
@@ -1423,8 +1412,7 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
     ) -> pagers.SearchRelatedAccountGroupMembershipsPager:
         r"""Search group memberships related to a given account.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recaptchaenterprise_v1
 

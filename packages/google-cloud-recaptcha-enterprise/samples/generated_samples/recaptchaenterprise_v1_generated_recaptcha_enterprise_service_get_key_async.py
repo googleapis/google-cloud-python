@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for CreateKey
+# Snippet for GetKey
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,27 +23,23 @@
 #   python3 -m pip install google-cloud-recaptcha-enterprise
 
 
-# [START recaptchaenterprise_generated_recaptchaenterprise_v1_RecaptchaEnterpriseService_CreateKey_sync]
+# [START recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_GetKey_async]
 from google.cloud import recaptchaenterprise_v1
 
 
-def sample_create_key():
+async def sample_get_key():
     # Create a client
-    client = recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient()
+    client = recaptchaenterprise_v1.RecaptchaEnterpriseServiceAsyncClient()
 
     # Initialize request argument(s)
-    key = recaptchaenterprise_v1.Key()
-    key.web_settings.integration_type = "INVISIBLE"
-
-    request = recaptchaenterprise_v1.CreateKeyRequest(
-        parent="parent_value",
-        key=key,
+    request = recaptchaenterprise_v1.GetKeyRequest(
+        name="name_value",
     )
 
     # Make the request
-    response = client.create_key(request=request)
+    response = await client.get_key(request=request)
 
     # Handle the response
     print(response)
 
-# [END recaptchaenterprise_generated_recaptchaenterprise_v1_RecaptchaEnterpriseService_CreateKey_sync]
+# [END recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_GetKey_async]

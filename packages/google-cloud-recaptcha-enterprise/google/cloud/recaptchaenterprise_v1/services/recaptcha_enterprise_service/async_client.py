@@ -246,7 +246,7 @@ class RecaptchaEnterpriseServiceAsyncClient:
         legitimate.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recaptchaenterprise_v1
 
@@ -346,7 +346,7 @@ class RecaptchaEnterpriseServiceAsyncClient:
         to be authentic or fraudulent.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recaptchaenterprise_v1
 
@@ -448,7 +448,7 @@ class RecaptchaEnterpriseServiceAsyncClient:
     ) -> recaptchaenterprise.Key:
         r"""Creates a new reCAPTCHA Enterprise key.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recaptchaenterprise_v1
 
@@ -522,7 +522,7 @@ class RecaptchaEnterpriseServiceAsyncClient:
         project.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recaptchaenterprise_v1
 
@@ -599,7 +599,7 @@ class RecaptchaEnterpriseServiceAsyncClient:
     ) -> recaptchaenterprise.Key:
         r"""Returns the specified key.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recaptchaenterprise_v1
 
@@ -667,7 +667,7 @@ class RecaptchaEnterpriseServiceAsyncClient:
     ) -> recaptchaenterprise.Key:
         r"""Updates the specified key.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recaptchaenterprise_v1
 
@@ -738,7 +738,7 @@ class RecaptchaEnterpriseServiceAsyncClient:
     ) -> None:
         r"""Deletes the specified key.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recaptchaenterprise_v1
 
@@ -802,7 +802,7 @@ class RecaptchaEnterpriseServiceAsyncClient:
         role in the destination project.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recaptchaenterprise_v1
 
@@ -873,7 +873,7 @@ class RecaptchaEnterpriseServiceAsyncClient:
         be used to build dashboards.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recaptchaenterprise_v1
 
@@ -963,7 +963,7 @@ class RecaptchaEnterpriseServiceAsyncClient:
     ) -> pagers.ListRelatedAccountGroupsAsyncPager:
         r"""List groups of related accounts.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recaptchaenterprise_v1
 
@@ -1065,7 +1065,7 @@ class RecaptchaEnterpriseServiceAsyncClient:
     ) -> pagers.ListRelatedAccountGroupMembershipsAsyncPager:
         r"""Get the memberships in a group of related accounts.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recaptchaenterprise_v1
 
@@ -1169,7 +1169,7 @@ class RecaptchaEnterpriseServiceAsyncClient:
     ) -> pagers.SearchRelatedAccountGroupMembershipsAsyncPager:
         r"""Search group memberships related to a given account.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recaptchaenterprise_v1
 
