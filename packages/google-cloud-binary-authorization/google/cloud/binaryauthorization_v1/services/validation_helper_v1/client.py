@@ -396,8 +396,7 @@ class ValidationHelperV1Client(metaclass=ValidationHelperV1ClientMeta):
         image URI was signed by the given Attestor
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import binaryauthorization_v1
 

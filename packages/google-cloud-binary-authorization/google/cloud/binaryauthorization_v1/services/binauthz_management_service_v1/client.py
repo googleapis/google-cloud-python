@@ -446,8 +446,7 @@ class BinauthzManagementServiceV1Client(
         project does not have one.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import binaryauthorization_v1
 
@@ -546,8 +545,7 @@ class BinauthzManagementServiceV1Client(
         request is malformed.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import binaryauthorization_v1
 
@@ -657,8 +655,7 @@ class BinauthzManagementServiceV1Client(
         already exists.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import binaryauthorization_v1
 
@@ -783,8 +780,7 @@ class BinauthzManagementServiceV1Client(
         not exist.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import binaryauthorization_v1
 
@@ -881,8 +877,7 @@ class BinauthzManagementServiceV1Client(
         not exist.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import binaryauthorization_v1
 
@@ -985,8 +980,7 @@ class BinauthzManagementServiceV1Client(
         Returns INVALID_ARGUMENT if the project does not exist.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import binaryauthorization_v1
 
@@ -1093,8 +1087,7 @@ class BinauthzManagementServiceV1Client(
         not exist.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import binaryauthorization_v1
 

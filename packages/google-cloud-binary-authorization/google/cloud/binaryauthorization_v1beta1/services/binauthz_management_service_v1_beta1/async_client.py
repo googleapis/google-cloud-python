@@ -257,7 +257,7 @@ class BinauthzManagementServiceV1Beta1AsyncClient:
         project does not have one.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import binaryauthorization_v1beta1
 
@@ -367,7 +367,7 @@ class BinauthzManagementServiceV1Beta1AsyncClient:
         INVALID_ARGUMENT if the request is malformed.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import binaryauthorization_v1beta1
 
@@ -489,7 +489,7 @@ class BinauthzManagementServiceV1Beta1AsyncClient:
         already exists.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import binaryauthorization_v1beta1
 
@@ -614,7 +614,7 @@ class BinauthzManagementServiceV1Beta1AsyncClient:
         does not exist.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import binaryauthorization_v1beta1
 
@@ -721,7 +721,7 @@ class BinauthzManagementServiceV1Beta1AsyncClient:
         does not exist.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import binaryauthorization_v1beta1
 
@@ -835,7 +835,7 @@ class BinauthzManagementServiceV1Beta1AsyncClient:
         Returns INVALID_ARGUMENT if the project does not exist.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import binaryauthorization_v1beta1
 
@@ -952,7 +952,7 @@ class BinauthzManagementServiceV1Beta1AsyncClient:
         does not exist.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import binaryauthorization_v1beta1
 

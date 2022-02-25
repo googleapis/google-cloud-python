@@ -408,8 +408,7 @@ class SystemPolicyV1Client(metaclass=SystemPolicyV1ClientMeta):
         location.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import binaryauthorization_v1
 

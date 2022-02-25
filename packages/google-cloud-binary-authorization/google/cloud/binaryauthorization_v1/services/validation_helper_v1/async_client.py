@@ -212,7 +212,7 @@ class ValidationHelperV1AsyncClient:
         image URI was signed by the given Attestor
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import binaryauthorization_v1
 

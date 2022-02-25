@@ -10,8 +10,8 @@
           "shortName": "CreateAttestor"
         }
       },
-      "file": "binaryauthorization_generated_binaryauthorization_v1_binauthz_management_service_v1_create_attestor_async.py",
-      "regionTag": "binaryauthorization_generated_binaryauthorization_v1_BinauthzManagementServiceV1_CreateAttestor_async",
+      "file": "binaryauthorization_v1_generated_binauthz_management_service_v1_create_attestor_async.py",
+      "regionTag": "binaryauthorization_v1_generated_BinauthzManagementServiceV1_CreateAttestor_async",
       "segments": [
         {
           "end": 50,
@@ -54,8 +54,8 @@
           "shortName": "CreateAttestor"
         }
       },
-      "file": "binaryauthorization_generated_binaryauthorization_v1_binauthz_management_service_v1_create_attestor_sync.py",
-      "regionTag": "binaryauthorization_generated_binaryauthorization_v1_BinauthzManagementServiceV1_CreateAttestor_sync",
+      "file": "binaryauthorization_v1_generated_binauthz_management_service_v1_create_attestor_sync.py",
+      "regionTag": "binaryauthorization_v1_generated_BinauthzManagementServiceV1_CreateAttestor_sync",
       "segments": [
         {
           "end": 50,
@@ -99,8 +99,8 @@
           "shortName": "DeleteAttestor"
         }
       },
-      "file": "binaryauthorization_generated_binaryauthorization_v1_binauthz_management_service_v1_delete_attestor_async.py",
-      "regionTag": "binaryauthorization_generated_binaryauthorization_v1_BinauthzManagementServiceV1_DeleteAttestor_async",
+      "file": "binaryauthorization_v1_generated_binauthz_management_service_v1_delete_attestor_async.py",
+      "regionTag": "binaryauthorization_v1_generated_BinauthzManagementServiceV1_DeleteAttestor_async",
       "segments": [
         {
           "end": 42,
@@ -141,8 +141,8 @@
           "shortName": "DeleteAttestor"
         }
       },
-      "file": "binaryauthorization_generated_binaryauthorization_v1_binauthz_management_service_v1_delete_attestor_sync.py",
-      "regionTag": "binaryauthorization_generated_binaryauthorization_v1_BinauthzManagementServiceV1_DeleteAttestor_sync",
+      "file": "binaryauthorization_v1_generated_binauthz_management_service_v1_delete_attestor_sync.py",
+      "regionTag": "binaryauthorization_v1_generated_BinauthzManagementServiceV1_DeleteAttestor_sync",
       "segments": [
         {
           "end": 42,
@@ -184,8 +184,8 @@
           "shortName": "GetAttestor"
         }
       },
-      "file": "binaryauthorization_generated_binaryauthorization_v1_binauthz_management_service_v1_get_attestor_async.py",
-      "regionTag": "binaryauthorization_generated_binaryauthorization_v1_BinauthzManagementServiceV1_GetAttestor_async",
+      "file": "binaryauthorization_v1_generated_binauthz_management_service_v1_get_attestor_async.py",
+      "regionTag": "binaryauthorization_v1_generated_BinauthzManagementServiceV1_GetAttestor_async",
       "segments": [
         {
           "end": 44,
@@ -228,8 +228,8 @@
           "shortName": "GetAttestor"
         }
       },
-      "file": "binaryauthorization_generated_binaryauthorization_v1_binauthz_management_service_v1_get_attestor_sync.py",
-      "regionTag": "binaryauthorization_generated_binaryauthorization_v1_BinauthzManagementServiceV1_GetAttestor_sync",
+      "file": "binaryauthorization_v1_generated_binauthz_management_service_v1_get_attestor_sync.py",
+      "regionTag": "binaryauthorization_v1_generated_BinauthzManagementServiceV1_GetAttestor_sync",
       "segments": [
         {
           "end": 44,
@@ -273,8 +273,8 @@
           "shortName": "GetPolicy"
         }
       },
-      "file": "binaryauthorization_generated_binaryauthorization_v1_binauthz_management_service_v1_get_policy_async.py",
-      "regionTag": "binaryauthorization_generated_binaryauthorization_v1_BinauthzManagementServiceV1_GetPolicy_async",
+      "file": "binaryauthorization_v1_generated_binauthz_management_service_v1_get_policy_async.py",
+      "regionTag": "binaryauthorization_v1_generated_BinauthzManagementServiceV1_GetPolicy_async",
       "segments": [
         {
           "end": 44,
@@ -317,8 +317,8 @@
           "shortName": "GetPolicy"
         }
       },
-      "file": "binaryauthorization_generated_binaryauthorization_v1_binauthz_management_service_v1_get_policy_sync.py",
-      "regionTag": "binaryauthorization_generated_binaryauthorization_v1_BinauthzManagementServiceV1_GetPolicy_sync",
+      "file": "binaryauthorization_v1_generated_binauthz_management_service_v1_get_policy_sync.py",
+      "regionTag": "binaryauthorization_v1_generated_BinauthzManagementServiceV1_GetPolicy_sync",
       "segments": [
         {
           "end": 44,
@@ -362,8 +362,8 @@
           "shortName": "ListAttestors"
         }
       },
-      "file": "binaryauthorization_generated_binaryauthorization_v1_binauthz_management_service_v1_list_attestors_async.py",
-      "regionTag": "binaryauthorization_generated_binaryauthorization_v1_BinauthzManagementServiceV1_ListAttestors_async",
+      "file": "binaryauthorization_v1_generated_binauthz_management_service_v1_list_attestors_async.py",
+      "regionTag": "binaryauthorization_v1_generated_BinauthzManagementServiceV1_ListAttestors_async",
       "segments": [
         {
           "end": 45,
@@ -406,8 +406,8 @@
           "shortName": "ListAttestors"
         }
       },
-      "file": "binaryauthorization_generated_binaryauthorization_v1_binauthz_management_service_v1_list_attestors_sync.py",
-      "regionTag": "binaryauthorization_generated_binaryauthorization_v1_BinauthzManagementServiceV1_ListAttestors_sync",
+      "file": "binaryauthorization_v1_generated_binauthz_management_service_v1_list_attestors_sync.py",
+      "regionTag": "binaryauthorization_v1_generated_BinauthzManagementServiceV1_ListAttestors_sync",
       "segments": [
         {
           "end": 45,
@@ -451,8 +451,8 @@
           "shortName": "UpdateAttestor"
         }
       },
-      "file": "binaryauthorization_generated_binaryauthorization_v1_binauthz_management_service_v1_update_attestor_async.py",
-      "regionTag": "binaryauthorization_generated_binaryauthorization_v1_BinauthzManagementServiceV1_UpdateAttestor_async",
+      "file": "binaryauthorization_v1_generated_binauthz_management_service_v1_update_attestor_async.py",
+      "regionTag": "binaryauthorization_v1_generated_BinauthzManagementServiceV1_UpdateAttestor_async",
       "segments": [
         {
           "end": 48,
@@ -495,8 +495,8 @@
           "shortName": "UpdateAttestor"
         }
       },
-      "file": "binaryauthorization_generated_binaryauthorization_v1_binauthz_management_service_v1_update_attestor_sync.py",
-      "regionTag": "binaryauthorization_generated_binaryauthorization_v1_BinauthzManagementServiceV1_UpdateAttestor_sync",
+      "file": "binaryauthorization_v1_generated_binauthz_management_service_v1_update_attestor_sync.py",
+      "regionTag": "binaryauthorization_v1_generated_BinauthzManagementServiceV1_UpdateAttestor_sync",
       "segments": [
         {
           "end": 48,
@@ -540,8 +540,8 @@
           "shortName": "UpdatePolicy"
         }
       },
-      "file": "binaryauthorization_generated_binaryauthorization_v1_binauthz_management_service_v1_update_policy_async.py",
-      "regionTag": "binaryauthorization_generated_binaryauthorization_v1_BinauthzManagementServiceV1_UpdatePolicy_async",
+      "file": "binaryauthorization_v1_generated_binauthz_management_service_v1_update_policy_async.py",
+      "regionTag": "binaryauthorization_v1_generated_BinauthzManagementServiceV1_UpdatePolicy_async",
       "segments": [
         {
           "end": 48,
@@ -584,8 +584,8 @@
           "shortName": "UpdatePolicy"
         }
       },
-      "file": "binaryauthorization_generated_binaryauthorization_v1_binauthz_management_service_v1_update_policy_sync.py",
-      "regionTag": "binaryauthorization_generated_binaryauthorization_v1_BinauthzManagementServiceV1_UpdatePolicy_sync",
+      "file": "binaryauthorization_v1_generated_binauthz_management_service_v1_update_policy_sync.py",
+      "regionTag": "binaryauthorization_v1_generated_BinauthzManagementServiceV1_UpdatePolicy_sync",
       "segments": [
         {
           "end": 48,
@@ -629,8 +629,8 @@
           "shortName": "GetSystemPolicy"
         }
       },
-      "file": "binaryauthorization_generated_binaryauthorization_v1_system_policy_v1_get_system_policy_async.py",
-      "regionTag": "binaryauthorization_generated_binaryauthorization_v1_SystemPolicyV1_GetSystemPolicy_async",
+      "file": "binaryauthorization_v1_generated_system_policy_v1_get_system_policy_async.py",
+      "regionTag": "binaryauthorization_v1_generated_SystemPolicyV1_GetSystemPolicy_async",
       "segments": [
         {
           "end": 44,
@@ -673,8 +673,8 @@
           "shortName": "GetSystemPolicy"
         }
       },
-      "file": "binaryauthorization_generated_binaryauthorization_v1_system_policy_v1_get_system_policy_sync.py",
-      "regionTag": "binaryauthorization_generated_binaryauthorization_v1_SystemPolicyV1_GetSystemPolicy_sync",
+      "file": "binaryauthorization_v1_generated_system_policy_v1_get_system_policy_sync.py",
+      "regionTag": "binaryauthorization_v1_generated_SystemPolicyV1_GetSystemPolicy_sync",
       "segments": [
         {
           "end": 44,
@@ -718,8 +718,8 @@
           "shortName": "ValidateAttestationOccurrence"
         }
       },
-      "file": "binaryauthorization_generated_binaryauthorization_v1_validation_helper_v1_validate_attestation_occurrence_async.py",
-      "regionTag": "binaryauthorization_generated_binaryauthorization_v1_ValidationHelperV1_ValidateAttestationOccurrence_async",
+      "file": "binaryauthorization_v1_generated_validation_helper_v1_validate_attestation_occurrence_async.py",
+      "regionTag": "binaryauthorization_v1_generated_ValidationHelperV1_ValidateAttestationOccurrence_async",
       "segments": [
         {
           "end": 46,
@@ -762,8 +762,8 @@
           "shortName": "ValidateAttestationOccurrence"
         }
       },
-      "file": "binaryauthorization_generated_binaryauthorization_v1_validation_helper_v1_validate_attestation_occurrence_sync.py",
-      "regionTag": "binaryauthorization_generated_binaryauthorization_v1_ValidationHelperV1_ValidateAttestationOccurrence_sync",
+      "file": "binaryauthorization_v1_generated_validation_helper_v1_validate_attestation_occurrence_sync.py",
+      "regionTag": "binaryauthorization_v1_generated_ValidationHelperV1_ValidateAttestationOccurrence_sync",
       "segments": [
         {
           "end": 46,

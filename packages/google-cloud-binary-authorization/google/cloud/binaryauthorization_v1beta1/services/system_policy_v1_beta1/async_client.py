@@ -217,7 +217,7 @@ class SystemPolicyV1Beta1AsyncClient:
         location.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import binaryauthorization_v1beta1
 
