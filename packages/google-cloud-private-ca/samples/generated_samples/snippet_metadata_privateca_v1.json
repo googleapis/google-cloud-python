@@ -10,8 +10,8 @@
           "shortName": "ActivateCertificateAuthority"
         }
       },
-      "file": "privateca_generated_privateca_v1_certificate_authority_service_activate_certificate_authority_async.py",
-      "regionTag": "privateca_generated_privateca_v1_CertificateAuthorityService_ActivateCertificateAuthority_async",
+      "file": "privateca_v1_generated_certificate_authority_service_activate_certificate_authority_async.py",
+      "regionTag": "privateca_v1_generated_CertificateAuthorityService_ActivateCertificateAuthority_async",
       "segments": [
         {
           "end": 53,
@@ -54,8 +54,8 @@
           "shortName": "ActivateCertificateAuthority"
         }
       },
-      "file": "privateca_generated_privateca_v1_certificate_authority_service_activate_certificate_authority_sync.py",
-      "regionTag": "privateca_generated_privateca_v1_CertificateAuthorityService_ActivateCertificateAuthority_sync",
+      "file": "privateca_v1_generated_certificate_authority_service_activate_certificate_authority_sync.py",
+      "regionTag": "privateca_v1_generated_CertificateAuthorityService_ActivateCertificateAuthority_sync",
       "segments": [
         {
           "end": 53,
@@ -99,8 +99,8 @@
           "shortName": "CreateCaPool"
         }
       },
-      "file": "privateca_generated_privateca_v1_certificate_authority_service_create_ca_pool_async.py",
-      "regionTag": "privateca_generated_privateca_v1_CertificateAuthorityService_CreateCaPool_async",
+      "file": "privateca_v1_generated_certificate_authority_service_create_ca_pool_async.py",
+      "regionTag": "privateca_v1_generated_CertificateAuthorityService_CreateCaPool_async",
       "segments": [
         {
           "end": 53,
@@ -143,8 +143,8 @@
           "shortName": "CreateCaPool"
         }
       },
-      "file": "privateca_generated_privateca_v1_certificate_authority_service_create_ca_pool_sync.py",
-      "regionTag": "privateca_generated_privateca_v1_CertificateAuthorityService_CreateCaPool_sync",
+      "file": "privateca_v1_generated_certificate_authority_service_create_ca_pool_sync.py",
+      "regionTag": "privateca_v1_generated_CertificateAuthorityService_CreateCaPool_sync",
       "segments": [
         {
           "end": 53,
@@ -188,8 +188,8 @@
           "shortName": "CreateCertificateAuthority"
         }
       },
-      "file": "privateca_generated_privateca_v1_certificate_authority_service_create_certificate_authority_async.py",
-      "regionTag": "privateca_generated_privateca_v1_CertificateAuthorityService_CreateCertificateAuthority_async",
+      "file": "privateca_v1_generated_certificate_authority_service_create_certificate_authority_async.py",
+      "regionTag": "privateca_v1_generated_CertificateAuthorityService_CreateCertificateAuthority_async",
       "segments": [
         {
           "end": 54,
@@ -232,8 +232,8 @@
           "shortName": "CreateCertificateAuthority"
         }
       },
-      "file": "privateca_generated_privateca_v1_certificate_authority_service_create_certificate_authority_sync.py",
-      "regionTag": "privateca_generated_privateca_v1_CertificateAuthorityService_CreateCertificateAuthority_sync",
+      "file": "privateca_v1_generated_certificate_authority_service_create_certificate_authority_sync.py",
+      "regionTag": "privateca_v1_generated_CertificateAuthorityService_CreateCertificateAuthority_sync",
       "segments": [
         {
           "end": 54,
@@ -277,8 +277,8 @@
           "shortName": "CreateCertificateTemplate"
         }
       },
-      "file": "privateca_generated_privateca_v1_certificate_authority_service_create_certificate_template_async.py",
-      "regionTag": "privateca_generated_privateca_v1_CertificateAuthorityService_CreateCertificateTemplate_async",
+      "file": "privateca_v1_generated_certificate_authority_service_create_certificate_template_async.py",
+      "regionTag": "privateca_v1_generated_CertificateAuthorityService_CreateCertificateTemplate_async",
       "segments": [
         {
           "end": 49,
@@ -321,8 +321,8 @@
           "shortName": "CreateCertificateTemplate"
         }
       },
-      "file": "privateca_generated_privateca_v1_certificate_authority_service_create_certificate_template_sync.py",
-      "regionTag": "privateca_generated_privateca_v1_CertificateAuthorityService_CreateCertificateTemplate_sync",
+      "file": "privateca_v1_generated_certificate_authority_service_create_certificate_template_sync.py",
+      "regionTag": "privateca_v1_generated_CertificateAuthorityService_CreateCertificateTemplate_sync",
       "segments": [
         {
           "end": 49,
@@ -366,8 +366,8 @@
           "shortName": "CreateCertificate"
         }
       },
-      "file": "privateca_generated_privateca_v1_certificate_authority_service_create_certificate_async.py",
-      "regionTag": "privateca_generated_privateca_v1_CertificateAuthorityService_CreateCertificate_async",
+      "file": "privateca_v1_generated_certificate_authority_service_create_certificate_async.py",
+      "regionTag": "privateca_v1_generated_CertificateAuthorityService_CreateCertificate_async",
       "segments": [
         {
           "end": 48,
@@ -410,8 +410,8 @@
           "shortName": "CreateCertificate"
         }
       },
-      "file": "privateca_generated_privateca_v1_certificate_authority_service_create_certificate_sync.py",
-      "regionTag": "privateca_generated_privateca_v1_CertificateAuthorityService_CreateCertificate_sync",
+      "file": "privateca_v1_generated_certificate_authority_service_create_certificate_sync.py",
+      "regionTag": "privateca_v1_generated_CertificateAuthorityService_CreateCertificate_sync",
       "segments": [
         {
           "end": 48,
@@ -455,8 +455,8 @@
           "shortName": "DeleteCaPool"
         }
       },
-      "file": "privateca_generated_privateca_v1_certificate_authority_service_delete_ca_pool_async.py",
-      "regionTag": "privateca_generated_privateca_v1_CertificateAuthorityService_DeleteCaPool_async",
+      "file": "privateca_v1_generated_certificate_authority_service_delete_ca_pool_async.py",
+      "regionTag": "privateca_v1_generated_CertificateAuthorityService_DeleteCaPool_async",
       "segments": [
         {
           "end": 48,
@@ -499,8 +499,8 @@
           "shortName": "DeleteCaPool"
         }
       },
-      "file": "privateca_generated_privateca_v1_certificate_authority_service_delete_ca_pool_sync.py",
-      "regionTag": "privateca_generated_privateca_v1_CertificateAuthorityService_DeleteCaPool_sync",
+      "file": "privateca_v1_generated_certificate_authority_service_delete_ca_pool_sync.py",
+      "regionTag": "privateca_v1_generated_CertificateAuthorityService_DeleteCaPool_sync",
       "segments": [
         {
           "end": 48,
@@ -544,8 +544,8 @@
           "shortName": "DeleteCertificateAuthority"
         }
       },
-      "file": "privateca_generated_privateca_v1_certificate_authority_service_delete_certificate_authority_async.py",
-      "regionTag": "privateca_generated_privateca_v1_CertificateAuthorityService_DeleteCertificateAuthority_async",
+      "file": "privateca_v1_generated_certificate_authority_service_delete_certificate_authority_async.py",
+      "regionTag": "privateca_v1_generated_CertificateAuthorityService_DeleteCertificateAuthority_async",
       "segments": [
         {
           "end": 48,
@@ -588,8 +588,8 @@
           "shortName": "DeleteCertificateAuthority"
         }
       },
-      "file": "privateca_generated_privateca_v1_certificate_authority_service_delete_certificate_authority_sync.py",
-      "regionTag": "privateca_generated_privateca_v1_CertificateAuthorityService_DeleteCertificateAuthority_sync",
+      "file": "privateca_v1_generated_certificate_authority_service_delete_certificate_authority_sync.py",
+      "regionTag": "privateca_v1_generated_CertificateAuthorityService_DeleteCertificateAuthority_sync",
       "segments": [
         {
           "end": 48,
@@ -633,8 +633,8 @@
           "shortName": "DeleteCertificateTemplate"
         }
       },
-      "file": "privateca_generated_privateca_v1_certificate_authority_service_delete_certificate_template_async.py",
-      "regionTag": "privateca_generated_privateca_v1_CertificateAuthorityService_DeleteCertificateTemplate_async",
+      "file": "privateca_v1_generated_certificate_authority_service_delete_certificate_template_async.py",
+      "regionTag": "privateca_v1_generated_CertificateAuthorityService_DeleteCertificateTemplate_async",
       "segments": [
         {
           "end": 48,
@@ -677,8 +677,8 @@
           "shortName": "DeleteCertificateTemplate"
         }
       },
-      "file": "privateca_generated_privateca_v1_certificate_authority_service_delete_certificate_template_sync.py",
-      "regionTag": "privateca_generated_privateca_v1_CertificateAuthorityService_DeleteCertificateTemplate_sync",
+      "file": "privateca_v1_generated_certificate_authority_service_delete_certificate_template_sync.py",
+      "regionTag": "privateca_v1_generated_CertificateAuthorityService_DeleteCertificateTemplate_sync",
       "segments": [
         {
           "end": 48,
@@ -722,8 +722,8 @@
           "shortName": "DisableCertificateAuthority"
         }
       },
-      "file": "privateca_generated_privateca_v1_certificate_authority_service_disable_certificate_authority_async.py",
-      "regionTag": "privateca_generated_privateca_v1_CertificateAuthorityService_DisableCertificateAuthority_async",
+      "file": "privateca_v1_generated_certificate_authority_service_disable_certificate_authority_async.py",
+      "regionTag": "privateca_v1_generated_CertificateAuthorityService_DisableCertificateAuthority_async",
       "segments": [
         {
           "end": 48,
@@ -766,8 +766,8 @@
           "shortName": "DisableCertificateAuthority"
         }
       },
-      "file": "privateca_generated_privateca_v1_certificate_authority_service_disable_certificate_authority_sync.py",
-      "regionTag": "privateca_generated_privateca_v1_CertificateAuthorityService_DisableCertificateAuthority_sync",
+      "file": "privateca_v1_generated_certificate_authority_service_disable_certificate_authority_sync.py",
+      "regionTag": "privateca_v1_generated_CertificateAuthorityService_DisableCertificateAuthority_sync",
       "segments": [
         {
           "end": 48,
@@ -811,8 +811,8 @@
           "shortName": "EnableCertificateAuthority"
         }
       },
-      "file": "privateca_generated_privateca_v1_certificate_authority_service_enable_certificate_authority_async.py",
-      "regionTag": "privateca_generated_privateca_v1_CertificateAuthorityService_EnableCertificateAuthority_async",
+      "file": "privateca_v1_generated_certificate_authority_service_enable_certificate_authority_async.py",
+      "regionTag": "privateca_v1_generated_CertificateAuthorityService_EnableCertificateAuthority_async",
       "segments": [
         {
           "end": 48,
@@ -855,8 +855,8 @@
           "shortName": "EnableCertificateAuthority"
         }
       },
-      "file": "privateca_generated_privateca_v1_certificate_authority_service_enable_certificate_authority_sync.py",
-      "regionTag": "privateca_generated_privateca_v1_CertificateAuthorityService_EnableCertificateAuthority_sync",
+      "file": "privateca_v1_generated_certificate_authority_service_enable_certificate_authority_sync.py",
+      "regionTag": "privateca_v1_generated_CertificateAuthorityService_EnableCertificateAuthority_sync",
       "segments": [
         {
           "end": 48,
@@ -900,8 +900,8 @@
           "shortName": "FetchCaCerts"
         }
       },
-      "file": "privateca_generated_privateca_v1_certificate_authority_service_fetch_ca_certs_async.py",
-      "regionTag": "privateca_generated_privateca_v1_CertificateAuthorityService_FetchCaCerts_async",
+      "file": "privateca_v1_generated_certificate_authority_service_fetch_ca_certs_async.py",
+      "regionTag": "privateca_v1_generated_CertificateAuthorityService_FetchCaCerts_async",
       "segments": [
         {
           "end": 44,
@@ -944,8 +944,8 @@
           "shortName": "FetchCaCerts"
         }
       },
-      "file": "privateca_generated_privateca_v1_certificate_authority_service_fetch_ca_certs_sync.py",
-      "regionTag": "privateca_generated_privateca_v1_CertificateAuthorityService_FetchCaCerts_sync",
+      "file": "privateca_v1_generated_certificate_authority_service_fetch_ca_certs_sync.py",
+      "regionTag": "privateca_v1_generated_CertificateAuthorityService_FetchCaCerts_sync",
       "segments": [
         {
           "end": 44,
@@ -989,8 +989,8 @@
           "shortName": "FetchCertificateAuthorityCsr"
         }
       },
-      "file": "privateca_generated_privateca_v1_certificate_authority_service_fetch_certificate_authority_csr_async.py",
-      "regionTag": "privateca_generated_privateca_v1_CertificateAuthorityService_FetchCertificateAuthorityCsr_async",
+      "file": "privateca_v1_generated_certificate_authority_service_fetch_certificate_authority_csr_async.py",
+      "regionTag": "privateca_v1_generated_CertificateAuthorityService_FetchCertificateAuthorityCsr_async",
       "segments": [
         {
           "end": 44,
@@ -1033,8 +1033,8 @@
           "shortName": "FetchCertificateAuthorityCsr"
         }
       },
-      "file": "privateca_generated_privateca_v1_certificate_authority_service_fetch_certificate_authority_csr_sync.py",
-      "regionTag": "privateca_generated_privateca_v1_CertificateAuthorityService_FetchCertificateAuthorityCsr_sync",
+      "file": "privateca_v1_generated_certificate_authority_service_fetch_certificate_authority_csr_sync.py",
+      "regionTag": "privateca_v1_generated_CertificateAuthorityService_FetchCertificateAuthorityCsr_sync",
       "segments": [
         {
           "end": 44,
@@ -1078,8 +1078,8 @@
           "shortName": "GetCaPool"
         }
       },
-      "file": "privateca_generated_privateca_v1_certificate_authority_service_get_ca_pool_async.py",
-      "regionTag": "privateca_generated_privateca_v1_CertificateAuthorityService_GetCaPool_async",
+      "file": "privateca_v1_generated_certificate_authority_service_get_ca_pool_async.py",
+      "regionTag": "privateca_v1_generated_CertificateAuthorityService_GetCaPool_async",
       "segments": [
         {
           "end": 44,
@@ -1122,8 +1122,8 @@
           "shortName": "GetCaPool"
         }
       },
-      "file": "privateca_generated_privateca_v1_certificate_authority_service_get_ca_pool_sync.py",
-      "regionTag": "privateca_generated_privateca_v1_CertificateAuthorityService_GetCaPool_sync",
+      "file": "privateca_v1_generated_certificate_authority_service_get_ca_pool_sync.py",
+      "regionTag": "privateca_v1_generated_CertificateAuthorityService_GetCaPool_sync",
       "segments": [
         {
           "end": 44,
@@ -1167,8 +1167,8 @@
           "shortName": "GetCertificateAuthority"
         }
       },
-      "file": "privateca_generated_privateca_v1_certificate_authority_service_get_certificate_authority_async.py",
-      "regionTag": "privateca_generated_privateca_v1_CertificateAuthorityService_GetCertificateAuthority_async",
+      "file": "privateca_v1_generated_certificate_authority_service_get_certificate_authority_async.py",
+      "regionTag": "privateca_v1_generated_CertificateAuthorityService_GetCertificateAuthority_async",
       "segments": [
         {
           "end": 44,
@@ -1211,8 +1211,8 @@
           "shortName": "GetCertificateAuthority"
         }
       },
-      "file": "privateca_generated_privateca_v1_certificate_authority_service_get_certificate_authority_sync.py",
-      "regionTag": "privateca_generated_privateca_v1_CertificateAuthorityService_GetCertificateAuthority_sync",
+      "file": "privateca_v1_generated_certificate_authority_service_get_certificate_authority_sync.py",
+      "regionTag": "privateca_v1_generated_CertificateAuthorityService_GetCertificateAuthority_sync",
       "segments": [
         {
           "end": 44,
@@ -1256,8 +1256,8 @@
           "shortName": "GetCertificateRevocationList"
         }
       },
-      "file": "privateca_generated_privateca_v1_certificate_authority_service_get_certificate_revocation_list_async.py",
-      "regionTag": "privateca_generated_privateca_v1_CertificateAuthorityService_GetCertificateRevocationList_async",
+      "file": "privateca_v1_generated_certificate_authority_service_get_certificate_revocation_list_async.py",
+      "regionTag": "privateca_v1_generated_CertificateAuthorityService_GetCertificateRevocationList_async",
       "segments": [
         {
           "end": 44,
@@ -1300,8 +1300,8 @@
           "shortName": "GetCertificateRevocationList"
         }
       },
-      "file": "privateca_generated_privateca_v1_certificate_authority_service_get_certificate_revocation_list_sync.py",
-      "regionTag": "privateca_generated_privateca_v1_CertificateAuthorityService_GetCertificateRevocationList_sync",
+      "file": "privateca_v1_generated_certificate_authority_service_get_certificate_revocation_list_sync.py",
+      "regionTag": "privateca_v1_generated_CertificateAuthorityService_GetCertificateRevocationList_sync",
       "segments": [
         {
           "end": 44,
@@ -1345,8 +1345,8 @@
           "shortName": "GetCertificateTemplate"
         }
       },
-      "file": "privateca_generated_privateca_v1_certificate_authority_service_get_certificate_template_async.py",
-      "regionTag": "privateca_generated_privateca_v1_CertificateAuthorityService_GetCertificateTemplate_async",
+      "file": "privateca_v1_generated_certificate_authority_service_get_certificate_template_async.py",
+      "regionTag": "privateca_v1_generated_CertificateAuthorityService_GetCertificateTemplate_async",
       "segments": [
         {
           "end": 44,
@@ -1389,8 +1389,8 @@
           "shortName": "GetCertificateTemplate"
         }
       },
-      "file": "privateca_generated_privateca_v1_certificate_authority_service_get_certificate_template_sync.py",
-      "regionTag": "privateca_generated_privateca_v1_CertificateAuthorityService_GetCertificateTemplate_sync",
+      "file": "privateca_v1_generated_certificate_authority_service_get_certificate_template_sync.py",
+      "regionTag": "privateca_v1_generated_CertificateAuthorityService_GetCertificateTemplate_sync",
       "segments": [
         {
           "end": 44,
@@ -1434,8 +1434,8 @@
           "shortName": "GetCertificate"
         }
       },
-      "file": "privateca_generated_privateca_v1_certificate_authority_service_get_certificate_async.py",
-      "regionTag": "privateca_generated_privateca_v1_CertificateAuthorityService_GetCertificate_async",
+      "file": "privateca_v1_generated_certificate_authority_service_get_certificate_async.py",
+      "regionTag": "privateca_v1_generated_CertificateAuthorityService_GetCertificate_async",
       "segments": [
         {
           "end": 44,
@@ -1478,8 +1478,8 @@
           "shortName": "GetCertificate"
         }
       },
-      "file": "privateca_generated_privateca_v1_certificate_authority_service_get_certificate_sync.py",
-      "regionTag": "privateca_generated_privateca_v1_CertificateAuthorityService_GetCertificate_sync",
+      "file": "privateca_v1_generated_certificate_authority_service_get_certificate_sync.py",
+      "regionTag": "privateca_v1_generated_CertificateAuthorityService_GetCertificate_sync",
       "segments": [
         {
           "end": 44,
@@ -1523,8 +1523,8 @@
           "shortName": "ListCaPools"
         }
       },
-      "file": "privateca_generated_privateca_v1_certificate_authority_service_list_ca_pools_async.py",
-      "regionTag": "privateca_generated_privateca_v1_CertificateAuthorityService_ListCaPools_async",
+      "file": "privateca_v1_generated_certificate_authority_service_list_ca_pools_async.py",
+      "regionTag": "privateca_v1_generated_CertificateAuthorityService_ListCaPools_async",
       "segments": [
         {
           "end": 45,
@@ -1567,8 +1567,8 @@
           "shortName": "ListCaPools"
         }
       },
-      "file": "privateca_generated_privateca_v1_certificate_authority_service_list_ca_pools_sync.py",
-      "regionTag": "privateca_generated_privateca_v1_CertificateAuthorityService_ListCaPools_sync",
+      "file": "privateca_v1_generated_certificate_authority_service_list_ca_pools_sync.py",
+      "regionTag": "privateca_v1_generated_CertificateAuthorityService_ListCaPools_sync",
       "segments": [
         {
           "end": 45,
@@ -1612,8 +1612,8 @@
           "shortName": "ListCertificateAuthorities"
         }
       },
-      "file": "privateca_generated_privateca_v1_certificate_authority_service_list_certificate_authorities_async.py",
-      "regionTag": "privateca_generated_privateca_v1_CertificateAuthorityService_ListCertificateAuthorities_async",
+      "file": "privateca_v1_generated_certificate_authority_service_list_certificate_authorities_async.py",
+      "regionTag": "privateca_v1_generated_CertificateAuthorityService_ListCertificateAuthorities_async",
       "segments": [
         {
           "end": 45,
@@ -1656,8 +1656,8 @@
           "shortName": "ListCertificateAuthorities"
         }
       },
-      "file": "privateca_generated_privateca_v1_certificate_authority_service_list_certificate_authorities_sync.py",
-      "regionTag": "privateca_generated_privateca_v1_CertificateAuthorityService_ListCertificateAuthorities_sync",
+      "file": "privateca_v1_generated_certificate_authority_service_list_certificate_authorities_sync.py",
+      "regionTag": "privateca_v1_generated_CertificateAuthorityService_ListCertificateAuthorities_sync",
       "segments": [
         {
           "end": 45,
@@ -1701,8 +1701,8 @@
           "shortName": "ListCertificateRevocationLists"
         }
       },
-      "file": "privateca_generated_privateca_v1_certificate_authority_service_list_certificate_revocation_lists_async.py",
-      "regionTag": "privateca_generated_privateca_v1_CertificateAuthorityService_ListCertificateRevocationLists_async",
+      "file": "privateca_v1_generated_certificate_authority_service_list_certificate_revocation_lists_async.py",
+      "regionTag": "privateca_v1_generated_CertificateAuthorityService_ListCertificateRevocationLists_async",
       "segments": [
         {
           "end": 45,
@@ -1745,8 +1745,8 @@
           "shortName": "ListCertificateRevocationLists"
         }
       },
-      "file": "privateca_generated_privateca_v1_certificate_authority_service_list_certificate_revocation_lists_sync.py",
-      "regionTag": "privateca_generated_privateca_v1_CertificateAuthorityService_ListCertificateRevocationLists_sync",
+      "file": "privateca_v1_generated_certificate_authority_service_list_certificate_revocation_lists_sync.py",
+      "regionTag": "privateca_v1_generated_CertificateAuthorityService_ListCertificateRevocationLists_sync",
       "segments": [
         {
           "end": 45,
@@ -1790,8 +1790,8 @@
           "shortName": "ListCertificateTemplates"
         }
       },
-      "file": "privateca_generated_privateca_v1_certificate_authority_service_list_certificate_templates_async.py",
-      "regionTag": "privateca_generated_privateca_v1_CertificateAuthorityService_ListCertificateTemplates_async",
+      "file": "privateca_v1_generated_certificate_authority_service_list_certificate_templates_async.py",
+      "regionTag": "privateca_v1_generated_CertificateAuthorityService_ListCertificateTemplates_async",
       "segments": [
         {
           "end": 45,
@@ -1834,8 +1834,8 @@
           "shortName": "ListCertificateTemplates"
         }
       },
-      "file": "privateca_generated_privateca_v1_certificate_authority_service_list_certificate_templates_sync.py",
-      "regionTag": "privateca_generated_privateca_v1_CertificateAuthorityService_ListCertificateTemplates_sync",
+      "file": "privateca_v1_generated_certificate_authority_service_list_certificate_templates_sync.py",
+      "regionTag": "privateca_v1_generated_CertificateAuthorityService_ListCertificateTemplates_sync",
       "segments": [
         {
           "end": 45,
@@ -1879,8 +1879,8 @@
           "shortName": "ListCertificates"
         }
       },
-      "file": "privateca_generated_privateca_v1_certificate_authority_service_list_certificates_async.py",
-      "regionTag": "privateca_generated_privateca_v1_CertificateAuthorityService_ListCertificates_async",
+      "file": "privateca_v1_generated_certificate_authority_service_list_certificates_async.py",
+      "regionTag": "privateca_v1_generated_CertificateAuthorityService_ListCertificates_async",
       "segments": [
         {
           "end": 45,
@@ -1923,8 +1923,8 @@
           "shortName": "ListCertificates"
         }
       },
-      "file": "privateca_generated_privateca_v1_certificate_authority_service_list_certificates_sync.py",
-      "regionTag": "privateca_generated_privateca_v1_CertificateAuthorityService_ListCertificates_sync",
+      "file": "privateca_v1_generated_certificate_authority_service_list_certificates_sync.py",
+      "regionTag": "privateca_v1_generated_CertificateAuthorityService_ListCertificates_sync",
       "segments": [
         {
           "end": 45,
@@ -1968,8 +1968,8 @@
           "shortName": "RevokeCertificate"
         }
       },
-      "file": "privateca_generated_privateca_v1_certificate_authority_service_revoke_certificate_async.py",
-      "regionTag": "privateca_generated_privateca_v1_CertificateAuthorityService_RevokeCertificate_async",
+      "file": "privateca_v1_generated_certificate_authority_service_revoke_certificate_async.py",
+      "regionTag": "privateca_v1_generated_CertificateAuthorityService_RevokeCertificate_async",
       "segments": [
         {
           "end": 45,
@@ -2012,8 +2012,8 @@
           "shortName": "RevokeCertificate"
         }
       },
-      "file": "privateca_generated_privateca_v1_certificate_authority_service_revoke_certificate_sync.py",
-      "regionTag": "privateca_generated_privateca_v1_CertificateAuthorityService_RevokeCertificate_sync",
+      "file": "privateca_v1_generated_certificate_authority_service_revoke_certificate_sync.py",
+      "regionTag": "privateca_v1_generated_CertificateAuthorityService_RevokeCertificate_sync",
       "segments": [
         {
           "end": 45,
@@ -2057,8 +2057,8 @@
           "shortName": "UndeleteCertificateAuthority"
         }
       },
-      "file": "privateca_generated_privateca_v1_certificate_authority_service_undelete_certificate_authority_async.py",
-      "regionTag": "privateca_generated_privateca_v1_CertificateAuthorityService_UndeleteCertificateAuthority_async",
+      "file": "privateca_v1_generated_certificate_authority_service_undelete_certificate_authority_async.py",
+      "regionTag": "privateca_v1_generated_CertificateAuthorityService_UndeleteCertificateAuthority_async",
       "segments": [
         {
           "end": 48,
@@ -2101,8 +2101,8 @@
           "shortName": "UndeleteCertificateAuthority"
         }
       },
-      "file": "privateca_generated_privateca_v1_certificate_authority_service_undelete_certificate_authority_sync.py",
-      "regionTag": "privateca_generated_privateca_v1_CertificateAuthorityService_UndeleteCertificateAuthority_sync",
+      "file": "privateca_v1_generated_certificate_authority_service_undelete_certificate_authority_sync.py",
+      "regionTag": "privateca_v1_generated_CertificateAuthorityService_UndeleteCertificateAuthority_sync",
       "segments": [
         {
           "end": 48,
@@ -2146,8 +2146,8 @@
           "shortName": "UpdateCaPool"
         }
       },
-      "file": "privateca_generated_privateca_v1_certificate_authority_service_update_ca_pool_async.py",
-      "regionTag": "privateca_generated_privateca_v1_CertificateAuthorityService_UpdateCaPool_async",
+      "file": "privateca_v1_generated_certificate_authority_service_update_ca_pool_async.py",
+      "regionTag": "privateca_v1_generated_CertificateAuthorityService_UpdateCaPool_async",
       "segments": [
         {
           "end": 51,
@@ -2190,8 +2190,8 @@
           "shortName": "UpdateCaPool"
         }
       },
-      "file": "privateca_generated_privateca_v1_certificate_authority_service_update_ca_pool_sync.py",
-      "regionTag": "privateca_generated_privateca_v1_CertificateAuthorityService_UpdateCaPool_sync",
+      "file": "privateca_v1_generated_certificate_authority_service_update_ca_pool_sync.py",
+      "regionTag": "privateca_v1_generated_CertificateAuthorityService_UpdateCaPool_sync",
       "segments": [
         {
           "end": 51,
@@ -2235,8 +2235,8 @@
           "shortName": "UpdateCertificateAuthority"
         }
       },
-      "file": "privateca_generated_privateca_v1_certificate_authority_service_update_certificate_authority_async.py",
-      "regionTag": "privateca_generated_privateca_v1_CertificateAuthorityService_UpdateCertificateAuthority_async",
+      "file": "privateca_v1_generated_certificate_authority_service_update_certificate_authority_async.py",
+      "regionTag": "privateca_v1_generated_CertificateAuthorityService_UpdateCertificateAuthority_async",
       "segments": [
         {
           "end": 52,
@@ -2279,8 +2279,8 @@
           "shortName": "UpdateCertificateAuthority"
         }
       },
-      "file": "privateca_generated_privateca_v1_certificate_authority_service_update_certificate_authority_sync.py",
-      "regionTag": "privateca_generated_privateca_v1_CertificateAuthorityService_UpdateCertificateAuthority_sync",
+      "file": "privateca_v1_generated_certificate_authority_service_update_certificate_authority_sync.py",
+      "regionTag": "privateca_v1_generated_CertificateAuthorityService_UpdateCertificateAuthority_sync",
       "segments": [
         {
           "end": 52,
@@ -2324,8 +2324,8 @@
           "shortName": "UpdateCertificateRevocationList"
         }
       },
-      "file": "privateca_generated_privateca_v1_certificate_authority_service_update_certificate_revocation_list_async.py",
-      "regionTag": "privateca_generated_privateca_v1_CertificateAuthorityService_UpdateCertificateRevocationList_async",
+      "file": "privateca_v1_generated_certificate_authority_service_update_certificate_revocation_list_async.py",
+      "regionTag": "privateca_v1_generated_CertificateAuthorityService_UpdateCertificateRevocationList_async",
       "segments": [
         {
           "end": 47,
@@ -2368,8 +2368,8 @@
           "shortName": "UpdateCertificateRevocationList"
         }
       },
-      "file": "privateca_generated_privateca_v1_certificate_authority_service_update_certificate_revocation_list_sync.py",
-      "regionTag": "privateca_generated_privateca_v1_CertificateAuthorityService_UpdateCertificateRevocationList_sync",
+      "file": "privateca_v1_generated_certificate_authority_service_update_certificate_revocation_list_sync.py",
+      "regionTag": "privateca_v1_generated_CertificateAuthorityService_UpdateCertificateRevocationList_sync",
       "segments": [
         {
           "end": 47,
@@ -2413,8 +2413,8 @@
           "shortName": "UpdateCertificateTemplate"
         }
       },
-      "file": "privateca_generated_privateca_v1_certificate_authority_service_update_certificate_template_async.py",
-      "regionTag": "privateca_generated_privateca_v1_CertificateAuthorityService_UpdateCertificateTemplate_async",
+      "file": "privateca_v1_generated_certificate_authority_service_update_certificate_template_async.py",
+      "regionTag": "privateca_v1_generated_CertificateAuthorityService_UpdateCertificateTemplate_async",
       "segments": [
         {
           "end": 47,
@@ -2457,8 +2457,8 @@
           "shortName": "UpdateCertificateTemplate"
         }
       },
-      "file": "privateca_generated_privateca_v1_certificate_authority_service_update_certificate_template_sync.py",
-      "regionTag": "privateca_generated_privateca_v1_CertificateAuthorityService_UpdateCertificateTemplate_sync",
+      "file": "privateca_v1_generated_certificate_authority_service_update_certificate_template_sync.py",
+      "regionTag": "privateca_v1_generated_CertificateAuthorityService_UpdateCertificateTemplate_sync",
       "segments": [
         {
           "end": 47,
@@ -2502,8 +2502,8 @@
           "shortName": "UpdateCertificate"
         }
       },
-      "file": "privateca_generated_privateca_v1_certificate_authority_service_update_certificate_async.py",
-      "regionTag": "privateca_generated_privateca_v1_CertificateAuthorityService_UpdateCertificate_async",
+      "file": "privateca_v1_generated_certificate_authority_service_update_certificate_async.py",
+      "regionTag": "privateca_v1_generated_CertificateAuthorityService_UpdateCertificate_async",
       "segments": [
         {
           "end": 47,
@@ -2546,8 +2546,8 @@
           "shortName": "UpdateCertificate"
         }
       },
-      "file": "privateca_generated_privateca_v1_certificate_authority_service_update_certificate_sync.py",
-      "regionTag": "privateca_generated_privateca_v1_CertificateAuthorityService_UpdateCertificate_sync",
+      "file": "privateca_v1_generated_certificate_authority_service_update_certificate_sync.py",
+      "regionTag": "privateca_v1_generated_CertificateAuthorityService_UpdateCertificate_sync",
       "segments": [
         {
           "end": 47,
