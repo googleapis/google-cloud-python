@@ -430,8 +430,7 @@ class SpeechClient(metaclass=SpeechClientMeta):
         results after all audio has been sent and processed.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import speech_v1p1beta1
 
@@ -540,8 +539,7 @@ class SpeechClient(metaclass=SpeechClientMeta):
         `how-to <https://cloud.google.com/speech-to-text/docs/async-recognize>`__.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import speech_v1p1beta1
 
@@ -662,8 +660,7 @@ class SpeechClient(metaclass=SpeechClientMeta):
         available via the gRPC API (not REST).
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import speech_v1p1beta1
 

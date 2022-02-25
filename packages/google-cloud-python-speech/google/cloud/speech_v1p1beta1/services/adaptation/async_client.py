@@ -217,7 +217,7 @@ class AdaptationAsyncClient:
         when you send a call that includes the PhraseSet.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import speech_v1p1beta1
 
@@ -338,7 +338,7 @@ class AdaptationAsyncClient:
     ) -> resource.PhraseSet:
         r"""Get a phrase set.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import speech_v1p1beta1
 
@@ -438,7 +438,7 @@ class AdaptationAsyncClient:
     ) -> pagers.ListPhraseSetAsyncPager:
         r"""List phrase sets.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import speech_v1p1beta1
 
@@ -548,7 +548,7 @@ class AdaptationAsyncClient:
     ) -> resource.PhraseSet:
         r"""Update a phrase set.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import speech_v1p1beta1
 
@@ -658,7 +658,7 @@ class AdaptationAsyncClient:
     ) -> None:
         r"""Delete a phrase set.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import speech_v1p1beta1
 
@@ -741,7 +741,7 @@ class AdaptationAsyncClient:
     ) -> resource.CustomClass:
         r"""Create a custom class.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import speech_v1p1beta1
 
@@ -866,7 +866,7 @@ class AdaptationAsyncClient:
     ) -> resource.CustomClass:
         r"""Get a custom class.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import speech_v1p1beta1
 
@@ -963,7 +963,7 @@ class AdaptationAsyncClient:
     ) -> pagers.ListCustomClassesAsyncPager:
         r"""List custom classes.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import speech_v1p1beta1
 
@@ -1073,7 +1073,7 @@ class AdaptationAsyncClient:
     ) -> resource.CustomClass:
         r"""Update a custom class.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import speech_v1p1beta1
 
@@ -1187,7 +1187,7 @@ class AdaptationAsyncClient:
     ) -> None:
         r"""Delete a custom class.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import speech_v1p1beta1
 
