@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for GetFunction
+# Snippet for ListFunctions
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,23 +23,23 @@
 #   python3 -m pip install google-cloud-functions
 
 
-# [START cloudfunctions_generated_functions_v1_CloudFunctionsService_GetFunction_sync]
+# [START cloudfunctions_v1_generated_CloudFunctionsService_ListFunctions_async]
 from google.cloud import functions_v1
 
 
-def sample_get_function():
+async def sample_list_functions():
     # Create a client
-    client = functions_v1.CloudFunctionsServiceClient()
+    client = functions_v1.CloudFunctionsServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = functions_v1.GetFunctionRequest(
-        name="name_value",
+    request = functions_v1.ListFunctionsRequest(
     )
 
     # Make the request
-    response = client.get_function(request=request)
+    page_result = client.list_functions(request=request)
 
     # Handle the response
-    print(response)
+    async for response in page_result:
+        print(response)
 
-# [END cloudfunctions_generated_functions_v1_CloudFunctionsService_GetFunction_sync]
+# [END cloudfunctions_v1_generated_CloudFunctionsService_ListFunctions_async]

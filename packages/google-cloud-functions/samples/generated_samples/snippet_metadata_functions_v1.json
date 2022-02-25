@@ -10,8 +10,8 @@
           "shortName": "CallFunction"
         }
       },
-      "file": "cloudfunctions_generated_functions_v1_cloud_functions_service_call_function_async.py",
-      "regionTag": "cloudfunctions_generated_functions_v1_CloudFunctionsService_CallFunction_async",
+      "file": "cloudfunctions_v1_generated_cloud_functions_service_call_function_async.py",
+      "regionTag": "cloudfunctions_v1_generated_CloudFunctionsService_CallFunction_async",
       "segments": [
         {
           "end": 45,
@@ -54,8 +54,8 @@
           "shortName": "CallFunction"
         }
       },
-      "file": "cloudfunctions_generated_functions_v1_cloud_functions_service_call_function_sync.py",
-      "regionTag": "cloudfunctions_generated_functions_v1_CloudFunctionsService_CallFunction_sync",
+      "file": "cloudfunctions_v1_generated_cloud_functions_service_call_function_sync.py",
+      "regionTag": "cloudfunctions_v1_generated_CloudFunctionsService_CallFunction_sync",
       "segments": [
         {
           "end": 45,
@@ -99,8 +99,8 @@
           "shortName": "CreateFunction"
         }
       },
-      "file": "cloudfunctions_generated_functions_v1_cloud_functions_service_create_function_async.py",
-      "regionTag": "cloudfunctions_generated_functions_v1_CloudFunctionsService_CreateFunction_async",
+      "file": "cloudfunctions_v1_generated_cloud_functions_service_create_function_async.py",
+      "regionTag": "cloudfunctions_v1_generated_CloudFunctionsService_CreateFunction_async",
       "segments": [
         {
           "end": 52,
@@ -143,8 +143,8 @@
           "shortName": "CreateFunction"
         }
       },
-      "file": "cloudfunctions_generated_functions_v1_cloud_functions_service_create_function_sync.py",
-      "regionTag": "cloudfunctions_generated_functions_v1_CloudFunctionsService_CreateFunction_sync",
+      "file": "cloudfunctions_v1_generated_cloud_functions_service_create_function_sync.py",
+      "regionTag": "cloudfunctions_v1_generated_CloudFunctionsService_CreateFunction_sync",
       "segments": [
         {
           "end": 52,
@@ -188,8 +188,8 @@
           "shortName": "DeleteFunction"
         }
       },
-      "file": "cloudfunctions_generated_functions_v1_cloud_functions_service_delete_function_async.py",
-      "regionTag": "cloudfunctions_generated_functions_v1_CloudFunctionsService_DeleteFunction_async",
+      "file": "cloudfunctions_v1_generated_cloud_functions_service_delete_function_async.py",
+      "regionTag": "cloudfunctions_v1_generated_CloudFunctionsService_DeleteFunction_async",
       "segments": [
         {
           "end": 48,
@@ -232,8 +232,8 @@
           "shortName": "DeleteFunction"
         }
       },
-      "file": "cloudfunctions_generated_functions_v1_cloud_functions_service_delete_function_sync.py",
-      "regionTag": "cloudfunctions_generated_functions_v1_CloudFunctionsService_DeleteFunction_sync",
+      "file": "cloudfunctions_v1_generated_cloud_functions_service_delete_function_sync.py",
+      "regionTag": "cloudfunctions_v1_generated_CloudFunctionsService_DeleteFunction_sync",
       "segments": [
         {
           "end": 48,
@@ -277,8 +277,8 @@
           "shortName": "GenerateDownloadUrl"
         }
       },
-      "file": "cloudfunctions_generated_functions_v1_cloud_functions_service_generate_download_url_async.py",
-      "regionTag": "cloudfunctions_generated_functions_v1_CloudFunctionsService_GenerateDownloadUrl_async",
+      "file": "cloudfunctions_v1_generated_cloud_functions_service_generate_download_url_async.py",
+      "regionTag": "cloudfunctions_v1_generated_CloudFunctionsService_GenerateDownloadUrl_async",
       "segments": [
         {
           "end": 43,
@@ -321,8 +321,8 @@
           "shortName": "GenerateDownloadUrl"
         }
       },
-      "file": "cloudfunctions_generated_functions_v1_cloud_functions_service_generate_download_url_sync.py",
-      "regionTag": "cloudfunctions_generated_functions_v1_CloudFunctionsService_GenerateDownloadUrl_sync",
+      "file": "cloudfunctions_v1_generated_cloud_functions_service_generate_download_url_sync.py",
+      "regionTag": "cloudfunctions_v1_generated_CloudFunctionsService_GenerateDownloadUrl_sync",
       "segments": [
         {
           "end": 43,
@@ -366,8 +366,8 @@
           "shortName": "GenerateUploadUrl"
         }
       },
-      "file": "cloudfunctions_generated_functions_v1_cloud_functions_service_generate_upload_url_async.py",
-      "regionTag": "cloudfunctions_generated_functions_v1_CloudFunctionsService_GenerateUploadUrl_async",
+      "file": "cloudfunctions_v1_generated_cloud_functions_service_generate_upload_url_async.py",
+      "regionTag": "cloudfunctions_v1_generated_CloudFunctionsService_GenerateUploadUrl_async",
       "segments": [
         {
           "end": 43,
@@ -410,8 +410,8 @@
           "shortName": "GenerateUploadUrl"
         }
       },
-      "file": "cloudfunctions_generated_functions_v1_cloud_functions_service_generate_upload_url_sync.py",
-      "regionTag": "cloudfunctions_generated_functions_v1_CloudFunctionsService_GenerateUploadUrl_sync",
+      "file": "cloudfunctions_v1_generated_cloud_functions_service_generate_upload_url_sync.py",
+      "regionTag": "cloudfunctions_v1_generated_CloudFunctionsService_GenerateUploadUrl_sync",
       "segments": [
         {
           "end": 43,
@@ -455,8 +455,8 @@
           "shortName": "GetFunction"
         }
       },
-      "file": "cloudfunctions_generated_functions_v1_cloud_functions_service_get_function_async.py",
-      "regionTag": "cloudfunctions_generated_functions_v1_CloudFunctionsService_GetFunction_async",
+      "file": "cloudfunctions_v1_generated_cloud_functions_service_get_function_async.py",
+      "regionTag": "cloudfunctions_v1_generated_CloudFunctionsService_GetFunction_async",
       "segments": [
         {
           "end": 44,
@@ -499,8 +499,8 @@
           "shortName": "GetFunction"
         }
       },
-      "file": "cloudfunctions_generated_functions_v1_cloud_functions_service_get_function_sync.py",
-      "regionTag": "cloudfunctions_generated_functions_v1_CloudFunctionsService_GetFunction_sync",
+      "file": "cloudfunctions_v1_generated_cloud_functions_service_get_function_sync.py",
+      "regionTag": "cloudfunctions_v1_generated_CloudFunctionsService_GetFunction_sync",
       "segments": [
         {
           "end": 44,
@@ -544,8 +544,8 @@
           "shortName": "GetIamPolicy"
         }
       },
-      "file": "cloudfunctions_generated_functions_v1_cloud_functions_service_get_iam_policy_async.py",
-      "regionTag": "cloudfunctions_generated_functions_v1_CloudFunctionsService_GetIamPolicy_async",
+      "file": "cloudfunctions_v1_generated_cloud_functions_service_get_iam_policy_async.py",
+      "regionTag": "cloudfunctions_v1_generated_CloudFunctionsService_GetIamPolicy_async",
       "segments": [
         {
           "end": 44,
@@ -588,8 +588,8 @@
           "shortName": "GetIamPolicy"
         }
       },
-      "file": "cloudfunctions_generated_functions_v1_cloud_functions_service_get_iam_policy_sync.py",
-      "regionTag": "cloudfunctions_generated_functions_v1_CloudFunctionsService_GetIamPolicy_sync",
+      "file": "cloudfunctions_v1_generated_cloud_functions_service_get_iam_policy_sync.py",
+      "regionTag": "cloudfunctions_v1_generated_CloudFunctionsService_GetIamPolicy_sync",
       "segments": [
         {
           "end": 44,
@@ -633,8 +633,8 @@
           "shortName": "ListFunctions"
         }
       },
-      "file": "cloudfunctions_generated_functions_v1_cloud_functions_service_list_functions_async.py",
-      "regionTag": "cloudfunctions_generated_functions_v1_CloudFunctionsService_ListFunctions_async",
+      "file": "cloudfunctions_v1_generated_cloud_functions_service_list_functions_async.py",
+      "regionTag": "cloudfunctions_v1_generated_CloudFunctionsService_ListFunctions_async",
       "segments": [
         {
           "end": 44,
@@ -677,8 +677,8 @@
           "shortName": "ListFunctions"
         }
       },
-      "file": "cloudfunctions_generated_functions_v1_cloud_functions_service_list_functions_sync.py",
-      "regionTag": "cloudfunctions_generated_functions_v1_CloudFunctionsService_ListFunctions_sync",
+      "file": "cloudfunctions_v1_generated_cloud_functions_service_list_functions_sync.py",
+      "regionTag": "cloudfunctions_v1_generated_CloudFunctionsService_ListFunctions_sync",
       "segments": [
         {
           "end": 44,
@@ -722,8 +722,8 @@
           "shortName": "SetIamPolicy"
         }
       },
-      "file": "cloudfunctions_generated_functions_v1_cloud_functions_service_set_iam_policy_async.py",
-      "regionTag": "cloudfunctions_generated_functions_v1_CloudFunctionsService_SetIamPolicy_async",
+      "file": "cloudfunctions_v1_generated_cloud_functions_service_set_iam_policy_async.py",
+      "regionTag": "cloudfunctions_v1_generated_CloudFunctionsService_SetIamPolicy_async",
       "segments": [
         {
           "end": 44,
@@ -766,8 +766,8 @@
           "shortName": "SetIamPolicy"
         }
       },
-      "file": "cloudfunctions_generated_functions_v1_cloud_functions_service_set_iam_policy_sync.py",
-      "regionTag": "cloudfunctions_generated_functions_v1_CloudFunctionsService_SetIamPolicy_sync",
+      "file": "cloudfunctions_v1_generated_cloud_functions_service_set_iam_policy_sync.py",
+      "regionTag": "cloudfunctions_v1_generated_CloudFunctionsService_SetIamPolicy_sync",
       "segments": [
         {
           "end": 44,
@@ -811,8 +811,8 @@
           "shortName": "TestIamPermissions"
         }
       },
-      "file": "cloudfunctions_generated_functions_v1_cloud_functions_service_test_iam_permissions_async.py",
-      "regionTag": "cloudfunctions_generated_functions_v1_CloudFunctionsService_TestIamPermissions_async",
+      "file": "cloudfunctions_v1_generated_cloud_functions_service_test_iam_permissions_async.py",
+      "regionTag": "cloudfunctions_v1_generated_CloudFunctionsService_TestIamPermissions_async",
       "segments": [
         {
           "end": 45,
@@ -855,8 +855,8 @@
           "shortName": "TestIamPermissions"
         }
       },
-      "file": "cloudfunctions_generated_functions_v1_cloud_functions_service_test_iam_permissions_sync.py",
-      "regionTag": "cloudfunctions_generated_functions_v1_CloudFunctionsService_TestIamPermissions_sync",
+      "file": "cloudfunctions_v1_generated_cloud_functions_service_test_iam_permissions_sync.py",
+      "regionTag": "cloudfunctions_v1_generated_CloudFunctionsService_TestIamPermissions_sync",
       "segments": [
         {
           "end": 45,
@@ -900,8 +900,8 @@
           "shortName": "UpdateFunction"
         }
       },
-      "file": "cloudfunctions_generated_functions_v1_cloud_functions_service_update_function_async.py",
-      "regionTag": "cloudfunctions_generated_functions_v1_CloudFunctionsService_UpdateFunction_async",
+      "file": "cloudfunctions_v1_generated_cloud_functions_service_update_function_async.py",
+      "regionTag": "cloudfunctions_v1_generated_CloudFunctionsService_UpdateFunction_async",
       "segments": [
         {
           "end": 51,
@@ -944,8 +944,8 @@
           "shortName": "UpdateFunction"
         }
       },
-      "file": "cloudfunctions_generated_functions_v1_cloud_functions_service_update_function_sync.py",
-      "regionTag": "cloudfunctions_generated_functions_v1_CloudFunctionsService_UpdateFunction_sync",
+      "file": "cloudfunctions_v1_generated_cloud_functions_service_update_function_sync.py",
+      "regionTag": "cloudfunctions_v1_generated_CloudFunctionsService_UpdateFunction_sync",
       "segments": [
         {
           "end": 51,

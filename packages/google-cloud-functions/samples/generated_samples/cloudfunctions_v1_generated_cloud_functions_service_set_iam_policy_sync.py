@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for UpdateFunction
+# Snippet for SetIamPolicy
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,30 +23,23 @@
 #   python3 -m pip install google-cloud-functions
 
 
-# [START cloudfunctions_generated_functions_v1_CloudFunctionsService_UpdateFunction_sync]
+# [START cloudfunctions_v1_generated_CloudFunctionsService_SetIamPolicy_sync]
 from google.cloud import functions_v1
 
 
-def sample_update_function():
+def sample_set_iam_policy():
     # Create a client
     client = functions_v1.CloudFunctionsServiceClient()
 
     # Initialize request argument(s)
-    function = functions_v1.CloudFunction()
-    function.source_archive_url = "source_archive_url_value"
-
-    request = functions_v1.UpdateFunctionRequest(
-        function=function,
+    request = functions_v1.SetIamPolicyRequest(
+        resource="resource_value",
     )
 
     # Make the request
-    operation = client.update_function(request=request)
-
-    print("Waiting for operation to complete...")
-
-    response = operation.result()
+    response = client.set_iam_policy(request=request)
 
     # Handle the response
     print(response)
 
-# [END cloudfunctions_generated_functions_v1_CloudFunctionsService_UpdateFunction_sync]
+# [END cloudfunctions_v1_generated_CloudFunctionsService_SetIamPolicy_sync]

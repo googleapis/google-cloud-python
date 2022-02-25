@@ -237,7 +237,7 @@ class CloudFunctionsServiceAsyncClient:
         requested project.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import functions_v1
 
@@ -326,7 +326,7 @@ class CloudFunctionsServiceAsyncClient:
         requested project.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import functions_v1
 
@@ -433,7 +433,7 @@ class CloudFunctionsServiceAsyncClient:
         operation will return ``ALREADY_EXISTS`` error.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import functions_v1
 
@@ -550,7 +550,7 @@ class CloudFunctionsServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Updates existing function.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import functions_v1
 
@@ -674,7 +674,7 @@ class CloudFunctionsServiceAsyncClient:
         function.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import functions_v1
 
@@ -804,7 +804,7 @@ class CloudFunctionsServiceAsyncClient:
         Limits <https://cloud.google.com/functions/quotas#rate_limits>`__.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import functions_v1
 
@@ -929,7 +929,7 @@ class CloudFunctionsServiceAsyncClient:
         -  ``Authorization: Bearer YOUR_TOKEN``
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import functions_v1
 
@@ -1000,7 +1000,7 @@ class CloudFunctionsServiceAsyncClient:
         https://cloud.google.com/storage/docs/access-control/signed-urls
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import functions_v1
 
@@ -1067,7 +1067,7 @@ class CloudFunctionsServiceAsyncClient:
         function. Replaces any existing policy.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import functions_v1
 
@@ -1194,7 +1194,7 @@ class CloudFunctionsServiceAsyncClient:
         not have a policy set.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import functions_v1
 
@@ -1321,7 +1321,7 @@ class CloudFunctionsServiceAsyncClient:
         return an empty set of permissions, not a NOT_FOUND error.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import functions_v1
 

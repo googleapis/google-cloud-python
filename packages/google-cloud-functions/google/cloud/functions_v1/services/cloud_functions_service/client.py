@@ -460,8 +460,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
         requested project.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import functions_v1
 
@@ -541,8 +540,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
         requested project.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import functions_v1
 
@@ -639,8 +637,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
         operation will return ``ALREADY_EXISTS`` error.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import functions_v1
 
@@ -757,8 +754,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
     ) -> operation.Operation:
         r"""Updates existing function.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import functions_v1
 
@@ -872,8 +868,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
         function.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import functions_v1
 
@@ -993,8 +988,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
         Limits <https://cloud.google.com/functions/quotas#rate_limits>`__.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import functions_v1
 
@@ -1119,8 +1113,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
         -  ``Authorization: Bearer YOUR_TOKEN``
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import functions_v1
 
@@ -1192,8 +1185,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
         https://cloud.google.com/storage/docs/access-control/signed-urls
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import functions_v1
 
@@ -1261,8 +1253,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
         function. Replaces any existing policy.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import functions_v1
 
@@ -1388,8 +1379,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
         not have a policy set.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import functions_v1
 
@@ -1515,8 +1505,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
         return an empty set of permissions, not a NOT_FOUND error.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import functions_v1
 

@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for GetIamPolicy
+# Snippet for GenerateUploadUrl
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,23 +23,22 @@
 #   python3 -m pip install google-cloud-functions
 
 
-# [START cloudfunctions_generated_functions_v1_CloudFunctionsService_GetIamPolicy_async]
+# [START cloudfunctions_v1_generated_CloudFunctionsService_GenerateUploadUrl_sync]
 from google.cloud import functions_v1
 
 
-async def sample_get_iam_policy():
+def sample_generate_upload_url():
     # Create a client
-    client = functions_v1.CloudFunctionsServiceAsyncClient()
+    client = functions_v1.CloudFunctionsServiceClient()
 
     # Initialize request argument(s)
-    request = functions_v1.GetIamPolicyRequest(
-        resource="resource_value",
+    request = functions_v1.GenerateUploadUrlRequest(
     )
 
     # Make the request
-    response = await client.get_iam_policy(request=request)
+    response = client.generate_upload_url(request=request)
 
     # Handle the response
     print(response)
 
-# [END cloudfunctions_generated_functions_v1_CloudFunctionsService_GetIamPolicy_async]
+# [END cloudfunctions_v1_generated_CloudFunctionsService_GenerateUploadUrl_sync]

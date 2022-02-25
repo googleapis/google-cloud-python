@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for DeleteFunction
+# Snippet for CallFunction
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,27 +23,24 @@
 #   python3 -m pip install google-cloud-functions
 
 
-# [START cloudfunctions_generated_functions_v1_CloudFunctionsService_DeleteFunction_async]
+# [START cloudfunctions_v1_generated_CloudFunctionsService_CallFunction_async]
 from google.cloud import functions_v1
 
 
-async def sample_delete_function():
+async def sample_call_function():
     # Create a client
     client = functions_v1.CloudFunctionsServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = functions_v1.DeleteFunctionRequest(
+    request = functions_v1.CallFunctionRequest(
         name="name_value",
+        data="data_value",
     )
 
     # Make the request
-    operation = client.delete_function(request=request)
-
-    print("Waiting for operation to complete...")
-
-    response = await operation.result()
+    response = await client.call_function(request=request)
 
     # Handle the response
     print(response)
 
-# [END cloudfunctions_generated_functions_v1_CloudFunctionsService_DeleteFunction_async]
+# [END cloudfunctions_v1_generated_CloudFunctionsService_CallFunction_async]

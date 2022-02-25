@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for TestIamPermissions
+# Snippet for GetFunction
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,24 +23,23 @@
 #   python3 -m pip install google-cloud-functions
 
 
-# [START cloudfunctions_generated_functions_v1_CloudFunctionsService_TestIamPermissions_async]
+# [START cloudfunctions_v1_generated_CloudFunctionsService_GetFunction_async]
 from google.cloud import functions_v1
 
 
-async def sample_test_iam_permissions():
+async def sample_get_function():
     # Create a client
     client = functions_v1.CloudFunctionsServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = functions_v1.TestIamPermissionsRequest(
-        resource="resource_value",
-        permissions=['permissions_value_1', 'permissions_value_2'],
+    request = functions_v1.GetFunctionRequest(
+        name="name_value",
     )
 
     # Make the request
-    response = await client.test_iam_permissions(request=request)
+    response = await client.get_function(request=request)
 
     # Handle the response
     print(response)
 
-# [END cloudfunctions_generated_functions_v1_CloudFunctionsService_TestIamPermissions_async]
+# [END cloudfunctions_v1_generated_CloudFunctionsService_GetFunction_async]

@@ -23,13 +23,13 @@
 #   python3 -m pip install google-cloud-functions
 
 
-# [START cloudfunctions_generated_functions_v1_CloudFunctionsService_CreateFunction_async]
+# [START cloudfunctions_v1_generated_CloudFunctionsService_CreateFunction_sync]
 from google.cloud import functions_v1
 
 
-async def sample_create_function():
+def sample_create_function():
     # Create a client
-    client = functions_v1.CloudFunctionsServiceAsyncClient()
+    client = functions_v1.CloudFunctionsServiceClient()
 
     # Initialize request argument(s)
     function = functions_v1.CloudFunction()
@@ -45,9 +45,9 @@ async def sample_create_function():
 
     print("Waiting for operation to complete...")
 
-    response = await operation.result()
+    response = operation.result()
 
     # Handle the response
     print(response)
 
-# [END cloudfunctions_generated_functions_v1_CloudFunctionsService_CreateFunction_async]
+# [END cloudfunctions_v1_generated_CloudFunctionsService_CreateFunction_sync]

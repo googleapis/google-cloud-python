@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for GenerateUploadUrl
+# Snippet for ListFunctions
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,22 +23,23 @@
 #   python3 -m pip install google-cloud-functions
 
 
-# [START cloudfunctions_generated_functions_v1_CloudFunctionsService_GenerateUploadUrl_sync]
+# [START cloudfunctions_v1_generated_CloudFunctionsService_ListFunctions_sync]
 from google.cloud import functions_v1
 
 
-def sample_generate_upload_url():
+def sample_list_functions():
     # Create a client
     client = functions_v1.CloudFunctionsServiceClient()
 
     # Initialize request argument(s)
-    request = functions_v1.GenerateUploadUrlRequest(
+    request = functions_v1.ListFunctionsRequest(
     )
 
     # Make the request
-    response = client.generate_upload_url(request=request)
+    page_result = client.list_functions(request=request)
 
     # Handle the response
-    print(response)
+    for response in page_result:
+        print(response)
 
-# [END cloudfunctions_generated_functions_v1_CloudFunctionsService_GenerateUploadUrl_sync]
+# [END cloudfunctions_v1_generated_CloudFunctionsService_ListFunctions_sync]

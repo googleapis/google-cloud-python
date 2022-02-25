@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for DeleteFunction
+# Snippet for GetIamPolicy
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,27 +23,23 @@
 #   python3 -m pip install google-cloud-functions
 
 
-# [START cloudfunctions_generated_functions_v1_CloudFunctionsService_DeleteFunction_sync]
+# [START cloudfunctions_v1_generated_CloudFunctionsService_GetIamPolicy_async]
 from google.cloud import functions_v1
 
 
-def sample_delete_function():
+async def sample_get_iam_policy():
     # Create a client
-    client = functions_v1.CloudFunctionsServiceClient()
+    client = functions_v1.CloudFunctionsServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = functions_v1.DeleteFunctionRequest(
-        name="name_value",
+    request = functions_v1.GetIamPolicyRequest(
+        resource="resource_value",
     )
 
     # Make the request
-    operation = client.delete_function(request=request)
-
-    print("Waiting for operation to complete...")
-
-    response = operation.result()
+    response = await client.get_iam_policy(request=request)
 
     # Handle the response
     print(response)
 
-# [END cloudfunctions_generated_functions_v1_CloudFunctionsService_DeleteFunction_sync]
+# [END cloudfunctions_v1_generated_CloudFunctionsService_GetIamPolicy_async]
