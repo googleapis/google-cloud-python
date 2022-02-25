@@ -435,8 +435,7 @@ class ExecutionsClient(metaclass=ExecutionsClientMeta):
         first).
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.workflows import executions_v1beta
 
@@ -543,8 +542,7 @@ class ExecutionsClient(metaclass=ExecutionsClientMeta):
         the given workflow.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.workflows import executions_v1beta
 
@@ -646,8 +644,7 @@ class ExecutionsClient(metaclass=ExecutionsClientMeta):
     ) -> executions.Execution:
         r"""Returns an execution of the given name.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.workflows import executions_v1beta
 
@@ -739,8 +736,7 @@ class ExecutionsClient(metaclass=ExecutionsClientMeta):
     ) -> executions.Execution:
         r"""Cancels an execution of the given name.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.workflows import executions_v1beta
 

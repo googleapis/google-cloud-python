@@ -418,8 +418,7 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
         The default order is not specified.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import workflows_v1
 
@@ -523,8 +522,7 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
     ) -> workflows.Workflow:
         r"""Gets details of a single Workflow.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import workflows_v1
 
@@ -622,8 +620,7 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
         [ALREADY_EXISTS][google.rpc.Code.ALREADY_EXISTS] error.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import workflows_v1
 
@@ -763,8 +760,7 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
         executions of the workflow.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import workflows_v1
 
@@ -888,8 +884,7 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
         used in new workflow executions.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import workflows_v1
 

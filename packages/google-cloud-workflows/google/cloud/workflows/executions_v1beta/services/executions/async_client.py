@@ -218,7 +218,7 @@ class ExecutionsAsyncClient:
         first).
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.workflows import executions_v1beta
 
@@ -325,7 +325,7 @@ class ExecutionsAsyncClient:
         the given workflow.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.workflows import executions_v1beta
 
@@ -427,7 +427,7 @@ class ExecutionsAsyncClient:
     ) -> executions.Execution:
         r"""Returns an execution of the given name.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.workflows import executions_v1beta
 
@@ -519,7 +519,7 @@ class ExecutionsAsyncClient:
     ) -> executions.Execution:
         r"""Cancels an execution of the given name.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.workflows import executions_v1beta
 

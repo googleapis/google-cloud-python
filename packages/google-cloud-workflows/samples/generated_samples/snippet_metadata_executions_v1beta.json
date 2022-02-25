@@ -10,8 +10,8 @@
           "shortName": "CancelExecution"
         }
       },
-      "file": "workflowexecutions_generated_executions_v1beta_executions_cancel_execution_async.py",
-      "regionTag": "workflowexecutions_generated_executions_v1beta_Executions_CancelExecution_async",
+      "file": "workflowexecutions_v1beta_generated_executions_cancel_execution_async.py",
+      "regionTag": "workflowexecutions_v1beta_generated_Executions_CancelExecution_async",
       "segments": [
         {
           "end": 44,
@@ -54,8 +54,8 @@
           "shortName": "CancelExecution"
         }
       },
-      "file": "workflowexecutions_generated_executions_v1beta_executions_cancel_execution_sync.py",
-      "regionTag": "workflowexecutions_generated_executions_v1beta_Executions_CancelExecution_sync",
+      "file": "workflowexecutions_v1beta_generated_executions_cancel_execution_sync.py",
+      "regionTag": "workflowexecutions_v1beta_generated_Executions_CancelExecution_sync",
       "segments": [
         {
           "end": 44,
@@ -99,8 +99,8 @@
           "shortName": "CreateExecution"
         }
       },
-      "file": "workflowexecutions_generated_executions_v1beta_executions_create_execution_async.py",
-      "regionTag": "workflowexecutions_generated_executions_v1beta_Executions_CreateExecution_async",
+      "file": "workflowexecutions_v1beta_generated_executions_create_execution_async.py",
+      "regionTag": "workflowexecutions_v1beta_generated_Executions_CreateExecution_async",
       "segments": [
         {
           "end": 44,
@@ -143,8 +143,8 @@
           "shortName": "CreateExecution"
         }
       },
-      "file": "workflowexecutions_generated_executions_v1beta_executions_create_execution_sync.py",
-      "regionTag": "workflowexecutions_generated_executions_v1beta_Executions_CreateExecution_sync",
+      "file": "workflowexecutions_v1beta_generated_executions_create_execution_sync.py",
+      "regionTag": "workflowexecutions_v1beta_generated_Executions_CreateExecution_sync",
       "segments": [
         {
           "end": 44,
@@ -188,8 +188,8 @@
           "shortName": "GetExecution"
         }
       },
-      "file": "workflowexecutions_generated_executions_v1beta_executions_get_execution_async.py",
-      "regionTag": "workflowexecutions_generated_executions_v1beta_Executions_GetExecution_async",
+      "file": "workflowexecutions_v1beta_generated_executions_get_execution_async.py",
+      "regionTag": "workflowexecutions_v1beta_generated_Executions_GetExecution_async",
       "segments": [
         {
           "end": 44,
@@ -232,8 +232,8 @@
           "shortName": "GetExecution"
         }
       },
-      "file": "workflowexecutions_generated_executions_v1beta_executions_get_execution_sync.py",
-      "regionTag": "workflowexecutions_generated_executions_v1beta_Executions_GetExecution_sync",
+      "file": "workflowexecutions_v1beta_generated_executions_get_execution_sync.py",
+      "regionTag": "workflowexecutions_v1beta_generated_Executions_GetExecution_sync",
       "segments": [
         {
           "end": 44,
@@ -277,8 +277,8 @@
           "shortName": "ListExecutions"
         }
       },
-      "file": "workflowexecutions_generated_executions_v1beta_executions_list_executions_async.py",
-      "regionTag": "workflowexecutions_generated_executions_v1beta_Executions_ListExecutions_async",
+      "file": "workflowexecutions_v1beta_generated_executions_list_executions_async.py",
+      "regionTag": "workflowexecutions_v1beta_generated_Executions_ListExecutions_async",
       "segments": [
         {
           "end": 45,
@@ -321,8 +321,8 @@
           "shortName": "ListExecutions"
         }
       },
-      "file": "workflowexecutions_generated_executions_v1beta_executions_list_executions_sync.py",
-      "regionTag": "workflowexecutions_generated_executions_v1beta_Executions_ListExecutions_sync",
+      "file": "workflowexecutions_v1beta_generated_executions_list_executions_sync.py",
+      "regionTag": "workflowexecutions_v1beta_generated_Executions_ListExecutions_sync",
       "segments": [
         {
           "end": 45,

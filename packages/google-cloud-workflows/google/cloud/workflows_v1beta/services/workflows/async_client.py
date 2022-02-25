@@ -217,7 +217,7 @@ class WorkflowsAsyncClient:
         The default order is not specified.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import workflows_v1beta
 
@@ -321,7 +321,7 @@ class WorkflowsAsyncClient:
     ) -> workflows.Workflow:
         r"""Gets details of a single Workflow.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import workflows_v1beta
 
@@ -419,7 +419,7 @@ class WorkflowsAsyncClient:
         [ALREADY_EXISTS][google.rpc.Code.ALREADY_EXISTS] error.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import workflows_v1beta
 
@@ -559,7 +559,7 @@ class WorkflowsAsyncClient:
         executions of the workflow.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import workflows_v1beta
 
@@ -683,7 +683,7 @@ class WorkflowsAsyncClient:
         used in new workflow executions.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import workflows_v1beta
 

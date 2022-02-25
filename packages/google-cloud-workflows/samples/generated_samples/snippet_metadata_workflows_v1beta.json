@@ -10,8 +10,8 @@
           "shortName": "CreateWorkflow"
         }
       },
-      "file": "workflows_generated_workflows_v1beta_workflows_create_workflow_async.py",
-      "regionTag": "workflows_generated_workflows_v1beta_Workflows_CreateWorkflow_async",
+      "file": "workflows_v1beta_generated_workflows_create_workflow_async.py",
+      "regionTag": "workflows_v1beta_generated_Workflows_CreateWorkflow_async",
       "segments": [
         {
           "end": 53,
@@ -54,8 +54,8 @@
           "shortName": "CreateWorkflow"
         }
       },
-      "file": "workflows_generated_workflows_v1beta_workflows_create_workflow_sync.py",
-      "regionTag": "workflows_generated_workflows_v1beta_Workflows_CreateWorkflow_sync",
+      "file": "workflows_v1beta_generated_workflows_create_workflow_sync.py",
+      "regionTag": "workflows_v1beta_generated_Workflows_CreateWorkflow_sync",
       "segments": [
         {
           "end": 53,
@@ -99,8 +99,8 @@
           "shortName": "DeleteWorkflow"
         }
       },
-      "file": "workflows_generated_workflows_v1beta_workflows_delete_workflow_async.py",
-      "regionTag": "workflows_generated_workflows_v1beta_Workflows_DeleteWorkflow_async",
+      "file": "workflows_v1beta_generated_workflows_delete_workflow_async.py",
+      "regionTag": "workflows_v1beta_generated_Workflows_DeleteWorkflow_async",
       "segments": [
         {
           "end": 48,
@@ -143,8 +143,8 @@
           "shortName": "DeleteWorkflow"
         }
       },
-      "file": "workflows_generated_workflows_v1beta_workflows_delete_workflow_sync.py",
-      "regionTag": "workflows_generated_workflows_v1beta_Workflows_DeleteWorkflow_sync",
+      "file": "workflows_v1beta_generated_workflows_delete_workflow_sync.py",
+      "regionTag": "workflows_v1beta_generated_Workflows_DeleteWorkflow_sync",
       "segments": [
         {
           "end": 48,
@@ -188,8 +188,8 @@
           "shortName": "GetWorkflow"
         }
       },
-      "file": "workflows_generated_workflows_v1beta_workflows_get_workflow_async.py",
-      "regionTag": "workflows_generated_workflows_v1beta_Workflows_GetWorkflow_async",
+      "file": "workflows_v1beta_generated_workflows_get_workflow_async.py",
+      "regionTag": "workflows_v1beta_generated_Workflows_GetWorkflow_async",
       "segments": [
         {
           "end": 44,
@@ -232,8 +232,8 @@
           "shortName": "GetWorkflow"
         }
       },
-      "file": "workflows_generated_workflows_v1beta_workflows_get_workflow_sync.py",
-      "regionTag": "workflows_generated_workflows_v1beta_Workflows_GetWorkflow_sync",
+      "file": "workflows_v1beta_generated_workflows_get_workflow_sync.py",
+      "regionTag": "workflows_v1beta_generated_Workflows_GetWorkflow_sync",
       "segments": [
         {
           "end": 44,
@@ -277,8 +277,8 @@
           "shortName": "ListWorkflows"
         }
       },
-      "file": "workflows_generated_workflows_v1beta_workflows_list_workflows_async.py",
-      "regionTag": "workflows_generated_workflows_v1beta_Workflows_ListWorkflows_async",
+      "file": "workflows_v1beta_generated_workflows_list_workflows_async.py",
+      "regionTag": "workflows_v1beta_generated_Workflows_ListWorkflows_async",
       "segments": [
         {
           "end": 45,
@@ -321,8 +321,8 @@
           "shortName": "ListWorkflows"
         }
       },
-      "file": "workflows_generated_workflows_v1beta_workflows_list_workflows_sync.py",
-      "regionTag": "workflows_generated_workflows_v1beta_Workflows_ListWorkflows_sync",
+      "file": "workflows_v1beta_generated_workflows_list_workflows_sync.py",
+      "regionTag": "workflows_v1beta_generated_Workflows_ListWorkflows_sync",
       "segments": [
         {
           "end": 45,
@@ -366,8 +366,8 @@
           "shortName": "UpdateWorkflow"
         }
       },
-      "file": "workflows_generated_workflows_v1beta_workflows_update_workflow_async.py",
-      "regionTag": "workflows_generated_workflows_v1beta_Workflows_UpdateWorkflow_async",
+      "file": "workflows_v1beta_generated_workflows_update_workflow_async.py",
+      "regionTag": "workflows_v1beta_generated_Workflows_UpdateWorkflow_async",
       "segments": [
         {
           "end": 51,
@@ -410,8 +410,8 @@
           "shortName": "UpdateWorkflow"
         }
       },
-      "file": "workflows_generated_workflows_v1beta_workflows_update_workflow_sync.py",
-      "regionTag": "workflows_generated_workflows_v1beta_Workflows_UpdateWorkflow_sync",
+      "file": "workflows_v1beta_generated_workflows_update_workflow_sync.py",
+      "regionTag": "workflows_v1beta_generated_Workflows_UpdateWorkflow_sync",
       "segments": [
         {
           "end": 51,
