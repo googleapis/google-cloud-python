@@ -23,16 +23,16 @@
 #   python3 -m pip install google-cloud-billing-budgets
 
 
-# [START billingbudgets_generated_budgets_v1beta1_BudgetService_ListBudgets_async]
-from google.cloud.billing import budgets_v1beta1
+# [START billingbudgets_v1_generated_BudgetService_ListBudgets_sync]
+from google.cloud.billing import budgets_v1
 
 
-async def sample_list_budgets():
+def sample_list_budgets():
     # Create a client
-    client = budgets_v1beta1.BudgetServiceAsyncClient()
+    client = budgets_v1.BudgetServiceClient()
 
     # Initialize request argument(s)
-    request = budgets_v1beta1.ListBudgetsRequest(
+    request = budgets_v1.ListBudgetsRequest(
         parent="parent_value",
     )
 
@@ -40,7 +40,7 @@ async def sample_list_budgets():
     page_result = client.list_budgets(request=request)
 
     # Handle the response
-    async for response in page_result:
+    for response in page_result:
         print(response)
 
-# [END billingbudgets_generated_budgets_v1beta1_BudgetService_ListBudgets_async]
+# [END billingbudgets_v1_generated_BudgetService_ListBudgets_sync]

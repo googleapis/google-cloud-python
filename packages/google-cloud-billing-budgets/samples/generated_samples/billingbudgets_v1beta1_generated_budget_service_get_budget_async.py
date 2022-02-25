@@ -23,23 +23,23 @@
 #   python3 -m pip install google-cloud-billing-budgets
 
 
-# [START billingbudgets_generated_budgets_v1_BudgetService_GetBudget_sync]
-from google.cloud.billing import budgets_v1
+# [START billingbudgets_v1beta1_generated_BudgetService_GetBudget_async]
+from google.cloud.billing import budgets_v1beta1
 
 
-def sample_get_budget():
+async def sample_get_budget():
     # Create a client
-    client = budgets_v1.BudgetServiceClient()
+    client = budgets_v1beta1.BudgetServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = budgets_v1.GetBudgetRequest(
+    request = budgets_v1beta1.GetBudgetRequest(
         name="name_value",
     )
 
     # Make the request
-    response = client.get_budget(request=request)
+    response = await client.get_budget(request=request)
 
     # Handle the response
     print(response)
 
-# [END billingbudgets_generated_budgets_v1_BudgetService_GetBudget_sync]
+# [END billingbudgets_v1beta1_generated_BudgetService_GetBudget_async]

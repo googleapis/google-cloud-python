@@ -10,8 +10,8 @@
           "shortName": "CreateBudget"
         }
       },
-      "file": "billingbudgets_generated_budgets_v1beta1_budget_service_create_budget_async.py",
-      "regionTag": "billingbudgets_generated_budgets_v1beta1_BudgetService_CreateBudget_async",
+      "file": "billingbudgets_v1beta1_generated_budget_service_create_budget_async.py",
+      "regionTag": "billingbudgets_v1beta1_generated_BudgetService_CreateBudget_async",
       "segments": [
         {
           "end": 44,
@@ -54,8 +54,8 @@
           "shortName": "CreateBudget"
         }
       },
-      "file": "billingbudgets_generated_budgets_v1beta1_budget_service_create_budget_sync.py",
-      "regionTag": "billingbudgets_generated_budgets_v1beta1_BudgetService_CreateBudget_sync",
+      "file": "billingbudgets_v1beta1_generated_budget_service_create_budget_sync.py",
+      "regionTag": "billingbudgets_v1beta1_generated_BudgetService_CreateBudget_sync",
       "segments": [
         {
           "end": 44,
@@ -99,8 +99,8 @@
           "shortName": "DeleteBudget"
         }
       },
-      "file": "billingbudgets_generated_budgets_v1beta1_budget_service_delete_budget_async.py",
-      "regionTag": "billingbudgets_generated_budgets_v1beta1_BudgetService_DeleteBudget_async",
+      "file": "billingbudgets_v1beta1_generated_budget_service_delete_budget_async.py",
+      "regionTag": "billingbudgets_v1beta1_generated_BudgetService_DeleteBudget_async",
       "segments": [
         {
           "end": 42,
@@ -141,8 +141,8 @@
           "shortName": "DeleteBudget"
         }
       },
-      "file": "billingbudgets_generated_budgets_v1beta1_budget_service_delete_budget_sync.py",
-      "regionTag": "billingbudgets_generated_budgets_v1beta1_BudgetService_DeleteBudget_sync",
+      "file": "billingbudgets_v1beta1_generated_budget_service_delete_budget_sync.py",
+      "regionTag": "billingbudgets_v1beta1_generated_BudgetService_DeleteBudget_sync",
       "segments": [
         {
           "end": 42,
@@ -184,8 +184,8 @@
           "shortName": "GetBudget"
         }
       },
-      "file": "billingbudgets_generated_budgets_v1beta1_budget_service_get_budget_async.py",
-      "regionTag": "billingbudgets_generated_budgets_v1beta1_BudgetService_GetBudget_async",
+      "file": "billingbudgets_v1beta1_generated_budget_service_get_budget_async.py",
+      "regionTag": "billingbudgets_v1beta1_generated_BudgetService_GetBudget_async",
       "segments": [
         {
           "end": 44,
@@ -228,8 +228,8 @@
           "shortName": "GetBudget"
         }
       },
-      "file": "billingbudgets_generated_budgets_v1beta1_budget_service_get_budget_sync.py",
-      "regionTag": "billingbudgets_generated_budgets_v1beta1_BudgetService_GetBudget_sync",
+      "file": "billingbudgets_v1beta1_generated_budget_service_get_budget_sync.py",
+      "regionTag": "billingbudgets_v1beta1_generated_BudgetService_GetBudget_sync",
       "segments": [
         {
           "end": 44,
@@ -273,8 +273,8 @@
           "shortName": "ListBudgets"
         }
       },
-      "file": "billingbudgets_generated_budgets_v1beta1_budget_service_list_budgets_async.py",
-      "regionTag": "billingbudgets_generated_budgets_v1beta1_BudgetService_ListBudgets_async",
+      "file": "billingbudgets_v1beta1_generated_budget_service_list_budgets_async.py",
+      "regionTag": "billingbudgets_v1beta1_generated_BudgetService_ListBudgets_async",
       "segments": [
         {
           "end": 45,
@@ -317,8 +317,8 @@
           "shortName": "ListBudgets"
         }
       },
-      "file": "billingbudgets_generated_budgets_v1beta1_budget_service_list_budgets_sync.py",
-      "regionTag": "billingbudgets_generated_budgets_v1beta1_BudgetService_ListBudgets_sync",
+      "file": "billingbudgets_v1beta1_generated_budget_service_list_budgets_sync.py",
+      "regionTag": "billingbudgets_v1beta1_generated_BudgetService_ListBudgets_sync",
       "segments": [
         {
           "end": 45,
@@ -362,8 +362,8 @@
           "shortName": "UpdateBudget"
         }
       },
-      "file": "billingbudgets_generated_budgets_v1beta1_budget_service_update_budget_async.py",
-      "regionTag": "billingbudgets_generated_budgets_v1beta1_BudgetService_UpdateBudget_async",
+      "file": "billingbudgets_v1beta1_generated_budget_service_update_budget_async.py",
+      "regionTag": "billingbudgets_v1beta1_generated_BudgetService_UpdateBudget_async",
       "segments": [
         {
           "end": 43,
@@ -406,8 +406,8 @@
           "shortName": "UpdateBudget"
         }
       },
-      "file": "billingbudgets_generated_budgets_v1beta1_budget_service_update_budget_sync.py",
-      "regionTag": "billingbudgets_generated_budgets_v1beta1_BudgetService_UpdateBudget_sync",
+      "file": "billingbudgets_v1beta1_generated_budget_service_update_budget_sync.py",
+      "regionTag": "billingbudgets_v1beta1_generated_BudgetService_UpdateBudget_sync",
       "segments": [
         {
           "end": 43,

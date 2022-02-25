@@ -220,7 +220,7 @@ class BudgetServiceAsyncClient:
         create.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.billing import budgets_v1beta1
 
@@ -299,7 +299,7 @@ class BudgetServiceAsyncClient:
         changed by this method.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.billing import budgets_v1beta1
 
@@ -390,7 +390,7 @@ class BudgetServiceAsyncClient:
         Cloud Console.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.billing import budgets_v1beta1
 
@@ -480,7 +480,7 @@ class BudgetServiceAsyncClient:
         Cloud Console.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.billing import budgets_v1beta1
 
@@ -568,7 +568,7 @@ class BudgetServiceAsyncClient:
         deleted.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.billing import budgets_v1beta1
 

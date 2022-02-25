@@ -417,8 +417,7 @@ class BudgetServiceClient(metaclass=BudgetServiceClientMeta):
         create.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.billing import budgets_v1
 
@@ -528,8 +527,7 @@ class BudgetServiceClient(metaclass=BudgetServiceClientMeta):
         changed by this method.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.billing import budgets_v1
 
@@ -646,8 +644,7 @@ class BudgetServiceClient(metaclass=BudgetServiceClientMeta):
         Cloud Console.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.billing import budgets_v1
 
@@ -749,8 +746,7 @@ class BudgetServiceClient(metaclass=BudgetServiceClientMeta):
         Cloud Console.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.billing import budgets_v1
 
@@ -851,8 +847,7 @@ class BudgetServiceClient(metaclass=BudgetServiceClientMeta):
         deleted.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.billing import budgets_v1
 

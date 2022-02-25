@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for GetBudget
+# Snippet for CreateBudget
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,23 +23,23 @@
 #   python3 -m pip install google-cloud-billing-budgets
 
 
-# [START billingbudgets_generated_budgets_v1beta1_BudgetService_GetBudget_async]
-from google.cloud.billing import budgets_v1beta1
+# [START billingbudgets_v1_generated_BudgetService_CreateBudget_sync]
+from google.cloud.billing import budgets_v1
 
 
-async def sample_get_budget():
+def sample_create_budget():
     # Create a client
-    client = budgets_v1beta1.BudgetServiceAsyncClient()
+    client = budgets_v1.BudgetServiceClient()
 
     # Initialize request argument(s)
-    request = budgets_v1beta1.GetBudgetRequest(
-        name="name_value",
+    request = budgets_v1.CreateBudgetRequest(
+        parent="parent_value",
     )
 
     # Make the request
-    response = await client.get_budget(request=request)
+    response = client.create_budget(request=request)
 
     # Handle the response
     print(response)
 
-# [END billingbudgets_generated_budgets_v1beta1_BudgetService_GetBudget_async]
+# [END billingbudgets_v1_generated_BudgetService_CreateBudget_sync]

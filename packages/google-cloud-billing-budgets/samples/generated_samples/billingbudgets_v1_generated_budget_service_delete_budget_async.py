@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ListBudgets
+# Snippet for DeleteBudget
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,24 +23,21 @@
 #   python3 -m pip install google-cloud-billing-budgets
 
 
-# [START billingbudgets_generated_budgets_v1_BudgetService_ListBudgets_sync]
+# [START billingbudgets_v1_generated_BudgetService_DeleteBudget_async]
 from google.cloud.billing import budgets_v1
 
 
-def sample_list_budgets():
+async def sample_delete_budget():
     # Create a client
-    client = budgets_v1.BudgetServiceClient()
+    client = budgets_v1.BudgetServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = budgets_v1.ListBudgetsRequest(
-        parent="parent_value",
+    request = budgets_v1.DeleteBudgetRequest(
+        name="name_value",
     )
 
     # Make the request
-    page_result = client.list_budgets(request=request)
+    await client.delete_budget(request=request)
 
-    # Handle the response
-    for response in page_result:
-        print(response)
 
-# [END billingbudgets_generated_budgets_v1_BudgetService_ListBudgets_sync]
+# [END billingbudgets_v1_generated_BudgetService_DeleteBudget_async]
