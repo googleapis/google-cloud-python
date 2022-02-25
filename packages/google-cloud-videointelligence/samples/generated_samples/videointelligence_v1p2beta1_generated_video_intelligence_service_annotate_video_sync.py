@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-videointelligence
 
 
-# [START videointelligence_generated_videointelligence_v1p2beta1_VideoIntelligenceService_AnnotateVideo_sync]
+# [START videointelligence_v1p2beta1_generated_VideoIntelligenceService_AnnotateVideo_sync]
 from google.cloud import videointelligence_v1p2beta1
 
 
@@ -46,4 +46,4 @@ def sample_annotate_video():
     # Handle the response
     print(response)
 
-# [END videointelligence_generated_videointelligence_v1p2beta1_VideoIntelligenceService_AnnotateVideo_sync]
+# [END videointelligence_v1p2beta1_generated_VideoIntelligenceService_AnnotateVideo_sync]

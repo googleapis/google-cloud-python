@@ -408,8 +408,7 @@ class StreamingVideoIntelligenceServiceClient(
         (not REST).
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import videointelligence_v1p3beta1
 

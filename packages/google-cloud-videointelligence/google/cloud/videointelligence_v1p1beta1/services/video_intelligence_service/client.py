@@ -403,8 +403,7 @@ class VideoIntelligenceServiceClient(metaclass=VideoIntelligenceServiceClientMet
         contains ``AnnotateVideoResponse`` (results).
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import videointelligence_v1p1beta1
 

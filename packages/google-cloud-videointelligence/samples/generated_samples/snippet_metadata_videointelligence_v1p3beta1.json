@@ -10,8 +10,8 @@
           "shortName": "StreamingAnnotateVideo"
         }
       },
-      "file": "videointelligence_generated_videointelligence_v1p3beta1_streaming_video_intelligence_service_streaming_annotate_video_async.py",
-      "regionTag": "videointelligence_generated_videointelligence_v1p3beta1_StreamingVideoIntelligenceService_StreamingAnnotateVideo_async",
+      "file": "videointelligence_v1p3beta1_generated_streaming_video_intelligence_service_streaming_annotate_video_async.py",
+      "regionTag": "videointelligence_v1p3beta1_generated_StreamingVideoIntelligenceService_StreamingAnnotateVideo_async",
       "segments": [
         {
           "end": 54,
@@ -54,8 +54,8 @@
           "shortName": "StreamingAnnotateVideo"
         }
       },
-      "file": "videointelligence_generated_videointelligence_v1p3beta1_streaming_video_intelligence_service_streaming_annotate_video_sync.py",
-      "regionTag": "videointelligence_generated_videointelligence_v1p3beta1_StreamingVideoIntelligenceService_StreamingAnnotateVideo_sync",
+      "file": "videointelligence_v1p3beta1_generated_streaming_video_intelligence_service_streaming_annotate_video_sync.py",
+      "regionTag": "videointelligence_v1p3beta1_generated_StreamingVideoIntelligenceService_StreamingAnnotateVideo_sync",
       "segments": [
         {
           "end": 54,
@@ -99,8 +99,8 @@
           "shortName": "AnnotateVideo"
         }
       },
-      "file": "videointelligence_generated_videointelligence_v1p3beta1_video_intelligence_service_annotate_video_async.py",
-      "regionTag": "videointelligence_generated_videointelligence_v1p3beta1_VideoIntelligenceService_AnnotateVideo_async",
+      "file": "videointelligence_v1p3beta1_generated_video_intelligence_service_annotate_video_async.py",
+      "regionTag": "videointelligence_v1p3beta1_generated_VideoIntelligenceService_AnnotateVideo_async",
       "segments": [
         {
           "end": 48,
@@ -143,8 +143,8 @@
           "shortName": "AnnotateVideo"
         }
       },
-      "file": "videointelligence_generated_videointelligence_v1p3beta1_video_intelligence_service_annotate_video_sync.py",
-      "regionTag": "videointelligence_generated_videointelligence_v1p3beta1_VideoIntelligenceService_AnnotateVideo_sync",
+      "file": "videointelligence_v1p3beta1_generated_video_intelligence_service_annotate_video_sync.py",
+      "regionTag": "videointelligence_v1p3beta1_generated_VideoIntelligenceService_AnnotateVideo_sync",
       "segments": [
         {
           "end": 48,

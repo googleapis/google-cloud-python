@@ -23,17 +23,17 @@
 #   python3 -m pip install google-cloud-videointelligence
 
 
-# [START videointelligence_generated_videointelligence_v1_VideoIntelligenceService_AnnotateVideo_async]
-from google.cloud import videointelligence_v1
+# [START videointelligence_v1beta2_generated_VideoIntelligenceService_AnnotateVideo_async]
+from google.cloud import videointelligence_v1beta2
 
 
 async def sample_annotate_video():
     # Create a client
-    client = videointelligence_v1.VideoIntelligenceServiceAsyncClient()
+    client = videointelligence_v1beta2.VideoIntelligenceServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = videointelligence_v1.AnnotateVideoRequest(
-        features="PERSON_DETECTION",
+    request = videointelligence_v1beta2.AnnotateVideoRequest(
+        features="FACE_DETECTION",
     )
 
     # Make the request
@@ -46,4 +46,4 @@ async def sample_annotate_video():
     # Handle the response
     print(response)
 
-# [END videointelligence_generated_videointelligence_v1_VideoIntelligenceService_AnnotateVideo_async]
+# [END videointelligence_v1beta2_generated_VideoIntelligenceService_AnnotateVideo_async]

@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for StreamingAnnotateVideo
+# Snippet for AnnotateVideo
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,33 +23,27 @@
 #   python3 -m pip install google-cloud-videointelligence
 
 
-# [START videointelligence_generated_videointelligence_v1p3beta1_StreamingVideoIntelligenceService_StreamingAnnotateVideo_async]
+# [START videointelligence_v1p3beta1_generated_VideoIntelligenceService_AnnotateVideo_sync]
 from google.cloud import videointelligence_v1p3beta1
 
 
-async def sample_streaming_annotate_video():
+def sample_annotate_video():
     # Create a client
-    client = videointelligence_v1p3beta1.StreamingVideoIntelligenceServiceAsyncClient()
+    client = videointelligence_v1p3beta1.VideoIntelligenceServiceClient()
 
     # Initialize request argument(s)
-    request = videointelligence_v1p3beta1.StreamingAnnotateVideoRequest(
+    request = videointelligence_v1p3beta1.AnnotateVideoRequest(
+        features="PERSON_DETECTION",
     )
 
-    # This method expects an iterator which contains
-    # 'videointelligence_v1p3beta1.StreamingAnnotateVideoRequest' objects
-    # Here we create a generator that yields a single `request` for
-    # demonstrative purposes.
-    requests = [request]
-
-    def request_generator():
-        for request in requests:
-            yield request
-
     # Make the request
-    stream = await client.streaming_annotate_video(requests=request_generator())
+    operation = client.annotate_video(request=request)
+
+    print("Waiting for operation to complete...")
+
+    response = operation.result()
 
     # Handle the response
-    async for response in stream:
-        print(response)
+    print(response)
 
-# [END videointelligence_generated_videointelligence_v1p3beta1_StreamingVideoIntelligenceService_StreamingAnnotateVideo_async]
+# [END videointelligence_v1p3beta1_generated_VideoIntelligenceService_AnnotateVideo_sync]
