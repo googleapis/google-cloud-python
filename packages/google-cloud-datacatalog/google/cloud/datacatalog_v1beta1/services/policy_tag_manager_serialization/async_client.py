@@ -231,7 +231,7 @@ class PolicyTagManagerSerializationAsyncClient:
         creation using nested proto structure.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1beta1
 
@@ -310,7 +310,7 @@ class PolicyTagManagerSerializationAsyncClient:
         future ImportTaxonomies calls.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1beta1
 

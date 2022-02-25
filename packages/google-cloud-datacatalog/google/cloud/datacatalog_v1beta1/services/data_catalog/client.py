@@ -510,8 +510,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         for more information.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1beta1
 
@@ -639,8 +638,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         for more information).
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1beta1
 
@@ -767,8 +765,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         for more information).
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1beta1
 
@@ -873,8 +870,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
     ) -> datacatalog.EntryGroup:
         r"""Gets an EntryGroup.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1beta1
 
@@ -982,8 +978,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         for more information).
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1beta1
 
@@ -1063,8 +1058,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
     ) -> pagers.ListEntryGroupsPager:
         r"""Lists entry groups.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1beta1
 
@@ -1179,8 +1173,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         A maximum of 100,000 entries may be created per entry group.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1beta1
 
@@ -1314,8 +1307,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         for more information).
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1beta1
 
@@ -1462,8 +1454,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         for more information).
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1beta1
 
@@ -1544,8 +1535,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
     ) -> datacatalog.Entry:
         r"""Gets an entry.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1beta1
 
@@ -1649,8 +1639,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         Entry.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1beta1
 
@@ -1724,8 +1713,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
     ) -> pagers.ListEntriesPager:
         r"""Lists entries.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1beta1
 
@@ -1834,8 +1822,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         for more information).
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1beta1
 
@@ -1954,8 +1941,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
     ) -> tags.TagTemplate:
         r"""Gets a tag template.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1beta1
 
@@ -2063,8 +2049,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         for more information).
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1beta1
 
@@ -2184,8 +2169,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         for more information).
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1beta1
 
@@ -2286,8 +2270,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         for more information).
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1beta1
 
@@ -2419,8 +2402,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         for more information).
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1beta1
 
@@ -2552,8 +2534,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         for more information).
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1beta1
 
@@ -2663,8 +2644,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         for more information).
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1beta1
 
@@ -2768,8 +2748,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         used to create the tag must be from the same organization.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1beta1
 
@@ -2883,8 +2862,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
     ) -> tags.Tag:
         r"""Updates an existing tag.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1beta1
 
@@ -2994,8 +2972,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
     ) -> None:
         r"""Deletes a tag.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1beta1
 
@@ -3078,8 +3055,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         [Entry][google.cloud.datacatalog.v1beta1.Entry].
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1beta1
 
@@ -3203,8 +3179,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
            entry groups.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1beta1
 
@@ -3369,8 +3344,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
            entry groups.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1beta1
 
@@ -3527,8 +3501,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         this request.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1beta1
 

@@ -228,7 +228,7 @@ class PolicyTagManagerAsyncClient:
         contain policy tags.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -339,7 +339,7 @@ class PolicyTagManagerAsyncClient:
         references from BigQuery columns.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -423,7 +423,7 @@ class PolicyTagManagerAsyncClient:
         description, and activated policy types.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -527,7 +527,7 @@ class PolicyTagManagerAsyncClient:
         location that you have a permission to view.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -627,7 +627,7 @@ class PolicyTagManagerAsyncClient:
     ) -> policytagmanager.Taxonomy:
         r"""Gets a taxonomy.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -728,7 +728,7 @@ class PolicyTagManagerAsyncClient:
     ) -> policytagmanager.PolicyTag:
         r"""Creates a policy tag in a taxonomy.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -839,7 +839,7 @@ class PolicyTagManagerAsyncClient:
            its descendants
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -923,7 +923,7 @@ class PolicyTagManagerAsyncClient:
         name, description, and parent policy tag.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -1022,7 +1022,7 @@ class PolicyTagManagerAsyncClient:
     ) -> pagers.ListPolicyTagsAsyncPager:
         r"""Lists all policy tags in a taxonomy.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -1122,7 +1122,7 @@ class PolicyTagManagerAsyncClient:
     ) -> policytagmanager.PolicyTag:
         r"""Gets a policy tag.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -1218,7 +1218,7 @@ class PolicyTagManagerAsyncClient:
     ) -> policy_pb2.Policy:
         r"""Gets the IAM policy for a policy tag or a taxonomy.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -1342,7 +1342,7 @@ class PolicyTagManagerAsyncClient:
     ) -> policy_pb2.Policy:
         r"""Sets the IAM policy for a policy tag or a taxonomy.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -1468,7 +1468,7 @@ class PolicyTagManagerAsyncClient:
         taxonomy.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 

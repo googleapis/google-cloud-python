@@ -10,8 +10,8 @@
           "shortName": "CreateEntryGroup"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_data_catalog_create_entry_group_async.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_DataCatalog_CreateEntryGroup_async",
+      "file": "datacatalog_v1beta1_generated_data_catalog_create_entry_group_async.py",
+      "regionTag": "datacatalog_v1beta1_generated_DataCatalog_CreateEntryGroup_async",
       "segments": [
         {
           "end": 45,
@@ -54,8 +54,8 @@
           "shortName": "CreateEntryGroup"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_data_catalog_create_entry_group_sync.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_DataCatalog_CreateEntryGroup_sync",
+      "file": "datacatalog_v1beta1_generated_data_catalog_create_entry_group_sync.py",
+      "regionTag": "datacatalog_v1beta1_generated_DataCatalog_CreateEntryGroup_sync",
       "segments": [
         {
           "end": 45,
@@ -99,8 +99,8 @@
           "shortName": "CreateEntry"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_data_catalog_create_entry_async.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_DataCatalog_CreateEntry_async",
+      "file": "datacatalog_v1beta1_generated_data_catalog_create_entry_async.py",
+      "regionTag": "datacatalog_v1beta1_generated_DataCatalog_CreateEntry_async",
       "segments": [
         {
           "end": 51,
@@ -143,8 +143,8 @@
           "shortName": "CreateEntry"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_data_catalog_create_entry_sync.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_DataCatalog_CreateEntry_sync",
+      "file": "datacatalog_v1beta1_generated_data_catalog_create_entry_sync.py",
+      "regionTag": "datacatalog_v1beta1_generated_DataCatalog_CreateEntry_sync",
       "segments": [
         {
           "end": 51,
@@ -188,8 +188,8 @@
           "shortName": "CreateTagTemplateField"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_data_catalog_create_tag_template_field_async.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_DataCatalog_CreateTagTemplateField_async",
+      "file": "datacatalog_v1beta1_generated_data_catalog_create_tag_template_field_async.py",
+      "regionTag": "datacatalog_v1beta1_generated_DataCatalog_CreateTagTemplateField_async",
       "segments": [
         {
           "end": 49,
@@ -232,8 +232,8 @@
           "shortName": "CreateTagTemplateField"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_data_catalog_create_tag_template_field_sync.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_DataCatalog_CreateTagTemplateField_sync",
+      "file": "datacatalog_v1beta1_generated_data_catalog_create_tag_template_field_sync.py",
+      "regionTag": "datacatalog_v1beta1_generated_DataCatalog_CreateTagTemplateField_sync",
       "segments": [
         {
           "end": 49,
@@ -277,8 +277,8 @@
           "shortName": "CreateTagTemplate"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_data_catalog_create_tag_template_async.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_DataCatalog_CreateTagTemplate_async",
+      "file": "datacatalog_v1beta1_generated_data_catalog_create_tag_template_async.py",
+      "regionTag": "datacatalog_v1beta1_generated_DataCatalog_CreateTagTemplate_async",
       "segments": [
         {
           "end": 45,
@@ -321,8 +321,8 @@
           "shortName": "CreateTagTemplate"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_data_catalog_create_tag_template_sync.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_DataCatalog_CreateTagTemplate_sync",
+      "file": "datacatalog_v1beta1_generated_data_catalog_create_tag_template_sync.py",
+      "regionTag": "datacatalog_v1beta1_generated_DataCatalog_CreateTagTemplate_sync",
       "segments": [
         {
           "end": 45,
@@ -366,8 +366,8 @@
           "shortName": "CreateTag"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_data_catalog_create_tag_async.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_DataCatalog_CreateTag_async",
+      "file": "datacatalog_v1beta1_generated_data_catalog_create_tag_async.py",
+      "regionTag": "datacatalog_v1beta1_generated_DataCatalog_CreateTag_async",
       "segments": [
         {
           "end": 49,
@@ -410,8 +410,8 @@
           "shortName": "CreateTag"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_data_catalog_create_tag_sync.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_DataCatalog_CreateTag_sync",
+      "file": "datacatalog_v1beta1_generated_data_catalog_create_tag_sync.py",
+      "regionTag": "datacatalog_v1beta1_generated_DataCatalog_CreateTag_sync",
       "segments": [
         {
           "end": 49,
@@ -455,8 +455,8 @@
           "shortName": "DeleteEntryGroup"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_data_catalog_delete_entry_group_async.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_DataCatalog_DeleteEntryGroup_async",
+      "file": "datacatalog_v1beta1_generated_data_catalog_delete_entry_group_async.py",
+      "regionTag": "datacatalog_v1beta1_generated_DataCatalog_DeleteEntryGroup_async",
       "segments": [
         {
           "end": 42,
@@ -497,8 +497,8 @@
           "shortName": "DeleteEntryGroup"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_data_catalog_delete_entry_group_sync.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_DataCatalog_DeleteEntryGroup_sync",
+      "file": "datacatalog_v1beta1_generated_data_catalog_delete_entry_group_sync.py",
+      "regionTag": "datacatalog_v1beta1_generated_DataCatalog_DeleteEntryGroup_sync",
       "segments": [
         {
           "end": 42,
@@ -540,8 +540,8 @@
           "shortName": "DeleteEntry"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_data_catalog_delete_entry_async.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_DataCatalog_DeleteEntry_async",
+      "file": "datacatalog_v1beta1_generated_data_catalog_delete_entry_async.py",
+      "regionTag": "datacatalog_v1beta1_generated_DataCatalog_DeleteEntry_async",
       "segments": [
         {
           "end": 42,
@@ -582,8 +582,8 @@
           "shortName": "DeleteEntry"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_data_catalog_delete_entry_sync.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_DataCatalog_DeleteEntry_sync",
+      "file": "datacatalog_v1beta1_generated_data_catalog_delete_entry_sync.py",
+      "regionTag": "datacatalog_v1beta1_generated_DataCatalog_DeleteEntry_sync",
       "segments": [
         {
           "end": 42,
@@ -625,8 +625,8 @@
           "shortName": "DeleteTagTemplateField"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_data_catalog_delete_tag_template_field_async.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_DataCatalog_DeleteTagTemplateField_async",
+      "file": "datacatalog_v1beta1_generated_data_catalog_delete_tag_template_field_async.py",
+      "regionTag": "datacatalog_v1beta1_generated_DataCatalog_DeleteTagTemplateField_async",
       "segments": [
         {
           "end": 43,
@@ -667,8 +667,8 @@
           "shortName": "DeleteTagTemplateField"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_data_catalog_delete_tag_template_field_sync.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_DataCatalog_DeleteTagTemplateField_sync",
+      "file": "datacatalog_v1beta1_generated_data_catalog_delete_tag_template_field_sync.py",
+      "regionTag": "datacatalog_v1beta1_generated_DataCatalog_DeleteTagTemplateField_sync",
       "segments": [
         {
           "end": 43,
@@ -710,8 +710,8 @@
           "shortName": "DeleteTagTemplate"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_data_catalog_delete_tag_template_async.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_DataCatalog_DeleteTagTemplate_async",
+      "file": "datacatalog_v1beta1_generated_data_catalog_delete_tag_template_async.py",
+      "regionTag": "datacatalog_v1beta1_generated_DataCatalog_DeleteTagTemplate_async",
       "segments": [
         {
           "end": 43,
@@ -752,8 +752,8 @@
           "shortName": "DeleteTagTemplate"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_data_catalog_delete_tag_template_sync.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_DataCatalog_DeleteTagTemplate_sync",
+      "file": "datacatalog_v1beta1_generated_data_catalog_delete_tag_template_sync.py",
+      "regionTag": "datacatalog_v1beta1_generated_DataCatalog_DeleteTagTemplate_sync",
       "segments": [
         {
           "end": 43,
@@ -795,8 +795,8 @@
           "shortName": "DeleteTag"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_data_catalog_delete_tag_async.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_DataCatalog_DeleteTag_async",
+      "file": "datacatalog_v1beta1_generated_data_catalog_delete_tag_async.py",
+      "regionTag": "datacatalog_v1beta1_generated_DataCatalog_DeleteTag_async",
       "segments": [
         {
           "end": 42,
@@ -837,8 +837,8 @@
           "shortName": "DeleteTag"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_data_catalog_delete_tag_sync.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_DataCatalog_DeleteTag_sync",
+      "file": "datacatalog_v1beta1_generated_data_catalog_delete_tag_sync.py",
+      "regionTag": "datacatalog_v1beta1_generated_DataCatalog_DeleteTag_sync",
       "segments": [
         {
           "end": 42,
@@ -880,8 +880,8 @@
           "shortName": "GetEntryGroup"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_data_catalog_get_entry_group_async.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_DataCatalog_GetEntryGroup_async",
+      "file": "datacatalog_v1beta1_generated_data_catalog_get_entry_group_async.py",
+      "regionTag": "datacatalog_v1beta1_generated_DataCatalog_GetEntryGroup_async",
       "segments": [
         {
           "end": 44,
@@ -924,8 +924,8 @@
           "shortName": "GetEntryGroup"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_data_catalog_get_entry_group_sync.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_DataCatalog_GetEntryGroup_sync",
+      "file": "datacatalog_v1beta1_generated_data_catalog_get_entry_group_sync.py",
+      "regionTag": "datacatalog_v1beta1_generated_DataCatalog_GetEntryGroup_sync",
       "segments": [
         {
           "end": 44,
@@ -969,8 +969,8 @@
           "shortName": "GetEntry"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_data_catalog_get_entry_async.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_DataCatalog_GetEntry_async",
+      "file": "datacatalog_v1beta1_generated_data_catalog_get_entry_async.py",
+      "regionTag": "datacatalog_v1beta1_generated_DataCatalog_GetEntry_async",
       "segments": [
         {
           "end": 44,
@@ -1013,8 +1013,8 @@
           "shortName": "GetEntry"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_data_catalog_get_entry_sync.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_DataCatalog_GetEntry_sync",
+      "file": "datacatalog_v1beta1_generated_data_catalog_get_entry_sync.py",
+      "regionTag": "datacatalog_v1beta1_generated_DataCatalog_GetEntry_sync",
       "segments": [
         {
           "end": 44,
@@ -1058,8 +1058,8 @@
           "shortName": "GetIamPolicy"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_data_catalog_get_iam_policy_async.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_DataCatalog_GetIamPolicy_async",
+      "file": "datacatalog_v1beta1_generated_data_catalog_get_iam_policy_async.py",
+      "regionTag": "datacatalog_v1beta1_generated_DataCatalog_GetIamPolicy_async",
       "segments": [
         {
           "end": 44,
@@ -1102,8 +1102,8 @@
           "shortName": "GetIamPolicy"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_data_catalog_get_iam_policy_sync.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_DataCatalog_GetIamPolicy_sync",
+      "file": "datacatalog_v1beta1_generated_data_catalog_get_iam_policy_sync.py",
+      "regionTag": "datacatalog_v1beta1_generated_DataCatalog_GetIamPolicy_sync",
       "segments": [
         {
           "end": 44,
@@ -1147,8 +1147,8 @@
           "shortName": "GetTagTemplate"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_data_catalog_get_tag_template_async.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_DataCatalog_GetTagTemplate_async",
+      "file": "datacatalog_v1beta1_generated_data_catalog_get_tag_template_async.py",
+      "regionTag": "datacatalog_v1beta1_generated_DataCatalog_GetTagTemplate_async",
       "segments": [
         {
           "end": 44,
@@ -1191,8 +1191,8 @@
           "shortName": "GetTagTemplate"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_data_catalog_get_tag_template_sync.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_DataCatalog_GetTagTemplate_sync",
+      "file": "datacatalog_v1beta1_generated_data_catalog_get_tag_template_sync.py",
+      "regionTag": "datacatalog_v1beta1_generated_DataCatalog_GetTagTemplate_sync",
       "segments": [
         {
           "end": 44,
@@ -1236,8 +1236,8 @@
           "shortName": "ListEntries"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_data_catalog_list_entries_async.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_DataCatalog_ListEntries_async",
+      "file": "datacatalog_v1beta1_generated_data_catalog_list_entries_async.py",
+      "regionTag": "datacatalog_v1beta1_generated_DataCatalog_ListEntries_async",
       "segments": [
         {
           "end": 45,
@@ -1280,8 +1280,8 @@
           "shortName": "ListEntries"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_data_catalog_list_entries_sync.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_DataCatalog_ListEntries_sync",
+      "file": "datacatalog_v1beta1_generated_data_catalog_list_entries_sync.py",
+      "regionTag": "datacatalog_v1beta1_generated_DataCatalog_ListEntries_sync",
       "segments": [
         {
           "end": 45,
@@ -1325,8 +1325,8 @@
           "shortName": "ListEntryGroups"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_data_catalog_list_entry_groups_async.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_DataCatalog_ListEntryGroups_async",
+      "file": "datacatalog_v1beta1_generated_data_catalog_list_entry_groups_async.py",
+      "regionTag": "datacatalog_v1beta1_generated_DataCatalog_ListEntryGroups_async",
       "segments": [
         {
           "end": 45,
@@ -1369,8 +1369,8 @@
           "shortName": "ListEntryGroups"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_data_catalog_list_entry_groups_sync.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_DataCatalog_ListEntryGroups_sync",
+      "file": "datacatalog_v1beta1_generated_data_catalog_list_entry_groups_sync.py",
+      "regionTag": "datacatalog_v1beta1_generated_DataCatalog_ListEntryGroups_sync",
       "segments": [
         {
           "end": 45,
@@ -1414,8 +1414,8 @@
           "shortName": "ListTags"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_data_catalog_list_tags_async.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_DataCatalog_ListTags_async",
+      "file": "datacatalog_v1beta1_generated_data_catalog_list_tags_async.py",
+      "regionTag": "datacatalog_v1beta1_generated_DataCatalog_ListTags_async",
       "segments": [
         {
           "end": 45,
@@ -1458,8 +1458,8 @@
           "shortName": "ListTags"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_data_catalog_list_tags_sync.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_DataCatalog_ListTags_sync",
+      "file": "datacatalog_v1beta1_generated_data_catalog_list_tags_sync.py",
+      "regionTag": "datacatalog_v1beta1_generated_DataCatalog_ListTags_sync",
       "segments": [
         {
           "end": 45,
@@ -1503,8 +1503,8 @@
           "shortName": "LookupEntry"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_data_catalog_lookup_entry_async.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_DataCatalog_LookupEntry_async",
+      "file": "datacatalog_v1beta1_generated_data_catalog_lookup_entry_async.py",
+      "regionTag": "datacatalog_v1beta1_generated_DataCatalog_LookupEntry_async",
       "segments": [
         {
           "end": 44,
@@ -1547,8 +1547,8 @@
           "shortName": "LookupEntry"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_data_catalog_lookup_entry_sync.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_DataCatalog_LookupEntry_sync",
+      "file": "datacatalog_v1beta1_generated_data_catalog_lookup_entry_sync.py",
+      "regionTag": "datacatalog_v1beta1_generated_DataCatalog_LookupEntry_sync",
       "segments": [
         {
           "end": 44,
@@ -1592,8 +1592,8 @@
           "shortName": "RenameTagTemplateField"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_data_catalog_rename_tag_template_field_async.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_DataCatalog_RenameTagTemplateField_async",
+      "file": "datacatalog_v1beta1_generated_data_catalog_rename_tag_template_field_async.py",
+      "regionTag": "datacatalog_v1beta1_generated_DataCatalog_RenameTagTemplateField_async",
       "segments": [
         {
           "end": 45,
@@ -1636,8 +1636,8 @@
           "shortName": "RenameTagTemplateField"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_data_catalog_rename_tag_template_field_sync.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_DataCatalog_RenameTagTemplateField_sync",
+      "file": "datacatalog_v1beta1_generated_data_catalog_rename_tag_template_field_sync.py",
+      "regionTag": "datacatalog_v1beta1_generated_DataCatalog_RenameTagTemplateField_sync",
       "segments": [
         {
           "end": 45,
@@ -1681,8 +1681,8 @@
           "shortName": "SearchCatalog"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_data_catalog_search_catalog_async.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_DataCatalog_SearchCatalog_async",
+      "file": "datacatalog_v1beta1_generated_data_catalog_search_catalog_async.py",
+      "regionTag": "datacatalog_v1beta1_generated_DataCatalog_SearchCatalog_async",
       "segments": [
         {
           "end": 45,
@@ -1725,8 +1725,8 @@
           "shortName": "SearchCatalog"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_data_catalog_search_catalog_sync.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_DataCatalog_SearchCatalog_sync",
+      "file": "datacatalog_v1beta1_generated_data_catalog_search_catalog_sync.py",
+      "regionTag": "datacatalog_v1beta1_generated_DataCatalog_SearchCatalog_sync",
       "segments": [
         {
           "end": 45,
@@ -1770,8 +1770,8 @@
           "shortName": "SetIamPolicy"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_data_catalog_set_iam_policy_async.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_DataCatalog_SetIamPolicy_async",
+      "file": "datacatalog_v1beta1_generated_data_catalog_set_iam_policy_async.py",
+      "regionTag": "datacatalog_v1beta1_generated_DataCatalog_SetIamPolicy_async",
       "segments": [
         {
           "end": 44,
@@ -1814,8 +1814,8 @@
           "shortName": "SetIamPolicy"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_data_catalog_set_iam_policy_sync.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_DataCatalog_SetIamPolicy_sync",
+      "file": "datacatalog_v1beta1_generated_data_catalog_set_iam_policy_sync.py",
+      "regionTag": "datacatalog_v1beta1_generated_DataCatalog_SetIamPolicy_sync",
       "segments": [
         {
           "end": 44,
@@ -1859,8 +1859,8 @@
           "shortName": "TestIamPermissions"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_data_catalog_test_iam_permissions_async.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_DataCatalog_TestIamPermissions_async",
+      "file": "datacatalog_v1beta1_generated_data_catalog_test_iam_permissions_async.py",
+      "regionTag": "datacatalog_v1beta1_generated_DataCatalog_TestIamPermissions_async",
       "segments": [
         {
           "end": 45,
@@ -1903,8 +1903,8 @@
           "shortName": "TestIamPermissions"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_data_catalog_test_iam_permissions_sync.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_DataCatalog_TestIamPermissions_sync",
+      "file": "datacatalog_v1beta1_generated_data_catalog_test_iam_permissions_sync.py",
+      "regionTag": "datacatalog_v1beta1_generated_DataCatalog_TestIamPermissions_sync",
       "segments": [
         {
           "end": 45,
@@ -1948,8 +1948,8 @@
           "shortName": "UpdateEntryGroup"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_data_catalog_update_entry_group_async.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_DataCatalog_UpdateEntryGroup_async",
+      "file": "datacatalog_v1beta1_generated_data_catalog_update_entry_group_async.py",
+      "regionTag": "datacatalog_v1beta1_generated_DataCatalog_UpdateEntryGroup_async",
       "segments": [
         {
           "end": 43,
@@ -1992,8 +1992,8 @@
           "shortName": "UpdateEntryGroup"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_data_catalog_update_entry_group_sync.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_DataCatalog_UpdateEntryGroup_sync",
+      "file": "datacatalog_v1beta1_generated_data_catalog_update_entry_group_sync.py",
+      "regionTag": "datacatalog_v1beta1_generated_DataCatalog_UpdateEntryGroup_sync",
       "segments": [
         {
           "end": 43,
@@ -2037,8 +2037,8 @@
           "shortName": "UpdateEntry"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_data_catalog_update_entry_async.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_DataCatalog_UpdateEntry_async",
+      "file": "datacatalog_v1beta1_generated_data_catalog_update_entry_async.py",
+      "regionTag": "datacatalog_v1beta1_generated_DataCatalog_UpdateEntry_async",
       "segments": [
         {
           "end": 49,
@@ -2081,8 +2081,8 @@
           "shortName": "UpdateEntry"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_data_catalog_update_entry_sync.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_DataCatalog_UpdateEntry_sync",
+      "file": "datacatalog_v1beta1_generated_data_catalog_update_entry_sync.py",
+      "regionTag": "datacatalog_v1beta1_generated_DataCatalog_UpdateEntry_sync",
       "segments": [
         {
           "end": 49,
@@ -2126,8 +2126,8 @@
           "shortName": "UpdateTagTemplateField"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_data_catalog_update_tag_template_field_async.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_DataCatalog_UpdateTagTemplateField_async",
+      "file": "datacatalog_v1beta1_generated_data_catalog_update_tag_template_field_async.py",
+      "regionTag": "datacatalog_v1beta1_generated_DataCatalog_UpdateTagTemplateField_async",
       "segments": [
         {
           "end": 48,
@@ -2170,8 +2170,8 @@
           "shortName": "UpdateTagTemplateField"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_data_catalog_update_tag_template_field_sync.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_DataCatalog_UpdateTagTemplateField_sync",
+      "file": "datacatalog_v1beta1_generated_data_catalog_update_tag_template_field_sync.py",
+      "regionTag": "datacatalog_v1beta1_generated_DataCatalog_UpdateTagTemplateField_sync",
       "segments": [
         {
           "end": 48,
@@ -2215,8 +2215,8 @@
           "shortName": "UpdateTagTemplate"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_data_catalog_update_tag_template_async.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_DataCatalog_UpdateTagTemplate_async",
+      "file": "datacatalog_v1beta1_generated_data_catalog_update_tag_template_async.py",
+      "regionTag": "datacatalog_v1beta1_generated_DataCatalog_UpdateTagTemplate_async",
       "segments": [
         {
           "end": 43,
@@ -2259,8 +2259,8 @@
           "shortName": "UpdateTagTemplate"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_data_catalog_update_tag_template_sync.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_DataCatalog_UpdateTagTemplate_sync",
+      "file": "datacatalog_v1beta1_generated_data_catalog_update_tag_template_sync.py",
+      "regionTag": "datacatalog_v1beta1_generated_DataCatalog_UpdateTagTemplate_sync",
       "segments": [
         {
           "end": 43,
@@ -2304,8 +2304,8 @@
           "shortName": "UpdateTag"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_data_catalog_update_tag_async.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_DataCatalog_UpdateTag_async",
+      "file": "datacatalog_v1beta1_generated_data_catalog_update_tag_async.py",
+      "regionTag": "datacatalog_v1beta1_generated_DataCatalog_UpdateTag_async",
       "segments": [
         {
           "end": 48,
@@ -2348,8 +2348,8 @@
           "shortName": "UpdateTag"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_data_catalog_update_tag_sync.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_DataCatalog_UpdateTag_sync",
+      "file": "datacatalog_v1beta1_generated_data_catalog_update_tag_sync.py",
+      "regionTag": "datacatalog_v1beta1_generated_DataCatalog_UpdateTag_sync",
       "segments": [
         {
           "end": 48,
@@ -2393,8 +2393,8 @@
           "shortName": "ExportTaxonomies"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_policy_tag_manager_serialization_export_taxonomies_async.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_PolicyTagManagerSerialization_ExportTaxonomies_async",
+      "file": "datacatalog_v1beta1_generated_policy_tag_manager_serialization_export_taxonomies_async.py",
+      "regionTag": "datacatalog_v1beta1_generated_PolicyTagManagerSerialization_ExportTaxonomies_async",
       "segments": [
         {
           "end": 46,
@@ -2437,8 +2437,8 @@
           "shortName": "ExportTaxonomies"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_policy_tag_manager_serialization_export_taxonomies_sync.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_PolicyTagManagerSerialization_ExportTaxonomies_sync",
+      "file": "datacatalog_v1beta1_generated_policy_tag_manager_serialization_export_taxonomies_sync.py",
+      "regionTag": "datacatalog_v1beta1_generated_PolicyTagManagerSerialization_ExportTaxonomies_sync",
       "segments": [
         {
           "end": 46,
@@ -2482,8 +2482,8 @@
           "shortName": "ImportTaxonomies"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_policy_tag_manager_serialization_import_taxonomies_async.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_PolicyTagManagerSerialization_ImportTaxonomies_async",
+      "file": "datacatalog_v1beta1_generated_policy_tag_manager_serialization_import_taxonomies_async.py",
+      "regionTag": "datacatalog_v1beta1_generated_PolicyTagManagerSerialization_ImportTaxonomies_async",
       "segments": [
         {
           "end": 48,
@@ -2526,8 +2526,8 @@
           "shortName": "ImportTaxonomies"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_policy_tag_manager_serialization_import_taxonomies_sync.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_PolicyTagManagerSerialization_ImportTaxonomies_sync",
+      "file": "datacatalog_v1beta1_generated_policy_tag_manager_serialization_import_taxonomies_sync.py",
+      "regionTag": "datacatalog_v1beta1_generated_PolicyTagManagerSerialization_ImportTaxonomies_sync",
       "segments": [
         {
           "end": 48,
@@ -2571,8 +2571,8 @@
           "shortName": "CreatePolicyTag"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_policy_tag_manager_create_policy_tag_async.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_PolicyTagManager_CreatePolicyTag_async",
+      "file": "datacatalog_v1beta1_generated_policy_tag_manager_create_policy_tag_async.py",
+      "regionTag": "datacatalog_v1beta1_generated_PolicyTagManager_CreatePolicyTag_async",
       "segments": [
         {
           "end": 44,
@@ -2615,8 +2615,8 @@
           "shortName": "CreatePolicyTag"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_policy_tag_manager_create_policy_tag_sync.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_PolicyTagManager_CreatePolicyTag_sync",
+      "file": "datacatalog_v1beta1_generated_policy_tag_manager_create_policy_tag_sync.py",
+      "regionTag": "datacatalog_v1beta1_generated_PolicyTagManager_CreatePolicyTag_sync",
       "segments": [
         {
           "end": 44,
@@ -2660,8 +2660,8 @@
           "shortName": "CreateTaxonomy"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_policy_tag_manager_create_taxonomy_async.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_PolicyTagManager_CreateTaxonomy_async",
+      "file": "datacatalog_v1beta1_generated_policy_tag_manager_create_taxonomy_async.py",
+      "regionTag": "datacatalog_v1beta1_generated_PolicyTagManager_CreateTaxonomy_async",
       "segments": [
         {
           "end": 44,
@@ -2704,8 +2704,8 @@
           "shortName": "CreateTaxonomy"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_policy_tag_manager_create_taxonomy_sync.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_PolicyTagManager_CreateTaxonomy_sync",
+      "file": "datacatalog_v1beta1_generated_policy_tag_manager_create_taxonomy_sync.py",
+      "regionTag": "datacatalog_v1beta1_generated_PolicyTagManager_CreateTaxonomy_sync",
       "segments": [
         {
           "end": 44,
@@ -2749,8 +2749,8 @@
           "shortName": "DeletePolicyTag"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_policy_tag_manager_delete_policy_tag_async.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_PolicyTagManager_DeletePolicyTag_async",
+      "file": "datacatalog_v1beta1_generated_policy_tag_manager_delete_policy_tag_async.py",
+      "regionTag": "datacatalog_v1beta1_generated_PolicyTagManager_DeletePolicyTag_async",
       "segments": [
         {
           "end": 42,
@@ -2791,8 +2791,8 @@
           "shortName": "DeletePolicyTag"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_policy_tag_manager_delete_policy_tag_sync.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_PolicyTagManager_DeletePolicyTag_sync",
+      "file": "datacatalog_v1beta1_generated_policy_tag_manager_delete_policy_tag_sync.py",
+      "regionTag": "datacatalog_v1beta1_generated_PolicyTagManager_DeletePolicyTag_sync",
       "segments": [
         {
           "end": 42,
@@ -2834,8 +2834,8 @@
           "shortName": "DeleteTaxonomy"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_policy_tag_manager_delete_taxonomy_async.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_PolicyTagManager_DeleteTaxonomy_async",
+      "file": "datacatalog_v1beta1_generated_policy_tag_manager_delete_taxonomy_async.py",
+      "regionTag": "datacatalog_v1beta1_generated_PolicyTagManager_DeleteTaxonomy_async",
       "segments": [
         {
           "end": 42,
@@ -2876,8 +2876,8 @@
           "shortName": "DeleteTaxonomy"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_policy_tag_manager_delete_taxonomy_sync.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_PolicyTagManager_DeleteTaxonomy_sync",
+      "file": "datacatalog_v1beta1_generated_policy_tag_manager_delete_taxonomy_sync.py",
+      "regionTag": "datacatalog_v1beta1_generated_PolicyTagManager_DeleteTaxonomy_sync",
       "segments": [
         {
           "end": 42,
@@ -2919,8 +2919,8 @@
           "shortName": "GetIamPolicy"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_policy_tag_manager_get_iam_policy_async.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_PolicyTagManager_GetIamPolicy_async",
+      "file": "datacatalog_v1beta1_generated_policy_tag_manager_get_iam_policy_async.py",
+      "regionTag": "datacatalog_v1beta1_generated_PolicyTagManager_GetIamPolicy_async",
       "segments": [
         {
           "end": 44,
@@ -2963,8 +2963,8 @@
           "shortName": "GetIamPolicy"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_policy_tag_manager_get_iam_policy_sync.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_PolicyTagManager_GetIamPolicy_sync",
+      "file": "datacatalog_v1beta1_generated_policy_tag_manager_get_iam_policy_sync.py",
+      "regionTag": "datacatalog_v1beta1_generated_PolicyTagManager_GetIamPolicy_sync",
       "segments": [
         {
           "end": 44,
@@ -3008,8 +3008,8 @@
           "shortName": "GetPolicyTag"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_policy_tag_manager_get_policy_tag_async.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_PolicyTagManager_GetPolicyTag_async",
+      "file": "datacatalog_v1beta1_generated_policy_tag_manager_get_policy_tag_async.py",
+      "regionTag": "datacatalog_v1beta1_generated_PolicyTagManager_GetPolicyTag_async",
       "segments": [
         {
           "end": 44,
@@ -3052,8 +3052,8 @@
           "shortName": "GetPolicyTag"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_policy_tag_manager_get_policy_tag_sync.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_PolicyTagManager_GetPolicyTag_sync",
+      "file": "datacatalog_v1beta1_generated_policy_tag_manager_get_policy_tag_sync.py",
+      "regionTag": "datacatalog_v1beta1_generated_PolicyTagManager_GetPolicyTag_sync",
       "segments": [
         {
           "end": 44,
@@ -3097,8 +3097,8 @@
           "shortName": "GetTaxonomy"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_policy_tag_manager_get_taxonomy_async.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_PolicyTagManager_GetTaxonomy_async",
+      "file": "datacatalog_v1beta1_generated_policy_tag_manager_get_taxonomy_async.py",
+      "regionTag": "datacatalog_v1beta1_generated_PolicyTagManager_GetTaxonomy_async",
       "segments": [
         {
           "end": 44,
@@ -3141,8 +3141,8 @@
           "shortName": "GetTaxonomy"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_policy_tag_manager_get_taxonomy_sync.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_PolicyTagManager_GetTaxonomy_sync",
+      "file": "datacatalog_v1beta1_generated_policy_tag_manager_get_taxonomy_sync.py",
+      "regionTag": "datacatalog_v1beta1_generated_PolicyTagManager_GetTaxonomy_sync",
       "segments": [
         {
           "end": 44,
@@ -3186,8 +3186,8 @@
           "shortName": "ListPolicyTags"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_policy_tag_manager_list_policy_tags_async.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_PolicyTagManager_ListPolicyTags_async",
+      "file": "datacatalog_v1beta1_generated_policy_tag_manager_list_policy_tags_async.py",
+      "regionTag": "datacatalog_v1beta1_generated_PolicyTagManager_ListPolicyTags_async",
       "segments": [
         {
           "end": 45,
@@ -3230,8 +3230,8 @@
           "shortName": "ListPolicyTags"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_policy_tag_manager_list_policy_tags_sync.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_PolicyTagManager_ListPolicyTags_sync",
+      "file": "datacatalog_v1beta1_generated_policy_tag_manager_list_policy_tags_sync.py",
+      "regionTag": "datacatalog_v1beta1_generated_PolicyTagManager_ListPolicyTags_sync",
       "segments": [
         {
           "end": 45,
@@ -3275,8 +3275,8 @@
           "shortName": "ListTaxonomies"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_policy_tag_manager_list_taxonomies_async.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_PolicyTagManager_ListTaxonomies_async",
+      "file": "datacatalog_v1beta1_generated_policy_tag_manager_list_taxonomies_async.py",
+      "regionTag": "datacatalog_v1beta1_generated_PolicyTagManager_ListTaxonomies_async",
       "segments": [
         {
           "end": 45,
@@ -3319,8 +3319,8 @@
           "shortName": "ListTaxonomies"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_policy_tag_manager_list_taxonomies_sync.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_PolicyTagManager_ListTaxonomies_sync",
+      "file": "datacatalog_v1beta1_generated_policy_tag_manager_list_taxonomies_sync.py",
+      "regionTag": "datacatalog_v1beta1_generated_PolicyTagManager_ListTaxonomies_sync",
       "segments": [
         {
           "end": 45,
@@ -3364,8 +3364,8 @@
           "shortName": "SetIamPolicy"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_policy_tag_manager_set_iam_policy_async.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_PolicyTagManager_SetIamPolicy_async",
+      "file": "datacatalog_v1beta1_generated_policy_tag_manager_set_iam_policy_async.py",
+      "regionTag": "datacatalog_v1beta1_generated_PolicyTagManager_SetIamPolicy_async",
       "segments": [
         {
           "end": 44,
@@ -3408,8 +3408,8 @@
           "shortName": "SetIamPolicy"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_policy_tag_manager_set_iam_policy_sync.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_PolicyTagManager_SetIamPolicy_sync",
+      "file": "datacatalog_v1beta1_generated_policy_tag_manager_set_iam_policy_sync.py",
+      "regionTag": "datacatalog_v1beta1_generated_PolicyTagManager_SetIamPolicy_sync",
       "segments": [
         {
           "end": 44,
@@ -3453,8 +3453,8 @@
           "shortName": "TestIamPermissions"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_policy_tag_manager_test_iam_permissions_async.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_PolicyTagManager_TestIamPermissions_async",
+      "file": "datacatalog_v1beta1_generated_policy_tag_manager_test_iam_permissions_async.py",
+      "regionTag": "datacatalog_v1beta1_generated_PolicyTagManager_TestIamPermissions_async",
       "segments": [
         {
           "end": 45,
@@ -3497,8 +3497,8 @@
           "shortName": "TestIamPermissions"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_policy_tag_manager_test_iam_permissions_sync.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_PolicyTagManager_TestIamPermissions_sync",
+      "file": "datacatalog_v1beta1_generated_policy_tag_manager_test_iam_permissions_sync.py",
+      "regionTag": "datacatalog_v1beta1_generated_PolicyTagManager_TestIamPermissions_sync",
       "segments": [
         {
           "end": 45,
@@ -3542,8 +3542,8 @@
           "shortName": "UpdatePolicyTag"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_policy_tag_manager_update_policy_tag_async.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_PolicyTagManager_UpdatePolicyTag_async",
+      "file": "datacatalog_v1beta1_generated_policy_tag_manager_update_policy_tag_async.py",
+      "regionTag": "datacatalog_v1beta1_generated_PolicyTagManager_UpdatePolicyTag_async",
       "segments": [
         {
           "end": 43,
@@ -3586,8 +3586,8 @@
           "shortName": "UpdatePolicyTag"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_policy_tag_manager_update_policy_tag_sync.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_PolicyTagManager_UpdatePolicyTag_sync",
+      "file": "datacatalog_v1beta1_generated_policy_tag_manager_update_policy_tag_sync.py",
+      "regionTag": "datacatalog_v1beta1_generated_PolicyTagManager_UpdatePolicyTag_sync",
       "segments": [
         {
           "end": 43,
@@ -3631,8 +3631,8 @@
           "shortName": "UpdateTaxonomy"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_policy_tag_manager_update_taxonomy_async.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_PolicyTagManager_UpdateTaxonomy_async",
+      "file": "datacatalog_v1beta1_generated_policy_tag_manager_update_taxonomy_async.py",
+      "regionTag": "datacatalog_v1beta1_generated_PolicyTagManager_UpdateTaxonomy_async",
       "segments": [
         {
           "end": 43,
@@ -3675,8 +3675,8 @@
           "shortName": "UpdateTaxonomy"
         }
       },
-      "file": "datacatalog_generated_datacatalog_v1beta1_policy_tag_manager_update_taxonomy_sync.py",
-      "regionTag": "datacatalog_generated_datacatalog_v1beta1_PolicyTagManager_UpdateTaxonomy_sync",
+      "file": "datacatalog_v1beta1_generated_policy_tag_manager_update_taxonomy_sync.py",
+      "regionTag": "datacatalog_v1beta1_generated_PolicyTagManager_UpdateTaxonomy_sync",
       "segments": [
         {
           "end": 43,

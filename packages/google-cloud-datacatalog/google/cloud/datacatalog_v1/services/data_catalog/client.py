@@ -537,8 +537,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         (https://cloud.google.com/data-catalog/docs/how-to/search-reference).
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -688,8 +687,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -810,8 +808,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
     ) -> datacatalog.EntryGroup:
         r"""Gets an entry group.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -920,8 +917,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -1035,8 +1031,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -1116,8 +1111,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
     ) -> pagers.ListEntryGroupsPager:
         r"""Lists entry groups.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -1233,8 +1227,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         An entry group can have a maximum of 100,000 entries.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -1369,8 +1362,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -1523,8 +1515,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -1604,8 +1595,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
     ) -> datacatalog.Entry:
         r"""Gets an entry.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -1706,8 +1696,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         Platform service.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -1785,8 +1774,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         [SearchCatalog][google.cloud.datacatalog.v1.DataCatalog.SearchCatalog].
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -1892,8 +1880,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         corresponding project.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -1968,8 +1955,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         corresponding project.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -2045,8 +2031,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         (https://cloud.google.com/data-catalog/docs/concepts/resource-project).
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -2167,8 +2152,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
     ) -> tags.TagTemplate:
         r"""Gets a tag template.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -2278,8 +2262,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -2404,8 +2387,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -2505,8 +2487,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -2640,8 +2621,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -2776,8 +2756,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         (https://cloud.google.com/data-catalog/docs/concepts/resource-project).
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -2882,8 +2861,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         Within a single enum field, enum values must be unique.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -2993,8 +2971,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -3104,8 +3081,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         used to create the tag must be in the same organization.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -3220,8 +3196,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
     ) -> tags.Tag:
         r"""Updates an existing tag.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -3335,8 +3310,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
     ) -> None:
         r"""Deletes a tag.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -3420,8 +3394,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         response are lowercased.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -3529,8 +3502,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         user.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -3624,8 +3596,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         each user.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -3736,8 +3707,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
            entry groups.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -3905,8 +3875,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
            entry groups.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -4063,8 +4032,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         method.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 

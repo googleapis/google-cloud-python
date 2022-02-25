@@ -241,7 +241,7 @@ class PolicyTagManagerSerializationAsyncClient:
         -  Updates policy tags with valid resources names accordingly.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -333,7 +333,7 @@ class PolicyTagManagerSerializationAsyncClient:
         created in bulk using nested protocol buffer structures.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -414,7 +414,7 @@ class PolicyTagManagerSerializationAsyncClient:
         ``ImportTaxonomies`` calls.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 

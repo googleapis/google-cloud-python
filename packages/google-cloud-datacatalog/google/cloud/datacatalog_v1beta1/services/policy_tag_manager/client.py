@@ -436,8 +436,7 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
     ) -> policytagmanager.Taxonomy:
         r"""Creates a taxonomy in the specified project.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1beta1
 
@@ -542,8 +541,7 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
         associated policies.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1beta1
 
@@ -624,8 +622,7 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
     ) -> policytagmanager.Taxonomy:
         r"""Updates a taxonomy.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1beta1
 
@@ -722,8 +719,7 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
         location that the caller has permission to view.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1beta1
 
@@ -823,8 +819,7 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
     ) -> policytagmanager.Taxonomy:
         r"""Gets a taxonomy.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1beta1
 
@@ -919,8 +914,7 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
     ) -> policytagmanager.PolicyTag:
         r"""Creates a policy tag in the specified taxonomy.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1beta1
 
@@ -1026,8 +1020,7 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
         descendant policy tags.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1beta1
 
@@ -1108,8 +1101,7 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
     ) -> policytagmanager.PolicyTag:
         r"""Updates a policy tag.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1beta1
 
@@ -1207,8 +1199,7 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
     ) -> pagers.ListPolicyTagsPager:
         r"""Lists all policy tags in a taxonomy.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1beta1
 
@@ -1308,8 +1299,7 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
     ) -> policytagmanager.PolicyTag:
         r"""Gets a policy tag.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1beta1
 
@@ -1404,8 +1394,7 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
     ) -> policy_pb2.Policy:
         r"""Gets the IAM policy for a taxonomy or a policy tag.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1beta1
 
@@ -1528,8 +1517,7 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
     ) -> policy_pb2.Policy:
         r"""Sets the IAM policy for a taxonomy or a policy tag.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1beta1
 
@@ -1654,8 +1642,7 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
         specified taxonomy or policy tag.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1beta1
 

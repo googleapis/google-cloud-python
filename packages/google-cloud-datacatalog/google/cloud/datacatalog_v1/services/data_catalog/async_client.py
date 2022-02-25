@@ -256,7 +256,7 @@ class DataCatalogAsyncClient:
         (https://cloud.google.com/data-catalog/docs/how-to/search-reference).
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -415,7 +415,7 @@ class DataCatalogAsyncClient:
         project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -536,7 +536,7 @@ class DataCatalogAsyncClient:
     ) -> datacatalog.EntryGroup:
         r"""Gets an entry group.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -654,7 +654,7 @@ class DataCatalogAsyncClient:
         project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -768,7 +768,7 @@ class DataCatalogAsyncClient:
         project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -848,7 +848,7 @@ class DataCatalogAsyncClient:
     ) -> pagers.ListEntryGroupsAsyncPager:
         r"""Lists entry groups.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -973,7 +973,7 @@ class DataCatalogAsyncClient:
         An entry group can have a maximum of 100,000 entries.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -1108,7 +1108,7 @@ class DataCatalogAsyncClient:
         project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -1261,7 +1261,7 @@ class DataCatalogAsyncClient:
         project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -1341,7 +1341,7 @@ class DataCatalogAsyncClient:
     ) -> datacatalog.Entry:
         r"""Gets an entry.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -1451,7 +1451,7 @@ class DataCatalogAsyncClient:
         Platform service.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -1537,7 +1537,7 @@ class DataCatalogAsyncClient:
         [SearchCatalog][google.cloud.datacatalog.v1.DataCatalog.SearchCatalog].
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -1652,7 +1652,7 @@ class DataCatalogAsyncClient:
         corresponding project.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -1726,7 +1726,7 @@ class DataCatalogAsyncClient:
         corresponding project.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -1801,7 +1801,7 @@ class DataCatalogAsyncClient:
         (https://cloud.google.com/data-catalog/docs/concepts/resource-project).
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -1922,7 +1922,7 @@ class DataCatalogAsyncClient:
     ) -> tags.TagTemplate:
         r"""Gets a tag template.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -2032,7 +2032,7 @@ class DataCatalogAsyncClient:
         project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -2157,7 +2157,7 @@ class DataCatalogAsyncClient:
         project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -2257,7 +2257,7 @@ class DataCatalogAsyncClient:
         project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -2389,7 +2389,7 @@ class DataCatalogAsyncClient:
         project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -2522,7 +2522,7 @@ class DataCatalogAsyncClient:
         (https://cloud.google.com/data-catalog/docs/concepts/resource-project).
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -2625,7 +2625,7 @@ class DataCatalogAsyncClient:
         Within a single enum field, enum values must be unique.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -2733,7 +2733,7 @@ class DataCatalogAsyncClient:
         project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -2841,7 +2841,7 @@ class DataCatalogAsyncClient:
         used to create the tag must be in the same organization.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -2956,7 +2956,7 @@ class DataCatalogAsyncClient:
     ) -> tags.Tag:
         r"""Updates an existing tag.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -3070,7 +3070,7 @@ class DataCatalogAsyncClient:
     ) -> None:
         r"""Deletes a tag.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -3154,7 +3154,7 @@ class DataCatalogAsyncClient:
         response are lowercased.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -3271,7 +3271,7 @@ class DataCatalogAsyncClient:
         user.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -3365,7 +3365,7 @@ class DataCatalogAsyncClient:
         each user.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -3476,7 +3476,7 @@ class DataCatalogAsyncClient:
            entry groups.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -3645,7 +3645,7 @@ class DataCatalogAsyncClient:
            entry groups.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
@@ -3812,7 +3812,7 @@ class DataCatalogAsyncClient:
         method.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datacatalog_v1
 
