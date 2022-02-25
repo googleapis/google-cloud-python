@@ -218,7 +218,7 @@ class SchemaServiceAsyncClient:
     ) -> gp_schema.Schema:
         r"""Creates a schema.
 
-        .. code-block::
+        .. code-block:: python
 
             from google import pubsub_v1
 
@@ -334,7 +334,7 @@ class SchemaServiceAsyncClient:
     ) -> schema.Schema:
         r"""Gets a schema.
 
-        .. code-block::
+        .. code-block:: python
 
             from google import pubsub_v1
 
@@ -421,7 +421,7 @@ class SchemaServiceAsyncClient:
     ) -> pagers.ListSchemasAsyncPager:
         r"""Lists schemas in a project.
 
-        .. code-block::
+        .. code-block:: python
 
             from google import pubsub_v1
 
@@ -520,7 +520,7 @@ class SchemaServiceAsyncClient:
     ) -> None:
         r"""Deletes a schema.
 
-        .. code-block::
+        .. code-block:: python
 
             from google import pubsub_v1
 
@@ -601,7 +601,7 @@ class SchemaServiceAsyncClient:
     ) -> gp_schema.ValidateSchemaResponse:
         r"""Validates a schema.
 
-        .. code-block::
+        .. code-block:: python
 
             from google import pubsub_v1
 
@@ -703,7 +703,7 @@ class SchemaServiceAsyncClient:
     ) -> schema.ValidateMessageResponse:
         r"""Validates a message against a schema.
 
-        .. code-block::
+        .. code-block:: python
 
             from google import pubsub_v1
 

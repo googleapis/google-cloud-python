@@ -10,8 +10,8 @@
           "shortName": "CreateTopic"
         }
       },
-      "file": "pubsub_generated_pubsub_v1_publisher_create_topic_async.py",
-      "regionTag": "pubsub_generated_pubsub_v1_Publisher_CreateTopic_async",
+      "file": "pubsub_v1_generated_publisher_create_topic_async.py",
+      "regionTag": "pubsub_v1_generated_Publisher_CreateTopic_async",
       "segments": [
         {
           "end": 44,
@@ -54,8 +54,8 @@
           "shortName": "CreateTopic"
         }
       },
-      "file": "pubsub_generated_pubsub_v1_publisher_create_topic_sync.py",
-      "regionTag": "pubsub_generated_pubsub_v1_Publisher_CreateTopic_sync",
+      "file": "pubsub_v1_generated_publisher_create_topic_sync.py",
+      "regionTag": "pubsub_v1_generated_Publisher_CreateTopic_sync",
       "segments": [
         {
           "end": 44,
@@ -99,8 +99,8 @@
           "shortName": "DeleteTopic"
         }
       },
-      "file": "pubsub_generated_pubsub_v1_publisher_delete_topic_async.py",
-      "regionTag": "pubsub_generated_pubsub_v1_Publisher_DeleteTopic_async",
+      "file": "pubsub_v1_generated_publisher_delete_topic_async.py",
+      "regionTag": "pubsub_v1_generated_Publisher_DeleteTopic_async",
       "segments": [
         {
           "end": 42,
@@ -141,8 +141,8 @@
           "shortName": "DeleteTopic"
         }
       },
-      "file": "pubsub_generated_pubsub_v1_publisher_delete_topic_sync.py",
-      "regionTag": "pubsub_generated_pubsub_v1_Publisher_DeleteTopic_sync",
+      "file": "pubsub_v1_generated_publisher_delete_topic_sync.py",
+      "regionTag": "pubsub_v1_generated_Publisher_DeleteTopic_sync",
       "segments": [
         {
           "end": 42,
@@ -184,8 +184,8 @@
           "shortName": "DetachSubscription"
         }
       },
-      "file": "pubsub_generated_pubsub_v1_publisher_detach_subscription_async.py",
-      "regionTag": "pubsub_generated_pubsub_v1_Publisher_DetachSubscription_async",
+      "file": "pubsub_v1_generated_publisher_detach_subscription_async.py",
+      "regionTag": "pubsub_v1_generated_Publisher_DetachSubscription_async",
       "segments": [
         {
           "end": 44,
@@ -228,8 +228,8 @@
           "shortName": "DetachSubscription"
         }
       },
-      "file": "pubsub_generated_pubsub_v1_publisher_detach_subscription_sync.py",
-      "regionTag": "pubsub_generated_pubsub_v1_Publisher_DetachSubscription_sync",
+      "file": "pubsub_v1_generated_publisher_detach_subscription_sync.py",
+      "regionTag": "pubsub_v1_generated_Publisher_DetachSubscription_sync",
       "segments": [
         {
           "end": 44,
@@ -273,8 +273,8 @@
           "shortName": "GetTopic"
         }
       },
-      "file": "pubsub_generated_pubsub_v1_publisher_get_topic_async.py",
-      "regionTag": "pubsub_generated_pubsub_v1_Publisher_GetTopic_async",
+      "file": "pubsub_v1_generated_publisher_get_topic_async.py",
+      "regionTag": "pubsub_v1_generated_Publisher_GetTopic_async",
       "segments": [
         {
           "end": 44,
@@ -317,8 +317,8 @@
           "shortName": "GetTopic"
         }
       },
-      "file": "pubsub_generated_pubsub_v1_publisher_get_topic_sync.py",
-      "regionTag": "pubsub_generated_pubsub_v1_Publisher_GetTopic_sync",
+      "file": "pubsub_v1_generated_publisher_get_topic_sync.py",
+      "regionTag": "pubsub_v1_generated_Publisher_GetTopic_sync",
       "segments": [
         {
           "end": 44,
@@ -362,8 +362,8 @@
           "shortName": "ListTopicSnapshots"
         }
       },
-      "file": "pubsub_generated_pubsub_v1_publisher_list_topic_snapshots_async.py",
-      "regionTag": "pubsub_generated_pubsub_v1_Publisher_ListTopicSnapshots_async",
+      "file": "pubsub_v1_generated_publisher_list_topic_snapshots_async.py",
+      "regionTag": "pubsub_v1_generated_Publisher_ListTopicSnapshots_async",
       "segments": [
         {
           "end": 45,
@@ -406,8 +406,8 @@
           "shortName": "ListTopicSnapshots"
         }
       },
-      "file": "pubsub_generated_pubsub_v1_publisher_list_topic_snapshots_sync.py",
-      "regionTag": "pubsub_generated_pubsub_v1_Publisher_ListTopicSnapshots_sync",
+      "file": "pubsub_v1_generated_publisher_list_topic_snapshots_sync.py",
+      "regionTag": "pubsub_v1_generated_Publisher_ListTopicSnapshots_sync",
       "segments": [
         {
           "end": 45,
@@ -451,8 +451,8 @@
           "shortName": "ListTopicSubscriptions"
         }
       },
-      "file": "pubsub_generated_pubsub_v1_publisher_list_topic_subscriptions_async.py",
-      "regionTag": "pubsub_generated_pubsub_v1_Publisher_ListTopicSubscriptions_async",
+      "file": "pubsub_v1_generated_publisher_list_topic_subscriptions_async.py",
+      "regionTag": "pubsub_v1_generated_Publisher_ListTopicSubscriptions_async",
       "segments": [
         {
           "end": 45,
@@ -495,8 +495,8 @@
           "shortName": "ListTopicSubscriptions"
         }
       },
-      "file": "pubsub_generated_pubsub_v1_publisher_list_topic_subscriptions_sync.py",
-      "regionTag": "pubsub_generated_pubsub_v1_Publisher_ListTopicSubscriptions_sync",
+      "file": "pubsub_v1_generated_publisher_list_topic_subscriptions_sync.py",
+      "regionTag": "pubsub_v1_generated_Publisher_ListTopicSubscriptions_sync",
       "segments": [
         {
           "end": 45,
@@ -540,8 +540,8 @@
           "shortName": "ListTopics"
         }
       },
-      "file": "pubsub_generated_pubsub_v1_publisher_list_topics_async.py",
-      "regionTag": "pubsub_generated_pubsub_v1_Publisher_ListTopics_async",
+      "file": "pubsub_v1_generated_publisher_list_topics_async.py",
+      "regionTag": "pubsub_v1_generated_Publisher_ListTopics_async",
       "segments": [
         {
           "end": 45,
@@ -584,8 +584,8 @@
           "shortName": "ListTopics"
         }
       },
-      "file": "pubsub_generated_pubsub_v1_publisher_list_topics_sync.py",
-      "regionTag": "pubsub_generated_pubsub_v1_Publisher_ListTopics_sync",
+      "file": "pubsub_v1_generated_publisher_list_topics_sync.py",
+      "regionTag": "pubsub_v1_generated_Publisher_ListTopics_sync",
       "segments": [
         {
           "end": 45,
@@ -629,8 +629,8 @@
           "shortName": "Publish"
         }
       },
-      "file": "pubsub_generated_pubsub_v1_publisher_publish_async.py",
-      "regionTag": "pubsub_generated_pubsub_v1_Publisher_Publish_async",
+      "file": "pubsub_v1_generated_publisher_publish_async.py",
+      "regionTag": "pubsub_v1_generated_Publisher_Publish_async",
       "segments": [
         {
           "end": 44,
@@ -673,8 +673,8 @@
           "shortName": "Publish"
         }
       },
-      "file": "pubsub_generated_pubsub_v1_publisher_publish_sync.py",
-      "regionTag": "pubsub_generated_pubsub_v1_Publisher_Publish_sync",
+      "file": "pubsub_v1_generated_publisher_publish_sync.py",
+      "regionTag": "pubsub_v1_generated_Publisher_Publish_sync",
       "segments": [
         {
           "end": 44,
@@ -718,8 +718,8 @@
           "shortName": "UpdateTopic"
         }
       },
-      "file": "pubsub_generated_pubsub_v1_publisher_update_topic_async.py",
-      "regionTag": "pubsub_generated_pubsub_v1_Publisher_UpdateTopic_async",
+      "file": "pubsub_v1_generated_publisher_update_topic_async.py",
+      "regionTag": "pubsub_v1_generated_Publisher_UpdateTopic_async",
       "segments": [
         {
           "end": 47,
@@ -762,8 +762,8 @@
           "shortName": "UpdateTopic"
         }
       },
-      "file": "pubsub_generated_pubsub_v1_publisher_update_topic_sync.py",
-      "regionTag": "pubsub_generated_pubsub_v1_Publisher_UpdateTopic_sync",
+      "file": "pubsub_v1_generated_publisher_update_topic_sync.py",
+      "regionTag": "pubsub_v1_generated_Publisher_UpdateTopic_sync",
       "segments": [
         {
           "end": 47,
@@ -807,8 +807,8 @@
           "shortName": "CreateSchema"
         }
       },
-      "file": "pubsub_generated_pubsub_v1_schema_service_create_schema_async.py",
-      "regionTag": "pubsub_generated_pubsub_v1_SchemaService_CreateSchema_async",
+      "file": "pubsub_v1_generated_schema_service_create_schema_async.py",
+      "regionTag": "pubsub_v1_generated_SchemaService_CreateSchema_async",
       "segments": [
         {
           "end": 48,
@@ -851,8 +851,8 @@
           "shortName": "CreateSchema"
         }
       },
-      "file": "pubsub_generated_pubsub_v1_schema_service_create_schema_sync.py",
-      "regionTag": "pubsub_generated_pubsub_v1_SchemaService_CreateSchema_sync",
+      "file": "pubsub_v1_generated_schema_service_create_schema_sync.py",
+      "regionTag": "pubsub_v1_generated_SchemaService_CreateSchema_sync",
       "segments": [
         {
           "end": 48,
@@ -896,8 +896,8 @@
           "shortName": "DeleteSchema"
         }
       },
-      "file": "pubsub_generated_pubsub_v1_schema_service_delete_schema_async.py",
-      "regionTag": "pubsub_generated_pubsub_v1_SchemaService_DeleteSchema_async",
+      "file": "pubsub_v1_generated_schema_service_delete_schema_async.py",
+      "regionTag": "pubsub_v1_generated_SchemaService_DeleteSchema_async",
       "segments": [
         {
           "end": 42,
@@ -938,8 +938,8 @@
           "shortName": "DeleteSchema"
         }
       },
-      "file": "pubsub_generated_pubsub_v1_schema_service_delete_schema_sync.py",
-      "regionTag": "pubsub_generated_pubsub_v1_SchemaService_DeleteSchema_sync",
+      "file": "pubsub_v1_generated_schema_service_delete_schema_sync.py",
+      "regionTag": "pubsub_v1_generated_SchemaService_DeleteSchema_sync",
       "segments": [
         {
           "end": 42,
@@ -981,8 +981,8 @@
           "shortName": "GetSchema"
         }
       },
-      "file": "pubsub_generated_pubsub_v1_schema_service_get_schema_async.py",
-      "regionTag": "pubsub_generated_pubsub_v1_SchemaService_GetSchema_async",
+      "file": "pubsub_v1_generated_schema_service_get_schema_async.py",
+      "regionTag": "pubsub_v1_generated_SchemaService_GetSchema_async",
       "segments": [
         {
           "end": 44,
@@ -1025,8 +1025,8 @@
           "shortName": "GetSchema"
         }
       },
-      "file": "pubsub_generated_pubsub_v1_schema_service_get_schema_sync.py",
-      "regionTag": "pubsub_generated_pubsub_v1_SchemaService_GetSchema_sync",
+      "file": "pubsub_v1_generated_schema_service_get_schema_sync.py",
+      "regionTag": "pubsub_v1_generated_SchemaService_GetSchema_sync",
       "segments": [
         {
           "end": 44,
@@ -1070,8 +1070,8 @@
           "shortName": "ListSchemas"
         }
       },
-      "file": "pubsub_generated_pubsub_v1_schema_service_list_schemas_async.py",
-      "regionTag": "pubsub_generated_pubsub_v1_SchemaService_ListSchemas_async",
+      "file": "pubsub_v1_generated_schema_service_list_schemas_async.py",
+      "regionTag": "pubsub_v1_generated_SchemaService_ListSchemas_async",
       "segments": [
         {
           "end": 45,
@@ -1114,8 +1114,8 @@
           "shortName": "ListSchemas"
         }
       },
-      "file": "pubsub_generated_pubsub_v1_schema_service_list_schemas_sync.py",
-      "regionTag": "pubsub_generated_pubsub_v1_SchemaService_ListSchemas_sync",
+      "file": "pubsub_v1_generated_schema_service_list_schemas_sync.py",
+      "regionTag": "pubsub_v1_generated_SchemaService_ListSchemas_sync",
       "segments": [
         {
           "end": 45,
@@ -1159,8 +1159,8 @@
           "shortName": "ValidateMessage"
         }
       },
-      "file": "pubsub_generated_pubsub_v1_schema_service_validate_message_async.py",
-      "regionTag": "pubsub_generated_pubsub_v1_SchemaService_ValidateMessage_async",
+      "file": "pubsub_v1_generated_schema_service_validate_message_async.py",
+      "regionTag": "pubsub_v1_generated_SchemaService_ValidateMessage_async",
       "segments": [
         {
           "end": 45,
@@ -1203,8 +1203,8 @@
           "shortName": "ValidateMessage"
         }
       },
-      "file": "pubsub_generated_pubsub_v1_schema_service_validate_message_sync.py",
-      "regionTag": "pubsub_generated_pubsub_v1_SchemaService_ValidateMessage_sync",
+      "file": "pubsub_v1_generated_schema_service_validate_message_sync.py",
+      "regionTag": "pubsub_v1_generated_SchemaService_ValidateMessage_sync",
       "segments": [
         {
           "end": 45,
@@ -1248,8 +1248,8 @@
           "shortName": "ValidateSchema"
         }
       },
-      "file": "pubsub_generated_pubsub_v1_schema_service_validate_schema_async.py",
-      "regionTag": "pubsub_generated_pubsub_v1_SchemaService_ValidateSchema_async",
+      "file": "pubsub_v1_generated_schema_service_validate_schema_async.py",
+      "regionTag": "pubsub_v1_generated_SchemaService_ValidateSchema_async",
       "segments": [
         {
           "end": 48,
@@ -1292,8 +1292,8 @@
           "shortName": "ValidateSchema"
         }
       },
-      "file": "pubsub_generated_pubsub_v1_schema_service_validate_schema_sync.py",
-      "regionTag": "pubsub_generated_pubsub_v1_SchemaService_ValidateSchema_sync",
+      "file": "pubsub_v1_generated_schema_service_validate_schema_sync.py",
+      "regionTag": "pubsub_v1_generated_SchemaService_ValidateSchema_sync",
       "segments": [
         {
           "end": 48,
@@ -1337,8 +1337,8 @@
           "shortName": "Acknowledge"
         }
       },
-      "file": "pubsub_generated_pubsub_v1_subscriber_acknowledge_async.py",
-      "regionTag": "pubsub_generated_pubsub_v1_Subscriber_Acknowledge_async",
+      "file": "pubsub_v1_generated_subscriber_acknowledge_async.py",
+      "regionTag": "pubsub_v1_generated_Subscriber_Acknowledge_async",
       "segments": [
         {
           "end": 43,
@@ -1379,8 +1379,8 @@
           "shortName": "Acknowledge"
         }
       },
-      "file": "pubsub_generated_pubsub_v1_subscriber_acknowledge_sync.py",
-      "regionTag": "pubsub_generated_pubsub_v1_Subscriber_Acknowledge_sync",
+      "file": "pubsub_v1_generated_subscriber_acknowledge_sync.py",
+      "regionTag": "pubsub_v1_generated_Subscriber_Acknowledge_sync",
       "segments": [
         {
           "end": 43,
@@ -1422,8 +1422,8 @@
           "shortName": "CreateSnapshot"
         }
       },
-      "file": "pubsub_generated_pubsub_v1_subscriber_create_snapshot_async.py",
-      "regionTag": "pubsub_generated_pubsub_v1_Subscriber_CreateSnapshot_async",
+      "file": "pubsub_v1_generated_subscriber_create_snapshot_async.py",
+      "regionTag": "pubsub_v1_generated_Subscriber_CreateSnapshot_async",
       "segments": [
         {
           "end": 45,
@@ -1466,8 +1466,8 @@
           "shortName": "CreateSnapshot"
         }
       },
-      "file": "pubsub_generated_pubsub_v1_subscriber_create_snapshot_sync.py",
-      "regionTag": "pubsub_generated_pubsub_v1_Subscriber_CreateSnapshot_sync",
+      "file": "pubsub_v1_generated_subscriber_create_snapshot_sync.py",
+      "regionTag": "pubsub_v1_generated_Subscriber_CreateSnapshot_sync",
       "segments": [
         {
           "end": 45,
@@ -1511,8 +1511,8 @@
           "shortName": "CreateSubscription"
         }
       },
-      "file": "pubsub_generated_pubsub_v1_subscriber_create_subscription_async.py",
-      "regionTag": "pubsub_generated_pubsub_v1_Subscriber_CreateSubscription_async",
+      "file": "pubsub_v1_generated_subscriber_create_subscription_async.py",
+      "regionTag": "pubsub_v1_generated_Subscriber_CreateSubscription_async",
       "segments": [
         {
           "end": 45,
@@ -1555,8 +1555,8 @@
           "shortName": "CreateSubscription"
         }
       },
-      "file": "pubsub_generated_pubsub_v1_subscriber_create_subscription_sync.py",
-      "regionTag": "pubsub_generated_pubsub_v1_Subscriber_CreateSubscription_sync",
+      "file": "pubsub_v1_generated_subscriber_create_subscription_sync.py",
+      "regionTag": "pubsub_v1_generated_Subscriber_CreateSubscription_sync",
       "segments": [
         {
           "end": 45,
@@ -1600,8 +1600,8 @@
           "shortName": "DeleteSnapshot"
         }
       },
-      "file": "pubsub_generated_pubsub_v1_subscriber_delete_snapshot_async.py",
-      "regionTag": "pubsub_generated_pubsub_v1_Subscriber_DeleteSnapshot_async",
+      "file": "pubsub_v1_generated_subscriber_delete_snapshot_async.py",
+      "regionTag": "pubsub_v1_generated_Subscriber_DeleteSnapshot_async",
       "segments": [
         {
           "end": 42,
@@ -1642,8 +1642,8 @@
           "shortName": "DeleteSnapshot"
         }
       },
-      "file": "pubsub_generated_pubsub_v1_subscriber_delete_snapshot_sync.py",
-      "regionTag": "pubsub_generated_pubsub_v1_Subscriber_DeleteSnapshot_sync",
+      "file": "pubsub_v1_generated_subscriber_delete_snapshot_sync.py",
+      "regionTag": "pubsub_v1_generated_Subscriber_DeleteSnapshot_sync",
       "segments": [
         {
           "end": 42,
@@ -1685,8 +1685,8 @@
           "shortName": "DeleteSubscription"
         }
       },
-      "file": "pubsub_generated_pubsub_v1_subscriber_delete_subscription_async.py",
-      "regionTag": "pubsub_generated_pubsub_v1_Subscriber_DeleteSubscription_async",
+      "file": "pubsub_v1_generated_subscriber_delete_subscription_async.py",
+      "regionTag": "pubsub_v1_generated_Subscriber_DeleteSubscription_async",
       "segments": [
         {
           "end": 42,
@@ -1727,8 +1727,8 @@
           "shortName": "DeleteSubscription"
         }
       },
-      "file": "pubsub_generated_pubsub_v1_subscriber_delete_subscription_sync.py",
-      "regionTag": "pubsub_generated_pubsub_v1_Subscriber_DeleteSubscription_sync",
+      "file": "pubsub_v1_generated_subscriber_delete_subscription_sync.py",
+      "regionTag": "pubsub_v1_generated_Subscriber_DeleteSubscription_sync",
       "segments": [
         {
           "end": 42,
@@ -1770,8 +1770,8 @@
           "shortName": "GetSnapshot"
         }
       },
-      "file": "pubsub_generated_pubsub_v1_subscriber_get_snapshot_async.py",
-      "regionTag": "pubsub_generated_pubsub_v1_Subscriber_GetSnapshot_async",
+      "file": "pubsub_v1_generated_subscriber_get_snapshot_async.py",
+      "regionTag": "pubsub_v1_generated_Subscriber_GetSnapshot_async",
       "segments": [
         {
           "end": 44,
@@ -1814,8 +1814,8 @@
           "shortName": "GetSnapshot"
         }
       },
-      "file": "pubsub_generated_pubsub_v1_subscriber_get_snapshot_sync.py",
-      "regionTag": "pubsub_generated_pubsub_v1_Subscriber_GetSnapshot_sync",
+      "file": "pubsub_v1_generated_subscriber_get_snapshot_sync.py",
+      "regionTag": "pubsub_v1_generated_Subscriber_GetSnapshot_sync",
       "segments": [
         {
           "end": 44,
@@ -1859,8 +1859,8 @@
           "shortName": "GetSubscription"
         }
       },
-      "file": "pubsub_generated_pubsub_v1_subscriber_get_subscription_async.py",
-      "regionTag": "pubsub_generated_pubsub_v1_Subscriber_GetSubscription_async",
+      "file": "pubsub_v1_generated_subscriber_get_subscription_async.py",
+      "regionTag": "pubsub_v1_generated_Subscriber_GetSubscription_async",
       "segments": [
         {
           "end": 44,
@@ -1903,8 +1903,8 @@
           "shortName": "GetSubscription"
         }
       },
-      "file": "pubsub_generated_pubsub_v1_subscriber_get_subscription_sync.py",
-      "regionTag": "pubsub_generated_pubsub_v1_Subscriber_GetSubscription_sync",
+      "file": "pubsub_v1_generated_subscriber_get_subscription_sync.py",
+      "regionTag": "pubsub_v1_generated_Subscriber_GetSubscription_sync",
       "segments": [
         {
           "end": 44,
@@ -1948,8 +1948,8 @@
           "shortName": "ListSnapshots"
         }
       },
-      "file": "pubsub_generated_pubsub_v1_subscriber_list_snapshots_async.py",
-      "regionTag": "pubsub_generated_pubsub_v1_Subscriber_ListSnapshots_async",
+      "file": "pubsub_v1_generated_subscriber_list_snapshots_async.py",
+      "regionTag": "pubsub_v1_generated_Subscriber_ListSnapshots_async",
       "segments": [
         {
           "end": 45,
@@ -1992,8 +1992,8 @@
           "shortName": "ListSnapshots"
         }
       },
-      "file": "pubsub_generated_pubsub_v1_subscriber_list_snapshots_sync.py",
-      "regionTag": "pubsub_generated_pubsub_v1_Subscriber_ListSnapshots_sync",
+      "file": "pubsub_v1_generated_subscriber_list_snapshots_sync.py",
+      "regionTag": "pubsub_v1_generated_Subscriber_ListSnapshots_sync",
       "segments": [
         {
           "end": 45,
@@ -2037,8 +2037,8 @@
           "shortName": "ListSubscriptions"
         }
       },
-      "file": "pubsub_generated_pubsub_v1_subscriber_list_subscriptions_async.py",
-      "regionTag": "pubsub_generated_pubsub_v1_Subscriber_ListSubscriptions_async",
+      "file": "pubsub_v1_generated_subscriber_list_subscriptions_async.py",
+      "regionTag": "pubsub_v1_generated_Subscriber_ListSubscriptions_async",
       "segments": [
         {
           "end": 45,
@@ -2081,8 +2081,8 @@
           "shortName": "ListSubscriptions"
         }
       },
-      "file": "pubsub_generated_pubsub_v1_subscriber_list_subscriptions_sync.py",
-      "regionTag": "pubsub_generated_pubsub_v1_Subscriber_ListSubscriptions_sync",
+      "file": "pubsub_v1_generated_subscriber_list_subscriptions_sync.py",
+      "regionTag": "pubsub_v1_generated_Subscriber_ListSubscriptions_sync",
       "segments": [
         {
           "end": 45,
@@ -2126,8 +2126,8 @@
           "shortName": "ModifyAckDeadline"
         }
       },
-      "file": "pubsub_generated_pubsub_v1_subscriber_modify_ack_deadline_async.py",
-      "regionTag": "pubsub_generated_pubsub_v1_Subscriber_ModifyAckDeadline_async",
+      "file": "pubsub_v1_generated_subscriber_modify_ack_deadline_async.py",
+      "regionTag": "pubsub_v1_generated_Subscriber_ModifyAckDeadline_async",
       "segments": [
         {
           "end": 44,
@@ -2168,8 +2168,8 @@
           "shortName": "ModifyAckDeadline"
         }
       },
-      "file": "pubsub_generated_pubsub_v1_subscriber_modify_ack_deadline_sync.py",
-      "regionTag": "pubsub_generated_pubsub_v1_Subscriber_ModifyAckDeadline_sync",
+      "file": "pubsub_v1_generated_subscriber_modify_ack_deadline_sync.py",
+      "regionTag": "pubsub_v1_generated_Subscriber_ModifyAckDeadline_sync",
       "segments": [
         {
           "end": 44,
@@ -2211,8 +2211,8 @@
           "shortName": "ModifyPushConfig"
         }
       },
-      "file": "pubsub_generated_pubsub_v1_subscriber_modify_push_config_async.py",
-      "regionTag": "pubsub_generated_pubsub_v1_Subscriber_ModifyPushConfig_async",
+      "file": "pubsub_v1_generated_subscriber_modify_push_config_async.py",
+      "regionTag": "pubsub_v1_generated_Subscriber_ModifyPushConfig_async",
       "segments": [
         {
           "end": 42,
@@ -2253,8 +2253,8 @@
           "shortName": "ModifyPushConfig"
         }
       },
-      "file": "pubsub_generated_pubsub_v1_subscriber_modify_push_config_sync.py",
-      "regionTag": "pubsub_generated_pubsub_v1_Subscriber_ModifyPushConfig_sync",
+      "file": "pubsub_v1_generated_subscriber_modify_push_config_sync.py",
+      "regionTag": "pubsub_v1_generated_Subscriber_ModifyPushConfig_sync",
       "segments": [
         {
           "end": 42,
@@ -2296,8 +2296,8 @@
           "shortName": "Pull"
         }
       },
-      "file": "pubsub_generated_pubsub_v1_subscriber_pull_async.py",
-      "regionTag": "pubsub_generated_pubsub_v1_Subscriber_Pull_async",
+      "file": "pubsub_v1_generated_subscriber_pull_async.py",
+      "regionTag": "pubsub_v1_generated_Subscriber_Pull_async",
       "segments": [
         {
           "end": 45,
@@ -2340,8 +2340,8 @@
           "shortName": "Pull"
         }
       },
-      "file": "pubsub_generated_pubsub_v1_subscriber_pull_sync.py",
-      "regionTag": "pubsub_generated_pubsub_v1_Subscriber_Pull_sync",
+      "file": "pubsub_v1_generated_subscriber_pull_sync.py",
+      "regionTag": "pubsub_v1_generated_Subscriber_Pull_sync",
       "segments": [
         {
           "end": 45,
@@ -2385,8 +2385,8 @@
           "shortName": "Seek"
         }
       },
-      "file": "pubsub_generated_pubsub_v1_subscriber_seek_async.py",
-      "regionTag": "pubsub_generated_pubsub_v1_Subscriber_Seek_async",
+      "file": "pubsub_v1_generated_subscriber_seek_async.py",
+      "regionTag": "pubsub_v1_generated_Subscriber_Seek_async",
       "segments": [
         {
           "end": 44,
@@ -2429,8 +2429,8 @@
           "shortName": "Seek"
         }
       },
-      "file": "pubsub_generated_pubsub_v1_subscriber_seek_sync.py",
-      "regionTag": "pubsub_generated_pubsub_v1_Subscriber_Seek_sync",
+      "file": "pubsub_v1_generated_subscriber_seek_sync.py",
+      "regionTag": "pubsub_v1_generated_Subscriber_Seek_sync",
       "segments": [
         {
           "end": 44,
@@ -2474,8 +2474,8 @@
           "shortName": "StreamingPull"
         }
       },
-      "file": "pubsub_generated_pubsub_v1_subscriber_streaming_pull_async.py",
-      "regionTag": "pubsub_generated_pubsub_v1_Subscriber_StreamingPull_async",
+      "file": "pubsub_v1_generated_subscriber_streaming_pull_async.py",
+      "regionTag": "pubsub_v1_generated_Subscriber_StreamingPull_async",
       "segments": [
         {
           "end": 56,
@@ -2518,8 +2518,8 @@
           "shortName": "StreamingPull"
         }
       },
-      "file": "pubsub_generated_pubsub_v1_subscriber_streaming_pull_sync.py",
-      "regionTag": "pubsub_generated_pubsub_v1_Subscriber_StreamingPull_sync",
+      "file": "pubsub_v1_generated_subscriber_streaming_pull_sync.py",
+      "regionTag": "pubsub_v1_generated_Subscriber_StreamingPull_sync",
       "segments": [
         {
           "end": 56,
@@ -2563,8 +2563,8 @@
           "shortName": "UpdateSnapshot"
         }
       },
-      "file": "pubsub_generated_pubsub_v1_subscriber_update_snapshot_async.py",
-      "regionTag": "pubsub_generated_pubsub_v1_Subscriber_UpdateSnapshot_async",
+      "file": "pubsub_v1_generated_subscriber_update_snapshot_async.py",
+      "regionTag": "pubsub_v1_generated_Subscriber_UpdateSnapshot_async",
       "segments": [
         {
           "end": 43,
@@ -2607,8 +2607,8 @@
           "shortName": "UpdateSnapshot"
         }
       },
-      "file": "pubsub_generated_pubsub_v1_subscriber_update_snapshot_sync.py",
-      "regionTag": "pubsub_generated_pubsub_v1_Subscriber_UpdateSnapshot_sync",
+      "file": "pubsub_v1_generated_subscriber_update_snapshot_sync.py",
+      "regionTag": "pubsub_v1_generated_Subscriber_UpdateSnapshot_sync",
       "segments": [
         {
           "end": 43,
@@ -2652,8 +2652,8 @@
           "shortName": "UpdateSubscription"
         }
       },
-      "file": "pubsub_generated_pubsub_v1_subscriber_update_subscription_async.py",
-      "regionTag": "pubsub_generated_pubsub_v1_Subscriber_UpdateSubscription_async",
+      "file": "pubsub_v1_generated_subscriber_update_subscription_async.py",
+      "regionTag": "pubsub_v1_generated_Subscriber_UpdateSubscription_async",
       "segments": [
         {
           "end": 48,
@@ -2696,8 +2696,8 @@
           "shortName": "UpdateSubscription"
         }
       },
-      "file": "pubsub_generated_pubsub_v1_subscriber_update_subscription_sync.py",
-      "regionTag": "pubsub_generated_pubsub_v1_Subscriber_UpdateSubscription_sync",
+      "file": "pubsub_v1_generated_subscriber_update_subscription_sync.py",
+      "regionTag": "pubsub_v1_generated_Subscriber_UpdateSubscription_sync",
       "segments": [
         {
           "end": 48,

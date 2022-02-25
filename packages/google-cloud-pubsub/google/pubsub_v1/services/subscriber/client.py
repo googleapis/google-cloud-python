@@ -484,8 +484,7 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
         request.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google import pubsub_v1
 
@@ -635,8 +634,7 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
     ) -> pubsub.Subscription:
         r"""Gets the configuration details of a subscription.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google import pubsub_v1
 
@@ -729,8 +727,7 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
         modifiable.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google import pubsub_v1
 
@@ -805,8 +802,7 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
     ) -> pagers.ListSubscriptionsPager:
         r"""Lists matching subscriptions.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google import pubsub_v1
 
@@ -912,8 +908,7 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
         topic unless the same topic is specified.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google import pubsub_v1
 
@@ -1004,8 +999,7 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
         used for subsequent messages.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google import pubsub_v1
 
@@ -1124,8 +1118,7 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
         error.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google import pubsub_v1
 
@@ -1224,8 +1217,7 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
         pending for the given subscription.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google import pubsub_v1
 
@@ -1358,8 +1350,7 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
         configuring the underlying RPC channel.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google import pubsub_v1
 
@@ -1445,8 +1436,7 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
         call regardless of changes to the ``PushConfig``.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google import pubsub_v1
 
@@ -1550,8 +1540,7 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
         subscription to the state captured by a snapshot.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google import pubsub_v1
 
@@ -1650,8 +1639,7 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
         in an existing subscription to the state captured by a snapshot.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google import pubsub_v1
 
@@ -1771,8 +1759,7 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
         request.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google import pubsub_v1
 
@@ -1897,8 +1884,7 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
         snapshot.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google import pubsub_v1
 
@@ -1984,8 +1970,7 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
         the same subscription is specified.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google import pubsub_v1
 
@@ -2074,8 +2059,7 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
         same topic.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google import pubsub_v1
 

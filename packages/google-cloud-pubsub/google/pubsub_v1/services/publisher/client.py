@@ -469,8 +469,7 @@ class PublisherClient(metaclass=PublisherClientMeta):
         (https://cloud.google.com/pubsub/docs/admin#resource_names).
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google import pubsub_v1
 
@@ -566,8 +565,7 @@ class PublisherClient(metaclass=PublisherClientMeta):
         properties of a topic are not modifiable.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google import pubsub_v1
 
@@ -644,8 +642,7 @@ class PublisherClient(metaclass=PublisherClientMeta):
         the topic does not exist.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google import pubsub_v1
 
@@ -742,8 +739,7 @@ class PublisherClient(metaclass=PublisherClientMeta):
     ) -> pubsub.Topic:
         r"""Gets the configuration of a topic.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google import pubsub_v1
 
@@ -832,8 +828,7 @@ class PublisherClient(metaclass=PublisherClientMeta):
     ) -> pagers.ListTopicsPager:
         r"""Lists matching topics.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google import pubsub_v1
 
@@ -935,8 +930,7 @@ class PublisherClient(metaclass=PublisherClientMeta):
         topic.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google import pubsub_v1
 
@@ -1044,8 +1038,7 @@ class PublisherClient(metaclass=PublisherClientMeta):
         in an existing subscription to the state captured by a snapshot.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google import pubsub_v1
 
@@ -1153,8 +1146,7 @@ class PublisherClient(metaclass=PublisherClientMeta):
         field is set to ``_deleted-topic_``.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google import pubsub_v1
 
@@ -1240,8 +1232,7 @@ class PublisherClient(metaclass=PublisherClientMeta):
         will stop.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google import pubsub_v1
 

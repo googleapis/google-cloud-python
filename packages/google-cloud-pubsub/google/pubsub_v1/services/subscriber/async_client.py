@@ -246,7 +246,7 @@ class SubscriberAsyncClient:
         request.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google import pubsub_v1
 
@@ -406,7 +406,7 @@ class SubscriberAsyncClient:
     ) -> pubsub.Subscription:
         r"""Gets the configuration details of a subscription.
 
-        .. code-block::
+        .. code-block:: python
 
             from google import pubsub_v1
 
@@ -509,7 +509,7 @@ class SubscriberAsyncClient:
         modifiable.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google import pubsub_v1
 
@@ -591,7 +591,7 @@ class SubscriberAsyncClient:
     ) -> pagers.ListSubscriptionsAsyncPager:
         r"""Lists matching subscriptions.
 
-        .. code-block::
+        .. code-block:: python
 
             from google import pubsub_v1
 
@@ -707,7 +707,7 @@ class SubscriberAsyncClient:
         topic unless the same topic is specified.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google import pubsub_v1
 
@@ -806,7 +806,7 @@ class SubscriberAsyncClient:
         used for subsequent messages.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google import pubsub_v1
 
@@ -933,7 +933,7 @@ class SubscriberAsyncClient:
         error.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google import pubsub_v1
 
@@ -1040,7 +1040,7 @@ class SubscriberAsyncClient:
         pending for the given subscription.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google import pubsub_v1
 
@@ -1183,7 +1183,7 @@ class SubscriberAsyncClient:
         configuring the underlying RPC channel.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google import pubsub_v1
 
@@ -1280,7 +1280,7 @@ class SubscriberAsyncClient:
         call regardless of changes to the ``PushConfig``.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google import pubsub_v1
 
@@ -1392,7 +1392,7 @@ class SubscriberAsyncClient:
         subscription to the state captured by a snapshot.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google import pubsub_v1
 
@@ -1501,7 +1501,7 @@ class SubscriberAsyncClient:
         in an existing subscription to the state captured by a snapshot.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google import pubsub_v1
 
@@ -1631,7 +1631,7 @@ class SubscriberAsyncClient:
         request.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google import pubsub_v1
 
@@ -1764,7 +1764,7 @@ class SubscriberAsyncClient:
         snapshot.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google import pubsub_v1
 
@@ -1857,7 +1857,7 @@ class SubscriberAsyncClient:
         the same subscription is specified.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google import pubsub_v1
 
@@ -1954,7 +1954,7 @@ class SubscriberAsyncClient:
         same topic.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google import pubsub_v1
 
