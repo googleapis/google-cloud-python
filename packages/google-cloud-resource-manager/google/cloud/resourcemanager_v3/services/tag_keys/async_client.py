@@ -211,7 +211,7 @@ class TagKeysAsyncClient:
     ) -> pagers.ListTagKeysAsyncPager:
         r"""Lists all TagKeys for a parent resource.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -317,7 +317,7 @@ class TagKeysAsyncClient:
         not have permission to view it.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -421,7 +421,7 @@ class TagKeysAsyncClient:
         given time.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -525,7 +525,7 @@ class TagKeysAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Updates the attributes of the TagKey resource.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -651,7 +651,7 @@ class TagKeysAsyncClient:
         has any child TagValues.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -764,7 +764,7 @@ class TagKeysAsyncClient:
         permission on the specified TagKey.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -923,7 +923,7 @@ class TagKeysAsyncClient:
         identified tagValue.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -1074,7 +1074,7 @@ class TagKeysAsyncClient:
         There are no permissions required for making this API call.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 

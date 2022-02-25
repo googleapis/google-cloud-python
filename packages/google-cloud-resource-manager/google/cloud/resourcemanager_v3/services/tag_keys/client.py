@@ -409,8 +409,7 @@ class TagKeysClient(metaclass=TagKeysClientMeta):
     ) -> pagers.ListTagKeysPager:
         r"""Lists all TagKeys for a parent resource.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -507,8 +506,7 @@ class TagKeysClient(metaclass=TagKeysClientMeta):
         not have permission to view it.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -603,8 +601,7 @@ class TagKeysClient(metaclass=TagKeysClientMeta):
         given time.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -708,8 +705,7 @@ class TagKeysClient(metaclass=TagKeysClientMeta):
     ) -> operation.Operation:
         r"""Updates the attributes of the TagKey resource.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -835,8 +831,7 @@ class TagKeysClient(metaclass=TagKeysClientMeta):
         has any child TagValues.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -949,8 +944,7 @@ class TagKeysClient(metaclass=TagKeysClientMeta):
         permission on the specified TagKey.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -1099,8 +1093,7 @@ class TagKeysClient(metaclass=TagKeysClientMeta):
         identified tagValue.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -1250,8 +1243,7 @@ class TagKeysClient(metaclass=TagKeysClientMeta):
         There are no permissions required for making this API call.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 

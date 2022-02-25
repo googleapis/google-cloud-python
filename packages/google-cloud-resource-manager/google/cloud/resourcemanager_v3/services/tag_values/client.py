@@ -409,8 +409,7 @@ class TagValuesClient(metaclass=TagValuesClientMeta):
     ) -> pagers.ListTagValuesPager:
         r"""Lists all TagValues for a specific TagKey.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -506,8 +505,7 @@ class TagValuesClient(metaclass=TagValuesClientMeta):
         method will return ``PERMISSION_DENIED``.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -604,8 +602,7 @@ class TagValuesClient(metaclass=TagValuesClientMeta):
         TagValues can exist under a TagKey at any given time.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -709,8 +706,7 @@ class TagValuesClient(metaclass=TagValuesClientMeta):
     ) -> operation.Operation:
         r"""Updates the attributes of the TagValue resource.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -833,8 +829,7 @@ class TagValuesClient(metaclass=TagValuesClientMeta):
         bindings when it is deleted.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -947,8 +942,7 @@ class TagValuesClient(metaclass=TagValuesClientMeta):
         policy.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -1097,8 +1091,7 @@ class TagValuesClient(metaclass=TagValuesClientMeta):
         the identified tagValue.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -1248,8 +1241,7 @@ class TagValuesClient(metaclass=TagValuesClientMeta):
         There are no permissions required for making this API call.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 

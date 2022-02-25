@@ -216,7 +216,7 @@ class ProjectsAsyncClient:
         for this project.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -325,7 +325,7 @@ class ProjectsAsyncClient:
         the identified parent.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -453,7 +453,7 @@ class ProjectsAsyncClient:
         method.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -597,7 +597,7 @@ class ProjectsAsyncClient:
         ``DeleteOperation``.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -712,7 +712,7 @@ class ProjectsAsyncClient:
         permission for this project.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -846,7 +846,7 @@ class ProjectsAsyncClient:
         current and proposed new parent.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -997,7 +997,7 @@ class ProjectsAsyncClient:
         permissions for this project.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -1110,7 +1110,7 @@ class ProjectsAsyncClient:
         permission for this project.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -1222,7 +1222,7 @@ class ProjectsAsyncClient:
         the resource do not exist.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -1428,7 +1428,7 @@ class ProjectsAsyncClient:
            API.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -1576,7 +1576,7 @@ class ProjectsAsyncClient:
         specified project.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 

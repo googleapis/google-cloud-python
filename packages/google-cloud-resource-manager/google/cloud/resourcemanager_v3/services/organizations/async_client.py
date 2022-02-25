@@ -218,7 +218,7 @@ class OrganizationsAsyncClient:
         specified resource name.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -330,7 +330,7 @@ class OrganizationsAsyncClient:
         permission ``resourcemanager.organizations.get``
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -451,7 +451,7 @@ class OrganizationsAsyncClient:
         organization.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -613,7 +613,7 @@ class OrganizationsAsyncClient:
         organization.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -764,7 +764,7 @@ class OrganizationsAsyncClient:
         There are no permissions required for making this API call.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 

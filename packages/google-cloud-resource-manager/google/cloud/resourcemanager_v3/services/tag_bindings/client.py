@@ -415,8 +415,7 @@ class TagBindingsClient(metaclass=TagBindingsClientMeta):
         https://cloud.google.com/apis/design/resource_names#full_resource_name
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -513,8 +512,7 @@ class TagBindingsClient(metaclass=TagBindingsClientMeta):
         resource (currently project, folder, or organization).
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -614,8 +612,7 @@ class TagBindingsClient(metaclass=TagBindingsClientMeta):
     ) -> operation.Operation:
         r"""Deletes a TagBinding.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 

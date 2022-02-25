@@ -220,7 +220,7 @@ class FoldersAsyncClient:
         the identified folder.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -326,7 +326,7 @@ class FoldersAsyncClient:
         parent.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -439,7 +439,7 @@ class FoldersAsyncClient:
         permission ``resourcemanager.folders.get``.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -594,7 +594,7 @@ class FoldersAsyncClient:
         permission on the identified parent.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -715,7 +715,7 @@ class FoldersAsyncClient:
         returned in the Status.details field.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -858,7 +858,7 @@ class FoldersAsyncClient:
         current and proposed new parent.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -985,7 +985,7 @@ class FoldersAsyncClient:
         identified folder.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -1101,7 +1101,7 @@ class FoldersAsyncClient:
         identified folder.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -1210,7 +1210,7 @@ class FoldersAsyncClient:
         identified folder.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -1369,7 +1369,7 @@ class FoldersAsyncClient:
         identified folder.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -1520,7 +1520,7 @@ class FoldersAsyncClient:
         There are no permissions required for making this API call.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 

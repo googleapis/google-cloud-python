@@ -221,7 +221,7 @@ class TagBindingsAsyncClient:
         https://cloud.google.com/apis/design/resource_names#full_resource_name
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -327,7 +327,7 @@ class TagBindingsAsyncClient:
         resource (currently project, folder, or organization).
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -427,7 +427,7 @@ class TagBindingsAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Deletes a TagBinding.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 

@@ -408,8 +408,7 @@ class OrganizationsClient(metaclass=OrganizationsClientMeta):
         specified resource name.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -512,8 +511,7 @@ class OrganizationsClient(metaclass=OrganizationsClientMeta):
         permission ``resourcemanager.organizations.get``
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -634,8 +632,7 @@ class OrganizationsClient(metaclass=OrganizationsClientMeta):
         organization.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -787,8 +784,7 @@ class OrganizationsClient(metaclass=OrganizationsClientMeta):
         organization.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -938,8 +934,7 @@ class OrganizationsClient(metaclass=OrganizationsClientMeta):
         There are no permissions required for making this API call.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 

@@ -10,8 +10,8 @@
           "shortName": "CreateFolder"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_folders_create_folder_async.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_Folders_CreateFolder_async",
+      "file": "cloudresourcemanager_v3_generated_folders_create_folder_async.py",
+      "regionTag": "cloudresourcemanager_v3_generated_Folders_CreateFolder_async",
       "segments": [
         {
           "end": 51,
@@ -54,8 +54,8 @@
           "shortName": "CreateFolder"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_folders_create_folder_sync.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_Folders_CreateFolder_sync",
+      "file": "cloudresourcemanager_v3_generated_folders_create_folder_sync.py",
+      "regionTag": "cloudresourcemanager_v3_generated_Folders_CreateFolder_sync",
       "segments": [
         {
           "end": 51,
@@ -99,8 +99,8 @@
           "shortName": "DeleteFolder"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_folders_delete_folder_async.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_Folders_DeleteFolder_async",
+      "file": "cloudresourcemanager_v3_generated_folders_delete_folder_async.py",
+      "regionTag": "cloudresourcemanager_v3_generated_Folders_DeleteFolder_async",
       "segments": [
         {
           "end": 48,
@@ -143,8 +143,8 @@
           "shortName": "DeleteFolder"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_folders_delete_folder_sync.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_Folders_DeleteFolder_sync",
+      "file": "cloudresourcemanager_v3_generated_folders_delete_folder_sync.py",
+      "regionTag": "cloudresourcemanager_v3_generated_Folders_DeleteFolder_sync",
       "segments": [
         {
           "end": 48,
@@ -188,8 +188,8 @@
           "shortName": "GetFolder"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_folders_get_folder_async.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_Folders_GetFolder_async",
+      "file": "cloudresourcemanager_v3_generated_folders_get_folder_async.py",
+      "regionTag": "cloudresourcemanager_v3_generated_Folders_GetFolder_async",
       "segments": [
         {
           "end": 44,
@@ -232,8 +232,8 @@
           "shortName": "GetFolder"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_folders_get_folder_sync.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_Folders_GetFolder_sync",
+      "file": "cloudresourcemanager_v3_generated_folders_get_folder_sync.py",
+      "regionTag": "cloudresourcemanager_v3_generated_Folders_GetFolder_sync",
       "segments": [
         {
           "end": 44,
@@ -277,8 +277,8 @@
           "shortName": "GetIamPolicy"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_folders_get_iam_policy_async.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_Folders_GetIamPolicy_async",
+      "file": "cloudresourcemanager_v3_generated_folders_get_iam_policy_async.py",
+      "regionTag": "cloudresourcemanager_v3_generated_Folders_GetIamPolicy_async",
       "segments": [
         {
           "end": 44,
@@ -321,8 +321,8 @@
           "shortName": "GetIamPolicy"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_folders_get_iam_policy_sync.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_Folders_GetIamPolicy_sync",
+      "file": "cloudresourcemanager_v3_generated_folders_get_iam_policy_sync.py",
+      "regionTag": "cloudresourcemanager_v3_generated_Folders_GetIamPolicy_sync",
       "segments": [
         {
           "end": 44,
@@ -366,8 +366,8 @@
           "shortName": "ListFolders"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_folders_list_folders_async.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_Folders_ListFolders_async",
+      "file": "cloudresourcemanager_v3_generated_folders_list_folders_async.py",
+      "regionTag": "cloudresourcemanager_v3_generated_Folders_ListFolders_async",
       "segments": [
         {
           "end": 45,
@@ -410,8 +410,8 @@
           "shortName": "ListFolders"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_folders_list_folders_sync.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_Folders_ListFolders_sync",
+      "file": "cloudresourcemanager_v3_generated_folders_list_folders_sync.py",
+      "regionTag": "cloudresourcemanager_v3_generated_Folders_ListFolders_sync",
       "segments": [
         {
           "end": 45,
@@ -455,8 +455,8 @@
           "shortName": "MoveFolder"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_folders_move_folder_async.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_Folders_MoveFolder_async",
+      "file": "cloudresourcemanager_v3_generated_folders_move_folder_async.py",
+      "regionTag": "cloudresourcemanager_v3_generated_Folders_MoveFolder_async",
       "segments": [
         {
           "end": 49,
@@ -499,8 +499,8 @@
           "shortName": "MoveFolder"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_folders_move_folder_sync.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_Folders_MoveFolder_sync",
+      "file": "cloudresourcemanager_v3_generated_folders_move_folder_sync.py",
+      "regionTag": "cloudresourcemanager_v3_generated_Folders_MoveFolder_sync",
       "segments": [
         {
           "end": 49,
@@ -544,8 +544,8 @@
           "shortName": "SearchFolders"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_folders_search_folders_async.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_Folders_SearchFolders_async",
+      "file": "cloudresourcemanager_v3_generated_folders_search_folders_async.py",
+      "regionTag": "cloudresourcemanager_v3_generated_Folders_SearchFolders_async",
       "segments": [
         {
           "end": 44,
@@ -588,8 +588,8 @@
           "shortName": "SearchFolders"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_folders_search_folders_sync.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_Folders_SearchFolders_sync",
+      "file": "cloudresourcemanager_v3_generated_folders_search_folders_sync.py",
+      "regionTag": "cloudresourcemanager_v3_generated_Folders_SearchFolders_sync",
       "segments": [
         {
           "end": 44,
@@ -633,8 +633,8 @@
           "shortName": "SetIamPolicy"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_folders_set_iam_policy_async.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_Folders_SetIamPolicy_async",
+      "file": "cloudresourcemanager_v3_generated_folders_set_iam_policy_async.py",
+      "regionTag": "cloudresourcemanager_v3_generated_Folders_SetIamPolicy_async",
       "segments": [
         {
           "end": 44,
@@ -677,8 +677,8 @@
           "shortName": "SetIamPolicy"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_folders_set_iam_policy_sync.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_Folders_SetIamPolicy_sync",
+      "file": "cloudresourcemanager_v3_generated_folders_set_iam_policy_sync.py",
+      "regionTag": "cloudresourcemanager_v3_generated_Folders_SetIamPolicy_sync",
       "segments": [
         {
           "end": 44,
@@ -722,8 +722,8 @@
           "shortName": "TestIamPermissions"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_folders_test_iam_permissions_async.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_Folders_TestIamPermissions_async",
+      "file": "cloudresourcemanager_v3_generated_folders_test_iam_permissions_async.py",
+      "regionTag": "cloudresourcemanager_v3_generated_Folders_TestIamPermissions_async",
       "segments": [
         {
           "end": 45,
@@ -766,8 +766,8 @@
           "shortName": "TestIamPermissions"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_folders_test_iam_permissions_sync.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_Folders_TestIamPermissions_sync",
+      "file": "cloudresourcemanager_v3_generated_folders_test_iam_permissions_sync.py",
+      "regionTag": "cloudresourcemanager_v3_generated_Folders_TestIamPermissions_sync",
       "segments": [
         {
           "end": 45,
@@ -811,8 +811,8 @@
           "shortName": "UndeleteFolder"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_folders_undelete_folder_async.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_Folders_UndeleteFolder_async",
+      "file": "cloudresourcemanager_v3_generated_folders_undelete_folder_async.py",
+      "regionTag": "cloudresourcemanager_v3_generated_Folders_UndeleteFolder_async",
       "segments": [
         {
           "end": 48,
@@ -855,8 +855,8 @@
           "shortName": "UndeleteFolder"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_folders_undelete_folder_sync.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_Folders_UndeleteFolder_sync",
+      "file": "cloudresourcemanager_v3_generated_folders_undelete_folder_sync.py",
+      "regionTag": "cloudresourcemanager_v3_generated_Folders_UndeleteFolder_sync",
       "segments": [
         {
           "end": 48,
@@ -900,8 +900,8 @@
           "shortName": "UpdateFolder"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_folders_update_folder_async.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_Folders_UpdateFolder_async",
+      "file": "cloudresourcemanager_v3_generated_folders_update_folder_async.py",
+      "regionTag": "cloudresourcemanager_v3_generated_Folders_UpdateFolder_async",
       "segments": [
         {
           "end": 51,
@@ -944,8 +944,8 @@
           "shortName": "UpdateFolder"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_folders_update_folder_sync.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_Folders_UpdateFolder_sync",
+      "file": "cloudresourcemanager_v3_generated_folders_update_folder_sync.py",
+      "regionTag": "cloudresourcemanager_v3_generated_Folders_UpdateFolder_sync",
       "segments": [
         {
           "end": 51,
@@ -989,8 +989,8 @@
           "shortName": "GetIamPolicy"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_organizations_get_iam_policy_async.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_Organizations_GetIamPolicy_async",
+      "file": "cloudresourcemanager_v3_generated_organizations_get_iam_policy_async.py",
+      "regionTag": "cloudresourcemanager_v3_generated_Organizations_GetIamPolicy_async",
       "segments": [
         {
           "end": 44,
@@ -1033,8 +1033,8 @@
           "shortName": "GetIamPolicy"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_organizations_get_iam_policy_sync.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_Organizations_GetIamPolicy_sync",
+      "file": "cloudresourcemanager_v3_generated_organizations_get_iam_policy_sync.py",
+      "regionTag": "cloudresourcemanager_v3_generated_Organizations_GetIamPolicy_sync",
       "segments": [
         {
           "end": 44,
@@ -1078,8 +1078,8 @@
           "shortName": "GetOrganization"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_organizations_get_organization_async.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_Organizations_GetOrganization_async",
+      "file": "cloudresourcemanager_v3_generated_organizations_get_organization_async.py",
+      "regionTag": "cloudresourcemanager_v3_generated_Organizations_GetOrganization_async",
       "segments": [
         {
           "end": 44,
@@ -1122,8 +1122,8 @@
           "shortName": "GetOrganization"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_organizations_get_organization_sync.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_Organizations_GetOrganization_sync",
+      "file": "cloudresourcemanager_v3_generated_organizations_get_organization_sync.py",
+      "regionTag": "cloudresourcemanager_v3_generated_Organizations_GetOrganization_sync",
       "segments": [
         {
           "end": 44,
@@ -1167,8 +1167,8 @@
           "shortName": "SearchOrganizations"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_organizations_search_organizations_async.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_Organizations_SearchOrganizations_async",
+      "file": "cloudresourcemanager_v3_generated_organizations_search_organizations_async.py",
+      "regionTag": "cloudresourcemanager_v3_generated_Organizations_SearchOrganizations_async",
       "segments": [
         {
           "end": 44,
@@ -1211,8 +1211,8 @@
           "shortName": "SearchOrganizations"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_organizations_search_organizations_sync.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_Organizations_SearchOrganizations_sync",
+      "file": "cloudresourcemanager_v3_generated_organizations_search_organizations_sync.py",
+      "regionTag": "cloudresourcemanager_v3_generated_Organizations_SearchOrganizations_sync",
       "segments": [
         {
           "end": 44,
@@ -1256,8 +1256,8 @@
           "shortName": "SetIamPolicy"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_organizations_set_iam_policy_async.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_Organizations_SetIamPolicy_async",
+      "file": "cloudresourcemanager_v3_generated_organizations_set_iam_policy_async.py",
+      "regionTag": "cloudresourcemanager_v3_generated_Organizations_SetIamPolicy_async",
       "segments": [
         {
           "end": 44,
@@ -1300,8 +1300,8 @@
           "shortName": "SetIamPolicy"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_organizations_set_iam_policy_sync.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_Organizations_SetIamPolicy_sync",
+      "file": "cloudresourcemanager_v3_generated_organizations_set_iam_policy_sync.py",
+      "regionTag": "cloudresourcemanager_v3_generated_Organizations_SetIamPolicy_sync",
       "segments": [
         {
           "end": 44,
@@ -1345,8 +1345,8 @@
           "shortName": "TestIamPermissions"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_organizations_test_iam_permissions_async.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_Organizations_TestIamPermissions_async",
+      "file": "cloudresourcemanager_v3_generated_organizations_test_iam_permissions_async.py",
+      "regionTag": "cloudresourcemanager_v3_generated_Organizations_TestIamPermissions_async",
       "segments": [
         {
           "end": 45,
@@ -1389,8 +1389,8 @@
           "shortName": "TestIamPermissions"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_organizations_test_iam_permissions_sync.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_Organizations_TestIamPermissions_sync",
+      "file": "cloudresourcemanager_v3_generated_organizations_test_iam_permissions_sync.py",
+      "regionTag": "cloudresourcemanager_v3_generated_Organizations_TestIamPermissions_sync",
       "segments": [
         {
           "end": 45,
@@ -1434,8 +1434,8 @@
           "shortName": "CreateProject"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_projects_create_project_async.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_Projects_CreateProject_async",
+      "file": "cloudresourcemanager_v3_generated_projects_create_project_async.py",
+      "regionTag": "cloudresourcemanager_v3_generated_Projects_CreateProject_async",
       "segments": [
         {
           "end": 47,
@@ -1478,8 +1478,8 @@
           "shortName": "CreateProject"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_projects_create_project_sync.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_Projects_CreateProject_sync",
+      "file": "cloudresourcemanager_v3_generated_projects_create_project_sync.py",
+      "regionTag": "cloudresourcemanager_v3_generated_Projects_CreateProject_sync",
       "segments": [
         {
           "end": 47,
@@ -1523,8 +1523,8 @@
           "shortName": "DeleteProject"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_projects_delete_project_async.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_Projects_DeleteProject_async",
+      "file": "cloudresourcemanager_v3_generated_projects_delete_project_async.py",
+      "regionTag": "cloudresourcemanager_v3_generated_Projects_DeleteProject_async",
       "segments": [
         {
           "end": 48,
@@ -1567,8 +1567,8 @@
           "shortName": "DeleteProject"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_projects_delete_project_sync.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_Projects_DeleteProject_sync",
+      "file": "cloudresourcemanager_v3_generated_projects_delete_project_sync.py",
+      "regionTag": "cloudresourcemanager_v3_generated_Projects_DeleteProject_sync",
       "segments": [
         {
           "end": 48,
@@ -1612,8 +1612,8 @@
           "shortName": "GetIamPolicy"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_projects_get_iam_policy_async.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_Projects_GetIamPolicy_async",
+      "file": "cloudresourcemanager_v3_generated_projects_get_iam_policy_async.py",
+      "regionTag": "cloudresourcemanager_v3_generated_Projects_GetIamPolicy_async",
       "segments": [
         {
           "end": 44,
@@ -1656,8 +1656,8 @@
           "shortName": "GetIamPolicy"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_projects_get_iam_policy_sync.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_Projects_GetIamPolicy_sync",
+      "file": "cloudresourcemanager_v3_generated_projects_get_iam_policy_sync.py",
+      "regionTag": "cloudresourcemanager_v3_generated_Projects_GetIamPolicy_sync",
       "segments": [
         {
           "end": 44,
@@ -1701,8 +1701,8 @@
           "shortName": "GetProject"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_projects_get_project_async.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_Projects_GetProject_async",
+      "file": "cloudresourcemanager_v3_generated_projects_get_project_async.py",
+      "regionTag": "cloudresourcemanager_v3_generated_Projects_GetProject_async",
       "segments": [
         {
           "end": 44,
@@ -1745,8 +1745,8 @@
           "shortName": "GetProject"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_projects_get_project_sync.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_Projects_GetProject_sync",
+      "file": "cloudresourcemanager_v3_generated_projects_get_project_sync.py",
+      "regionTag": "cloudresourcemanager_v3_generated_Projects_GetProject_sync",
       "segments": [
         {
           "end": 44,
@@ -1790,8 +1790,8 @@
           "shortName": "ListProjects"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_projects_list_projects_async.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_Projects_ListProjects_async",
+      "file": "cloudresourcemanager_v3_generated_projects_list_projects_async.py",
+      "regionTag": "cloudresourcemanager_v3_generated_Projects_ListProjects_async",
       "segments": [
         {
           "end": 45,
@@ -1834,8 +1834,8 @@
           "shortName": "ListProjects"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_projects_list_projects_sync.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_Projects_ListProjects_sync",
+      "file": "cloudresourcemanager_v3_generated_projects_list_projects_sync.py",
+      "regionTag": "cloudresourcemanager_v3_generated_Projects_ListProjects_sync",
       "segments": [
         {
           "end": 45,
@@ -1879,8 +1879,8 @@
           "shortName": "MoveProject"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_projects_move_project_async.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_Projects_MoveProject_async",
+      "file": "cloudresourcemanager_v3_generated_projects_move_project_async.py",
+      "regionTag": "cloudresourcemanager_v3_generated_Projects_MoveProject_async",
       "segments": [
         {
           "end": 49,
@@ -1923,8 +1923,8 @@
           "shortName": "MoveProject"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_projects_move_project_sync.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_Projects_MoveProject_sync",
+      "file": "cloudresourcemanager_v3_generated_projects_move_project_sync.py",
+      "regionTag": "cloudresourcemanager_v3_generated_Projects_MoveProject_sync",
       "segments": [
         {
           "end": 49,
@@ -1968,8 +1968,8 @@
           "shortName": "SearchProjects"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_projects_search_projects_async.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_Projects_SearchProjects_async",
+      "file": "cloudresourcemanager_v3_generated_projects_search_projects_async.py",
+      "regionTag": "cloudresourcemanager_v3_generated_Projects_SearchProjects_async",
       "segments": [
         {
           "end": 44,
@@ -2012,8 +2012,8 @@
           "shortName": "SearchProjects"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_projects_search_projects_sync.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_Projects_SearchProjects_sync",
+      "file": "cloudresourcemanager_v3_generated_projects_search_projects_sync.py",
+      "regionTag": "cloudresourcemanager_v3_generated_Projects_SearchProjects_sync",
       "segments": [
         {
           "end": 44,
@@ -2057,8 +2057,8 @@
           "shortName": "SetIamPolicy"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_projects_set_iam_policy_async.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_Projects_SetIamPolicy_async",
+      "file": "cloudresourcemanager_v3_generated_projects_set_iam_policy_async.py",
+      "regionTag": "cloudresourcemanager_v3_generated_Projects_SetIamPolicy_async",
       "segments": [
         {
           "end": 44,
@@ -2101,8 +2101,8 @@
           "shortName": "SetIamPolicy"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_projects_set_iam_policy_sync.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_Projects_SetIamPolicy_sync",
+      "file": "cloudresourcemanager_v3_generated_projects_set_iam_policy_sync.py",
+      "regionTag": "cloudresourcemanager_v3_generated_Projects_SetIamPolicy_sync",
       "segments": [
         {
           "end": 44,
@@ -2146,8 +2146,8 @@
           "shortName": "TestIamPermissions"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_projects_test_iam_permissions_async.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_Projects_TestIamPermissions_async",
+      "file": "cloudresourcemanager_v3_generated_projects_test_iam_permissions_async.py",
+      "regionTag": "cloudresourcemanager_v3_generated_Projects_TestIamPermissions_async",
       "segments": [
         {
           "end": 45,
@@ -2190,8 +2190,8 @@
           "shortName": "TestIamPermissions"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_projects_test_iam_permissions_sync.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_Projects_TestIamPermissions_sync",
+      "file": "cloudresourcemanager_v3_generated_projects_test_iam_permissions_sync.py",
+      "regionTag": "cloudresourcemanager_v3_generated_Projects_TestIamPermissions_sync",
       "segments": [
         {
           "end": 45,
@@ -2235,8 +2235,8 @@
           "shortName": "UndeleteProject"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_projects_undelete_project_async.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_Projects_UndeleteProject_async",
+      "file": "cloudresourcemanager_v3_generated_projects_undelete_project_async.py",
+      "regionTag": "cloudresourcemanager_v3_generated_Projects_UndeleteProject_async",
       "segments": [
         {
           "end": 48,
@@ -2279,8 +2279,8 @@
           "shortName": "UndeleteProject"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_projects_undelete_project_sync.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_Projects_UndeleteProject_sync",
+      "file": "cloudresourcemanager_v3_generated_projects_undelete_project_sync.py",
+      "regionTag": "cloudresourcemanager_v3_generated_Projects_UndeleteProject_sync",
       "segments": [
         {
           "end": 48,
@@ -2324,8 +2324,8 @@
           "shortName": "UpdateProject"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_projects_update_project_async.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_Projects_UpdateProject_async",
+      "file": "cloudresourcemanager_v3_generated_projects_update_project_async.py",
+      "regionTag": "cloudresourcemanager_v3_generated_Projects_UpdateProject_async",
       "segments": [
         {
           "end": 47,
@@ -2368,8 +2368,8 @@
           "shortName": "UpdateProject"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_projects_update_project_sync.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_Projects_UpdateProject_sync",
+      "file": "cloudresourcemanager_v3_generated_projects_update_project_sync.py",
+      "regionTag": "cloudresourcemanager_v3_generated_Projects_UpdateProject_sync",
       "segments": [
         {
           "end": 47,
@@ -2413,8 +2413,8 @@
           "shortName": "CreateTagBinding"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_tag_bindings_create_tag_binding_async.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_TagBindings_CreateTagBinding_async",
+      "file": "cloudresourcemanager_v3_generated_tag_bindings_create_tag_binding_async.py",
+      "regionTag": "cloudresourcemanager_v3_generated_TagBindings_CreateTagBinding_async",
       "segments": [
         {
           "end": 47,
@@ -2457,8 +2457,8 @@
           "shortName": "CreateTagBinding"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_tag_bindings_create_tag_binding_sync.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_TagBindings_CreateTagBinding_sync",
+      "file": "cloudresourcemanager_v3_generated_tag_bindings_create_tag_binding_sync.py",
+      "regionTag": "cloudresourcemanager_v3_generated_TagBindings_CreateTagBinding_sync",
       "segments": [
         {
           "end": 47,
@@ -2502,8 +2502,8 @@
           "shortName": "DeleteTagBinding"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_tag_bindings_delete_tag_binding_async.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_TagBindings_DeleteTagBinding_async",
+      "file": "cloudresourcemanager_v3_generated_tag_bindings_delete_tag_binding_async.py",
+      "regionTag": "cloudresourcemanager_v3_generated_TagBindings_DeleteTagBinding_async",
       "segments": [
         {
           "end": 48,
@@ -2546,8 +2546,8 @@
           "shortName": "DeleteTagBinding"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_tag_bindings_delete_tag_binding_sync.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_TagBindings_DeleteTagBinding_sync",
+      "file": "cloudresourcemanager_v3_generated_tag_bindings_delete_tag_binding_sync.py",
+      "regionTag": "cloudresourcemanager_v3_generated_TagBindings_DeleteTagBinding_sync",
       "segments": [
         {
           "end": 48,
@@ -2591,8 +2591,8 @@
           "shortName": "ListTagBindings"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_tag_bindings_list_tag_bindings_async.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_TagBindings_ListTagBindings_async",
+      "file": "cloudresourcemanager_v3_generated_tag_bindings_list_tag_bindings_async.py",
+      "regionTag": "cloudresourcemanager_v3_generated_TagBindings_ListTagBindings_async",
       "segments": [
         {
           "end": 45,
@@ -2635,8 +2635,8 @@
           "shortName": "ListTagBindings"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_tag_bindings_list_tag_bindings_sync.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_TagBindings_ListTagBindings_sync",
+      "file": "cloudresourcemanager_v3_generated_tag_bindings_list_tag_bindings_sync.py",
+      "regionTag": "cloudresourcemanager_v3_generated_TagBindings_ListTagBindings_sync",
       "segments": [
         {
           "end": 45,
@@ -2680,8 +2680,8 @@
           "shortName": "CreateTagKey"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_tag_keys_create_tag_key_async.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_TagKeys_CreateTagKey_async",
+      "file": "cloudresourcemanager_v3_generated_tag_keys_create_tag_key_async.py",
+      "regionTag": "cloudresourcemanager_v3_generated_TagKeys_CreateTagKey_async",
       "segments": [
         {
           "end": 51,
@@ -2724,8 +2724,8 @@
           "shortName": "CreateTagKey"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_tag_keys_create_tag_key_sync.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_TagKeys_CreateTagKey_sync",
+      "file": "cloudresourcemanager_v3_generated_tag_keys_create_tag_key_sync.py",
+      "regionTag": "cloudresourcemanager_v3_generated_TagKeys_CreateTagKey_sync",
       "segments": [
         {
           "end": 51,
@@ -2769,8 +2769,8 @@
           "shortName": "DeleteTagKey"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_tag_keys_delete_tag_key_async.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_TagKeys_DeleteTagKey_async",
+      "file": "cloudresourcemanager_v3_generated_tag_keys_delete_tag_key_async.py",
+      "regionTag": "cloudresourcemanager_v3_generated_TagKeys_DeleteTagKey_async",
       "segments": [
         {
           "end": 48,
@@ -2813,8 +2813,8 @@
           "shortName": "DeleteTagKey"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_tag_keys_delete_tag_key_sync.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_TagKeys_DeleteTagKey_sync",
+      "file": "cloudresourcemanager_v3_generated_tag_keys_delete_tag_key_sync.py",
+      "regionTag": "cloudresourcemanager_v3_generated_TagKeys_DeleteTagKey_sync",
       "segments": [
         {
           "end": 48,
@@ -2858,8 +2858,8 @@
           "shortName": "GetIamPolicy"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_tag_keys_get_iam_policy_async.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_TagKeys_GetIamPolicy_async",
+      "file": "cloudresourcemanager_v3_generated_tag_keys_get_iam_policy_async.py",
+      "regionTag": "cloudresourcemanager_v3_generated_TagKeys_GetIamPolicy_async",
       "segments": [
         {
           "end": 44,
@@ -2902,8 +2902,8 @@
           "shortName": "GetIamPolicy"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_tag_keys_get_iam_policy_sync.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_TagKeys_GetIamPolicy_sync",
+      "file": "cloudresourcemanager_v3_generated_tag_keys_get_iam_policy_sync.py",
+      "regionTag": "cloudresourcemanager_v3_generated_TagKeys_GetIamPolicy_sync",
       "segments": [
         {
           "end": 44,
@@ -2947,8 +2947,8 @@
           "shortName": "GetTagKey"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_tag_keys_get_tag_key_async.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_TagKeys_GetTagKey_async",
+      "file": "cloudresourcemanager_v3_generated_tag_keys_get_tag_key_async.py",
+      "regionTag": "cloudresourcemanager_v3_generated_TagKeys_GetTagKey_async",
       "segments": [
         {
           "end": 44,
@@ -2991,8 +2991,8 @@
           "shortName": "GetTagKey"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_tag_keys_get_tag_key_sync.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_TagKeys_GetTagKey_sync",
+      "file": "cloudresourcemanager_v3_generated_tag_keys_get_tag_key_sync.py",
+      "regionTag": "cloudresourcemanager_v3_generated_TagKeys_GetTagKey_sync",
       "segments": [
         {
           "end": 44,
@@ -3036,8 +3036,8 @@
           "shortName": "ListTagKeys"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_tag_keys_list_tag_keys_async.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_TagKeys_ListTagKeys_async",
+      "file": "cloudresourcemanager_v3_generated_tag_keys_list_tag_keys_async.py",
+      "regionTag": "cloudresourcemanager_v3_generated_TagKeys_ListTagKeys_async",
       "segments": [
         {
           "end": 45,
@@ -3080,8 +3080,8 @@
           "shortName": "ListTagKeys"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_tag_keys_list_tag_keys_sync.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_TagKeys_ListTagKeys_sync",
+      "file": "cloudresourcemanager_v3_generated_tag_keys_list_tag_keys_sync.py",
+      "regionTag": "cloudresourcemanager_v3_generated_TagKeys_ListTagKeys_sync",
       "segments": [
         {
           "end": 45,
@@ -3125,8 +3125,8 @@
           "shortName": "SetIamPolicy"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_tag_keys_set_iam_policy_async.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_TagKeys_SetIamPolicy_async",
+      "file": "cloudresourcemanager_v3_generated_tag_keys_set_iam_policy_async.py",
+      "regionTag": "cloudresourcemanager_v3_generated_TagKeys_SetIamPolicy_async",
       "segments": [
         {
           "end": 44,
@@ -3169,8 +3169,8 @@
           "shortName": "SetIamPolicy"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_tag_keys_set_iam_policy_sync.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_TagKeys_SetIamPolicy_sync",
+      "file": "cloudresourcemanager_v3_generated_tag_keys_set_iam_policy_sync.py",
+      "regionTag": "cloudresourcemanager_v3_generated_TagKeys_SetIamPolicy_sync",
       "segments": [
         {
           "end": 44,
@@ -3214,8 +3214,8 @@
           "shortName": "TestIamPermissions"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_tag_keys_test_iam_permissions_async.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_TagKeys_TestIamPermissions_async",
+      "file": "cloudresourcemanager_v3_generated_tag_keys_test_iam_permissions_async.py",
+      "regionTag": "cloudresourcemanager_v3_generated_TagKeys_TestIamPermissions_async",
       "segments": [
         {
           "end": 45,
@@ -3258,8 +3258,8 @@
           "shortName": "TestIamPermissions"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_tag_keys_test_iam_permissions_sync.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_TagKeys_TestIamPermissions_sync",
+      "file": "cloudresourcemanager_v3_generated_tag_keys_test_iam_permissions_sync.py",
+      "regionTag": "cloudresourcemanager_v3_generated_TagKeys_TestIamPermissions_sync",
       "segments": [
         {
           "end": 45,
@@ -3303,8 +3303,8 @@
           "shortName": "UpdateTagKey"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_tag_keys_update_tag_key_async.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_TagKeys_UpdateTagKey_async",
+      "file": "cloudresourcemanager_v3_generated_tag_keys_update_tag_key_async.py",
+      "regionTag": "cloudresourcemanager_v3_generated_TagKeys_UpdateTagKey_async",
       "segments": [
         {
           "end": 51,
@@ -3347,8 +3347,8 @@
           "shortName": "UpdateTagKey"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_tag_keys_update_tag_key_sync.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_TagKeys_UpdateTagKey_sync",
+      "file": "cloudresourcemanager_v3_generated_tag_keys_update_tag_key_sync.py",
+      "regionTag": "cloudresourcemanager_v3_generated_TagKeys_UpdateTagKey_sync",
       "segments": [
         {
           "end": 51,
@@ -3392,8 +3392,8 @@
           "shortName": "CreateTagValue"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_tag_values_create_tag_value_async.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_TagValues_CreateTagValue_async",
+      "file": "cloudresourcemanager_v3_generated_tag_values_create_tag_value_async.py",
+      "regionTag": "cloudresourcemanager_v3_generated_TagValues_CreateTagValue_async",
       "segments": [
         {
           "end": 51,
@@ -3436,8 +3436,8 @@
           "shortName": "CreateTagValue"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_tag_values_create_tag_value_sync.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_TagValues_CreateTagValue_sync",
+      "file": "cloudresourcemanager_v3_generated_tag_values_create_tag_value_sync.py",
+      "regionTag": "cloudresourcemanager_v3_generated_TagValues_CreateTagValue_sync",
       "segments": [
         {
           "end": 51,
@@ -3481,8 +3481,8 @@
           "shortName": "DeleteTagValue"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_tag_values_delete_tag_value_async.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_TagValues_DeleteTagValue_async",
+      "file": "cloudresourcemanager_v3_generated_tag_values_delete_tag_value_async.py",
+      "regionTag": "cloudresourcemanager_v3_generated_TagValues_DeleteTagValue_async",
       "segments": [
         {
           "end": 48,
@@ -3525,8 +3525,8 @@
           "shortName": "DeleteTagValue"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_tag_values_delete_tag_value_sync.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_TagValues_DeleteTagValue_sync",
+      "file": "cloudresourcemanager_v3_generated_tag_values_delete_tag_value_sync.py",
+      "regionTag": "cloudresourcemanager_v3_generated_TagValues_DeleteTagValue_sync",
       "segments": [
         {
           "end": 48,
@@ -3570,8 +3570,8 @@
           "shortName": "GetIamPolicy"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_tag_values_get_iam_policy_async.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_TagValues_GetIamPolicy_async",
+      "file": "cloudresourcemanager_v3_generated_tag_values_get_iam_policy_async.py",
+      "regionTag": "cloudresourcemanager_v3_generated_TagValues_GetIamPolicy_async",
       "segments": [
         {
           "end": 44,
@@ -3614,8 +3614,8 @@
           "shortName": "GetIamPolicy"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_tag_values_get_iam_policy_sync.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_TagValues_GetIamPolicy_sync",
+      "file": "cloudresourcemanager_v3_generated_tag_values_get_iam_policy_sync.py",
+      "regionTag": "cloudresourcemanager_v3_generated_TagValues_GetIamPolicy_sync",
       "segments": [
         {
           "end": 44,
@@ -3659,8 +3659,8 @@
           "shortName": "GetTagValue"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_tag_values_get_tag_value_async.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_TagValues_GetTagValue_async",
+      "file": "cloudresourcemanager_v3_generated_tag_values_get_tag_value_async.py",
+      "regionTag": "cloudresourcemanager_v3_generated_TagValues_GetTagValue_async",
       "segments": [
         {
           "end": 44,
@@ -3703,8 +3703,8 @@
           "shortName": "GetTagValue"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_tag_values_get_tag_value_sync.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_TagValues_GetTagValue_sync",
+      "file": "cloudresourcemanager_v3_generated_tag_values_get_tag_value_sync.py",
+      "regionTag": "cloudresourcemanager_v3_generated_TagValues_GetTagValue_sync",
       "segments": [
         {
           "end": 44,
@@ -3748,8 +3748,8 @@
           "shortName": "ListTagValues"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_tag_values_list_tag_values_async.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_TagValues_ListTagValues_async",
+      "file": "cloudresourcemanager_v3_generated_tag_values_list_tag_values_async.py",
+      "regionTag": "cloudresourcemanager_v3_generated_TagValues_ListTagValues_async",
       "segments": [
         {
           "end": 45,
@@ -3792,8 +3792,8 @@
           "shortName": "ListTagValues"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_tag_values_list_tag_values_sync.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_TagValues_ListTagValues_sync",
+      "file": "cloudresourcemanager_v3_generated_tag_values_list_tag_values_sync.py",
+      "regionTag": "cloudresourcemanager_v3_generated_TagValues_ListTagValues_sync",
       "segments": [
         {
           "end": 45,
@@ -3837,8 +3837,8 @@
           "shortName": "SetIamPolicy"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_tag_values_set_iam_policy_async.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_TagValues_SetIamPolicy_async",
+      "file": "cloudresourcemanager_v3_generated_tag_values_set_iam_policy_async.py",
+      "regionTag": "cloudresourcemanager_v3_generated_TagValues_SetIamPolicy_async",
       "segments": [
         {
           "end": 44,
@@ -3881,8 +3881,8 @@
           "shortName": "SetIamPolicy"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_tag_values_set_iam_policy_sync.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_TagValues_SetIamPolicy_sync",
+      "file": "cloudresourcemanager_v3_generated_tag_values_set_iam_policy_sync.py",
+      "regionTag": "cloudresourcemanager_v3_generated_TagValues_SetIamPolicy_sync",
       "segments": [
         {
           "end": 44,
@@ -3926,8 +3926,8 @@
           "shortName": "TestIamPermissions"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_tag_values_test_iam_permissions_async.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_TagValues_TestIamPermissions_async",
+      "file": "cloudresourcemanager_v3_generated_tag_values_test_iam_permissions_async.py",
+      "regionTag": "cloudresourcemanager_v3_generated_TagValues_TestIamPermissions_async",
       "segments": [
         {
           "end": 45,
@@ -3970,8 +3970,8 @@
           "shortName": "TestIamPermissions"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_tag_values_test_iam_permissions_sync.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_TagValues_TestIamPermissions_sync",
+      "file": "cloudresourcemanager_v3_generated_tag_values_test_iam_permissions_sync.py",
+      "regionTag": "cloudresourcemanager_v3_generated_TagValues_TestIamPermissions_sync",
       "segments": [
         {
           "end": 45,
@@ -4015,8 +4015,8 @@
           "shortName": "UpdateTagValue"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_tag_values_update_tag_value_async.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_TagValues_UpdateTagValue_async",
+      "file": "cloudresourcemanager_v3_generated_tag_values_update_tag_value_async.py",
+      "regionTag": "cloudresourcemanager_v3_generated_TagValues_UpdateTagValue_async",
       "segments": [
         {
           "end": 51,
@@ -4059,8 +4059,8 @@
           "shortName": "UpdateTagValue"
         }
       },
-      "file": "cloudresourcemanager_generated_resourcemanager_v3_tag_values_update_tag_value_sync.py",
-      "regionTag": "cloudresourcemanager_generated_resourcemanager_v3_TagValues_UpdateTagValue_sync",
+      "file": "cloudresourcemanager_v3_generated_tag_values_update_tag_value_sync.py",
+      "regionTag": "cloudresourcemanager_v3_generated_TagValues_UpdateTagValue_sync",
       "segments": [
         {
           "end": 51,

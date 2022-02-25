@@ -418,8 +418,7 @@ class FoldersClient(metaclass=FoldersClientMeta):
         the identified folder.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -516,8 +515,7 @@ class FoldersClient(metaclass=FoldersClientMeta):
         parent.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -621,8 +619,7 @@ class FoldersClient(metaclass=FoldersClientMeta):
         permission ``resourcemanager.folders.get``.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -777,8 +774,7 @@ class FoldersClient(metaclass=FoldersClientMeta):
         permission on the identified parent.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -899,8 +895,7 @@ class FoldersClient(metaclass=FoldersClientMeta):
         returned in the Status.details field.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -1043,8 +1038,7 @@ class FoldersClient(metaclass=FoldersClientMeta):
         current and proposed new parent.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -1171,8 +1165,7 @@ class FoldersClient(metaclass=FoldersClientMeta):
         identified folder.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -1288,8 +1281,7 @@ class FoldersClient(metaclass=FoldersClientMeta):
         identified folder.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -1398,8 +1390,7 @@ class FoldersClient(metaclass=FoldersClientMeta):
         identified folder.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -1548,8 +1539,7 @@ class FoldersClient(metaclass=FoldersClientMeta):
         identified folder.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -1699,8 +1689,7 @@ class FoldersClient(metaclass=FoldersClientMeta):
         There are no permissions required for making this API call.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 

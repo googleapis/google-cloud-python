@@ -414,8 +414,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         for this project.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -515,8 +514,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         the identified parent.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -635,8 +633,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         method.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -780,8 +777,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         ``DeleteOperation``.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -896,8 +892,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         permission for this project.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -1031,8 +1026,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         current and proposed new parent.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -1183,8 +1177,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         permissions for this project.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -1297,8 +1290,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         permission for this project.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -1410,8 +1402,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         the resource do not exist.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -1607,8 +1598,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
            API.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
@@ -1755,8 +1745,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         specified project.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import resourcemanager_v3
 
