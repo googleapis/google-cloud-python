@@ -432,8 +432,7 @@ class AdaptationClient(metaclass=AdaptationClientMeta):
         when you send a call that includes the PhraseSet.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import speech_v1p1beta1
 
@@ -554,8 +553,7 @@ class AdaptationClient(metaclass=AdaptationClientMeta):
     ) -> resource.PhraseSet:
         r"""Get a phrase set.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import speech_v1p1beta1
 
@@ -655,8 +653,7 @@ class AdaptationClient(metaclass=AdaptationClientMeta):
     ) -> pagers.ListPhraseSetPager:
         r"""List phrase sets.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import speech_v1p1beta1
 
@@ -766,8 +763,7 @@ class AdaptationClient(metaclass=AdaptationClientMeta):
     ) -> resource.PhraseSet:
         r"""Update a phrase set.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import speech_v1p1beta1
 
@@ -877,8 +873,7 @@ class AdaptationClient(metaclass=AdaptationClientMeta):
     ) -> None:
         r"""Delete a phrase set.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import speech_v1p1beta1
 
@@ -961,8 +956,7 @@ class AdaptationClient(metaclass=AdaptationClientMeta):
     ) -> resource.CustomClass:
         r"""Create a custom class.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import speech_v1p1beta1
 
@@ -1087,8 +1081,7 @@ class AdaptationClient(metaclass=AdaptationClientMeta):
     ) -> resource.CustomClass:
         r"""Get a custom class.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import speech_v1p1beta1
 
@@ -1185,8 +1178,7 @@ class AdaptationClient(metaclass=AdaptationClientMeta):
     ) -> pagers.ListCustomClassesPager:
         r"""List custom classes.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import speech_v1p1beta1
 
@@ -1296,8 +1288,7 @@ class AdaptationClient(metaclass=AdaptationClientMeta):
     ) -> resource.CustomClass:
         r"""Update a custom class.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import speech_v1p1beta1
 
@@ -1411,8 +1402,7 @@ class AdaptationClient(metaclass=AdaptationClientMeta):
     ) -> None:
         r"""Delete a custom class.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import speech_v1p1beta1
 
