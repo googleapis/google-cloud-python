@@ -406,8 +406,7 @@ class WebRiskServiceClient(metaclass=WebRiskServiceClientMeta):
         once for each list.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import webrisk_v1
 
@@ -521,8 +520,7 @@ class WebRiskServiceClient(metaclass=WebRiskServiceClientMeta):
         response will be returned.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import webrisk_v1
 
@@ -622,8 +620,7 @@ class WebRiskServiceClient(metaclass=WebRiskServiceClientMeta):
         match of a threat.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import webrisk_v1
 
@@ -726,8 +723,7 @@ class WebRiskServiceClient(metaclass=WebRiskServiceClientMeta):
         visibility can use this method.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import webrisk_v1
 

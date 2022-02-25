@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ComputeThreatListDiff
+# Snippet for SearchHashes
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,23 +23,23 @@
 #   python3 -m pip install google-cloud-webrisk
 
 
-# [START webrisk_generated_webrisk_v1_WebRiskService_ComputeThreatListDiff_sync]
+# [START webrisk_v1_generated_WebRiskService_SearchHashes_async]
 from google.cloud import webrisk_v1
 
 
-def sample_compute_threat_list_diff():
+async def sample_search_hashes():
     # Create a client
-    client = webrisk_v1.WebRiskServiceClient()
+    client = webrisk_v1.WebRiskServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = webrisk_v1.ComputeThreatListDiffRequest(
-        threat_type="UNWANTED_SOFTWARE",
+    request = webrisk_v1.SearchHashesRequest(
+        threat_types="UNWANTED_SOFTWARE",
     )
 
     # Make the request
-    response = client.compute_threat_list_diff(request=request)
+    response = await client.search_hashes(request=request)
 
     # Handle the response
     print(response)
 
-# [END webrisk_generated_webrisk_v1_WebRiskService_ComputeThreatListDiff_sync]
+# [END webrisk_v1_generated_WebRiskService_SearchHashes_async]

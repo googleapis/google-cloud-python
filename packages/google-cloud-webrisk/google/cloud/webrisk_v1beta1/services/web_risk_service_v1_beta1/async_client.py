@@ -218,7 +218,7 @@ class WebRiskServiceV1Beta1AsyncClient:
     ) -> webrisk.ComputeThreatListDiffResponse:
         r"""Gets the most recent threat list diffs.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import webrisk_v1beta1
 
@@ -330,7 +330,7 @@ class WebRiskServiceV1Beta1AsyncClient:
         given threatList.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import webrisk_v1beta1
 
@@ -439,7 +439,7 @@ class WebRiskServiceV1Beta1AsyncClient:
         match of a threat.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import webrisk_v1beta1
 

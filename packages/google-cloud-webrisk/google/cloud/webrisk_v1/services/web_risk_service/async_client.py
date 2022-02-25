@@ -223,7 +223,7 @@ class WebRiskServiceAsyncClient:
         once for each list.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import webrisk_v1
 
@@ -347,7 +347,7 @@ class WebRiskServiceAsyncClient:
         response will be returned.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import webrisk_v1
 
@@ -457,7 +457,7 @@ class WebRiskServiceAsyncClient:
         match of a threat.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import webrisk_v1
 
@@ -570,7 +570,7 @@ class WebRiskServiceAsyncClient:
         visibility can use this method.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import webrisk_v1
 

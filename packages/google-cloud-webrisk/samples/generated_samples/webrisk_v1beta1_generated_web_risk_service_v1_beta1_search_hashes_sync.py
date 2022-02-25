@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for CreateSubmission
+# Snippet for SearchHashes
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,27 +23,23 @@
 #   python3 -m pip install google-cloud-webrisk
 
 
-# [START webrisk_generated_webrisk_v1_WebRiskService_CreateSubmission_sync]
-from google.cloud import webrisk_v1
+# [START webrisk_v1beta1_generated_WebRiskServiceV1Beta1_SearchHashes_sync]
+from google.cloud import webrisk_v1beta1
 
 
-def sample_create_submission():
+def sample_search_hashes():
     # Create a client
-    client = webrisk_v1.WebRiskServiceClient()
+    client = webrisk_v1beta1.WebRiskServiceV1Beta1Client()
 
     # Initialize request argument(s)
-    submission = webrisk_v1.Submission()
-    submission.uri = "uri_value"
-
-    request = webrisk_v1.CreateSubmissionRequest(
-        parent="parent_value",
-        submission=submission,
+    request = webrisk_v1beta1.SearchHashesRequest(
+        threat_types="UNWANTED_SOFTWARE",
     )
 
     # Make the request
-    response = client.create_submission(request=request)
+    response = client.search_hashes(request=request)
 
     # Handle the response
     print(response)
 
-# [END webrisk_generated_webrisk_v1_WebRiskService_CreateSubmission_sync]
+# [END webrisk_v1beta1_generated_WebRiskServiceV1Beta1_SearchHashes_sync]

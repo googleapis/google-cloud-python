@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-webrisk
 
 
-# [START webrisk_generated_webrisk_v1beta1_WebRiskServiceV1Beta1_SearchHashes_async]
+# [START webrisk_v1beta1_generated_WebRiskServiceV1Beta1_SearchHashes_async]
 from google.cloud import webrisk_v1beta1
 
 
@@ -42,4 +42,4 @@ async def sample_search_hashes():
     # Handle the response
     print(response)
 
-# [END webrisk_generated_webrisk_v1beta1_WebRiskServiceV1Beta1_SearchHashes_async]
+# [END webrisk_v1beta1_generated_WebRiskServiceV1Beta1_SearchHashes_async]

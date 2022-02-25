@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for SearchUris
+# Snippet for SearchHashes
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,24 +23,23 @@
 #   python3 -m pip install google-cloud-webrisk
 
 
-# [START webrisk_generated_webrisk_v1_WebRiskService_SearchUris_sync]
+# [START webrisk_v1_generated_WebRiskService_SearchHashes_sync]
 from google.cloud import webrisk_v1
 
 
-def sample_search_uris():
+def sample_search_hashes():
     # Create a client
     client = webrisk_v1.WebRiskServiceClient()
 
     # Initialize request argument(s)
-    request = webrisk_v1.SearchUrisRequest(
-        uri="uri_value",
+    request = webrisk_v1.SearchHashesRequest(
         threat_types="UNWANTED_SOFTWARE",
     )
 
     # Make the request
-    response = client.search_uris(request=request)
+    response = client.search_hashes(request=request)
 
     # Handle the response
     print(response)
 
-# [END webrisk_generated_webrisk_v1_WebRiskService_SearchUris_sync]
+# [END webrisk_v1_generated_WebRiskService_SearchHashes_sync]

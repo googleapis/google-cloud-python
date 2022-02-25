@@ -10,8 +10,8 @@
           "shortName": "ComputeThreatListDiff"
         }
       },
-      "file": "webrisk_generated_webrisk_v1_web_risk_service_compute_threat_list_diff_async.py",
-      "regionTag": "webrisk_generated_webrisk_v1_WebRiskService_ComputeThreatListDiff_async",
+      "file": "webrisk_v1_generated_web_risk_service_compute_threat_list_diff_async.py",
+      "regionTag": "webrisk_v1_generated_WebRiskService_ComputeThreatListDiff_async",
       "segments": [
         {
           "end": 44,
@@ -54,8 +54,8 @@
           "shortName": "ComputeThreatListDiff"
         }
       },
-      "file": "webrisk_generated_webrisk_v1_web_risk_service_compute_threat_list_diff_sync.py",
-      "regionTag": "webrisk_generated_webrisk_v1_WebRiskService_ComputeThreatListDiff_sync",
+      "file": "webrisk_v1_generated_web_risk_service_compute_threat_list_diff_sync.py",
+      "regionTag": "webrisk_v1_generated_WebRiskService_ComputeThreatListDiff_sync",
       "segments": [
         {
           "end": 44,
@@ -99,8 +99,8 @@
           "shortName": "CreateSubmission"
         }
       },
-      "file": "webrisk_generated_webrisk_v1_web_risk_service_create_submission_async.py",
-      "regionTag": "webrisk_generated_webrisk_v1_WebRiskService_CreateSubmission_async",
+      "file": "webrisk_v1_generated_web_risk_service_create_submission_async.py",
+      "regionTag": "webrisk_v1_generated_WebRiskService_CreateSubmission_async",
       "segments": [
         {
           "end": 48,
@@ -143,8 +143,8 @@
           "shortName": "CreateSubmission"
         }
       },
-      "file": "webrisk_generated_webrisk_v1_web_risk_service_create_submission_sync.py",
-      "regionTag": "webrisk_generated_webrisk_v1_WebRiskService_CreateSubmission_sync",
+      "file": "webrisk_v1_generated_web_risk_service_create_submission_sync.py",
+      "regionTag": "webrisk_v1_generated_WebRiskService_CreateSubmission_sync",
       "segments": [
         {
           "end": 48,
@@ -188,8 +188,8 @@
           "shortName": "SearchHashes"
         }
       },
-      "file": "webrisk_generated_webrisk_v1_web_risk_service_search_hashes_async.py",
-      "regionTag": "webrisk_generated_webrisk_v1_WebRiskService_SearchHashes_async",
+      "file": "webrisk_v1_generated_web_risk_service_search_hashes_async.py",
+      "regionTag": "webrisk_v1_generated_WebRiskService_SearchHashes_async",
       "segments": [
         {
           "end": 44,
@@ -232,8 +232,8 @@
           "shortName": "SearchHashes"
         }
       },
-      "file": "webrisk_generated_webrisk_v1_web_risk_service_search_hashes_sync.py",
-      "regionTag": "webrisk_generated_webrisk_v1_WebRiskService_SearchHashes_sync",
+      "file": "webrisk_v1_generated_web_risk_service_search_hashes_sync.py",
+      "regionTag": "webrisk_v1_generated_WebRiskService_SearchHashes_sync",
       "segments": [
         {
           "end": 44,
@@ -277,8 +277,8 @@
           "shortName": "SearchUris"
         }
       },
-      "file": "webrisk_generated_webrisk_v1_web_risk_service_search_uris_async.py",
-      "regionTag": "webrisk_generated_webrisk_v1_WebRiskService_SearchUris_async",
+      "file": "webrisk_v1_generated_web_risk_service_search_uris_async.py",
+      "regionTag": "webrisk_v1_generated_WebRiskService_SearchUris_async",
       "segments": [
         {
           "end": 45,
@@ -321,8 +321,8 @@
           "shortName": "SearchUris"
         }
       },
-      "file": "webrisk_generated_webrisk_v1_web_risk_service_search_uris_sync.py",
-      "regionTag": "webrisk_generated_webrisk_v1_WebRiskService_SearchUris_sync",
+      "file": "webrisk_v1_generated_web_risk_service_search_uris_sync.py",
+      "regionTag": "webrisk_v1_generated_WebRiskService_SearchUris_sync",
       "segments": [
         {
           "end": 45,

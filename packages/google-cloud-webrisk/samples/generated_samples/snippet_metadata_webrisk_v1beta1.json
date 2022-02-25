@@ -10,8 +10,8 @@
           "shortName": "ComputeThreatListDiff"
         }
       },
-      "file": "webrisk_generated_webrisk_v1beta1_web_risk_service_v1_beta1_compute_threat_list_diff_async.py",
-      "regionTag": "webrisk_generated_webrisk_v1beta1_WebRiskServiceV1Beta1_ComputeThreatListDiff_async",
+      "file": "webrisk_v1beta1_generated_web_risk_service_v1_beta1_compute_threat_list_diff_async.py",
+      "regionTag": "webrisk_v1beta1_generated_WebRiskServiceV1Beta1_ComputeThreatListDiff_async",
       "segments": [
         {
           "end": 44,
@@ -54,8 +54,8 @@
           "shortName": "ComputeThreatListDiff"
         }
       },
-      "file": "webrisk_generated_webrisk_v1beta1_web_risk_service_v1_beta1_compute_threat_list_diff_sync.py",
-      "regionTag": "webrisk_generated_webrisk_v1beta1_WebRiskServiceV1Beta1_ComputeThreatListDiff_sync",
+      "file": "webrisk_v1beta1_generated_web_risk_service_v1_beta1_compute_threat_list_diff_sync.py",
+      "regionTag": "webrisk_v1beta1_generated_WebRiskServiceV1Beta1_ComputeThreatListDiff_sync",
       "segments": [
         {
           "end": 44,
@@ -99,8 +99,8 @@
           "shortName": "SearchHashes"
         }
       },
-      "file": "webrisk_generated_webrisk_v1beta1_web_risk_service_v1_beta1_search_hashes_async.py",
-      "regionTag": "webrisk_generated_webrisk_v1beta1_WebRiskServiceV1Beta1_SearchHashes_async",
+      "file": "webrisk_v1beta1_generated_web_risk_service_v1_beta1_search_hashes_async.py",
+      "regionTag": "webrisk_v1beta1_generated_WebRiskServiceV1Beta1_SearchHashes_async",
       "segments": [
         {
           "end": 44,
@@ -143,8 +143,8 @@
           "shortName": "SearchHashes"
         }
       },
-      "file": "webrisk_generated_webrisk_v1beta1_web_risk_service_v1_beta1_search_hashes_sync.py",
-      "regionTag": "webrisk_generated_webrisk_v1beta1_WebRiskServiceV1Beta1_SearchHashes_sync",
+      "file": "webrisk_v1beta1_generated_web_risk_service_v1_beta1_search_hashes_sync.py",
+      "regionTag": "webrisk_v1beta1_generated_WebRiskServiceV1Beta1_SearchHashes_sync",
       "segments": [
         {
           "end": 44,
@@ -188,8 +188,8 @@
           "shortName": "SearchUris"
         }
       },
-      "file": "webrisk_generated_webrisk_v1beta1_web_risk_service_v1_beta1_search_uris_async.py",
-      "regionTag": "webrisk_generated_webrisk_v1beta1_WebRiskServiceV1Beta1_SearchUris_async",
+      "file": "webrisk_v1beta1_generated_web_risk_service_v1_beta1_search_uris_async.py",
+      "regionTag": "webrisk_v1beta1_generated_WebRiskServiceV1Beta1_SearchUris_async",
       "segments": [
         {
           "end": 45,
@@ -232,8 +232,8 @@
           "shortName": "SearchUris"
         }
       },
-      "file": "webrisk_generated_webrisk_v1beta1_web_risk_service_v1_beta1_search_uris_sync.py",
-      "regionTag": "webrisk_generated_webrisk_v1beta1_WebRiskServiceV1Beta1_SearchUris_sync",
+      "file": "webrisk_v1beta1_generated_web_risk_service_v1_beta1_search_uris_sync.py",
+      "regionTag": "webrisk_v1beta1_generated_WebRiskServiceV1Beta1_SearchUris_sync",
       "segments": [
         {
           "end": 45,

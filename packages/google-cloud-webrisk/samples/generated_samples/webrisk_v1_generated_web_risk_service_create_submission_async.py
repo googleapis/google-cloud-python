@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for SearchUris
+# Snippet for CreateSubmission
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,24 +23,27 @@
 #   python3 -m pip install google-cloud-webrisk
 
 
-# [START webrisk_generated_webrisk_v1_WebRiskService_SearchUris_async]
+# [START webrisk_v1_generated_WebRiskService_CreateSubmission_async]
 from google.cloud import webrisk_v1
 
 
-async def sample_search_uris():
+async def sample_create_submission():
     # Create a client
     client = webrisk_v1.WebRiskServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = webrisk_v1.SearchUrisRequest(
-        uri="uri_value",
-        threat_types="UNWANTED_SOFTWARE",
+    submission = webrisk_v1.Submission()
+    submission.uri = "uri_value"
+
+    request = webrisk_v1.CreateSubmissionRequest(
+        parent="parent_value",
+        submission=submission,
     )
 
     # Make the request
-    response = await client.search_uris(request=request)
+    response = await client.create_submission(request=request)
 
     # Handle the response
     print(response)
 
-# [END webrisk_generated_webrisk_v1_WebRiskService_SearchUris_async]
+# [END webrisk_v1_generated_WebRiskService_CreateSubmission_async]

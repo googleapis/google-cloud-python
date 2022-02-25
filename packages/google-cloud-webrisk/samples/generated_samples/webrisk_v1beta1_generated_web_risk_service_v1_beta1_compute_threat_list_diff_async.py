@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for CreateSubmission
+# Snippet for ComputeThreatListDiff
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,27 +23,23 @@
 #   python3 -m pip install google-cloud-webrisk
 
 
-# [START webrisk_generated_webrisk_v1_WebRiskService_CreateSubmission_async]
-from google.cloud import webrisk_v1
+# [START webrisk_v1beta1_generated_WebRiskServiceV1Beta1_ComputeThreatListDiff_async]
+from google.cloud import webrisk_v1beta1
 
 
-async def sample_create_submission():
+async def sample_compute_threat_list_diff():
     # Create a client
-    client = webrisk_v1.WebRiskServiceAsyncClient()
+    client = webrisk_v1beta1.WebRiskServiceV1Beta1AsyncClient()
 
     # Initialize request argument(s)
-    submission = webrisk_v1.Submission()
-    submission.uri = "uri_value"
-
-    request = webrisk_v1.CreateSubmissionRequest(
-        parent="parent_value",
-        submission=submission,
+    request = webrisk_v1beta1.ComputeThreatListDiffRequest(
+        threat_type="UNWANTED_SOFTWARE",
     )
 
     # Make the request
-    response = await client.create_submission(request=request)
+    response = await client.compute_threat_list_diff(request=request)
 
     # Handle the response
     print(response)
 
-# [END webrisk_generated_webrisk_v1_WebRiskService_CreateSubmission_async]
+# [END webrisk_v1beta1_generated_WebRiskServiceV1Beta1_ComputeThreatListDiff_async]
