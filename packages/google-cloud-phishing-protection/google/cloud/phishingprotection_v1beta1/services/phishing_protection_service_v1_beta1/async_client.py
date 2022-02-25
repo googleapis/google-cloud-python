@@ -234,7 +234,7 @@ class PhishingProtectionServiceV1Beta1AsyncClient:
         in the future.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import phishingprotection_v1beta1
 

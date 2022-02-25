@@ -10,8 +10,8 @@
           "shortName": "ReportPhishing"
         }
       },
-      "file": "phishingprotection_generated_phishingprotection_v1beta1_phishing_protection_service_v1_beta1_report_phishing_async.py",
-      "regionTag": "phishingprotection_generated_phishingprotection_v1beta1_PhishingProtectionServiceV1Beta1_ReportPhishing_async",
+      "file": "phishingprotection_v1beta1_generated_phishing_protection_service_v1_beta1_report_phishing_async.py",
+      "regionTag": "phishingprotection_v1beta1_generated_PhishingProtectionServiceV1Beta1_ReportPhishing_async",
       "segments": [
         {
           "end": 45,
@@ -54,8 +54,8 @@
           "shortName": "ReportPhishing"
         }
       },
-      "file": "phishingprotection_generated_phishingprotection_v1beta1_phishing_protection_service_v1_beta1_report_phishing_sync.py",
-      "regionTag": "phishingprotection_generated_phishingprotection_v1beta1_PhishingProtectionServiceV1Beta1_ReportPhishing_sync",
+      "file": "phishingprotection_v1beta1_generated_phishing_protection_service_v1_beta1_report_phishing_sync.py",
+      "regionTag": "phishingprotection_v1beta1_generated_PhishingProtectionServiceV1Beta1_ReportPhishing_sync",
       "segments": [
         {
           "end": 45,

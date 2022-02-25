@@ -23,13 +23,13 @@
 #   python3 -m pip install google-cloud-phishingprotection
 
 
-# [START phishingprotection_generated_phishingprotection_v1beta1_PhishingProtectionServiceV1Beta1_ReportPhishing_sync]
+# [START phishingprotection_v1beta1_generated_PhishingProtectionServiceV1Beta1_ReportPhishing_async]
 from google.cloud import phishingprotection_v1beta1
 
 
-def sample_report_phishing():
+async def sample_report_phishing():
     # Create a client
-    client = phishingprotection_v1beta1.PhishingProtectionServiceV1Beta1Client()
+    client = phishingprotection_v1beta1.PhishingProtectionServiceV1Beta1AsyncClient()
 
     # Initialize request argument(s)
     request = phishingprotection_v1beta1.ReportPhishingRequest(
@@ -38,9 +38,9 @@ def sample_report_phishing():
     )
 
     # Make the request
-    response = client.report_phishing(request=request)
+    response = await client.report_phishing(request=request)
 
     # Handle the response
     print(response)
 
-# [END phishingprotection_generated_phishingprotection_v1beta1_PhishingProtectionServiceV1Beta1_ReportPhishing_sync]
+# [END phishingprotection_v1beta1_generated_PhishingProtectionServiceV1Beta1_ReportPhishing_async]
