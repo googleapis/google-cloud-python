@@ -23,13 +23,13 @@
 #   python3 -m pip install google-cloud-orgpolicy
 
 
-# [START orgpolicy_generated_orgpolicy_v2_OrgPolicy_ListPolicies_sync]
+# [START orgpolicy_v2_generated_OrgPolicy_ListPolicies_async]
 from google.cloud import orgpolicy_v2
 
 
-def sample_list_policies():
+async def sample_list_policies():
     # Create a client
-    client = orgpolicy_v2.OrgPolicyClient()
+    client = orgpolicy_v2.OrgPolicyAsyncClient()
 
     # Initialize request argument(s)
     request = orgpolicy_v2.ListPoliciesRequest(
@@ -40,7 +40,7 @@ def sample_list_policies():
     page_result = client.list_policies(request=request)
 
     # Handle the response
-    for response in page_result:
+    async for response in page_result:
         print(response)
 
-# [END orgpolicy_generated_orgpolicy_v2_OrgPolicy_ListPolicies_sync]
+# [END orgpolicy_v2_generated_OrgPolicy_ListPolicies_async]

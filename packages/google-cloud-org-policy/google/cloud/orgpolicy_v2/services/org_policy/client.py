@@ -445,8 +445,7 @@ class OrgPolicyClient(metaclass=OrgPolicyClientMeta):
         resource.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import orgpolicy_v2
 
@@ -556,8 +555,7 @@ class OrgPolicyClient(metaclass=OrgPolicyClientMeta):
         resource.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import orgpolicy_v2
 
@@ -672,8 +670,7 @@ class OrgPolicyClient(metaclass=OrgPolicyClientMeta):
         a ``Policy`` during read-modify-write.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import orgpolicy_v2
 
@@ -769,8 +766,7 @@ class OrgPolicyClient(metaclass=OrgPolicyClientMeta):
         hierarchy with 'under:' prefix will not be expanded.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import orgpolicy_v2
 
@@ -870,8 +866,7 @@ class OrgPolicyClient(metaclass=OrgPolicyClientMeta):
         on the given Cloud resource.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import orgpolicy_v2
 
@@ -985,8 +980,7 @@ class OrgPolicyClient(metaclass=OrgPolicyClientMeta):
         fields.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import orgpolicy_v2
 
@@ -1082,8 +1076,7 @@ class OrgPolicyClient(metaclass=OrgPolicyClientMeta):
         does not exist.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import orgpolicy_v2
 

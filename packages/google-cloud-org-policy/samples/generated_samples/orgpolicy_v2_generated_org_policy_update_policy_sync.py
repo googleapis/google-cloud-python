@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for DeletePolicy
+# Snippet for UpdatePolicy
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,21 +23,22 @@
 #   python3 -m pip install google-cloud-orgpolicy
 
 
-# [START orgpolicy_generated_orgpolicy_v2_OrgPolicy_DeletePolicy_sync]
+# [START orgpolicy_v2_generated_OrgPolicy_UpdatePolicy_sync]
 from google.cloud import orgpolicy_v2
 
 
-def sample_delete_policy():
+def sample_update_policy():
     # Create a client
     client = orgpolicy_v2.OrgPolicyClient()
 
     # Initialize request argument(s)
-    request = orgpolicy_v2.DeletePolicyRequest(
-        name="name_value",
+    request = orgpolicy_v2.UpdatePolicyRequest(
     )
 
     # Make the request
-    client.delete_policy(request=request)
+    response = client.update_policy(request=request)
 
+    # Handle the response
+    print(response)
 
-# [END orgpolicy_generated_orgpolicy_v2_OrgPolicy_DeletePolicy_sync]
+# [END orgpolicy_v2_generated_OrgPolicy_UpdatePolicy_sync]

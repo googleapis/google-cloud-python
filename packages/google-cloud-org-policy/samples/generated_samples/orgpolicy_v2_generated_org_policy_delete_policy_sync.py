@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ListConstraints
+# Snippet for DeletePolicy
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,24 +23,21 @@
 #   python3 -m pip install google-cloud-orgpolicy
 
 
-# [START orgpolicy_generated_orgpolicy_v2_OrgPolicy_ListConstraints_sync]
+# [START orgpolicy_v2_generated_OrgPolicy_DeletePolicy_sync]
 from google.cloud import orgpolicy_v2
 
 
-def sample_list_constraints():
+def sample_delete_policy():
     # Create a client
     client = orgpolicy_v2.OrgPolicyClient()
 
     # Initialize request argument(s)
-    request = orgpolicy_v2.ListConstraintsRequest(
-        parent="parent_value",
+    request = orgpolicy_v2.DeletePolicyRequest(
+        name="name_value",
     )
 
     # Make the request
-    page_result = client.list_constraints(request=request)
+    client.delete_policy(request=request)
 
-    # Handle the response
-    for response in page_result:
-        print(response)
 
-# [END orgpolicy_generated_orgpolicy_v2_OrgPolicy_ListConstraints_sync]
+# [END orgpolicy_v2_generated_OrgPolicy_DeletePolicy_sync]

@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for CreatePolicy
+# Snippet for ListConstraints
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,23 +23,24 @@
 #   python3 -m pip install google-cloud-orgpolicy
 
 
-# [START orgpolicy_generated_orgpolicy_v2_OrgPolicy_CreatePolicy_async]
+# [START orgpolicy_v2_generated_OrgPolicy_ListConstraints_async]
 from google.cloud import orgpolicy_v2
 
 
-async def sample_create_policy():
+async def sample_list_constraints():
     # Create a client
     client = orgpolicy_v2.OrgPolicyAsyncClient()
 
     # Initialize request argument(s)
-    request = orgpolicy_v2.CreatePolicyRequest(
+    request = orgpolicy_v2.ListConstraintsRequest(
         parent="parent_value",
     )
 
     # Make the request
-    response = await client.create_policy(request=request)
+    page_result = client.list_constraints(request=request)
 
     # Handle the response
-    print(response)
+    async for response in page_result:
+        print(response)
 
-# [END orgpolicy_generated_orgpolicy_v2_OrgPolicy_CreatePolicy_async]
+# [END orgpolicy_v2_generated_OrgPolicy_ListConstraints_async]

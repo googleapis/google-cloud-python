@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for CreatePolicy
+# Snippet for ListPolicies
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,23 +23,24 @@
 #   python3 -m pip install google-cloud-orgpolicy
 
 
-# [START orgpolicy_generated_orgpolicy_v2_OrgPolicy_CreatePolicy_sync]
+# [START orgpolicy_v2_generated_OrgPolicy_ListPolicies_sync]
 from google.cloud import orgpolicy_v2
 
 
-def sample_create_policy():
+def sample_list_policies():
     # Create a client
     client = orgpolicy_v2.OrgPolicyClient()
 
     # Initialize request argument(s)
-    request = orgpolicy_v2.CreatePolicyRequest(
+    request = orgpolicy_v2.ListPoliciesRequest(
         parent="parent_value",
     )
 
     # Make the request
-    response = client.create_policy(request=request)
+    page_result = client.list_policies(request=request)
 
     # Handle the response
-    print(response)
+    for response in page_result:
+        print(response)
 
-# [END orgpolicy_generated_orgpolicy_v2_OrgPolicy_CreatePolicy_sync]
+# [END orgpolicy_v2_generated_OrgPolicy_ListPolicies_sync]

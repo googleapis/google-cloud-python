@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for GetPolicy
+# Snippet for CreatePolicy
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,23 +23,23 @@
 #   python3 -m pip install google-cloud-orgpolicy
 
 
-# [START orgpolicy_generated_orgpolicy_v2_OrgPolicy_GetPolicy_async]
+# [START orgpolicy_v2_generated_OrgPolicy_CreatePolicy_sync]
 from google.cloud import orgpolicy_v2
 
 
-async def sample_get_policy():
+def sample_create_policy():
     # Create a client
-    client = orgpolicy_v2.OrgPolicyAsyncClient()
+    client = orgpolicy_v2.OrgPolicyClient()
 
     # Initialize request argument(s)
-    request = orgpolicy_v2.GetPolicyRequest(
-        name="name_value",
+    request = orgpolicy_v2.CreatePolicyRequest(
+        parent="parent_value",
     )
 
     # Make the request
-    response = await client.get_policy(request=request)
+    response = client.create_policy(request=request)
 
     # Handle the response
     print(response)
 
-# [END orgpolicy_generated_orgpolicy_v2_OrgPolicy_GetPolicy_async]
+# [END orgpolicy_v2_generated_OrgPolicy_CreatePolicy_sync]

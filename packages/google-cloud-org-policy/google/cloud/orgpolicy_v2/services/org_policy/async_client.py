@@ -234,7 +234,7 @@ class OrgPolicyAsyncClient:
         resource.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import orgpolicy_v2
 
@@ -354,7 +354,7 @@ class OrgPolicyAsyncClient:
         resource.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import orgpolicy_v2
 
@@ -479,7 +479,7 @@ class OrgPolicyAsyncClient:
         a ``Policy`` during read-modify-write.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import orgpolicy_v2
 
@@ -585,7 +585,7 @@ class OrgPolicyAsyncClient:
         hierarchy with 'under:' prefix will not be expanded.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import orgpolicy_v2
 
@@ -695,7 +695,7 @@ class OrgPolicyAsyncClient:
         on the given Cloud resource.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import orgpolicy_v2
 
@@ -819,7 +819,7 @@ class OrgPolicyAsyncClient:
         fields.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import orgpolicy_v2
 
@@ -925,7 +925,7 @@ class OrgPolicyAsyncClient:
         does not exist.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import orgpolicy_v2
 

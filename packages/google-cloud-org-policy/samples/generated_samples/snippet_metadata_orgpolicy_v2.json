@@ -10,8 +10,8 @@
           "shortName": "CreatePolicy"
         }
       },
-      "file": "orgpolicy_generated_orgpolicy_v2_org_policy_create_policy_async.py",
-      "regionTag": "orgpolicy_generated_orgpolicy_v2_OrgPolicy_CreatePolicy_async",
+      "file": "orgpolicy_v2_generated_org_policy_create_policy_async.py",
+      "regionTag": "orgpolicy_v2_generated_OrgPolicy_CreatePolicy_async",
       "segments": [
         {
           "end": 44,
@@ -54,8 +54,8 @@
           "shortName": "CreatePolicy"
         }
       },
-      "file": "orgpolicy_generated_orgpolicy_v2_org_policy_create_policy_sync.py",
-      "regionTag": "orgpolicy_generated_orgpolicy_v2_OrgPolicy_CreatePolicy_sync",
+      "file": "orgpolicy_v2_generated_org_policy_create_policy_sync.py",
+      "regionTag": "orgpolicy_v2_generated_OrgPolicy_CreatePolicy_sync",
       "segments": [
         {
           "end": 44,
@@ -99,8 +99,8 @@
           "shortName": "DeletePolicy"
         }
       },
-      "file": "orgpolicy_generated_orgpolicy_v2_org_policy_delete_policy_async.py",
-      "regionTag": "orgpolicy_generated_orgpolicy_v2_OrgPolicy_DeletePolicy_async",
+      "file": "orgpolicy_v2_generated_org_policy_delete_policy_async.py",
+      "regionTag": "orgpolicy_v2_generated_OrgPolicy_DeletePolicy_async",
       "segments": [
         {
           "end": 42,
@@ -141,8 +141,8 @@
           "shortName": "DeletePolicy"
         }
       },
-      "file": "orgpolicy_generated_orgpolicy_v2_org_policy_delete_policy_sync.py",
-      "regionTag": "orgpolicy_generated_orgpolicy_v2_OrgPolicy_DeletePolicy_sync",
+      "file": "orgpolicy_v2_generated_org_policy_delete_policy_sync.py",
+      "regionTag": "orgpolicy_v2_generated_OrgPolicy_DeletePolicy_sync",
       "segments": [
         {
           "end": 42,
@@ -184,8 +184,8 @@
           "shortName": "GetEffectivePolicy"
         }
       },
-      "file": "orgpolicy_generated_orgpolicy_v2_org_policy_get_effective_policy_async.py",
-      "regionTag": "orgpolicy_generated_orgpolicy_v2_OrgPolicy_GetEffectivePolicy_async",
+      "file": "orgpolicy_v2_generated_org_policy_get_effective_policy_async.py",
+      "regionTag": "orgpolicy_v2_generated_OrgPolicy_GetEffectivePolicy_async",
       "segments": [
         {
           "end": 44,
@@ -228,8 +228,8 @@
           "shortName": "GetEffectivePolicy"
         }
       },
-      "file": "orgpolicy_generated_orgpolicy_v2_org_policy_get_effective_policy_sync.py",
-      "regionTag": "orgpolicy_generated_orgpolicy_v2_OrgPolicy_GetEffectivePolicy_sync",
+      "file": "orgpolicy_v2_generated_org_policy_get_effective_policy_sync.py",
+      "regionTag": "orgpolicy_v2_generated_OrgPolicy_GetEffectivePolicy_sync",
       "segments": [
         {
           "end": 44,
@@ -273,8 +273,8 @@
           "shortName": "GetPolicy"
         }
       },
-      "file": "orgpolicy_generated_orgpolicy_v2_org_policy_get_policy_async.py",
-      "regionTag": "orgpolicy_generated_orgpolicy_v2_OrgPolicy_GetPolicy_async",
+      "file": "orgpolicy_v2_generated_org_policy_get_policy_async.py",
+      "regionTag": "orgpolicy_v2_generated_OrgPolicy_GetPolicy_async",
       "segments": [
         {
           "end": 44,
@@ -317,8 +317,8 @@
           "shortName": "GetPolicy"
         }
       },
-      "file": "orgpolicy_generated_orgpolicy_v2_org_policy_get_policy_sync.py",
-      "regionTag": "orgpolicy_generated_orgpolicy_v2_OrgPolicy_GetPolicy_sync",
+      "file": "orgpolicy_v2_generated_org_policy_get_policy_sync.py",
+      "regionTag": "orgpolicy_v2_generated_OrgPolicy_GetPolicy_sync",
       "segments": [
         {
           "end": 44,
@@ -362,8 +362,8 @@
           "shortName": "ListConstraints"
         }
       },
-      "file": "orgpolicy_generated_orgpolicy_v2_org_policy_list_constraints_async.py",
-      "regionTag": "orgpolicy_generated_orgpolicy_v2_OrgPolicy_ListConstraints_async",
+      "file": "orgpolicy_v2_generated_org_policy_list_constraints_async.py",
+      "regionTag": "orgpolicy_v2_generated_OrgPolicy_ListConstraints_async",
       "segments": [
         {
           "end": 45,
@@ -406,8 +406,8 @@
           "shortName": "ListConstraints"
         }
       },
-      "file": "orgpolicy_generated_orgpolicy_v2_org_policy_list_constraints_sync.py",
-      "regionTag": "orgpolicy_generated_orgpolicy_v2_OrgPolicy_ListConstraints_sync",
+      "file": "orgpolicy_v2_generated_org_policy_list_constraints_sync.py",
+      "regionTag": "orgpolicy_v2_generated_OrgPolicy_ListConstraints_sync",
       "segments": [
         {
           "end": 45,
@@ -451,8 +451,8 @@
           "shortName": "ListPolicies"
         }
       },
-      "file": "orgpolicy_generated_orgpolicy_v2_org_policy_list_policies_async.py",
-      "regionTag": "orgpolicy_generated_orgpolicy_v2_OrgPolicy_ListPolicies_async",
+      "file": "orgpolicy_v2_generated_org_policy_list_policies_async.py",
+      "regionTag": "orgpolicy_v2_generated_OrgPolicy_ListPolicies_async",
       "segments": [
         {
           "end": 45,
@@ -495,8 +495,8 @@
           "shortName": "ListPolicies"
         }
       },
-      "file": "orgpolicy_generated_orgpolicy_v2_org_policy_list_policies_sync.py",
-      "regionTag": "orgpolicy_generated_orgpolicy_v2_OrgPolicy_ListPolicies_sync",
+      "file": "orgpolicy_v2_generated_org_policy_list_policies_sync.py",
+      "regionTag": "orgpolicy_v2_generated_OrgPolicy_ListPolicies_sync",
       "segments": [
         {
           "end": 45,
@@ -540,8 +540,8 @@
           "shortName": "UpdatePolicy"
         }
       },
-      "file": "orgpolicy_generated_orgpolicy_v2_org_policy_update_policy_async.py",
-      "regionTag": "orgpolicy_generated_orgpolicy_v2_OrgPolicy_UpdatePolicy_async",
+      "file": "orgpolicy_v2_generated_org_policy_update_policy_async.py",
+      "regionTag": "orgpolicy_v2_generated_OrgPolicy_UpdatePolicy_async",
       "segments": [
         {
           "end": 43,
@@ -584,8 +584,8 @@
           "shortName": "UpdatePolicy"
         }
       },
-      "file": "orgpolicy_generated_orgpolicy_v2_org_policy_update_policy_sync.py",
-      "regionTag": "orgpolicy_generated_orgpolicy_v2_OrgPolicy_UpdatePolicy_sync",
+      "file": "orgpolicy_v2_generated_org_policy_update_policy_sync.py",
+      "regionTag": "orgpolicy_v2_generated_OrgPolicy_UpdatePolicy_sync",
       "segments": [
         {
           "end": 43,
