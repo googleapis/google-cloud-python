@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-ids
 
 
-# [START ids_generated_ids_v1_IDS_DeleteEndpoint_sync]
+# [START ids_v1_generated_IDS_DeleteEndpoint_sync]
 from google.cloud import ids_v1
 
 
@@ -46,4 +46,4 @@ def sample_delete_endpoint():
     # Handle the response
     print(response)
 
-# [END ids_generated_ids_v1_IDS_DeleteEndpoint_sync]
+# [END ids_v1_generated_IDS_DeleteEndpoint_sync]

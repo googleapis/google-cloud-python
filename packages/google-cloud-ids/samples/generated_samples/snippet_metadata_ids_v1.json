@@ -10,8 +10,8 @@
           "shortName": "CreateEndpoint"
         }
       },
-      "file": "ids_generated_ids_v1_ids_create_endpoint_async.py",
-      "regionTag": "ids_generated_ids_v1_IDS_CreateEndpoint_async",
+      "file": "ids_v1_generated_ids_create_endpoint_async.py",
+      "regionTag": "ids_v1_generated_IDS_CreateEndpoint_async",
       "segments": [
         {
           "end": 54,
@@ -54,8 +54,8 @@
           "shortName": "CreateEndpoint"
         }
       },
-      "file": "ids_generated_ids_v1_ids_create_endpoint_sync.py",
-      "regionTag": "ids_generated_ids_v1_IDS_CreateEndpoint_sync",
+      "file": "ids_v1_generated_ids_create_endpoint_sync.py",
+      "regionTag": "ids_v1_generated_IDS_CreateEndpoint_sync",
       "segments": [
         {
           "end": 54,
@@ -99,8 +99,8 @@
           "shortName": "DeleteEndpoint"
         }
       },
-      "file": "ids_generated_ids_v1_ids_delete_endpoint_async.py",
-      "regionTag": "ids_generated_ids_v1_IDS_DeleteEndpoint_async",
+      "file": "ids_v1_generated_ids_delete_endpoint_async.py",
+      "regionTag": "ids_v1_generated_IDS_DeleteEndpoint_async",
       "segments": [
         {
           "end": 48,
@@ -143,8 +143,8 @@
           "shortName": "DeleteEndpoint"
         }
       },
-      "file": "ids_generated_ids_v1_ids_delete_endpoint_sync.py",
-      "regionTag": "ids_generated_ids_v1_IDS_DeleteEndpoint_sync",
+      "file": "ids_v1_generated_ids_delete_endpoint_sync.py",
+      "regionTag": "ids_v1_generated_IDS_DeleteEndpoint_sync",
       "segments": [
         {
           "end": 48,
@@ -188,8 +188,8 @@
           "shortName": "GetEndpoint"
         }
       },
-      "file": "ids_generated_ids_v1_ids_get_endpoint_async.py",
-      "regionTag": "ids_generated_ids_v1_IDS_GetEndpoint_async",
+      "file": "ids_v1_generated_ids_get_endpoint_async.py",
+      "regionTag": "ids_v1_generated_IDS_GetEndpoint_async",
       "segments": [
         {
           "end": 44,
@@ -232,8 +232,8 @@
           "shortName": "GetEndpoint"
         }
       },
-      "file": "ids_generated_ids_v1_ids_get_endpoint_sync.py",
-      "regionTag": "ids_generated_ids_v1_IDS_GetEndpoint_sync",
+      "file": "ids_v1_generated_ids_get_endpoint_sync.py",
+      "regionTag": "ids_v1_generated_IDS_GetEndpoint_sync",
       "segments": [
         {
           "end": 44,
@@ -277,8 +277,8 @@
           "shortName": "ListEndpoints"
         }
       },
-      "file": "ids_generated_ids_v1_ids_list_endpoints_async.py",
-      "regionTag": "ids_generated_ids_v1_IDS_ListEndpoints_async",
+      "file": "ids_v1_generated_ids_list_endpoints_async.py",
+      "regionTag": "ids_v1_generated_IDS_ListEndpoints_async",
       "segments": [
         {
           "end": 45,
@@ -321,8 +321,8 @@
           "shortName": "ListEndpoints"
         }
       },
-      "file": "ids_generated_ids_v1_ids_list_endpoints_sync.py",
-      "regionTag": "ids_generated_ids_v1_IDS_ListEndpoints_sync",
+      "file": "ids_v1_generated_ids_list_endpoints_sync.py",
+      "regionTag": "ids_v1_generated_IDS_ListEndpoints_sync",
       "segments": [
         {
           "end": 45,

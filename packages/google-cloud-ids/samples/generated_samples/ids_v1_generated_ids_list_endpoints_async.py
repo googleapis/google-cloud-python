@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for GetEndpoint
+# Snippet for ListEndpoints
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,23 +23,24 @@
 #   python3 -m pip install google-cloud-ids
 
 
-# [START ids_generated_ids_v1_IDS_GetEndpoint_async]
+# [START ids_v1_generated_IDS_ListEndpoints_async]
 from google.cloud import ids_v1
 
 
-async def sample_get_endpoint():
+async def sample_list_endpoints():
     # Create a client
     client = ids_v1.IDSAsyncClient()
 
     # Initialize request argument(s)
-    request = ids_v1.GetEndpointRequest(
-        name="name_value",
+    request = ids_v1.ListEndpointsRequest(
+        parent="parent_value",
     )
 
     # Make the request
-    response = await client.get_endpoint(request=request)
+    page_result = client.list_endpoints(request=request)
 
     # Handle the response
-    print(response)
+    async for response in page_result:
+        print(response)
 
-# [END ids_generated_ids_v1_IDS_GetEndpoint_async]
+# [END ids_v1_generated_IDS_ListEndpoints_async]

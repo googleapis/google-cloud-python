@@ -207,7 +207,7 @@ class IDSAsyncClient:
     ) -> pagers.ListEndpointsAsyncPager:
         r"""Lists Endpoints in a given project and location.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import ids_v1
 
@@ -313,7 +313,7 @@ class IDSAsyncClient:
     ) -> ids.Endpoint:
         r"""Gets details of a single Endpoint.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import ids_v1
 
@@ -417,7 +417,7 @@ class IDSAsyncClient:
         location.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import ids_v1
 
@@ -544,7 +544,7 @@ class IDSAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Deletes a single Endpoint.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import ids_v1
 

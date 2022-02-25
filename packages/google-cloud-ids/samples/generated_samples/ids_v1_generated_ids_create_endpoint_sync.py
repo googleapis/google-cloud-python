@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for GetEndpoint
+# Snippet for CreateEndpoint
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,23 +23,33 @@
 #   python3 -m pip install google-cloud-ids
 
 
-# [START ids_generated_ids_v1_IDS_GetEndpoint_sync]
+# [START ids_v1_generated_IDS_CreateEndpoint_sync]
 from google.cloud import ids_v1
 
 
-def sample_get_endpoint():
+def sample_create_endpoint():
     # Create a client
     client = ids_v1.IDSClient()
 
     # Initialize request argument(s)
-    request = ids_v1.GetEndpointRequest(
-        name="name_value",
+    endpoint = ids_v1.Endpoint()
+    endpoint.network = "network_value"
+    endpoint.severity = "CRITICAL"
+
+    request = ids_v1.CreateEndpointRequest(
+        parent="parent_value",
+        endpoint_id="endpoint_id_value",
+        endpoint=endpoint,
     )
 
     # Make the request
-    response = client.get_endpoint(request=request)
+    operation = client.create_endpoint(request=request)
+
+    print("Waiting for operation to complete...")
+
+    response = operation.result()
 
     # Handle the response
     print(response)
 
-# [END ids_generated_ids_v1_IDS_GetEndpoint_sync]
+# [END ids_v1_generated_IDS_CreateEndpoint_sync]

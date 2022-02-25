@@ -412,8 +412,7 @@ class IDSClient(metaclass=IDSClientMeta):
     ) -> pagers.ListEndpointsPager:
         r"""Lists Endpoints in a given project and location.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import ids_v1
 
@@ -510,8 +509,7 @@ class IDSClient(metaclass=IDSClientMeta):
     ) -> ids.Endpoint:
         r"""Gets details of a single Endpoint.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import ids_v1
 
@@ -606,8 +604,7 @@ class IDSClient(metaclass=IDSClientMeta):
         location.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import ids_v1
 
@@ -734,8 +731,7 @@ class IDSClient(metaclass=IDSClientMeta):
     ) -> operation.Operation:
         r"""Deletes a single Endpoint.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import ids_v1
 
