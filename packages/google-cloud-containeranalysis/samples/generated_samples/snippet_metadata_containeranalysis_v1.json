@@ -10,8 +10,8 @@
           "shortName": "GetIamPolicy"
         }
       },
-      "file": "containeranalysis_generated_containeranalysis_v1_container_analysis_get_iam_policy_async.py",
-      "regionTag": "containeranalysis_generated_containeranalysis_v1_ContainerAnalysis_GetIamPolicy_async",
+      "file": "containeranalysis_v1_generated_container_analysis_get_iam_policy_async.py",
+      "regionTag": "containeranalysis_v1_generated_ContainerAnalysis_GetIamPolicy_async",
       "segments": [
         {
           "end": 44,
@@ -54,8 +54,8 @@
           "shortName": "GetIamPolicy"
         }
       },
-      "file": "containeranalysis_generated_containeranalysis_v1_container_analysis_get_iam_policy_sync.py",
-      "regionTag": "containeranalysis_generated_containeranalysis_v1_ContainerAnalysis_GetIamPolicy_sync",
+      "file": "containeranalysis_v1_generated_container_analysis_get_iam_policy_sync.py",
+      "regionTag": "containeranalysis_v1_generated_ContainerAnalysis_GetIamPolicy_sync",
       "segments": [
         {
           "end": 44,
@@ -99,8 +99,8 @@
           "shortName": "GetVulnerabilityOccurrencesSummary"
         }
       },
-      "file": "containeranalysis_generated_containeranalysis_v1_container_analysis_get_vulnerability_occurrences_summary_async.py",
-      "regionTag": "containeranalysis_generated_containeranalysis_v1_ContainerAnalysis_GetVulnerabilityOccurrencesSummary_async",
+      "file": "containeranalysis_v1_generated_container_analysis_get_vulnerability_occurrences_summary_async.py",
+      "regionTag": "containeranalysis_v1_generated_ContainerAnalysis_GetVulnerabilityOccurrencesSummary_async",
       "segments": [
         {
           "end": 44,
@@ -143,8 +143,8 @@
           "shortName": "GetVulnerabilityOccurrencesSummary"
         }
       },
-      "file": "containeranalysis_generated_containeranalysis_v1_container_analysis_get_vulnerability_occurrences_summary_sync.py",
-      "regionTag": "containeranalysis_generated_containeranalysis_v1_ContainerAnalysis_GetVulnerabilityOccurrencesSummary_sync",
+      "file": "containeranalysis_v1_generated_container_analysis_get_vulnerability_occurrences_summary_sync.py",
+      "regionTag": "containeranalysis_v1_generated_ContainerAnalysis_GetVulnerabilityOccurrencesSummary_sync",
       "segments": [
         {
           "end": 44,
@@ -188,8 +188,8 @@
           "shortName": "SetIamPolicy"
         }
       },
-      "file": "containeranalysis_generated_containeranalysis_v1_container_analysis_set_iam_policy_async.py",
-      "regionTag": "containeranalysis_generated_containeranalysis_v1_ContainerAnalysis_SetIamPolicy_async",
+      "file": "containeranalysis_v1_generated_container_analysis_set_iam_policy_async.py",
+      "regionTag": "containeranalysis_v1_generated_ContainerAnalysis_SetIamPolicy_async",
       "segments": [
         {
           "end": 44,
@@ -232,8 +232,8 @@
           "shortName": "SetIamPolicy"
         }
       },
-      "file": "containeranalysis_generated_containeranalysis_v1_container_analysis_set_iam_policy_sync.py",
-      "regionTag": "containeranalysis_generated_containeranalysis_v1_ContainerAnalysis_SetIamPolicy_sync",
+      "file": "containeranalysis_v1_generated_container_analysis_set_iam_policy_sync.py",
+      "regionTag": "containeranalysis_v1_generated_ContainerAnalysis_SetIamPolicy_sync",
       "segments": [
         {
           "end": 44,
@@ -277,8 +277,8 @@
           "shortName": "TestIamPermissions"
         }
       },
-      "file": "containeranalysis_generated_containeranalysis_v1_container_analysis_test_iam_permissions_async.py",
-      "regionTag": "containeranalysis_generated_containeranalysis_v1_ContainerAnalysis_TestIamPermissions_async",
+      "file": "containeranalysis_v1_generated_container_analysis_test_iam_permissions_async.py",
+      "regionTag": "containeranalysis_v1_generated_ContainerAnalysis_TestIamPermissions_async",
       "segments": [
         {
           "end": 45,
@@ -321,8 +321,8 @@
           "shortName": "TestIamPermissions"
         }
       },
-      "file": "containeranalysis_generated_containeranalysis_v1_container_analysis_test_iam_permissions_sync.py",
-      "regionTag": "containeranalysis_generated_containeranalysis_v1_ContainerAnalysis_TestIamPermissions_sync",
+      "file": "containeranalysis_v1_generated_container_analysis_test_iam_permissions_sync.py",
+      "regionTag": "containeranalysis_v1_generated_ContainerAnalysis_TestIamPermissions_sync",
       "segments": [
         {
           "end": 45,

@@ -249,7 +249,7 @@ class ContainerAnalysisAsyncClient:
         occurrences.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.devtools import containeranalysis_v1
 
@@ -403,7 +403,7 @@ class ContainerAnalysisAsyncClient:
         occurrences.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.devtools import containeranalysis_v1
 
@@ -557,7 +557,7 @@ class ContainerAnalysisAsyncClient:
         occurrences.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.devtools import containeranalysis_v1
 
@@ -664,7 +664,7 @@ class ContainerAnalysisAsyncClient:
         occurrences.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.devtools import containeranalysis_v1
 

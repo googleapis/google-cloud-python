@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for TestIamPermissions
+# Snippet for GetIamPolicy
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,24 +23,23 @@
 #   python3 -m pip install google-cloud-devtools-containeranalysis
 
 
-# [START containeranalysis_generated_containeranalysis_v1_ContainerAnalysis_TestIamPermissions_async]
+# [START containeranalysis_v1_generated_ContainerAnalysis_GetIamPolicy_async]
 from google.cloud.devtools import containeranalysis_v1
 
 
-async def sample_test_iam_permissions():
+async def sample_get_iam_policy():
     # Create a client
     client = containeranalysis_v1.ContainerAnalysisAsyncClient()
 
     # Initialize request argument(s)
-    request = containeranalysis_v1.TestIamPermissionsRequest(
+    request = containeranalysis_v1.GetIamPolicyRequest(
         resource="resource_value",
-        permissions=['permissions_value_1', 'permissions_value_2'],
     )
 
     # Make the request
-    response = await client.test_iam_permissions(request=request)
+    response = await client.get_iam_policy(request=request)
 
     # Handle the response
     print(response)
 
-# [END containeranalysis_generated_containeranalysis_v1_ContainerAnalysis_TestIamPermissions_async]
+# [END containeranalysis_v1_generated_ContainerAnalysis_GetIamPolicy_async]

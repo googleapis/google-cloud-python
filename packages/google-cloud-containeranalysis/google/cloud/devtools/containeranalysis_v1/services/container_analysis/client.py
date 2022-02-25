@@ -434,8 +434,7 @@ class ContainerAnalysisClient(metaclass=ContainerAnalysisClientMeta):
         occurrences.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.devtools import containeranalysis_v1
 
@@ -588,8 +587,7 @@ class ContainerAnalysisClient(metaclass=ContainerAnalysisClientMeta):
         occurrences.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.devtools import containeranalysis_v1
 
@@ -742,8 +740,7 @@ class ContainerAnalysisClient(metaclass=ContainerAnalysisClientMeta):
         occurrences.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.devtools import containeranalysis_v1
 
@@ -849,8 +846,7 @@ class ContainerAnalysisClient(metaclass=ContainerAnalysisClientMeta):
         occurrences.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.devtools import containeranalysis_v1
 

@@ -23,13 +23,13 @@
 #   python3 -m pip install google-cloud-devtools-containeranalysis
 
 
-# [START containeranalysis_generated_containeranalysis_v1_ContainerAnalysis_SetIamPolicy_sync]
+# [START containeranalysis_v1_generated_ContainerAnalysis_SetIamPolicy_async]
 from google.cloud.devtools import containeranalysis_v1
 
 
-def sample_set_iam_policy():
+async def sample_set_iam_policy():
     # Create a client
-    client = containeranalysis_v1.ContainerAnalysisClient()
+    client = containeranalysis_v1.ContainerAnalysisAsyncClient()
 
     # Initialize request argument(s)
     request = containeranalysis_v1.SetIamPolicyRequest(
@@ -37,9 +37,9 @@ def sample_set_iam_policy():
     )
 
     # Make the request
-    response = client.set_iam_policy(request=request)
+    response = await client.set_iam_policy(request=request)
 
     # Handle the response
     print(response)
 
-# [END containeranalysis_generated_containeranalysis_v1_ContainerAnalysis_SetIamPolicy_sync]
+# [END containeranalysis_v1_generated_ContainerAnalysis_SetIamPolicy_async]

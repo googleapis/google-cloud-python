@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for SetIamPolicy
+# Snippet for GetIamPolicy
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,23 +23,23 @@
 #   python3 -m pip install google-cloud-devtools-containeranalysis
 
 
-# [START containeranalysis_generated_containeranalysis_v1_ContainerAnalysis_SetIamPolicy_async]
+# [START containeranalysis_v1_generated_ContainerAnalysis_GetIamPolicy_sync]
 from google.cloud.devtools import containeranalysis_v1
 
 
-async def sample_set_iam_policy():
+def sample_get_iam_policy():
     # Create a client
-    client = containeranalysis_v1.ContainerAnalysisAsyncClient()
+    client = containeranalysis_v1.ContainerAnalysisClient()
 
     # Initialize request argument(s)
-    request = containeranalysis_v1.SetIamPolicyRequest(
+    request = containeranalysis_v1.GetIamPolicyRequest(
         resource="resource_value",
     )
 
     # Make the request
-    response = await client.set_iam_policy(request=request)
+    response = client.get_iam_policy(request=request)
 
     # Handle the response
     print(response)
 
-# [END containeranalysis_generated_containeranalysis_v1_ContainerAnalysis_SetIamPolicy_async]
+# [END containeranalysis_v1_generated_ContainerAnalysis_GetIamPolicy_sync]
