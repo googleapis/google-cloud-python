@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for UndeleteService
+# Snippet for CreateServiceRollout
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,27 +23,27 @@
 #   python3 -m pip install google-cloud-service-management
 
 
-# [START servicemanagement_generated_servicemanagement_v1_ServiceManager_UndeleteService_sync]
+# [START servicemanagement_v1_generated_ServiceManager_CreateServiceRollout_async]
 from google.cloud import servicemanagement_v1
 
 
-def sample_undelete_service():
+async def sample_create_service_rollout():
     # Create a client
-    client = servicemanagement_v1.ServiceManagerClient()
+    client = servicemanagement_v1.ServiceManagerAsyncClient()
 
     # Initialize request argument(s)
-    request = servicemanagement_v1.UndeleteServiceRequest(
+    request = servicemanagement_v1.CreateServiceRolloutRequest(
         service_name="service_name_value",
     )
 
     # Make the request
-    operation = client.undelete_service(request=request)
+    operation = client.create_service_rollout(request=request)
 
     print("Waiting for operation to complete...")
 
-    response = operation.result()
+    response = await operation.result()
 
     # Handle the response
     print(response)
 
-# [END servicemanagement_generated_servicemanagement_v1_ServiceManager_UndeleteService_sync]
+# [END servicemanagement_v1_generated_ServiceManager_CreateServiceRollout_async]

@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for GetServiceConfig
+# Snippet for CreateServiceConfig
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,24 +23,23 @@
 #   python3 -m pip install google-cloud-service-management
 
 
-# [START servicemanagement_generated_servicemanagement_v1_ServiceManager_GetServiceConfig_sync]
+# [START servicemanagement_v1_generated_ServiceManager_CreateServiceConfig_sync]
 from google.cloud import servicemanagement_v1
 
 
-def sample_get_service_config():
+def sample_create_service_config():
     # Create a client
     client = servicemanagement_v1.ServiceManagerClient()
 
     # Initialize request argument(s)
-    request = servicemanagement_v1.GetServiceConfigRequest(
+    request = servicemanagement_v1.CreateServiceConfigRequest(
         service_name="service_name_value",
-        config_id="config_id_value",
     )
 
     # Make the request
-    response = client.get_service_config(request=request)
+    response = client.create_service_config(request=request)
 
     # Handle the response
     print(response)
 
-# [END servicemanagement_generated_servicemanagement_v1_ServiceManager_GetServiceConfig_sync]
+# [END servicemanagement_v1_generated_ServiceManager_CreateServiceConfig_sync]

@@ -23,13 +23,13 @@
 #   python3 -m pip install google-cloud-service-management
 
 
-# [START servicemanagement_generated_servicemanagement_v1_ServiceManager_GetServiceConfig_async]
+# [START servicemanagement_v1_generated_ServiceManager_GetServiceConfig_sync]
 from google.cloud import servicemanagement_v1
 
 
-async def sample_get_service_config():
+def sample_get_service_config():
     # Create a client
-    client = servicemanagement_v1.ServiceManagerAsyncClient()
+    client = servicemanagement_v1.ServiceManagerClient()
 
     # Initialize request argument(s)
     request = servicemanagement_v1.GetServiceConfigRequest(
@@ -38,9 +38,9 @@ async def sample_get_service_config():
     )
 
     # Make the request
-    response = await client.get_service_config(request=request)
+    response = client.get_service_config(request=request)
 
     # Handle the response
     print(response)
 
-# [END servicemanagement_generated_servicemanagement_v1_ServiceManager_GetServiceConfig_async]
+# [END servicemanagement_v1_generated_ServiceManager_GetServiceConfig_sync]

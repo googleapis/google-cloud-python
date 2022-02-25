@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for EnableService
+# Snippet for GetServiceRollout
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,28 +23,24 @@
 #   python3 -m pip install google-cloud-service-management
 
 
-# [START servicemanagement_generated_servicemanagement_v1_ServiceManager_EnableService_async]
+# [START servicemanagement_v1_generated_ServiceManager_GetServiceRollout_sync]
 from google.cloud import servicemanagement_v1
 
 
-async def sample_enable_service():
+def sample_get_service_rollout():
     # Create a client
-    client = servicemanagement_v1.ServiceManagerAsyncClient()
+    client = servicemanagement_v1.ServiceManagerClient()
 
     # Initialize request argument(s)
-    request = servicemanagement_v1.EnableServiceRequest(
+    request = servicemanagement_v1.GetServiceRolloutRequest(
         service_name="service_name_value",
-        consumer_id="consumer_id_value",
+        rollout_id="rollout_id_value",
     )
 
     # Make the request
-    operation = client.enable_service(request=request)
-
-    print("Waiting for operation to complete...")
-
-    response = await operation.result()
+    response = client.get_service_rollout(request=request)
 
     # Handle the response
     print(response)
 
-# [END servicemanagement_generated_servicemanagement_v1_ServiceManager_EnableService_async]
+# [END servicemanagement_v1_generated_ServiceManager_GetServiceRollout_sync]

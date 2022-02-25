@@ -10,8 +10,8 @@
           "shortName": "CreateServiceConfig"
         }
       },
-      "file": "servicemanagement_generated_servicemanagement_v1_service_manager_create_service_config_async.py",
-      "regionTag": "servicemanagement_generated_servicemanagement_v1_ServiceManager_CreateServiceConfig_async",
+      "file": "servicemanagement_v1_generated_service_manager_create_service_config_async.py",
+      "regionTag": "servicemanagement_v1_generated_ServiceManager_CreateServiceConfig_async",
       "segments": [
         {
           "end": 44,
@@ -54,8 +54,8 @@
           "shortName": "CreateServiceConfig"
         }
       },
-      "file": "servicemanagement_generated_servicemanagement_v1_service_manager_create_service_config_sync.py",
-      "regionTag": "servicemanagement_generated_servicemanagement_v1_ServiceManager_CreateServiceConfig_sync",
+      "file": "servicemanagement_v1_generated_service_manager_create_service_config_sync.py",
+      "regionTag": "servicemanagement_v1_generated_ServiceManager_CreateServiceConfig_sync",
       "segments": [
         {
           "end": 44,
@@ -99,8 +99,8 @@
           "shortName": "CreateServiceRollout"
         }
       },
-      "file": "servicemanagement_generated_servicemanagement_v1_service_manager_create_service_rollout_async.py",
-      "regionTag": "servicemanagement_generated_servicemanagement_v1_ServiceManager_CreateServiceRollout_async",
+      "file": "servicemanagement_v1_generated_service_manager_create_service_rollout_async.py",
+      "regionTag": "servicemanagement_v1_generated_ServiceManager_CreateServiceRollout_async",
       "segments": [
         {
           "end": 48,
@@ -143,8 +143,8 @@
           "shortName": "CreateServiceRollout"
         }
       },
-      "file": "servicemanagement_generated_servicemanagement_v1_service_manager_create_service_rollout_sync.py",
-      "regionTag": "servicemanagement_generated_servicemanagement_v1_ServiceManager_CreateServiceRollout_sync",
+      "file": "servicemanagement_v1_generated_service_manager_create_service_rollout_sync.py",
+      "regionTag": "servicemanagement_v1_generated_ServiceManager_CreateServiceRollout_sync",
       "segments": [
         {
           "end": 48,
@@ -188,8 +188,8 @@
           "shortName": "CreateService"
         }
       },
-      "file": "servicemanagement_generated_servicemanagement_v1_service_manager_create_service_async.py",
-      "regionTag": "servicemanagement_generated_servicemanagement_v1_ServiceManager_CreateService_async",
+      "file": "servicemanagement_v1_generated_service_manager_create_service_async.py",
+      "regionTag": "servicemanagement_v1_generated_ServiceManager_CreateService_async",
       "segments": [
         {
           "end": 47,
@@ -232,8 +232,8 @@
           "shortName": "CreateService"
         }
       },
-      "file": "servicemanagement_generated_servicemanagement_v1_service_manager_create_service_sync.py",
-      "regionTag": "servicemanagement_generated_servicemanagement_v1_ServiceManager_CreateService_sync",
+      "file": "servicemanagement_v1_generated_service_manager_create_service_sync.py",
+      "regionTag": "servicemanagement_v1_generated_ServiceManager_CreateService_sync",
       "segments": [
         {
           "end": 47,
@@ -277,8 +277,8 @@
           "shortName": "DeleteService"
         }
       },
-      "file": "servicemanagement_generated_servicemanagement_v1_service_manager_delete_service_async.py",
-      "regionTag": "servicemanagement_generated_servicemanagement_v1_ServiceManager_DeleteService_async",
+      "file": "servicemanagement_v1_generated_service_manager_delete_service_async.py",
+      "regionTag": "servicemanagement_v1_generated_ServiceManager_DeleteService_async",
       "segments": [
         {
           "end": 48,
@@ -321,8 +321,8 @@
           "shortName": "DeleteService"
         }
       },
-      "file": "servicemanagement_generated_servicemanagement_v1_service_manager_delete_service_sync.py",
-      "regionTag": "servicemanagement_generated_servicemanagement_v1_ServiceManager_DeleteService_sync",
+      "file": "servicemanagement_v1_generated_service_manager_delete_service_sync.py",
+      "regionTag": "servicemanagement_v1_generated_ServiceManager_DeleteService_sync",
       "segments": [
         {
           "end": 48,
@@ -366,8 +366,8 @@
           "shortName": "GenerateConfigReport"
         }
       },
-      "file": "servicemanagement_generated_servicemanagement_v1_service_manager_generate_config_report_async.py",
-      "regionTag": "servicemanagement_generated_servicemanagement_v1_ServiceManager_GenerateConfigReport_async",
+      "file": "servicemanagement_v1_generated_service_manager_generate_config_report_async.py",
+      "regionTag": "servicemanagement_v1_generated_ServiceManager_GenerateConfigReport_async",
       "segments": [
         {
           "end": 43,
@@ -410,8 +410,8 @@
           "shortName": "GenerateConfigReport"
         }
       },
-      "file": "servicemanagement_generated_servicemanagement_v1_service_manager_generate_config_report_sync.py",
-      "regionTag": "servicemanagement_generated_servicemanagement_v1_ServiceManager_GenerateConfigReport_sync",
+      "file": "servicemanagement_v1_generated_service_manager_generate_config_report_sync.py",
+      "regionTag": "servicemanagement_v1_generated_ServiceManager_GenerateConfigReport_sync",
       "segments": [
         {
           "end": 43,
@@ -455,8 +455,8 @@
           "shortName": "GetServiceConfig"
         }
       },
-      "file": "servicemanagement_generated_servicemanagement_v1_service_manager_get_service_config_async.py",
-      "regionTag": "servicemanagement_generated_servicemanagement_v1_ServiceManager_GetServiceConfig_async",
+      "file": "servicemanagement_v1_generated_service_manager_get_service_config_async.py",
+      "regionTag": "servicemanagement_v1_generated_ServiceManager_GetServiceConfig_async",
       "segments": [
         {
           "end": 45,
@@ -499,8 +499,8 @@
           "shortName": "GetServiceConfig"
         }
       },
-      "file": "servicemanagement_generated_servicemanagement_v1_service_manager_get_service_config_sync.py",
-      "regionTag": "servicemanagement_generated_servicemanagement_v1_ServiceManager_GetServiceConfig_sync",
+      "file": "servicemanagement_v1_generated_service_manager_get_service_config_sync.py",
+      "regionTag": "servicemanagement_v1_generated_ServiceManager_GetServiceConfig_sync",
       "segments": [
         {
           "end": 45,
@@ -544,8 +544,8 @@
           "shortName": "GetServiceRollout"
         }
       },
-      "file": "servicemanagement_generated_servicemanagement_v1_service_manager_get_service_rollout_async.py",
-      "regionTag": "servicemanagement_generated_servicemanagement_v1_ServiceManager_GetServiceRollout_async",
+      "file": "servicemanagement_v1_generated_service_manager_get_service_rollout_async.py",
+      "regionTag": "servicemanagement_v1_generated_ServiceManager_GetServiceRollout_async",
       "segments": [
         {
           "end": 45,
@@ -588,8 +588,8 @@
           "shortName": "GetServiceRollout"
         }
       },
-      "file": "servicemanagement_generated_servicemanagement_v1_service_manager_get_service_rollout_sync.py",
-      "regionTag": "servicemanagement_generated_servicemanagement_v1_ServiceManager_GetServiceRollout_sync",
+      "file": "servicemanagement_v1_generated_service_manager_get_service_rollout_sync.py",
+      "regionTag": "servicemanagement_v1_generated_ServiceManager_GetServiceRollout_sync",
       "segments": [
         {
           "end": 45,
@@ -633,8 +633,8 @@
           "shortName": "GetService"
         }
       },
-      "file": "servicemanagement_generated_servicemanagement_v1_service_manager_get_service_async.py",
-      "regionTag": "servicemanagement_generated_servicemanagement_v1_ServiceManager_GetService_async",
+      "file": "servicemanagement_v1_generated_service_manager_get_service_async.py",
+      "regionTag": "servicemanagement_v1_generated_ServiceManager_GetService_async",
       "segments": [
         {
           "end": 44,
@@ -677,8 +677,8 @@
           "shortName": "GetService"
         }
       },
-      "file": "servicemanagement_generated_servicemanagement_v1_service_manager_get_service_sync.py",
-      "regionTag": "servicemanagement_generated_servicemanagement_v1_ServiceManager_GetService_sync",
+      "file": "servicemanagement_v1_generated_service_manager_get_service_sync.py",
+      "regionTag": "servicemanagement_v1_generated_ServiceManager_GetService_sync",
       "segments": [
         {
           "end": 44,
@@ -722,8 +722,8 @@
           "shortName": "ListServiceConfigs"
         }
       },
-      "file": "servicemanagement_generated_servicemanagement_v1_service_manager_list_service_configs_async.py",
-      "regionTag": "servicemanagement_generated_servicemanagement_v1_ServiceManager_ListServiceConfigs_async",
+      "file": "servicemanagement_v1_generated_service_manager_list_service_configs_async.py",
+      "regionTag": "servicemanagement_v1_generated_ServiceManager_ListServiceConfigs_async",
       "segments": [
         {
           "end": 45,
@@ -766,8 +766,8 @@
           "shortName": "ListServiceConfigs"
         }
       },
-      "file": "servicemanagement_generated_servicemanagement_v1_service_manager_list_service_configs_sync.py",
-      "regionTag": "servicemanagement_generated_servicemanagement_v1_ServiceManager_ListServiceConfigs_sync",
+      "file": "servicemanagement_v1_generated_service_manager_list_service_configs_sync.py",
+      "regionTag": "servicemanagement_v1_generated_ServiceManager_ListServiceConfigs_sync",
       "segments": [
         {
           "end": 45,
@@ -811,8 +811,8 @@
           "shortName": "ListServiceRollouts"
         }
       },
-      "file": "servicemanagement_generated_servicemanagement_v1_service_manager_list_service_rollouts_async.py",
-      "regionTag": "servicemanagement_generated_servicemanagement_v1_ServiceManager_ListServiceRollouts_async",
+      "file": "servicemanagement_v1_generated_service_manager_list_service_rollouts_async.py",
+      "regionTag": "servicemanagement_v1_generated_ServiceManager_ListServiceRollouts_async",
       "segments": [
         {
           "end": 46,
@@ -855,8 +855,8 @@
           "shortName": "ListServiceRollouts"
         }
       },
-      "file": "servicemanagement_generated_servicemanagement_v1_service_manager_list_service_rollouts_sync.py",
-      "regionTag": "servicemanagement_generated_servicemanagement_v1_ServiceManager_ListServiceRollouts_sync",
+      "file": "servicemanagement_v1_generated_service_manager_list_service_rollouts_sync.py",
+      "regionTag": "servicemanagement_v1_generated_ServiceManager_ListServiceRollouts_sync",
       "segments": [
         {
           "end": 46,
@@ -900,8 +900,8 @@
           "shortName": "ListServices"
         }
       },
-      "file": "servicemanagement_generated_servicemanagement_v1_service_manager_list_services_async.py",
-      "regionTag": "servicemanagement_generated_servicemanagement_v1_ServiceManager_ListServices_async",
+      "file": "servicemanagement_v1_generated_service_manager_list_services_async.py",
+      "regionTag": "servicemanagement_v1_generated_ServiceManager_ListServices_async",
       "segments": [
         {
           "end": 44,
@@ -944,8 +944,8 @@
           "shortName": "ListServices"
         }
       },
-      "file": "servicemanagement_generated_servicemanagement_v1_service_manager_list_services_sync.py",
-      "regionTag": "servicemanagement_generated_servicemanagement_v1_ServiceManager_ListServices_sync",
+      "file": "servicemanagement_v1_generated_service_manager_list_services_sync.py",
+      "regionTag": "servicemanagement_v1_generated_ServiceManager_ListServices_sync",
       "segments": [
         {
           "end": 44,
@@ -989,8 +989,8 @@
           "shortName": "SubmitConfigSource"
         }
       },
-      "file": "servicemanagement_generated_servicemanagement_v1_service_manager_submit_config_source_async.py",
-      "regionTag": "servicemanagement_generated_servicemanagement_v1_ServiceManager_SubmitConfigSource_async",
+      "file": "servicemanagement_v1_generated_service_manager_submit_config_source_async.py",
+      "regionTag": "servicemanagement_v1_generated_ServiceManager_SubmitConfigSource_async",
       "segments": [
         {
           "end": 48,
@@ -1033,8 +1033,8 @@
           "shortName": "SubmitConfigSource"
         }
       },
-      "file": "servicemanagement_generated_servicemanagement_v1_service_manager_submit_config_source_sync.py",
-      "regionTag": "servicemanagement_generated_servicemanagement_v1_ServiceManager_SubmitConfigSource_sync",
+      "file": "servicemanagement_v1_generated_service_manager_submit_config_source_sync.py",
+      "regionTag": "servicemanagement_v1_generated_ServiceManager_SubmitConfigSource_sync",
       "segments": [
         {
           "end": 48,
@@ -1078,8 +1078,8 @@
           "shortName": "UndeleteService"
         }
       },
-      "file": "servicemanagement_generated_servicemanagement_v1_service_manager_undelete_service_async.py",
-      "regionTag": "servicemanagement_generated_servicemanagement_v1_ServiceManager_UndeleteService_async",
+      "file": "servicemanagement_v1_generated_service_manager_undelete_service_async.py",
+      "regionTag": "servicemanagement_v1_generated_ServiceManager_UndeleteService_async",
       "segments": [
         {
           "end": 48,
@@ -1122,8 +1122,8 @@
           "shortName": "UndeleteService"
         }
       },
-      "file": "servicemanagement_generated_servicemanagement_v1_service_manager_undelete_service_sync.py",
-      "regionTag": "servicemanagement_generated_servicemanagement_v1_ServiceManager_UndeleteService_sync",
+      "file": "servicemanagement_v1_generated_service_manager_undelete_service_sync.py",
+      "regionTag": "servicemanagement_v1_generated_ServiceManager_UndeleteService_sync",
       "segments": [
         {
           "end": 48,

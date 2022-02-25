@@ -243,7 +243,7 @@ class ServiceManagerAsyncClient:
         "servicemanagement.services.get" permission for.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import servicemanagement_v1
 
@@ -350,7 +350,7 @@ class ServiceManagerAsyncClient:
         unless the service is public.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import servicemanagement_v1
 
@@ -447,7 +447,7 @@ class ServiceManagerAsyncClient:
         Operation<response: ManagedService>
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import servicemanagement_v1
 
@@ -552,7 +552,7 @@ class ServiceManagerAsyncClient:
         Operation<response: google.protobuf.Empty>
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import servicemanagement_v1
 
@@ -669,7 +669,7 @@ class ServiceManagerAsyncClient:
         Operation<response: UndeleteServiceResponse>
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import servicemanagement_v1
 
@@ -771,7 +771,7 @@ class ServiceManagerAsyncClient:
         managed service, from the newest to the oldest.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import servicemanagement_v1
 
@@ -870,7 +870,7 @@ class ServiceManagerAsyncClient:
         service.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import servicemanagement_v1
 
@@ -1004,7 +1004,7 @@ class ServiceManagerAsyncClient:
         rest will be deleted eventually.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import servicemanagement_v1
 
@@ -1130,7 +1130,7 @@ class ServiceManagerAsyncClient:
         Operation<response: SubmitConfigSourceResponse>
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import servicemanagement_v1
 
@@ -1254,7 +1254,7 @@ class ServiceManagerAsyncClient:
         oldest.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import servicemanagement_v1
 
@@ -1369,7 +1369,7 @@ class ServiceManagerAsyncClient:
         [rollout][google.api.servicemanagement.v1.Rollout].
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import servicemanagement_v1
 
@@ -1486,7 +1486,7 @@ class ServiceManagerAsyncClient:
         Operation<response: Rollout>
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import servicemanagement_v1
 
@@ -1609,7 +1609,7 @@ class ServiceManagerAsyncClient:
         the last pushed service configuration.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import servicemanagement_v1
 

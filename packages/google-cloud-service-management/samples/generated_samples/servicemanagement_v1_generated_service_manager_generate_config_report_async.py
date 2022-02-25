@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for CreateServiceConfig
+# Snippet for GenerateConfigReport
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,23 +23,22 @@
 #   python3 -m pip install google-cloud-service-management
 
 
-# [START servicemanagement_generated_servicemanagement_v1_ServiceManager_CreateServiceConfig_async]
+# [START servicemanagement_v1_generated_ServiceManager_GenerateConfigReport_async]
 from google.cloud import servicemanagement_v1
 
 
-async def sample_create_service_config():
+async def sample_generate_config_report():
     # Create a client
     client = servicemanagement_v1.ServiceManagerAsyncClient()
 
     # Initialize request argument(s)
-    request = servicemanagement_v1.CreateServiceConfigRequest(
-        service_name="service_name_value",
+    request = servicemanagement_v1.GenerateConfigReportRequest(
     )
 
     # Make the request
-    response = await client.create_service_config(request=request)
+    response = await client.generate_config_report(request=request)
 
     # Handle the response
     print(response)
 
-# [END servicemanagement_generated_servicemanagement_v1_ServiceManager_CreateServiceConfig_async]
+# [END servicemanagement_v1_generated_ServiceManager_GenerateConfigReport_async]

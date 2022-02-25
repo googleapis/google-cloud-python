@@ -23,13 +23,13 @@
 #   python3 -m pip install google-cloud-service-management
 
 
-# [START servicemanagement_generated_servicemanagement_v1_ServiceManager_ListServices_async]
+# [START servicemanagement_v1_generated_ServiceManager_ListServices_sync]
 from google.cloud import servicemanagement_v1
 
 
-async def sample_list_services():
+def sample_list_services():
     # Create a client
-    client = servicemanagement_v1.ServiceManagerAsyncClient()
+    client = servicemanagement_v1.ServiceManagerClient()
 
     # Initialize request argument(s)
     request = servicemanagement_v1.ListServicesRequest(
@@ -39,7 +39,7 @@ async def sample_list_services():
     page_result = client.list_services(request=request)
 
     # Handle the response
-    async for response in page_result:
+    for response in page_result:
         print(response)
 
-# [END servicemanagement_generated_servicemanagement_v1_ServiceManager_ListServices_async]
+# [END servicemanagement_v1_generated_ServiceManager_ListServices_sync]

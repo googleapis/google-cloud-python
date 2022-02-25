@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for UndeleteService
+# Snippet for GenerateConfigReport
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,27 +23,22 @@
 #   python3 -m pip install google-cloud-service-management
 
 
-# [START servicemanagement_generated_servicemanagement_v1_ServiceManager_UndeleteService_async]
+# [START servicemanagement_v1_generated_ServiceManager_GenerateConfigReport_sync]
 from google.cloud import servicemanagement_v1
 
 
-async def sample_undelete_service():
+def sample_generate_config_report():
     # Create a client
-    client = servicemanagement_v1.ServiceManagerAsyncClient()
+    client = servicemanagement_v1.ServiceManagerClient()
 
     # Initialize request argument(s)
-    request = servicemanagement_v1.UndeleteServiceRequest(
-        service_name="service_name_value",
+    request = servicemanagement_v1.GenerateConfigReportRequest(
     )
 
     # Make the request
-    operation = client.undelete_service(request=request)
-
-    print("Waiting for operation to complete...")
-
-    response = await operation.result()
+    response = client.generate_config_report(request=request)
 
     # Handle the response
     print(response)
 
-# [END servicemanagement_generated_servicemanagement_v1_ServiceManager_UndeleteService_async]
+# [END servicemanagement_v1_generated_ServiceManager_GenerateConfigReport_sync]

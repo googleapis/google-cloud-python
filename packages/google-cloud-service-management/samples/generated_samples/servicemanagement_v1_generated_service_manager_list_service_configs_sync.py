@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for DeleteService
+# Snippet for ListServiceConfigs
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,27 +23,24 @@
 #   python3 -m pip install google-cloud-service-management
 
 
-# [START servicemanagement_generated_servicemanagement_v1_ServiceManager_DeleteService_sync]
+# [START servicemanagement_v1_generated_ServiceManager_ListServiceConfigs_sync]
 from google.cloud import servicemanagement_v1
 
 
-def sample_delete_service():
+def sample_list_service_configs():
     # Create a client
     client = servicemanagement_v1.ServiceManagerClient()
 
     # Initialize request argument(s)
-    request = servicemanagement_v1.DeleteServiceRequest(
+    request = servicemanagement_v1.ListServiceConfigsRequest(
         service_name="service_name_value",
     )
 
     # Make the request
-    operation = client.delete_service(request=request)
-
-    print("Waiting for operation to complete...")
-
-    response = operation.result()
+    page_result = client.list_service_configs(request=request)
 
     # Handle the response
-    print(response)
+    for response in page_result:
+        print(response)
 
-# [END servicemanagement_generated_servicemanagement_v1_ServiceManager_DeleteService_sync]
+# [END servicemanagement_v1_generated_ServiceManager_ListServiceConfigs_sync]

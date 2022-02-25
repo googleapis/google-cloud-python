@@ -426,8 +426,7 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         "servicemanagement.services.get" permission for.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import servicemanagement_v1
 
@@ -534,8 +533,7 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         unless the service is public.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import servicemanagement_v1
 
@@ -632,8 +630,7 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         Operation<response: ManagedService>
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import servicemanagement_v1
 
@@ -738,8 +735,7 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         Operation<response: google.protobuf.Empty>
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import servicemanagement_v1
 
@@ -856,8 +852,7 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         Operation<response: UndeleteServiceResponse>
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import servicemanagement_v1
 
@@ -959,8 +954,7 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         managed service, from the newest to the oldest.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import servicemanagement_v1
 
@@ -1059,8 +1053,7 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         service.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import servicemanagement_v1
 
@@ -1194,8 +1187,7 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         rest will be deleted eventually.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import servicemanagement_v1
 
@@ -1321,8 +1313,7 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         Operation<response: SubmitConfigSourceResponse>
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import servicemanagement_v1
 
@@ -1446,8 +1437,7 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         oldest.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import servicemanagement_v1
 
@@ -1562,8 +1552,7 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         [rollout][google.api.servicemanagement.v1.Rollout].
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import servicemanagement_v1
 
@@ -1680,8 +1669,7 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         Operation<response: Rollout>
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import servicemanagement_v1
 
@@ -1804,8 +1792,7 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         the last pushed service configuration.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import servicemanagement_v1
 

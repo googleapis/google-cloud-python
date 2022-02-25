@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for EnableService
+# Snippet for SubmitConfigSource
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,28 +23,27 @@
 #   python3 -m pip install google-cloud-service-management
 
 
-# [START servicemanagement_generated_servicemanagement_v1_ServiceManager_EnableService_sync]
+# [START servicemanagement_v1_generated_ServiceManager_SubmitConfigSource_async]
 from google.cloud import servicemanagement_v1
 
 
-def sample_enable_service():
+async def sample_submit_config_source():
     # Create a client
-    client = servicemanagement_v1.ServiceManagerClient()
+    client = servicemanagement_v1.ServiceManagerAsyncClient()
 
     # Initialize request argument(s)
-    request = servicemanagement_v1.EnableServiceRequest(
+    request = servicemanagement_v1.SubmitConfigSourceRequest(
         service_name="service_name_value",
-        consumer_id="consumer_id_value",
     )
 
     # Make the request
-    operation = client.enable_service(request=request)
+    operation = client.submit_config_source(request=request)
 
     print("Waiting for operation to complete...")
 
-    response = operation.result()
+    response = await operation.result()
 
     # Handle the response
     print(response)
 
-# [END servicemanagement_generated_servicemanagement_v1_ServiceManager_EnableService_sync]
+# [END servicemanagement_v1_generated_ServiceManager_SubmitConfigSource_async]

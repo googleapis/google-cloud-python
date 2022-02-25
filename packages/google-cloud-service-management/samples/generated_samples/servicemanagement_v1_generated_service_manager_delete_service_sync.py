@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for DisableService
+# Snippet for DeleteService
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,28 +23,27 @@
 #   python3 -m pip install google-cloud-service-management
 
 
-# [START servicemanagement_generated_servicemanagement_v1_ServiceManager_DisableService_async]
+# [START servicemanagement_v1_generated_ServiceManager_DeleteService_sync]
 from google.cloud import servicemanagement_v1
 
 
-async def sample_disable_service():
+def sample_delete_service():
     # Create a client
-    client = servicemanagement_v1.ServiceManagerAsyncClient()
+    client = servicemanagement_v1.ServiceManagerClient()
 
     # Initialize request argument(s)
-    request = servicemanagement_v1.DisableServiceRequest(
+    request = servicemanagement_v1.DeleteServiceRequest(
         service_name="service_name_value",
-        consumer_id="consumer_id_value",
     )
 
     # Make the request
-    operation = client.disable_service(request=request)
+    operation = client.delete_service(request=request)
 
     print("Waiting for operation to complete...")
 
-    response = await operation.result()
+    response = operation.result()
 
     # Handle the response
     print(response)
 
-# [END servicemanagement_generated_servicemanagement_v1_ServiceManager_DisableService_async]
+# [END servicemanagement_v1_generated_ServiceManager_DeleteService_sync]

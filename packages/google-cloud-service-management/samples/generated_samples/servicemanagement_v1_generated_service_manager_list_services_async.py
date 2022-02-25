@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for CreateService
+# Snippet for ListServices
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,26 +23,23 @@
 #   python3 -m pip install google-cloud-service-management
 
 
-# [START servicemanagement_generated_servicemanagement_v1_ServiceManager_CreateService_sync]
+# [START servicemanagement_v1_generated_ServiceManager_ListServices_async]
 from google.cloud import servicemanagement_v1
 
 
-def sample_create_service():
+async def sample_list_services():
     # Create a client
-    client = servicemanagement_v1.ServiceManagerClient()
+    client = servicemanagement_v1.ServiceManagerAsyncClient()
 
     # Initialize request argument(s)
-    request = servicemanagement_v1.CreateServiceRequest(
+    request = servicemanagement_v1.ListServicesRequest(
     )
 
     # Make the request
-    operation = client.create_service(request=request)
-
-    print("Waiting for operation to complete...")
-
-    response = operation.result()
+    page_result = client.list_services(request=request)
 
     # Handle the response
-    print(response)
+    async for response in page_result:
+        print(response)
 
-# [END servicemanagement_generated_servicemanagement_v1_ServiceManager_CreateService_sync]
+# [END servicemanagement_v1_generated_ServiceManager_ListServices_async]

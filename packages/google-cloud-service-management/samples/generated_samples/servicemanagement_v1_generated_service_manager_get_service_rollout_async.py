@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for GenerateConfigReport
+# Snippet for GetServiceRollout
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,22 +23,24 @@
 #   python3 -m pip install google-cloud-service-management
 
 
-# [START servicemanagement_generated_servicemanagement_v1_ServiceManager_GenerateConfigReport_sync]
+# [START servicemanagement_v1_generated_ServiceManager_GetServiceRollout_async]
 from google.cloud import servicemanagement_v1
 
 
-def sample_generate_config_report():
+async def sample_get_service_rollout():
     # Create a client
-    client = servicemanagement_v1.ServiceManagerClient()
+    client = servicemanagement_v1.ServiceManagerAsyncClient()
 
     # Initialize request argument(s)
-    request = servicemanagement_v1.GenerateConfigReportRequest(
+    request = servicemanagement_v1.GetServiceRolloutRequest(
+        service_name="service_name_value",
+        rollout_id="rollout_id_value",
     )
 
     # Make the request
-    response = client.generate_config_report(request=request)
+    response = await client.get_service_rollout(request=request)
 
     # Handle the response
     print(response)
 
-# [END servicemanagement_generated_servicemanagement_v1_ServiceManager_GenerateConfigReport_sync]
+# [END servicemanagement_v1_generated_ServiceManager_GetServiceRollout_async]
