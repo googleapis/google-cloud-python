@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ListTraces
+# Snippet for BatchWriteSpans
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,24 +23,26 @@
 #   python3 -m pip install google-cloud-trace
 
 
-# [START cloudtrace_generated_trace_v1_TraceService_ListTraces_async]
-from google.cloud import trace_v1
+# [START cloudtrace_v2_generated_TraceService_BatchWriteSpans_async]
+from google.cloud import trace_v2
 
 
-async def sample_list_traces():
+async def sample_batch_write_spans():
     # Create a client
-    client = trace_v1.TraceServiceAsyncClient()
+    client = trace_v2.TraceServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = trace_v1.ListTracesRequest(
-        project_id="project_id_value",
+    spans = trace_v2.Span()
+    spans.name = "name_value"
+    spans.span_id = "span_id_value"
+
+    request = trace_v2.BatchWriteSpansRequest(
+        name="name_value",
+        spans=spans,
     )
 
     # Make the request
-    page_result = client.list_traces(request=request)
+    await client.batch_write_spans(request=request)
 
-    # Handle the response
-    async for response in page_result:
-        print(response)
 
-# [END cloudtrace_generated_trace_v1_TraceService_ListTraces_async]
+# [END cloudtrace_v2_generated_TraceService_BatchWriteSpans_async]

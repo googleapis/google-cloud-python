@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for GetTrace
+# Snippet for PatchTraces
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,24 +23,21 @@
 #   python3 -m pip install google-cloud-trace
 
 
-# [START cloudtrace_generated_trace_v1_TraceService_GetTrace_sync]
+# [START cloudtrace_v1_generated_TraceService_PatchTraces_sync]
 from google.cloud import trace_v1
 
 
-def sample_get_trace():
+def sample_patch_traces():
     # Create a client
     client = trace_v1.TraceServiceClient()
 
     # Initialize request argument(s)
-    request = trace_v1.GetTraceRequest(
+    request = trace_v1.PatchTracesRequest(
         project_id="project_id_value",
-        trace_id="trace_id_value",
     )
 
     # Make the request
-    response = client.get_trace(request=request)
+    client.patch_traces(request=request)
 
-    # Handle the response
-    print(response)
 
-# [END cloudtrace_generated_trace_v1_TraceService_GetTrace_sync]
+# [END cloudtrace_v1_generated_TraceService_PatchTraces_sync]

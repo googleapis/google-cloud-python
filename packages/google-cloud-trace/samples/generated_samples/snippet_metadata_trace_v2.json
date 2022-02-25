@@ -10,8 +10,8 @@
           "shortName": "BatchWriteSpans"
         }
       },
-      "file": "cloudtrace_generated_trace_v2_trace_service_batch_write_spans_async.py",
-      "regionTag": "cloudtrace_generated_trace_v2_TraceService_BatchWriteSpans_async",
+      "file": "cloudtrace_v2_generated_trace_service_batch_write_spans_async.py",
+      "regionTag": "cloudtrace_v2_generated_TraceService_BatchWriteSpans_async",
       "segments": [
         {
           "end": 47,
@@ -52,8 +52,8 @@
           "shortName": "BatchWriteSpans"
         }
       },
-      "file": "cloudtrace_generated_trace_v2_trace_service_batch_write_spans_sync.py",
-      "regionTag": "cloudtrace_generated_trace_v2_TraceService_BatchWriteSpans_sync",
+      "file": "cloudtrace_v2_generated_trace_service_batch_write_spans_sync.py",
+      "regionTag": "cloudtrace_v2_generated_TraceService_BatchWriteSpans_sync",
       "segments": [
         {
           "end": 47,
@@ -95,8 +95,8 @@
           "shortName": "CreateSpan"
         }
       },
-      "file": "cloudtrace_generated_trace_v2_trace_service_create_span_async.py",
-      "regionTag": "cloudtrace_generated_trace_v2_TraceService_CreateSpan_async",
+      "file": "cloudtrace_v2_generated_trace_service_create_span_async.py",
+      "regionTag": "cloudtrace_v2_generated_TraceService_CreateSpan_async",
       "segments": [
         {
           "end": 45,
@@ -139,8 +139,8 @@
           "shortName": "CreateSpan"
         }
       },
-      "file": "cloudtrace_generated_trace_v2_trace_service_create_span_sync.py",
-      "regionTag": "cloudtrace_generated_trace_v2_TraceService_CreateSpan_sync",
+      "file": "cloudtrace_v2_generated_trace_service_create_span_sync.py",
+      "regionTag": "cloudtrace_v2_generated_TraceService_CreateSpan_sync",
       "segments": [
         {
           "end": 45,

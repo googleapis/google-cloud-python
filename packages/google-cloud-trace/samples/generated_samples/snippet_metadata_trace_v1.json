@@ -10,8 +10,8 @@
           "shortName": "GetTrace"
         }
       },
-      "file": "cloudtrace_generated_trace_v1_trace_service_get_trace_async.py",
-      "regionTag": "cloudtrace_generated_trace_v1_TraceService_GetTrace_async",
+      "file": "cloudtrace_v1_generated_trace_service_get_trace_async.py",
+      "regionTag": "cloudtrace_v1_generated_TraceService_GetTrace_async",
       "segments": [
         {
           "end": 45,
@@ -54,8 +54,8 @@
           "shortName": "GetTrace"
         }
       },
-      "file": "cloudtrace_generated_trace_v1_trace_service_get_trace_sync.py",
-      "regionTag": "cloudtrace_generated_trace_v1_TraceService_GetTrace_sync",
+      "file": "cloudtrace_v1_generated_trace_service_get_trace_sync.py",
+      "regionTag": "cloudtrace_v1_generated_TraceService_GetTrace_sync",
       "segments": [
         {
           "end": 45,
@@ -99,8 +99,8 @@
           "shortName": "ListTraces"
         }
       },
-      "file": "cloudtrace_generated_trace_v1_trace_service_list_traces_async.py",
-      "regionTag": "cloudtrace_generated_trace_v1_TraceService_ListTraces_async",
+      "file": "cloudtrace_v1_generated_trace_service_list_traces_async.py",
+      "regionTag": "cloudtrace_v1_generated_TraceService_ListTraces_async",
       "segments": [
         {
           "end": 45,
@@ -143,8 +143,8 @@
           "shortName": "ListTraces"
         }
       },
-      "file": "cloudtrace_generated_trace_v1_trace_service_list_traces_sync.py",
-      "regionTag": "cloudtrace_generated_trace_v1_TraceService_ListTraces_sync",
+      "file": "cloudtrace_v1_generated_trace_service_list_traces_sync.py",
+      "regionTag": "cloudtrace_v1_generated_TraceService_ListTraces_sync",
       "segments": [
         {
           "end": 45,
@@ -188,8 +188,8 @@
           "shortName": "PatchTraces"
         }
       },
-      "file": "cloudtrace_generated_trace_v1_trace_service_patch_traces_async.py",
-      "regionTag": "cloudtrace_generated_trace_v1_TraceService_PatchTraces_async",
+      "file": "cloudtrace_v1_generated_trace_service_patch_traces_async.py",
+      "regionTag": "cloudtrace_v1_generated_TraceService_PatchTraces_async",
       "segments": [
         {
           "end": 42,
@@ -230,8 +230,8 @@
           "shortName": "PatchTraces"
         }
       },
-      "file": "cloudtrace_generated_trace_v1_trace_service_patch_traces_sync.py",
-      "regionTag": "cloudtrace_generated_trace_v1_TraceService_PatchTraces_sync",
+      "file": "cloudtrace_v1_generated_trace_service_patch_traces_sync.py",
+      "regionTag": "cloudtrace_v1_generated_TraceService_PatchTraces_sync",
       "segments": [
         {
           "end": 42,

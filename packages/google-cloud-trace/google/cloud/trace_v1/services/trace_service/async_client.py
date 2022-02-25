@@ -215,7 +215,7 @@ class TraceServiceAsyncClient:
         filter conditions.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import trace_v1
 
@@ -320,7 +320,7 @@ class TraceServiceAsyncClient:
     ) -> trace.Trace:
         r"""Gets a single trace by its ID.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import trace_v1
 
@@ -433,7 +433,7 @@ class TraceServiceAsyncClient:
         a new trace is created.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import trace_v1
 

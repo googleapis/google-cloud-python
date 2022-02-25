@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-trace
 
 
-# [START cloudtrace_generated_trace_v1_TraceService_GetTrace_async]
+# [START cloudtrace_v1_generated_TraceService_GetTrace_async]
 from google.cloud import trace_v1
 
 
@@ -43,4 +43,4 @@ async def sample_get_trace():
     # Handle the response
     print(response)
 
-# [END cloudtrace_generated_trace_v1_TraceService_GetTrace_async]
+# [END cloudtrace_v1_generated_TraceService_GetTrace_async]

@@ -221,7 +221,7 @@ class TraceServiceAsyncClient:
         update existing spans.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import trace_v2
 
@@ -315,7 +315,7 @@ class TraceServiceAsyncClient:
     ) -> trace.Span:
         r"""Creates a new span.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import trace_v2
 

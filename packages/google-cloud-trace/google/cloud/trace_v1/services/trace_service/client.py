@@ -400,8 +400,7 @@ class TraceServiceClient(metaclass=TraceServiceClientMeta):
         filter conditions.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import trace_v1
 
@@ -496,8 +495,7 @@ class TraceServiceClient(metaclass=TraceServiceClientMeta):
     ) -> trace.Trace:
         r"""Gets a single trace by its ID.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import trace_v1
 
@@ -600,8 +598,7 @@ class TraceServiceClient(metaclass=TraceServiceClientMeta):
         a new trace is created.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import trace_v1
 
