@@ -541,8 +541,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
     ) -> resources.Conversation:
         r"""Creates a conversation.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import contact_center_insights_v1
 
@@ -654,8 +653,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
     ) -> resources.Conversation:
         r"""Updates a conversation.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import contact_center_insights_v1
 
@@ -751,8 +749,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
     ) -> resources.Conversation:
         r"""Gets a conversation.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import contact_center_insights_v1
 
@@ -839,8 +836,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
     ) -> pagers.ListConversationsPager:
         r"""Lists conversations.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import contact_center_insights_v1
 
@@ -939,8 +935,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
     ) -> None:
         r"""Deletes a conversation.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import contact_center_insights_v1
 
@@ -1023,8 +1018,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         done when the analysis has completed.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import contact_center_insights_v1
 
@@ -1135,8 +1129,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
     ) -> resources.Analysis:
         r"""Gets an analysis.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import contact_center_insights_v1
 
@@ -1223,8 +1216,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
     ) -> pagers.ListAnalysesPager:
         r"""Lists analyses.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import contact_center_insights_v1
 
@@ -1322,8 +1314,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
     ) -> None:
         r"""Deletes an analysis.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import contact_center_insights_v1
 
@@ -1404,8 +1395,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         request body.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import contact_center_insights_v1
 
@@ -1514,8 +1504,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
     ) -> operation.Operation:
         r"""Creates an issue model.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import contact_center_insights_v1
 
@@ -1628,8 +1617,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
     ) -> resources.IssueModel:
         r"""Updates an issue model.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import contact_center_insights_v1
 
@@ -1725,8 +1713,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
     ) -> resources.IssueModel:
         r"""Gets an issue model.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import contact_center_insights_v1
 
@@ -1813,8 +1800,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
     ) -> contact_center_insights.ListIssueModelsResponse:
         r"""Lists issue models.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import contact_center_insights_v1
 
@@ -1901,8 +1887,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
     ) -> operation.Operation:
         r"""Deletes an issue model.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import contact_center_insights_v1
 
@@ -2020,8 +2005,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         analysis after it has been deployed.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import contact_center_insights_v1
 
@@ -2127,8 +2111,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         been undeployed.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import contact_center_insights_v1
 
@@ -2233,8 +2216,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
     ) -> resources.Issue:
         r"""Gets an issue.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import contact_center_insights_v1
 
@@ -2321,8 +2303,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
     ) -> contact_center_insights.ListIssuesResponse:
         r"""Lists issues.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import contact_center_insights_v1
 
@@ -2410,8 +2391,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
     ) -> resources.Issue:
         r"""Updates an issue.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import contact_center_insights_v1
 
@@ -2508,8 +2488,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
     ) -> contact_center_insights.CalculateIssueModelStatsResponse:
         r"""Gets an issue model's statistics.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import contact_center_insights_v1
 
@@ -2606,8 +2585,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
     ) -> resources.PhraseMatcher:
         r"""Creates a phrase matcher.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import contact_center_insights_v1
 
@@ -2710,8 +2688,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
     ) -> resources.PhraseMatcher:
         r"""Gets a phrase matcher.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import contact_center_insights_v1
 
@@ -2799,8 +2776,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
     ) -> pagers.ListPhraseMatchersPager:
         r"""Lists phrase matchers.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import contact_center_insights_v1
 
@@ -2899,8 +2875,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
     ) -> None:
         r"""Deletes a phrase matcher.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import contact_center_insights_v1
 
@@ -2981,8 +2956,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
     ) -> resources.PhraseMatcher:
         r"""Updates a phrase matcher.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import contact_center_insights_v1
 
@@ -3082,8 +3056,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
     ) -> contact_center_insights.CalculateStatsResponse:
         r"""Gets conversation statistics.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import contact_center_insights_v1
 
@@ -3173,8 +3146,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
     ) -> resources.Settings:
         r"""Gets project-level settings.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import contact_center_insights_v1
 
@@ -3263,8 +3235,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
     ) -> resources.Settings:
         r"""Updates project-level settings.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import contact_center_insights_v1
 
@@ -3361,8 +3332,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
     ) -> resources.View:
         r"""Creates a view.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import contact_center_insights_v1
 
@@ -3460,8 +3430,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
     ) -> resources.View:
         r"""Gets a view.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import contact_center_insights_v1
 
@@ -3548,8 +3517,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
     ) -> pagers.ListViewsPager:
         r"""Lists views.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import contact_center_insights_v1
 
@@ -3648,8 +3616,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
     ) -> resources.View:
         r"""Updates a view.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import contact_center_insights_v1
 
@@ -3742,8 +3709,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
     ) -> None:
         r"""Deletes a view.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import contact_center_insights_v1
 
