@@ -15,30 +15,31 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for GetEnvironment
+# Snippet for ListImageVersions
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
 # To install the latest published package dependency, execute the following:
-#   python3 -m pip install google-cloud-orchestration-airflow-service
+#   python3 -m pip install google-cloud-orchestration-airflow
 
 
-# [START composer_generated_service_v1beta1_Environments_GetEnvironment_sync]
-from google.cloud.orchestration.airflow import service_v1beta1
+# [START composer_v1_generated_ImageVersions_ListImageVersions_async]
+from google.cloud.orchestration.airflow import service_v1
 
 
-def sample_get_environment():
+async def sample_list_image_versions():
     # Create a client
-    client = service_v1beta1.EnvironmentsClient()
+    client = service_v1.ImageVersionsAsyncClient()
 
     # Initialize request argument(s)
-    request = service_v1beta1.GetEnvironmentRequest(
+    request = service_v1.ListImageVersionsRequest(
     )
 
     # Make the request
-    response = client.get_environment(request=request)
+    page_result = client.list_image_versions(request=request)
 
     # Handle the response
-    print(response)
+    async for response in page_result:
+        print(response)
 
-# [END composer_generated_service_v1beta1_Environments_GetEnvironment_sync]
+# [END composer_v1_generated_ImageVersions_ListImageVersions_async]

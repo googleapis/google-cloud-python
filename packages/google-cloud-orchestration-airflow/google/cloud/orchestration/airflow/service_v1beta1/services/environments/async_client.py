@@ -218,7 +218,7 @@ class EnvironmentsAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Create a new environment.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.orchestration.airflow import service_v1beta1
 
@@ -328,7 +328,7 @@ class EnvironmentsAsyncClient:
     ) -> environments.Environment:
         r"""Get an existing environment.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.orchestration.airflow import service_v1beta1
 
@@ -417,7 +417,7 @@ class EnvironmentsAsyncClient:
     ) -> pagers.ListEnvironmentsAsyncPager:
         r"""List environments.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.orchestration.airflow import service_v1beta1
 
@@ -519,7 +519,7 @@ class EnvironmentsAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Update an environment.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.orchestration.airflow import service_v1beta1
 
@@ -822,7 +822,7 @@ class EnvironmentsAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Delete an environment.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.orchestration.airflow import service_v1beta1
 
@@ -935,7 +935,7 @@ class EnvironmentsAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Restart Airflow web server.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.orchestration.airflow import service_v1beta1
 
@@ -1020,7 +1020,7 @@ class EnvironmentsAsyncClient:
         returned Operation.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.orchestration.airflow import service_v1beta1
 

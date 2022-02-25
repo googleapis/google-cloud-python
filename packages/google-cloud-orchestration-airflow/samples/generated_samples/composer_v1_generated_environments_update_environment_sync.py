@@ -15,34 +15,34 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for RestartWebServer
+# Snippet for UpdateEnvironment
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
 # To install the latest published package dependency, execute the following:
-#   python3 -m pip install google-cloud-orchestration-airflow-service
+#   python3 -m pip install google-cloud-orchestration-airflow
 
 
-# [START composer_generated_service_v1beta1_Environments_RestartWebServer_async]
-from google.cloud.orchestration.airflow import service_v1beta1
+# [START composer_v1_generated_Environments_UpdateEnvironment_sync]
+from google.cloud.orchestration.airflow import service_v1
 
 
-async def sample_restart_web_server():
+def sample_update_environment():
     # Create a client
-    client = service_v1beta1.EnvironmentsAsyncClient()
+    client = service_v1.EnvironmentsClient()
 
     # Initialize request argument(s)
-    request = service_v1beta1.RestartWebServerRequest(
+    request = service_v1.UpdateEnvironmentRequest(
     )
 
     # Make the request
-    operation = client.restart_web_server(request=request)
+    operation = client.update_environment(request=request)
 
     print("Waiting for operation to complete...")
 
-    response = await operation.result()
+    response = operation.result()
 
     # Handle the response
     print(response)
 
-# [END composer_generated_service_v1beta1_Environments_RestartWebServer_async]
+# [END composer_v1_generated_Environments_UpdateEnvironment_sync]

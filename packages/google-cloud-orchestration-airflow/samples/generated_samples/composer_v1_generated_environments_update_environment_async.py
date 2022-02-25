@@ -23,13 +23,13 @@
 #   python3 -m pip install google-cloud-orchestration-airflow
 
 
-# [START composer_generated_service_v1_Environments_UpdateEnvironment_sync]
+# [START composer_v1_generated_Environments_UpdateEnvironment_async]
 from google.cloud.orchestration.airflow import service_v1
 
 
-def sample_update_environment():
+async def sample_update_environment():
     # Create a client
-    client = service_v1.EnvironmentsClient()
+    client = service_v1.EnvironmentsAsyncClient()
 
     # Initialize request argument(s)
     request = service_v1.UpdateEnvironmentRequest(
@@ -40,9 +40,9 @@ def sample_update_environment():
 
     print("Waiting for operation to complete...")
 
-    response = operation.result()
+    response = await operation.result()
 
     # Handle the response
     print(response)
 
-# [END composer_generated_service_v1_Environments_UpdateEnvironment_sync]
+# [END composer_v1_generated_Environments_UpdateEnvironment_async]

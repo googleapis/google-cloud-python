@@ -15,31 +15,34 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ListImageVersions
+# Snippet for RestartWebServer
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
 # To install the latest published package dependency, execute the following:
-#   python3 -m pip install google-cloud-orchestration-airflow
+#   python3 -m pip install google-cloud-orchestration-airflow-service
 
 
-# [START composer_generated_service_v1_ImageVersions_ListImageVersions_async]
-from google.cloud.orchestration.airflow import service_v1
+# [START composer_v1beta1_generated_Environments_RestartWebServer_async]
+from google.cloud.orchestration.airflow import service_v1beta1
 
 
-async def sample_list_image_versions():
+async def sample_restart_web_server():
     # Create a client
-    client = service_v1.ImageVersionsAsyncClient()
+    client = service_v1beta1.EnvironmentsAsyncClient()
 
     # Initialize request argument(s)
-    request = service_v1.ListImageVersionsRequest(
+    request = service_v1beta1.RestartWebServerRequest(
     )
 
     # Make the request
-    page_result = client.list_image_versions(request=request)
+    operation = client.restart_web_server(request=request)
+
+    print("Waiting for operation to complete...")
+
+    response = await operation.result()
 
     # Handle the response
-    async for response in page_result:
-        print(response)
+    print(response)
 
-# [END composer_generated_service_v1_ImageVersions_ListImageVersions_async]
+# [END composer_v1beta1_generated_Environments_RestartWebServer_async]

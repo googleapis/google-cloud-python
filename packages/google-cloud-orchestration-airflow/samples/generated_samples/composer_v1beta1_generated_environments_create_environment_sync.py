@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for CheckUpgrade
+# Snippet for CreateEnvironment
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,26 +23,26 @@
 #   python3 -m pip install google-cloud-orchestration-airflow-service
 
 
-# [START composer_generated_service_v1beta1_Environments_CheckUpgrade_async]
+# [START composer_v1beta1_generated_Environments_CreateEnvironment_sync]
 from google.cloud.orchestration.airflow import service_v1beta1
 
 
-async def sample_check_upgrade():
+def sample_create_environment():
     # Create a client
-    client = service_v1beta1.EnvironmentsAsyncClient()
+    client = service_v1beta1.EnvironmentsClient()
 
     # Initialize request argument(s)
-    request = service_v1beta1.CheckUpgradeRequest(
+    request = service_v1beta1.CreateEnvironmentRequest(
     )
 
     # Make the request
-    operation = client.check_upgrade(request=request)
+    operation = client.create_environment(request=request)
 
     print("Waiting for operation to complete...")
 
-    response = await operation.result()
+    response = operation.result()
 
     # Handle the response
     print(response)
 
-# [END composer_generated_service_v1beta1_Environments_CheckUpgrade_async]
+# [END composer_v1beta1_generated_Environments_CreateEnvironment_sync]

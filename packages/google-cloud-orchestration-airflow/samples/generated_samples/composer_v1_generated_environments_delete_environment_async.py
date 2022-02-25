@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for GetEnvironment
+# Snippet for DeleteEnvironment
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,22 +23,26 @@
 #   python3 -m pip install google-cloud-orchestration-airflow
 
 
-# [START composer_generated_service_v1_Environments_GetEnvironment_sync]
+# [START composer_v1_generated_Environments_DeleteEnvironment_async]
 from google.cloud.orchestration.airflow import service_v1
 
 
-def sample_get_environment():
+async def sample_delete_environment():
     # Create a client
-    client = service_v1.EnvironmentsClient()
+    client = service_v1.EnvironmentsAsyncClient()
 
     # Initialize request argument(s)
-    request = service_v1.GetEnvironmentRequest(
+    request = service_v1.DeleteEnvironmentRequest(
     )
 
     # Make the request
-    response = client.get_environment(request=request)
+    operation = client.delete_environment(request=request)
+
+    print("Waiting for operation to complete...")
+
+    response = await operation.result()
 
     # Handle the response
     print(response)
 
-# [END composer_generated_service_v1_Environments_GetEnvironment_sync]
+# [END composer_v1_generated_Environments_DeleteEnvironment_async]

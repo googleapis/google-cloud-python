@@ -15,34 +15,31 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for DeleteEnvironment
+# Snippet for ListImageVersions
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
 # To install the latest published package dependency, execute the following:
-#   python3 -m pip install google-cloud-orchestration-airflow-service
+#   python3 -m pip install google-cloud-orchestration-airflow
 
 
-# [START composer_generated_service_v1beta1_Environments_DeleteEnvironment_async]
-from google.cloud.orchestration.airflow import service_v1beta1
+# [START composer_v1_generated_ImageVersions_ListImageVersions_sync]
+from google.cloud.orchestration.airflow import service_v1
 
 
-async def sample_delete_environment():
+def sample_list_image_versions():
     # Create a client
-    client = service_v1beta1.EnvironmentsAsyncClient()
+    client = service_v1.ImageVersionsClient()
 
     # Initialize request argument(s)
-    request = service_v1beta1.DeleteEnvironmentRequest(
+    request = service_v1.ListImageVersionsRequest(
     )
 
     # Make the request
-    operation = client.delete_environment(request=request)
-
-    print("Waiting for operation to complete...")
-
-    response = await operation.result()
+    page_result = client.list_image_versions(request=request)
 
     # Handle the response
-    print(response)
+    for response in page_result:
+        print(response)
 
-# [END composer_generated_service_v1beta1_Environments_DeleteEnvironment_async]
+# [END composer_v1_generated_ImageVersions_ListImageVersions_sync]

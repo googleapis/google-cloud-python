@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ListEnvironments
+# Snippet for GetEnvironment
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,23 +23,22 @@
 #   python3 -m pip install google-cloud-orchestration-airflow-service
 
 
-# [START composer_generated_service_v1beta1_Environments_ListEnvironments_sync]
+# [START composer_v1beta1_generated_Environments_GetEnvironment_async]
 from google.cloud.orchestration.airflow import service_v1beta1
 
 
-def sample_list_environments():
+async def sample_get_environment():
     # Create a client
-    client = service_v1beta1.EnvironmentsClient()
+    client = service_v1beta1.EnvironmentsAsyncClient()
 
     # Initialize request argument(s)
-    request = service_v1beta1.ListEnvironmentsRequest(
+    request = service_v1beta1.GetEnvironmentRequest(
     )
 
     # Make the request
-    page_result = client.list_environments(request=request)
+    response = await client.get_environment(request=request)
 
     # Handle the response
-    for response in page_result:
-        print(response)
+    print(response)
 
-# [END composer_generated_service_v1beta1_Environments_ListEnvironments_sync]
+# [END composer_v1beta1_generated_Environments_GetEnvironment_async]

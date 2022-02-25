@@ -23,13 +23,13 @@
 #   python3 -m pip install google-cloud-orchestration-airflow-service
 
 
-# [START composer_generated_service_v1beta1_ImageVersions_ListImageVersions_async]
+# [START composer_v1beta1_generated_ImageVersions_ListImageVersions_sync]
 from google.cloud.orchestration.airflow import service_v1beta1
 
 
-async def sample_list_image_versions():
+def sample_list_image_versions():
     # Create a client
-    client = service_v1beta1.ImageVersionsAsyncClient()
+    client = service_v1beta1.ImageVersionsClient()
 
     # Initialize request argument(s)
     request = service_v1beta1.ListImageVersionsRequest(
@@ -39,7 +39,7 @@ async def sample_list_image_versions():
     page_result = client.list_image_versions(request=request)
 
     # Handle the response
-    async for response in page_result:
+    for response in page_result:
         print(response)
 
-# [END composer_generated_service_v1beta1_ImageVersions_ListImageVersions_async]
+# [END composer_v1beta1_generated_ImageVersions_ListImageVersions_sync]

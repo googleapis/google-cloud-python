@@ -213,7 +213,7 @@ class ImageVersionsAsyncClient:
     ) -> pagers.ListImageVersionsAsyncPager:
         r"""List ImageVersions for provided location.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.orchestration.airflow import service_v1beta1
 

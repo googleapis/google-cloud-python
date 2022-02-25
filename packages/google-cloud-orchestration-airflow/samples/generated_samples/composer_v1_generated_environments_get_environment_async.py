@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for CreateEnvironment
+# Snippet for GetEnvironment
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,26 +23,22 @@
 #   python3 -m pip install google-cloud-orchestration-airflow
 
 
-# [START composer_generated_service_v1_Environments_CreateEnvironment_sync]
+# [START composer_v1_generated_Environments_GetEnvironment_async]
 from google.cloud.orchestration.airflow import service_v1
 
 
-def sample_create_environment():
+async def sample_get_environment():
     # Create a client
-    client = service_v1.EnvironmentsClient()
+    client = service_v1.EnvironmentsAsyncClient()
 
     # Initialize request argument(s)
-    request = service_v1.CreateEnvironmentRequest(
+    request = service_v1.GetEnvironmentRequest(
     )
 
     # Make the request
-    operation = client.create_environment(request=request)
-
-    print("Waiting for operation to complete...")
-
-    response = operation.result()
+    response = await client.get_environment(request=request)
 
     # Handle the response
     print(response)
 
-# [END composer_generated_service_v1_Environments_CreateEnvironment_sync]
+# [END composer_v1_generated_Environments_GetEnvironment_async]

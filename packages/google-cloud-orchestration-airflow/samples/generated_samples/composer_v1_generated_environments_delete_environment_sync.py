@@ -15,31 +15,34 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ListEnvironments
+# Snippet for DeleteEnvironment
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
 # To install the latest published package dependency, execute the following:
-#   python3 -m pip install google-cloud-orchestration-airflow-service
+#   python3 -m pip install google-cloud-orchestration-airflow
 
 
-# [START composer_generated_service_v1beta1_Environments_ListEnvironments_async]
-from google.cloud.orchestration.airflow import service_v1beta1
+# [START composer_v1_generated_Environments_DeleteEnvironment_sync]
+from google.cloud.orchestration.airflow import service_v1
 
 
-async def sample_list_environments():
+def sample_delete_environment():
     # Create a client
-    client = service_v1beta1.EnvironmentsAsyncClient()
+    client = service_v1.EnvironmentsClient()
 
     # Initialize request argument(s)
-    request = service_v1beta1.ListEnvironmentsRequest(
+    request = service_v1.DeleteEnvironmentRequest(
     )
 
     # Make the request
-    page_result = client.list_environments(request=request)
+    operation = client.delete_environment(request=request)
+
+    print("Waiting for operation to complete...")
+
+    response = operation.result()
 
     # Handle the response
-    async for response in page_result:
-        print(response)
+    print(response)
 
-# [END composer_generated_service_v1beta1_Environments_ListEnvironments_async]
+# [END composer_v1_generated_Environments_DeleteEnvironment_sync]

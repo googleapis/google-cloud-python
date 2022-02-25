@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-orchestration-airflow-service
 
 
-# [START composer_generated_service_v1beta1_Environments_CheckUpgrade_sync]
+# [START composer_v1beta1_generated_Environments_CheckUpgrade_sync]
 from google.cloud.orchestration.airflow import service_v1beta1
 
 
@@ -45,4 +45,4 @@ def sample_check_upgrade():
     # Handle the response
     print(response)
 
-# [END composer_generated_service_v1beta1_Environments_CheckUpgrade_sync]
+# [END composer_v1beta1_generated_Environments_CheckUpgrade_sync]

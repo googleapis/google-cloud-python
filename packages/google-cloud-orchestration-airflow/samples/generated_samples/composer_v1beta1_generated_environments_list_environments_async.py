@@ -20,19 +20,19 @@
 # It may require modifications to work in your environment.
 
 # To install the latest published package dependency, execute the following:
-#   python3 -m pip install google-cloud-orchestration-airflow
+#   python3 -m pip install google-cloud-orchestration-airflow-service
 
 
-# [START composer_generated_service_v1_Environments_ListEnvironments_async]
-from google.cloud.orchestration.airflow import service_v1
+# [START composer_v1beta1_generated_Environments_ListEnvironments_async]
+from google.cloud.orchestration.airflow import service_v1beta1
 
 
 async def sample_list_environments():
     # Create a client
-    client = service_v1.EnvironmentsAsyncClient()
+    client = service_v1beta1.EnvironmentsAsyncClient()
 
     # Initialize request argument(s)
-    request = service_v1.ListEnvironmentsRequest(
+    request = service_v1beta1.ListEnvironmentsRequest(
     )
 
     # Make the request
@@ -42,4 +42,4 @@ async def sample_list_environments():
     async for response in page_result:
         print(response)
 
-# [END composer_generated_service_v1_Environments_ListEnvironments_async]
+# [END composer_v1beta1_generated_Environments_ListEnvironments_async]

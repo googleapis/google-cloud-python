@@ -392,8 +392,7 @@ class ImageVersionsClient(metaclass=ImageVersionsClientMeta):
     ) -> pagers.ListImageVersionsPager:
         r"""List ImageVersions for provided location.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.orchestration.airflow import service_v1
 

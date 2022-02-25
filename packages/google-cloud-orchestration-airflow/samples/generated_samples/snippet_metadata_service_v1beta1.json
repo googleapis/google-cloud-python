@@ -10,8 +10,8 @@
           "shortName": "CheckUpgrade"
         }
       },
-      "file": "composer_generated_service_v1beta1_environments_check_upgrade_async.py",
-      "regionTag": "composer_generated_service_v1beta1_Environments_CheckUpgrade_async",
+      "file": "composer_v1beta1_generated_environments_check_upgrade_async.py",
+      "regionTag": "composer_v1beta1_generated_Environments_CheckUpgrade_async",
       "segments": [
         {
           "end": 47,
@@ -54,8 +54,8 @@
           "shortName": "CheckUpgrade"
         }
       },
-      "file": "composer_generated_service_v1beta1_environments_check_upgrade_sync.py",
-      "regionTag": "composer_generated_service_v1beta1_Environments_CheckUpgrade_sync",
+      "file": "composer_v1beta1_generated_environments_check_upgrade_sync.py",
+      "regionTag": "composer_v1beta1_generated_Environments_CheckUpgrade_sync",
       "segments": [
         {
           "end": 47,
@@ -99,8 +99,8 @@
           "shortName": "CreateEnvironment"
         }
       },
-      "file": "composer_generated_service_v1beta1_environments_create_environment_async.py",
-      "regionTag": "composer_generated_service_v1beta1_Environments_CreateEnvironment_async",
+      "file": "composer_v1beta1_generated_environments_create_environment_async.py",
+      "regionTag": "composer_v1beta1_generated_Environments_CreateEnvironment_async",
       "segments": [
         {
           "end": 47,
@@ -143,8 +143,8 @@
           "shortName": "CreateEnvironment"
         }
       },
-      "file": "composer_generated_service_v1beta1_environments_create_environment_sync.py",
-      "regionTag": "composer_generated_service_v1beta1_Environments_CreateEnvironment_sync",
+      "file": "composer_v1beta1_generated_environments_create_environment_sync.py",
+      "regionTag": "composer_v1beta1_generated_Environments_CreateEnvironment_sync",
       "segments": [
         {
           "end": 47,
@@ -188,8 +188,8 @@
           "shortName": "DeleteEnvironment"
         }
       },
-      "file": "composer_generated_service_v1beta1_environments_delete_environment_async.py",
-      "regionTag": "composer_generated_service_v1beta1_Environments_DeleteEnvironment_async",
+      "file": "composer_v1beta1_generated_environments_delete_environment_async.py",
+      "regionTag": "composer_v1beta1_generated_Environments_DeleteEnvironment_async",
       "segments": [
         {
           "end": 47,
@@ -232,8 +232,8 @@
           "shortName": "DeleteEnvironment"
         }
       },
-      "file": "composer_generated_service_v1beta1_environments_delete_environment_sync.py",
-      "regionTag": "composer_generated_service_v1beta1_Environments_DeleteEnvironment_sync",
+      "file": "composer_v1beta1_generated_environments_delete_environment_sync.py",
+      "regionTag": "composer_v1beta1_generated_Environments_DeleteEnvironment_sync",
       "segments": [
         {
           "end": 47,
@@ -277,8 +277,8 @@
           "shortName": "GetEnvironment"
         }
       },
-      "file": "composer_generated_service_v1beta1_environments_get_environment_async.py",
-      "regionTag": "composer_generated_service_v1beta1_Environments_GetEnvironment_async",
+      "file": "composer_v1beta1_generated_environments_get_environment_async.py",
+      "regionTag": "composer_v1beta1_generated_Environments_GetEnvironment_async",
       "segments": [
         {
           "end": 43,
@@ -321,8 +321,8 @@
           "shortName": "GetEnvironment"
         }
       },
-      "file": "composer_generated_service_v1beta1_environments_get_environment_sync.py",
-      "regionTag": "composer_generated_service_v1beta1_Environments_GetEnvironment_sync",
+      "file": "composer_v1beta1_generated_environments_get_environment_sync.py",
+      "regionTag": "composer_v1beta1_generated_Environments_GetEnvironment_sync",
       "segments": [
         {
           "end": 43,
@@ -366,8 +366,8 @@
           "shortName": "ListEnvironments"
         }
       },
-      "file": "composer_generated_service_v1beta1_environments_list_environments_async.py",
-      "regionTag": "composer_generated_service_v1beta1_Environments_ListEnvironments_async",
+      "file": "composer_v1beta1_generated_environments_list_environments_async.py",
+      "regionTag": "composer_v1beta1_generated_Environments_ListEnvironments_async",
       "segments": [
         {
           "end": 44,
@@ -410,8 +410,8 @@
           "shortName": "ListEnvironments"
         }
       },
-      "file": "composer_generated_service_v1beta1_environments_list_environments_sync.py",
-      "regionTag": "composer_generated_service_v1beta1_Environments_ListEnvironments_sync",
+      "file": "composer_v1beta1_generated_environments_list_environments_sync.py",
+      "regionTag": "composer_v1beta1_generated_Environments_ListEnvironments_sync",
       "segments": [
         {
           "end": 44,
@@ -455,8 +455,8 @@
           "shortName": "RestartWebServer"
         }
       },
-      "file": "composer_generated_service_v1beta1_environments_restart_web_server_async.py",
-      "regionTag": "composer_generated_service_v1beta1_Environments_RestartWebServer_async",
+      "file": "composer_v1beta1_generated_environments_restart_web_server_async.py",
+      "regionTag": "composer_v1beta1_generated_Environments_RestartWebServer_async",
       "segments": [
         {
           "end": 47,
@@ -499,8 +499,8 @@
           "shortName": "RestartWebServer"
         }
       },
-      "file": "composer_generated_service_v1beta1_environments_restart_web_server_sync.py",
-      "regionTag": "composer_generated_service_v1beta1_Environments_RestartWebServer_sync",
+      "file": "composer_v1beta1_generated_environments_restart_web_server_sync.py",
+      "regionTag": "composer_v1beta1_generated_Environments_RestartWebServer_sync",
       "segments": [
         {
           "end": 47,
@@ -544,8 +544,8 @@
           "shortName": "UpdateEnvironment"
         }
       },
-      "file": "composer_generated_service_v1beta1_environments_update_environment_async.py",
-      "regionTag": "composer_generated_service_v1beta1_Environments_UpdateEnvironment_async",
+      "file": "composer_v1beta1_generated_environments_update_environment_async.py",
+      "regionTag": "composer_v1beta1_generated_Environments_UpdateEnvironment_async",
       "segments": [
         {
           "end": 47,
@@ -588,8 +588,8 @@
           "shortName": "UpdateEnvironment"
         }
       },
-      "file": "composer_generated_service_v1beta1_environments_update_environment_sync.py",
-      "regionTag": "composer_generated_service_v1beta1_Environments_UpdateEnvironment_sync",
+      "file": "composer_v1beta1_generated_environments_update_environment_sync.py",
+      "regionTag": "composer_v1beta1_generated_Environments_UpdateEnvironment_sync",
       "segments": [
         {
           "end": 47,
@@ -633,8 +633,8 @@
           "shortName": "ListImageVersions"
         }
       },
-      "file": "composer_generated_service_v1beta1_image_versions_list_image_versions_async.py",
-      "regionTag": "composer_generated_service_v1beta1_ImageVersions_ListImageVersions_async",
+      "file": "composer_v1beta1_generated_image_versions_list_image_versions_async.py",
+      "regionTag": "composer_v1beta1_generated_ImageVersions_ListImageVersions_async",
       "segments": [
         {
           "end": 44,
@@ -677,8 +677,8 @@
           "shortName": "ListImageVersions"
         }
       },
-      "file": "composer_generated_service_v1beta1_image_versions_list_image_versions_sync.py",
-      "regionTag": "composer_generated_service_v1beta1_ImageVersions_ListImageVersions_sync",
+      "file": "composer_v1beta1_generated_image_versions_list_image_versions_sync.py",
+      "regionTag": "composer_v1beta1_generated_ImageVersions_ListImageVersions_sync",
       "segments": [
         {
           "end": 44,
