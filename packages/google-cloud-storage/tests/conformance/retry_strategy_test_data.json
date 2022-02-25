@@ -239,6 +239,31 @@
         ],
         "preconditionProvided": true,
         "expectSuccess": false
+      },
+      {
+        "id": 7,
+        "description": "resumable_uploads_handle_complex_retries",
+        "cases": [],
+        "methods": [],
+        "preconditionProvided": true,
+        "expectSuccess": true
+      },
+      {
+        "id": 8,
+        "description": "downloads_handle_complex_retries",
+        "cases": [
+          {
+            "instructions": ["return-broken-stream", "return-broken-stream"]
+          },
+          {
+            "instructions": ["return-broken-stream-after-256K"]
+          }
+        ],
+        "methods": [
+          {"name": "storage.objects.get", "group": "storage.objects.download", "resources": ["BUCKET", "OBJECT"]}
+        ],
+        "preconditionProvided": false,
+        "expectSuccess": true
       }
     ]
   }
