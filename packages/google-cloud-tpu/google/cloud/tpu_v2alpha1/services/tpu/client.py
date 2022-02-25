@@ -448,8 +448,7 @@ class TpuClient(metaclass=TpuClientMeta):
     ) -> pagers.ListNodesPager:
         r"""Lists nodes.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import tpu_v2alpha1
 
@@ -547,8 +546,7 @@ class TpuClient(metaclass=TpuClientMeta):
     ) -> cloud_tpu.Node:
         r"""Gets the details of a node.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import tpu_v2alpha1
 
@@ -636,8 +634,7 @@ class TpuClient(metaclass=TpuClientMeta):
     ) -> operation.Operation:
         r"""Creates a node.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import tpu_v2alpha1
 
@@ -759,8 +756,7 @@ class TpuClient(metaclass=TpuClientMeta):
     ) -> operation.Operation:
         r"""Deletes a node.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import tpu_v2alpha1
 
@@ -864,8 +860,7 @@ class TpuClient(metaclass=TpuClientMeta):
         single TPU nodes.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import tpu_v2alpha1
 
@@ -948,8 +943,7 @@ class TpuClient(metaclass=TpuClientMeta):
     ) -> operation.Operation:
         r"""Starts a node.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import tpu_v2alpha1
 
@@ -1034,8 +1028,7 @@ class TpuClient(metaclass=TpuClientMeta):
     ) -> operation.Operation:
         r"""Updates the configurations of a node.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import tpu_v2alpha1
 
@@ -1156,8 +1149,7 @@ class TpuClient(metaclass=TpuClientMeta):
         project.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import tpu_v2alpha1
 
@@ -1229,8 +1221,7 @@ class TpuClient(metaclass=TpuClientMeta):
     ) -> pagers.ListAcceleratorTypesPager:
         r"""Lists accelerator types supported by this API.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import tpu_v2alpha1
 
@@ -1328,8 +1319,7 @@ class TpuClient(metaclass=TpuClientMeta):
     ) -> cloud_tpu.AcceleratorType:
         r"""Gets AcceleratorType.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import tpu_v2alpha1
 
@@ -1417,8 +1407,7 @@ class TpuClient(metaclass=TpuClientMeta):
     ) -> pagers.ListRuntimeVersionsPager:
         r"""Lists runtime versions supported by this API.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import tpu_v2alpha1
 
@@ -1516,8 +1505,7 @@ class TpuClient(metaclass=TpuClientMeta):
     ) -> cloud_tpu.RuntimeVersion:
         r"""Gets a runtime version.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import tpu_v2alpha1
 
@@ -1604,8 +1592,7 @@ class TpuClient(metaclass=TpuClientMeta):
     ) -> cloud_tpu.GetGuestAttributesResponse:
         r"""Retrieves the guest attributes for the node.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import tpu_v2alpha1
 

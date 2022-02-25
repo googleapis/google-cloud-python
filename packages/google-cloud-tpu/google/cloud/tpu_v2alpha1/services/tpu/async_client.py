@@ -213,7 +213,7 @@ class TpuAsyncClient:
     ) -> pagers.ListNodesAsyncPager:
         r"""Lists nodes.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import tpu_v2alpha1
 
@@ -311,7 +311,7 @@ class TpuAsyncClient:
     ) -> cloud_tpu.Node:
         r"""Gets the details of a node.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import tpu_v2alpha1
 
@@ -399,7 +399,7 @@ class TpuAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Creates a node.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import tpu_v2alpha1
 
@@ -521,7 +521,7 @@ class TpuAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Deletes a node.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import tpu_v2alpha1
 
@@ -625,7 +625,7 @@ class TpuAsyncClient:
         single TPU nodes.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import tpu_v2alpha1
 
@@ -707,7 +707,7 @@ class TpuAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Starts a node.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import tpu_v2alpha1
 
@@ -791,7 +791,7 @@ class TpuAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Updates the configurations of a node.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import tpu_v2alpha1
 
@@ -912,7 +912,7 @@ class TpuAsyncClient:
         project.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import tpu_v2alpha1
 
@@ -981,7 +981,7 @@ class TpuAsyncClient:
     ) -> pagers.ListAcceleratorTypesAsyncPager:
         r"""Lists accelerator types supported by this API.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import tpu_v2alpha1
 
@@ -1079,7 +1079,7 @@ class TpuAsyncClient:
     ) -> cloud_tpu.AcceleratorType:
         r"""Gets AcceleratorType.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import tpu_v2alpha1
 
@@ -1167,7 +1167,7 @@ class TpuAsyncClient:
     ) -> pagers.ListRuntimeVersionsAsyncPager:
         r"""Lists runtime versions supported by this API.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import tpu_v2alpha1
 
@@ -1265,7 +1265,7 @@ class TpuAsyncClient:
     ) -> cloud_tpu.RuntimeVersion:
         r"""Gets a runtime version.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import tpu_v2alpha1
 
@@ -1352,7 +1352,7 @@ class TpuAsyncClient:
     ) -> cloud_tpu.GetGuestAttributesResponse:
         r"""Retrieves the guest attributes for the node.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import tpu_v2alpha1
 

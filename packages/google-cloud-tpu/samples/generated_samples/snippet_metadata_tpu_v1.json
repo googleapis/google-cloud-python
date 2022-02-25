@@ -10,8 +10,8 @@
           "shortName": "CreateNode"
         }
       },
-      "file": "tpu_generated_tpu_v1_tpu_create_node_async.py",
-      "regionTag": "tpu_generated_tpu_v1_Tpu_CreateNode_async",
+      "file": "tpu_v1_generated_tpu_create_node_async.py",
+      "regionTag": "tpu_v1_generated_Tpu_CreateNode_async",
       "segments": [
         {
           "end": 53,
@@ -54,8 +54,8 @@
           "shortName": "CreateNode"
         }
       },
-      "file": "tpu_generated_tpu_v1_tpu_create_node_sync.py",
-      "regionTag": "tpu_generated_tpu_v1_Tpu_CreateNode_sync",
+      "file": "tpu_v1_generated_tpu_create_node_sync.py",
+      "regionTag": "tpu_v1_generated_Tpu_CreateNode_sync",
       "segments": [
         {
           "end": 53,
@@ -99,8 +99,8 @@
           "shortName": "DeleteNode"
         }
       },
-      "file": "tpu_generated_tpu_v1_tpu_delete_node_async.py",
-      "regionTag": "tpu_generated_tpu_v1_Tpu_DeleteNode_async",
+      "file": "tpu_v1_generated_tpu_delete_node_async.py",
+      "regionTag": "tpu_v1_generated_Tpu_DeleteNode_async",
       "segments": [
         {
           "end": 48,
@@ -143,8 +143,8 @@
           "shortName": "DeleteNode"
         }
       },
-      "file": "tpu_generated_tpu_v1_tpu_delete_node_sync.py",
-      "regionTag": "tpu_generated_tpu_v1_Tpu_DeleteNode_sync",
+      "file": "tpu_v1_generated_tpu_delete_node_sync.py",
+      "regionTag": "tpu_v1_generated_Tpu_DeleteNode_sync",
       "segments": [
         {
           "end": 48,
@@ -188,8 +188,8 @@
           "shortName": "GetAcceleratorType"
         }
       },
-      "file": "tpu_generated_tpu_v1_tpu_get_accelerator_type_async.py",
-      "regionTag": "tpu_generated_tpu_v1_Tpu_GetAcceleratorType_async",
+      "file": "tpu_v1_generated_tpu_get_accelerator_type_async.py",
+      "regionTag": "tpu_v1_generated_Tpu_GetAcceleratorType_async",
       "segments": [
         {
           "end": 44,
@@ -232,8 +232,8 @@
           "shortName": "GetAcceleratorType"
         }
       },
-      "file": "tpu_generated_tpu_v1_tpu_get_accelerator_type_sync.py",
-      "regionTag": "tpu_generated_tpu_v1_Tpu_GetAcceleratorType_sync",
+      "file": "tpu_v1_generated_tpu_get_accelerator_type_sync.py",
+      "regionTag": "tpu_v1_generated_Tpu_GetAcceleratorType_sync",
       "segments": [
         {
           "end": 44,
@@ -277,8 +277,8 @@
           "shortName": "GetNode"
         }
       },
-      "file": "tpu_generated_tpu_v1_tpu_get_node_async.py",
-      "regionTag": "tpu_generated_tpu_v1_Tpu_GetNode_async",
+      "file": "tpu_v1_generated_tpu_get_node_async.py",
+      "regionTag": "tpu_v1_generated_Tpu_GetNode_async",
       "segments": [
         {
           "end": 44,
@@ -321,8 +321,8 @@
           "shortName": "GetNode"
         }
       },
-      "file": "tpu_generated_tpu_v1_tpu_get_node_sync.py",
-      "regionTag": "tpu_generated_tpu_v1_Tpu_GetNode_sync",
+      "file": "tpu_v1_generated_tpu_get_node_sync.py",
+      "regionTag": "tpu_v1_generated_Tpu_GetNode_sync",
       "segments": [
         {
           "end": 44,
@@ -366,8 +366,8 @@
           "shortName": "GetTensorFlowVersion"
         }
       },
-      "file": "tpu_generated_tpu_v1_tpu_get_tensor_flow_version_async.py",
-      "regionTag": "tpu_generated_tpu_v1_Tpu_GetTensorFlowVersion_async",
+      "file": "tpu_v1_generated_tpu_get_tensor_flow_version_async.py",
+      "regionTag": "tpu_v1_generated_Tpu_GetTensorFlowVersion_async",
       "segments": [
         {
           "end": 44,
@@ -410,8 +410,8 @@
           "shortName": "GetTensorFlowVersion"
         }
       },
-      "file": "tpu_generated_tpu_v1_tpu_get_tensor_flow_version_sync.py",
-      "regionTag": "tpu_generated_tpu_v1_Tpu_GetTensorFlowVersion_sync",
+      "file": "tpu_v1_generated_tpu_get_tensor_flow_version_sync.py",
+      "regionTag": "tpu_v1_generated_Tpu_GetTensorFlowVersion_sync",
       "segments": [
         {
           "end": 44,
@@ -455,8 +455,8 @@
           "shortName": "ListAcceleratorTypes"
         }
       },
-      "file": "tpu_generated_tpu_v1_tpu_list_accelerator_types_async.py",
-      "regionTag": "tpu_generated_tpu_v1_Tpu_ListAcceleratorTypes_async",
+      "file": "tpu_v1_generated_tpu_list_accelerator_types_async.py",
+      "regionTag": "tpu_v1_generated_Tpu_ListAcceleratorTypes_async",
       "segments": [
         {
           "end": 45,
@@ -499,8 +499,8 @@
           "shortName": "ListAcceleratorTypes"
         }
       },
-      "file": "tpu_generated_tpu_v1_tpu_list_accelerator_types_sync.py",
-      "regionTag": "tpu_generated_tpu_v1_Tpu_ListAcceleratorTypes_sync",
+      "file": "tpu_v1_generated_tpu_list_accelerator_types_sync.py",
+      "regionTag": "tpu_v1_generated_Tpu_ListAcceleratorTypes_sync",
       "segments": [
         {
           "end": 45,
@@ -544,8 +544,8 @@
           "shortName": "ListNodes"
         }
       },
-      "file": "tpu_generated_tpu_v1_tpu_list_nodes_async.py",
-      "regionTag": "tpu_generated_tpu_v1_Tpu_ListNodes_async",
+      "file": "tpu_v1_generated_tpu_list_nodes_async.py",
+      "regionTag": "tpu_v1_generated_Tpu_ListNodes_async",
       "segments": [
         {
           "end": 45,
@@ -588,8 +588,8 @@
           "shortName": "ListNodes"
         }
       },
-      "file": "tpu_generated_tpu_v1_tpu_list_nodes_sync.py",
-      "regionTag": "tpu_generated_tpu_v1_Tpu_ListNodes_sync",
+      "file": "tpu_v1_generated_tpu_list_nodes_sync.py",
+      "regionTag": "tpu_v1_generated_Tpu_ListNodes_sync",
       "segments": [
         {
           "end": 45,
@@ -633,8 +633,8 @@
           "shortName": "ListTensorFlowVersions"
         }
       },
-      "file": "tpu_generated_tpu_v1_tpu_list_tensor_flow_versions_async.py",
-      "regionTag": "tpu_generated_tpu_v1_Tpu_ListTensorFlowVersions_async",
+      "file": "tpu_v1_generated_tpu_list_tensor_flow_versions_async.py",
+      "regionTag": "tpu_v1_generated_Tpu_ListTensorFlowVersions_async",
       "segments": [
         {
           "end": 45,
@@ -677,8 +677,8 @@
           "shortName": "ListTensorFlowVersions"
         }
       },
-      "file": "tpu_generated_tpu_v1_tpu_list_tensor_flow_versions_sync.py",
-      "regionTag": "tpu_generated_tpu_v1_Tpu_ListTensorFlowVersions_sync",
+      "file": "tpu_v1_generated_tpu_list_tensor_flow_versions_sync.py",
+      "regionTag": "tpu_v1_generated_Tpu_ListTensorFlowVersions_sync",
       "segments": [
         {
           "end": 45,
@@ -722,8 +722,8 @@
           "shortName": "ReimageNode"
         }
       },
-      "file": "tpu_generated_tpu_v1_tpu_reimage_node_async.py",
-      "regionTag": "tpu_generated_tpu_v1_Tpu_ReimageNode_async",
+      "file": "tpu_v1_generated_tpu_reimage_node_async.py",
+      "regionTag": "tpu_v1_generated_Tpu_ReimageNode_async",
       "segments": [
         {
           "end": 47,
@@ -766,8 +766,8 @@
           "shortName": "ReimageNode"
         }
       },
-      "file": "tpu_generated_tpu_v1_tpu_reimage_node_sync.py",
-      "regionTag": "tpu_generated_tpu_v1_Tpu_ReimageNode_sync",
+      "file": "tpu_v1_generated_tpu_reimage_node_sync.py",
+      "regionTag": "tpu_v1_generated_Tpu_ReimageNode_sync",
       "segments": [
         {
           "end": 47,
@@ -811,8 +811,8 @@
           "shortName": "StartNode"
         }
       },
-      "file": "tpu_generated_tpu_v1_tpu_start_node_async.py",
-      "regionTag": "tpu_generated_tpu_v1_Tpu_StartNode_async",
+      "file": "tpu_v1_generated_tpu_start_node_async.py",
+      "regionTag": "tpu_v1_generated_Tpu_StartNode_async",
       "segments": [
         {
           "end": 47,
@@ -855,8 +855,8 @@
           "shortName": "StartNode"
         }
       },
-      "file": "tpu_generated_tpu_v1_tpu_start_node_sync.py",
-      "regionTag": "tpu_generated_tpu_v1_Tpu_StartNode_sync",
+      "file": "tpu_v1_generated_tpu_start_node_sync.py",
+      "regionTag": "tpu_v1_generated_Tpu_StartNode_sync",
       "segments": [
         {
           "end": 47,
@@ -900,8 +900,8 @@
           "shortName": "StopNode"
         }
       },
-      "file": "tpu_generated_tpu_v1_tpu_stop_node_async.py",
-      "regionTag": "tpu_generated_tpu_v1_Tpu_StopNode_async",
+      "file": "tpu_v1_generated_tpu_stop_node_async.py",
+      "regionTag": "tpu_v1_generated_Tpu_StopNode_async",
       "segments": [
         {
           "end": 47,
@@ -944,8 +944,8 @@
           "shortName": "StopNode"
         }
       },
-      "file": "tpu_generated_tpu_v1_tpu_stop_node_sync.py",
-      "regionTag": "tpu_generated_tpu_v1_Tpu_StopNode_sync",
+      "file": "tpu_v1_generated_tpu_stop_node_sync.py",
+      "regionTag": "tpu_v1_generated_Tpu_StopNode_sync",
       "segments": [
         {
           "end": 47,
