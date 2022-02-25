@@ -23,13 +23,13 @@
 #   python3 -m pip install google-cloud-filestore
 
 
-# [START file_generated_filestore_v1_CloudFilestoreManager_DeleteInstance_sync]
+# [START file_v1_generated_CloudFilestoreManager_DeleteInstance_async]
 from google.cloud import filestore_v1
 
 
-def sample_delete_instance():
+async def sample_delete_instance():
     # Create a client
-    client = filestore_v1.CloudFilestoreManagerClient()
+    client = filestore_v1.CloudFilestoreManagerAsyncClient()
 
     # Initialize request argument(s)
     request = filestore_v1.DeleteInstanceRequest(
@@ -41,9 +41,9 @@ def sample_delete_instance():
 
     print("Waiting for operation to complete...")
 
-    response = operation.result()
+    response = await operation.result()
 
     # Handle the response
     print(response)
 
-# [END file_generated_filestore_v1_CloudFilestoreManager_DeleteInstance_sync]
+# [END file_v1_generated_CloudFilestoreManager_DeleteInstance_async]

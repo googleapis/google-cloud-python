@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for GetBackup
+# Snippet for DeleteInstance
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,23 +23,27 @@
 #   python3 -m pip install google-cloud-filestore
 
 
-# [START file_generated_filestore_v1_CloudFilestoreManager_GetBackup_async]
+# [START file_v1_generated_CloudFilestoreManager_DeleteInstance_sync]
 from google.cloud import filestore_v1
 
 
-async def sample_get_backup():
+def sample_delete_instance():
     # Create a client
-    client = filestore_v1.CloudFilestoreManagerAsyncClient()
+    client = filestore_v1.CloudFilestoreManagerClient()
 
     # Initialize request argument(s)
-    request = filestore_v1.GetBackupRequest(
+    request = filestore_v1.DeleteInstanceRequest(
         name="name_value",
     )
 
     # Make the request
-    response = await client.get_backup(request=request)
+    operation = client.delete_instance(request=request)
+
+    print("Waiting for operation to complete...")
+
+    response = operation.result()
 
     # Handle the response
     print(response)
 
-# [END file_generated_filestore_v1_CloudFilestoreManager_GetBackup_async]
+# [END file_v1_generated_CloudFilestoreManager_DeleteInstance_sync]

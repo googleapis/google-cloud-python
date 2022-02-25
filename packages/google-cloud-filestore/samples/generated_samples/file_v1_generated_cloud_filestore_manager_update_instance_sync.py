@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ListBackups
+# Snippet for UpdateInstance
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,24 +23,26 @@
 #   python3 -m pip install google-cloud-filestore
 
 
-# [START file_generated_filestore_v1_CloudFilestoreManager_ListBackups_sync]
+# [START file_v1_generated_CloudFilestoreManager_UpdateInstance_sync]
 from google.cloud import filestore_v1
 
 
-def sample_list_backups():
+def sample_update_instance():
     # Create a client
     client = filestore_v1.CloudFilestoreManagerClient()
 
     # Initialize request argument(s)
-    request = filestore_v1.ListBackupsRequest(
-        parent="parent_value",
+    request = filestore_v1.UpdateInstanceRequest(
     )
 
     # Make the request
-    page_result = client.list_backups(request=request)
+    operation = client.update_instance(request=request)
+
+    print("Waiting for operation to complete...")
+
+    response = operation.result()
 
     # Handle the response
-    for response in page_result:
-        print(response)
+    print(response)
 
-# [END file_generated_filestore_v1_CloudFilestoreManager_ListBackups_sync]
+# [END file_v1_generated_CloudFilestoreManager_UpdateInstance_sync]

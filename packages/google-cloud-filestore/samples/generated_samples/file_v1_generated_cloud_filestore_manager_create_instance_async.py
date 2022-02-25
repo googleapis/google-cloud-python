@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ListBackups
+# Snippet for CreateInstance
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,24 +23,28 @@
 #   python3 -m pip install google-cloud-filestore
 
 
-# [START file_generated_filestore_v1_CloudFilestoreManager_ListBackups_async]
+# [START file_v1_generated_CloudFilestoreManager_CreateInstance_async]
 from google.cloud import filestore_v1
 
 
-async def sample_list_backups():
+async def sample_create_instance():
     # Create a client
     client = filestore_v1.CloudFilestoreManagerAsyncClient()
 
     # Initialize request argument(s)
-    request = filestore_v1.ListBackupsRequest(
+    request = filestore_v1.CreateInstanceRequest(
         parent="parent_value",
+        instance_id="instance_id_value",
     )
 
     # Make the request
-    page_result = client.list_backups(request=request)
+    operation = client.create_instance(request=request)
+
+    print("Waiting for operation to complete...")
+
+    response = await operation.result()
 
     # Handle the response
-    async for response in page_result:
-        print(response)
+    print(response)
 
-# [END file_generated_filestore_v1_CloudFilestoreManager_ListBackups_async]
+# [END file_v1_generated_CloudFilestoreManager_CreateInstance_async]

@@ -10,8 +10,8 @@
           "shortName": "CreateBackup"
         }
       },
-      "file": "file_generated_filestore_v1_cloud_filestore_manager_create_backup_async.py",
-      "regionTag": "file_generated_filestore_v1_CloudFilestoreManager_CreateBackup_async",
+      "file": "file_v1_generated_cloud_filestore_manager_create_backup_async.py",
+      "regionTag": "file_v1_generated_CloudFilestoreManager_CreateBackup_async",
       "segments": [
         {
           "end": 49,
@@ -54,8 +54,8 @@
           "shortName": "CreateBackup"
         }
       },
-      "file": "file_generated_filestore_v1_cloud_filestore_manager_create_backup_sync.py",
-      "regionTag": "file_generated_filestore_v1_CloudFilestoreManager_CreateBackup_sync",
+      "file": "file_v1_generated_cloud_filestore_manager_create_backup_sync.py",
+      "regionTag": "file_v1_generated_CloudFilestoreManager_CreateBackup_sync",
       "segments": [
         {
           "end": 49,
@@ -99,8 +99,8 @@
           "shortName": "CreateInstance"
         }
       },
-      "file": "file_generated_filestore_v1_cloud_filestore_manager_create_instance_async.py",
-      "regionTag": "file_generated_filestore_v1_CloudFilestoreManager_CreateInstance_async",
+      "file": "file_v1_generated_cloud_filestore_manager_create_instance_async.py",
+      "regionTag": "file_v1_generated_CloudFilestoreManager_CreateInstance_async",
       "segments": [
         {
           "end": 49,
@@ -143,8 +143,8 @@
           "shortName": "CreateInstance"
         }
       },
-      "file": "file_generated_filestore_v1_cloud_filestore_manager_create_instance_sync.py",
-      "regionTag": "file_generated_filestore_v1_CloudFilestoreManager_CreateInstance_sync",
+      "file": "file_v1_generated_cloud_filestore_manager_create_instance_sync.py",
+      "regionTag": "file_v1_generated_CloudFilestoreManager_CreateInstance_sync",
       "segments": [
         {
           "end": 49,
@@ -188,8 +188,8 @@
           "shortName": "DeleteBackup"
         }
       },
-      "file": "file_generated_filestore_v1_cloud_filestore_manager_delete_backup_async.py",
-      "regionTag": "file_generated_filestore_v1_CloudFilestoreManager_DeleteBackup_async",
+      "file": "file_v1_generated_cloud_filestore_manager_delete_backup_async.py",
+      "regionTag": "file_v1_generated_CloudFilestoreManager_DeleteBackup_async",
       "segments": [
         {
           "end": 48,
@@ -232,8 +232,8 @@
           "shortName": "DeleteBackup"
         }
       },
-      "file": "file_generated_filestore_v1_cloud_filestore_manager_delete_backup_sync.py",
-      "regionTag": "file_generated_filestore_v1_CloudFilestoreManager_DeleteBackup_sync",
+      "file": "file_v1_generated_cloud_filestore_manager_delete_backup_sync.py",
+      "regionTag": "file_v1_generated_CloudFilestoreManager_DeleteBackup_sync",
       "segments": [
         {
           "end": 48,
@@ -277,8 +277,8 @@
           "shortName": "DeleteInstance"
         }
       },
-      "file": "file_generated_filestore_v1_cloud_filestore_manager_delete_instance_async.py",
-      "regionTag": "file_generated_filestore_v1_CloudFilestoreManager_DeleteInstance_async",
+      "file": "file_v1_generated_cloud_filestore_manager_delete_instance_async.py",
+      "regionTag": "file_v1_generated_CloudFilestoreManager_DeleteInstance_async",
       "segments": [
         {
           "end": 48,
@@ -321,8 +321,8 @@
           "shortName": "DeleteInstance"
         }
       },
-      "file": "file_generated_filestore_v1_cloud_filestore_manager_delete_instance_sync.py",
-      "regionTag": "file_generated_filestore_v1_CloudFilestoreManager_DeleteInstance_sync",
+      "file": "file_v1_generated_cloud_filestore_manager_delete_instance_sync.py",
+      "regionTag": "file_v1_generated_CloudFilestoreManager_DeleteInstance_sync",
       "segments": [
         {
           "end": 48,
@@ -366,8 +366,8 @@
           "shortName": "GetBackup"
         }
       },
-      "file": "file_generated_filestore_v1_cloud_filestore_manager_get_backup_async.py",
-      "regionTag": "file_generated_filestore_v1_CloudFilestoreManager_GetBackup_async",
+      "file": "file_v1_generated_cloud_filestore_manager_get_backup_async.py",
+      "regionTag": "file_v1_generated_CloudFilestoreManager_GetBackup_async",
       "segments": [
         {
           "end": 44,
@@ -410,8 +410,8 @@
           "shortName": "GetBackup"
         }
       },
-      "file": "file_generated_filestore_v1_cloud_filestore_manager_get_backup_sync.py",
-      "regionTag": "file_generated_filestore_v1_CloudFilestoreManager_GetBackup_sync",
+      "file": "file_v1_generated_cloud_filestore_manager_get_backup_sync.py",
+      "regionTag": "file_v1_generated_CloudFilestoreManager_GetBackup_sync",
       "segments": [
         {
           "end": 44,
@@ -455,8 +455,8 @@
           "shortName": "GetInstance"
         }
       },
-      "file": "file_generated_filestore_v1_cloud_filestore_manager_get_instance_async.py",
-      "regionTag": "file_generated_filestore_v1_CloudFilestoreManager_GetInstance_async",
+      "file": "file_v1_generated_cloud_filestore_manager_get_instance_async.py",
+      "regionTag": "file_v1_generated_CloudFilestoreManager_GetInstance_async",
       "segments": [
         {
           "end": 44,
@@ -499,8 +499,8 @@
           "shortName": "GetInstance"
         }
       },
-      "file": "file_generated_filestore_v1_cloud_filestore_manager_get_instance_sync.py",
-      "regionTag": "file_generated_filestore_v1_CloudFilestoreManager_GetInstance_sync",
+      "file": "file_v1_generated_cloud_filestore_manager_get_instance_sync.py",
+      "regionTag": "file_v1_generated_CloudFilestoreManager_GetInstance_sync",
       "segments": [
         {
           "end": 44,
@@ -544,8 +544,8 @@
           "shortName": "ListBackups"
         }
       },
-      "file": "file_generated_filestore_v1_cloud_filestore_manager_list_backups_async.py",
-      "regionTag": "file_generated_filestore_v1_CloudFilestoreManager_ListBackups_async",
+      "file": "file_v1_generated_cloud_filestore_manager_list_backups_async.py",
+      "regionTag": "file_v1_generated_CloudFilestoreManager_ListBackups_async",
       "segments": [
         {
           "end": 45,
@@ -588,8 +588,8 @@
           "shortName": "ListBackups"
         }
       },
-      "file": "file_generated_filestore_v1_cloud_filestore_manager_list_backups_sync.py",
-      "regionTag": "file_generated_filestore_v1_CloudFilestoreManager_ListBackups_sync",
+      "file": "file_v1_generated_cloud_filestore_manager_list_backups_sync.py",
+      "regionTag": "file_v1_generated_CloudFilestoreManager_ListBackups_sync",
       "segments": [
         {
           "end": 45,
@@ -633,8 +633,8 @@
           "shortName": "ListInstances"
         }
       },
-      "file": "file_generated_filestore_v1_cloud_filestore_manager_list_instances_async.py",
-      "regionTag": "file_generated_filestore_v1_CloudFilestoreManager_ListInstances_async",
+      "file": "file_v1_generated_cloud_filestore_manager_list_instances_async.py",
+      "regionTag": "file_v1_generated_CloudFilestoreManager_ListInstances_async",
       "segments": [
         {
           "end": 45,
@@ -677,8 +677,8 @@
           "shortName": "ListInstances"
         }
       },
-      "file": "file_generated_filestore_v1_cloud_filestore_manager_list_instances_sync.py",
-      "regionTag": "file_generated_filestore_v1_CloudFilestoreManager_ListInstances_sync",
+      "file": "file_v1_generated_cloud_filestore_manager_list_instances_sync.py",
+      "regionTag": "file_v1_generated_CloudFilestoreManager_ListInstances_sync",
       "segments": [
         {
           "end": 45,
@@ -722,8 +722,8 @@
           "shortName": "RestoreInstance"
         }
       },
-      "file": "file_generated_filestore_v1_cloud_filestore_manager_restore_instance_async.py",
-      "regionTag": "file_generated_filestore_v1_CloudFilestoreManager_RestoreInstance_async",
+      "file": "file_v1_generated_cloud_filestore_manager_restore_instance_async.py",
+      "regionTag": "file_v1_generated_CloudFilestoreManager_RestoreInstance_async",
       "segments": [
         {
           "end": 50,
@@ -766,8 +766,8 @@
           "shortName": "RestoreInstance"
         }
       },
-      "file": "file_generated_filestore_v1_cloud_filestore_manager_restore_instance_sync.py",
-      "regionTag": "file_generated_filestore_v1_CloudFilestoreManager_RestoreInstance_sync",
+      "file": "file_v1_generated_cloud_filestore_manager_restore_instance_sync.py",
+      "regionTag": "file_v1_generated_CloudFilestoreManager_RestoreInstance_sync",
       "segments": [
         {
           "end": 50,
@@ -811,8 +811,8 @@
           "shortName": "UpdateBackup"
         }
       },
-      "file": "file_generated_filestore_v1_cloud_filestore_manager_update_backup_async.py",
-      "regionTag": "file_generated_filestore_v1_CloudFilestoreManager_UpdateBackup_async",
+      "file": "file_v1_generated_cloud_filestore_manager_update_backup_async.py",
+      "regionTag": "file_v1_generated_CloudFilestoreManager_UpdateBackup_async",
       "segments": [
         {
           "end": 47,
@@ -855,8 +855,8 @@
           "shortName": "UpdateBackup"
         }
       },
-      "file": "file_generated_filestore_v1_cloud_filestore_manager_update_backup_sync.py",
-      "regionTag": "file_generated_filestore_v1_CloudFilestoreManager_UpdateBackup_sync",
+      "file": "file_v1_generated_cloud_filestore_manager_update_backup_sync.py",
+      "regionTag": "file_v1_generated_CloudFilestoreManager_UpdateBackup_sync",
       "segments": [
         {
           "end": 47,
@@ -900,8 +900,8 @@
           "shortName": "UpdateInstance"
         }
       },
-      "file": "file_generated_filestore_v1_cloud_filestore_manager_update_instance_async.py",
-      "regionTag": "file_generated_filestore_v1_CloudFilestoreManager_UpdateInstance_async",
+      "file": "file_v1_generated_cloud_filestore_manager_update_instance_async.py",
+      "regionTag": "file_v1_generated_CloudFilestoreManager_UpdateInstance_async",
       "segments": [
         {
           "end": 47,
@@ -944,8 +944,8 @@
           "shortName": "UpdateInstance"
         }
       },
-      "file": "file_generated_filestore_v1_cloud_filestore_manager_update_instance_sync.py",
-      "regionTag": "file_generated_filestore_v1_CloudFilestoreManager_UpdateInstance_sync",
+      "file": "file_v1_generated_cloud_filestore_manager_update_instance_sync.py",
+      "regionTag": "file_v1_generated_CloudFilestoreManager_UpdateInstance_sync",
       "segments": [
         {
           "end": 47,

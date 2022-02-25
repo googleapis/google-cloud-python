@@ -250,7 +250,7 @@ class CloudFilestoreManagerAsyncClient:
         specified location or for all locations.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import filestore_v1
 
@@ -363,7 +363,7 @@ class CloudFilestoreManagerAsyncClient:
     ) -> cloud_filestore_service.Instance:
         r"""Gets the details of a specific instance.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import filestore_v1
 
@@ -467,7 +467,7 @@ class CloudFilestoreManagerAsyncClient:
         the minimum capacity of the tier).
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import filestore_v1
 
@@ -595,7 +595,7 @@ class CloudFilestoreManagerAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Updates the settings of a specific instance.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import filestore_v1
 
@@ -717,7 +717,7 @@ class CloudFilestoreManagerAsyncClient:
         to or larger than the minimum capacity of the tier).
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import filestore_v1
 
@@ -803,7 +803,7 @@ class CloudFilestoreManagerAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Deletes an instance.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import filestore_v1
 
@@ -920,7 +920,7 @@ class CloudFilestoreManagerAsyncClient:
         location or for all locations.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import filestore_v1
 
@@ -1032,7 +1032,7 @@ class CloudFilestoreManagerAsyncClient:
     ) -> cloud_filestore_service.Backup:
         r"""Gets the details of a specific backup.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import filestore_v1
 
@@ -1131,7 +1131,7 @@ class CloudFilestoreManagerAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Creates a backup.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import filestore_v1
 
@@ -1263,7 +1263,7 @@ class CloudFilestoreManagerAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Deletes a backup.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import filestore_v1
 
@@ -1379,7 +1379,7 @@ class CloudFilestoreManagerAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Updates the settings of a specific backup.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import filestore_v1
 

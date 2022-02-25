@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for GetBackup
+# Snippet for ListBackups
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,23 +23,24 @@
 #   python3 -m pip install google-cloud-filestore
 
 
-# [START file_generated_filestore_v1_CloudFilestoreManager_GetBackup_sync]
+# [START file_v1_generated_CloudFilestoreManager_ListBackups_sync]
 from google.cloud import filestore_v1
 
 
-def sample_get_backup():
+def sample_list_backups():
     # Create a client
     client = filestore_v1.CloudFilestoreManagerClient()
 
     # Initialize request argument(s)
-    request = filestore_v1.GetBackupRequest(
-        name="name_value",
+    request = filestore_v1.ListBackupsRequest(
+        parent="parent_value",
     )
 
     # Make the request
-    response = client.get_backup(request=request)
+    page_result = client.list_backups(request=request)
 
     # Handle the response
-    print(response)
+    for response in page_result:
+        print(response)
 
-# [END file_generated_filestore_v1_CloudFilestoreManager_GetBackup_sync]
+# [END file_v1_generated_CloudFilestoreManager_ListBackups_sync]

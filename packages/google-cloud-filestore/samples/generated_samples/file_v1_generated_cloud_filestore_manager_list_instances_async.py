@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for UpdateInstance
+# Snippet for ListInstances
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,26 +23,24 @@
 #   python3 -m pip install google-cloud-filestore
 
 
-# [START file_generated_filestore_v1_CloudFilestoreManager_UpdateInstance_sync]
+# [START file_v1_generated_CloudFilestoreManager_ListInstances_async]
 from google.cloud import filestore_v1
 
 
-def sample_update_instance():
+async def sample_list_instances():
     # Create a client
-    client = filestore_v1.CloudFilestoreManagerClient()
+    client = filestore_v1.CloudFilestoreManagerAsyncClient()
 
     # Initialize request argument(s)
-    request = filestore_v1.UpdateInstanceRequest(
+    request = filestore_v1.ListInstancesRequest(
+        parent="parent_value",
     )
 
     # Make the request
-    operation = client.update_instance(request=request)
-
-    print("Waiting for operation to complete...")
-
-    response = operation.result()
+    page_result = client.list_instances(request=request)
 
     # Handle the response
-    print(response)
+    async for response in page_result:
+        print(response)
 
-# [END file_generated_filestore_v1_CloudFilestoreManager_UpdateInstance_sync]
+# [END file_v1_generated_CloudFilestoreManager_ListInstances_async]

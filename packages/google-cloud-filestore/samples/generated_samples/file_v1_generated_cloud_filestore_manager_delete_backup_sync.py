@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-filestore
 
 
-# [START file_generated_filestore_v1_CloudFilestoreManager_DeleteBackup_sync]
+# [START file_v1_generated_CloudFilestoreManager_DeleteBackup_sync]
 from google.cloud import filestore_v1
 
 
@@ -46,4 +46,4 @@ def sample_delete_backup():
     # Handle the response
     print(response)
 
-# [END file_generated_filestore_v1_CloudFilestoreManager_DeleteBackup_sync]
+# [END file_v1_generated_CloudFilestoreManager_DeleteBackup_sync]

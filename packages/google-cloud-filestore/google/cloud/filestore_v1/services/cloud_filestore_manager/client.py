@@ -460,8 +460,7 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
         specified location or for all locations.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import filestore_v1
 
@@ -565,8 +564,7 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
     ) -> cloud_filestore_service.Instance:
         r"""Gets the details of a specific instance.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import filestore_v1
 
@@ -661,8 +659,7 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
         the minimum capacity of the tier).
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import filestore_v1
 
@@ -790,8 +787,7 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
     ) -> operation.Operation:
         r"""Updates the settings of a specific instance.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import filestore_v1
 
@@ -913,8 +909,7 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
         to or larger than the minimum capacity of the tier).
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import filestore_v1
 
@@ -1001,8 +996,7 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
     ) -> operation.Operation:
         r"""Deletes an instance.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import filestore_v1
 
@@ -1119,8 +1113,7 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
         location or for all locations.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import filestore_v1
 
@@ -1223,8 +1216,7 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
     ) -> cloud_filestore_service.Backup:
         r"""Gets the details of a specific backup.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import filestore_v1
 
@@ -1314,8 +1306,7 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
     ) -> operation.Operation:
         r"""Creates a backup.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import filestore_v1
 
@@ -1447,8 +1438,7 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
     ) -> operation.Operation:
         r"""Deletes a backup.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import filestore_v1
 
@@ -1564,8 +1554,7 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
     ) -> operation.Operation:
         r"""Updates the settings of a specific backup.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import filestore_v1
 

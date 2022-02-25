@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for UpdateBackup
+# Snippet for CreateInstance
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,20 +23,22 @@
 #   python3 -m pip install google-cloud-filestore
 
 
-# [START file_generated_filestore_v1_CloudFilestoreManager_UpdateBackup_sync]
+# [START file_v1_generated_CloudFilestoreManager_CreateInstance_sync]
 from google.cloud import filestore_v1
 
 
-def sample_update_backup():
+def sample_create_instance():
     # Create a client
     client = filestore_v1.CloudFilestoreManagerClient()
 
     # Initialize request argument(s)
-    request = filestore_v1.UpdateBackupRequest(
+    request = filestore_v1.CreateInstanceRequest(
+        parent="parent_value",
+        instance_id="instance_id_value",
     )
 
     # Make the request
-    operation = client.update_backup(request=request)
+    operation = client.create_instance(request=request)
 
     print("Waiting for operation to complete...")
 
@@ -45,4 +47,4 @@ def sample_update_backup():
     # Handle the response
     print(response)
 
-# [END file_generated_filestore_v1_CloudFilestoreManager_UpdateBackup_sync]
+# [END file_v1_generated_CloudFilestoreManager_CreateInstance_sync]

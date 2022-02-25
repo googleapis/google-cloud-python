@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for DeleteBackup
+# Snippet for GetBackup
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,27 +23,23 @@
 #   python3 -m pip install google-cloud-filestore
 
 
-# [START file_generated_filestore_v1_CloudFilestoreManager_DeleteBackup_async]
+# [START file_v1_generated_CloudFilestoreManager_GetBackup_async]
 from google.cloud import filestore_v1
 
 
-async def sample_delete_backup():
+async def sample_get_backup():
     # Create a client
     client = filestore_v1.CloudFilestoreManagerAsyncClient()
 
     # Initialize request argument(s)
-    request = filestore_v1.DeleteBackupRequest(
+    request = filestore_v1.GetBackupRequest(
         name="name_value",
     )
 
     # Make the request
-    operation = client.delete_backup(request=request)
-
-    print("Waiting for operation to complete...")
-
-    response = await operation.result()
+    response = await client.get_backup(request=request)
 
     # Handle the response
     print(response)
 
-# [END file_generated_filestore_v1_CloudFilestoreManager_DeleteBackup_async]
+# [END file_v1_generated_CloudFilestoreManager_GetBackup_async]

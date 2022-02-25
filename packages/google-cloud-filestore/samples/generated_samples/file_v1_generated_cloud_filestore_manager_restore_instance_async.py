@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for CreateBackup
+# Snippet for RestoreInstance
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,28 +23,29 @@
 #   python3 -m pip install google-cloud-filestore
 
 
-# [START file_generated_filestore_v1_CloudFilestoreManager_CreateBackup_sync]
+# [START file_v1_generated_CloudFilestoreManager_RestoreInstance_async]
 from google.cloud import filestore_v1
 
 
-def sample_create_backup():
+async def sample_restore_instance():
     # Create a client
-    client = filestore_v1.CloudFilestoreManagerClient()
+    client = filestore_v1.CloudFilestoreManagerAsyncClient()
 
     # Initialize request argument(s)
-    request = filestore_v1.CreateBackupRequest(
-        parent="parent_value",
-        backup_id="backup_id_value",
+    request = filestore_v1.RestoreInstanceRequest(
+        source_backup="source_backup_value",
+        name="name_value",
+        file_share="file_share_value",
     )
 
     # Make the request
-    operation = client.create_backup(request=request)
+    operation = client.restore_instance(request=request)
 
     print("Waiting for operation to complete...")
 
-    response = operation.result()
+    response = await operation.result()
 
     # Handle the response
     print(response)
 
-# [END file_generated_filestore_v1_CloudFilestoreManager_CreateBackup_sync]
+# [END file_v1_generated_CloudFilestoreManager_RestoreInstance_async]
