@@ -567,8 +567,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         the filter will be muted after the LRO is done.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1
 
@@ -683,8 +682,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
     ) -> gcs_source.Source:
         r"""Creates a source.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1
 
@@ -792,8 +790,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         exist for finding creation to succeed.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1
 
@@ -916,8 +913,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
     ) -> gcs_mute_config.MuteConfig:
         r"""Creates a mute config.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1
 
@@ -1040,8 +1036,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
     ) -> gcs_notification_config.NotificationConfig:
         r"""Creates a notification config.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1
 
@@ -1164,8 +1159,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
     ) -> None:
         r"""Deletes an existing mute config.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1
 
@@ -1249,8 +1243,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
     ) -> None:
         r"""Deletes a notification config.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1
 
@@ -1337,8 +1330,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         Source.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1
 
@@ -1482,8 +1474,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
     ) -> mute_config.MuteConfig:
         r"""Gets a mute config.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1
 
@@ -1579,8 +1570,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
     ) -> notification_config.NotificationConfig:
         r"""Gets a notification config.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1
 
@@ -1677,8 +1667,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
     ) -> organization_settings.OrganizationSettings:
         r"""Gets the settings for an organization.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1
 
@@ -1774,8 +1763,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
     ) -> source.Source:
         r"""Gets a source.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1
 
@@ -1871,8 +1859,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         their specified properties.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1
 
@@ -1961,8 +1948,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         /v1/projects/{project_id}/sources/-/findings
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1
 
@@ -2092,8 +2078,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
     ) -> pagers.ListAssetsPager:
         r"""Lists an organization's assets.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1
 
@@ -2174,8 +2159,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         Example: /v1/organizations/{organization_id}/sources/-/findings
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1
 
@@ -2255,8 +2239,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
     ) -> pagers.ListMuteConfigsPager:
         r"""Lists mute configs.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1
 
@@ -2361,8 +2344,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
     ) -> pagers.ListNotificationConfigsPager:
         r"""Lists notification configs.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1
 
@@ -2467,8 +2449,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
     ) -> pagers.ListSourcesPager:
         r"""Lists all sources belonging to an organization.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1
 
@@ -2574,8 +2555,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         receive a TOO_MANY_REQUESTS error.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1
 
@@ -2683,8 +2663,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
     ) -> finding.Finding:
         r"""Updates the state of a finding.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1
 
@@ -2804,8 +2783,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
     ) -> finding.Finding:
         r"""Updates the mute state of a finding.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1
 
@@ -2919,8 +2897,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         Source.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1
 
@@ -3067,8 +3044,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         specified source.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1
 
@@ -3170,8 +3146,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
     ) -> gcs_external_system.ExternalSystem:
         r"""Updates external system. This is for a given finding.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1
 
@@ -3275,8 +3250,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         source must exist for a finding creation to succeed.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1
 
@@ -3380,8 +3354,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
     ) -> gcs_mute_config.MuteConfig:
         r"""Updates a mute config.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1
 
@@ -3492,8 +3465,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         allowed: description, pubsub_topic, streaming_config.filter
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1
 
@@ -3605,8 +3577,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
     ) -> gcs_organization_settings.OrganizationSettings:
         r"""Updates an organization's settings.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1
 
@@ -3702,8 +3673,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
     ) -> gcs_source.Source:
         r"""Updates a source.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1
 
@@ -3798,8 +3768,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
     ) -> gcs_security_marks.SecurityMarks:
         r"""Updates security marks.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1
 

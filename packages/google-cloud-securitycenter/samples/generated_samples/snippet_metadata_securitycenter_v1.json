@@ -10,8 +10,8 @@
           "shortName": "BulkMuteFindings"
         }
       },
-      "file": "securitycenter_generated_securitycenter_v1_security_center_bulk_mute_findings_async.py",
-      "regionTag": "securitycenter_generated_securitycenter_v1_SecurityCenter_BulkMuteFindings_async",
+      "file": "securitycenter_v1_generated_security_center_bulk_mute_findings_async.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_BulkMuteFindings_async",
       "segments": [
         {
           "end": 48,
@@ -54,8 +54,8 @@
           "shortName": "BulkMuteFindings"
         }
       },
-      "file": "securitycenter_generated_securitycenter_v1_security_center_bulk_mute_findings_sync.py",
-      "regionTag": "securitycenter_generated_securitycenter_v1_SecurityCenter_BulkMuteFindings_sync",
+      "file": "securitycenter_v1_generated_security_center_bulk_mute_findings_sync.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_BulkMuteFindings_sync",
       "segments": [
         {
           "end": 48,
@@ -99,8 +99,8 @@
           "shortName": "CreateFinding"
         }
       },
-      "file": "securitycenter_generated_securitycenter_v1_security_center_create_finding_async.py",
-      "regionTag": "securitycenter_generated_securitycenter_v1_SecurityCenter_CreateFinding_async",
+      "file": "securitycenter_v1_generated_security_center_create_finding_async.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_CreateFinding_async",
       "segments": [
         {
           "end": 45,
@@ -143,8 +143,8 @@
           "shortName": "CreateFinding"
         }
       },
-      "file": "securitycenter_generated_securitycenter_v1_security_center_create_finding_sync.py",
-      "regionTag": "securitycenter_generated_securitycenter_v1_SecurityCenter_CreateFinding_sync",
+      "file": "securitycenter_v1_generated_security_center_create_finding_sync.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_CreateFinding_sync",
       "segments": [
         {
           "end": 45,
@@ -188,8 +188,8 @@
           "shortName": "CreateMuteConfig"
         }
       },
-      "file": "securitycenter_generated_securitycenter_v1_security_center_create_mute_config_async.py",
-      "regionTag": "securitycenter_generated_securitycenter_v1_SecurityCenter_CreateMuteConfig_async",
+      "file": "securitycenter_v1_generated_security_center_create_mute_config_async.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_CreateMuteConfig_async",
       "segments": [
         {
           "end": 49,
@@ -232,8 +232,8 @@
           "shortName": "CreateMuteConfig"
         }
       },
-      "file": "securitycenter_generated_securitycenter_v1_security_center_create_mute_config_sync.py",
-      "regionTag": "securitycenter_generated_securitycenter_v1_SecurityCenter_CreateMuteConfig_sync",
+      "file": "securitycenter_v1_generated_security_center_create_mute_config_sync.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_CreateMuteConfig_sync",
       "segments": [
         {
           "end": 49,
@@ -277,8 +277,8 @@
           "shortName": "CreateNotificationConfig"
         }
       },
-      "file": "securitycenter_generated_securitycenter_v1_security_center_create_notification_config_async.py",
-      "regionTag": "securitycenter_generated_securitycenter_v1_SecurityCenter_CreateNotificationConfig_async",
+      "file": "securitycenter_v1_generated_security_center_create_notification_config_async.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_CreateNotificationConfig_async",
       "segments": [
         {
           "end": 45,
@@ -321,8 +321,8 @@
           "shortName": "CreateNotificationConfig"
         }
       },
-      "file": "securitycenter_generated_securitycenter_v1_security_center_create_notification_config_sync.py",
-      "regionTag": "securitycenter_generated_securitycenter_v1_SecurityCenter_CreateNotificationConfig_sync",
+      "file": "securitycenter_v1_generated_security_center_create_notification_config_sync.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_CreateNotificationConfig_sync",
       "segments": [
         {
           "end": 45,
@@ -366,8 +366,8 @@
           "shortName": "CreateSource"
         }
       },
-      "file": "securitycenter_generated_securitycenter_v1_security_center_create_source_async.py",
-      "regionTag": "securitycenter_generated_securitycenter_v1_SecurityCenter_CreateSource_async",
+      "file": "securitycenter_v1_generated_security_center_create_source_async.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_CreateSource_async",
       "segments": [
         {
           "end": 44,
@@ -410,8 +410,8 @@
           "shortName": "CreateSource"
         }
       },
-      "file": "securitycenter_generated_securitycenter_v1_security_center_create_source_sync.py",
-      "regionTag": "securitycenter_generated_securitycenter_v1_SecurityCenter_CreateSource_sync",
+      "file": "securitycenter_v1_generated_security_center_create_source_sync.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_CreateSource_sync",
       "segments": [
         {
           "end": 44,
@@ -455,8 +455,8 @@
           "shortName": "DeleteMuteConfig"
         }
       },
-      "file": "securitycenter_generated_securitycenter_v1_security_center_delete_mute_config_async.py",
-      "regionTag": "securitycenter_generated_securitycenter_v1_SecurityCenter_DeleteMuteConfig_async",
+      "file": "securitycenter_v1_generated_security_center_delete_mute_config_async.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_DeleteMuteConfig_async",
       "segments": [
         {
           "end": 42,
@@ -497,8 +497,8 @@
           "shortName": "DeleteMuteConfig"
         }
       },
-      "file": "securitycenter_generated_securitycenter_v1_security_center_delete_mute_config_sync.py",
-      "regionTag": "securitycenter_generated_securitycenter_v1_SecurityCenter_DeleteMuteConfig_sync",
+      "file": "securitycenter_v1_generated_security_center_delete_mute_config_sync.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_DeleteMuteConfig_sync",
       "segments": [
         {
           "end": 42,
@@ -540,8 +540,8 @@
           "shortName": "DeleteNotificationConfig"
         }
       },
-      "file": "securitycenter_generated_securitycenter_v1_security_center_delete_notification_config_async.py",
-      "regionTag": "securitycenter_generated_securitycenter_v1_SecurityCenter_DeleteNotificationConfig_async",
+      "file": "securitycenter_v1_generated_security_center_delete_notification_config_async.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_DeleteNotificationConfig_async",
       "segments": [
         {
           "end": 42,
@@ -582,8 +582,8 @@
           "shortName": "DeleteNotificationConfig"
         }
       },
-      "file": "securitycenter_generated_securitycenter_v1_security_center_delete_notification_config_sync.py",
-      "regionTag": "securitycenter_generated_securitycenter_v1_SecurityCenter_DeleteNotificationConfig_sync",
+      "file": "securitycenter_v1_generated_security_center_delete_notification_config_sync.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_DeleteNotificationConfig_sync",
       "segments": [
         {
           "end": 42,
@@ -625,8 +625,8 @@
           "shortName": "GetIamPolicy"
         }
       },
-      "file": "securitycenter_generated_securitycenter_v1_security_center_get_iam_policy_async.py",
-      "regionTag": "securitycenter_generated_securitycenter_v1_SecurityCenter_GetIamPolicy_async",
+      "file": "securitycenter_v1_generated_security_center_get_iam_policy_async.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_GetIamPolicy_async",
       "segments": [
         {
           "end": 44,
@@ -669,8 +669,8 @@
           "shortName": "GetIamPolicy"
         }
       },
-      "file": "securitycenter_generated_securitycenter_v1_security_center_get_iam_policy_sync.py",
-      "regionTag": "securitycenter_generated_securitycenter_v1_SecurityCenter_GetIamPolicy_sync",
+      "file": "securitycenter_v1_generated_security_center_get_iam_policy_sync.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_GetIamPolicy_sync",
       "segments": [
         {
           "end": 44,
@@ -714,8 +714,8 @@
           "shortName": "GetMuteConfig"
         }
       },
-      "file": "securitycenter_generated_securitycenter_v1_security_center_get_mute_config_async.py",
-      "regionTag": "securitycenter_generated_securitycenter_v1_SecurityCenter_GetMuteConfig_async",
+      "file": "securitycenter_v1_generated_security_center_get_mute_config_async.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_GetMuteConfig_async",
       "segments": [
         {
           "end": 44,
@@ -758,8 +758,8 @@
           "shortName": "GetMuteConfig"
         }
       },
-      "file": "securitycenter_generated_securitycenter_v1_security_center_get_mute_config_sync.py",
-      "regionTag": "securitycenter_generated_securitycenter_v1_SecurityCenter_GetMuteConfig_sync",
+      "file": "securitycenter_v1_generated_security_center_get_mute_config_sync.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_GetMuteConfig_sync",
       "segments": [
         {
           "end": 44,
@@ -803,8 +803,8 @@
           "shortName": "GetNotificationConfig"
         }
       },
-      "file": "securitycenter_generated_securitycenter_v1_security_center_get_notification_config_async.py",
-      "regionTag": "securitycenter_generated_securitycenter_v1_SecurityCenter_GetNotificationConfig_async",
+      "file": "securitycenter_v1_generated_security_center_get_notification_config_async.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_GetNotificationConfig_async",
       "segments": [
         {
           "end": 44,
@@ -847,8 +847,8 @@
           "shortName": "GetNotificationConfig"
         }
       },
-      "file": "securitycenter_generated_securitycenter_v1_security_center_get_notification_config_sync.py",
-      "regionTag": "securitycenter_generated_securitycenter_v1_SecurityCenter_GetNotificationConfig_sync",
+      "file": "securitycenter_v1_generated_security_center_get_notification_config_sync.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_GetNotificationConfig_sync",
       "segments": [
         {
           "end": 44,
@@ -892,8 +892,8 @@
           "shortName": "GetOrganizationSettings"
         }
       },
-      "file": "securitycenter_generated_securitycenter_v1_security_center_get_organization_settings_async.py",
-      "regionTag": "securitycenter_generated_securitycenter_v1_SecurityCenter_GetOrganizationSettings_async",
+      "file": "securitycenter_v1_generated_security_center_get_organization_settings_async.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_GetOrganizationSettings_async",
       "segments": [
         {
           "end": 44,
@@ -936,8 +936,8 @@
           "shortName": "GetOrganizationSettings"
         }
       },
-      "file": "securitycenter_generated_securitycenter_v1_security_center_get_organization_settings_sync.py",
-      "regionTag": "securitycenter_generated_securitycenter_v1_SecurityCenter_GetOrganizationSettings_sync",
+      "file": "securitycenter_v1_generated_security_center_get_organization_settings_sync.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_GetOrganizationSettings_sync",
       "segments": [
         {
           "end": 44,
@@ -981,8 +981,8 @@
           "shortName": "GetSource"
         }
       },
-      "file": "securitycenter_generated_securitycenter_v1_security_center_get_source_async.py",
-      "regionTag": "securitycenter_generated_securitycenter_v1_SecurityCenter_GetSource_async",
+      "file": "securitycenter_v1_generated_security_center_get_source_async.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_GetSource_async",
       "segments": [
         {
           "end": 44,
@@ -1025,8 +1025,8 @@
           "shortName": "GetSource"
         }
       },
-      "file": "securitycenter_generated_securitycenter_v1_security_center_get_source_sync.py",
-      "regionTag": "securitycenter_generated_securitycenter_v1_SecurityCenter_GetSource_sync",
+      "file": "securitycenter_v1_generated_security_center_get_source_sync.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_GetSource_sync",
       "segments": [
         {
           "end": 44,
@@ -1070,8 +1070,8 @@
           "shortName": "GroupAssets"
         }
       },
-      "file": "securitycenter_generated_securitycenter_v1_security_center_group_assets_async.py",
-      "regionTag": "securitycenter_generated_securitycenter_v1_SecurityCenter_GroupAssets_async",
+      "file": "securitycenter_v1_generated_security_center_group_assets_async.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_GroupAssets_async",
       "segments": [
         {
           "end": 46,
@@ -1114,8 +1114,8 @@
           "shortName": "GroupAssets"
         }
       },
-      "file": "securitycenter_generated_securitycenter_v1_security_center_group_assets_sync.py",
-      "regionTag": "securitycenter_generated_securitycenter_v1_SecurityCenter_GroupAssets_sync",
+      "file": "securitycenter_v1_generated_security_center_group_assets_sync.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_GroupAssets_sync",
       "segments": [
         {
           "end": 46,
@@ -1159,8 +1159,8 @@
           "shortName": "GroupFindings"
         }
       },
-      "file": "securitycenter_generated_securitycenter_v1_security_center_group_findings_async.py",
-      "regionTag": "securitycenter_generated_securitycenter_v1_SecurityCenter_GroupFindings_async",
+      "file": "securitycenter_v1_generated_security_center_group_findings_async.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_GroupFindings_async",
       "segments": [
         {
           "end": 46,
@@ -1203,8 +1203,8 @@
           "shortName": "GroupFindings"
         }
       },
-      "file": "securitycenter_generated_securitycenter_v1_security_center_group_findings_sync.py",
-      "regionTag": "securitycenter_generated_securitycenter_v1_SecurityCenter_GroupFindings_sync",
+      "file": "securitycenter_v1_generated_security_center_group_findings_sync.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_GroupFindings_sync",
       "segments": [
         {
           "end": 46,
@@ -1248,8 +1248,8 @@
           "shortName": "ListAssets"
         }
       },
-      "file": "securitycenter_generated_securitycenter_v1_security_center_list_assets_async.py",
-      "regionTag": "securitycenter_generated_securitycenter_v1_SecurityCenter_ListAssets_async",
+      "file": "securitycenter_v1_generated_security_center_list_assets_async.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_ListAssets_async",
       "segments": [
         {
           "end": 45,
@@ -1292,8 +1292,8 @@
           "shortName": "ListAssets"
         }
       },
-      "file": "securitycenter_generated_securitycenter_v1_security_center_list_assets_sync.py",
-      "regionTag": "securitycenter_generated_securitycenter_v1_SecurityCenter_ListAssets_sync",
+      "file": "securitycenter_v1_generated_security_center_list_assets_sync.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_ListAssets_sync",
       "segments": [
         {
           "end": 45,
@@ -1337,8 +1337,8 @@
           "shortName": "ListFindings"
         }
       },
-      "file": "securitycenter_generated_securitycenter_v1_security_center_list_findings_async.py",
-      "regionTag": "securitycenter_generated_securitycenter_v1_SecurityCenter_ListFindings_async",
+      "file": "securitycenter_v1_generated_security_center_list_findings_async.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_ListFindings_async",
       "segments": [
         {
           "end": 45,
@@ -1381,8 +1381,8 @@
           "shortName": "ListFindings"
         }
       },
-      "file": "securitycenter_generated_securitycenter_v1_security_center_list_findings_sync.py",
-      "regionTag": "securitycenter_generated_securitycenter_v1_SecurityCenter_ListFindings_sync",
+      "file": "securitycenter_v1_generated_security_center_list_findings_sync.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_ListFindings_sync",
       "segments": [
         {
           "end": 45,
@@ -1426,8 +1426,8 @@
           "shortName": "ListMuteConfigs"
         }
       },
-      "file": "securitycenter_generated_securitycenter_v1_security_center_list_mute_configs_async.py",
-      "regionTag": "securitycenter_generated_securitycenter_v1_SecurityCenter_ListMuteConfigs_async",
+      "file": "securitycenter_v1_generated_security_center_list_mute_configs_async.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_ListMuteConfigs_async",
       "segments": [
         {
           "end": 45,
@@ -1470,8 +1470,8 @@
           "shortName": "ListMuteConfigs"
         }
       },
-      "file": "securitycenter_generated_securitycenter_v1_security_center_list_mute_configs_sync.py",
-      "regionTag": "securitycenter_generated_securitycenter_v1_SecurityCenter_ListMuteConfigs_sync",
+      "file": "securitycenter_v1_generated_security_center_list_mute_configs_sync.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_ListMuteConfigs_sync",
       "segments": [
         {
           "end": 45,
@@ -1515,8 +1515,8 @@
           "shortName": "ListNotificationConfigs"
         }
       },
-      "file": "securitycenter_generated_securitycenter_v1_security_center_list_notification_configs_async.py",
-      "regionTag": "securitycenter_generated_securitycenter_v1_SecurityCenter_ListNotificationConfigs_async",
+      "file": "securitycenter_v1_generated_security_center_list_notification_configs_async.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_ListNotificationConfigs_async",
       "segments": [
         {
           "end": 45,
@@ -1559,8 +1559,8 @@
           "shortName": "ListNotificationConfigs"
         }
       },
-      "file": "securitycenter_generated_securitycenter_v1_security_center_list_notification_configs_sync.py",
-      "regionTag": "securitycenter_generated_securitycenter_v1_SecurityCenter_ListNotificationConfigs_sync",
+      "file": "securitycenter_v1_generated_security_center_list_notification_configs_sync.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_ListNotificationConfigs_sync",
       "segments": [
         {
           "end": 45,
@@ -1604,8 +1604,8 @@
           "shortName": "ListSources"
         }
       },
-      "file": "securitycenter_generated_securitycenter_v1_security_center_list_sources_async.py",
-      "regionTag": "securitycenter_generated_securitycenter_v1_SecurityCenter_ListSources_async",
+      "file": "securitycenter_v1_generated_security_center_list_sources_async.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_ListSources_async",
       "segments": [
         {
           "end": 45,
@@ -1648,8 +1648,8 @@
           "shortName": "ListSources"
         }
       },
-      "file": "securitycenter_generated_securitycenter_v1_security_center_list_sources_sync.py",
-      "regionTag": "securitycenter_generated_securitycenter_v1_SecurityCenter_ListSources_sync",
+      "file": "securitycenter_v1_generated_security_center_list_sources_sync.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_ListSources_sync",
       "segments": [
         {
           "end": 45,
@@ -1693,8 +1693,8 @@
           "shortName": "RunAssetDiscovery"
         }
       },
-      "file": "securitycenter_generated_securitycenter_v1_security_center_run_asset_discovery_async.py",
-      "regionTag": "securitycenter_generated_securitycenter_v1_SecurityCenter_RunAssetDiscovery_async",
+      "file": "securitycenter_v1_generated_security_center_run_asset_discovery_async.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_RunAssetDiscovery_async",
       "segments": [
         {
           "end": 48,
@@ -1737,8 +1737,8 @@
           "shortName": "RunAssetDiscovery"
         }
       },
-      "file": "securitycenter_generated_securitycenter_v1_security_center_run_asset_discovery_sync.py",
-      "regionTag": "securitycenter_generated_securitycenter_v1_SecurityCenter_RunAssetDiscovery_sync",
+      "file": "securitycenter_v1_generated_security_center_run_asset_discovery_sync.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_RunAssetDiscovery_sync",
       "segments": [
         {
           "end": 48,
@@ -1782,8 +1782,8 @@
           "shortName": "SetFindingState"
         }
       },
-      "file": "securitycenter_generated_securitycenter_v1_security_center_set_finding_state_async.py",
-      "regionTag": "securitycenter_generated_securitycenter_v1_SecurityCenter_SetFindingState_async",
+      "file": "securitycenter_v1_generated_security_center_set_finding_state_async.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_SetFindingState_async",
       "segments": [
         {
           "end": 45,
@@ -1826,8 +1826,8 @@
           "shortName": "SetFindingState"
         }
       },
-      "file": "securitycenter_generated_securitycenter_v1_security_center_set_finding_state_sync.py",
-      "regionTag": "securitycenter_generated_securitycenter_v1_SecurityCenter_SetFindingState_sync",
+      "file": "securitycenter_v1_generated_security_center_set_finding_state_sync.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_SetFindingState_sync",
       "segments": [
         {
           "end": 45,
@@ -1871,8 +1871,8 @@
           "shortName": "SetIamPolicy"
         }
       },
-      "file": "securitycenter_generated_securitycenter_v1_security_center_set_iam_policy_async.py",
-      "regionTag": "securitycenter_generated_securitycenter_v1_SecurityCenter_SetIamPolicy_async",
+      "file": "securitycenter_v1_generated_security_center_set_iam_policy_async.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_SetIamPolicy_async",
       "segments": [
         {
           "end": 44,
@@ -1915,8 +1915,8 @@
           "shortName": "SetIamPolicy"
         }
       },
-      "file": "securitycenter_generated_securitycenter_v1_security_center_set_iam_policy_sync.py",
-      "regionTag": "securitycenter_generated_securitycenter_v1_SecurityCenter_SetIamPolicy_sync",
+      "file": "securitycenter_v1_generated_security_center_set_iam_policy_sync.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_SetIamPolicy_sync",
       "segments": [
         {
           "end": 44,
@@ -1960,8 +1960,8 @@
           "shortName": "SetMute"
         }
       },
-      "file": "securitycenter_generated_securitycenter_v1_security_center_set_mute_async.py",
-      "regionTag": "securitycenter_generated_securitycenter_v1_SecurityCenter_SetMute_async",
+      "file": "securitycenter_v1_generated_security_center_set_mute_async.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_SetMute_async",
       "segments": [
         {
           "end": 45,
@@ -2004,8 +2004,8 @@
           "shortName": "SetMute"
         }
       },
-      "file": "securitycenter_generated_securitycenter_v1_security_center_set_mute_sync.py",
-      "regionTag": "securitycenter_generated_securitycenter_v1_SecurityCenter_SetMute_sync",
+      "file": "securitycenter_v1_generated_security_center_set_mute_sync.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_SetMute_sync",
       "segments": [
         {
           "end": 45,
@@ -2049,8 +2049,8 @@
           "shortName": "TestIamPermissions"
         }
       },
-      "file": "securitycenter_generated_securitycenter_v1_security_center_test_iam_permissions_async.py",
-      "regionTag": "securitycenter_generated_securitycenter_v1_SecurityCenter_TestIamPermissions_async",
+      "file": "securitycenter_v1_generated_security_center_test_iam_permissions_async.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_TestIamPermissions_async",
       "segments": [
         {
           "end": 45,
@@ -2093,8 +2093,8 @@
           "shortName": "TestIamPermissions"
         }
       },
-      "file": "securitycenter_generated_securitycenter_v1_security_center_test_iam_permissions_sync.py",
-      "regionTag": "securitycenter_generated_securitycenter_v1_SecurityCenter_TestIamPermissions_sync",
+      "file": "securitycenter_v1_generated_security_center_test_iam_permissions_sync.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_TestIamPermissions_sync",
       "segments": [
         {
           "end": 45,
@@ -2138,8 +2138,8 @@
           "shortName": "UpdateExternalSystem"
         }
       },
-      "file": "securitycenter_generated_securitycenter_v1_security_center_update_external_system_async.py",
-      "regionTag": "securitycenter_generated_securitycenter_v1_SecurityCenter_UpdateExternalSystem_async",
+      "file": "securitycenter_v1_generated_security_center_update_external_system_async.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_UpdateExternalSystem_async",
       "segments": [
         {
           "end": 43,
@@ -2182,8 +2182,8 @@
           "shortName": "UpdateExternalSystem"
         }
       },
-      "file": "securitycenter_generated_securitycenter_v1_security_center_update_external_system_sync.py",
-      "regionTag": "securitycenter_generated_securitycenter_v1_SecurityCenter_UpdateExternalSystem_sync",
+      "file": "securitycenter_v1_generated_security_center_update_external_system_sync.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_UpdateExternalSystem_sync",
       "segments": [
         {
           "end": 43,
@@ -2227,8 +2227,8 @@
           "shortName": "UpdateFinding"
         }
       },
-      "file": "securitycenter_generated_securitycenter_v1_security_center_update_finding_async.py",
-      "regionTag": "securitycenter_generated_securitycenter_v1_SecurityCenter_UpdateFinding_async",
+      "file": "securitycenter_v1_generated_security_center_update_finding_async.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_UpdateFinding_async",
       "segments": [
         {
           "end": 43,
@@ -2271,8 +2271,8 @@
           "shortName": "UpdateFinding"
         }
       },
-      "file": "securitycenter_generated_securitycenter_v1_security_center_update_finding_sync.py",
-      "regionTag": "securitycenter_generated_securitycenter_v1_SecurityCenter_UpdateFinding_sync",
+      "file": "securitycenter_v1_generated_security_center_update_finding_sync.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_UpdateFinding_sync",
       "segments": [
         {
           "end": 43,
@@ -2316,8 +2316,8 @@
           "shortName": "UpdateMuteConfig"
         }
       },
-      "file": "securitycenter_generated_securitycenter_v1_security_center_update_mute_config_async.py",
-      "regionTag": "securitycenter_generated_securitycenter_v1_SecurityCenter_UpdateMuteConfig_async",
+      "file": "securitycenter_v1_generated_security_center_update_mute_config_async.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_UpdateMuteConfig_async",
       "segments": [
         {
           "end": 47,
@@ -2360,8 +2360,8 @@
           "shortName": "UpdateMuteConfig"
         }
       },
-      "file": "securitycenter_generated_securitycenter_v1_security_center_update_mute_config_sync.py",
-      "regionTag": "securitycenter_generated_securitycenter_v1_SecurityCenter_UpdateMuteConfig_sync",
+      "file": "securitycenter_v1_generated_security_center_update_mute_config_sync.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_UpdateMuteConfig_sync",
       "segments": [
         {
           "end": 47,
@@ -2405,8 +2405,8 @@
           "shortName": "UpdateNotificationConfig"
         }
       },
-      "file": "securitycenter_generated_securitycenter_v1_security_center_update_notification_config_async.py",
-      "regionTag": "securitycenter_generated_securitycenter_v1_SecurityCenter_UpdateNotificationConfig_async",
+      "file": "securitycenter_v1_generated_security_center_update_notification_config_async.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_UpdateNotificationConfig_async",
       "segments": [
         {
           "end": 43,
@@ -2449,8 +2449,8 @@
           "shortName": "UpdateNotificationConfig"
         }
       },
-      "file": "securitycenter_generated_securitycenter_v1_security_center_update_notification_config_sync.py",
-      "regionTag": "securitycenter_generated_securitycenter_v1_SecurityCenter_UpdateNotificationConfig_sync",
+      "file": "securitycenter_v1_generated_security_center_update_notification_config_sync.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_UpdateNotificationConfig_sync",
       "segments": [
         {
           "end": 43,
@@ -2494,8 +2494,8 @@
           "shortName": "UpdateOrganizationSettings"
         }
       },
-      "file": "securitycenter_generated_securitycenter_v1_security_center_update_organization_settings_async.py",
-      "regionTag": "securitycenter_generated_securitycenter_v1_SecurityCenter_UpdateOrganizationSettings_async",
+      "file": "securitycenter_v1_generated_security_center_update_organization_settings_async.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_UpdateOrganizationSettings_async",
       "segments": [
         {
           "end": 43,
@@ -2538,8 +2538,8 @@
           "shortName": "UpdateOrganizationSettings"
         }
       },
-      "file": "securitycenter_generated_securitycenter_v1_security_center_update_organization_settings_sync.py",
-      "regionTag": "securitycenter_generated_securitycenter_v1_SecurityCenter_UpdateOrganizationSettings_sync",
+      "file": "securitycenter_v1_generated_security_center_update_organization_settings_sync.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_UpdateOrganizationSettings_sync",
       "segments": [
         {
           "end": 43,
@@ -2583,8 +2583,8 @@
           "shortName": "UpdateSecurityMarks"
         }
       },
-      "file": "securitycenter_generated_securitycenter_v1_security_center_update_security_marks_async.py",
-      "regionTag": "securitycenter_generated_securitycenter_v1_SecurityCenter_UpdateSecurityMarks_async",
+      "file": "securitycenter_v1_generated_security_center_update_security_marks_async.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_UpdateSecurityMarks_async",
       "segments": [
         {
           "end": 43,
@@ -2627,8 +2627,8 @@
           "shortName": "UpdateSecurityMarks"
         }
       },
-      "file": "securitycenter_generated_securitycenter_v1_security_center_update_security_marks_sync.py",
-      "regionTag": "securitycenter_generated_securitycenter_v1_SecurityCenter_UpdateSecurityMarks_sync",
+      "file": "securitycenter_v1_generated_security_center_update_security_marks_sync.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_UpdateSecurityMarks_sync",
       "segments": [
         {
           "end": 43,
@@ -2672,8 +2672,8 @@
           "shortName": "UpdateSource"
         }
       },
-      "file": "securitycenter_generated_securitycenter_v1_security_center_update_source_async.py",
-      "regionTag": "securitycenter_generated_securitycenter_v1_SecurityCenter_UpdateSource_async",
+      "file": "securitycenter_v1_generated_security_center_update_source_async.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_UpdateSource_async",
       "segments": [
         {
           "end": 43,
@@ -2716,8 +2716,8 @@
           "shortName": "UpdateSource"
         }
       },
-      "file": "securitycenter_generated_securitycenter_v1_security_center_update_source_sync.py",
-      "regionTag": "securitycenter_generated_securitycenter_v1_SecurityCenter_UpdateSource_sync",
+      "file": "securitycenter_v1_generated_security_center_update_source_sync.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_UpdateSource_sync",
       "segments": [
         {
           "end": 43,

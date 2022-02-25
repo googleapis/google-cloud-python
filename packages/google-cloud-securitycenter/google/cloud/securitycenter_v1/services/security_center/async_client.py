@@ -273,7 +273,7 @@ class SecurityCenterAsyncClient:
         the filter will be muted after the LRO is done.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1
 
@@ -388,7 +388,7 @@ class SecurityCenterAsyncClient:
     ) -> gcs_source.Source:
         r"""Creates a source.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1
 
@@ -496,7 +496,7 @@ class SecurityCenterAsyncClient:
         exist for finding creation to succeed.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1
 
@@ -619,7 +619,7 @@ class SecurityCenterAsyncClient:
     ) -> gcs_mute_config.MuteConfig:
         r"""Creates a mute config.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1
 
@@ -742,7 +742,7 @@ class SecurityCenterAsyncClient:
     ) -> gcs_notification_config.NotificationConfig:
         r"""Creates a notification config.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1
 
@@ -861,7 +861,7 @@ class SecurityCenterAsyncClient:
     ) -> None:
         r"""Deletes an existing mute config.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1
 
@@ -945,7 +945,7 @@ class SecurityCenterAsyncClient:
     ) -> None:
         r"""Deletes a notification config.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1
 
@@ -1028,7 +1028,7 @@ class SecurityCenterAsyncClient:
         Source.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1
 
@@ -1183,7 +1183,7 @@ class SecurityCenterAsyncClient:
     ) -> mute_config.MuteConfig:
         r"""Gets a mute config.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1
 
@@ -1279,7 +1279,7 @@ class SecurityCenterAsyncClient:
     ) -> notification_config.NotificationConfig:
         r"""Gets a notification config.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1
 
@@ -1386,7 +1386,7 @@ class SecurityCenterAsyncClient:
     ) -> organization_settings.OrganizationSettings:
         r"""Gets the settings for an organization.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1
 
@@ -1488,7 +1488,7 @@ class SecurityCenterAsyncClient:
     ) -> source.Source:
         r"""Gets a source.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1
 
@@ -1594,7 +1594,7 @@ class SecurityCenterAsyncClient:
         their specified properties.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1
 
@@ -1692,7 +1692,7 @@ class SecurityCenterAsyncClient:
         /v1/projects/{project_id}/sources/-/findings
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1
 
@@ -1832,7 +1832,7 @@ class SecurityCenterAsyncClient:
     ) -> pagers.ListAssetsAsyncPager:
         r"""Lists an organization's assets.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1
 
@@ -1922,7 +1922,7 @@ class SecurityCenterAsyncClient:
         Example: /v1/organizations/{organization_id}/sources/-/findings
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1
 
@@ -2011,7 +2011,7 @@ class SecurityCenterAsyncClient:
     ) -> pagers.ListMuteConfigsAsyncPager:
         r"""Lists mute configs.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1
 
@@ -2116,7 +2116,7 @@ class SecurityCenterAsyncClient:
     ) -> pagers.ListNotificationConfigsAsyncPager:
         r"""Lists notification configs.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1
 
@@ -2227,7 +2227,7 @@ class SecurityCenterAsyncClient:
     ) -> pagers.ListSourcesAsyncPager:
         r"""Lists all sources belonging to an organization.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1
 
@@ -2343,7 +2343,7 @@ class SecurityCenterAsyncClient:
         receive a TOO_MANY_REQUESTS error.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1
 
@@ -2451,7 +2451,7 @@ class SecurityCenterAsyncClient:
     ) -> finding.Finding:
         r"""Updates the state of a finding.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1
 
@@ -2571,7 +2571,7 @@ class SecurityCenterAsyncClient:
     ) -> finding.Finding:
         r"""Updates the mute state of a finding.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1
 
@@ -2685,7 +2685,7 @@ class SecurityCenterAsyncClient:
         Source.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1
 
@@ -2833,7 +2833,7 @@ class SecurityCenterAsyncClient:
         specified source.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1
 
@@ -2946,7 +2946,7 @@ class SecurityCenterAsyncClient:
     ) -> gcs_external_system.ExternalSystem:
         r"""Updates external system. This is for a given finding.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1
 
@@ -3050,7 +3050,7 @@ class SecurityCenterAsyncClient:
         source must exist for a finding creation to succeed.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1
 
@@ -3154,7 +3154,7 @@ class SecurityCenterAsyncClient:
     ) -> gcs_mute_config.MuteConfig:
         r"""Updates a mute config.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1
 
@@ -3265,7 +3265,7 @@ class SecurityCenterAsyncClient:
         allowed: description, pubsub_topic, streaming_config.filter
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1
 
@@ -3373,7 +3373,7 @@ class SecurityCenterAsyncClient:
     ) -> gcs_organization_settings.OrganizationSettings:
         r"""Updates an organization's settings.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1
 
@@ -3465,7 +3465,7 @@ class SecurityCenterAsyncClient:
     ) -> gcs_source.Source:
         r"""Updates a source.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1
 
@@ -3560,7 +3560,7 @@ class SecurityCenterAsyncClient:
     ) -> gcs_security_marks.SecurityMarks:
         r"""Updates security marks.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1
 

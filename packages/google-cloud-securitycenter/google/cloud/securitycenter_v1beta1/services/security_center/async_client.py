@@ -246,7 +246,7 @@ class SecurityCenterAsyncClient:
     ) -> gcs_source.Source:
         r"""Creates a source.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1beta1
 
@@ -354,7 +354,7 @@ class SecurityCenterAsyncClient:
         exist for finding creation to succeed.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1beta1
 
@@ -477,7 +477,7 @@ class SecurityCenterAsyncClient:
         Source.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1beta1
 
@@ -634,7 +634,7 @@ class SecurityCenterAsyncClient:
     ) -> organization_settings.OrganizationSettings:
         r"""Gets the settings for an organization.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1beta1
 
@@ -736,7 +736,7 @@ class SecurityCenterAsyncClient:
     ) -> source.Source:
         r"""Gets a source.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1beta1
 
@@ -842,7 +842,7 @@ class SecurityCenterAsyncClient:
         their specified properties.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1beta1
 
@@ -939,7 +939,7 @@ class SecurityCenterAsyncClient:
         /v1beta1/organizations/{organization_id}/sources/-/findings
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1beta1
 
@@ -1070,7 +1070,7 @@ class SecurityCenterAsyncClient:
     ) -> pagers.ListAssetsAsyncPager:
         r"""Lists an organization's assets.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1beta1
 
@@ -1161,7 +1161,7 @@ class SecurityCenterAsyncClient:
         /v1beta1/organizations/{organization_id}/sources/-/findings
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1beta1
 
@@ -1250,7 +1250,7 @@ class SecurityCenterAsyncClient:
     ) -> pagers.ListSourcesAsyncPager:
         r"""Lists all sources belonging to an organization.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1beta1
 
@@ -1365,7 +1365,7 @@ class SecurityCenterAsyncClient:
         receive a TOO_MANY_REQUESTS error.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1beta1
 
@@ -1483,7 +1483,7 @@ class SecurityCenterAsyncClient:
     ) -> finding.Finding:
         r"""Updates the state of a finding.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1beta1
 
@@ -1604,7 +1604,7 @@ class SecurityCenterAsyncClient:
         Source.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1beta1
 
@@ -1752,7 +1752,7 @@ class SecurityCenterAsyncClient:
         specified source.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1beta1
 
@@ -1866,7 +1866,7 @@ class SecurityCenterAsyncClient:
         source must exist for a finding creation to succeed.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1beta1
 
@@ -1971,7 +1971,7 @@ class SecurityCenterAsyncClient:
     ) -> gcs_organization_settings.OrganizationSettings:
         r"""Updates an organization's settings.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1beta1
 
@@ -2063,7 +2063,7 @@ class SecurityCenterAsyncClient:
     ) -> gcs_source.Source:
         r"""Updates a source.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1beta1
 
@@ -2158,7 +2158,7 @@ class SecurityCenterAsyncClient:
     ) -> gcs_security_marks.SecurityMarks:
         r"""Updates security marks.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import securitycenter_v1beta1
 
