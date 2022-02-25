@@ -1,6 +1,13 @@
 # Changelog
 
 
+### [0.63.5](https://github.com/googleapis/gapic-generator-python/compare/v0.63.4...v0.63.5) (2022-02-25)
+
+
+### Bug Fixes
+
+* update license year to 2022 ([#1199](https://github.com/googleapis/gapic-generator-python/issues/1199)) ([31292d5](https://github.com/googleapis/gapic-generator-python/commit/31292d59c8d08695f3e2dfa75861c86d723a9d35))
+
 ### [0.63.4](https://github.com/googleapis/gapic-generator-python/compare/v0.63.3...v0.63.4) (2022-02-22)
 
 
