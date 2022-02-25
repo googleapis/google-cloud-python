@@ -234,7 +234,7 @@ class WebSecurityScannerAsyncClient:
     ) -> gcw_scan_config.ScanConfig:
         r"""Creates a new ScanConfig.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import websecurityscanner_v1alpha
 
@@ -343,7 +343,7 @@ class WebSecurityScannerAsyncClient:
         resources.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import websecurityscanner_v1alpha
 
@@ -435,7 +435,7 @@ class WebSecurityScannerAsyncClient:
     ) -> scan_config.ScanConfig:
         r"""Gets a ScanConfig.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import websecurityscanner_v1alpha
 
@@ -538,7 +538,7 @@ class WebSecurityScannerAsyncClient:
     ) -> pagers.ListScanConfigsAsyncPager:
         r"""Lists ScanConfigs under a given project.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import websecurityscanner_v1alpha
 
@@ -651,7 +651,7 @@ class WebSecurityScannerAsyncClient:
         update of a ScanConfig.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import websecurityscanner_v1alpha
 
@@ -761,7 +761,7 @@ class WebSecurityScannerAsyncClient:
     ) -> scan_run.ScanRun:
         r"""Start a ScanRun according to the given ScanConfig.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import websecurityscanner_v1alpha
 
@@ -853,7 +853,7 @@ class WebSecurityScannerAsyncClient:
     ) -> scan_run.ScanRun:
         r"""Gets a ScanRun.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import websecurityscanner_v1alpha
 
@@ -956,7 +956,7 @@ class WebSecurityScannerAsyncClient:
         descending order of ScanRun stop time.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import websecurityscanner_v1alpha
 
@@ -1067,7 +1067,7 @@ class WebSecurityScannerAsyncClient:
     ) -> scan_run.ScanRun:
         r"""Stops a ScanRun. The stopped ScanRun is returned.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import websecurityscanner_v1alpha
 
@@ -1159,7 +1159,7 @@ class WebSecurityScannerAsyncClient:
     ) -> pagers.ListCrawledUrlsAsyncPager:
         r"""List CrawledUrls under a given ScanRun.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import websecurityscanner_v1alpha
 
@@ -1270,7 +1270,7 @@ class WebSecurityScannerAsyncClient:
     ) -> finding.Finding:
         r"""Gets a Finding.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import websecurityscanner_v1alpha
 
@@ -1373,7 +1373,7 @@ class WebSecurityScannerAsyncClient:
     ) -> pagers.ListFindingsAsyncPager:
         r"""List Findings under a given ScanRun.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import websecurityscanner_v1alpha
 
@@ -1495,7 +1495,7 @@ class WebSecurityScannerAsyncClient:
     ) -> web_security_scanner.ListFindingTypeStatsResponse:
         r"""List all FindingTypeStats under a given ScanRun.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import websecurityscanner_v1alpha
 

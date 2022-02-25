@@ -462,8 +462,7 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
     ) -> gcw_scan_config.ScanConfig:
         r"""Creates a new ScanConfig.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import websecurityscanner_v1alpha
 
@@ -572,8 +571,7 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
         resources.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import websecurityscanner_v1alpha
 
@@ -655,8 +653,7 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
     ) -> scan_config.ScanConfig:
         r"""Gets a ScanConfig.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import websecurityscanner_v1alpha
 
@@ -749,8 +746,7 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
     ) -> pagers.ListScanConfigsPager:
         r"""Lists ScanConfigs under a given project.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import websecurityscanner_v1alpha
 
@@ -853,8 +849,7 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
         update of a ScanConfig.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import websecurityscanner_v1alpha
 
@@ -964,8 +959,7 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
     ) -> scan_run.ScanRun:
         r"""Start a ScanRun according to the given ScanConfig.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import websecurityscanner_v1alpha
 
@@ -1057,8 +1051,7 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
     ) -> scan_run.ScanRun:
         r"""Gets a ScanRun.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import websecurityscanner_v1alpha
 
@@ -1151,8 +1144,7 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
         descending order of ScanRun stop time.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import websecurityscanner_v1alpha
 
@@ -1253,8 +1245,7 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
     ) -> scan_run.ScanRun:
         r"""Stops a ScanRun. The stopped ScanRun is returned.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import websecurityscanner_v1alpha
 
@@ -1346,8 +1337,7 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
     ) -> pagers.ListCrawledUrlsPager:
         r"""List CrawledUrls under a given ScanRun.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import websecurityscanner_v1alpha
 
@@ -1448,8 +1438,7 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
     ) -> finding.Finding:
         r"""Gets a Finding.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import websecurityscanner_v1alpha
 
@@ -1542,8 +1531,7 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
     ) -> pagers.ListFindingsPager:
         r"""List Findings under a given ScanRun.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import websecurityscanner_v1alpha
 
@@ -1655,8 +1643,7 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
     ) -> web_security_scanner.ListFindingTypeStatsResponse:
         r"""List all FindingTypeStats under a given ScanRun.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import websecurityscanner_v1alpha
 

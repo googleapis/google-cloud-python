@@ -10,8 +10,8 @@
           "shortName": "CreateScanConfig"
         }
       },
-      "file": "websecurityscanner_generated_websecurityscanner_v1beta_web_security_scanner_create_scan_config_async.py",
-      "regionTag": "websecurityscanner_generated_websecurityscanner_v1beta_WebSecurityScanner_CreateScanConfig_async",
+      "file": "websecurityscanner_v1beta_generated_web_security_scanner_create_scan_config_async.py",
+      "regionTag": "websecurityscanner_v1beta_generated_WebSecurityScanner_CreateScanConfig_async",
       "segments": [
         {
           "end": 49,
@@ -54,8 +54,8 @@
           "shortName": "CreateScanConfig"
         }
       },
-      "file": "websecurityscanner_generated_websecurityscanner_v1beta_web_security_scanner_create_scan_config_sync.py",
-      "regionTag": "websecurityscanner_generated_websecurityscanner_v1beta_WebSecurityScanner_CreateScanConfig_sync",
+      "file": "websecurityscanner_v1beta_generated_web_security_scanner_create_scan_config_sync.py",
+      "regionTag": "websecurityscanner_v1beta_generated_WebSecurityScanner_CreateScanConfig_sync",
       "segments": [
         {
           "end": 49,
@@ -99,8 +99,8 @@
           "shortName": "DeleteScanConfig"
         }
       },
-      "file": "websecurityscanner_generated_websecurityscanner_v1beta_web_security_scanner_delete_scan_config_async.py",
-      "regionTag": "websecurityscanner_generated_websecurityscanner_v1beta_WebSecurityScanner_DeleteScanConfig_async",
+      "file": "websecurityscanner_v1beta_generated_web_security_scanner_delete_scan_config_async.py",
+      "regionTag": "websecurityscanner_v1beta_generated_WebSecurityScanner_DeleteScanConfig_async",
       "segments": [
         {
           "end": 42,
@@ -141,8 +141,8 @@
           "shortName": "DeleteScanConfig"
         }
       },
-      "file": "websecurityscanner_generated_websecurityscanner_v1beta_web_security_scanner_delete_scan_config_sync.py",
-      "regionTag": "websecurityscanner_generated_websecurityscanner_v1beta_WebSecurityScanner_DeleteScanConfig_sync",
+      "file": "websecurityscanner_v1beta_generated_web_security_scanner_delete_scan_config_sync.py",
+      "regionTag": "websecurityscanner_v1beta_generated_WebSecurityScanner_DeleteScanConfig_sync",
       "segments": [
         {
           "end": 42,
@@ -184,8 +184,8 @@
           "shortName": "GetFinding"
         }
       },
-      "file": "websecurityscanner_generated_websecurityscanner_v1beta_web_security_scanner_get_finding_async.py",
-      "regionTag": "websecurityscanner_generated_websecurityscanner_v1beta_WebSecurityScanner_GetFinding_async",
+      "file": "websecurityscanner_v1beta_generated_web_security_scanner_get_finding_async.py",
+      "regionTag": "websecurityscanner_v1beta_generated_WebSecurityScanner_GetFinding_async",
       "segments": [
         {
           "end": 44,
@@ -228,8 +228,8 @@
           "shortName": "GetFinding"
         }
       },
-      "file": "websecurityscanner_generated_websecurityscanner_v1beta_web_security_scanner_get_finding_sync.py",
-      "regionTag": "websecurityscanner_generated_websecurityscanner_v1beta_WebSecurityScanner_GetFinding_sync",
+      "file": "websecurityscanner_v1beta_generated_web_security_scanner_get_finding_sync.py",
+      "regionTag": "websecurityscanner_v1beta_generated_WebSecurityScanner_GetFinding_sync",
       "segments": [
         {
           "end": 44,
@@ -273,8 +273,8 @@
           "shortName": "GetScanConfig"
         }
       },
-      "file": "websecurityscanner_generated_websecurityscanner_v1beta_web_security_scanner_get_scan_config_async.py",
-      "regionTag": "websecurityscanner_generated_websecurityscanner_v1beta_WebSecurityScanner_GetScanConfig_async",
+      "file": "websecurityscanner_v1beta_generated_web_security_scanner_get_scan_config_async.py",
+      "regionTag": "websecurityscanner_v1beta_generated_WebSecurityScanner_GetScanConfig_async",
       "segments": [
         {
           "end": 44,
@@ -317,8 +317,8 @@
           "shortName": "GetScanConfig"
         }
       },
-      "file": "websecurityscanner_generated_websecurityscanner_v1beta_web_security_scanner_get_scan_config_sync.py",
-      "regionTag": "websecurityscanner_generated_websecurityscanner_v1beta_WebSecurityScanner_GetScanConfig_sync",
+      "file": "websecurityscanner_v1beta_generated_web_security_scanner_get_scan_config_sync.py",
+      "regionTag": "websecurityscanner_v1beta_generated_WebSecurityScanner_GetScanConfig_sync",
       "segments": [
         {
           "end": 44,
@@ -362,8 +362,8 @@
           "shortName": "GetScanRun"
         }
       },
-      "file": "websecurityscanner_generated_websecurityscanner_v1beta_web_security_scanner_get_scan_run_async.py",
-      "regionTag": "websecurityscanner_generated_websecurityscanner_v1beta_WebSecurityScanner_GetScanRun_async",
+      "file": "websecurityscanner_v1beta_generated_web_security_scanner_get_scan_run_async.py",
+      "regionTag": "websecurityscanner_v1beta_generated_WebSecurityScanner_GetScanRun_async",
       "segments": [
         {
           "end": 44,
@@ -406,8 +406,8 @@
           "shortName": "GetScanRun"
         }
       },
-      "file": "websecurityscanner_generated_websecurityscanner_v1beta_web_security_scanner_get_scan_run_sync.py",
-      "regionTag": "websecurityscanner_generated_websecurityscanner_v1beta_WebSecurityScanner_GetScanRun_sync",
+      "file": "websecurityscanner_v1beta_generated_web_security_scanner_get_scan_run_sync.py",
+      "regionTag": "websecurityscanner_v1beta_generated_WebSecurityScanner_GetScanRun_sync",
       "segments": [
         {
           "end": 44,
@@ -451,8 +451,8 @@
           "shortName": "ListCrawledUrls"
         }
       },
-      "file": "websecurityscanner_generated_websecurityscanner_v1beta_web_security_scanner_list_crawled_urls_async.py",
-      "regionTag": "websecurityscanner_generated_websecurityscanner_v1beta_WebSecurityScanner_ListCrawledUrls_async",
+      "file": "websecurityscanner_v1beta_generated_web_security_scanner_list_crawled_urls_async.py",
+      "regionTag": "websecurityscanner_v1beta_generated_WebSecurityScanner_ListCrawledUrls_async",
       "segments": [
         {
           "end": 45,
@@ -495,8 +495,8 @@
           "shortName": "ListCrawledUrls"
         }
       },
-      "file": "websecurityscanner_generated_websecurityscanner_v1beta_web_security_scanner_list_crawled_urls_sync.py",
-      "regionTag": "websecurityscanner_generated_websecurityscanner_v1beta_WebSecurityScanner_ListCrawledUrls_sync",
+      "file": "websecurityscanner_v1beta_generated_web_security_scanner_list_crawled_urls_sync.py",
+      "regionTag": "websecurityscanner_v1beta_generated_WebSecurityScanner_ListCrawledUrls_sync",
       "segments": [
         {
           "end": 45,
@@ -540,8 +540,8 @@
           "shortName": "ListFindingTypeStats"
         }
       },
-      "file": "websecurityscanner_generated_websecurityscanner_v1beta_web_security_scanner_list_finding_type_stats_async.py",
-      "regionTag": "websecurityscanner_generated_websecurityscanner_v1beta_WebSecurityScanner_ListFindingTypeStats_async",
+      "file": "websecurityscanner_v1beta_generated_web_security_scanner_list_finding_type_stats_async.py",
+      "regionTag": "websecurityscanner_v1beta_generated_WebSecurityScanner_ListFindingTypeStats_async",
       "segments": [
         {
           "end": 44,
@@ -584,8 +584,8 @@
           "shortName": "ListFindingTypeStats"
         }
       },
-      "file": "websecurityscanner_generated_websecurityscanner_v1beta_web_security_scanner_list_finding_type_stats_sync.py",
-      "regionTag": "websecurityscanner_generated_websecurityscanner_v1beta_WebSecurityScanner_ListFindingTypeStats_sync",
+      "file": "websecurityscanner_v1beta_generated_web_security_scanner_list_finding_type_stats_sync.py",
+      "regionTag": "websecurityscanner_v1beta_generated_WebSecurityScanner_ListFindingTypeStats_sync",
       "segments": [
         {
           "end": 44,
@@ -629,8 +629,8 @@
           "shortName": "ListFindings"
         }
       },
-      "file": "websecurityscanner_generated_websecurityscanner_v1beta_web_security_scanner_list_findings_async.py",
-      "regionTag": "websecurityscanner_generated_websecurityscanner_v1beta_WebSecurityScanner_ListFindings_async",
+      "file": "websecurityscanner_v1beta_generated_web_security_scanner_list_findings_async.py",
+      "regionTag": "websecurityscanner_v1beta_generated_WebSecurityScanner_ListFindings_async",
       "segments": [
         {
           "end": 46,
@@ -673,8 +673,8 @@
           "shortName": "ListFindings"
         }
       },
-      "file": "websecurityscanner_generated_websecurityscanner_v1beta_web_security_scanner_list_findings_sync.py",
-      "regionTag": "websecurityscanner_generated_websecurityscanner_v1beta_WebSecurityScanner_ListFindings_sync",
+      "file": "websecurityscanner_v1beta_generated_web_security_scanner_list_findings_sync.py",
+      "regionTag": "websecurityscanner_v1beta_generated_WebSecurityScanner_ListFindings_sync",
       "segments": [
         {
           "end": 46,
@@ -718,8 +718,8 @@
           "shortName": "ListScanConfigs"
         }
       },
-      "file": "websecurityscanner_generated_websecurityscanner_v1beta_web_security_scanner_list_scan_configs_async.py",
-      "regionTag": "websecurityscanner_generated_websecurityscanner_v1beta_WebSecurityScanner_ListScanConfigs_async",
+      "file": "websecurityscanner_v1beta_generated_web_security_scanner_list_scan_configs_async.py",
+      "regionTag": "websecurityscanner_v1beta_generated_WebSecurityScanner_ListScanConfigs_async",
       "segments": [
         {
           "end": 45,
@@ -762,8 +762,8 @@
           "shortName": "ListScanConfigs"
         }
       },
-      "file": "websecurityscanner_generated_websecurityscanner_v1beta_web_security_scanner_list_scan_configs_sync.py",
-      "regionTag": "websecurityscanner_generated_websecurityscanner_v1beta_WebSecurityScanner_ListScanConfigs_sync",
+      "file": "websecurityscanner_v1beta_generated_web_security_scanner_list_scan_configs_sync.py",
+      "regionTag": "websecurityscanner_v1beta_generated_WebSecurityScanner_ListScanConfigs_sync",
       "segments": [
         {
           "end": 45,
@@ -807,8 +807,8 @@
           "shortName": "ListScanRuns"
         }
       },
-      "file": "websecurityscanner_generated_websecurityscanner_v1beta_web_security_scanner_list_scan_runs_async.py",
-      "regionTag": "websecurityscanner_generated_websecurityscanner_v1beta_WebSecurityScanner_ListScanRuns_async",
+      "file": "websecurityscanner_v1beta_generated_web_security_scanner_list_scan_runs_async.py",
+      "regionTag": "websecurityscanner_v1beta_generated_WebSecurityScanner_ListScanRuns_async",
       "segments": [
         {
           "end": 45,
@@ -851,8 +851,8 @@
           "shortName": "ListScanRuns"
         }
       },
-      "file": "websecurityscanner_generated_websecurityscanner_v1beta_web_security_scanner_list_scan_runs_sync.py",
-      "regionTag": "websecurityscanner_generated_websecurityscanner_v1beta_WebSecurityScanner_ListScanRuns_sync",
+      "file": "websecurityscanner_v1beta_generated_web_security_scanner_list_scan_runs_sync.py",
+      "regionTag": "websecurityscanner_v1beta_generated_WebSecurityScanner_ListScanRuns_sync",
       "segments": [
         {
           "end": 45,
@@ -896,8 +896,8 @@
           "shortName": "StartScanRun"
         }
       },
-      "file": "websecurityscanner_generated_websecurityscanner_v1beta_web_security_scanner_start_scan_run_async.py",
-      "regionTag": "websecurityscanner_generated_websecurityscanner_v1beta_WebSecurityScanner_StartScanRun_async",
+      "file": "websecurityscanner_v1beta_generated_web_security_scanner_start_scan_run_async.py",
+      "regionTag": "websecurityscanner_v1beta_generated_WebSecurityScanner_StartScanRun_async",
       "segments": [
         {
           "end": 44,
@@ -940,8 +940,8 @@
           "shortName": "StartScanRun"
         }
       },
-      "file": "websecurityscanner_generated_websecurityscanner_v1beta_web_security_scanner_start_scan_run_sync.py",
-      "regionTag": "websecurityscanner_generated_websecurityscanner_v1beta_WebSecurityScanner_StartScanRun_sync",
+      "file": "websecurityscanner_v1beta_generated_web_security_scanner_start_scan_run_sync.py",
+      "regionTag": "websecurityscanner_v1beta_generated_WebSecurityScanner_StartScanRun_sync",
       "segments": [
         {
           "end": 44,
@@ -985,8 +985,8 @@
           "shortName": "StopScanRun"
         }
       },
-      "file": "websecurityscanner_generated_websecurityscanner_v1beta_web_security_scanner_stop_scan_run_async.py",
-      "regionTag": "websecurityscanner_generated_websecurityscanner_v1beta_WebSecurityScanner_StopScanRun_async",
+      "file": "websecurityscanner_v1beta_generated_web_security_scanner_stop_scan_run_async.py",
+      "regionTag": "websecurityscanner_v1beta_generated_WebSecurityScanner_StopScanRun_async",
       "segments": [
         {
           "end": 44,
@@ -1029,8 +1029,8 @@
           "shortName": "StopScanRun"
         }
       },
-      "file": "websecurityscanner_generated_websecurityscanner_v1beta_web_security_scanner_stop_scan_run_sync.py",
-      "regionTag": "websecurityscanner_generated_websecurityscanner_v1beta_WebSecurityScanner_StopScanRun_sync",
+      "file": "websecurityscanner_v1beta_generated_web_security_scanner_stop_scan_run_sync.py",
+      "regionTag": "websecurityscanner_v1beta_generated_WebSecurityScanner_StopScanRun_sync",
       "segments": [
         {
           "end": 44,
@@ -1074,8 +1074,8 @@
           "shortName": "UpdateScanConfig"
         }
       },
-      "file": "websecurityscanner_generated_websecurityscanner_v1beta_web_security_scanner_update_scan_config_async.py",
-      "regionTag": "websecurityscanner_generated_websecurityscanner_v1beta_WebSecurityScanner_UpdateScanConfig_async",
+      "file": "websecurityscanner_v1beta_generated_web_security_scanner_update_scan_config_async.py",
+      "regionTag": "websecurityscanner_v1beta_generated_WebSecurityScanner_UpdateScanConfig_async",
       "segments": [
         {
           "end": 48,
@@ -1118,8 +1118,8 @@
           "shortName": "UpdateScanConfig"
         }
       },
-      "file": "websecurityscanner_generated_websecurityscanner_v1beta_web_security_scanner_update_scan_config_sync.py",
-      "regionTag": "websecurityscanner_generated_websecurityscanner_v1beta_WebSecurityScanner_UpdateScanConfig_sync",
+      "file": "websecurityscanner_v1beta_generated_web_security_scanner_update_scan_config_sync.py",
+      "regionTag": "websecurityscanner_v1beta_generated_WebSecurityScanner_UpdateScanConfig_sync",
       "segments": [
         {
           "end": 48,
