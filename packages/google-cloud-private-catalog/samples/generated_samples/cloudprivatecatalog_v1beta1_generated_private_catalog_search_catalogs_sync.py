@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for SearchVersions
+# Snippet for SearchCatalogs
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,25 +23,24 @@
 #   python3 -m pip install google-cloud-private-catalog
 
 
-# [START cloudprivatecatalog_generated_privatecatalog_v1beta1_PrivateCatalog_SearchVersions_sync]
+# [START cloudprivatecatalog_v1beta1_generated_PrivateCatalog_SearchCatalogs_sync]
 from google.cloud import privatecatalog_v1beta1
 
 
-def sample_search_versions():
+def sample_search_catalogs():
     # Create a client
     client = privatecatalog_v1beta1.PrivateCatalogClient()
 
     # Initialize request argument(s)
-    request = privatecatalog_v1beta1.SearchVersionsRequest(
+    request = privatecatalog_v1beta1.SearchCatalogsRequest(
         resource="resource_value",
-        query="query_value",
     )
 
     # Make the request
-    page_result = client.search_versions(request=request)
+    page_result = client.search_catalogs(request=request)
 
     # Handle the response
     for response in page_result:
         print(response)
 
-# [END cloudprivatecatalog_generated_privatecatalog_v1beta1_PrivateCatalog_SearchVersions_sync]
+# [END cloudprivatecatalog_v1beta1_generated_PrivateCatalog_SearchCatalogs_sync]

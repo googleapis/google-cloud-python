@@ -10,8 +10,8 @@
           "shortName": "SearchCatalogs"
         }
       },
-      "file": "cloudprivatecatalog_generated_privatecatalog_v1beta1_private_catalog_search_catalogs_async.py",
-      "regionTag": "cloudprivatecatalog_generated_privatecatalog_v1beta1_PrivateCatalog_SearchCatalogs_async",
+      "file": "cloudprivatecatalog_v1beta1_generated_private_catalog_search_catalogs_async.py",
+      "regionTag": "cloudprivatecatalog_v1beta1_generated_PrivateCatalog_SearchCatalogs_async",
       "segments": [
         {
           "end": 45,
@@ -54,8 +54,8 @@
           "shortName": "SearchCatalogs"
         }
       },
-      "file": "cloudprivatecatalog_generated_privatecatalog_v1beta1_private_catalog_search_catalogs_sync.py",
-      "regionTag": "cloudprivatecatalog_generated_privatecatalog_v1beta1_PrivateCatalog_SearchCatalogs_sync",
+      "file": "cloudprivatecatalog_v1beta1_generated_private_catalog_search_catalogs_sync.py",
+      "regionTag": "cloudprivatecatalog_v1beta1_generated_PrivateCatalog_SearchCatalogs_sync",
       "segments": [
         {
           "end": 45,
@@ -99,8 +99,8 @@
           "shortName": "SearchProducts"
         }
       },
-      "file": "cloudprivatecatalog_generated_privatecatalog_v1beta1_private_catalog_search_products_async.py",
-      "regionTag": "cloudprivatecatalog_generated_privatecatalog_v1beta1_PrivateCatalog_SearchProducts_async",
+      "file": "cloudprivatecatalog_v1beta1_generated_private_catalog_search_products_async.py",
+      "regionTag": "cloudprivatecatalog_v1beta1_generated_PrivateCatalog_SearchProducts_async",
       "segments": [
         {
           "end": 45,
@@ -143,8 +143,8 @@
           "shortName": "SearchProducts"
         }
       },
-      "file": "cloudprivatecatalog_generated_privatecatalog_v1beta1_private_catalog_search_products_sync.py",
-      "regionTag": "cloudprivatecatalog_generated_privatecatalog_v1beta1_PrivateCatalog_SearchProducts_sync",
+      "file": "cloudprivatecatalog_v1beta1_generated_private_catalog_search_products_sync.py",
+      "regionTag": "cloudprivatecatalog_v1beta1_generated_PrivateCatalog_SearchProducts_sync",
       "segments": [
         {
           "end": 45,
@@ -188,8 +188,8 @@
           "shortName": "SearchVersions"
         }
       },
-      "file": "cloudprivatecatalog_generated_privatecatalog_v1beta1_private_catalog_search_versions_async.py",
-      "regionTag": "cloudprivatecatalog_generated_privatecatalog_v1beta1_PrivateCatalog_SearchVersions_async",
+      "file": "cloudprivatecatalog_v1beta1_generated_private_catalog_search_versions_async.py",
+      "regionTag": "cloudprivatecatalog_v1beta1_generated_PrivateCatalog_SearchVersions_async",
       "segments": [
         {
           "end": 46,
@@ -232,8 +232,8 @@
           "shortName": "SearchVersions"
         }
       },
-      "file": "cloudprivatecatalog_generated_privatecatalog_v1beta1_private_catalog_search_versions_sync.py",
-      "regionTag": "cloudprivatecatalog_generated_privatecatalog_v1beta1_PrivateCatalog_SearchVersions_sync",
+      "file": "cloudprivatecatalog_v1beta1_generated_private_catalog_search_versions_sync.py",
+      "regionTag": "cloudprivatecatalog_v1beta1_generated_PrivateCatalog_SearchVersions_sync",
       "segments": [
         {
           "end": 46,

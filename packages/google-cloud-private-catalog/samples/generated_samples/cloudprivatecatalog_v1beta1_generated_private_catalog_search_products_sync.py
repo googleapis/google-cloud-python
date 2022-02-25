@@ -23,13 +23,13 @@
 #   python3 -m pip install google-cloud-private-catalog
 
 
-# [START cloudprivatecatalog_generated_privatecatalog_v1beta1_PrivateCatalog_SearchProducts_async]
+# [START cloudprivatecatalog_v1beta1_generated_PrivateCatalog_SearchProducts_sync]
 from google.cloud import privatecatalog_v1beta1
 
 
-async def sample_search_products():
+def sample_search_products():
     # Create a client
-    client = privatecatalog_v1beta1.PrivateCatalogAsyncClient()
+    client = privatecatalog_v1beta1.PrivateCatalogClient()
 
     # Initialize request argument(s)
     request = privatecatalog_v1beta1.SearchProductsRequest(
@@ -40,7 +40,7 @@ async def sample_search_products():
     page_result = client.search_products(request=request)
 
     # Handle the response
-    async for response in page_result:
+    for response in page_result:
         print(response)
 
-# [END cloudprivatecatalog_generated_privatecatalog_v1beta1_PrivateCatalog_SearchProducts_async]
+# [END cloudprivatecatalog_v1beta1_generated_PrivateCatalog_SearchProducts_sync]

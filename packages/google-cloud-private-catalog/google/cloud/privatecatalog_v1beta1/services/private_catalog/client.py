@@ -456,8 +456,7 @@ class PrivateCatalogClient(metaclass=PrivateCatalogClientMeta):
         consumer cloud resource hierarchy context.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import privatecatalog_v1beta1
 
@@ -539,8 +538,7 @@ class PrivateCatalogClient(metaclass=PrivateCatalogClientMeta):
         consumer cloud resource hierarchy context.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import privatecatalog_v1beta1
 
@@ -622,8 +620,7 @@ class PrivateCatalogClient(metaclass=PrivateCatalogClientMeta):
         consumer cloud resource hierarchy context.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import privatecatalog_v1beta1
 
