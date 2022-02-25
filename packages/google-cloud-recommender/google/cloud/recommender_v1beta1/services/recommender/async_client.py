@@ -247,7 +247,7 @@ class RecommenderAsyncClient:
         type.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recommender_v1beta1
 
@@ -373,7 +373,7 @@ class RecommenderAsyncClient:
         permission for the specified insight type.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recommender_v1beta1
 
@@ -484,7 +484,7 @@ class RecommenderAsyncClient:
         specified insight.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recommender_v1beta1
 
@@ -598,7 +598,7 @@ class RecommenderAsyncClient:
         recommender.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recommender_v1beta1
 
@@ -752,7 +752,7 @@ class RecommenderAsyncClient:
         recommender.*.get IAM permission for the specified recommender.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recommender_v1beta1
 
@@ -869,7 +869,7 @@ class RecommenderAsyncClient:
         specified recommender.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recommender_v1beta1
 
@@ -999,7 +999,7 @@ class RecommenderAsyncClient:
         specified recommender.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recommender_v1beta1
 
@@ -1129,7 +1129,7 @@ class RecommenderAsyncClient:
         specified recommender.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recommender_v1beta1
 
@@ -1244,7 +1244,7 @@ class RecommenderAsyncClient:
         one instance of the config for each Recommender.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recommender_v1beta1
 
@@ -1342,7 +1342,7 @@ class RecommenderAsyncClient:
         revision of the config.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recommender_v1beta1
 
@@ -1440,7 +1440,7 @@ class RecommenderAsyncClient:
         one instance of the config for each InsightType.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recommender_v1beta1
 
@@ -1538,7 +1538,7 @@ class RecommenderAsyncClient:
         a new revision of the config.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recommender_v1beta1
 

@@ -230,7 +230,7 @@ class RecommenderAsyncClient:
         type.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recommender_v1
 
@@ -356,7 +356,7 @@ class RecommenderAsyncClient:
         permission for the specified insight type.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recommender_v1
 
@@ -467,7 +467,7 @@ class RecommenderAsyncClient:
         specified insight.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recommender_v1
 
@@ -581,7 +581,7 @@ class RecommenderAsyncClient:
         recommender.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recommender_v1
 
@@ -735,7 +735,7 @@ class RecommenderAsyncClient:
         recommender.*.get IAM permission for the specified recommender.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recommender_v1
 
@@ -852,7 +852,7 @@ class RecommenderAsyncClient:
         specified recommender.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recommender_v1
 
@@ -982,7 +982,7 @@ class RecommenderAsyncClient:
         specified recommender.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recommender_v1
 
@@ -1112,7 +1112,7 @@ class RecommenderAsyncClient:
         specified recommender.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recommender_v1
 

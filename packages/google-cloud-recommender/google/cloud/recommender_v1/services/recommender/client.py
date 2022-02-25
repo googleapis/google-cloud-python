@@ -479,8 +479,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
         type.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recommender_v1
 
@@ -596,8 +595,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
         permission for the specified insight type.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recommender_v1
 
@@ -698,8 +696,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
         specified insight.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recommender_v1
 
@@ -812,8 +809,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
         recommender.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recommender_v1
 
@@ -957,8 +953,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
         recommender.*.get IAM permission for the specified recommender.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recommender_v1
 
@@ -1065,8 +1060,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
         specified recommender.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recommender_v1
 
@@ -1199,8 +1193,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
         specified recommender.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recommender_v1
 
@@ -1333,8 +1326,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
         specified recommender.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import recommender_v1
 
