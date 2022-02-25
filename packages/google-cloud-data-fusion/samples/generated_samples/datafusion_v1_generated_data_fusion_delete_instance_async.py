@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for GetInstance
+# Snippet for DeleteInstance
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,23 +23,27 @@
 #   python3 -m pip install google-cloud-data-fusion
 
 
-# [START datafusion_generated_data_fusion_v1_DataFusion_GetInstance_async]
+# [START datafusion_v1_generated_DataFusion_DeleteInstance_async]
 from google.cloud import data_fusion_v1
 
 
-async def sample_get_instance():
+async def sample_delete_instance():
     # Create a client
     client = data_fusion_v1.DataFusionAsyncClient()
 
     # Initialize request argument(s)
-    request = data_fusion_v1.GetInstanceRequest(
+    request = data_fusion_v1.DeleteInstanceRequest(
         name="name_value",
     )
 
     # Make the request
-    response = await client.get_instance(request=request)
+    operation = client.delete_instance(request=request)
+
+    print("Waiting for operation to complete...")
+
+    response = await operation.result()
 
     # Handle the response
     print(response)
 
-# [END datafusion_generated_data_fusion_v1_DataFusion_GetInstance_async]
+# [END datafusion_v1_generated_DataFusion_DeleteInstance_async]

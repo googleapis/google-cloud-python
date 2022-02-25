@@ -219,7 +219,7 @@ class DataFusionAsyncClient:
         the specified project and location.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import data_fusion_v1
 
@@ -322,7 +322,7 @@ class DataFusionAsyncClient:
         and location.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import data_fusion_v1
 
@@ -400,7 +400,7 @@ class DataFusionAsyncClient:
     ) -> datafusion.Instance:
         r"""Gets details of a single Data Fusion instance.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import data_fusion_v1
 
@@ -471,7 +471,7 @@ class DataFusionAsyncClient:
         project and location.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import data_fusion_v1
 
@@ -594,7 +594,7 @@ class DataFusionAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Deletes a single Date Fusion instance.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import data_fusion_v1
 
@@ -711,7 +711,7 @@ class DataFusionAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Updates a single Data Fusion instance.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import data_fusion_v1
 
@@ -842,7 +842,7 @@ class DataFusionAsyncClient:
         At the end of an operation instance is fully restarted.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import data_fusion_v1
 

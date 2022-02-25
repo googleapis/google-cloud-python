@@ -439,8 +439,7 @@ class DataFusionClient(metaclass=DataFusionClientMeta):
         the specified project and location.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import data_fusion_v1
 
@@ -543,8 +542,7 @@ class DataFusionClient(metaclass=DataFusionClientMeta):
         and location.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import data_fusion_v1
 
@@ -623,8 +621,7 @@ class DataFusionClient(metaclass=DataFusionClientMeta):
     ) -> datafusion.Instance:
         r"""Gets details of a single Data Fusion instance.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import data_fusion_v1
 
@@ -696,8 +693,7 @@ class DataFusionClient(metaclass=DataFusionClientMeta):
         project and location.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import data_fusion_v1
 
@@ -820,8 +816,7 @@ class DataFusionClient(metaclass=DataFusionClientMeta):
     ) -> operation.Operation:
         r"""Deletes a single Date Fusion instance.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import data_fusion_v1
 
@@ -938,8 +933,7 @@ class DataFusionClient(metaclass=DataFusionClientMeta):
     ) -> operation.Operation:
         r"""Updates a single Data Fusion instance.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import data_fusion_v1
 
@@ -1070,8 +1064,7 @@ class DataFusionClient(metaclass=DataFusionClientMeta):
         At the end of an operation instance is fully restarted.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import data_fusion_v1
 

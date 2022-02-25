@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for GetInstance
+# Snippet for ListInstances
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,23 +23,24 @@
 #   python3 -m pip install google-cloud-data-fusion
 
 
-# [START datafusion_generated_data_fusion_v1_DataFusion_GetInstance_sync]
+# [START datafusion_v1_generated_DataFusion_ListInstances_async]
 from google.cloud import data_fusion_v1
 
 
-def sample_get_instance():
+async def sample_list_instances():
     # Create a client
-    client = data_fusion_v1.DataFusionClient()
+    client = data_fusion_v1.DataFusionAsyncClient()
 
     # Initialize request argument(s)
-    request = data_fusion_v1.GetInstanceRequest(
-        name="name_value",
+    request = data_fusion_v1.ListInstancesRequest(
+        parent="parent_value",
     )
 
     # Make the request
-    response = client.get_instance(request=request)
+    page_result = client.list_instances(request=request)
 
     # Handle the response
-    print(response)
+    async for response in page_result:
+        print(response)
 
-# [END datafusion_generated_data_fusion_v1_DataFusion_GetInstance_sync]
+# [END datafusion_v1_generated_DataFusion_ListInstances_async]

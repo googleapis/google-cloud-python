@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for CreateInstance
+# Snippet for ListInstances
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,28 +23,24 @@
 #   python3 -m pip install google-cloud-data-fusion
 
 
-# [START datafusion_generated_data_fusion_v1_DataFusion_CreateInstance_async]
+# [START datafusion_v1_generated_DataFusion_ListInstances_sync]
 from google.cloud import data_fusion_v1
 
 
-async def sample_create_instance():
+def sample_list_instances():
     # Create a client
-    client = data_fusion_v1.DataFusionAsyncClient()
+    client = data_fusion_v1.DataFusionClient()
 
     # Initialize request argument(s)
-    request = data_fusion_v1.CreateInstanceRequest(
+    request = data_fusion_v1.ListInstancesRequest(
         parent="parent_value",
-        instance_id="instance_id_value",
     )
 
     # Make the request
-    operation = client.create_instance(request=request)
-
-    print("Waiting for operation to complete...")
-
-    response = await operation.result()
+    page_result = client.list_instances(request=request)
 
     # Handle the response
-    print(response)
+    for response in page_result:
+        print(response)
 
-# [END datafusion_generated_data_fusion_v1_DataFusion_CreateInstance_async]
+# [END datafusion_v1_generated_DataFusion_ListInstances_sync]

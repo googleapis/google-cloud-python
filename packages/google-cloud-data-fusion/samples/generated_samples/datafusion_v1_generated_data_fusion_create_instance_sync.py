@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for RestartInstance
+# Snippet for CreateInstance
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,27 +23,28 @@
 #   python3 -m pip install google-cloud-data-fusion
 
 
-# [START datafusion_generated_data_fusion_v1_DataFusion_RestartInstance_async]
+# [START datafusion_v1_generated_DataFusion_CreateInstance_sync]
 from google.cloud import data_fusion_v1
 
 
-async def sample_restart_instance():
+def sample_create_instance():
     # Create a client
-    client = data_fusion_v1.DataFusionAsyncClient()
+    client = data_fusion_v1.DataFusionClient()
 
     # Initialize request argument(s)
-    request = data_fusion_v1.RestartInstanceRequest(
-        name="name_value",
+    request = data_fusion_v1.CreateInstanceRequest(
+        parent="parent_value",
+        instance_id="instance_id_value",
     )
 
     # Make the request
-    operation = client.restart_instance(request=request)
+    operation = client.create_instance(request=request)
 
     print("Waiting for operation to complete...")
 
-    response = await operation.result()
+    response = operation.result()
 
     # Handle the response
     print(response)
 
-# [END datafusion_generated_data_fusion_v1_DataFusion_RestartInstance_async]
+# [END datafusion_v1_generated_DataFusion_CreateInstance_sync]

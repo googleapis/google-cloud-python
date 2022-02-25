@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ListAvailableVersions
+# Snippet for CreateInstance
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,24 +23,28 @@
 #   python3 -m pip install google-cloud-data-fusion
 
 
-# [START datafusion_generated_data_fusion_v1_DataFusion_ListAvailableVersions_async]
+# [START datafusion_v1_generated_DataFusion_CreateInstance_async]
 from google.cloud import data_fusion_v1
 
 
-async def sample_list_available_versions():
+async def sample_create_instance():
     # Create a client
     client = data_fusion_v1.DataFusionAsyncClient()
 
     # Initialize request argument(s)
-    request = data_fusion_v1.ListAvailableVersionsRequest(
+    request = data_fusion_v1.CreateInstanceRequest(
         parent="parent_value",
+        instance_id="instance_id_value",
     )
 
     # Make the request
-    page_result = client.list_available_versions(request=request)
+    operation = client.create_instance(request=request)
+
+    print("Waiting for operation to complete...")
+
+    response = await operation.result()
 
     # Handle the response
-    async for response in page_result:
-        print(response)
+    print(response)
 
-# [END datafusion_generated_data_fusion_v1_DataFusion_ListAvailableVersions_async]
+# [END datafusion_v1_generated_DataFusion_CreateInstance_async]

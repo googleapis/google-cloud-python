@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for UpdateInstance
+# Snippet for ListAvailableVersions
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,30 +23,24 @@
 #   python3 -m pip install google-cloud-data-fusion
 
 
-# [START datafusion_generated_data_fusion_v1_DataFusion_UpdateInstance_sync]
+# [START datafusion_v1_generated_DataFusion_ListAvailableVersions_async]
 from google.cloud import data_fusion_v1
 
 
-def sample_update_instance():
+async def sample_list_available_versions():
     # Create a client
-    client = data_fusion_v1.DataFusionClient()
+    client = data_fusion_v1.DataFusionAsyncClient()
 
     # Initialize request argument(s)
-    instance = data_fusion_v1.Instance()
-    instance.type_ = "DEVELOPER"
-
-    request = data_fusion_v1.UpdateInstanceRequest(
-        instance=instance,
+    request = data_fusion_v1.ListAvailableVersionsRequest(
+        parent="parent_value",
     )
 
     # Make the request
-    operation = client.update_instance(request=request)
-
-    print("Waiting for operation to complete...")
-
-    response = operation.result()
+    page_result = client.list_available_versions(request=request)
 
     # Handle the response
-    print(response)
+    async for response in page_result:
+        print(response)
 
-# [END datafusion_generated_data_fusion_v1_DataFusion_UpdateInstance_sync]
+# [END datafusion_v1_generated_DataFusion_ListAvailableVersions_async]

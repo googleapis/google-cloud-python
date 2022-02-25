@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ListAvailableVersions
+# Snippet for RestartInstance
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,24 +23,27 @@
 #   python3 -m pip install google-cloud-data-fusion
 
 
-# [START datafusion_generated_data_fusion_v1_DataFusion_ListAvailableVersions_sync]
+# [START datafusion_v1_generated_DataFusion_RestartInstance_sync]
 from google.cloud import data_fusion_v1
 
 
-def sample_list_available_versions():
+def sample_restart_instance():
     # Create a client
     client = data_fusion_v1.DataFusionClient()
 
     # Initialize request argument(s)
-    request = data_fusion_v1.ListAvailableVersionsRequest(
-        parent="parent_value",
+    request = data_fusion_v1.RestartInstanceRequest(
+        name="name_value",
     )
 
     # Make the request
-    page_result = client.list_available_versions(request=request)
+    operation = client.restart_instance(request=request)
+
+    print("Waiting for operation to complete...")
+
+    response = operation.result()
 
     # Handle the response
-    for response in page_result:
-        print(response)
+    print(response)
 
-# [END datafusion_generated_data_fusion_v1_DataFusion_ListAvailableVersions_sync]
+# [END datafusion_v1_generated_DataFusion_RestartInstance_sync]

@@ -10,8 +10,8 @@
           "shortName": "CreateInstance"
         }
       },
-      "file": "datafusion_generated_data_fusion_v1_data_fusion_create_instance_async.py",
-      "regionTag": "datafusion_generated_data_fusion_v1_DataFusion_CreateInstance_async",
+      "file": "datafusion_v1_generated_data_fusion_create_instance_async.py",
+      "regionTag": "datafusion_v1_generated_DataFusion_CreateInstance_async",
       "segments": [
         {
           "end": 49,
@@ -54,8 +54,8 @@
           "shortName": "CreateInstance"
         }
       },
-      "file": "datafusion_generated_data_fusion_v1_data_fusion_create_instance_sync.py",
-      "regionTag": "datafusion_generated_data_fusion_v1_DataFusion_CreateInstance_sync",
+      "file": "datafusion_v1_generated_data_fusion_create_instance_sync.py",
+      "regionTag": "datafusion_v1_generated_DataFusion_CreateInstance_sync",
       "segments": [
         {
           "end": 49,
@@ -99,8 +99,8 @@
           "shortName": "DeleteInstance"
         }
       },
-      "file": "datafusion_generated_data_fusion_v1_data_fusion_delete_instance_async.py",
-      "regionTag": "datafusion_generated_data_fusion_v1_DataFusion_DeleteInstance_async",
+      "file": "datafusion_v1_generated_data_fusion_delete_instance_async.py",
+      "regionTag": "datafusion_v1_generated_DataFusion_DeleteInstance_async",
       "segments": [
         {
           "end": 48,
@@ -143,8 +143,8 @@
           "shortName": "DeleteInstance"
         }
       },
-      "file": "datafusion_generated_data_fusion_v1_data_fusion_delete_instance_sync.py",
-      "regionTag": "datafusion_generated_data_fusion_v1_DataFusion_DeleteInstance_sync",
+      "file": "datafusion_v1_generated_data_fusion_delete_instance_sync.py",
+      "regionTag": "datafusion_v1_generated_DataFusion_DeleteInstance_sync",
       "segments": [
         {
           "end": 48,
@@ -188,8 +188,8 @@
           "shortName": "GetInstance"
         }
       },
-      "file": "datafusion_generated_data_fusion_v1_data_fusion_get_instance_async.py",
-      "regionTag": "datafusion_generated_data_fusion_v1_DataFusion_GetInstance_async",
+      "file": "datafusion_v1_generated_data_fusion_get_instance_async.py",
+      "regionTag": "datafusion_v1_generated_DataFusion_GetInstance_async",
       "segments": [
         {
           "end": 44,
@@ -232,8 +232,8 @@
           "shortName": "GetInstance"
         }
       },
-      "file": "datafusion_generated_data_fusion_v1_data_fusion_get_instance_sync.py",
-      "regionTag": "datafusion_generated_data_fusion_v1_DataFusion_GetInstance_sync",
+      "file": "datafusion_v1_generated_data_fusion_get_instance_sync.py",
+      "regionTag": "datafusion_v1_generated_DataFusion_GetInstance_sync",
       "segments": [
         {
           "end": 44,
@@ -277,8 +277,8 @@
           "shortName": "ListAvailableVersions"
         }
       },
-      "file": "datafusion_generated_data_fusion_v1_data_fusion_list_available_versions_async.py",
-      "regionTag": "datafusion_generated_data_fusion_v1_DataFusion_ListAvailableVersions_async",
+      "file": "datafusion_v1_generated_data_fusion_list_available_versions_async.py",
+      "regionTag": "datafusion_v1_generated_DataFusion_ListAvailableVersions_async",
       "segments": [
         {
           "end": 45,
@@ -321,8 +321,8 @@
           "shortName": "ListAvailableVersions"
         }
       },
-      "file": "datafusion_generated_data_fusion_v1_data_fusion_list_available_versions_sync.py",
-      "regionTag": "datafusion_generated_data_fusion_v1_DataFusion_ListAvailableVersions_sync",
+      "file": "datafusion_v1_generated_data_fusion_list_available_versions_sync.py",
+      "regionTag": "datafusion_v1_generated_DataFusion_ListAvailableVersions_sync",
       "segments": [
         {
           "end": 45,
@@ -366,8 +366,8 @@
           "shortName": "ListInstances"
         }
       },
-      "file": "datafusion_generated_data_fusion_v1_data_fusion_list_instances_async.py",
-      "regionTag": "datafusion_generated_data_fusion_v1_DataFusion_ListInstances_async",
+      "file": "datafusion_v1_generated_data_fusion_list_instances_async.py",
+      "regionTag": "datafusion_v1_generated_DataFusion_ListInstances_async",
       "segments": [
         {
           "end": 45,
@@ -410,8 +410,8 @@
           "shortName": "ListInstances"
         }
       },
-      "file": "datafusion_generated_data_fusion_v1_data_fusion_list_instances_sync.py",
-      "regionTag": "datafusion_generated_data_fusion_v1_DataFusion_ListInstances_sync",
+      "file": "datafusion_v1_generated_data_fusion_list_instances_sync.py",
+      "regionTag": "datafusion_v1_generated_DataFusion_ListInstances_sync",
       "segments": [
         {
           "end": 45,
@@ -455,8 +455,8 @@
           "shortName": "RestartInstance"
         }
       },
-      "file": "datafusion_generated_data_fusion_v1_data_fusion_restart_instance_async.py",
-      "regionTag": "datafusion_generated_data_fusion_v1_DataFusion_RestartInstance_async",
+      "file": "datafusion_v1_generated_data_fusion_restart_instance_async.py",
+      "regionTag": "datafusion_v1_generated_DataFusion_RestartInstance_async",
       "segments": [
         {
           "end": 48,
@@ -499,8 +499,8 @@
           "shortName": "RestartInstance"
         }
       },
-      "file": "datafusion_generated_data_fusion_v1_data_fusion_restart_instance_sync.py",
-      "regionTag": "datafusion_generated_data_fusion_v1_DataFusion_RestartInstance_sync",
+      "file": "datafusion_v1_generated_data_fusion_restart_instance_sync.py",
+      "regionTag": "datafusion_v1_generated_DataFusion_RestartInstance_sync",
       "segments": [
         {
           "end": 48,
@@ -544,8 +544,8 @@
           "shortName": "UpdateInstance"
         }
       },
-      "file": "datafusion_generated_data_fusion_v1_data_fusion_update_instance_async.py",
-      "regionTag": "datafusion_generated_data_fusion_v1_DataFusion_UpdateInstance_async",
+      "file": "datafusion_v1_generated_data_fusion_update_instance_async.py",
+      "regionTag": "datafusion_v1_generated_DataFusion_UpdateInstance_async",
       "segments": [
         {
           "end": 51,
@@ -588,8 +588,8 @@
           "shortName": "UpdateInstance"
         }
       },
-      "file": "datafusion_generated_data_fusion_v1_data_fusion_update_instance_sync.py",
-      "regionTag": "datafusion_generated_data_fusion_v1_DataFusion_UpdateInstance_sync",
+      "file": "datafusion_v1_generated_data_fusion_update_instance_sync.py",
+      "regionTag": "datafusion_v1_generated_DataFusion_UpdateInstance_sync",
       "segments": [
         {
           "end": 51,

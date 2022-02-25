@@ -23,13 +23,13 @@
 #   python3 -m pip install google-cloud-data-fusion
 
 
-# [START datafusion_generated_data_fusion_v1_DataFusion_DeleteInstance_async]
+# [START datafusion_v1_generated_DataFusion_DeleteInstance_sync]
 from google.cloud import data_fusion_v1
 
 
-async def sample_delete_instance():
+def sample_delete_instance():
     # Create a client
-    client = data_fusion_v1.DataFusionAsyncClient()
+    client = data_fusion_v1.DataFusionClient()
 
     # Initialize request argument(s)
     request = data_fusion_v1.DeleteInstanceRequest(
@@ -41,9 +41,9 @@ async def sample_delete_instance():
 
     print("Waiting for operation to complete...")
 
-    response = await operation.result()
+    response = operation.result()
 
     # Handle the response
     print(response)
 
-# [END datafusion_generated_data_fusion_v1_DataFusion_DeleteInstance_async]
+# [END datafusion_v1_generated_DataFusion_DeleteInstance_sync]
