@@ -264,7 +264,7 @@ class DataLabelingServiceAsyncClient:
         resource.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 
@@ -362,7 +362,7 @@ class DataLabelingServiceAsyncClient:
     ) -> dataset.Dataset:
         r"""Gets dataset by resource name.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 
@@ -466,7 +466,7 @@ class DataLabelingServiceAsyncClient:
         supported.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 
@@ -584,7 +584,7 @@ class DataLabelingServiceAsyncClient:
     ) -> None:
         r"""Deletes a dataset by resource name.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 
@@ -680,7 +680,7 @@ class DataLabelingServiceAsyncClient:
         started while importing is still ongoing. Vice versa.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 
@@ -796,7 +796,7 @@ class DataLabelingServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Exports data and annotations from dataset.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 
@@ -943,7 +943,7 @@ class DataLabelingServiceAsyncClient:
         API can be called after data are imported into dataset.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 
@@ -1046,7 +1046,7 @@ class DataLabelingServiceAsyncClient:
         supported.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 
@@ -1164,7 +1164,7 @@ class DataLabelingServiceAsyncClient:
     ) -> dataset.AnnotatedDataset:
         r"""Gets an annotated dataset by resource name.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 
@@ -1271,7 +1271,7 @@ class DataLabelingServiceAsyncClient:
         supported.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 
@@ -1392,7 +1392,7 @@ class DataLabelingServiceAsyncClient:
     ) -> None:
         r"""Deletes an annotated dataset by resource name.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 
@@ -1455,7 +1455,7 @@ class DataLabelingServiceAsyncClient:
         labeling task is configured by feature in the request.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 
@@ -1592,7 +1592,7 @@ class DataLabelingServiceAsyncClient:
         labeling task is configured by feature in the request.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 
@@ -1728,7 +1728,7 @@ class DataLabelingServiceAsyncClient:
         labeling task is configured by feature in the request.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 
@@ -1863,7 +1863,7 @@ class DataLabelingServiceAsyncClient:
         and annotation.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 
@@ -1977,7 +1977,7 @@ class DataLabelingServiceAsyncClient:
         supported.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 
@@ -2100,7 +2100,7 @@ class DataLabelingServiceAsyncClient:
         labels.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 
@@ -2204,7 +2204,7 @@ class DataLabelingServiceAsyncClient:
     ) -> annotation_spec_set.AnnotationSpecSet:
         r"""Gets an annotation spec set by resource name.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 
@@ -2313,7 +2313,7 @@ class DataLabelingServiceAsyncClient:
         is supported.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 
@@ -2434,7 +2434,7 @@ class DataLabelingServiceAsyncClient:
     ) -> None:
         r"""Deletes an annotation spec set by resource name.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 
@@ -2527,7 +2527,7 @@ class DataLabelingServiceAsyncClient:
         labeled.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 
@@ -2640,7 +2640,7 @@ class DataLabelingServiceAsyncClient:
     ) -> instruction.Instruction:
         r"""Gets an instruction by resource name.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 
@@ -2744,7 +2744,7 @@ class DataLabelingServiceAsyncClient:
         supported.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 
@@ -2863,7 +2863,7 @@ class DataLabelingServiceAsyncClient:
     ) -> None:
         r"""Deletes an instruction object by resource name.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 
@@ -2955,7 +2955,7 @@ class DataLabelingServiceAsyncClient:
         [projects.evaluations.search][google.cloud.datalabeling.v1beta1.DataLabelingService.SearchEvaluations]).
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 
@@ -3061,7 +3061,7 @@ class DataLabelingServiceAsyncClient:
         within a project.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 
@@ -3216,7 +3216,7 @@ class DataLabelingServiceAsyncClient:
         Search by providing an evaluation ID.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 
@@ -3320,7 +3320,7 @@ class DataLabelingServiceAsyncClient:
     ) -> evaluation_job.EvaluationJob:
         r"""Creates an evaluation job.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 
@@ -3432,7 +3432,7 @@ class DataLabelingServiceAsyncClient:
         you must delete the job and create a new one.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 
@@ -3543,7 +3543,7 @@ class DataLabelingServiceAsyncClient:
     ) -> evaluation_job.EvaluationJob:
         r"""Gets an evaluation job by resource name.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 
@@ -3650,7 +3650,7 @@ class DataLabelingServiceAsyncClient:
         already in a ``PAUSED`` state is a no-op.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 
@@ -3735,7 +3735,7 @@ class DataLabelingServiceAsyncClient:
         evaluation job is a no-op.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 
@@ -3816,7 +3816,7 @@ class DataLabelingServiceAsyncClient:
     ) -> None:
         r"""Stops and deletes an evaluation job.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 
@@ -3910,7 +3910,7 @@ class DataLabelingServiceAsyncClient:
         possible filters. Pagination is supported.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 

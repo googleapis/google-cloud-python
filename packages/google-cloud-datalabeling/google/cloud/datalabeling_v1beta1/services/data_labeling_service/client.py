@@ -548,8 +548,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         resource.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 
@@ -647,8 +646,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
     ) -> dataset.Dataset:
         r"""Gets dataset by resource name.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 
@@ -742,8 +740,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         supported.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 
@@ -851,8 +848,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
     ) -> None:
         r"""Deletes a dataset by resource name.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 
@@ -938,8 +934,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         started while importing is still ongoing. Vice versa.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 
@@ -1055,8 +1050,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
     ) -> operation.Operation:
         r"""Exports data and annotations from dataset.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 
@@ -1193,8 +1187,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         API can be called after data are imported into dataset.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 
@@ -1287,8 +1280,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         supported.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 
@@ -1396,8 +1388,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
     ) -> dataset.AnnotatedDataset:
         r"""Gets an annotated dataset by resource name.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 
@@ -1494,8 +1485,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         supported.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 
@@ -1606,8 +1596,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
     ) -> None:
         r"""Deletes an annotated dataset by resource name.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 
@@ -1671,8 +1660,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         labeling task is configured by feature in the request.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 
@@ -1809,8 +1797,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         labeling task is configured by feature in the request.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 
@@ -1946,8 +1933,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         labeling task is configured by feature in the request.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 
@@ -2082,8 +2068,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         and annotation.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 
@@ -2187,8 +2172,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         supported.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 
@@ -2301,8 +2285,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         labels.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 
@@ -2410,8 +2393,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
     ) -> annotation_spec_set.AnnotationSpecSet:
         r"""Gets an annotation spec set by resource name.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 
@@ -2510,8 +2492,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         is supported.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 
@@ -2624,8 +2605,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
     ) -> None:
         r"""Deletes an annotation spec set by resource name.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 
@@ -2712,8 +2692,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         labeled.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 
@@ -2826,8 +2805,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
     ) -> instruction.Instruction:
         r"""Gets an instruction by resource name.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 
@@ -2921,8 +2899,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         supported.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 
@@ -3031,8 +3008,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
     ) -> None:
         r"""Deletes an instruction object by resource name.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 
@@ -3114,8 +3090,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         [projects.evaluations.search][google.cloud.datalabeling.v1beta1.DataLabelingService.SearchEvaluations]).
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 
@@ -3211,8 +3186,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         within a project.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 
@@ -3357,8 +3331,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         Search by providing an evaluation ID.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 
@@ -3466,8 +3439,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
     ) -> evaluation_job.EvaluationJob:
         r"""Creates an evaluation job.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 
@@ -3579,8 +3551,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         you must delete the job and create a new one.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 
@@ -3691,8 +3662,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
     ) -> evaluation_job.EvaluationJob:
         r"""Gets an evaluation job by resource name.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 
@@ -3789,8 +3759,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         already in a ``PAUSED`` state is a no-op.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 
@@ -3875,8 +3844,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         evaluation job is a no-op.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 
@@ -3957,8 +3925,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
     ) -> None:
         r"""Stops and deletes an evaluation job.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 
@@ -4042,8 +4009,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         possible filters. Pagination is supported.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import datalabeling_v1beta1
 
