@@ -276,7 +276,7 @@ class CloudChannelServiceAsyncClient:
         if there are no customers.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import channel_v1
 
@@ -369,7 +369,7 @@ class CloudChannelServiceAsyncClient:
         resource.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import channel_v1
 
@@ -479,7 +479,7 @@ class CloudChannelServiceAsyncClient:
         resources match the domain.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import channel_v1
 
@@ -562,7 +562,7 @@ class CloudChannelServiceAsyncClient:
         [Customer][google.cloud.channel.v1.Customer] resource.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import channel_v1
 
@@ -649,7 +649,7 @@ class CloudChannelServiceAsyncClient:
         [Customer][google.cloud.channel.v1.Customer] resource.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import channel_v1
 
@@ -736,7 +736,7 @@ class CloudChannelServiceAsyncClient:
            resource found for the name in the request.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import channel_v1
 
@@ -832,7 +832,7 @@ class CloudChannelServiceAsyncClient:
         Return value: The [Customer][google.cloud.channel.v1.Customer].
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import channel_v1
 
@@ -925,7 +925,7 @@ class CloudChannelServiceAsyncClient:
         [OperationMetadata][google.cloud.channel.v1.OperationMetadata].
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import channel_v1
 
@@ -1020,7 +1020,7 @@ class CloudChannelServiceAsyncClient:
         [Entitlement][google.cloud.channel.v1.Entitlement]s.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import channel_v1
 
@@ -1121,7 +1121,7 @@ class CloudChannelServiceAsyncClient:
         [TransferableSku][google.cloud.channel.v1.TransferableSku].
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import channel_v1
 
@@ -1225,7 +1225,7 @@ class CloudChannelServiceAsyncClient:
         for the given customer and SKU.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import channel_v1
 
@@ -1318,7 +1318,7 @@ class CloudChannelServiceAsyncClient:
         [Entitlement][google.cloud.channel.v1.Entitlement] resource.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import channel_v1
 
@@ -1431,7 +1431,7 @@ class CloudChannelServiceAsyncClient:
         [OperationMetadata][google.cloud.channel.v1.OperationMetadata].
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import channel_v1
 
@@ -1544,7 +1544,7 @@ class CloudChannelServiceAsyncClient:
         [OperationMetadata][google.cloud.channel.v1.OperationMetadata].
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import channel_v1
 
@@ -1655,7 +1655,7 @@ class CloudChannelServiceAsyncClient:
         [OperationMetadata][google.cloud.channel.v1.OperationMetadata].
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import channel_v1
 
@@ -1762,7 +1762,7 @@ class CloudChannelServiceAsyncClient:
         [OperationMetadata][google.cloud.channel.v1.OperationMetadata].
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import channel_v1
 
@@ -1873,7 +1873,7 @@ class CloudChannelServiceAsyncClient:
         [OperationMetadata][google.cloud.channel.v1.OperationMetadata].
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import channel_v1
 
@@ -1980,7 +1980,7 @@ class CloudChannelServiceAsyncClient:
         [OperationMetadata][google.cloud.channel.v1.OperationMetadata].
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import channel_v1
 
@@ -2092,7 +2092,7 @@ class CloudChannelServiceAsyncClient:
         [OperationMetadata][google.cloud.channel.v1.OperationMetadata].
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import channel_v1
 
@@ -2215,7 +2215,7 @@ class CloudChannelServiceAsyncClient:
         [OperationMetadata][google.cloud.channel.v1.OperationMetadata].
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import channel_v1
 
@@ -2335,7 +2335,7 @@ class CloudChannelServiceAsyncClient:
         [OperationMetadata][google.cloud.channel.v1.OperationMetadata].
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import channel_v1
 
@@ -2458,7 +2458,7 @@ class CloudChannelServiceAsyncClient:
         [OperationMetadata][google.cloud.channel.v1.OperationMetadata].
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import channel_v1
 
@@ -2570,7 +2570,7 @@ class CloudChannelServiceAsyncClient:
         resources.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import channel_v1
 
@@ -2664,7 +2664,7 @@ class CloudChannelServiceAsyncClient:
         resource.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import channel_v1
 
@@ -2758,7 +2758,7 @@ class CloudChannelServiceAsyncClient:
         resource.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import channel_v1
 
@@ -2857,7 +2857,7 @@ class CloudChannelServiceAsyncClient:
         resource.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import channel_v1
 
@@ -2944,7 +2944,7 @@ class CloudChannelServiceAsyncClient:
         resource.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import channel_v1
 
@@ -3022,7 +3022,7 @@ class CloudChannelServiceAsyncClient:
            invalid.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import channel_v1
 
@@ -3098,7 +3098,7 @@ class CloudChannelServiceAsyncClient:
            invalid.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import channel_v1
 
@@ -3181,7 +3181,7 @@ class CloudChannelServiceAsyncClient:
            invalid.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import channel_v1
 
@@ -3268,7 +3268,7 @@ class CloudChannelServiceAsyncClient:
            invalid.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import channel_v1
 
@@ -3361,7 +3361,7 @@ class CloudChannelServiceAsyncClient:
            invalid.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import channel_v1
 
@@ -3462,7 +3462,7 @@ class CloudChannelServiceAsyncClient:
         address.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import channel_v1
 
@@ -3553,7 +3553,7 @@ class CloudChannelServiceAsyncClient:
         wasn't registered with the topic.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import channel_v1
 
@@ -3639,7 +3639,7 @@ class CloudChannelServiceAsyncClient:
         Return value: A list of service email addresses.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import channel_v1
 

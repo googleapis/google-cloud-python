@@ -10,8 +10,8 @@
           "shortName": "ActivateEntitlement"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_activate_entitlement_async.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_ActivateEntitlement_async",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_activate_entitlement_async.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_ActivateEntitlement_async",
       "segments": [
         {
           "end": 48,
@@ -54,8 +54,8 @@
           "shortName": "ActivateEntitlement"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_activate_entitlement_sync.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_ActivateEntitlement_sync",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_activate_entitlement_sync.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_ActivateEntitlement_sync",
       "segments": [
         {
           "end": 48,
@@ -99,8 +99,8 @@
           "shortName": "CancelEntitlement"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_cancel_entitlement_async.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_CancelEntitlement_async",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_cancel_entitlement_async.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_CancelEntitlement_async",
       "segments": [
         {
           "end": 48,
@@ -143,8 +143,8 @@
           "shortName": "CancelEntitlement"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_cancel_entitlement_sync.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_CancelEntitlement_sync",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_cancel_entitlement_sync.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_CancelEntitlement_sync",
       "segments": [
         {
           "end": 48,
@@ -188,8 +188,8 @@
           "shortName": "ChangeOffer"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_change_offer_async.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_ChangeOffer_async",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_change_offer_async.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_ChangeOffer_async",
       "segments": [
         {
           "end": 49,
@@ -232,8 +232,8 @@
           "shortName": "ChangeOffer"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_change_offer_sync.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_ChangeOffer_sync",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_change_offer_sync.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_ChangeOffer_sync",
       "segments": [
         {
           "end": 49,
@@ -277,8 +277,8 @@
           "shortName": "ChangeParameters"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_change_parameters_async.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_ChangeParameters_async",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_change_parameters_async.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_ChangeParameters_async",
       "segments": [
         {
           "end": 48,
@@ -321,8 +321,8 @@
           "shortName": "ChangeParameters"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_change_parameters_sync.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_ChangeParameters_sync",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_change_parameters_sync.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_ChangeParameters_sync",
       "segments": [
         {
           "end": 48,
@@ -366,8 +366,8 @@
           "shortName": "ChangeRenewalSettings"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_change_renewal_settings_async.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_ChangeRenewalSettings_async",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_change_renewal_settings_async.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_ChangeRenewalSettings_async",
       "segments": [
         {
           "end": 48,
@@ -410,8 +410,8 @@
           "shortName": "ChangeRenewalSettings"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_change_renewal_settings_sync.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_ChangeRenewalSettings_sync",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_change_renewal_settings_sync.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_ChangeRenewalSettings_sync",
       "segments": [
         {
           "end": 48,
@@ -455,8 +455,8 @@
           "shortName": "CheckCloudIdentityAccountsExist"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_check_cloud_identity_accounts_exist_async.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_CheckCloudIdentityAccountsExist_async",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_check_cloud_identity_accounts_exist_async.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_CheckCloudIdentityAccountsExist_async",
       "segments": [
         {
           "end": 45,
@@ -499,8 +499,8 @@
           "shortName": "CheckCloudIdentityAccountsExist"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_check_cloud_identity_accounts_exist_sync.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_CheckCloudIdentityAccountsExist_sync",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_check_cloud_identity_accounts_exist_sync.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_CheckCloudIdentityAccountsExist_sync",
       "segments": [
         {
           "end": 45,
@@ -544,8 +544,8 @@
           "shortName": "CreateChannelPartnerLink"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_create_channel_partner_link_async.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_CreateChannelPartnerLink_async",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_create_channel_partner_link_async.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_CreateChannelPartnerLink_async",
       "segments": [
         {
           "end": 49,
@@ -588,8 +588,8 @@
           "shortName": "CreateChannelPartnerLink"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_create_channel_partner_link_sync.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_CreateChannelPartnerLink_sync",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_create_channel_partner_link_sync.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_CreateChannelPartnerLink_sync",
       "segments": [
         {
           "end": 49,
@@ -633,8 +633,8 @@
           "shortName": "CreateCustomer"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_create_customer_async.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_CreateCustomer_async",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_create_customer_async.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_CreateCustomer_async",
       "segments": [
         {
           "end": 49,
@@ -677,8 +677,8 @@
           "shortName": "CreateCustomer"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_create_customer_sync.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_CreateCustomer_sync",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_create_customer_sync.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_CreateCustomer_sync",
       "segments": [
         {
           "end": 49,
@@ -722,8 +722,8 @@
           "shortName": "CreateEntitlement"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_create_entitlement_async.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_CreateEntitlement_async",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_create_entitlement_async.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_CreateEntitlement_async",
       "segments": [
         {
           "end": 52,
@@ -766,8 +766,8 @@
           "shortName": "CreateEntitlement"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_create_entitlement_sync.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_CreateEntitlement_sync",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_create_entitlement_sync.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_CreateEntitlement_sync",
       "segments": [
         {
           "end": 52,
@@ -811,8 +811,8 @@
           "shortName": "DeleteCustomer"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_delete_customer_async.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_DeleteCustomer_async",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_delete_customer_async.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_DeleteCustomer_async",
       "segments": [
         {
           "end": 42,
@@ -853,8 +853,8 @@
           "shortName": "DeleteCustomer"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_delete_customer_sync.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_DeleteCustomer_sync",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_delete_customer_sync.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_DeleteCustomer_sync",
       "segments": [
         {
           "end": 42,
@@ -896,8 +896,8 @@
           "shortName": "GetChannelPartnerLink"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_get_channel_partner_link_async.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_GetChannelPartnerLink_async",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_get_channel_partner_link_async.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_GetChannelPartnerLink_async",
       "segments": [
         {
           "end": 44,
@@ -940,8 +940,8 @@
           "shortName": "GetChannelPartnerLink"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_get_channel_partner_link_sync.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_GetChannelPartnerLink_sync",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_get_channel_partner_link_sync.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_GetChannelPartnerLink_sync",
       "segments": [
         {
           "end": 44,
@@ -985,8 +985,8 @@
           "shortName": "GetCustomer"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_get_customer_async.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_GetCustomer_async",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_get_customer_async.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_GetCustomer_async",
       "segments": [
         {
           "end": 44,
@@ -1029,8 +1029,8 @@
           "shortName": "GetCustomer"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_get_customer_sync.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_GetCustomer_sync",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_get_customer_sync.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_GetCustomer_sync",
       "segments": [
         {
           "end": 44,
@@ -1074,8 +1074,8 @@
           "shortName": "GetEntitlement"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_get_entitlement_async.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_GetEntitlement_async",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_get_entitlement_async.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_GetEntitlement_async",
       "segments": [
         {
           "end": 44,
@@ -1118,8 +1118,8 @@
           "shortName": "GetEntitlement"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_get_entitlement_sync.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_GetEntitlement_sync",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_get_entitlement_sync.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_GetEntitlement_sync",
       "segments": [
         {
           "end": 44,
@@ -1163,8 +1163,8 @@
           "shortName": "ImportCustomer"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_import_customer_async.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_ImportCustomer_async",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_import_customer_async.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_ImportCustomer_async",
       "segments": [
         {
           "end": 46,
@@ -1207,8 +1207,8 @@
           "shortName": "ImportCustomer"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_import_customer_sync.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_ImportCustomer_sync",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_import_customer_sync.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_ImportCustomer_sync",
       "segments": [
         {
           "end": 46,
@@ -1252,8 +1252,8 @@
           "shortName": "ListChannelPartnerLinks"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_list_channel_partner_links_async.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_ListChannelPartnerLinks_async",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_list_channel_partner_links_async.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListChannelPartnerLinks_async",
       "segments": [
         {
           "end": 45,
@@ -1296,8 +1296,8 @@
           "shortName": "ListChannelPartnerLinks"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_list_channel_partner_links_sync.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_ListChannelPartnerLinks_sync",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_list_channel_partner_links_sync.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListChannelPartnerLinks_sync",
       "segments": [
         {
           "end": 45,
@@ -1341,8 +1341,8 @@
           "shortName": "ListCustomers"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_list_customers_async.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_ListCustomers_async",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_list_customers_async.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListCustomers_async",
       "segments": [
         {
           "end": 45,
@@ -1385,8 +1385,8 @@
           "shortName": "ListCustomers"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_list_customers_sync.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_ListCustomers_sync",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_list_customers_sync.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListCustomers_sync",
       "segments": [
         {
           "end": 45,
@@ -1430,8 +1430,8 @@
           "shortName": "ListEntitlements"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_list_entitlements_async.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_ListEntitlements_async",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_list_entitlements_async.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListEntitlements_async",
       "segments": [
         {
           "end": 45,
@@ -1474,8 +1474,8 @@
           "shortName": "ListEntitlements"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_list_entitlements_sync.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_ListEntitlements_sync",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_list_entitlements_sync.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListEntitlements_sync",
       "segments": [
         {
           "end": 45,
@@ -1519,8 +1519,8 @@
           "shortName": "ListOffers"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_list_offers_async.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_ListOffers_async",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_list_offers_async.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListOffers_async",
       "segments": [
         {
           "end": 45,
@@ -1563,8 +1563,8 @@
           "shortName": "ListOffers"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_list_offers_sync.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_ListOffers_sync",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_list_offers_sync.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListOffers_sync",
       "segments": [
         {
           "end": 45,
@@ -1608,8 +1608,8 @@
           "shortName": "ListProducts"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_list_products_async.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_ListProducts_async",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_list_products_async.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListProducts_async",
       "segments": [
         {
           "end": 45,
@@ -1652,8 +1652,8 @@
           "shortName": "ListProducts"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_list_products_sync.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_ListProducts_sync",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_list_products_sync.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListProducts_sync",
       "segments": [
         {
           "end": 45,
@@ -1697,8 +1697,8 @@
           "shortName": "ListPurchasableOffers"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_list_purchasable_offers_async.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_ListPurchasableOffers_async",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_list_purchasable_offers_async.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListPurchasableOffers_async",
       "segments": [
         {
           "end": 49,
@@ -1741,8 +1741,8 @@
           "shortName": "ListPurchasableOffers"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_list_purchasable_offers_sync.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_ListPurchasableOffers_sync",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_list_purchasable_offers_sync.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListPurchasableOffers_sync",
       "segments": [
         {
           "end": 49,
@@ -1786,8 +1786,8 @@
           "shortName": "ListPurchasableSkus"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_list_purchasable_skus_async.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_ListPurchasableSkus_async",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_list_purchasable_skus_async.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListPurchasableSkus_async",
       "segments": [
         {
           "end": 49,
@@ -1830,8 +1830,8 @@
           "shortName": "ListPurchasableSkus"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_list_purchasable_skus_sync.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_ListPurchasableSkus_sync",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_list_purchasable_skus_sync.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListPurchasableSkus_sync",
       "segments": [
         {
           "end": 49,
@@ -1875,8 +1875,8 @@
           "shortName": "ListSkus"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_list_skus_async.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_ListSkus_async",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_list_skus_async.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListSkus_async",
       "segments": [
         {
           "end": 46,
@@ -1919,8 +1919,8 @@
           "shortName": "ListSkus"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_list_skus_sync.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_ListSkus_sync",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_list_skus_sync.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListSkus_sync",
       "segments": [
         {
           "end": 46,
@@ -1964,8 +1964,8 @@
           "shortName": "ListSubscribers"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_list_subscribers_async.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_ListSubscribers_async",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_list_subscribers_async.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListSubscribers_async",
       "segments": [
         {
           "end": 45,
@@ -2008,8 +2008,8 @@
           "shortName": "ListSubscribers"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_list_subscribers_sync.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_ListSubscribers_sync",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_list_subscribers_sync.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListSubscribers_sync",
       "segments": [
         {
           "end": 45,
@@ -2053,8 +2053,8 @@
           "shortName": "ListTransferableOffers"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_list_transferable_offers_async.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_ListTransferableOffers_async",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_list_transferable_offers_async.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListTransferableOffers_async",
       "segments": [
         {
           "end": 47,
@@ -2097,8 +2097,8 @@
           "shortName": "ListTransferableOffers"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_list_transferable_offers_sync.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_ListTransferableOffers_sync",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_list_transferable_offers_sync.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListTransferableOffers_sync",
       "segments": [
         {
           "end": 47,
@@ -2142,8 +2142,8 @@
           "shortName": "ListTransferableSkus"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_list_transferable_skus_async.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_ListTransferableSkus_async",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_list_transferable_skus_async.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListTransferableSkus_async",
       "segments": [
         {
           "end": 46,
@@ -2186,8 +2186,8 @@
           "shortName": "ListTransferableSkus"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_list_transferable_skus_sync.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_ListTransferableSkus_sync",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_list_transferable_skus_sync.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListTransferableSkus_sync",
       "segments": [
         {
           "end": 46,
@@ -2231,8 +2231,8 @@
           "shortName": "LookupOffer"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_lookup_offer_async.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_LookupOffer_async",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_lookup_offer_async.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_LookupOffer_async",
       "segments": [
         {
           "end": 44,
@@ -2275,8 +2275,8 @@
           "shortName": "LookupOffer"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_lookup_offer_sync.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_LookupOffer_sync",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_lookup_offer_sync.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_LookupOffer_sync",
       "segments": [
         {
           "end": 44,
@@ -2320,8 +2320,8 @@
           "shortName": "ProvisionCloudIdentity"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_provision_cloud_identity_async.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_ProvisionCloudIdentity_async",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_provision_cloud_identity_async.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_ProvisionCloudIdentity_async",
       "segments": [
         {
           "end": 48,
@@ -2364,8 +2364,8 @@
           "shortName": "ProvisionCloudIdentity"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_provision_cloud_identity_sync.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_ProvisionCloudIdentity_sync",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_provision_cloud_identity_sync.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_ProvisionCloudIdentity_sync",
       "segments": [
         {
           "end": 48,
@@ -2409,8 +2409,8 @@
           "shortName": "RegisterSubscriber"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_register_subscriber_async.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_RegisterSubscriber_async",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_register_subscriber_async.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_RegisterSubscriber_async",
       "segments": [
         {
           "end": 45,
@@ -2453,8 +2453,8 @@
           "shortName": "RegisterSubscriber"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_register_subscriber_sync.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_RegisterSubscriber_sync",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_register_subscriber_sync.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_RegisterSubscriber_sync",
       "segments": [
         {
           "end": 45,
@@ -2498,8 +2498,8 @@
           "shortName": "StartPaidService"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_start_paid_service_async.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_StartPaidService_async",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_start_paid_service_async.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_StartPaidService_async",
       "segments": [
         {
           "end": 48,
@@ -2542,8 +2542,8 @@
           "shortName": "StartPaidService"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_start_paid_service_sync.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_StartPaidService_sync",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_start_paid_service_sync.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_StartPaidService_sync",
       "segments": [
         {
           "end": 48,
@@ -2587,8 +2587,8 @@
           "shortName": "SuspendEntitlement"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_suspend_entitlement_async.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_SuspendEntitlement_async",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_suspend_entitlement_async.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_SuspendEntitlement_async",
       "segments": [
         {
           "end": 48,
@@ -2631,8 +2631,8 @@
           "shortName": "SuspendEntitlement"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_suspend_entitlement_sync.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_SuspendEntitlement_sync",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_suspend_entitlement_sync.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_SuspendEntitlement_sync",
       "segments": [
         {
           "end": 48,
@@ -2676,8 +2676,8 @@
           "shortName": "TransferEntitlementsToGoogle"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_transfer_entitlements_to_google_async.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_TransferEntitlementsToGoogle_async",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_transfer_entitlements_to_google_async.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_TransferEntitlementsToGoogle_async",
       "segments": [
         {
           "end": 52,
@@ -2720,8 +2720,8 @@
           "shortName": "TransferEntitlementsToGoogle"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_transfer_entitlements_to_google_sync.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_TransferEntitlementsToGoogle_sync",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_transfer_entitlements_to_google_sync.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_TransferEntitlementsToGoogle_sync",
       "segments": [
         {
           "end": 52,
@@ -2765,8 +2765,8 @@
           "shortName": "TransferEntitlements"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_transfer_entitlements_async.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_TransferEntitlements_async",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_transfer_entitlements_async.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_TransferEntitlements_async",
       "segments": [
         {
           "end": 52,
@@ -2809,8 +2809,8 @@
           "shortName": "TransferEntitlements"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_transfer_entitlements_sync.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_TransferEntitlements_sync",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_transfer_entitlements_sync.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_TransferEntitlements_sync",
       "segments": [
         {
           "end": 52,
@@ -2854,8 +2854,8 @@
           "shortName": "UnregisterSubscriber"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_unregister_subscriber_async.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_UnregisterSubscriber_async",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_unregister_subscriber_async.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_UnregisterSubscriber_async",
       "segments": [
         {
           "end": 45,
@@ -2898,8 +2898,8 @@
           "shortName": "UnregisterSubscriber"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_unregister_subscriber_sync.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_UnregisterSubscriber_sync",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_unregister_subscriber_sync.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_UnregisterSubscriber_sync",
       "segments": [
         {
           "end": 45,
@@ -2943,8 +2943,8 @@
           "shortName": "UpdateChannelPartnerLink"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_update_channel_partner_link_async.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_UpdateChannelPartnerLink_async",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_update_channel_partner_link_async.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_UpdateChannelPartnerLink_async",
       "segments": [
         {
           "end": 49,
@@ -2987,8 +2987,8 @@
           "shortName": "UpdateChannelPartnerLink"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_update_channel_partner_link_sync.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_UpdateChannelPartnerLink_sync",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_update_channel_partner_link_sync.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_UpdateChannelPartnerLink_sync",
       "segments": [
         {
           "end": 49,
@@ -3032,8 +3032,8 @@
           "shortName": "UpdateCustomer"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_update_customer_async.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_UpdateCustomer_async",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_update_customer_async.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_UpdateCustomer_async",
       "segments": [
         {
           "end": 48,
@@ -3076,8 +3076,8 @@
           "shortName": "UpdateCustomer"
         }
       },
-      "file": "cloudchannel_generated_channel_v1_cloud_channel_service_update_customer_sync.py",
-      "regionTag": "cloudchannel_generated_channel_v1_CloudChannelService_UpdateCustomer_sync",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_update_customer_sync.py",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_UpdateCustomer_sync",
       "segments": [
         {
           "end": 48,
