@@ -249,6 +249,27 @@ class NetworkSecurityAsyncClient:
         r"""Lists AuthorizationPolicies in a given project and
         location.
 
+
+        .. code-block:: python
+
+            from google.cloud import network_security_v1beta1
+
+            def sample_list_authorization_policies():
+                # Create a client
+                client = network_security_v1beta1.NetworkSecurityClient()
+
+                # Initialize request argument(s)
+                request = network_security_v1beta1.ListAuthorizationPoliciesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_authorization_policies(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.network_security_v1beta1.types.ListAuthorizationPoliciesRequest, dict]):
                 The request object. Request used with the
@@ -329,6 +350,25 @@ class NetworkSecurityAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> authorization_policy.AuthorizationPolicy:
         r"""Gets details of a single AuthorizationPolicy.
+
+        .. code-block:: python
+
+            from google.cloud import network_security_v1beta1
+
+            def sample_get_authorization_policy():
+                # Create a client
+                client = network_security_v1beta1.NetworkSecurityClient()
+
+                # Initialize request argument(s)
+                request = network_security_v1beta1.GetAuthorizationPolicyRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_authorization_policy(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.network_security_v1beta1.types.GetAuthorizationPolicyRequest, dict]):
@@ -411,6 +451,36 @@ class NetworkSecurityAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Creates a new AuthorizationPolicy in a given project
         and location.
+
+
+        .. code-block:: python
+
+            from google.cloud import network_security_v1beta1
+
+            def sample_create_authorization_policy():
+                # Create a client
+                client = network_security_v1beta1.NetworkSecurityClient()
+
+                # Initialize request argument(s)
+                authorization_policy = network_security_v1beta1.AuthorizationPolicy()
+                authorization_policy.name = "name_value"
+                authorization_policy.action = "DENY"
+
+                request = network_security_v1beta1.CreateAuthorizationPolicyRequest(
+                    parent="parent_value",
+                    authorization_policy_id="authorization_policy_id_value",
+                    authorization_policy=authorization_policy,
+                )
+
+                # Make the request
+                operation = client.create_authorization_policy(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.network_security_v1beta1.types.CreateAuthorizationPolicyRequest, dict]):
@@ -524,6 +594,34 @@ class NetworkSecurityAsyncClient:
         r"""Updates the parameters of a single
         AuthorizationPolicy.
 
+
+        .. code-block:: python
+
+            from google.cloud import network_security_v1beta1
+
+            def sample_update_authorization_policy():
+                # Create a client
+                client = network_security_v1beta1.NetworkSecurityClient()
+
+                # Initialize request argument(s)
+                authorization_policy = network_security_v1beta1.AuthorizationPolicy()
+                authorization_policy.name = "name_value"
+                authorization_policy.action = "DENY"
+
+                request = network_security_v1beta1.UpdateAuthorizationPolicyRequest(
+                    authorization_policy=authorization_policy,
+                )
+
+                # Make the request
+                operation = client.update_authorization_policy(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.network_security_v1beta1.types.UpdateAuthorizationPolicyRequest, dict]):
                 The request object. Request used by the
@@ -626,6 +724,29 @@ class NetworkSecurityAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Deletes a single AuthorizationPolicy.
 
+        .. code-block:: python
+
+            from google.cloud import network_security_v1beta1
+
+            def sample_delete_authorization_policy():
+                # Create a client
+                client = network_security_v1beta1.NetworkSecurityClient()
+
+                # Initialize request argument(s)
+                request = network_security_v1beta1.DeleteAuthorizationPolicyRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_authorization_policy(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.network_security_v1beta1.types.DeleteAuthorizationPolicyRequest, dict]):
                 The request object. Request used by the
@@ -720,6 +841,27 @@ class NetworkSecurityAsyncClient:
         r"""Lists ServerTlsPolicies in a given project and
         location.
 
+
+        .. code-block:: python
+
+            from google.cloud import network_security_v1beta1
+
+            def sample_list_server_tls_policies():
+                # Create a client
+                client = network_security_v1beta1.NetworkSecurityClient()
+
+                # Initialize request argument(s)
+                request = network_security_v1beta1.ListServerTlsPoliciesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_server_tls_policies(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.network_security_v1beta1.types.ListServerTlsPoliciesRequest, dict]):
                 The request object. Request used by the
@@ -801,6 +943,25 @@ class NetworkSecurityAsyncClient:
     ) -> server_tls_policy.ServerTlsPolicy:
         r"""Gets details of a single ServerTlsPolicy.
 
+        .. code-block:: python
+
+            from google.cloud import network_security_v1beta1
+
+            def sample_get_server_tls_policy():
+                # Create a client
+                client = network_security_v1beta1.NetworkSecurityClient()
+
+                # Initialize request argument(s)
+                request = network_security_v1beta1.GetServerTlsPolicyRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_server_tls_policy(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.network_security_v1beta1.types.GetServerTlsPolicyRequest, dict]):
                 The request object. Request used by the
@@ -880,6 +1041,35 @@ class NetworkSecurityAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Creates a new ServerTlsPolicy in a given project and
         location.
+
+
+        .. code-block:: python
+
+            from google.cloud import network_security_v1beta1
+
+            def sample_create_server_tls_policy():
+                # Create a client
+                client = network_security_v1beta1.NetworkSecurityClient()
+
+                # Initialize request argument(s)
+                server_tls_policy = network_security_v1beta1.ServerTlsPolicy()
+                server_tls_policy.name = "name_value"
+
+                request = network_security_v1beta1.CreateServerTlsPolicyRequest(
+                    parent="parent_value",
+                    server_tls_policy_id="server_tls_policy_id_value",
+                    server_tls_policy=server_tls_policy,
+                )
+
+                # Make the request
+                operation = client.create_server_tls_policy(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.network_security_v1beta1.types.CreateServerTlsPolicyRequest, dict]):
@@ -988,6 +1178,32 @@ class NetworkSecurityAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Updates the parameters of a single ServerTlsPolicy.
 
+        .. code-block:: python
+
+            from google.cloud import network_security_v1beta1
+
+            def sample_update_server_tls_policy():
+                # Create a client
+                client = network_security_v1beta1.NetworkSecurityClient()
+
+                # Initialize request argument(s)
+                server_tls_policy = network_security_v1beta1.ServerTlsPolicy()
+                server_tls_policy.name = "name_value"
+
+                request = network_security_v1beta1.UpdateServerTlsPolicyRequest(
+                    server_tls_policy=server_tls_policy,
+                )
+
+                # Make the request
+                operation = client.update_server_tls_policy(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.network_security_v1beta1.types.UpdateServerTlsPolicyRequest, dict]):
                 The request object. Request used by
@@ -1088,6 +1304,29 @@ class NetworkSecurityAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Deletes a single ServerTlsPolicy.
 
+        .. code-block:: python
+
+            from google.cloud import network_security_v1beta1
+
+            def sample_delete_server_tls_policy():
+                # Create a client
+                client = network_security_v1beta1.NetworkSecurityClient()
+
+                # Initialize request argument(s)
+                request = network_security_v1beta1.DeleteServerTlsPolicyRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_server_tls_policy(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.network_security_v1beta1.types.DeleteServerTlsPolicyRequest, dict]):
                 The request object. Request used by the
@@ -1182,6 +1421,27 @@ class NetworkSecurityAsyncClient:
         r"""Lists ClientTlsPolicies in a given project and
         location.
 
+
+        .. code-block:: python
+
+            from google.cloud import network_security_v1beta1
+
+            def sample_list_client_tls_policies():
+                # Create a client
+                client = network_security_v1beta1.NetworkSecurityClient()
+
+                # Initialize request argument(s)
+                request = network_security_v1beta1.ListClientTlsPoliciesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_client_tls_policies(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.network_security_v1beta1.types.ListClientTlsPoliciesRequest, dict]):
                 The request object. Request used by the
@@ -1263,6 +1523,25 @@ class NetworkSecurityAsyncClient:
     ) -> client_tls_policy.ClientTlsPolicy:
         r"""Gets details of a single ClientTlsPolicy.
 
+        .. code-block:: python
+
+            from google.cloud import network_security_v1beta1
+
+            def sample_get_client_tls_policy():
+                # Create a client
+                client = network_security_v1beta1.NetworkSecurityClient()
+
+                # Initialize request argument(s)
+                request = network_security_v1beta1.GetClientTlsPolicyRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_client_tls_policy(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.network_security_v1beta1.types.GetClientTlsPolicyRequest, dict]):
                 The request object. Request used by the
@@ -1341,6 +1620,35 @@ class NetworkSecurityAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Creates a new ClientTlsPolicy in a given project and
         location.
+
+
+        .. code-block:: python
+
+            from google.cloud import network_security_v1beta1
+
+            def sample_create_client_tls_policy():
+                # Create a client
+                client = network_security_v1beta1.NetworkSecurityClient()
+
+                # Initialize request argument(s)
+                client_tls_policy = network_security_v1beta1.ClientTlsPolicy()
+                client_tls_policy.name = "name_value"
+
+                request = network_security_v1beta1.CreateClientTlsPolicyRequest(
+                    parent="parent_value",
+                    client_tls_policy_id="client_tls_policy_id_value",
+                    client_tls_policy=client_tls_policy,
+                )
+
+                # Make the request
+                operation = client.create_client_tls_policy(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.network_security_v1beta1.types.CreateClientTlsPolicyRequest, dict]):
@@ -1448,6 +1756,32 @@ class NetworkSecurityAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Updates the parameters of a single ClientTlsPolicy.
 
+        .. code-block:: python
+
+            from google.cloud import network_security_v1beta1
+
+            def sample_update_client_tls_policy():
+                # Create a client
+                client = network_security_v1beta1.NetworkSecurityClient()
+
+                # Initialize request argument(s)
+                client_tls_policy = network_security_v1beta1.ClientTlsPolicy()
+                client_tls_policy.name = "name_value"
+
+                request = network_security_v1beta1.UpdateClientTlsPolicyRequest(
+                    client_tls_policy=client_tls_policy,
+                )
+
+                # Make the request
+                operation = client.update_client_tls_policy(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.network_security_v1beta1.types.UpdateClientTlsPolicyRequest, dict]):
                 The request object. Request used by
@@ -1546,6 +1880,29 @@ class NetworkSecurityAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes a single ClientTlsPolicy.
+
+        .. code-block:: python
+
+            from google.cloud import network_security_v1beta1
+
+            def sample_delete_client_tls_policy():
+                # Create a client
+                client = network_security_v1beta1.NetworkSecurityClient()
+
+                # Initialize request argument(s)
+                request = network_security_v1beta1.DeleteClientTlsPolicyRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_client_tls_policy(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.network_security_v1beta1.types.DeleteClientTlsPolicyRequest, dict]):
