@@ -10,8 +10,8 @@
           "shortName": "CreateEnvironment"
         }
       },
-      "file": "notebooks_generated_notebooks_v1beta1_notebook_service_create_environment_async.py",
-      "regionTag": "notebooks_generated_notebooks_v1beta1_NotebookService_CreateEnvironment_async",
+      "file": "notebooks_v1beta1_generated_notebook_service_create_environment_async.py",
+      "regionTag": "notebooks_v1beta1_generated_NotebookService_CreateEnvironment_async",
       "segments": [
         {
           "end": 54,
@@ -54,8 +54,8 @@
           "shortName": "CreateEnvironment"
         }
       },
-      "file": "notebooks_generated_notebooks_v1beta1_notebook_service_create_environment_sync.py",
-      "regionTag": "notebooks_generated_notebooks_v1beta1_NotebookService_CreateEnvironment_sync",
+      "file": "notebooks_v1beta1_generated_notebook_service_create_environment_sync.py",
+      "regionTag": "notebooks_v1beta1_generated_NotebookService_CreateEnvironment_sync",
       "segments": [
         {
           "end": 54,
@@ -99,8 +99,8 @@
           "shortName": "CreateInstance"
         }
       },
-      "file": "notebooks_generated_notebooks_v1beta1_notebook_service_create_instance_async.py",
-      "regionTag": "notebooks_generated_notebooks_v1beta1_NotebookService_CreateInstance_async",
+      "file": "notebooks_v1beta1_generated_notebook_service_create_instance_async.py",
+      "regionTag": "notebooks_v1beta1_generated_NotebookService_CreateInstance_async",
       "segments": [
         {
           "end": 55,
@@ -143,8 +143,8 @@
           "shortName": "CreateInstance"
         }
       },
-      "file": "notebooks_generated_notebooks_v1beta1_notebook_service_create_instance_sync.py",
-      "regionTag": "notebooks_generated_notebooks_v1beta1_NotebookService_CreateInstance_sync",
+      "file": "notebooks_v1beta1_generated_notebook_service_create_instance_sync.py",
+      "regionTag": "notebooks_v1beta1_generated_NotebookService_CreateInstance_sync",
       "segments": [
         {
           "end": 55,
@@ -188,8 +188,8 @@
           "shortName": "DeleteEnvironment"
         }
       },
-      "file": "notebooks_generated_notebooks_v1beta1_notebook_service_delete_environment_async.py",
-      "regionTag": "notebooks_generated_notebooks_v1beta1_NotebookService_DeleteEnvironment_async",
+      "file": "notebooks_v1beta1_generated_notebook_service_delete_environment_async.py",
+      "regionTag": "notebooks_v1beta1_generated_NotebookService_DeleteEnvironment_async",
       "segments": [
         {
           "end": 48,
@@ -232,8 +232,8 @@
           "shortName": "DeleteEnvironment"
         }
       },
-      "file": "notebooks_generated_notebooks_v1beta1_notebook_service_delete_environment_sync.py",
-      "regionTag": "notebooks_generated_notebooks_v1beta1_NotebookService_DeleteEnvironment_sync",
+      "file": "notebooks_v1beta1_generated_notebook_service_delete_environment_sync.py",
+      "regionTag": "notebooks_v1beta1_generated_NotebookService_DeleteEnvironment_sync",
       "segments": [
         {
           "end": 48,
@@ -277,8 +277,8 @@
           "shortName": "DeleteInstance"
         }
       },
-      "file": "notebooks_generated_notebooks_v1beta1_notebook_service_delete_instance_async.py",
-      "regionTag": "notebooks_generated_notebooks_v1beta1_NotebookService_DeleteInstance_async",
+      "file": "notebooks_v1beta1_generated_notebook_service_delete_instance_async.py",
+      "regionTag": "notebooks_v1beta1_generated_NotebookService_DeleteInstance_async",
       "segments": [
         {
           "end": 48,
@@ -321,8 +321,8 @@
           "shortName": "DeleteInstance"
         }
       },
-      "file": "notebooks_generated_notebooks_v1beta1_notebook_service_delete_instance_sync.py",
-      "regionTag": "notebooks_generated_notebooks_v1beta1_NotebookService_DeleteInstance_sync",
+      "file": "notebooks_v1beta1_generated_notebook_service_delete_instance_sync.py",
+      "regionTag": "notebooks_v1beta1_generated_NotebookService_DeleteInstance_sync",
       "segments": [
         {
           "end": 48,
@@ -366,8 +366,8 @@
           "shortName": "GetEnvironment"
         }
       },
-      "file": "notebooks_generated_notebooks_v1beta1_notebook_service_get_environment_async.py",
-      "regionTag": "notebooks_generated_notebooks_v1beta1_NotebookService_GetEnvironment_async",
+      "file": "notebooks_v1beta1_generated_notebook_service_get_environment_async.py",
+      "regionTag": "notebooks_v1beta1_generated_NotebookService_GetEnvironment_async",
       "segments": [
         {
           "end": 44,
@@ -410,8 +410,8 @@
           "shortName": "GetEnvironment"
         }
       },
-      "file": "notebooks_generated_notebooks_v1beta1_notebook_service_get_environment_sync.py",
-      "regionTag": "notebooks_generated_notebooks_v1beta1_NotebookService_GetEnvironment_sync",
+      "file": "notebooks_v1beta1_generated_notebook_service_get_environment_sync.py",
+      "regionTag": "notebooks_v1beta1_generated_NotebookService_GetEnvironment_sync",
       "segments": [
         {
           "end": 44,
@@ -455,8 +455,8 @@
           "shortName": "GetInstance"
         }
       },
-      "file": "notebooks_generated_notebooks_v1beta1_notebook_service_get_instance_async.py",
-      "regionTag": "notebooks_generated_notebooks_v1beta1_NotebookService_GetInstance_async",
+      "file": "notebooks_v1beta1_generated_notebook_service_get_instance_async.py",
+      "regionTag": "notebooks_v1beta1_generated_NotebookService_GetInstance_async",
       "segments": [
         {
           "end": 44,
@@ -499,8 +499,8 @@
           "shortName": "GetInstance"
         }
       },
-      "file": "notebooks_generated_notebooks_v1beta1_notebook_service_get_instance_sync.py",
-      "regionTag": "notebooks_generated_notebooks_v1beta1_NotebookService_GetInstance_sync",
+      "file": "notebooks_v1beta1_generated_notebook_service_get_instance_sync.py",
+      "regionTag": "notebooks_v1beta1_generated_NotebookService_GetInstance_sync",
       "segments": [
         {
           "end": 44,
@@ -544,8 +544,8 @@
           "shortName": "IsInstanceUpgradeable"
         }
       },
-      "file": "notebooks_generated_notebooks_v1beta1_notebook_service_is_instance_upgradeable_async.py",
-      "regionTag": "notebooks_generated_notebooks_v1beta1_NotebookService_IsInstanceUpgradeable_async",
+      "file": "notebooks_v1beta1_generated_notebook_service_is_instance_upgradeable_async.py",
+      "regionTag": "notebooks_v1beta1_generated_NotebookService_IsInstanceUpgradeable_async",
       "segments": [
         {
           "end": 44,
@@ -588,8 +588,8 @@
           "shortName": "IsInstanceUpgradeable"
         }
       },
-      "file": "notebooks_generated_notebooks_v1beta1_notebook_service_is_instance_upgradeable_sync.py",
-      "regionTag": "notebooks_generated_notebooks_v1beta1_NotebookService_IsInstanceUpgradeable_sync",
+      "file": "notebooks_v1beta1_generated_notebook_service_is_instance_upgradeable_sync.py",
+      "regionTag": "notebooks_v1beta1_generated_NotebookService_IsInstanceUpgradeable_sync",
       "segments": [
         {
           "end": 44,
@@ -633,8 +633,8 @@
           "shortName": "ListEnvironments"
         }
       },
-      "file": "notebooks_generated_notebooks_v1beta1_notebook_service_list_environments_async.py",
-      "regionTag": "notebooks_generated_notebooks_v1beta1_NotebookService_ListEnvironments_async",
+      "file": "notebooks_v1beta1_generated_notebook_service_list_environments_async.py",
+      "regionTag": "notebooks_v1beta1_generated_NotebookService_ListEnvironments_async",
       "segments": [
         {
           "end": 45,
@@ -677,8 +677,8 @@
           "shortName": "ListEnvironments"
         }
       },
-      "file": "notebooks_generated_notebooks_v1beta1_notebook_service_list_environments_sync.py",
-      "regionTag": "notebooks_generated_notebooks_v1beta1_NotebookService_ListEnvironments_sync",
+      "file": "notebooks_v1beta1_generated_notebook_service_list_environments_sync.py",
+      "regionTag": "notebooks_v1beta1_generated_NotebookService_ListEnvironments_sync",
       "segments": [
         {
           "end": 45,
@@ -722,8 +722,8 @@
           "shortName": "ListInstances"
         }
       },
-      "file": "notebooks_generated_notebooks_v1beta1_notebook_service_list_instances_async.py",
-      "regionTag": "notebooks_generated_notebooks_v1beta1_NotebookService_ListInstances_async",
+      "file": "notebooks_v1beta1_generated_notebook_service_list_instances_async.py",
+      "regionTag": "notebooks_v1beta1_generated_NotebookService_ListInstances_async",
       "segments": [
         {
           "end": 45,
@@ -766,8 +766,8 @@
           "shortName": "ListInstances"
         }
       },
-      "file": "notebooks_generated_notebooks_v1beta1_notebook_service_list_instances_sync.py",
-      "regionTag": "notebooks_generated_notebooks_v1beta1_NotebookService_ListInstances_sync",
+      "file": "notebooks_v1beta1_generated_notebook_service_list_instances_sync.py",
+      "regionTag": "notebooks_v1beta1_generated_NotebookService_ListInstances_sync",
       "segments": [
         {
           "end": 45,
@@ -811,8 +811,8 @@
           "shortName": "RegisterInstance"
         }
       },
-      "file": "notebooks_generated_notebooks_v1beta1_notebook_service_register_instance_async.py",
-      "regionTag": "notebooks_generated_notebooks_v1beta1_NotebookService_RegisterInstance_async",
+      "file": "notebooks_v1beta1_generated_notebook_service_register_instance_async.py",
+      "regionTag": "notebooks_v1beta1_generated_NotebookService_RegisterInstance_async",
       "segments": [
         {
           "end": 49,
@@ -855,8 +855,8 @@
           "shortName": "RegisterInstance"
         }
       },
-      "file": "notebooks_generated_notebooks_v1beta1_notebook_service_register_instance_sync.py",
-      "regionTag": "notebooks_generated_notebooks_v1beta1_NotebookService_RegisterInstance_sync",
+      "file": "notebooks_v1beta1_generated_notebook_service_register_instance_sync.py",
+      "regionTag": "notebooks_v1beta1_generated_NotebookService_RegisterInstance_sync",
       "segments": [
         {
           "end": 49,
@@ -900,8 +900,8 @@
           "shortName": "ReportInstanceInfo"
         }
       },
-      "file": "notebooks_generated_notebooks_v1beta1_notebook_service_report_instance_info_async.py",
-      "regionTag": "notebooks_generated_notebooks_v1beta1_NotebookService_ReportInstanceInfo_async",
+      "file": "notebooks_v1beta1_generated_notebook_service_report_instance_info_async.py",
+      "regionTag": "notebooks_v1beta1_generated_NotebookService_ReportInstanceInfo_async",
       "segments": [
         {
           "end": 49,
@@ -944,8 +944,8 @@
           "shortName": "ReportInstanceInfo"
         }
       },
-      "file": "notebooks_generated_notebooks_v1beta1_notebook_service_report_instance_info_sync.py",
-      "regionTag": "notebooks_generated_notebooks_v1beta1_NotebookService_ReportInstanceInfo_sync",
+      "file": "notebooks_v1beta1_generated_notebook_service_report_instance_info_sync.py",
+      "regionTag": "notebooks_v1beta1_generated_NotebookService_ReportInstanceInfo_sync",
       "segments": [
         {
           "end": 49,
@@ -989,8 +989,8 @@
           "shortName": "ResetInstance"
         }
       },
-      "file": "notebooks_generated_notebooks_v1beta1_notebook_service_reset_instance_async.py",
-      "regionTag": "notebooks_generated_notebooks_v1beta1_NotebookService_ResetInstance_async",
+      "file": "notebooks_v1beta1_generated_notebook_service_reset_instance_async.py",
+      "regionTag": "notebooks_v1beta1_generated_NotebookService_ResetInstance_async",
       "segments": [
         {
           "end": 48,
@@ -1033,8 +1033,8 @@
           "shortName": "ResetInstance"
         }
       },
-      "file": "notebooks_generated_notebooks_v1beta1_notebook_service_reset_instance_sync.py",
-      "regionTag": "notebooks_generated_notebooks_v1beta1_NotebookService_ResetInstance_sync",
+      "file": "notebooks_v1beta1_generated_notebook_service_reset_instance_sync.py",
+      "regionTag": "notebooks_v1beta1_generated_NotebookService_ResetInstance_sync",
       "segments": [
         {
           "end": 48,
@@ -1078,8 +1078,8 @@
           "shortName": "SetInstanceAccelerator"
         }
       },
-      "file": "notebooks_generated_notebooks_v1beta1_notebook_service_set_instance_accelerator_async.py",
-      "regionTag": "notebooks_generated_notebooks_v1beta1_NotebookService_SetInstanceAccelerator_async",
+      "file": "notebooks_v1beta1_generated_notebook_service_set_instance_accelerator_async.py",
+      "regionTag": "notebooks_v1beta1_generated_NotebookService_SetInstanceAccelerator_async",
       "segments": [
         {
           "end": 50,
@@ -1122,8 +1122,8 @@
           "shortName": "SetInstanceAccelerator"
         }
       },
-      "file": "notebooks_generated_notebooks_v1beta1_notebook_service_set_instance_accelerator_sync.py",
-      "regionTag": "notebooks_generated_notebooks_v1beta1_NotebookService_SetInstanceAccelerator_sync",
+      "file": "notebooks_v1beta1_generated_notebook_service_set_instance_accelerator_sync.py",
+      "regionTag": "notebooks_v1beta1_generated_NotebookService_SetInstanceAccelerator_sync",
       "segments": [
         {
           "end": 50,
@@ -1167,8 +1167,8 @@
           "shortName": "SetInstanceLabels"
         }
       },
-      "file": "notebooks_generated_notebooks_v1beta1_notebook_service_set_instance_labels_async.py",
-      "regionTag": "notebooks_generated_notebooks_v1beta1_NotebookService_SetInstanceLabels_async",
+      "file": "notebooks_v1beta1_generated_notebook_service_set_instance_labels_async.py",
+      "regionTag": "notebooks_v1beta1_generated_NotebookService_SetInstanceLabels_async",
       "segments": [
         {
           "end": 48,
@@ -1211,8 +1211,8 @@
           "shortName": "SetInstanceLabels"
         }
       },
-      "file": "notebooks_generated_notebooks_v1beta1_notebook_service_set_instance_labels_sync.py",
-      "regionTag": "notebooks_generated_notebooks_v1beta1_NotebookService_SetInstanceLabels_sync",
+      "file": "notebooks_v1beta1_generated_notebook_service_set_instance_labels_sync.py",
+      "regionTag": "notebooks_v1beta1_generated_NotebookService_SetInstanceLabels_sync",
       "segments": [
         {
           "end": 48,
@@ -1256,8 +1256,8 @@
           "shortName": "SetInstanceMachineType"
         }
       },
-      "file": "notebooks_generated_notebooks_v1beta1_notebook_service_set_instance_machine_type_async.py",
-      "regionTag": "notebooks_generated_notebooks_v1beta1_NotebookService_SetInstanceMachineType_async",
+      "file": "notebooks_v1beta1_generated_notebook_service_set_instance_machine_type_async.py",
+      "regionTag": "notebooks_v1beta1_generated_NotebookService_SetInstanceMachineType_async",
       "segments": [
         {
           "end": 49,
@@ -1300,8 +1300,8 @@
           "shortName": "SetInstanceMachineType"
         }
       },
-      "file": "notebooks_generated_notebooks_v1beta1_notebook_service_set_instance_machine_type_sync.py",
-      "regionTag": "notebooks_generated_notebooks_v1beta1_NotebookService_SetInstanceMachineType_sync",
+      "file": "notebooks_v1beta1_generated_notebook_service_set_instance_machine_type_sync.py",
+      "regionTag": "notebooks_v1beta1_generated_NotebookService_SetInstanceMachineType_sync",
       "segments": [
         {
           "end": 49,
@@ -1345,8 +1345,8 @@
           "shortName": "StartInstance"
         }
       },
-      "file": "notebooks_generated_notebooks_v1beta1_notebook_service_start_instance_async.py",
-      "regionTag": "notebooks_generated_notebooks_v1beta1_NotebookService_StartInstance_async",
+      "file": "notebooks_v1beta1_generated_notebook_service_start_instance_async.py",
+      "regionTag": "notebooks_v1beta1_generated_NotebookService_StartInstance_async",
       "segments": [
         {
           "end": 48,
@@ -1389,8 +1389,8 @@
           "shortName": "StartInstance"
         }
       },
-      "file": "notebooks_generated_notebooks_v1beta1_notebook_service_start_instance_sync.py",
-      "regionTag": "notebooks_generated_notebooks_v1beta1_NotebookService_StartInstance_sync",
+      "file": "notebooks_v1beta1_generated_notebook_service_start_instance_sync.py",
+      "regionTag": "notebooks_v1beta1_generated_NotebookService_StartInstance_sync",
       "segments": [
         {
           "end": 48,
@@ -1434,8 +1434,8 @@
           "shortName": "StopInstance"
         }
       },
-      "file": "notebooks_generated_notebooks_v1beta1_notebook_service_stop_instance_async.py",
-      "regionTag": "notebooks_generated_notebooks_v1beta1_NotebookService_StopInstance_async",
+      "file": "notebooks_v1beta1_generated_notebook_service_stop_instance_async.py",
+      "regionTag": "notebooks_v1beta1_generated_NotebookService_StopInstance_async",
       "segments": [
         {
           "end": 48,
@@ -1478,8 +1478,8 @@
           "shortName": "StopInstance"
         }
       },
-      "file": "notebooks_generated_notebooks_v1beta1_notebook_service_stop_instance_sync.py",
-      "regionTag": "notebooks_generated_notebooks_v1beta1_NotebookService_StopInstance_sync",
+      "file": "notebooks_v1beta1_generated_notebook_service_stop_instance_sync.py",
+      "regionTag": "notebooks_v1beta1_generated_NotebookService_StopInstance_sync",
       "segments": [
         {
           "end": 48,
@@ -1523,8 +1523,8 @@
           "shortName": "UpgradeInstanceInternal"
         }
       },
-      "file": "notebooks_generated_notebooks_v1beta1_notebook_service_upgrade_instance_internal_async.py",
-      "regionTag": "notebooks_generated_notebooks_v1beta1_NotebookService_UpgradeInstanceInternal_async",
+      "file": "notebooks_v1beta1_generated_notebook_service_upgrade_instance_internal_async.py",
+      "regionTag": "notebooks_v1beta1_generated_NotebookService_UpgradeInstanceInternal_async",
       "segments": [
         {
           "end": 49,
@@ -1567,8 +1567,8 @@
           "shortName": "UpgradeInstanceInternal"
         }
       },
-      "file": "notebooks_generated_notebooks_v1beta1_notebook_service_upgrade_instance_internal_sync.py",
-      "regionTag": "notebooks_generated_notebooks_v1beta1_NotebookService_UpgradeInstanceInternal_sync",
+      "file": "notebooks_v1beta1_generated_notebook_service_upgrade_instance_internal_sync.py",
+      "regionTag": "notebooks_v1beta1_generated_NotebookService_UpgradeInstanceInternal_sync",
       "segments": [
         {
           "end": 49,
@@ -1612,8 +1612,8 @@
           "shortName": "UpgradeInstance"
         }
       },
-      "file": "notebooks_generated_notebooks_v1beta1_notebook_service_upgrade_instance_async.py",
-      "regionTag": "notebooks_generated_notebooks_v1beta1_NotebookService_UpgradeInstance_async",
+      "file": "notebooks_v1beta1_generated_notebook_service_upgrade_instance_async.py",
+      "regionTag": "notebooks_v1beta1_generated_NotebookService_UpgradeInstance_async",
       "segments": [
         {
           "end": 48,
@@ -1656,8 +1656,8 @@
           "shortName": "UpgradeInstance"
         }
       },
-      "file": "notebooks_generated_notebooks_v1beta1_notebook_service_upgrade_instance_sync.py",
-      "regionTag": "notebooks_generated_notebooks_v1beta1_NotebookService_UpgradeInstance_sync",
+      "file": "notebooks_v1beta1_generated_notebook_service_upgrade_instance_sync.py",
+      "regionTag": "notebooks_v1beta1_generated_NotebookService_UpgradeInstance_sync",
       "segments": [
         {
           "end": 48,

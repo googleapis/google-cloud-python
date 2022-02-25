@@ -427,8 +427,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
     ) -> pagers.ListInstancesPager:
         r"""Lists instances in a given project and location.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1beta1
 
@@ -507,8 +506,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
     ) -> instance.Instance:
         r"""Gets details of a single Instance.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1beta1
 
@@ -579,8 +577,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         location.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1beta1
 
@@ -677,8 +674,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         API.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1beta1
 
@@ -763,8 +759,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
     ) -> operation.Operation:
         r"""Updates the guest accelerators of a single Instance.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1beta1
 
@@ -850,8 +845,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
     ) -> operation.Operation:
         r"""Updates the machine type of a single Instance.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1beta1
 
@@ -938,8 +932,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
     ) -> operation.Operation:
         r"""Updates the labels of an Instance.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1beta1
 
@@ -1022,8 +1015,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
     ) -> operation.Operation:
         r"""Deletes a single Instance.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1beta1
 
@@ -1117,8 +1109,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
     ) -> operation.Operation:
         r"""Starts a notebook instance.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1beta1
 
@@ -1202,8 +1193,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
     ) -> operation.Operation:
         r"""Stops a notebook instance.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1beta1
 
@@ -1287,8 +1277,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
     ) -> operation.Operation:
         r"""Resets a notebook instance.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1beta1
 
@@ -1377,8 +1366,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         this method directly.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1beta1
 
@@ -1463,8 +1451,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
     ) -> service.IsInstanceUpgradeableResponse:
         r"""Check if a notebook instance is upgradable.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1beta1
 
@@ -1535,8 +1522,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
     ) -> operation.Operation:
         r"""Upgrades a notebook instance to the latest version.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1beta1
 
@@ -1623,8 +1609,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         this method directly.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1beta1
 
@@ -1711,8 +1696,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
     ) -> pagers.ListEnvironmentsPager:
         r"""Lists environments in a project.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1beta1
 
@@ -1789,8 +1773,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
     ) -> environment.Environment:
         r"""Gets details of a single Environment.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1beta1
 
@@ -1860,8 +1843,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
     ) -> operation.Operation:
         r"""Creates a new Environment.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1beta1
 
@@ -1950,8 +1932,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
     ) -> operation.Operation:
         r"""Deletes a single Environment.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1beta1
 

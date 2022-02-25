@@ -231,7 +231,7 @@ class NotebookServiceAsyncClient:
     ) -> pagers.ListInstancesAsyncPager:
         r"""Lists instances in a given project and location.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1
 
@@ -331,7 +331,7 @@ class NotebookServiceAsyncClient:
     ) -> instance.Instance:
         r"""Gets details of a single Instance.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1
 
@@ -425,7 +425,7 @@ class NotebookServiceAsyncClient:
         location.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1
 
@@ -558,7 +558,7 @@ class NotebookServiceAsyncClient:
         API.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1
 
@@ -642,7 +642,7 @@ class NotebookServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Updates the guest accelerators of a single Instance.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1
 
@@ -727,7 +727,7 @@ class NotebookServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Updates the machine type of a single Instance.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1
 
@@ -811,7 +811,7 @@ class NotebookServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Update Notebook Instance configurations.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1
 
@@ -896,7 +896,7 @@ class NotebookServiceAsyncClient:
         single Instance.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1
 
@@ -980,7 +980,7 @@ class NotebookServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Replaces all the labels of an Instance.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1
 
@@ -1063,7 +1063,7 @@ class NotebookServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Deletes a single Instance.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1
 
@@ -1177,7 +1177,7 @@ class NotebookServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Starts a notebook instance.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1
 
@@ -1260,7 +1260,7 @@ class NotebookServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Stops a notebook instance.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1
 
@@ -1343,7 +1343,7 @@ class NotebookServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Resets a notebook instance.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1
 
@@ -1431,7 +1431,7 @@ class NotebookServiceAsyncClient:
         this method directly.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1
 
@@ -1515,7 +1515,7 @@ class NotebookServiceAsyncClient:
     ) -> service.IsInstanceUpgradeableResponse:
         r"""Check if a notebook instance is upgradable.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1
 
@@ -1586,7 +1586,7 @@ class NotebookServiceAsyncClient:
     ) -> service.GetInstanceHealthResponse:
         r"""Check if a notebook instance is healthy.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1
 
@@ -1675,7 +1675,7 @@ class NotebookServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Upgrades a notebook instance to the latest version.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1
 
@@ -1760,7 +1760,7 @@ class NotebookServiceAsyncClient:
         version.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1
 
@@ -1847,7 +1847,7 @@ class NotebookServiceAsyncClient:
         this method directly.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1
 
@@ -1932,7 +1932,7 @@ class NotebookServiceAsyncClient:
     ) -> pagers.ListEnvironmentsAsyncPager:
         r"""Lists environments in a project.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1
 
@@ -2030,7 +2030,7 @@ class NotebookServiceAsyncClient:
     ) -> environment.Environment:
         r"""Gets details of a single Environment.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1
 
@@ -2123,7 +2123,7 @@ class NotebookServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Creates a new Environment.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1
 
@@ -2254,7 +2254,7 @@ class NotebookServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Deletes a single Environment.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1
 
@@ -2369,7 +2369,7 @@ class NotebookServiceAsyncClient:
     ) -> pagers.ListSchedulesAsyncPager:
         r"""Lists schedules in a given project and location.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1
 
@@ -2469,7 +2469,7 @@ class NotebookServiceAsyncClient:
     ) -> schedule.Schedule:
         r"""Gets details of schedule
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1
 
@@ -2557,7 +2557,7 @@ class NotebookServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Deletes schedule and all underlying jobs
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1
 
@@ -2675,7 +2675,7 @@ class NotebookServiceAsyncClient:
         and location.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1
 
@@ -2796,7 +2796,7 @@ class NotebookServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Triggers execution of an existing schedule.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1
 
@@ -2880,7 +2880,7 @@ class NotebookServiceAsyncClient:
     ) -> pagers.ListExecutionsAsyncPager:
         r"""Lists executions in a given project and location
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1
 
@@ -2980,7 +2980,7 @@ class NotebookServiceAsyncClient:
     ) -> execution.Execution:
         r"""Gets details of executions
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1
 
@@ -3070,7 +3070,7 @@ class NotebookServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Deletes execution
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1
 
@@ -3189,7 +3189,7 @@ class NotebookServiceAsyncClient:
         and location.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1
 

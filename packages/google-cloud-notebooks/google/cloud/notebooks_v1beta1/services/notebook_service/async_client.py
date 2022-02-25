@@ -220,7 +220,7 @@ class NotebookServiceAsyncClient:
     ) -> pagers.ListInstancesAsyncPager:
         r"""Lists instances in a given project and location.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1beta1
 
@@ -298,7 +298,7 @@ class NotebookServiceAsyncClient:
     ) -> instance.Instance:
         r"""Gets details of a single Instance.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1beta1
 
@@ -368,7 +368,7 @@ class NotebookServiceAsyncClient:
         location.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1beta1
 
@@ -464,7 +464,7 @@ class NotebookServiceAsyncClient:
         API.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1beta1
 
@@ -548,7 +548,7 @@ class NotebookServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Updates the guest accelerators of a single Instance.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1beta1
 
@@ -633,7 +633,7 @@ class NotebookServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Updates the machine type of a single Instance.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1beta1
 
@@ -717,7 +717,7 @@ class NotebookServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Updates the labels of an Instance.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1beta1
 
@@ -799,7 +799,7 @@ class NotebookServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Deletes a single Instance.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1beta1
 
@@ -892,7 +892,7 @@ class NotebookServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Starts a notebook instance.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1beta1
 
@@ -975,7 +975,7 @@ class NotebookServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Stops a notebook instance.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1beta1
 
@@ -1058,7 +1058,7 @@ class NotebookServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Resets a notebook instance.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1beta1
 
@@ -1146,7 +1146,7 @@ class NotebookServiceAsyncClient:
         this method directly.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1beta1
 
@@ -1230,7 +1230,7 @@ class NotebookServiceAsyncClient:
     ) -> service.IsInstanceUpgradeableResponse:
         r"""Check if a notebook instance is upgradable.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1beta1
 
@@ -1300,7 +1300,7 @@ class NotebookServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Upgrades a notebook instance to the latest version.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1beta1
 
@@ -1386,7 +1386,7 @@ class NotebookServiceAsyncClient:
         this method directly.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1beta1
 
@@ -1470,7 +1470,7 @@ class NotebookServiceAsyncClient:
     ) -> pagers.ListEnvironmentsAsyncPager:
         r"""Lists environments in a project.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1beta1
 
@@ -1546,7 +1546,7 @@ class NotebookServiceAsyncClient:
     ) -> environment.Environment:
         r"""Gets details of a single Environment.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1beta1
 
@@ -1615,7 +1615,7 @@ class NotebookServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Creates a new Environment.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1beta1
 
@@ -1703,7 +1703,7 @@ class NotebookServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Deletes a single Environment.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1beta1
 

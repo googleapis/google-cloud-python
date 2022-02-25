@@ -419,8 +419,7 @@ class ManagedNotebookServiceClient(metaclass=ManagedNotebookServiceClientMeta):
     ) -> pagers.ListRuntimesPager:
         r"""Lists Runtimes in a given project and location.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1
 
@@ -522,8 +521,7 @@ class ManagedNotebookServiceClient(metaclass=ManagedNotebookServiceClientMeta):
         be a regional endpoint rather than zonal.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1
 
@@ -617,8 +615,7 @@ class ManagedNotebookServiceClient(metaclass=ManagedNotebookServiceClientMeta):
         location.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1
 
@@ -740,8 +737,7 @@ class ManagedNotebookServiceClient(metaclass=ManagedNotebookServiceClientMeta):
     ) -> operation.Operation:
         r"""Deletes a single Runtime.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1
 
@@ -861,8 +857,7 @@ class ManagedNotebookServiceClient(metaclass=ManagedNotebookServiceClientMeta):
         https://cloud.google.com/compute/docs/instances/suspend-resume-instance
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1
 
@@ -972,8 +967,7 @@ class ManagedNotebookServiceClient(metaclass=ManagedNotebookServiceClientMeta):
         https://cloud.google.com/compute/docs/instances/suspend-resume-instance
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1
 
@@ -1078,8 +1072,7 @@ class ManagedNotebookServiceClient(metaclass=ManagedNotebookServiceClientMeta):
     ) -> operation.Operation:
         r"""Switch a Managed Notebook Runtime.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1
 
@@ -1184,8 +1177,7 @@ class ManagedNotebookServiceClient(metaclass=ManagedNotebookServiceClientMeta):
     ) -> operation.Operation:
         r"""Resets a Managed Notebook Runtime.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1
 
@@ -1290,8 +1282,7 @@ class ManagedNotebookServiceClient(metaclass=ManagedNotebookServiceClientMeta):
     ) -> operation.Operation:
         r"""Report and process a runtime event.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1
 

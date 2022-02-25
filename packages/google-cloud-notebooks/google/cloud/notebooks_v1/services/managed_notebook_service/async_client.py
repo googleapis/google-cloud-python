@@ -223,7 +223,7 @@ class ManagedNotebookServiceAsyncClient:
     ) -> pagers.ListRuntimesAsyncPager:
         r"""Lists Runtimes in a given project and location.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1
 
@@ -325,7 +325,7 @@ class ManagedNotebookServiceAsyncClient:
         be a regional endpoint rather than zonal.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1
 
@@ -419,7 +419,7 @@ class ManagedNotebookServiceAsyncClient:
         location.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1
 
@@ -541,7 +541,7 @@ class ManagedNotebookServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Deletes a single Runtime.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1
 
@@ -661,7 +661,7 @@ class ManagedNotebookServiceAsyncClient:
         https://cloud.google.com/compute/docs/instances/suspend-resume-instance
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1
 
@@ -771,7 +771,7 @@ class ManagedNotebookServiceAsyncClient:
         https://cloud.google.com/compute/docs/instances/suspend-resume-instance
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1
 
@@ -876,7 +876,7 @@ class ManagedNotebookServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Switch a Managed Notebook Runtime.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1
 
@@ -981,7 +981,7 @@ class ManagedNotebookServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Resets a Managed Notebook Runtime.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1
 
@@ -1086,7 +1086,7 @@ class ManagedNotebookServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Report and process a runtime event.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import notebooks_v1
 
