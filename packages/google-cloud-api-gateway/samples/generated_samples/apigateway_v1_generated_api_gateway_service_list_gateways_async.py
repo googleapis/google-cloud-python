@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for GetApiConfig
+# Snippet for ListGateways
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,23 +23,24 @@
 #   python3 -m pip install google-cloud-api-gateway
 
 
-# [START apigateway_generated_apigateway_v1_ApiGatewayService_GetApiConfig_async]
+# [START apigateway_v1_generated_ApiGatewayService_ListGateways_async]
 from google.cloud import apigateway_v1
 
 
-async def sample_get_api_config():
+async def sample_list_gateways():
     # Create a client
     client = apigateway_v1.ApiGatewayServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = apigateway_v1.GetApiConfigRequest(
-        name="name_value",
+    request = apigateway_v1.ListGatewaysRequest(
+        parent="parent_value",
     )
 
     # Make the request
-    response = await client.get_api_config(request=request)
+    page_result = client.list_gateways(request=request)
 
     # Handle the response
-    print(response)
+    async for response in page_result:
+        print(response)
 
-# [END apigateway_generated_apigateway_v1_ApiGatewayService_GetApiConfig_async]
+# [END apigateway_v1_generated_ApiGatewayService_ListGateways_async]

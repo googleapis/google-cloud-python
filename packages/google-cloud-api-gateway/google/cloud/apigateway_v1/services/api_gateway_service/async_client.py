@@ -234,7 +234,7 @@ class ApiGatewayServiceAsyncClient:
     ) -> pagers.ListGatewaysAsyncPager:
         r"""Lists Gateways in a given project and location.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import apigateway_v1
 
@@ -334,7 +334,7 @@ class ApiGatewayServiceAsyncClient:
     ) -> apigateway.Gateway:
         r"""Gets details of a single Gateway.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import apigateway_v1
 
@@ -432,7 +432,7 @@ class ApiGatewayServiceAsyncClient:
         location.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import apigateway_v1
 
@@ -570,7 +570,7 @@ class ApiGatewayServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Updates the parameters of a single Gateway.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import apigateway_v1
 
@@ -701,7 +701,7 @@ class ApiGatewayServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Deletes a single Gateway.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import apigateway_v1
 
@@ -825,7 +825,7 @@ class ApiGatewayServiceAsyncClient:
     ) -> pagers.ListApisAsyncPager:
         r"""Lists Apis in a given project and location.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import apigateway_v1
 
@@ -925,7 +925,7 @@ class ApiGatewayServiceAsyncClient:
     ) -> apigateway.Api:
         r"""Gets details of a single Api.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import apigateway_v1
 
@@ -1017,7 +1017,7 @@ class ApiGatewayServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Creates a new Api in a given project and location.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import apigateway_v1
 
@@ -1150,7 +1150,7 @@ class ApiGatewayServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Updates the parameters of a single Api.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import apigateway_v1
 
@@ -1274,7 +1274,7 @@ class ApiGatewayServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Deletes a single Api.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import apigateway_v1
 
@@ -1398,7 +1398,7 @@ class ApiGatewayServiceAsyncClient:
     ) -> pagers.ListApiConfigsAsyncPager:
         r"""Lists ApiConfigs in a given project and location.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import apigateway_v1
 
@@ -1498,7 +1498,7 @@ class ApiGatewayServiceAsyncClient:
     ) -> apigateway.ApiConfig:
         r"""Gets details of a single ApiConfig.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import apigateway_v1
 
@@ -1593,7 +1593,7 @@ class ApiGatewayServiceAsyncClient:
         location.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import apigateway_v1
 
@@ -1725,7 +1725,7 @@ class ApiGatewayServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Updates the parameters of a single ApiConfig.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import apigateway_v1
 
@@ -1850,7 +1850,7 @@ class ApiGatewayServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Deletes a single ApiConfig.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import apigateway_v1
 

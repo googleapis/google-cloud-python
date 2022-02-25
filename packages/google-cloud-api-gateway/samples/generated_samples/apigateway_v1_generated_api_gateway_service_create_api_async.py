@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ListApiConfigs
+# Snippet for CreateApi
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,24 +23,28 @@
 #   python3 -m pip install google-cloud-api-gateway
 
 
-# [START apigateway_generated_apigateway_v1_ApiGatewayService_ListApiConfigs_sync]
+# [START apigateway_v1_generated_ApiGatewayService_CreateApi_async]
 from google.cloud import apigateway_v1
 
 
-def sample_list_api_configs():
+async def sample_create_api():
     # Create a client
-    client = apigateway_v1.ApiGatewayServiceClient()
+    client = apigateway_v1.ApiGatewayServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = apigateway_v1.ListApiConfigsRequest(
+    request = apigateway_v1.CreateApiRequest(
         parent="parent_value",
+        api_id="api_id_value",
     )
 
     # Make the request
-    page_result = client.list_api_configs(request=request)
+    operation = client.create_api(request=request)
+
+    print("Waiting for operation to complete...")
+
+    response = await operation.result()
 
     # Handle the response
-    for response in page_result:
-        print(response)
+    print(response)
 
-# [END apigateway_generated_apigateway_v1_ApiGatewayService_ListApiConfigs_sync]
+# [END apigateway_v1_generated_ApiGatewayService_CreateApi_async]

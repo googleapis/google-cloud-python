@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for CreateApi
+# Snippet for DeleteApi
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,22 +23,21 @@
 #   python3 -m pip install google-cloud-api-gateway
 
 
-# [START apigateway_generated_apigateway_v1_ApiGatewayService_CreateApi_async]
+# [START apigateway_v1_generated_ApiGatewayService_DeleteApi_async]
 from google.cloud import apigateway_v1
 
 
-async def sample_create_api():
+async def sample_delete_api():
     # Create a client
     client = apigateway_v1.ApiGatewayServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = apigateway_v1.CreateApiRequest(
-        parent="parent_value",
-        api_id="api_id_value",
+    request = apigateway_v1.DeleteApiRequest(
+        name="name_value",
     )
 
     # Make the request
-    operation = client.create_api(request=request)
+    operation = client.delete_api(request=request)
 
     print("Waiting for operation to complete...")
 
@@ -47,4 +46,4 @@ async def sample_create_api():
     # Handle the response
     print(response)
 
-# [END apigateway_generated_apigateway_v1_ApiGatewayService_CreateApi_async]
+# [END apigateway_v1_generated_ApiGatewayService_DeleteApi_async]

@@ -490,8 +490,7 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
     ) -> pagers.ListGatewaysPager:
         r"""Lists Gateways in a given project and location.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import apigateway_v1
 
@@ -591,8 +590,7 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
     ) -> apigateway.Gateway:
         r"""Gets details of a single Gateway.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import apigateway_v1
 
@@ -690,8 +688,7 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         location.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import apigateway_v1
 
@@ -820,8 +817,7 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
     ) -> operation.Operation:
         r"""Updates the parameters of a single Gateway.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import apigateway_v1
 
@@ -943,8 +939,7 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
     ) -> operation.Operation:
         r"""Deletes a single Gateway.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import apigateway_v1
 
@@ -1059,8 +1054,7 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
     ) -> pagers.ListApisPager:
         r"""Lists Apis in a given project and location.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import apigateway_v1
 
@@ -1160,8 +1154,7 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
     ) -> apigateway.Api:
         r"""Gets details of a single Api.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import apigateway_v1
 
@@ -1253,8 +1246,7 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
     ) -> operation.Operation:
         r"""Creates a new Api in a given project and location.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import apigateway_v1
 
@@ -1378,8 +1370,7 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
     ) -> operation.Operation:
         r"""Updates the parameters of a single Api.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import apigateway_v1
 
@@ -1494,8 +1485,7 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
     ) -> operation.Operation:
         r"""Deletes a single Api.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import apigateway_v1
 
@@ -1610,8 +1600,7 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
     ) -> pagers.ListApiConfigsPager:
         r"""Lists ApiConfigs in a given project and location.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import apigateway_v1
 
@@ -1711,8 +1700,7 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
     ) -> apigateway.ApiConfig:
         r"""Gets details of a single ApiConfig.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import apigateway_v1
 
@@ -1807,8 +1795,7 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         location.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import apigateway_v1
 
@@ -1931,8 +1918,7 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
     ) -> operation.Operation:
         r"""Updates the parameters of a single ApiConfig.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import apigateway_v1
 
@@ -2048,8 +2034,7 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
     ) -> operation.Operation:
         r"""Deletes a single ApiConfig.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import apigateway_v1
 

@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for UpdateGateway
+# Snippet for DeleteApiConfig
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,24 +23,21 @@
 #   python3 -m pip install google-cloud-api-gateway
 
 
-# [START apigateway_generated_apigateway_v1_ApiGatewayService_UpdateGateway_sync]
+# [START apigateway_v1_generated_ApiGatewayService_DeleteApiConfig_sync]
 from google.cloud import apigateway_v1
 
 
-def sample_update_gateway():
+def sample_delete_api_config():
     # Create a client
     client = apigateway_v1.ApiGatewayServiceClient()
 
     # Initialize request argument(s)
-    gateway = apigateway_v1.Gateway()
-    gateway.api_config = "api_config_value"
-
-    request = apigateway_v1.UpdateGatewayRequest(
-        gateway=gateway,
+    request = apigateway_v1.DeleteApiConfigRequest(
+        name="name_value",
     )
 
     # Make the request
-    operation = client.update_gateway(request=request)
+    operation = client.delete_api_config(request=request)
 
     print("Waiting for operation to complete...")
 
@@ -49,4 +46,4 @@ def sample_update_gateway():
     # Handle the response
     print(response)
 
-# [END apigateway_generated_apigateway_v1_ApiGatewayService_UpdateGateway_sync]
+# [END apigateway_v1_generated_ApiGatewayService_DeleteApiConfig_sync]

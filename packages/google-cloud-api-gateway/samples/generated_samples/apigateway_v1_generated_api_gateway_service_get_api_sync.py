@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for UpdateApiConfig
+# Snippet for GetApi
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,26 +23,23 @@
 #   python3 -m pip install google-cloud-api-gateway
 
 
-# [START apigateway_generated_apigateway_v1_ApiGatewayService_UpdateApiConfig_async]
+# [START apigateway_v1_generated_ApiGatewayService_GetApi_sync]
 from google.cloud import apigateway_v1
 
 
-async def sample_update_api_config():
+def sample_get_api():
     # Create a client
-    client = apigateway_v1.ApiGatewayServiceAsyncClient()
+    client = apigateway_v1.ApiGatewayServiceClient()
 
     # Initialize request argument(s)
-    request = apigateway_v1.UpdateApiConfigRequest(
+    request = apigateway_v1.GetApiRequest(
+        name="name_value",
     )
 
     # Make the request
-    operation = client.update_api_config(request=request)
-
-    print("Waiting for operation to complete...")
-
-    response = await operation.result()
+    response = client.get_api(request=request)
 
     # Handle the response
     print(response)
 
-# [END apigateway_generated_apigateway_v1_ApiGatewayService_UpdateApiConfig_async]
+# [END apigateway_v1_generated_ApiGatewayService_GetApi_sync]

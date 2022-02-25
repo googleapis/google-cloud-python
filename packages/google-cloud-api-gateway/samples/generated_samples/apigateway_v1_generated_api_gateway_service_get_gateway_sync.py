@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ListGateways
+# Snippet for GetGateway
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,24 +23,23 @@
 #   python3 -m pip install google-cloud-api-gateway
 
 
-# [START apigateway_generated_apigateway_v1_ApiGatewayService_ListGateways_async]
+# [START apigateway_v1_generated_ApiGatewayService_GetGateway_sync]
 from google.cloud import apigateway_v1
 
 
-async def sample_list_gateways():
+def sample_get_gateway():
     # Create a client
-    client = apigateway_v1.ApiGatewayServiceAsyncClient()
+    client = apigateway_v1.ApiGatewayServiceClient()
 
     # Initialize request argument(s)
-    request = apigateway_v1.ListGatewaysRequest(
-        parent="parent_value",
+    request = apigateway_v1.GetGatewayRequest(
+        name="name_value",
     )
 
     # Make the request
-    page_result = client.list_gateways(request=request)
+    response = client.get_gateway(request=request)
 
     # Handle the response
-    async for response in page_result:
-        print(response)
+    print(response)
 
-# [END apigateway_generated_apigateway_v1_ApiGatewayService_ListGateways_async]
+# [END apigateway_v1_generated_ApiGatewayService_GetGateway_sync]

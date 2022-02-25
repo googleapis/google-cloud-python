@@ -10,8 +10,8 @@
           "shortName": "CreateApiConfig"
         }
       },
-      "file": "apigateway_generated_apigateway_v1_api_gateway_service_create_api_config_async.py",
-      "regionTag": "apigateway_generated_apigateway_v1_ApiGatewayService_CreateApiConfig_async",
+      "file": "apigateway_v1_generated_api_gateway_service_create_api_config_async.py",
+      "regionTag": "apigateway_v1_generated_ApiGatewayService_CreateApiConfig_async",
       "segments": [
         {
           "end": 49,
@@ -54,8 +54,8 @@
           "shortName": "CreateApiConfig"
         }
       },
-      "file": "apigateway_generated_apigateway_v1_api_gateway_service_create_api_config_sync.py",
-      "regionTag": "apigateway_generated_apigateway_v1_ApiGatewayService_CreateApiConfig_sync",
+      "file": "apigateway_v1_generated_api_gateway_service_create_api_config_sync.py",
+      "regionTag": "apigateway_v1_generated_ApiGatewayService_CreateApiConfig_sync",
       "segments": [
         {
           "end": 49,
@@ -99,8 +99,8 @@
           "shortName": "CreateApi"
         }
       },
-      "file": "apigateway_generated_apigateway_v1_api_gateway_service_create_api_async.py",
-      "regionTag": "apigateway_generated_apigateway_v1_ApiGatewayService_CreateApi_async",
+      "file": "apigateway_v1_generated_api_gateway_service_create_api_async.py",
+      "regionTag": "apigateway_v1_generated_ApiGatewayService_CreateApi_async",
       "segments": [
         {
           "end": 49,
@@ -143,8 +143,8 @@
           "shortName": "CreateApi"
         }
       },
-      "file": "apigateway_generated_apigateway_v1_api_gateway_service_create_api_sync.py",
-      "regionTag": "apigateway_generated_apigateway_v1_ApiGatewayService_CreateApi_sync",
+      "file": "apigateway_v1_generated_api_gateway_service_create_api_sync.py",
+      "regionTag": "apigateway_v1_generated_ApiGatewayService_CreateApi_sync",
       "segments": [
         {
           "end": 49,
@@ -188,8 +188,8 @@
           "shortName": "CreateGateway"
         }
       },
-      "file": "apigateway_generated_apigateway_v1_api_gateway_service_create_gateway_async.py",
-      "regionTag": "apigateway_generated_apigateway_v1_ApiGatewayService_CreateGateway_async",
+      "file": "apigateway_v1_generated_api_gateway_service_create_gateway_async.py",
+      "regionTag": "apigateway_v1_generated_ApiGatewayService_CreateGateway_async",
       "segments": [
         {
           "end": 53,
@@ -232,8 +232,8 @@
           "shortName": "CreateGateway"
         }
       },
-      "file": "apigateway_generated_apigateway_v1_api_gateway_service_create_gateway_sync.py",
-      "regionTag": "apigateway_generated_apigateway_v1_ApiGatewayService_CreateGateway_sync",
+      "file": "apigateway_v1_generated_api_gateway_service_create_gateway_sync.py",
+      "regionTag": "apigateway_v1_generated_ApiGatewayService_CreateGateway_sync",
       "segments": [
         {
           "end": 53,
@@ -277,8 +277,8 @@
           "shortName": "DeleteApiConfig"
         }
       },
-      "file": "apigateway_generated_apigateway_v1_api_gateway_service_delete_api_config_async.py",
-      "regionTag": "apigateway_generated_apigateway_v1_ApiGatewayService_DeleteApiConfig_async",
+      "file": "apigateway_v1_generated_api_gateway_service_delete_api_config_async.py",
+      "regionTag": "apigateway_v1_generated_ApiGatewayService_DeleteApiConfig_async",
       "segments": [
         {
           "end": 48,
@@ -321,8 +321,8 @@
           "shortName": "DeleteApiConfig"
         }
       },
-      "file": "apigateway_generated_apigateway_v1_api_gateway_service_delete_api_config_sync.py",
-      "regionTag": "apigateway_generated_apigateway_v1_ApiGatewayService_DeleteApiConfig_sync",
+      "file": "apigateway_v1_generated_api_gateway_service_delete_api_config_sync.py",
+      "regionTag": "apigateway_v1_generated_ApiGatewayService_DeleteApiConfig_sync",
       "segments": [
         {
           "end": 48,
@@ -366,8 +366,8 @@
           "shortName": "DeleteApi"
         }
       },
-      "file": "apigateway_generated_apigateway_v1_api_gateway_service_delete_api_async.py",
-      "regionTag": "apigateway_generated_apigateway_v1_ApiGatewayService_DeleteApi_async",
+      "file": "apigateway_v1_generated_api_gateway_service_delete_api_async.py",
+      "regionTag": "apigateway_v1_generated_ApiGatewayService_DeleteApi_async",
       "segments": [
         {
           "end": 48,
@@ -410,8 +410,8 @@
           "shortName": "DeleteApi"
         }
       },
-      "file": "apigateway_generated_apigateway_v1_api_gateway_service_delete_api_sync.py",
-      "regionTag": "apigateway_generated_apigateway_v1_ApiGatewayService_DeleteApi_sync",
+      "file": "apigateway_v1_generated_api_gateway_service_delete_api_sync.py",
+      "regionTag": "apigateway_v1_generated_ApiGatewayService_DeleteApi_sync",
       "segments": [
         {
           "end": 48,
@@ -455,8 +455,8 @@
           "shortName": "DeleteGateway"
         }
       },
-      "file": "apigateway_generated_apigateway_v1_api_gateway_service_delete_gateway_async.py",
-      "regionTag": "apigateway_generated_apigateway_v1_ApiGatewayService_DeleteGateway_async",
+      "file": "apigateway_v1_generated_api_gateway_service_delete_gateway_async.py",
+      "regionTag": "apigateway_v1_generated_ApiGatewayService_DeleteGateway_async",
       "segments": [
         {
           "end": 48,
@@ -499,8 +499,8 @@
           "shortName": "DeleteGateway"
         }
       },
-      "file": "apigateway_generated_apigateway_v1_api_gateway_service_delete_gateway_sync.py",
-      "regionTag": "apigateway_generated_apigateway_v1_ApiGatewayService_DeleteGateway_sync",
+      "file": "apigateway_v1_generated_api_gateway_service_delete_gateway_sync.py",
+      "regionTag": "apigateway_v1_generated_ApiGatewayService_DeleteGateway_sync",
       "segments": [
         {
           "end": 48,
@@ -544,8 +544,8 @@
           "shortName": "GetApiConfig"
         }
       },
-      "file": "apigateway_generated_apigateway_v1_api_gateway_service_get_api_config_async.py",
-      "regionTag": "apigateway_generated_apigateway_v1_ApiGatewayService_GetApiConfig_async",
+      "file": "apigateway_v1_generated_api_gateway_service_get_api_config_async.py",
+      "regionTag": "apigateway_v1_generated_ApiGatewayService_GetApiConfig_async",
       "segments": [
         {
           "end": 44,
@@ -588,8 +588,8 @@
           "shortName": "GetApiConfig"
         }
       },
-      "file": "apigateway_generated_apigateway_v1_api_gateway_service_get_api_config_sync.py",
-      "regionTag": "apigateway_generated_apigateway_v1_ApiGatewayService_GetApiConfig_sync",
+      "file": "apigateway_v1_generated_api_gateway_service_get_api_config_sync.py",
+      "regionTag": "apigateway_v1_generated_ApiGatewayService_GetApiConfig_sync",
       "segments": [
         {
           "end": 44,
@@ -633,8 +633,8 @@
           "shortName": "GetApi"
         }
       },
-      "file": "apigateway_generated_apigateway_v1_api_gateway_service_get_api_async.py",
-      "regionTag": "apigateway_generated_apigateway_v1_ApiGatewayService_GetApi_async",
+      "file": "apigateway_v1_generated_api_gateway_service_get_api_async.py",
+      "regionTag": "apigateway_v1_generated_ApiGatewayService_GetApi_async",
       "segments": [
         {
           "end": 44,
@@ -677,8 +677,8 @@
           "shortName": "GetApi"
         }
       },
-      "file": "apigateway_generated_apigateway_v1_api_gateway_service_get_api_sync.py",
-      "regionTag": "apigateway_generated_apigateway_v1_ApiGatewayService_GetApi_sync",
+      "file": "apigateway_v1_generated_api_gateway_service_get_api_sync.py",
+      "regionTag": "apigateway_v1_generated_ApiGatewayService_GetApi_sync",
       "segments": [
         {
           "end": 44,
@@ -722,8 +722,8 @@
           "shortName": "GetGateway"
         }
       },
-      "file": "apigateway_generated_apigateway_v1_api_gateway_service_get_gateway_async.py",
-      "regionTag": "apigateway_generated_apigateway_v1_ApiGatewayService_GetGateway_async",
+      "file": "apigateway_v1_generated_api_gateway_service_get_gateway_async.py",
+      "regionTag": "apigateway_v1_generated_ApiGatewayService_GetGateway_async",
       "segments": [
         {
           "end": 44,
@@ -766,8 +766,8 @@
           "shortName": "GetGateway"
         }
       },
-      "file": "apigateway_generated_apigateway_v1_api_gateway_service_get_gateway_sync.py",
-      "regionTag": "apigateway_generated_apigateway_v1_ApiGatewayService_GetGateway_sync",
+      "file": "apigateway_v1_generated_api_gateway_service_get_gateway_sync.py",
+      "regionTag": "apigateway_v1_generated_ApiGatewayService_GetGateway_sync",
       "segments": [
         {
           "end": 44,
@@ -811,8 +811,8 @@
           "shortName": "ListApiConfigs"
         }
       },
-      "file": "apigateway_generated_apigateway_v1_api_gateway_service_list_api_configs_async.py",
-      "regionTag": "apigateway_generated_apigateway_v1_ApiGatewayService_ListApiConfigs_async",
+      "file": "apigateway_v1_generated_api_gateway_service_list_api_configs_async.py",
+      "regionTag": "apigateway_v1_generated_ApiGatewayService_ListApiConfigs_async",
       "segments": [
         {
           "end": 45,
@@ -855,8 +855,8 @@
           "shortName": "ListApiConfigs"
         }
       },
-      "file": "apigateway_generated_apigateway_v1_api_gateway_service_list_api_configs_sync.py",
-      "regionTag": "apigateway_generated_apigateway_v1_ApiGatewayService_ListApiConfigs_sync",
+      "file": "apigateway_v1_generated_api_gateway_service_list_api_configs_sync.py",
+      "regionTag": "apigateway_v1_generated_ApiGatewayService_ListApiConfigs_sync",
       "segments": [
         {
           "end": 45,
@@ -900,8 +900,8 @@
           "shortName": "ListApis"
         }
       },
-      "file": "apigateway_generated_apigateway_v1_api_gateway_service_list_apis_async.py",
-      "regionTag": "apigateway_generated_apigateway_v1_ApiGatewayService_ListApis_async",
+      "file": "apigateway_v1_generated_api_gateway_service_list_apis_async.py",
+      "regionTag": "apigateway_v1_generated_ApiGatewayService_ListApis_async",
       "segments": [
         {
           "end": 45,
@@ -944,8 +944,8 @@
           "shortName": "ListApis"
         }
       },
-      "file": "apigateway_generated_apigateway_v1_api_gateway_service_list_apis_sync.py",
-      "regionTag": "apigateway_generated_apigateway_v1_ApiGatewayService_ListApis_sync",
+      "file": "apigateway_v1_generated_api_gateway_service_list_apis_sync.py",
+      "regionTag": "apigateway_v1_generated_ApiGatewayService_ListApis_sync",
       "segments": [
         {
           "end": 45,
@@ -989,8 +989,8 @@
           "shortName": "ListGateways"
         }
       },
-      "file": "apigateway_generated_apigateway_v1_api_gateway_service_list_gateways_async.py",
-      "regionTag": "apigateway_generated_apigateway_v1_ApiGatewayService_ListGateways_async",
+      "file": "apigateway_v1_generated_api_gateway_service_list_gateways_async.py",
+      "regionTag": "apigateway_v1_generated_ApiGatewayService_ListGateways_async",
       "segments": [
         {
           "end": 45,
@@ -1033,8 +1033,8 @@
           "shortName": "ListGateways"
         }
       },
-      "file": "apigateway_generated_apigateway_v1_api_gateway_service_list_gateways_sync.py",
-      "regionTag": "apigateway_generated_apigateway_v1_ApiGatewayService_ListGateways_sync",
+      "file": "apigateway_v1_generated_api_gateway_service_list_gateways_sync.py",
+      "regionTag": "apigateway_v1_generated_ApiGatewayService_ListGateways_sync",
       "segments": [
         {
           "end": 45,
@@ -1078,8 +1078,8 @@
           "shortName": "UpdateApiConfig"
         }
       },
-      "file": "apigateway_generated_apigateway_v1_api_gateway_service_update_api_config_async.py",
-      "regionTag": "apigateway_generated_apigateway_v1_ApiGatewayService_UpdateApiConfig_async",
+      "file": "apigateway_v1_generated_api_gateway_service_update_api_config_async.py",
+      "regionTag": "apigateway_v1_generated_ApiGatewayService_UpdateApiConfig_async",
       "segments": [
         {
           "end": 47,
@@ -1122,8 +1122,8 @@
           "shortName": "UpdateApiConfig"
         }
       },
-      "file": "apigateway_generated_apigateway_v1_api_gateway_service_update_api_config_sync.py",
-      "regionTag": "apigateway_generated_apigateway_v1_ApiGatewayService_UpdateApiConfig_sync",
+      "file": "apigateway_v1_generated_api_gateway_service_update_api_config_sync.py",
+      "regionTag": "apigateway_v1_generated_ApiGatewayService_UpdateApiConfig_sync",
       "segments": [
         {
           "end": 47,
@@ -1167,8 +1167,8 @@
           "shortName": "UpdateApi"
         }
       },
-      "file": "apigateway_generated_apigateway_v1_api_gateway_service_update_api_async.py",
-      "regionTag": "apigateway_generated_apigateway_v1_ApiGatewayService_UpdateApi_async",
+      "file": "apigateway_v1_generated_api_gateway_service_update_api_async.py",
+      "regionTag": "apigateway_v1_generated_ApiGatewayService_UpdateApi_async",
       "segments": [
         {
           "end": 47,
@@ -1211,8 +1211,8 @@
           "shortName": "UpdateApi"
         }
       },
-      "file": "apigateway_generated_apigateway_v1_api_gateway_service_update_api_sync.py",
-      "regionTag": "apigateway_generated_apigateway_v1_ApiGatewayService_UpdateApi_sync",
+      "file": "apigateway_v1_generated_api_gateway_service_update_api_sync.py",
+      "regionTag": "apigateway_v1_generated_ApiGatewayService_UpdateApi_sync",
       "segments": [
         {
           "end": 47,
@@ -1256,8 +1256,8 @@
           "shortName": "UpdateGateway"
         }
       },
-      "file": "apigateway_generated_apigateway_v1_api_gateway_service_update_gateway_async.py",
-      "regionTag": "apigateway_generated_apigateway_v1_ApiGatewayService_UpdateGateway_async",
+      "file": "apigateway_v1_generated_api_gateway_service_update_gateway_async.py",
+      "regionTag": "apigateway_v1_generated_ApiGatewayService_UpdateGateway_async",
       "segments": [
         {
           "end": 51,
@@ -1300,8 +1300,8 @@
           "shortName": "UpdateGateway"
         }
       },
-      "file": "apigateway_generated_apigateway_v1_api_gateway_service_update_gateway_sync.py",
-      "regionTag": "apigateway_generated_apigateway_v1_ApiGatewayService_UpdateGateway_sync",
+      "file": "apigateway_v1_generated_api_gateway_service_update_gateway_sync.py",
+      "regionTag": "apigateway_v1_generated_ApiGatewayService_UpdateGateway_sync",
       "segments": [
         {
           "end": 51,
