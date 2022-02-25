@@ -398,8 +398,7 @@ class DomainMappingsClient(metaclass=DomainMappingsClientMeta):
     ) -> pagers.ListDomainMappingsPager:
         r"""Lists the domain mappings on an application.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import appengine_admin_v1
 
@@ -476,8 +475,7 @@ class DomainMappingsClient(metaclass=DomainMappingsClientMeta):
     ) -> domain_mapping.DomainMapping:
         r"""Gets the specified domain mapping.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import appengine_admin_v1
 
@@ -549,8 +547,7 @@ class DomainMappingsClient(metaclass=DomainMappingsClientMeta):
         ```AuthorizedDomains.ListAuthorizedDomains`` <>`__.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import appengine_admin_v1
 
@@ -638,8 +635,7 @@ class DomainMappingsClient(metaclass=DomainMappingsClientMeta):
         ``DomainMapping`` resource.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import appengine_admin_v1
 
@@ -725,8 +721,7 @@ class DomainMappingsClient(metaclass=DomainMappingsClientMeta):
         ``DomainMapping`` resource.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import appengine_admin_v1
 

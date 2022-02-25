@@ -400,8 +400,7 @@ class VersionsClient(metaclass=VersionsClientMeta):
     ) -> pagers.ListVersionsPager:
         r"""Lists the versions of a service.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import appengine_admin_v1
 
@@ -481,8 +480,7 @@ class VersionsClient(metaclass=VersionsClientMeta):
         parameter to get the full resource.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import appengine_admin_v1
 
@@ -551,8 +549,7 @@ class VersionsClient(metaclass=VersionsClientMeta):
     ) -> gac_operation.Operation:
         r"""Deploys code and resource files to a new version.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import appengine_admin_v1
 
@@ -670,8 +667,7 @@ class VersionsClient(metaclass=VersionsClientMeta):
         -  ```manual_scaling.instances`` <https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services.versions#manualscaling>`__
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import appengine_admin_v1
 
@@ -753,8 +749,7 @@ class VersionsClient(metaclass=VersionsClientMeta):
     ) -> gac_operation.Operation:
         r"""Deletes an existing Version resource.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import appengine_admin_v1
 

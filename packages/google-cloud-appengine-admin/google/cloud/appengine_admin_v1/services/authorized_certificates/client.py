@@ -402,8 +402,7 @@ class AuthorizedCertificatesClient(metaclass=AuthorizedCertificatesClientMeta):
         administer.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import appengine_admin_v1
 
@@ -483,8 +482,7 @@ class AuthorizedCertificatesClient(metaclass=AuthorizedCertificatesClientMeta):
     ) -> certificate.AuthorizedCertificate:
         r"""Gets the specified SSL certificate.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import appengine_admin_v1
 
@@ -557,8 +555,7 @@ class AuthorizedCertificatesClient(metaclass=AuthorizedCertificatesClientMeta):
     ) -> certificate.AuthorizedCertificate:
         r"""Uploads the specified SSL certificate.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import appengine_admin_v1
 
@@ -637,8 +634,7 @@ class AuthorizedCertificatesClient(metaclass=AuthorizedCertificatesClientMeta):
         updated.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import appengine_admin_v1
 
@@ -711,8 +707,7 @@ class AuthorizedCertificatesClient(metaclass=AuthorizedCertificatesClientMeta):
     ) -> None:
         r"""Deletes the specified SSL certificate.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import appengine_admin_v1
 

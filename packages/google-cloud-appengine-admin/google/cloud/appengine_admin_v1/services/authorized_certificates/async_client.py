@@ -220,7 +220,7 @@ class AuthorizedCertificatesAsyncClient:
         administer.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import appengine_admin_v1
 
@@ -297,7 +297,7 @@ class AuthorizedCertificatesAsyncClient:
     ) -> certificate.AuthorizedCertificate:
         r"""Gets the specified SSL certificate.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import appengine_admin_v1
 
@@ -367,7 +367,7 @@ class AuthorizedCertificatesAsyncClient:
     ) -> certificate.AuthorizedCertificate:
         r"""Uploads the specified SSL certificate.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import appengine_admin_v1
 
@@ -443,7 +443,7 @@ class AuthorizedCertificatesAsyncClient:
         updated.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import appengine_admin_v1
 
@@ -513,7 +513,7 @@ class AuthorizedCertificatesAsyncClient:
     ) -> None:
         r"""Deletes the specified SSL certificate.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import appengine_admin_v1
 

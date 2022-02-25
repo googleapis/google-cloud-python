@@ -10,8 +10,8 @@
           "shortName": "CreateApplication"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_applications_create_application_async.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_Applications_CreateApplication_async",
+      "file": "appengine_v1_generated_applications_create_application_async.py",
+      "regionTag": "appengine_v1_generated_Applications_CreateApplication_async",
       "segments": [
         {
           "end": 47,
@@ -54,8 +54,8 @@
           "shortName": "CreateApplication"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_applications_create_application_sync.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_Applications_CreateApplication_sync",
+      "file": "appengine_v1_generated_applications_create_application_sync.py",
+      "regionTag": "appengine_v1_generated_Applications_CreateApplication_sync",
       "segments": [
         {
           "end": 47,
@@ -99,8 +99,8 @@
           "shortName": "GetApplication"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_applications_get_application_async.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_Applications_GetApplication_async",
+      "file": "appengine_v1_generated_applications_get_application_async.py",
+      "regionTag": "appengine_v1_generated_Applications_GetApplication_async",
       "segments": [
         {
           "end": 43,
@@ -143,8 +143,8 @@
           "shortName": "GetApplication"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_applications_get_application_sync.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_Applications_GetApplication_sync",
+      "file": "appengine_v1_generated_applications_get_application_sync.py",
+      "regionTag": "appengine_v1_generated_Applications_GetApplication_sync",
       "segments": [
         {
           "end": 43,
@@ -188,8 +188,8 @@
           "shortName": "RepairApplication"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_applications_repair_application_async.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_Applications_RepairApplication_async",
+      "file": "appengine_v1_generated_applications_repair_application_async.py",
+      "regionTag": "appengine_v1_generated_Applications_RepairApplication_async",
       "segments": [
         {
           "end": 47,
@@ -232,8 +232,8 @@
           "shortName": "RepairApplication"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_applications_repair_application_sync.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_Applications_RepairApplication_sync",
+      "file": "appengine_v1_generated_applications_repair_application_sync.py",
+      "regionTag": "appengine_v1_generated_Applications_RepairApplication_sync",
       "segments": [
         {
           "end": 47,
@@ -277,8 +277,8 @@
           "shortName": "UpdateApplication"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_applications_update_application_async.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_Applications_UpdateApplication_async",
+      "file": "appengine_v1_generated_applications_update_application_async.py",
+      "regionTag": "appengine_v1_generated_Applications_UpdateApplication_async",
       "segments": [
         {
           "end": 47,
@@ -321,8 +321,8 @@
           "shortName": "UpdateApplication"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_applications_update_application_sync.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_Applications_UpdateApplication_sync",
+      "file": "appengine_v1_generated_applications_update_application_sync.py",
+      "regionTag": "appengine_v1_generated_Applications_UpdateApplication_sync",
       "segments": [
         {
           "end": 47,
@@ -366,8 +366,8 @@
           "shortName": "CreateAuthorizedCertificate"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_authorized_certificates_create_authorized_certificate_async.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_AuthorizedCertificates_CreateAuthorizedCertificate_async",
+      "file": "appengine_v1_generated_authorized_certificates_create_authorized_certificate_async.py",
+      "regionTag": "appengine_v1_generated_AuthorizedCertificates_CreateAuthorizedCertificate_async",
       "segments": [
         {
           "end": 43,
@@ -410,8 +410,8 @@
           "shortName": "CreateAuthorizedCertificate"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_authorized_certificates_create_authorized_certificate_sync.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_AuthorizedCertificates_CreateAuthorizedCertificate_sync",
+      "file": "appengine_v1_generated_authorized_certificates_create_authorized_certificate_sync.py",
+      "regionTag": "appengine_v1_generated_AuthorizedCertificates_CreateAuthorizedCertificate_sync",
       "segments": [
         {
           "end": 43,
@@ -455,8 +455,8 @@
           "shortName": "DeleteAuthorizedCertificate"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_authorized_certificates_delete_authorized_certificate_async.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_AuthorizedCertificates_DeleteAuthorizedCertificate_async",
+      "file": "appengine_v1_generated_authorized_certificates_delete_authorized_certificate_async.py",
+      "regionTag": "appengine_v1_generated_AuthorizedCertificates_DeleteAuthorizedCertificate_async",
       "segments": [
         {
           "end": 41,
@@ -497,8 +497,8 @@
           "shortName": "DeleteAuthorizedCertificate"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_authorized_certificates_delete_authorized_certificate_sync.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_AuthorizedCertificates_DeleteAuthorizedCertificate_sync",
+      "file": "appengine_v1_generated_authorized_certificates_delete_authorized_certificate_sync.py",
+      "regionTag": "appengine_v1_generated_AuthorizedCertificates_DeleteAuthorizedCertificate_sync",
       "segments": [
         {
           "end": 41,
@@ -540,8 +540,8 @@
           "shortName": "GetAuthorizedCertificate"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_authorized_certificates_get_authorized_certificate_async.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_AuthorizedCertificates_GetAuthorizedCertificate_async",
+      "file": "appengine_v1_generated_authorized_certificates_get_authorized_certificate_async.py",
+      "regionTag": "appengine_v1_generated_AuthorizedCertificates_GetAuthorizedCertificate_async",
       "segments": [
         {
           "end": 43,
@@ -584,8 +584,8 @@
           "shortName": "GetAuthorizedCertificate"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_authorized_certificates_get_authorized_certificate_sync.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_AuthorizedCertificates_GetAuthorizedCertificate_sync",
+      "file": "appengine_v1_generated_authorized_certificates_get_authorized_certificate_sync.py",
+      "regionTag": "appengine_v1_generated_AuthorizedCertificates_GetAuthorizedCertificate_sync",
       "segments": [
         {
           "end": 43,
@@ -629,8 +629,8 @@
           "shortName": "ListAuthorizedCertificates"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_authorized_certificates_list_authorized_certificates_async.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_AuthorizedCertificates_ListAuthorizedCertificates_async",
+      "file": "appengine_v1_generated_authorized_certificates_list_authorized_certificates_async.py",
+      "regionTag": "appengine_v1_generated_AuthorizedCertificates_ListAuthorizedCertificates_async",
       "segments": [
         {
           "end": 44,
@@ -673,8 +673,8 @@
           "shortName": "ListAuthorizedCertificates"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_authorized_certificates_list_authorized_certificates_sync.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_AuthorizedCertificates_ListAuthorizedCertificates_sync",
+      "file": "appengine_v1_generated_authorized_certificates_list_authorized_certificates_sync.py",
+      "regionTag": "appengine_v1_generated_AuthorizedCertificates_ListAuthorizedCertificates_sync",
       "segments": [
         {
           "end": 44,
@@ -718,8 +718,8 @@
           "shortName": "UpdateAuthorizedCertificate"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_authorized_certificates_update_authorized_certificate_async.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_AuthorizedCertificates_UpdateAuthorizedCertificate_async",
+      "file": "appengine_v1_generated_authorized_certificates_update_authorized_certificate_async.py",
+      "regionTag": "appengine_v1_generated_AuthorizedCertificates_UpdateAuthorizedCertificate_async",
       "segments": [
         {
           "end": 43,
@@ -762,8 +762,8 @@
           "shortName": "UpdateAuthorizedCertificate"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_authorized_certificates_update_authorized_certificate_sync.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_AuthorizedCertificates_UpdateAuthorizedCertificate_sync",
+      "file": "appengine_v1_generated_authorized_certificates_update_authorized_certificate_sync.py",
+      "regionTag": "appengine_v1_generated_AuthorizedCertificates_UpdateAuthorizedCertificate_sync",
       "segments": [
         {
           "end": 43,
@@ -807,8 +807,8 @@
           "shortName": "ListAuthorizedDomains"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_authorized_domains_list_authorized_domains_async.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_AuthorizedDomains_ListAuthorizedDomains_async",
+      "file": "appengine_v1_generated_authorized_domains_list_authorized_domains_async.py",
+      "regionTag": "appengine_v1_generated_AuthorizedDomains_ListAuthorizedDomains_async",
       "segments": [
         {
           "end": 44,
@@ -851,8 +851,8 @@
           "shortName": "ListAuthorizedDomains"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_authorized_domains_list_authorized_domains_sync.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_AuthorizedDomains_ListAuthorizedDomains_sync",
+      "file": "appengine_v1_generated_authorized_domains_list_authorized_domains_sync.py",
+      "regionTag": "appengine_v1_generated_AuthorizedDomains_ListAuthorizedDomains_sync",
       "segments": [
         {
           "end": 44,
@@ -896,8 +896,8 @@
           "shortName": "CreateDomainMapping"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_domain_mappings_create_domain_mapping_async.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_DomainMappings_CreateDomainMapping_async",
+      "file": "appengine_v1_generated_domain_mappings_create_domain_mapping_async.py",
+      "regionTag": "appengine_v1_generated_DomainMappings_CreateDomainMapping_async",
       "segments": [
         {
           "end": 47,
@@ -940,8 +940,8 @@
           "shortName": "CreateDomainMapping"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_domain_mappings_create_domain_mapping_sync.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_DomainMappings_CreateDomainMapping_sync",
+      "file": "appengine_v1_generated_domain_mappings_create_domain_mapping_sync.py",
+      "regionTag": "appengine_v1_generated_DomainMappings_CreateDomainMapping_sync",
       "segments": [
         {
           "end": 47,
@@ -985,8 +985,8 @@
           "shortName": "DeleteDomainMapping"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_domain_mappings_delete_domain_mapping_async.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_DomainMappings_DeleteDomainMapping_async",
+      "file": "appengine_v1_generated_domain_mappings_delete_domain_mapping_async.py",
+      "regionTag": "appengine_v1_generated_DomainMappings_DeleteDomainMapping_async",
       "segments": [
         {
           "end": 47,
@@ -1029,8 +1029,8 @@
           "shortName": "DeleteDomainMapping"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_domain_mappings_delete_domain_mapping_sync.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_DomainMappings_DeleteDomainMapping_sync",
+      "file": "appengine_v1_generated_domain_mappings_delete_domain_mapping_sync.py",
+      "regionTag": "appengine_v1_generated_DomainMappings_DeleteDomainMapping_sync",
       "segments": [
         {
           "end": 47,
@@ -1074,8 +1074,8 @@
           "shortName": "GetDomainMapping"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_domain_mappings_get_domain_mapping_async.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_DomainMappings_GetDomainMapping_async",
+      "file": "appengine_v1_generated_domain_mappings_get_domain_mapping_async.py",
+      "regionTag": "appengine_v1_generated_DomainMappings_GetDomainMapping_async",
       "segments": [
         {
           "end": 43,
@@ -1118,8 +1118,8 @@
           "shortName": "GetDomainMapping"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_domain_mappings_get_domain_mapping_sync.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_DomainMappings_GetDomainMapping_sync",
+      "file": "appengine_v1_generated_domain_mappings_get_domain_mapping_sync.py",
+      "regionTag": "appengine_v1_generated_DomainMappings_GetDomainMapping_sync",
       "segments": [
         {
           "end": 43,
@@ -1163,8 +1163,8 @@
           "shortName": "ListDomainMappings"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_domain_mappings_list_domain_mappings_async.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_DomainMappings_ListDomainMappings_async",
+      "file": "appengine_v1_generated_domain_mappings_list_domain_mappings_async.py",
+      "regionTag": "appengine_v1_generated_DomainMappings_ListDomainMappings_async",
       "segments": [
         {
           "end": 44,
@@ -1207,8 +1207,8 @@
           "shortName": "ListDomainMappings"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_domain_mappings_list_domain_mappings_sync.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_DomainMappings_ListDomainMappings_sync",
+      "file": "appengine_v1_generated_domain_mappings_list_domain_mappings_sync.py",
+      "regionTag": "appengine_v1_generated_DomainMappings_ListDomainMappings_sync",
       "segments": [
         {
           "end": 44,
@@ -1252,8 +1252,8 @@
           "shortName": "UpdateDomainMapping"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_domain_mappings_update_domain_mapping_async.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_DomainMappings_UpdateDomainMapping_async",
+      "file": "appengine_v1_generated_domain_mappings_update_domain_mapping_async.py",
+      "regionTag": "appengine_v1_generated_DomainMappings_UpdateDomainMapping_async",
       "segments": [
         {
           "end": 47,
@@ -1296,8 +1296,8 @@
           "shortName": "UpdateDomainMapping"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_domain_mappings_update_domain_mapping_sync.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_DomainMappings_UpdateDomainMapping_sync",
+      "file": "appengine_v1_generated_domain_mappings_update_domain_mapping_sync.py",
+      "regionTag": "appengine_v1_generated_DomainMappings_UpdateDomainMapping_sync",
       "segments": [
         {
           "end": 47,
@@ -1341,8 +1341,8 @@
           "shortName": "BatchUpdateIngressRules"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_firewall_batch_update_ingress_rules_async.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_Firewall_BatchUpdateIngressRules_async",
+      "file": "appengine_v1_generated_firewall_batch_update_ingress_rules_async.py",
+      "regionTag": "appengine_v1_generated_Firewall_BatchUpdateIngressRules_async",
       "segments": [
         {
           "end": 43,
@@ -1385,8 +1385,8 @@
           "shortName": "BatchUpdateIngressRules"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_firewall_batch_update_ingress_rules_sync.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_Firewall_BatchUpdateIngressRules_sync",
+      "file": "appengine_v1_generated_firewall_batch_update_ingress_rules_sync.py",
+      "regionTag": "appengine_v1_generated_Firewall_BatchUpdateIngressRules_sync",
       "segments": [
         {
           "end": 43,
@@ -1430,8 +1430,8 @@
           "shortName": "CreateIngressRule"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_firewall_create_ingress_rule_async.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_Firewall_CreateIngressRule_async",
+      "file": "appengine_v1_generated_firewall_create_ingress_rule_async.py",
+      "regionTag": "appengine_v1_generated_Firewall_CreateIngressRule_async",
       "segments": [
         {
           "end": 43,
@@ -1474,8 +1474,8 @@
           "shortName": "CreateIngressRule"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_firewall_create_ingress_rule_sync.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_Firewall_CreateIngressRule_sync",
+      "file": "appengine_v1_generated_firewall_create_ingress_rule_sync.py",
+      "regionTag": "appengine_v1_generated_Firewall_CreateIngressRule_sync",
       "segments": [
         {
           "end": 43,
@@ -1519,8 +1519,8 @@
           "shortName": "DeleteIngressRule"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_firewall_delete_ingress_rule_async.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_Firewall_DeleteIngressRule_async",
+      "file": "appengine_v1_generated_firewall_delete_ingress_rule_async.py",
+      "regionTag": "appengine_v1_generated_Firewall_DeleteIngressRule_async",
       "segments": [
         {
           "end": 41,
@@ -1561,8 +1561,8 @@
           "shortName": "DeleteIngressRule"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_firewall_delete_ingress_rule_sync.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_Firewall_DeleteIngressRule_sync",
+      "file": "appengine_v1_generated_firewall_delete_ingress_rule_sync.py",
+      "regionTag": "appengine_v1_generated_Firewall_DeleteIngressRule_sync",
       "segments": [
         {
           "end": 41,
@@ -1604,8 +1604,8 @@
           "shortName": "GetIngressRule"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_firewall_get_ingress_rule_async.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_Firewall_GetIngressRule_async",
+      "file": "appengine_v1_generated_firewall_get_ingress_rule_async.py",
+      "regionTag": "appengine_v1_generated_Firewall_GetIngressRule_async",
       "segments": [
         {
           "end": 43,
@@ -1648,8 +1648,8 @@
           "shortName": "GetIngressRule"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_firewall_get_ingress_rule_sync.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_Firewall_GetIngressRule_sync",
+      "file": "appengine_v1_generated_firewall_get_ingress_rule_sync.py",
+      "regionTag": "appengine_v1_generated_Firewall_GetIngressRule_sync",
       "segments": [
         {
           "end": 43,
@@ -1693,8 +1693,8 @@
           "shortName": "ListIngressRules"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_firewall_list_ingress_rules_async.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_Firewall_ListIngressRules_async",
+      "file": "appengine_v1_generated_firewall_list_ingress_rules_async.py",
+      "regionTag": "appengine_v1_generated_Firewall_ListIngressRules_async",
       "segments": [
         {
           "end": 44,
@@ -1737,8 +1737,8 @@
           "shortName": "ListIngressRules"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_firewall_list_ingress_rules_sync.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_Firewall_ListIngressRules_sync",
+      "file": "appengine_v1_generated_firewall_list_ingress_rules_sync.py",
+      "regionTag": "appengine_v1_generated_Firewall_ListIngressRules_sync",
       "segments": [
         {
           "end": 44,
@@ -1782,8 +1782,8 @@
           "shortName": "UpdateIngressRule"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_firewall_update_ingress_rule_async.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_Firewall_UpdateIngressRule_async",
+      "file": "appengine_v1_generated_firewall_update_ingress_rule_async.py",
+      "regionTag": "appengine_v1_generated_Firewall_UpdateIngressRule_async",
       "segments": [
         {
           "end": 43,
@@ -1826,8 +1826,8 @@
           "shortName": "UpdateIngressRule"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_firewall_update_ingress_rule_sync.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_Firewall_UpdateIngressRule_sync",
+      "file": "appengine_v1_generated_firewall_update_ingress_rule_sync.py",
+      "regionTag": "appengine_v1_generated_Firewall_UpdateIngressRule_sync",
       "segments": [
         {
           "end": 43,
@@ -1871,8 +1871,8 @@
           "shortName": "DebugInstance"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_instances_debug_instance_async.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_Instances_DebugInstance_async",
+      "file": "appengine_v1_generated_instances_debug_instance_async.py",
+      "regionTag": "appengine_v1_generated_Instances_DebugInstance_async",
       "segments": [
         {
           "end": 47,
@@ -1915,8 +1915,8 @@
           "shortName": "DebugInstance"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_instances_debug_instance_sync.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_Instances_DebugInstance_sync",
+      "file": "appengine_v1_generated_instances_debug_instance_sync.py",
+      "regionTag": "appengine_v1_generated_Instances_DebugInstance_sync",
       "segments": [
         {
           "end": 47,
@@ -1960,8 +1960,8 @@
           "shortName": "DeleteInstance"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_instances_delete_instance_async.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_Instances_DeleteInstance_async",
+      "file": "appengine_v1_generated_instances_delete_instance_async.py",
+      "regionTag": "appengine_v1_generated_Instances_DeleteInstance_async",
       "segments": [
         {
           "end": 47,
@@ -2004,8 +2004,8 @@
           "shortName": "DeleteInstance"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_instances_delete_instance_sync.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_Instances_DeleteInstance_sync",
+      "file": "appengine_v1_generated_instances_delete_instance_sync.py",
+      "regionTag": "appengine_v1_generated_Instances_DeleteInstance_sync",
       "segments": [
         {
           "end": 47,
@@ -2049,8 +2049,8 @@
           "shortName": "GetInstance"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_instances_get_instance_async.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_Instances_GetInstance_async",
+      "file": "appengine_v1_generated_instances_get_instance_async.py",
+      "regionTag": "appengine_v1_generated_Instances_GetInstance_async",
       "segments": [
         {
           "end": 43,
@@ -2093,8 +2093,8 @@
           "shortName": "GetInstance"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_instances_get_instance_sync.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_Instances_GetInstance_sync",
+      "file": "appengine_v1_generated_instances_get_instance_sync.py",
+      "regionTag": "appengine_v1_generated_Instances_GetInstance_sync",
       "segments": [
         {
           "end": 43,
@@ -2138,8 +2138,8 @@
           "shortName": "ListInstances"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_instances_list_instances_async.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_Instances_ListInstances_async",
+      "file": "appengine_v1_generated_instances_list_instances_async.py",
+      "regionTag": "appengine_v1_generated_Instances_ListInstances_async",
       "segments": [
         {
           "end": 44,
@@ -2182,8 +2182,8 @@
           "shortName": "ListInstances"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_instances_list_instances_sync.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_Instances_ListInstances_sync",
+      "file": "appengine_v1_generated_instances_list_instances_sync.py",
+      "regionTag": "appengine_v1_generated_Instances_ListInstances_sync",
       "segments": [
         {
           "end": 44,
@@ -2227,8 +2227,8 @@
           "shortName": "DeleteService"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_services_delete_service_async.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_Services_DeleteService_async",
+      "file": "appengine_v1_generated_services_delete_service_async.py",
+      "regionTag": "appengine_v1_generated_Services_DeleteService_async",
       "segments": [
         {
           "end": 47,
@@ -2271,8 +2271,8 @@
           "shortName": "DeleteService"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_services_delete_service_sync.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_Services_DeleteService_sync",
+      "file": "appengine_v1_generated_services_delete_service_sync.py",
+      "regionTag": "appengine_v1_generated_Services_DeleteService_sync",
       "segments": [
         {
           "end": 47,
@@ -2316,8 +2316,8 @@
           "shortName": "GetService"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_services_get_service_async.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_Services_GetService_async",
+      "file": "appengine_v1_generated_services_get_service_async.py",
+      "regionTag": "appengine_v1_generated_Services_GetService_async",
       "segments": [
         {
           "end": 43,
@@ -2360,8 +2360,8 @@
           "shortName": "GetService"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_services_get_service_sync.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_Services_GetService_sync",
+      "file": "appengine_v1_generated_services_get_service_sync.py",
+      "regionTag": "appengine_v1_generated_Services_GetService_sync",
       "segments": [
         {
           "end": 43,
@@ -2405,8 +2405,8 @@
           "shortName": "ListServices"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_services_list_services_async.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_Services_ListServices_async",
+      "file": "appengine_v1_generated_services_list_services_async.py",
+      "regionTag": "appengine_v1_generated_Services_ListServices_async",
       "segments": [
         {
           "end": 44,
@@ -2449,8 +2449,8 @@
           "shortName": "ListServices"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_services_list_services_sync.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_Services_ListServices_sync",
+      "file": "appengine_v1_generated_services_list_services_sync.py",
+      "regionTag": "appengine_v1_generated_Services_ListServices_sync",
       "segments": [
         {
           "end": 44,
@@ -2494,8 +2494,8 @@
           "shortName": "UpdateService"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_services_update_service_async.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_Services_UpdateService_async",
+      "file": "appengine_v1_generated_services_update_service_async.py",
+      "regionTag": "appengine_v1_generated_Services_UpdateService_async",
       "segments": [
         {
           "end": 47,
@@ -2538,8 +2538,8 @@
           "shortName": "UpdateService"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_services_update_service_sync.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_Services_UpdateService_sync",
+      "file": "appengine_v1_generated_services_update_service_sync.py",
+      "regionTag": "appengine_v1_generated_Services_UpdateService_sync",
       "segments": [
         {
           "end": 47,
@@ -2583,8 +2583,8 @@
           "shortName": "CreateVersion"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_versions_create_version_async.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_Versions_CreateVersion_async",
+      "file": "appengine_v1_generated_versions_create_version_async.py",
+      "regionTag": "appengine_v1_generated_Versions_CreateVersion_async",
       "segments": [
         {
           "end": 47,
@@ -2627,8 +2627,8 @@
           "shortName": "CreateVersion"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_versions_create_version_sync.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_Versions_CreateVersion_sync",
+      "file": "appengine_v1_generated_versions_create_version_sync.py",
+      "regionTag": "appengine_v1_generated_Versions_CreateVersion_sync",
       "segments": [
         {
           "end": 47,
@@ -2672,8 +2672,8 @@
           "shortName": "DeleteVersion"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_versions_delete_version_async.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_Versions_DeleteVersion_async",
+      "file": "appengine_v1_generated_versions_delete_version_async.py",
+      "regionTag": "appengine_v1_generated_Versions_DeleteVersion_async",
       "segments": [
         {
           "end": 47,
@@ -2716,8 +2716,8 @@
           "shortName": "DeleteVersion"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_versions_delete_version_sync.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_Versions_DeleteVersion_sync",
+      "file": "appengine_v1_generated_versions_delete_version_sync.py",
+      "regionTag": "appengine_v1_generated_Versions_DeleteVersion_sync",
       "segments": [
         {
           "end": 47,
@@ -2761,8 +2761,8 @@
           "shortName": "GetVersion"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_versions_get_version_async.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_Versions_GetVersion_async",
+      "file": "appengine_v1_generated_versions_get_version_async.py",
+      "regionTag": "appengine_v1_generated_Versions_GetVersion_async",
       "segments": [
         {
           "end": 43,
@@ -2805,8 +2805,8 @@
           "shortName": "GetVersion"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_versions_get_version_sync.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_Versions_GetVersion_sync",
+      "file": "appengine_v1_generated_versions_get_version_sync.py",
+      "regionTag": "appengine_v1_generated_Versions_GetVersion_sync",
       "segments": [
         {
           "end": 43,
@@ -2850,8 +2850,8 @@
           "shortName": "ListVersions"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_versions_list_versions_async.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_Versions_ListVersions_async",
+      "file": "appengine_v1_generated_versions_list_versions_async.py",
+      "regionTag": "appengine_v1_generated_Versions_ListVersions_async",
       "segments": [
         {
           "end": 44,
@@ -2894,8 +2894,8 @@
           "shortName": "ListVersions"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_versions_list_versions_sync.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_Versions_ListVersions_sync",
+      "file": "appengine_v1_generated_versions_list_versions_sync.py",
+      "regionTag": "appengine_v1_generated_Versions_ListVersions_sync",
       "segments": [
         {
           "end": 44,
@@ -2939,8 +2939,8 @@
           "shortName": "UpdateVersion"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_versions_update_version_async.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_Versions_UpdateVersion_async",
+      "file": "appengine_v1_generated_versions_update_version_async.py",
+      "regionTag": "appengine_v1_generated_Versions_UpdateVersion_async",
       "segments": [
         {
           "end": 47,
@@ -2983,8 +2983,8 @@
           "shortName": "UpdateVersion"
         }
       },
-      "file": "appengine_generated_appengine_admin_v1_versions_update_version_sync.py",
-      "regionTag": "appengine_generated_appengine_admin_v1_Versions_UpdateVersion_sync",
+      "file": "appengine_v1_generated_versions_update_version_sync.py",
+      "regionTag": "appengine_v1_generated_Versions_UpdateVersion_sync",
       "segments": [
         {
           "end": 47,

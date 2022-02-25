@@ -208,7 +208,7 @@ class ServicesAsyncClient:
     ) -> pagers.ListServicesAsyncPager:
         r"""Lists all the services in the application.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import appengine_admin_v1
 
@@ -286,7 +286,7 @@ class ServicesAsyncClient:
         service.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import appengine_admin_v1
 
@@ -363,7 +363,7 @@ class ServicesAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Updates the configuration of the specified service.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import appengine_admin_v1
 
@@ -453,7 +453,7 @@ class ServicesAsyncClient:
         versions.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import appengine_admin_v1
 

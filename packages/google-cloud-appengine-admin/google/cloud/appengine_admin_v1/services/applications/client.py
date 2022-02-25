@@ -395,8 +395,7 @@ class ApplicationsClient(metaclass=ApplicationsClientMeta):
     ) -> application.Application:
         r"""Gets information about an application.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import appengine_admin_v1
 
@@ -476,8 +475,7 @@ class ApplicationsClient(metaclass=ApplicationsClientMeta):
         Billing <https://cloud.google.com/appengine/docs/standard/python/console/>`__.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import appengine_admin_v1
 
@@ -560,8 +558,7 @@ class ApplicationsClient(metaclass=ApplicationsClientMeta):
            the application.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import appengine_admin_v1
 
@@ -654,8 +651,7 @@ class ApplicationsClient(metaclass=ApplicationsClientMeta):
         Cloud Console Activity Log.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import appengine_admin_v1
 

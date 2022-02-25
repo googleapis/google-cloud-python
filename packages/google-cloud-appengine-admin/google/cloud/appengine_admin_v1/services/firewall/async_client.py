@@ -214,7 +214,7 @@ class FirewallAsyncClient:
     ) -> pagers.ListIngressRulesAsyncPager:
         r"""Lists the firewall rules of an application.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import appengine_admin_v1
 
@@ -297,7 +297,7 @@ class FirewallAsyncClient:
         end of the list.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import appengine_admin_v1
 
@@ -362,7 +362,7 @@ class FirewallAsyncClient:
     ) -> firewall.FirewallRule:
         r"""Creates a firewall rule for the application.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import appengine_admin_v1
 
@@ -431,7 +431,7 @@ class FirewallAsyncClient:
     ) -> firewall.FirewallRule:
         r"""Gets the specified firewall rule.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import appengine_admin_v1
 
@@ -500,7 +500,7 @@ class FirewallAsyncClient:
     ) -> firewall.FirewallRule:
         r"""Updates the specified firewall rule.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import appengine_admin_v1
 
@@ -569,7 +569,7 @@ class FirewallAsyncClient:
     ) -> None:
         r"""Deletes the specified firewall rule.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import appengine_admin_v1
 

@@ -403,8 +403,7 @@ class FirewallClient(metaclass=FirewallClientMeta):
     ) -> pagers.ListIngressRulesPager:
         r"""Lists the firewall rules of an application.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import appengine_admin_v1
 
@@ -488,8 +487,7 @@ class FirewallClient(metaclass=FirewallClientMeta):
         end of the list.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import appengine_admin_v1
 
@@ -557,8 +555,7 @@ class FirewallClient(metaclass=FirewallClientMeta):
     ) -> firewall.FirewallRule:
         r"""Creates a firewall rule for the application.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import appengine_admin_v1
 
@@ -628,8 +625,7 @@ class FirewallClient(metaclass=FirewallClientMeta):
     ) -> firewall.FirewallRule:
         r"""Gets the specified firewall rule.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import appengine_admin_v1
 
@@ -699,8 +695,7 @@ class FirewallClient(metaclass=FirewallClientMeta):
     ) -> firewall.FirewallRule:
         r"""Updates the specified firewall rule.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import appengine_admin_v1
 
@@ -770,8 +765,7 @@ class FirewallClient(metaclass=FirewallClientMeta):
     ) -> None:
         r"""Deletes the specified firewall rule.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import appengine_admin_v1
 

@@ -211,7 +211,7 @@ class VersionsAsyncClient:
     ) -> pagers.ListVersionsAsyncPager:
         r"""Lists the versions of a service.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import appengine_admin_v1
 
@@ -290,7 +290,7 @@ class VersionsAsyncClient:
         parameter to get the full resource.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import appengine_admin_v1
 
@@ -358,7 +358,7 @@ class VersionsAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Deploys code and resource files to a new version.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import appengine_admin_v1
 
@@ -475,7 +475,7 @@ class VersionsAsyncClient:
         -  ```manual_scaling.instances`` <https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services.versions#manualscaling>`__
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import appengine_admin_v1
 
@@ -556,7 +556,7 @@ class VersionsAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Deletes an existing Version resource.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import appengine_admin_v1
 

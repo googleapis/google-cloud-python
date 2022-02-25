@@ -215,7 +215,7 @@ class DomainMappingsAsyncClient:
     ) -> pagers.ListDomainMappingsAsyncPager:
         r"""Lists the domain mappings on an application.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import appengine_admin_v1
 
@@ -291,7 +291,7 @@ class DomainMappingsAsyncClient:
     ) -> domain_mapping.DomainMapping:
         r"""Gets the specified domain mapping.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import appengine_admin_v1
 
@@ -362,7 +362,7 @@ class DomainMappingsAsyncClient:
         ```AuthorizedDomains.ListAuthorizedDomains`` <>`__.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import appengine_admin_v1
 
@@ -449,7 +449,7 @@ class DomainMappingsAsyncClient:
         ``DomainMapping`` resource.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import appengine_admin_v1
 
@@ -534,7 +534,7 @@ class DomainMappingsAsyncClient:
         ``DomainMapping`` resource.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import appengine_admin_v1
 

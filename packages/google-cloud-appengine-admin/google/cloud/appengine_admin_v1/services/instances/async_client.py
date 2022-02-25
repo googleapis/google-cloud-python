@@ -217,7 +217,7 @@ class InstancesAsyncClient:
         API <https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.timeSeries/list>`__.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import appengine_admin_v1
 
@@ -293,7 +293,7 @@ class InstancesAsyncClient:
     ) -> instance.Instance:
         r"""Gets instance information.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import appengine_admin_v1
 
@@ -376,7 +376,7 @@ class InstancesAsyncClient:
         method.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import appengine_admin_v1
 
@@ -478,7 +478,7 @@ class InstancesAsyncClient:
         environment.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import appengine_admin_v1
 

@@ -216,7 +216,7 @@ class AuthorizedDomainsAsyncClient:
         administer.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import appengine_admin_v1
 

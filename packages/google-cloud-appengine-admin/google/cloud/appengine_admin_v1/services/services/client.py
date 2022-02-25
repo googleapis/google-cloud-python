@@ -397,8 +397,7 @@ class ServicesClient(metaclass=ServicesClientMeta):
     ) -> pagers.ListServicesPager:
         r"""Lists all the services in the application.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import appengine_admin_v1
 
@@ -477,8 +476,7 @@ class ServicesClient(metaclass=ServicesClientMeta):
         service.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import appengine_admin_v1
 
@@ -556,8 +554,7 @@ class ServicesClient(metaclass=ServicesClientMeta):
     ) -> gac_operation.Operation:
         r"""Updates the configuration of the specified service.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import appengine_admin_v1
 
@@ -648,8 +645,7 @@ class ServicesClient(metaclass=ServicesClientMeta):
         versions.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import appengine_admin_v1
 
