@@ -438,8 +438,7 @@ class CloudTasksClient(metaclass=CloudTasksClientMeta):
         Queues are returned in lexicographical order.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import tasks_v2
 
@@ -539,8 +538,7 @@ class CloudTasksClient(metaclass=CloudTasksClientMeta):
     ) -> queue.Queue:
         r"""Gets a queue.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import tasks_v2
 
@@ -646,8 +644,7 @@ class CloudTasksClient(metaclass=CloudTasksClientMeta):
         before using this method.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import tasks_v2
 
@@ -772,8 +769,7 @@ class CloudTasksClient(metaclass=CloudTasksClientMeta):
         before using this method.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import tasks_v2
 
@@ -899,8 +895,7 @@ class CloudTasksClient(metaclass=CloudTasksClientMeta):
         before using this method.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import tasks_v2
 
@@ -986,8 +981,7 @@ class CloudTasksClient(metaclass=CloudTasksClientMeta):
         effect. A purge is irreversible.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import tasks_v2
 
@@ -1089,8 +1083,7 @@ class CloudTasksClient(metaclass=CloudTasksClientMeta):
         [PAUSED][google.cloud.tasks.v2.Queue.State.PAUSED].
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import tasks_v2
 
@@ -1199,8 +1192,7 @@ class CloudTasksClient(metaclass=CloudTasksClientMeta):
         Risks <https://cloud.google.com/tasks/docs/manage-cloud-task-scaling>`__.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import tasks_v2
 
@@ -1303,8 +1295,7 @@ class CloudTasksClient(metaclass=CloudTasksClientMeta):
         -  ``cloudtasks.queues.getIamPolicy``
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import tasks_v2
 
@@ -1461,8 +1452,7 @@ class CloudTasksClient(metaclass=CloudTasksClientMeta):
         -  ``cloudtasks.queues.setIamPolicy``
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import tasks_v2
 
@@ -1616,8 +1606,7 @@ class CloudTasksClient(metaclass=CloudTasksClientMeta):
         warning.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import tasks_v2
 
@@ -1728,8 +1717,7 @@ class CloudTasksClient(metaclass=CloudTasksClientMeta):
         at any time.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import tasks_v2
 
@@ -1830,8 +1818,7 @@ class CloudTasksClient(metaclass=CloudTasksClientMeta):
     ) -> task.Task:
         r"""Gets a task.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import tasks_v2
 
@@ -1927,8 +1914,7 @@ class CloudTasksClient(metaclass=CloudTasksClientMeta):
         -  The maximum task size is 100KB.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import tasks_v2
 
@@ -2070,8 +2056,7 @@ class CloudTasksClient(metaclass=CloudTasksClientMeta):
         or permanently failed.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import tasks_v2
 
@@ -2179,8 +2164,7 @@ class CloudTasksClient(metaclass=CloudTasksClientMeta):
         task that has already succeeded or permanently failed.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import tasks_v2
 

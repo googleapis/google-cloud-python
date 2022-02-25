@@ -223,7 +223,7 @@ class CloudTasksAsyncClient:
         Queues are returned in lexicographical order.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import tasks_v2beta3
 
@@ -333,7 +333,7 @@ class CloudTasksAsyncClient:
     ) -> queue.Queue:
         r"""Gets a queue.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import tasks_v2beta3
 
@@ -449,7 +449,7 @@ class CloudTasksAsyncClient:
         before using this method.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import tasks_v2beta3
 
@@ -574,7 +574,7 @@ class CloudTasksAsyncClient:
         before using this method.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import tasks_v2beta3
 
@@ -701,7 +701,7 @@ class CloudTasksAsyncClient:
         before using this method.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import tasks_v2beta3
 
@@ -797,7 +797,7 @@ class CloudTasksAsyncClient:
         effect. A purge is irreversible.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import tasks_v2beta3
 
@@ -899,7 +899,7 @@ class CloudTasksAsyncClient:
         [PAUSED][google.cloud.tasks.v2beta3.Queue.State.PAUSED].
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import tasks_v2beta3
 
@@ -1008,7 +1008,7 @@ class CloudTasksAsyncClient:
         Risks <https://cloud.google.com/tasks/docs/manage-cloud-task-scaling>`__.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import tasks_v2beta3
 
@@ -1111,7 +1111,7 @@ class CloudTasksAsyncClient:
         -  ``cloudtasks.queues.getIamPolicy``
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import tasks_v2beta3
 
@@ -1279,7 +1279,7 @@ class CloudTasksAsyncClient:
         -  ``cloudtasks.queues.setIamPolicy``
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import tasks_v2beta3
 
@@ -1434,7 +1434,7 @@ class CloudTasksAsyncClient:
         warning.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import tasks_v2beta3
 
@@ -1556,7 +1556,7 @@ class CloudTasksAsyncClient:
         at any time.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import tasks_v2beta3
 
@@ -1667,7 +1667,7 @@ class CloudTasksAsyncClient:
     ) -> task.Task:
         r"""Gets a task.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import tasks_v2beta3
 
@@ -1773,7 +1773,7 @@ class CloudTasksAsyncClient:
         -  The maximum task size is 100KB.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import tasks_v2beta3
 
@@ -1915,7 +1915,7 @@ class CloudTasksAsyncClient:
         or permanently failed.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import tasks_v2beta3
 
@@ -2034,7 +2034,7 @@ class CloudTasksAsyncClient:
         task that has already succeeded or permanently failed.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import tasks_v2beta3
 
