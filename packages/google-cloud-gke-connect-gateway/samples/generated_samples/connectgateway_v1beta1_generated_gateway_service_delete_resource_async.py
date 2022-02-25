@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-gke-connect-gateway
 
 
-# [START connectgateway_generated_gateway_v1beta1_GatewayService_DeleteResource_async]
+# [START connectgateway_v1beta1_generated_GatewayService_DeleteResource_async]
 from google.cloud.gkeconnect import gateway_v1beta1
 
 
@@ -41,4 +41,4 @@ async def sample_delete_resource():
     # Handle the response
     print(response)
 
-# [END connectgateway_generated_gateway_v1beta1_GatewayService_DeleteResource_async]
+# [END connectgateway_v1beta1_generated_GatewayService_DeleteResource_async]

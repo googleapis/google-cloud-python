@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for GetResource
+# Snippet for PatchResource
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,11 +23,11 @@
 #   python3 -m pip install google-cloud-gke-connect-gateway
 
 
-# [START connectgateway_generated_gateway_v1beta1_GatewayService_GetResource_async]
+# [START connectgateway_v1beta1_generated_GatewayService_PatchResource_async]
 from google.cloud.gkeconnect import gateway_v1beta1
 
 
-async def sample_get_resource():
+async def sample_patch_resource():
     # Create a client
     client = gateway_v1beta1.GatewayServiceAsyncClient()
 
@@ -36,9 +36,9 @@ async def sample_get_resource():
     )
 
     # Make the request
-    response = await client.get_resource(request=request)
+    response = await client.patch_resource(request=request)
 
     # Handle the response
     print(response)
 
-# [END connectgateway_generated_gateway_v1beta1_GatewayService_GetResource_async]
+# [END connectgateway_v1beta1_generated_GatewayService_PatchResource_async]

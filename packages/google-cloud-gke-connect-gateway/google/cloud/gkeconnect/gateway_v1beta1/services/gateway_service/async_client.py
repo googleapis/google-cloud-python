@@ -218,7 +218,7 @@ class GatewayServiceAsyncClient:
         Kubernetes API Server.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.gkeconnect import gateway_v1beta1
 
@@ -371,7 +371,7 @@ class GatewayServiceAsyncClient:
         API Server.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.gkeconnect import gateway_v1beta1
 
@@ -524,7 +524,7 @@ class GatewayServiceAsyncClient:
         Kubernetes API Server.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.gkeconnect import gateway_v1beta1
 
@@ -677,7 +677,7 @@ class GatewayServiceAsyncClient:
         API Server.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.gkeconnect import gateway_v1beta1
 
@@ -830,7 +830,7 @@ class GatewayServiceAsyncClient:
         Kubernetes API Server.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.gkeconnect import gateway_v1beta1
 

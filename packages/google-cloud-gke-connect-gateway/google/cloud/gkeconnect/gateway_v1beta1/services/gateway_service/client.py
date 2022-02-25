@@ -401,8 +401,7 @@ class GatewayServiceClient(metaclass=GatewayServiceClientMeta):
         Kubernetes API Server.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.gkeconnect import gateway_v1beta1
 
@@ -554,8 +553,7 @@ class GatewayServiceClient(metaclass=GatewayServiceClientMeta):
         API Server.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.gkeconnect import gateway_v1beta1
 
@@ -707,8 +705,7 @@ class GatewayServiceClient(metaclass=GatewayServiceClientMeta):
         Kubernetes API Server.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.gkeconnect import gateway_v1beta1
 
@@ -860,8 +857,7 @@ class GatewayServiceClient(metaclass=GatewayServiceClientMeta):
         API Server.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.gkeconnect import gateway_v1beta1
 
@@ -1013,8 +1009,7 @@ class GatewayServiceClient(metaclass=GatewayServiceClientMeta):
         Kubernetes API Server.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud.gkeconnect import gateway_v1beta1
 

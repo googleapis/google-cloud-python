@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-gke-connect-gateway
 
 
-# [START connectgateway_generated_gateway_v1beta1_GatewayService_PutResource_async]
+# [START connectgateway_v1beta1_generated_GatewayService_PutResource_async]
 from google.cloud.gkeconnect import gateway_v1beta1
 
 
@@ -41,4 +41,4 @@ async def sample_put_resource():
     # Handle the response
     print(response)
 
-# [END connectgateway_generated_gateway_v1beta1_GatewayService_PutResource_async]
+# [END connectgateway_v1beta1_generated_GatewayService_PutResource_async]

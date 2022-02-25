@@ -10,8 +10,8 @@
           "shortName": "DeleteResource"
         }
       },
-      "file": "connectgateway_generated_gateway_v1beta1_gateway_service_delete_resource_async.py",
-      "regionTag": "connectgateway_generated_gateway_v1beta1_GatewayService_DeleteResource_async",
+      "file": "connectgateway_v1beta1_generated_gateway_service_delete_resource_async.py",
+      "regionTag": "connectgateway_v1beta1_generated_GatewayService_DeleteResource_async",
       "segments": [
         {
           "end": 43,
@@ -54,8 +54,8 @@
           "shortName": "DeleteResource"
         }
       },
-      "file": "connectgateway_generated_gateway_v1beta1_gateway_service_delete_resource_sync.py",
-      "regionTag": "connectgateway_generated_gateway_v1beta1_GatewayService_DeleteResource_sync",
+      "file": "connectgateway_v1beta1_generated_gateway_service_delete_resource_sync.py",
+      "regionTag": "connectgateway_v1beta1_generated_GatewayService_DeleteResource_sync",
       "segments": [
         {
           "end": 43,
@@ -99,8 +99,8 @@
           "shortName": "GetResource"
         }
       },
-      "file": "connectgateway_generated_gateway_v1beta1_gateway_service_get_resource_async.py",
-      "regionTag": "connectgateway_generated_gateway_v1beta1_GatewayService_GetResource_async",
+      "file": "connectgateway_v1beta1_generated_gateway_service_get_resource_async.py",
+      "regionTag": "connectgateway_v1beta1_generated_GatewayService_GetResource_async",
       "segments": [
         {
           "end": 43,
@@ -143,8 +143,8 @@
           "shortName": "GetResource"
         }
       },
-      "file": "connectgateway_generated_gateway_v1beta1_gateway_service_get_resource_sync.py",
-      "regionTag": "connectgateway_generated_gateway_v1beta1_GatewayService_GetResource_sync",
+      "file": "connectgateway_v1beta1_generated_gateway_service_get_resource_sync.py",
+      "regionTag": "connectgateway_v1beta1_generated_GatewayService_GetResource_sync",
       "segments": [
         {
           "end": 43,
@@ -188,8 +188,8 @@
           "shortName": "PatchResource"
         }
       },
-      "file": "connectgateway_generated_gateway_v1beta1_gateway_service_patch_resource_async.py",
-      "regionTag": "connectgateway_generated_gateway_v1beta1_GatewayService_PatchResource_async",
+      "file": "connectgateway_v1beta1_generated_gateway_service_patch_resource_async.py",
+      "regionTag": "connectgateway_v1beta1_generated_GatewayService_PatchResource_async",
       "segments": [
         {
           "end": 43,
@@ -232,8 +232,8 @@
           "shortName": "PatchResource"
         }
       },
-      "file": "connectgateway_generated_gateway_v1beta1_gateway_service_patch_resource_sync.py",
-      "regionTag": "connectgateway_generated_gateway_v1beta1_GatewayService_PatchResource_sync",
+      "file": "connectgateway_v1beta1_generated_gateway_service_patch_resource_sync.py",
+      "regionTag": "connectgateway_v1beta1_generated_GatewayService_PatchResource_sync",
       "segments": [
         {
           "end": 43,
@@ -277,8 +277,8 @@
           "shortName": "PostResource"
         }
       },
-      "file": "connectgateway_generated_gateway_v1beta1_gateway_service_post_resource_async.py",
-      "regionTag": "connectgateway_generated_gateway_v1beta1_GatewayService_PostResource_async",
+      "file": "connectgateway_v1beta1_generated_gateway_service_post_resource_async.py",
+      "regionTag": "connectgateway_v1beta1_generated_GatewayService_PostResource_async",
       "segments": [
         {
           "end": 43,
@@ -321,8 +321,8 @@
           "shortName": "PostResource"
         }
       },
-      "file": "connectgateway_generated_gateway_v1beta1_gateway_service_post_resource_sync.py",
-      "regionTag": "connectgateway_generated_gateway_v1beta1_GatewayService_PostResource_sync",
+      "file": "connectgateway_v1beta1_generated_gateway_service_post_resource_sync.py",
+      "regionTag": "connectgateway_v1beta1_generated_GatewayService_PostResource_sync",
       "segments": [
         {
           "end": 43,
@@ -366,8 +366,8 @@
           "shortName": "PutResource"
         }
       },
-      "file": "connectgateway_generated_gateway_v1beta1_gateway_service_put_resource_async.py",
-      "regionTag": "connectgateway_generated_gateway_v1beta1_GatewayService_PutResource_async",
+      "file": "connectgateway_v1beta1_generated_gateway_service_put_resource_async.py",
+      "regionTag": "connectgateway_v1beta1_generated_GatewayService_PutResource_async",
       "segments": [
         {
           "end": 43,
@@ -410,8 +410,8 @@
           "shortName": "PutResource"
         }
       },
-      "file": "connectgateway_generated_gateway_v1beta1_gateway_service_put_resource_sync.py",
-      "regionTag": "connectgateway_generated_gateway_v1beta1_GatewayService_PutResource_sync",
+      "file": "connectgateway_v1beta1_generated_gateway_service_put_resource_sync.py",
+      "regionTag": "connectgateway_v1beta1_generated_GatewayService_PutResource_sync",
       "segments": [
         {
           "end": 43,

@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-gke-connect-gateway
 
 
-# [START connectgateway_generated_gateway_v1beta1_GatewayService_PostResource_sync]
+# [START connectgateway_v1beta1_generated_GatewayService_PostResource_sync]
 from google.cloud.gkeconnect import gateway_v1beta1
 
 
@@ -41,4 +41,4 @@ def sample_post_resource():
     # Handle the response
     print(response)
 
-# [END connectgateway_generated_gateway_v1beta1_GatewayService_PostResource_sync]
+# [END connectgateway_v1beta1_generated_GatewayService_PostResource_sync]
