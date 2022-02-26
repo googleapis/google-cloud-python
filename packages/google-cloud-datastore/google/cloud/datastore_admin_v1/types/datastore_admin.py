@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,10 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import proto
+import proto  # type: ignore
 
 from google.cloud.datastore_admin_v1.types import index as gda_index
-from google.protobuf import timestamp_pb2
+from google.cloud.datastore_admin_v1.types import migration
+from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -37,6 +38,7 @@ __protobuf__ = proto.module(
         "ListIndexesRequest",
         "ListIndexesResponse",
         "IndexOperationMetadata",
+        "DatastoreFirestoreMigrationMetadata",
     },
 )
 
@@ -408,6 +410,29 @@ class IndexOperationMetadata(proto.Message):
     common = proto.Field(proto.MESSAGE, number=1, message="CommonMetadata",)
     progress_entities = proto.Field(proto.MESSAGE, number=2, message="Progress",)
     index_id = proto.Field(proto.STRING, number=3,)
+
+
+class DatastoreFirestoreMigrationMetadata(proto.Message):
+    r"""Metadata for Datastore to Firestore migration operations.
+
+    The DatastoreFirestoreMigration operation is not started by the
+    end-user via an explicit "creation" method. This is an intentional
+    deviation from the LRO design pattern.
+
+    This singleton resource can be accessed at:
+    ``projects/{project_id}/datastore-firestore-migration``
+
+    Attributes:
+        migration_state (google.cloud.datastore_admin_v1.types.MigrationState):
+            The current state of migration from Cloud
+            Datastore to Cloud Firestore in Datastore mode.
+        migration_step (google.cloud.datastore_admin_v1.types.MigrationStep):
+            The current step of migration from Cloud
+            Datastore to Cloud Firestore in Datastore mode.
+    """
+
+    migration_state = proto.Field(proto.ENUM, number=1, enum=migration.MigrationState,)
+    migration_step = proto.Field(proto.ENUM, number=2, enum=migration.MigrationStep,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

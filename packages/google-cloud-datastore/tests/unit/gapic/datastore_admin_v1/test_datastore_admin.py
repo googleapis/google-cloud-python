@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -29,7 +29,8 @@ from google.api_core import future
 from google.api_core import gapic_v1
 from google.api_core import grpc_helpers
 from google.api_core import grpc_helpers_async
-from google.api_core import operation_async
+from google.api_core import operation
+from google.api_core import operation_async  # type: ignore
 from google.api_core import operations_v1
 from google.api_core import path_template
 from google.auth import credentials as ga_credentials
@@ -255,20 +256,20 @@ def test_datastore_admin_client_client_options(
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
         with pytest.raises(ValueError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -327,7 +328,7 @@ def test_datastore_admin_client_mtls_env_auto(
         )
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
-            client = client_class(transport=transport_name, client_options=options)
+            client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
@@ -405,6 +406,87 @@ def test_datastore_admin_client_mtls_env_auto(
 
 
 @pytest.mark.parametrize(
+    "client_class", [DatastoreAdminClient, DatastoreAdminAsyncClient]
+)
+@mock.patch.object(
+    DatastoreAdminClient,
+    "DEFAULT_ENDPOINT",
+    modify_default_endpoint(DatastoreAdminClient),
+)
+@mock.patch.object(
+    DatastoreAdminAsyncClient,
+    "DEFAULT_ENDPOINT",
+    modify_default_endpoint(DatastoreAdminAsyncClient),
+)
+def test_datastore_admin_client_get_mtls_endpoint_and_cert_source(client_class):
+    mock_client_cert_source = mock.Mock()
+
+    # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "true".
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+        mock_api_endpoint = "foo"
+        options = client_options.ClientOptions(
+            client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint
+        )
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(
+            options
+        )
+        assert api_endpoint == mock_api_endpoint
+        assert cert_source == mock_client_cert_source
+
+    # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "false".
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
+        mock_client_cert_source = mock.Mock()
+        mock_api_endpoint = "foo"
+        options = client_options.ClientOptions(
+            client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint
+        )
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(
+            options
+        )
+        assert api_endpoint == mock_api_endpoint
+        assert cert_source is None
+
+    # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "never".
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
+        assert api_endpoint == client_class.DEFAULT_ENDPOINT
+        assert cert_source is None
+
+    # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "always".
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
+        assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
+        assert cert_source is None
+
+    # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "auto" and default cert doesn't exist.
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+        with mock.patch(
+            "google.auth.transport.mtls.has_default_client_cert_source",
+            return_value=False,
+        ):
+            api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
+            assert api_endpoint == client_class.DEFAULT_ENDPOINT
+            assert cert_source is None
+
+    # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "auto" and default cert exists.
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+        with mock.patch(
+            "google.auth.transport.mtls.has_default_client_cert_source",
+            return_value=True,
+        ):
+            with mock.patch(
+                "google.auth.transport.mtls.default_client_cert_source",
+                return_value=mock_client_cert_source,
+            ):
+                (
+                    api_endpoint,
+                    cert_source,
+                ) = client_class.get_mtls_endpoint_and_cert_source()
+                assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
+                assert cert_source == mock_client_cert_source
+
+
+@pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
     [
         (DatastoreAdminClient, transports.DatastoreAdminGrpcTransport, "grpc"),
@@ -422,7 +504,7 @@ def test_datastore_admin_client_client_options_scopes(
     options = client_options.ClientOptions(scopes=["1", "2"],)
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -436,24 +518,31 @@ def test_datastore_admin_client_client_options_scopes(
 
 
 @pytest.mark.parametrize(
-    "client_class,transport_class,transport_name",
+    "client_class,transport_class,transport_name,grpc_helpers",
     [
-        (DatastoreAdminClient, transports.DatastoreAdminGrpcTransport, "grpc"),
+        (
+            DatastoreAdminClient,
+            transports.DatastoreAdminGrpcTransport,
+            "grpc",
+            grpc_helpers,
+        ),
         (
             DatastoreAdminAsyncClient,
             transports.DatastoreAdminGrpcAsyncIOTransport,
             "grpc_asyncio",
+            grpc_helpers_async,
         ),
     ],
 )
 def test_datastore_admin_client_client_options_credentials_file(
-    client_class, transport_class, transport_name
+    client_class, transport_class, transport_name, grpc_helpers
 ):
     # Check the case credentials file is provided.
     options = client_options.ClientOptions(credentials_file="credentials.json")
+
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
@@ -486,9 +575,77 @@ def test_datastore_admin_client_client_options_from_dict():
         )
 
 
-def test_export_entities(
-    transport: str = "grpc", request_type=datastore_admin.ExportEntitiesRequest
+@pytest.mark.parametrize(
+    "client_class,transport_class,transport_name,grpc_helpers",
+    [
+        (
+            DatastoreAdminClient,
+            transports.DatastoreAdminGrpcTransport,
+            "grpc",
+            grpc_helpers,
+        ),
+        (
+            DatastoreAdminAsyncClient,
+            transports.DatastoreAdminGrpcAsyncIOTransport,
+            "grpc_asyncio",
+            grpc_helpers_async,
+        ),
+    ],
+)
+def test_datastore_admin_client_create_channel_credentials_file(
+    client_class, transport_class, transport_name, grpc_helpers
 ):
+    # Check the case credentials file is provided.
+    options = client_options.ClientOptions(credentials_file="credentials.json")
+
+    with mock.patch.object(transport_class, "__init__") as patched:
+        patched.return_value = None
+        client = client_class(client_options=options, transport=transport_name)
+        patched.assert_called_once_with(
+            credentials=None,
+            credentials_file="credentials.json",
+            host=client.DEFAULT_ENDPOINT,
+            scopes=None,
+            client_cert_source_for_mtls=None,
+            quota_project_id=None,
+            client_info=transports.base.DEFAULT_CLIENT_INFO,
+            always_use_jwt_access=True,
+        )
+
+    # test that the credentials from file are saved and used as the credentials.
+    with mock.patch.object(
+        google.auth, "load_credentials_from_file", autospec=True
+    ) as load_creds, mock.patch.object(
+        google.auth, "default", autospec=True
+    ) as adc, mock.patch.object(
+        grpc_helpers, "create_channel"
+    ) as create_channel:
+        creds = ga_credentials.AnonymousCredentials()
+        file_creds = ga_credentials.AnonymousCredentials()
+        load_creds.return_value = (file_creds, None)
+        adc.return_value = (creds, None)
+        client = client_class(client_options=options, transport=transport_name)
+        create_channel.assert_called_with(
+            "datastore.googleapis.com:443",
+            credentials=file_creds,
+            credentials_file=None,
+            quota_project_id=None,
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/datastore",
+            ),
+            scopes=None,
+            default_host="datastore.googleapis.com",
+            ssl_credentials=None,
+            options=[
+                ("grpc.max_send_message_length", -1),
+                ("grpc.max_receive_message_length", -1),
+            ],
+        )
+
+
+@pytest.mark.parametrize("request_type", [datastore_admin.ExportEntitiesRequest, dict,])
+def test_export_entities(request_type, transport: str = "grpc"):
     client = DatastoreAdminClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -510,10 +667,6 @@ def test_export_entities(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_export_entities_from_dict():
-    test_export_entities(request_type=dict)
 
 
 def test_export_entities_empty_call():
@@ -673,9 +826,8 @@ async def test_export_entities_flattened_error_async():
         )
 
 
-def test_import_entities(
-    transport: str = "grpc", request_type=datastore_admin.ImportEntitiesRequest
-):
+@pytest.mark.parametrize("request_type", [datastore_admin.ImportEntitiesRequest, dict,])
+def test_import_entities(request_type, transport: str = "grpc"):
     client = DatastoreAdminClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -697,10 +849,6 @@ def test_import_entities(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_import_entities_from_dict():
-    test_import_entities(request_type=dict)
 
 
 def test_import_entities_empty_call():
@@ -860,9 +1008,8 @@ async def test_import_entities_flattened_error_async():
         )
 
 
-def test_create_index(
-    transport: str = "grpc", request_type=datastore_admin.CreateIndexRequest
-):
+@pytest.mark.parametrize("request_type", [datastore_admin.CreateIndexRequest, dict,])
+def test_create_index(request_type, transport: str = "grpc"):
     client = DatastoreAdminClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -884,10 +1031,6 @@ def test_create_index(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_create_index_from_dict():
-    test_create_index(request_type=dict)
 
 
 def test_create_index_empty_call():
@@ -939,9 +1082,8 @@ async def test_create_index_async_from_dict():
     await test_create_index_async(request_type=dict)
 
 
-def test_delete_index(
-    transport: str = "grpc", request_type=datastore_admin.DeleteIndexRequest
-):
+@pytest.mark.parametrize("request_type", [datastore_admin.DeleteIndexRequest, dict,])
+def test_delete_index(request_type, transport: str = "grpc"):
     client = DatastoreAdminClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -963,10 +1105,6 @@ def test_delete_index(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_delete_index_from_dict():
-    test_delete_index(request_type=dict)
 
 
 def test_delete_index_empty_call():
@@ -1018,9 +1156,8 @@ async def test_delete_index_async_from_dict():
     await test_delete_index_async(request_type=dict)
 
 
-def test_get_index(
-    transport: str = "grpc", request_type=datastore_admin.GetIndexRequest
-):
+@pytest.mark.parametrize("request_type", [datastore_admin.GetIndexRequest, dict,])
+def test_get_index(request_type, transport: str = "grpc"):
     client = DatastoreAdminClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1053,10 +1190,6 @@ def test_get_index(
     assert response.kind == "kind_value"
     assert response.ancestor == index.Index.AncestorMode.NONE
     assert response.state == index.Index.State.CREATING
-
-
-def test_get_index_from_dict():
-    test_get_index(request_type=dict)
 
 
 def test_get_index_empty_call():
@@ -1119,9 +1252,8 @@ async def test_get_index_async_from_dict():
     await test_get_index_async(request_type=dict)
 
 
-def test_list_indexes(
-    transport: str = "grpc", request_type=datastore_admin.ListIndexesRequest
-):
+@pytest.mark.parametrize("request_type", [datastore_admin.ListIndexesRequest, dict,])
+def test_list_indexes(request_type, transport: str = "grpc"):
     client = DatastoreAdminClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1146,10 +1278,6 @@ def test_list_indexes(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListIndexesPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_indexes_from_dict():
-    test_list_indexes(request_type=dict)
 
 
 def test_list_indexes_empty_call():
@@ -1204,8 +1332,10 @@ async def test_list_indexes_async_from_dict():
     await test_list_indexes_async(request_type=dict)
 
 
-def test_list_indexes_pager():
-    client = DatastoreAdminClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_indexes_pager(transport_name: str = "grpc"):
+    client = DatastoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_indexes), "__call__") as call:
@@ -1235,8 +1365,10 @@ def test_list_indexes_pager():
         assert all(isinstance(i, index.Index) for i in results)
 
 
-def test_list_indexes_pages():
-    client = DatastoreAdminClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_indexes_pages(transport_name: str = "grpc"):
+    client = DatastoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_indexes), "__call__") as call:
@@ -1341,6 +1473,23 @@ def test_credentials_transport_error():
         client = DatastoreAdminClient(
             client_options={"credentials_file": "credentials.json"},
             transport=transport,
+        )
+
+    # It is an error to provide an api_key and a transport instance.
+    transport = transports.DatastoreAdminGrpcTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    options = client_options.ClientOptions()
+    options.api_key = "api_key"
+    with pytest.raises(ValueError):
+        client = DatastoreAdminClient(client_options=options, transport=transport,)
+
+    # It is an error to provide an api_key and a credential.
+    options = mock.Mock()
+    options.api_key = "api_key"
+    with pytest.raises(ValueError):
+        client = DatastoreAdminClient(
+            client_options=options, credentials=ga_credentials.AnonymousCredentials()
         )
 
     # It is an error to provide scopes and a transport instance.
@@ -1861,7 +2010,7 @@ def test_parse_common_location_path():
     assert expected == actual
 
 
-def test_client_withDEFAULT_CLIENT_INFO():
+def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
@@ -1926,3 +2075,33 @@ def test_client_ctx():
             with client:
                 pass
             close.assert_called()
+
+
+@pytest.mark.parametrize(
+    "client_class,transport_class",
+    [
+        (DatastoreAdminClient, transports.DatastoreAdminGrpcTransport),
+        (DatastoreAdminAsyncClient, transports.DatastoreAdminGrpcAsyncIOTransport),
+    ],
+)
+def test_api_key_credentials(client_class, transport_class):
+    with mock.patch.object(
+        google.auth._default, "get_api_key_credentials", create=True
+    ) as get_api_key_credentials:
+        mock_cred = mock.Mock()
+        get_api_key_credentials.return_value = mock_cred
+        options = client_options.ClientOptions()
+        options.api_key = "api_key"
+        with mock.patch.object(transport_class, "__init__") as patched:
+            patched.return_value = None
+            client = client_class(client_options=options)
+            patched.assert_called_once_with(
+                credentials=mock_cred,
+                credentials_file=None,
+                host=client.DEFAULT_ENDPOINT,
+                scopes=None,
+                client_cert_source_for_mtls=None,
+                quota_project_id=None,
+                client_info=transports.base.DEFAULT_CLIENT_INFO,
+                always_use_jwt_access=True,
+            )

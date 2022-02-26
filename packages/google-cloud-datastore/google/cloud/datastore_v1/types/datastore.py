@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import proto
+import proto  # type: ignore
 
 from google.cloud.datastore_v1.types import entity
 from google.cloud.datastore_v1.types import query as gd_query
@@ -319,8 +319,8 @@ class ReserveIdsRequest(proto.Message):
             which to make the request.
         keys (Sequence[google.cloud.datastore_v1.types.Key]):
             Required. A list of keys with complete key
-            paths whose numeric IDs should not be auto-
-            allocated.
+            paths whose numeric IDs should not be
+            auto-allocated.
     """
 
     project_id = proto.Field(proto.STRING, number=8,)
@@ -366,8 +366,8 @@ class Mutation(proto.Message):
         delete (google.cloud.datastore_v1.types.Key):
             The key of the entity to delete. The entity
             may or may not already exist. Must have a
-            complete key path and must not be reserved/read-
-            only.
+            complete key path and must not be
+            reserved/read-only.
 
             This field is a member of `oneof`_ ``operation``.
         base_version (int):

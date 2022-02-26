@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ from .services.datastore_admin import DatastoreAdminAsyncClient
 
 from .types.datastore_admin import CommonMetadata
 from .types.datastore_admin import CreateIndexRequest
+from .types.datastore_admin import DatastoreFirestoreMigrationMetadata
 from .types.datastore_admin import DeleteIndexRequest
 from .types.datastore_admin import EntityFilter
 from .types.datastore_admin import ExportEntitiesMetadata
@@ -33,12 +34,17 @@ from .types.datastore_admin import ListIndexesResponse
 from .types.datastore_admin import Progress
 from .types.datastore_admin import OperationType
 from .types.index import Index
+from .types.migration import MigrationProgressEvent
+from .types.migration import MigrationStateEvent
+from .types.migration import MigrationState
+from .types.migration import MigrationStep
 
 __all__ = (
     "DatastoreAdminAsyncClient",
     "CommonMetadata",
     "CreateIndexRequest",
     "DatastoreAdminClient",
+    "DatastoreFirestoreMigrationMetadata",
     "DeleteIndexRequest",
     "EntityFilter",
     "ExportEntitiesMetadata",
@@ -51,6 +57,10 @@ __all__ = (
     "IndexOperationMetadata",
     "ListIndexesRequest",
     "ListIndexesResponse",
+    "MigrationProgressEvent",
+    "MigrationState",
+    "MigrationStateEvent",
+    "MigrationStep",
     "OperationType",
     "Progress",
 )
