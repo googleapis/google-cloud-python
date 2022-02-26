@@ -13,5 +13,5 @@
     "requires_billing": true,
     "default_version": "v4",
     "codeowner_team": "",
-    "api_shortname": "talent"
+    "api_shortname": "jobs"
 }
