@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -244,6 +244,26 @@ class SpannerAsyncClient:
         Idle sessions can be kept alive by sending a trivial SQL query
         periodically, e.g., ``"SELECT 1"``.
 
+
+        .. code-block:: python
+
+            from google.cloud import spanner_v1
+
+            def sample_create_session():
+                # Create a client
+                client = spanner_v1.SpannerClient()
+
+                # Initialize request argument(s)
+                request = spanner_v1.CreateSessionRequest(
+                    database="database_value",
+                )
+
+                # Make the request
+                response = client.create_session(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.spanner_v1.types.CreateSessionRequest, dict]):
                 The request object. The request for
@@ -325,6 +345,27 @@ class SpannerAsyncClient:
         This API can be used to initialize a session cache on
         the clients. See https://goo.gl/TgSFN2 for best
         practices on session cache management.
+
+
+        .. code-block:: python
+
+            from google.cloud import spanner_v1
+
+            def sample_batch_create_sessions():
+                # Create a client
+                client = spanner_v1.SpannerClient()
+
+                # Initialize request argument(s)
+                request = spanner_v1.BatchCreateSessionsRequest(
+                    database="database_value",
+                    session_count=1420,
+                )
+
+                # Make the request
+                response = client.batch_create_sessions(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.spanner_v1.types.BatchCreateSessionsRequest, dict]):
@@ -422,6 +463,26 @@ class SpannerAsyncClient:
         exist. This is mainly useful for determining whether a session
         is still alive.
 
+
+        .. code-block:: python
+
+            from google.cloud import spanner_v1
+
+            def sample_get_session():
+                # Create a client
+                client = spanner_v1.SpannerClient()
+
+                # Initialize request argument(s)
+                request = spanner_v1.GetSessionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_session(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.spanner_v1.types.GetSessionRequest, dict]):
                 The request object. The request for
@@ -499,6 +560,26 @@ class SpannerAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListSessionsAsyncPager:
         r"""Lists all sessions in a given database.
+
+        .. code-block:: python
+
+            from google.cloud import spanner_v1
+
+            def sample_list_sessions():
+                # Create a client
+                client = spanner_v1.SpannerClient()
+
+                # Initialize request argument(s)
+                request = spanner_v1.ListSessionsRequest(
+                    database="database_value",
+                )
+
+                # Make the request
+                page_result = client.list_sessions(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.spanner_v1.types.ListSessionsRequest, dict]):
@@ -591,6 +672,23 @@ class SpannerAsyncClient:
         with it. This will asynchronously trigger cancellation
         of any operations that are running with this session.
 
+
+        .. code-block:: python
+
+            from google.cloud import spanner_v1
+
+            def sample_delete_session():
+                # Create a client
+                client = spanner_v1.SpannerClient()
+
+                # Initialize request argument(s)
+                request = spanner_v1.DeleteSessionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_session(request=request)
+
         Args:
             request (Union[google.cloud.spanner_v1.types.DeleteSessionRequest, dict]):
                 The request object. The request for
@@ -676,6 +774,27 @@ class SpannerAsyncClient:
         [ExecuteStreamingSql][google.spanner.v1.Spanner.ExecuteStreamingSql]
         instead.
 
+
+        .. code-block:: python
+
+            from google.cloud import spanner_v1
+
+            def sample_execute_sql():
+                # Create a client
+                client = spanner_v1.SpannerClient()
+
+                # Initialize request argument(s)
+                request = spanner_v1.ExecuteSqlRequest(
+                    session="session_value",
+                    sql="sql_value",
+                )
+
+                # Make the request
+                response = client.execute_sql(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.spanner_v1.types.ExecuteSqlRequest, dict]):
                 The request object. The request for
@@ -739,6 +858,28 @@ class SpannerAsyncClient:
         limit on the size of the returned result set. However, no
         individual row in the result set can exceed 100 MiB, and no
         column value can exceed 10 MiB.
+
+
+        .. code-block:: python
+
+            from google.cloud import spanner_v1
+
+            def sample_execute_streaming_sql():
+                # Create a client
+                client = spanner_v1.SpannerClient()
+
+                # Initialize request argument(s)
+                request = spanner_v1.ExecuteSqlRequest(
+                    session="session_value",
+                    sql="sql_value",
+                )
+
+                # Make the request
+                stream = client.execute_streaming_sql(request=request)
+
+                # Handle the response
+                for response in stream:
+                    print(response)
 
         Args:
             request (Union[google.cloud.spanner_v1.types.ExecuteSqlRequest, dict]):
@@ -805,6 +946,31 @@ class SpannerAsyncClient:
 
         Execution stops after the first failed statement; the remaining
         statements are not executed.
+
+
+        .. code-block:: python
+
+            from google.cloud import spanner_v1
+
+            def sample_execute_batch_dml():
+                # Create a client
+                client = spanner_v1.SpannerClient()
+
+                # Initialize request argument(s)
+                statements = spanner_v1.Statement()
+                statements.sql = "sql_value"
+
+                request = spanner_v1.ExecuteBatchDmlRequest(
+                    session="session_value",
+                    statements=statements,
+                    seqno=550,
+                )
+
+                # Make the request
+                response = client.execute_batch_dml(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.spanner_v1.types.ExecuteBatchDmlRequest, dict]):
@@ -915,6 +1081,28 @@ class SpannerAsyncClient:
         calling [StreamingRead][google.spanner.v1.Spanner.StreamingRead]
         instead.
 
+
+        .. code-block:: python
+
+            from google.cloud import spanner_v1
+
+            def sample_read():
+                # Create a client
+                client = spanner_v1.SpannerClient()
+
+                # Initialize request argument(s)
+                request = spanner_v1.ReadRequest(
+                    session="session_value",
+                    table="table_value",
+                    columns=['columns_value_1', 'columns_value_2'],
+                )
+
+                # Make the request
+                response = client.read(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.spanner_v1.types.ReadRequest, dict]):
                 The request object. The request for
@@ -979,6 +1167,29 @@ class SpannerAsyncClient:
         the result set can exceed 100 MiB, and no column value can
         exceed 10 MiB.
 
+
+        .. code-block:: python
+
+            from google.cloud import spanner_v1
+
+            def sample_streaming_read():
+                # Create a client
+                client = spanner_v1.SpannerClient()
+
+                # Initialize request argument(s)
+                request = spanner_v1.ReadRequest(
+                    session="session_value",
+                    table="table_value",
+                    columns=['columns_value_1', 'columns_value_2'],
+                )
+
+                # Make the request
+                stream = client.streaming_read(request=request)
+
+                # Handle the response
+                for response in stream:
+                    print(response)
+
         Args:
             request (Union[google.cloud.spanner_v1.types.ReadRequest, dict]):
                 The request object. The request for
@@ -1037,6 +1248,26 @@ class SpannerAsyncClient:
         [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql] and
         [Commit][google.spanner.v1.Spanner.Commit] can begin a new
         transaction as a side-effect.
+
+
+        .. code-block:: python
+
+            from google.cloud import spanner_v1
+
+            def sample_begin_transaction():
+                # Create a client
+                client = spanner_v1.SpannerClient()
+
+                # Initialize request argument(s)
+                request = spanner_v1.BeginTransactionRequest(
+                    session="session_value",
+                )
+
+                # Make the request
+                response = client.begin_transaction(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.spanner_v1.types.BeginTransactionRequest, dict]):
@@ -1142,6 +1373,27 @@ class SpannerAsyncClient:
         track of the transaction outcome and we recommend that you
         perform another read from the database to see the state of
         things as they are now.
+
+
+        .. code-block:: python
+
+            from google.cloud import spanner_v1
+
+            def sample_commit():
+                # Create a client
+                client = spanner_v1.SpannerClient()
+
+                # Initialize request argument(s)
+                request = spanner_v1.CommitRequest(
+                    transaction_id=b'transaction_id_blob',
+                    session="session_value",
+                )
+
+                # Make the request
+                response = client.commit(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.spanner_v1.types.CommitRequest, dict]):
@@ -1272,6 +1524,24 @@ class SpannerAsyncClient:
         transaction is not found. ``Rollback`` never returns
         ``ABORTED``.
 
+
+        .. code-block:: python
+
+            from google.cloud import spanner_v1
+
+            def sample_rollback():
+                # Create a client
+                client = spanner_v1.SpannerClient()
+
+                # Initialize request argument(s)
+                request = spanner_v1.RollbackRequest(
+                    session="session_value",
+                    transaction_id=b'transaction_id_blob',
+                )
+
+                # Make the request
+                client.rollback(request=request)
+
         Args:
             request (Union[google.cloud.spanner_v1.types.RollbackRequest, dict]):
                 The request object. The request for
@@ -1366,6 +1636,27 @@ class SpannerAsyncClient:
         to resume the query, and the whole operation must be restarted
         from the beginning.
 
+
+        .. code-block:: python
+
+            from google.cloud import spanner_v1
+
+            def sample_partition_query():
+                # Create a client
+                client = spanner_v1.SpannerClient()
+
+                # Initialize request argument(s)
+                request = spanner_v1.PartitionQueryRequest(
+                    session="session_value",
+                    sql="sql_value",
+                )
+
+                # Make the request
+                response = client.partition_query(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.spanner_v1.types.PartitionQueryRequest, dict]):
                 The request object. The request for
@@ -1440,6 +1731,27 @@ class SpannerAsyncClient:
         or becomes too old. When any of these happen, it is not possible
         to resume the read, and the whole operation must be restarted
         from the beginning.
+
+
+        .. code-block:: python
+
+            from google.cloud import spanner_v1
+
+            def sample_partition_read():
+                # Create a client
+                client = spanner_v1.SpannerClient()
+
+                # Initialize request argument(s)
+                request = spanner_v1.PartitionReadRequest(
+                    session="session_value",
+                    table="table_value",
+                )
+
+                # Make the request
+                response = client.partition_read(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.spanner_v1.types.PartitionReadRequest, dict]):

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -503,6 +503,26 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
     ) -> pagers.ListDatabasesPager:
         r"""Lists Cloud Spanner databases.
 
+        .. code-block:: python
+
+            from google.cloud import spanner_admin_database_v1
+
+            def sample_list_databases():
+                # Create a client
+                client = spanner_admin_database_v1.DatabaseAdminClient()
+
+                # Initialize request argument(s)
+                request = spanner_admin_database_v1.ListDatabasesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_databases(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.spanner_admin_database_v1.types.ListDatabasesRequest, dict]):
                 The request object. The request for
@@ -593,6 +613,31 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         The [response][google.longrunning.Operation.response] field type
         is [Database][google.spanner.admin.database.v1.Database], if
         successful.
+
+
+        .. code-block:: python
+
+            from google.cloud import spanner_admin_database_v1
+
+            def sample_create_database():
+                # Create a client
+                client = spanner_admin_database_v1.DatabaseAdminClient()
+
+                # Initialize request argument(s)
+                request = spanner_admin_database_v1.CreateDatabaseRequest(
+                    parent="parent_value",
+                    create_statement="create_statement_value",
+                )
+
+                # Make the request
+                operation = client.create_database(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.spanner_admin_database_v1.types.CreateDatabaseRequest, dict]):
@@ -691,6 +736,25 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
     ) -> spanner_database_admin.Database:
         r"""Gets the state of a Cloud Spanner database.
 
+        .. code-block:: python
+
+            from google.cloud import spanner_admin_database_v1
+
+            def sample_get_database():
+                # Create a client
+                client = spanner_admin_database_v1.DatabaseAdminClient()
+
+                # Initialize request argument(s)
+                request = spanner_admin_database_v1.GetDatabaseRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_database(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.spanner_admin_database_v1.types.GetDatabaseRequest, dict]):
                 The request object. The request for
@@ -769,6 +833,31 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         [metadata][google.longrunning.Operation.metadata] field type is
         [UpdateDatabaseDdlMetadata][google.spanner.admin.database.v1.UpdateDatabaseDdlMetadata].
         The operation has no response.
+
+
+        .. code-block:: python
+
+            from google.cloud import spanner_admin_database_v1
+
+            def sample_update_database_ddl():
+                # Create a client
+                client = spanner_admin_database_v1.DatabaseAdminClient()
+
+                # Initialize request argument(s)
+                request = spanner_admin_database_v1.UpdateDatabaseDdlRequest(
+                    database="database_value",
+                    statements=['statements_value_1', 'statements_value_2'],
+                )
+
+                # Make the request
+                operation = client.update_database_ddl(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.spanner_admin_database_v1.types.UpdateDatabaseDdlRequest, dict]):
@@ -889,6 +978,23 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         ``expire_time``. Note: Cloud Spanner might continue to accept
         requests for a few seconds after the database has been deleted.
 
+
+        .. code-block:: python
+
+            from google.cloud import spanner_admin_database_v1
+
+            def sample_drop_database():
+                # Create a client
+                client = spanner_admin_database_v1.DatabaseAdminClient()
+
+                # Initialize request argument(s)
+                request = spanner_admin_database_v1.DropDatabaseRequest(
+                    database="database_value",
+                )
+
+                # Make the request
+                client.drop_database(request=request)
+
         Args:
             request (Union[google.cloud.spanner_admin_database_v1.types.DropDatabaseRequest, dict]):
                 The request object. The request for
@@ -953,6 +1059,26 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         formatted DDL statements. This method does not show pending
         schema updates, those may be queried using the
         [Operations][google.longrunning.Operations] API.
+
+
+        .. code-block:: python
+
+            from google.cloud import spanner_admin_database_v1
+
+            def sample_get_database_ddl():
+                # Create a client
+                client = spanner_admin_database_v1.DatabaseAdminClient()
+
+                # Initialize request argument(s)
+                request = spanner_admin_database_v1.GetDatabaseDdlRequest(
+                    database="database_value",
+                )
+
+                # Make the request
+                response = client.get_database_ddl(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.spanner_admin_database_v1.types.GetDatabaseDdlRequest, dict]):
@@ -1033,6 +1159,26 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         backups, authorization requires ``spanner.backups.setIamPolicy``
         permission on
         [resource][google.iam.v1.SetIamPolicyRequest.resource].
+
+
+        .. code-block:: python
+
+            from google.cloud import spanner_admin_database_v1
+
+            def sample_set_iam_policy():
+                # Create a client
+                client = spanner_admin_database_v1.DatabaseAdminClient()
+
+                # Initialize request argument(s)
+                request = spanner_admin_database_v1.SetIamPolicyRequest(
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.set_iam_policy(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]):
@@ -1167,6 +1313,26 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         backups, authorization requires ``spanner.backups.getIamPolicy``
         permission on
         [resource][google.iam.v1.GetIamPolicyRequest.resource].
+
+
+        .. code-block:: python
+
+            from google.cloud import spanner_admin_database_v1
+
+            def sample_get_iam_policy():
+                # Create a client
+                client = spanner_admin_database_v1.DatabaseAdminClient()
+
+                # Initialize request argument(s)
+                request = spanner_admin_database_v1.GetIamPolicyRequest(
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.get_iam_policy(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]):
@@ -1303,6 +1469,27 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         in a NOT_FOUND error if the user has ``spanner.backups.list``
         permission on the containing instance.
 
+
+        .. code-block:: python
+
+            from google.cloud import spanner_admin_database_v1
+
+            def sample_test_iam_permissions():
+                # Create a client
+                client = spanner_admin_database_v1.DatabaseAdminClient()
+
+                # Initialize request argument(s)
+                request = spanner_admin_database_v1.TestIamPermissionsRequest(
+                    resource="resource_value",
+                    permissions=['permissions_value_1', 'permissions_value_2'],
+                )
+
+                # Make the request
+                response = client.test_iam_permissions(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]):
                 The request object. Request message for
@@ -1397,6 +1584,31 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         creation and delete the backup. There can be only one pending
         backup creation per database. Backup creation of different
         databases can run concurrently.
+
+
+        .. code-block:: python
+
+            from google.cloud import spanner_admin_database_v1
+
+            def sample_create_backup():
+                # Create a client
+                client = spanner_admin_database_v1.DatabaseAdminClient()
+
+                # Initialize request argument(s)
+                request = spanner_admin_database_v1.CreateBackupRequest(
+                    parent="parent_value",
+                    backup_id="backup_id_value",
+                )
+
+                # Make the request
+                operation = client.create_backup(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.spanner_admin_database_v1.types.CreateBackupRequest, dict]):
@@ -1504,6 +1716,26 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         r"""Gets metadata on a pending or completed
         [Backup][google.spanner.admin.database.v1.Backup].
 
+
+        .. code-block:: python
+
+            from google.cloud import spanner_admin_database_v1
+
+            def sample_get_backup():
+                # Create a client
+                client = spanner_admin_database_v1.DatabaseAdminClient()
+
+                # Initialize request argument(s)
+                request = spanner_admin_database_v1.GetBackupRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_backup(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.spanner_admin_database_v1.types.GetBackupRequest, dict]):
                 The request object. The request for
@@ -1574,6 +1806,25 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
     ) -> gsad_backup.Backup:
         r"""Updates a pending or completed
         [Backup][google.spanner.admin.database.v1.Backup].
+
+
+        .. code-block:: python
+
+            from google.cloud import spanner_admin_database_v1
+
+            def sample_update_backup():
+                # Create a client
+                client = spanner_admin_database_v1.DatabaseAdminClient()
+
+                # Initialize request argument(s)
+                request = spanner_admin_database_v1.UpdateBackupRequest(
+                )
+
+                # Make the request
+                response = client.update_backup(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.spanner_admin_database_v1.types.UpdateBackupRequest, dict]):
@@ -1665,6 +1916,23 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         r"""Deletes a pending or completed
         [Backup][google.spanner.admin.database.v1.Backup].
 
+
+        .. code-block:: python
+
+            from google.cloud import spanner_admin_database_v1
+
+            def sample_delete_backup():
+                # Create a client
+                client = spanner_admin_database_v1.DatabaseAdminClient()
+
+                # Initialize request argument(s)
+                request = spanner_admin_database_v1.DeleteBackupRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_backup(request=request)
+
         Args:
             request (Union[google.cloud.spanner_admin_database_v1.types.DeleteBackupRequest, dict]):
                 The request object. The request for
@@ -1731,6 +1999,27 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         r"""Lists completed and pending backups. Backups returned are
         ordered by ``create_time`` in descending order, starting from
         the most recent ``create_time``.
+
+
+        .. code-block:: python
+
+            from google.cloud import spanner_admin_database_v1
+
+            def sample_list_backups():
+                # Create a client
+                client = spanner_admin_database_v1.DatabaseAdminClient()
+
+                # Initialize request argument(s)
+                request = spanner_admin_database_v1.ListBackupsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_backups(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.spanner_admin_database_v1.types.ListBackupsRequest, dict]):
@@ -1831,6 +2120,32 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         operation completes, a new restore operation can be initiated,
         without waiting for the optimize operation associated with the
         first restore to complete.
+
+
+        .. code-block:: python
+
+            from google.cloud import spanner_admin_database_v1
+
+            def sample_restore_database():
+                # Create a client
+                client = spanner_admin_database_v1.DatabaseAdminClient()
+
+                # Initialize request argument(s)
+                request = spanner_admin_database_v1.RestoreDatabaseRequest(
+                    backup="backup_value",
+                    parent="parent_value",
+                    database_id="database_id_value",
+                )
+
+                # Make the request
+                operation = client.restore_database(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.spanner_admin_database_v1.types.RestoreDatabaseRequest, dict]):
@@ -1950,6 +2265,27 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         completed/failed/canceled within the last 7 days, and pending
         operations.
 
+
+        .. code-block:: python
+
+            from google.cloud import spanner_admin_database_v1
+
+            def sample_list_database_operations():
+                # Create a client
+                client = spanner_admin_database_v1.DatabaseAdminClient()
+
+                # Initialize request argument(s)
+                request = spanner_admin_database_v1.ListDatabaseOperationsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_database_operations(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.spanner_admin_database_v1.types.ListDatabaseOperationsRequest, dict]):
                 The request object. The request for
@@ -2043,6 +2379,27 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         operations. Operations returned are ordered by
         ``operation.metadata.value.progress.start_time`` in descending
         order starting from the most recently started operation.
+
+
+        .. code-block:: python
+
+            from google.cloud import spanner_admin_database_v1
+
+            def sample_list_backup_operations():
+                # Create a client
+                client = spanner_admin_database_v1.DatabaseAdminClient()
+
+                # Initialize request argument(s)
+                request = spanner_admin_database_v1.ListBackupOperationsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_backup_operations(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.spanner_admin_database_v1.types.ListBackupOperationsRequest, dict]):

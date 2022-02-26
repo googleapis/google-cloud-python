@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -62,7 +62,7 @@ class CreateSessionRequest(proto.Message):
             Required. The database in which the new
             session is created.
         session (google.cloud.spanner_v1.types.Session):
-            The session to create.
+            Required. The session to create.
     """
 
     database = proto.Field(proto.STRING, number=1,)
