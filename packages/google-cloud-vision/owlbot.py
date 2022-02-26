@@ -100,6 +100,7 @@ for library in s.get_staging_dirs(default_version):
 
     # Move docs configuration
     s.move(library / f"docs/conf.py")
+    s.move(library / "samples")
 
 s.remove_staging_dirs()
 

@@ -1,0 +1,93 @@
+{
+  "snippets": [
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "ImageAnnotator"
+          },
+          "shortName": "BatchAnnotateImages"
+        }
+      },
+      "file": "vision_v1p1beta1_generated_image_annotator_batch_annotate_images_async.py",
+      "regionTag": "vision_v1p1beta1_generated_ImageAnnotator_BatchAnnotateImages_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "ImageAnnotator"
+          },
+          "shortName": "BatchAnnotateImages"
+        }
+      },
+      "file": "vision_v1p1beta1_generated_image_annotator_batch_annotate_images_sync.py",
+      "regionTag": "vision_v1p1beta1_generated_ImageAnnotator_BatchAnnotateImages_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    }
+  ]
+}
