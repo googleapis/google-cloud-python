@@ -233,6 +233,26 @@ class SecretManagerServiceAsyncClient:
     ) -> pagers.ListSecretsAsyncPager:
         r"""Lists [Secrets][google.cloud.secretmanager.v1.Secret].
 
+        .. code-block:: python
+
+            from google.cloud import secretmanager_v1
+
+            def sample_list_secrets():
+                # Create a client
+                client = secretmanager_v1.SecretManagerServiceClient()
+
+                # Initialize request argument(s)
+                request = secretmanager_v1.ListSecretsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_secrets(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.secretmanager_v1.types.ListSecretsRequest, dict]):
                 The request object. Request message for
@@ -318,6 +338,27 @@ class SecretManagerServiceAsyncClient:
         r"""Creates a new [Secret][google.cloud.secretmanager.v1.Secret]
         containing no
         [SecretVersions][google.cloud.secretmanager.v1.SecretVersion].
+
+
+        .. code-block:: python
+
+            from google.cloud import secretmanager_v1
+
+            def sample_create_secret():
+                # Create a client
+                client = secretmanager_v1.SecretManagerServiceClient()
+
+                # Initialize request argument(s)
+                request = secretmanager_v1.CreateSecretRequest(
+                    parent="parent_value",
+                    secret_id="secret_id_value",
+                )
+
+                # Make the request
+                response = client.create_secret(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.secretmanager_v1.types.CreateSecretRequest, dict]):
@@ -423,6 +464,26 @@ class SecretManagerServiceAsyncClient:
         containing secret data and attaches it to an existing
         [Secret][google.cloud.secretmanager.v1.Secret].
 
+
+        .. code-block:: python
+
+            from google.cloud import secretmanager_v1
+
+            def sample_add_secret_version():
+                # Create a client
+                client = secretmanager_v1.SecretManagerServiceClient()
+
+                # Initialize request argument(s)
+                request = secretmanager_v1.AddSecretVersionRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.add_secret_version(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.secretmanager_v1.types.AddSecretVersionRequest, dict]):
                 The request object. Request message for
@@ -507,6 +568,26 @@ class SecretManagerServiceAsyncClient:
         r"""Gets metadata for a given
         [Secret][google.cloud.secretmanager.v1.Secret].
 
+
+        .. code-block:: python
+
+            from google.cloud import secretmanager_v1
+
+            def sample_get_secret():
+                # Create a client
+                client = secretmanager_v1.SecretManagerServiceClient()
+
+                # Initialize request argument(s)
+                request = secretmanager_v1.GetSecretRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_secret(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.secretmanager_v1.types.GetSecretRequest, dict]):
                 The request object. Request message for
@@ -585,6 +666,25 @@ class SecretManagerServiceAsyncClient:
     ) -> resources.Secret:
         r"""Updates metadata of an existing
         [Secret][google.cloud.secretmanager.v1.Secret].
+
+
+        .. code-block:: python
+
+            from google.cloud import secretmanager_v1
+
+            def sample_update_secret():
+                # Create a client
+                client = secretmanager_v1.SecretManagerServiceClient()
+
+                # Initialize request argument(s)
+                request = secretmanager_v1.UpdateSecretRequest(
+                )
+
+                # Make the request
+                response = client.update_secret(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.secretmanager_v1.types.UpdateSecretRequest, dict]):
@@ -673,6 +773,22 @@ class SecretManagerServiceAsyncClient:
     ) -> None:
         r"""Deletes a [Secret][google.cloud.secretmanager.v1.Secret].
 
+        .. code-block:: python
+
+            from google.cloud import secretmanager_v1
+
+            def sample_delete_secret():
+                # Create a client
+                client = secretmanager_v1.SecretManagerServiceClient()
+
+                # Initialize request argument(s)
+                request = secretmanager_v1.DeleteSecretRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_secret(request=request)
+
         Args:
             request (Union[google.cloud.secretmanager_v1.types.DeleteSecretRequest, dict]):
                 The request object. Request message for
@@ -739,6 +855,27 @@ class SecretManagerServiceAsyncClient:
         r"""Lists
         [SecretVersions][google.cloud.secretmanager.v1.SecretVersion].
         This call does not return secret data.
+
+
+        .. code-block:: python
+
+            from google.cloud import secretmanager_v1
+
+            def sample_list_secret_versions():
+                # Create a client
+                client = secretmanager_v1.SecretManagerServiceClient()
+
+                # Initialize request argument(s)
+                request = secretmanager_v1.ListSecretVersionsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_secret_versions(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.secretmanager_v1.types.ListSecretVersionsRequest, dict]):
@@ -828,6 +965,26 @@ class SecretManagerServiceAsyncClient:
         recently created
         [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
 
+
+        .. code-block:: python
+
+            from google.cloud import secretmanager_v1
+
+            def sample_get_secret_version():
+                # Create a client
+                client = secretmanager_v1.SecretManagerServiceClient()
+
+                # Initialize request argument(s)
+                request = secretmanager_v1.GetSecretVersionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_secret_version(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.secretmanager_v1.types.GetSecretVersionRequest, dict]):
                 The request object. Request message for
@@ -909,6 +1066,26 @@ class SecretManagerServiceAsyncClient:
         ``projects/*/secrets/*/versions/latest`` is an alias to the most
         recently created
         [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
+
+
+        .. code-block:: python
+
+            from google.cloud import secretmanager_v1
+
+            def sample_access_secret_version():
+                # Create a client
+                client = secretmanager_v1.SecretManagerServiceClient()
+
+                # Initialize request argument(s)
+                request = secretmanager_v1.AccessSecretVersionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.access_secret_version(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.secretmanager_v1.types.AccessSecretVersionRequest, dict]):
@@ -1003,6 +1180,26 @@ class SecretManagerServiceAsyncClient:
         to
         [DISABLED][google.cloud.secretmanager.v1.SecretVersion.State.DISABLED].
 
+
+        .. code-block:: python
+
+            from google.cloud import secretmanager_v1
+
+            def sample_disable_secret_version():
+                # Create a client
+                client = secretmanager_v1.SecretManagerServiceClient()
+
+                # Initialize request argument(s)
+                request = secretmanager_v1.DisableSecretVersionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.disable_secret_version(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.secretmanager_v1.types.DisableSecretVersionRequest, dict]):
                 The request object. Request message for
@@ -1082,6 +1279,26 @@ class SecretManagerServiceAsyncClient:
         the [SecretVersion][google.cloud.secretmanager.v1.SecretVersion]
         to
         [ENABLED][google.cloud.secretmanager.v1.SecretVersion.State.ENABLED].
+
+
+        .. code-block:: python
+
+            from google.cloud import secretmanager_v1
+
+            def sample_enable_secret_version():
+                # Create a client
+                client = secretmanager_v1.SecretManagerServiceClient()
+
+                # Initialize request argument(s)
+                request = secretmanager_v1.EnableSecretVersionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.enable_secret_version(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.secretmanager_v1.types.EnableSecretVersionRequest, dict]):
@@ -1164,6 +1381,26 @@ class SecretManagerServiceAsyncClient:
         [DESTROYED][google.cloud.secretmanager.v1.SecretVersion.State.DESTROYED]
         and irrevocably destroys the secret data.
 
+
+        .. code-block:: python
+
+            from google.cloud import secretmanager_v1
+
+            def sample_destroy_secret_version():
+                # Create a client
+                client = secretmanager_v1.SecretManagerServiceClient()
+
+                # Initialize request argument(s)
+                request = secretmanager_v1.DestroySecretVersionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.destroy_secret_version(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.secretmanager_v1.types.DestroySecretVersionRequest, dict]):
                 The request object. Request message for
@@ -1241,6 +1478,26 @@ class SecretManagerServiceAsyncClient:
         [SecretVersions][google.cloud.secretmanager.v1.SecretVersion]
         are enforced according to the policy set on the associated
         [Secret][google.cloud.secretmanager.v1.Secret].
+
+
+        .. code-block:: python
+
+            from google.cloud import secretmanager_v1
+
+            def sample_set_iam_policy():
+                # Create a client
+                client = secretmanager_v1.SecretManagerServiceClient()
+
+                # Initialize request argument(s)
+                request = secretmanager_v1.SetIamPolicyRequest(
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.set_iam_policy(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]):
@@ -1348,6 +1605,26 @@ class SecretManagerServiceAsyncClient:
         r"""Gets the access control policy for a secret.
         Returns empty policy if the secret exists and does not
         have a policy set.
+
+
+        .. code-block:: python
+
+            from google.cloud import secretmanager_v1
+
+            def sample_get_iam_policy():
+                # Create a client
+                client = secretmanager_v1.SecretManagerServiceClient()
+
+                # Initialize request argument(s)
+                request = secretmanager_v1.GetIamPolicyRequest(
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.get_iam_policy(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]):
@@ -1460,6 +1737,27 @@ class SecretManagerServiceAsyncClient:
         permission-aware UIs and command-line tools, not for
         authorization checking. This operation may "fail open" without
         warning.
+
+
+        .. code-block:: python
+
+            from google.cloud import secretmanager_v1
+
+            def sample_test_iam_permissions():
+                # Create a client
+                client = secretmanager_v1.SecretManagerServiceClient()
+
+                # Initialize request argument(s)
+                request = secretmanager_v1.TestIamPermissionsRequest(
+                    resource="resource_value",
+                    permissions=['permissions_value_1', 'permissions_value_2'],
+                )
+
+                # Make the request
+                response = client.test_iam_permissions(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]):
