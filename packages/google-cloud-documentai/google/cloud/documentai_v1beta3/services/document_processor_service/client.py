@@ -457,8 +457,7 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
     ) -> document_processor_service.ProcessResponse:
         r"""Processes a single document.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import documentai_v1beta3
 
@@ -554,8 +553,7 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
         written to Cloud Storage as JSON in the [Document] format.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import documentai_v1beta3
 
@@ -662,8 +660,7 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
     ) -> document_processor_service.FetchProcessorTypesResponse:
         r"""Fetches processor types.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import documentai_v1beta3
 
@@ -756,8 +753,7 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
     ) -> pagers.ListProcessorsPager:
         r"""Lists all processors which belong to this project.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import documentai_v1beta3
 
@@ -862,8 +858,7 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
         default after its creation.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import documentai_v1beta3
 
@@ -972,8 +967,7 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
         artifacts associated with this processor.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import documentai_v1beta3
 
@@ -1087,8 +1081,7 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
     ) -> operation.Operation:
         r"""Enables a processor
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import documentai_v1beta3
 
@@ -1172,8 +1165,7 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
     ) -> operation.Operation:
         r"""Disables a processor
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import documentai_v1beta3
 
@@ -1260,8 +1252,7 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
         should be processed by the specified processor.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import documentai_v1beta3
 

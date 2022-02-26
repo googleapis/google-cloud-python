@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for BatchProcessDocuments
+# Snippet for ProcessDocument
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,27 +23,27 @@
 #   python3 -m pip install google-cloud-documentai
 
 
-# [START documentai_generated_documentai_v1_DocumentProcessorService_BatchProcessDocuments_sync]
-from google.cloud import documentai_v1
+# [START documentai_v1beta3_generated_DocumentProcessorService_ProcessDocument_sync]
+from google.cloud import documentai_v1beta3
 
 
-def sample_batch_process_documents():
+def sample_process_document():
     # Create a client
-    client = documentai_v1.DocumentProcessorServiceClient()
+    client = documentai_v1beta3.DocumentProcessorServiceClient()
 
     # Initialize request argument(s)
-    request = documentai_v1.BatchProcessRequest(
+    inline_document = documentai_v1beta3.Document()
+    inline_document.uri = "uri_value"
+
+    request = documentai_v1beta3.ProcessRequest(
+        inline_document=inline_document,
         name="name_value",
     )
 
     # Make the request
-    operation = client.batch_process_documents(request=request)
-
-    print("Waiting for operation to complete...")
-
-    response = operation.result()
+    response = client.process_document(request=request)
 
     # Handle the response
     print(response)
 
-# [END documentai_generated_documentai_v1_DocumentProcessorService_BatchProcessDocuments_sync]
+# [END documentai_v1beta3_generated_DocumentProcessorService_ProcessDocument_sync]

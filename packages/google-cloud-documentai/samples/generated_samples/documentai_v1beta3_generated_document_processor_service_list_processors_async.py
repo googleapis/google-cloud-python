@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ProcessDocument
+# Snippet for ListProcessors
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,27 +23,24 @@
 #   python3 -m pip install google-cloud-documentai
 
 
-# [START documentai_generated_documentai_v1_DocumentProcessorService_ProcessDocument_async]
-from google.cloud import documentai_v1
+# [START documentai_v1beta3_generated_DocumentProcessorService_ListProcessors_async]
+from google.cloud import documentai_v1beta3
 
 
-async def sample_process_document():
+async def sample_list_processors():
     # Create a client
-    client = documentai_v1.DocumentProcessorServiceAsyncClient()
+    client = documentai_v1beta3.DocumentProcessorServiceAsyncClient()
 
     # Initialize request argument(s)
-    inline_document = documentai_v1.Document()
-    inline_document.uri = "uri_value"
-
-    request = documentai_v1.ProcessRequest(
-        inline_document=inline_document,
-        name="name_value",
+    request = documentai_v1beta3.ListProcessorsRequest(
+        parent="parent_value",
     )
 
     # Make the request
-    response = await client.process_document(request=request)
+    page_result = client.list_processors(request=request)
 
     # Handle the response
-    print(response)
+    async for response in page_result:
+        print(response)
 
-# [END documentai_generated_documentai_v1_DocumentProcessorService_ProcessDocument_async]
+# [END documentai_v1beta3_generated_DocumentProcessorService_ListProcessors_async]

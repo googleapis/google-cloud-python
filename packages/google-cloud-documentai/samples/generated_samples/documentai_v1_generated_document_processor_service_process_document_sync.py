@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for DisableProcessor
+# Snippet for ProcessDocument
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,27 +23,27 @@
 #   python3 -m pip install google-cloud-documentai
 
 
-# [START documentai_generated_documentai_v1beta3_DocumentProcessorService_DisableProcessor_sync]
-from google.cloud import documentai_v1beta3
+# [START documentai_v1_generated_DocumentProcessorService_ProcessDocument_sync]
+from google.cloud import documentai_v1
 
 
-def sample_disable_processor():
+def sample_process_document():
     # Create a client
-    client = documentai_v1beta3.DocumentProcessorServiceClient()
+    client = documentai_v1.DocumentProcessorServiceClient()
 
     # Initialize request argument(s)
-    request = documentai_v1beta3.DisableProcessorRequest(
+    inline_document = documentai_v1.Document()
+    inline_document.uri = "uri_value"
+
+    request = documentai_v1.ProcessRequest(
+        inline_document=inline_document,
         name="name_value",
     )
 
     # Make the request
-    operation = client.disable_processor(request=request)
-
-    print("Waiting for operation to complete...")
-
-    response = operation.result()
+    response = client.process_document(request=request)
 
     # Handle the response
     print(response)
 
-# [END documentai_generated_documentai_v1beta3_DocumentProcessorService_DisableProcessor_sync]
+# [END documentai_v1_generated_DocumentProcessorService_ProcessDocument_sync]

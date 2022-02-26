@@ -10,8 +10,8 @@
           "shortName": "BatchProcessDocuments"
         }
       },
-      "file": "documentai_generated_documentai_v1beta3_document_processor_service_batch_process_documents_async.py",
-      "regionTag": "documentai_generated_documentai_v1beta3_DocumentProcessorService_BatchProcessDocuments_async",
+      "file": "documentai_v1beta3_generated_document_processor_service_batch_process_documents_async.py",
+      "regionTag": "documentai_v1beta3_generated_DocumentProcessorService_BatchProcessDocuments_async",
       "segments": [
         {
           "end": 48,
@@ -54,8 +54,8 @@
           "shortName": "BatchProcessDocuments"
         }
       },
-      "file": "documentai_generated_documentai_v1beta3_document_processor_service_batch_process_documents_sync.py",
-      "regionTag": "documentai_generated_documentai_v1beta3_DocumentProcessorService_BatchProcessDocuments_sync",
+      "file": "documentai_v1beta3_generated_document_processor_service_batch_process_documents_sync.py",
+      "regionTag": "documentai_v1beta3_generated_DocumentProcessorService_BatchProcessDocuments_sync",
       "segments": [
         {
           "end": 48,
@@ -99,8 +99,8 @@
           "shortName": "CreateProcessor"
         }
       },
-      "file": "documentai_generated_documentai_v1beta3_document_processor_service_create_processor_async.py",
-      "regionTag": "documentai_generated_documentai_v1beta3_DocumentProcessorService_CreateProcessor_async",
+      "file": "documentai_v1beta3_generated_document_processor_service_create_processor_async.py",
+      "regionTag": "documentai_v1beta3_generated_DocumentProcessorService_CreateProcessor_async",
       "segments": [
         {
           "end": 44,
@@ -143,8 +143,8 @@
           "shortName": "CreateProcessor"
         }
       },
-      "file": "documentai_generated_documentai_v1beta3_document_processor_service_create_processor_sync.py",
-      "regionTag": "documentai_generated_documentai_v1beta3_DocumentProcessorService_CreateProcessor_sync",
+      "file": "documentai_v1beta3_generated_document_processor_service_create_processor_sync.py",
+      "regionTag": "documentai_v1beta3_generated_DocumentProcessorService_CreateProcessor_sync",
       "segments": [
         {
           "end": 44,
@@ -188,8 +188,8 @@
           "shortName": "DeleteProcessor"
         }
       },
-      "file": "documentai_generated_documentai_v1beta3_document_processor_service_delete_processor_async.py",
-      "regionTag": "documentai_generated_documentai_v1beta3_DocumentProcessorService_DeleteProcessor_async",
+      "file": "documentai_v1beta3_generated_document_processor_service_delete_processor_async.py",
+      "regionTag": "documentai_v1beta3_generated_DocumentProcessorService_DeleteProcessor_async",
       "segments": [
         {
           "end": 48,
@@ -232,8 +232,8 @@
           "shortName": "DeleteProcessor"
         }
       },
-      "file": "documentai_generated_documentai_v1beta3_document_processor_service_delete_processor_sync.py",
-      "regionTag": "documentai_generated_documentai_v1beta3_DocumentProcessorService_DeleteProcessor_sync",
+      "file": "documentai_v1beta3_generated_document_processor_service_delete_processor_sync.py",
+      "regionTag": "documentai_v1beta3_generated_DocumentProcessorService_DeleteProcessor_sync",
       "segments": [
         {
           "end": 48,
@@ -277,8 +277,8 @@
           "shortName": "DisableProcessor"
         }
       },
-      "file": "documentai_generated_documentai_v1beta3_document_processor_service_disable_processor_async.py",
-      "regionTag": "documentai_generated_documentai_v1beta3_DocumentProcessorService_DisableProcessor_async",
+      "file": "documentai_v1beta3_generated_document_processor_service_disable_processor_async.py",
+      "regionTag": "documentai_v1beta3_generated_DocumentProcessorService_DisableProcessor_async",
       "segments": [
         {
           "end": 48,
@@ -321,8 +321,8 @@
           "shortName": "DisableProcessor"
         }
       },
-      "file": "documentai_generated_documentai_v1beta3_document_processor_service_disable_processor_sync.py",
-      "regionTag": "documentai_generated_documentai_v1beta3_DocumentProcessorService_DisableProcessor_sync",
+      "file": "documentai_v1beta3_generated_document_processor_service_disable_processor_sync.py",
+      "regionTag": "documentai_v1beta3_generated_DocumentProcessorService_DisableProcessor_sync",
       "segments": [
         {
           "end": 48,
@@ -366,8 +366,8 @@
           "shortName": "EnableProcessor"
         }
       },
-      "file": "documentai_generated_documentai_v1beta3_document_processor_service_enable_processor_async.py",
-      "regionTag": "documentai_generated_documentai_v1beta3_DocumentProcessorService_EnableProcessor_async",
+      "file": "documentai_v1beta3_generated_document_processor_service_enable_processor_async.py",
+      "regionTag": "documentai_v1beta3_generated_DocumentProcessorService_EnableProcessor_async",
       "segments": [
         {
           "end": 48,
@@ -410,8 +410,8 @@
           "shortName": "EnableProcessor"
         }
       },
-      "file": "documentai_generated_documentai_v1beta3_document_processor_service_enable_processor_sync.py",
-      "regionTag": "documentai_generated_documentai_v1beta3_DocumentProcessorService_EnableProcessor_sync",
+      "file": "documentai_v1beta3_generated_document_processor_service_enable_processor_sync.py",
+      "regionTag": "documentai_v1beta3_generated_DocumentProcessorService_EnableProcessor_sync",
       "segments": [
         {
           "end": 48,
@@ -455,8 +455,8 @@
           "shortName": "FetchProcessorTypes"
         }
       },
-      "file": "documentai_generated_documentai_v1beta3_document_processor_service_fetch_processor_types_async.py",
-      "regionTag": "documentai_generated_documentai_v1beta3_DocumentProcessorService_FetchProcessorTypes_async",
+      "file": "documentai_v1beta3_generated_document_processor_service_fetch_processor_types_async.py",
+      "regionTag": "documentai_v1beta3_generated_DocumentProcessorService_FetchProcessorTypes_async",
       "segments": [
         {
           "end": 44,
@@ -499,8 +499,8 @@
           "shortName": "FetchProcessorTypes"
         }
       },
-      "file": "documentai_generated_documentai_v1beta3_document_processor_service_fetch_processor_types_sync.py",
-      "regionTag": "documentai_generated_documentai_v1beta3_DocumentProcessorService_FetchProcessorTypes_sync",
+      "file": "documentai_v1beta3_generated_document_processor_service_fetch_processor_types_sync.py",
+      "regionTag": "documentai_v1beta3_generated_DocumentProcessorService_FetchProcessorTypes_sync",
       "segments": [
         {
           "end": 44,
@@ -544,8 +544,8 @@
           "shortName": "ListProcessors"
         }
       },
-      "file": "documentai_generated_documentai_v1beta3_document_processor_service_list_processors_async.py",
-      "regionTag": "documentai_generated_documentai_v1beta3_DocumentProcessorService_ListProcessors_async",
+      "file": "documentai_v1beta3_generated_document_processor_service_list_processors_async.py",
+      "regionTag": "documentai_v1beta3_generated_DocumentProcessorService_ListProcessors_async",
       "segments": [
         {
           "end": 45,
@@ -588,8 +588,8 @@
           "shortName": "ListProcessors"
         }
       },
-      "file": "documentai_generated_documentai_v1beta3_document_processor_service_list_processors_sync.py",
-      "regionTag": "documentai_generated_documentai_v1beta3_DocumentProcessorService_ListProcessors_sync",
+      "file": "documentai_v1beta3_generated_document_processor_service_list_processors_sync.py",
+      "regionTag": "documentai_v1beta3_generated_DocumentProcessorService_ListProcessors_sync",
       "segments": [
         {
           "end": 45,
@@ -633,8 +633,8 @@
           "shortName": "ProcessDocument"
         }
       },
-      "file": "documentai_generated_documentai_v1beta3_document_processor_service_process_document_async.py",
-      "regionTag": "documentai_generated_documentai_v1beta3_DocumentProcessorService_ProcessDocument_async",
+      "file": "documentai_v1beta3_generated_document_processor_service_process_document_async.py",
+      "regionTag": "documentai_v1beta3_generated_DocumentProcessorService_ProcessDocument_async",
       "segments": [
         {
           "end": 48,
@@ -677,8 +677,8 @@
           "shortName": "ProcessDocument"
         }
       },
-      "file": "documentai_generated_documentai_v1beta3_document_processor_service_process_document_sync.py",
-      "regionTag": "documentai_generated_documentai_v1beta3_DocumentProcessorService_ProcessDocument_sync",
+      "file": "documentai_v1beta3_generated_document_processor_service_process_document_sync.py",
+      "regionTag": "documentai_v1beta3_generated_DocumentProcessorService_ProcessDocument_sync",
       "segments": [
         {
           "end": 48,
@@ -722,8 +722,8 @@
           "shortName": "ReviewDocument"
         }
       },
-      "file": "documentai_generated_documentai_v1beta3_document_processor_service_review_document_async.py",
-      "regionTag": "documentai_generated_documentai_v1beta3_DocumentProcessorService_ReviewDocument_async",
+      "file": "documentai_v1beta3_generated_document_processor_service_review_document_async.py",
+      "regionTag": "documentai_v1beta3_generated_DocumentProcessorService_ReviewDocument_async",
       "segments": [
         {
           "end": 52,
@@ -766,8 +766,8 @@
           "shortName": "ReviewDocument"
         }
       },
-      "file": "documentai_generated_documentai_v1beta3_document_processor_service_review_document_sync.py",
-      "regionTag": "documentai_generated_documentai_v1beta3_DocumentProcessorService_ReviewDocument_sync",
+      "file": "documentai_v1beta3_generated_document_processor_service_review_document_sync.py",
+      "regionTag": "documentai_v1beta3_generated_DocumentProcessorService_ReviewDocument_sync",
       "segments": [
         {
           "end": 52,

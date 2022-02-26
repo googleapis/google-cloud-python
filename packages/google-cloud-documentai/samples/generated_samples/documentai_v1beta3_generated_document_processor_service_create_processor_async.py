@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ProcessDocument
+# Snippet for CreateProcessor
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,27 +23,23 @@
 #   python3 -m pip install google-cloud-documentai
 
 
-# [START documentai_generated_documentai_v1_DocumentProcessorService_ProcessDocument_sync]
-from google.cloud import documentai_v1
+# [START documentai_v1beta3_generated_DocumentProcessorService_CreateProcessor_async]
+from google.cloud import documentai_v1beta3
 
 
-def sample_process_document():
+async def sample_create_processor():
     # Create a client
-    client = documentai_v1.DocumentProcessorServiceClient()
+    client = documentai_v1beta3.DocumentProcessorServiceAsyncClient()
 
     # Initialize request argument(s)
-    inline_document = documentai_v1.Document()
-    inline_document.uri = "uri_value"
-
-    request = documentai_v1.ProcessRequest(
-        inline_document=inline_document,
-        name="name_value",
+    request = documentai_v1beta3.CreateProcessorRequest(
+        parent="parent_value",
     )
 
     # Make the request
-    response = client.process_document(request=request)
+    response = await client.create_processor(request=request)
 
     # Handle the response
     print(response)
 
-# [END documentai_generated_documentai_v1_DocumentProcessorService_ProcessDocument_sync]
+# [END documentai_v1beta3_generated_DocumentProcessorService_CreateProcessor_async]

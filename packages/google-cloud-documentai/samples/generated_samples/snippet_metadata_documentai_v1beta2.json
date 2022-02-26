@@ -10,8 +10,8 @@
           "shortName": "BatchProcessDocuments"
         }
       },
-      "file": "documentai_generated_documentai_v1beta2_document_understanding_service_batch_process_documents_async.py",
-      "regionTag": "documentai_generated_documentai_v1beta2_DocumentUnderstandingService_BatchProcessDocuments_async",
+      "file": "documentai_v1beta2_generated_document_understanding_service_batch_process_documents_async.py",
+      "regionTag": "documentai_v1beta2_generated_DocumentUnderstandingService_BatchProcessDocuments_async",
       "segments": [
         {
           "end": 52,
@@ -54,8 +54,8 @@
           "shortName": "BatchProcessDocuments"
         }
       },
-      "file": "documentai_generated_documentai_v1beta2_document_understanding_service_batch_process_documents_sync.py",
-      "regionTag": "documentai_generated_documentai_v1beta2_DocumentUnderstandingService_BatchProcessDocuments_sync",
+      "file": "documentai_v1beta2_generated_document_understanding_service_batch_process_documents_sync.py",
+      "regionTag": "documentai_v1beta2_generated_DocumentUnderstandingService_BatchProcessDocuments_sync",
       "segments": [
         {
           "end": 52,
@@ -99,8 +99,8 @@
           "shortName": "ProcessDocument"
         }
       },
-      "file": "documentai_generated_documentai_v1beta2_document_understanding_service_process_document_async.py",
-      "regionTag": "documentai_generated_documentai_v1beta2_DocumentUnderstandingService_ProcessDocument_async",
+      "file": "documentai_v1beta2_generated_document_understanding_service_process_document_async.py",
+      "regionTag": "documentai_v1beta2_generated_DocumentUnderstandingService_ProcessDocument_async",
       "segments": [
         {
           "end": 48,
@@ -143,8 +143,8 @@
           "shortName": "ProcessDocument"
         }
       },
-      "file": "documentai_generated_documentai_v1beta2_document_understanding_service_process_document_sync.py",
-      "regionTag": "documentai_generated_documentai_v1beta2_DocumentUnderstandingService_ProcessDocument_sync",
+      "file": "documentai_v1beta2_generated_document_understanding_service_process_document_sync.py",
+      "regionTag": "documentai_v1beta2_generated_DocumentUnderstandingService_ProcessDocument_sync",
       "segments": [
         {
           "end": 48,

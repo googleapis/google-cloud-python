@@ -410,8 +410,7 @@ class DocumentUnderstandingServiceClient(
         written to Cloud Storage as JSON in the [Document] format.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import documentai_v1beta2
 
@@ -519,8 +518,7 @@ class DocumentUnderstandingServiceClient(
     ) -> document.Document:
         r"""Processes a single document.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import documentai_v1beta2
 

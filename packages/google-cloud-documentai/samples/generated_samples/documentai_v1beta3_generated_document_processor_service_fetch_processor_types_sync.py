@@ -23,13 +23,13 @@
 #   python3 -m pip install google-cloud-documentai
 
 
-# [START documentai_generated_documentai_v1beta3_DocumentProcessorService_FetchProcessorTypes_async]
+# [START documentai_v1beta3_generated_DocumentProcessorService_FetchProcessorTypes_sync]
 from google.cloud import documentai_v1beta3
 
 
-async def sample_fetch_processor_types():
+def sample_fetch_processor_types():
     # Create a client
-    client = documentai_v1beta3.DocumentProcessorServiceAsyncClient()
+    client = documentai_v1beta3.DocumentProcessorServiceClient()
 
     # Initialize request argument(s)
     request = documentai_v1beta3.FetchProcessorTypesRequest(
@@ -37,9 +37,9 @@ async def sample_fetch_processor_types():
     )
 
     # Make the request
-    response = await client.fetch_processor_types(request=request)
+    response = client.fetch_processor_types(request=request)
 
     # Handle the response
     print(response)
 
-# [END documentai_generated_documentai_v1beta3_DocumentProcessorService_FetchProcessorTypes_async]
+# [END documentai_v1beta3_generated_DocumentProcessorService_FetchProcessorTypes_sync]

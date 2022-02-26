@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for BatchProcessDocuments
+# Snippet for ReviewDocument
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,27 +23,31 @@
 #   python3 -m pip install google-cloud-documentai
 
 
-# [START documentai_generated_documentai_v1beta3_DocumentProcessorService_BatchProcessDocuments_async]
+# [START documentai_v1beta3_generated_DocumentProcessorService_ReviewDocument_sync]
 from google.cloud import documentai_v1beta3
 
 
-async def sample_batch_process_documents():
+def sample_review_document():
     # Create a client
-    client = documentai_v1beta3.DocumentProcessorServiceAsyncClient()
+    client = documentai_v1beta3.DocumentProcessorServiceClient()
 
     # Initialize request argument(s)
-    request = documentai_v1beta3.BatchProcessRequest(
-        name="name_value",
+    inline_document = documentai_v1beta3.Document()
+    inline_document.uri = "uri_value"
+
+    request = documentai_v1beta3.ReviewDocumentRequest(
+        inline_document=inline_document,
+        human_review_config="human_review_config_value",
     )
 
     # Make the request
-    operation = client.batch_process_documents(request=request)
+    operation = client.review_document(request=request)
 
     print("Waiting for operation to complete...")
 
-    response = await operation.result()
+    response = operation.result()
 
     # Handle the response
     print(response)
 
-# [END documentai_generated_documentai_v1beta3_DocumentProcessorService_BatchProcessDocuments_async]
+# [END documentai_v1beta3_generated_DocumentProcessorService_ReviewDocument_sync]

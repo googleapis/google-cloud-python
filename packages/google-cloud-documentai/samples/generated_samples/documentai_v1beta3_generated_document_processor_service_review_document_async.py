@@ -23,19 +23,19 @@
 #   python3 -m pip install google-cloud-documentai
 
 
-# [START documentai_generated_documentai_v1_DocumentProcessorService_ReviewDocument_sync]
-from google.cloud import documentai_v1
+# [START documentai_v1beta3_generated_DocumentProcessorService_ReviewDocument_async]
+from google.cloud import documentai_v1beta3
 
 
-def sample_review_document():
+async def sample_review_document():
     # Create a client
-    client = documentai_v1.DocumentProcessorServiceClient()
+    client = documentai_v1beta3.DocumentProcessorServiceAsyncClient()
 
     # Initialize request argument(s)
-    inline_document = documentai_v1.Document()
+    inline_document = documentai_v1beta3.Document()
     inline_document.uri = "uri_value"
 
-    request = documentai_v1.ReviewDocumentRequest(
+    request = documentai_v1beta3.ReviewDocumentRequest(
         inline_document=inline_document,
         human_review_config="human_review_config_value",
     )
@@ -45,9 +45,9 @@ def sample_review_document():
 
     print("Waiting for operation to complete...")
 
-    response = operation.result()
+    response = await operation.result()
 
     # Handle the response
     print(response)
 
-# [END documentai_generated_documentai_v1_DocumentProcessorService_ReviewDocument_sync]
+# [END documentai_v1beta3_generated_DocumentProcessorService_ReviewDocument_async]

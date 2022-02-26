@@ -10,8 +10,8 @@
           "shortName": "BatchProcessDocuments"
         }
       },
-      "file": "documentai_generated_documentai_v1_document_processor_service_batch_process_documents_async.py",
-      "regionTag": "documentai_generated_documentai_v1_DocumentProcessorService_BatchProcessDocuments_async",
+      "file": "documentai_v1_generated_document_processor_service_batch_process_documents_async.py",
+      "regionTag": "documentai_v1_generated_DocumentProcessorService_BatchProcessDocuments_async",
       "segments": [
         {
           "end": 48,
@@ -54,8 +54,8 @@
           "shortName": "BatchProcessDocuments"
         }
       },
-      "file": "documentai_generated_documentai_v1_document_processor_service_batch_process_documents_sync.py",
-      "regionTag": "documentai_generated_documentai_v1_DocumentProcessorService_BatchProcessDocuments_sync",
+      "file": "documentai_v1_generated_document_processor_service_batch_process_documents_sync.py",
+      "regionTag": "documentai_v1_generated_DocumentProcessorService_BatchProcessDocuments_sync",
       "segments": [
         {
           "end": 48,
@@ -99,8 +99,8 @@
           "shortName": "ProcessDocument"
         }
       },
-      "file": "documentai_generated_documentai_v1_document_processor_service_process_document_async.py",
-      "regionTag": "documentai_generated_documentai_v1_DocumentProcessorService_ProcessDocument_async",
+      "file": "documentai_v1_generated_document_processor_service_process_document_async.py",
+      "regionTag": "documentai_v1_generated_DocumentProcessorService_ProcessDocument_async",
       "segments": [
         {
           "end": 48,
@@ -143,8 +143,8 @@
           "shortName": "ProcessDocument"
         }
       },
-      "file": "documentai_generated_documentai_v1_document_processor_service_process_document_sync.py",
-      "regionTag": "documentai_generated_documentai_v1_DocumentProcessorService_ProcessDocument_sync",
+      "file": "documentai_v1_generated_document_processor_service_process_document_sync.py",
+      "regionTag": "documentai_v1_generated_DocumentProcessorService_ProcessDocument_sync",
       "segments": [
         {
           "end": 48,
@@ -188,8 +188,8 @@
           "shortName": "ReviewDocument"
         }
       },
-      "file": "documentai_generated_documentai_v1_document_processor_service_review_document_async.py",
-      "regionTag": "documentai_generated_documentai_v1_DocumentProcessorService_ReviewDocument_async",
+      "file": "documentai_v1_generated_document_processor_service_review_document_async.py",
+      "regionTag": "documentai_v1_generated_DocumentProcessorService_ReviewDocument_async",
       "segments": [
         {
           "end": 52,
@@ -232,8 +232,8 @@
           "shortName": "ReviewDocument"
         }
       },
-      "file": "documentai_generated_documentai_v1_document_processor_service_review_document_sync.py",
-      "regionTag": "documentai_generated_documentai_v1_DocumentProcessorService_ReviewDocument_sync",
+      "file": "documentai_v1_generated_document_processor_service_review_document_sync.py",
+      "regionTag": "documentai_v1_generated_DocumentProcessorService_ReviewDocument_sync",
       "segments": [
         {
           "end": 52,

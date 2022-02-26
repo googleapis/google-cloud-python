@@ -23,13 +23,13 @@
 #   python3 -m pip install google-cloud-documentai
 
 
-# [START documentai_generated_documentai_v1beta3_DocumentProcessorService_DeleteProcessor_async]
+# [START documentai_v1beta3_generated_DocumentProcessorService_DeleteProcessor_sync]
 from google.cloud import documentai_v1beta3
 
 
-async def sample_delete_processor():
+def sample_delete_processor():
     # Create a client
-    client = documentai_v1beta3.DocumentProcessorServiceAsyncClient()
+    client = documentai_v1beta3.DocumentProcessorServiceClient()
 
     # Initialize request argument(s)
     request = documentai_v1beta3.DeleteProcessorRequest(
@@ -41,9 +41,9 @@ async def sample_delete_processor():
 
     print("Waiting for operation to complete...")
 
-    response = await operation.result()
+    response = operation.result()
 
     # Handle the response
     print(response)
 
-# [END documentai_generated_documentai_v1beta3_DocumentProcessorService_DeleteProcessor_async]
+# [END documentai_v1beta3_generated_DocumentProcessorService_DeleteProcessor_sync]

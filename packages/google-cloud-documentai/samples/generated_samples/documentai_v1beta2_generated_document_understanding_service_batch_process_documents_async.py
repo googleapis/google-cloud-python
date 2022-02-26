@@ -23,17 +23,21 @@
 #   python3 -m pip install google-cloud-documentai
 
 
-# [START documentai_generated_documentai_v1_DocumentProcessorService_BatchProcessDocuments_async]
-from google.cloud import documentai_v1
+# [START documentai_v1beta2_generated_DocumentUnderstandingService_BatchProcessDocuments_async]
+from google.cloud import documentai_v1beta2
 
 
 async def sample_batch_process_documents():
     # Create a client
-    client = documentai_v1.DocumentProcessorServiceAsyncClient()
+    client = documentai_v1beta2.DocumentUnderstandingServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = documentai_v1.BatchProcessRequest(
-        name="name_value",
+    requests = documentai_v1beta2.ProcessDocumentRequest()
+    requests.input_config.gcs_source.uri = "uri_value"
+    requests.input_config.mime_type = "mime_type_value"
+
+    request = documentai_v1beta2.BatchProcessDocumentsRequest(
+        requests=requests,
     )
 
     # Make the request
@@ -46,4 +50,4 @@ async def sample_batch_process_documents():
     # Handle the response
     print(response)
 
-# [END documentai_generated_documentai_v1_DocumentProcessorService_BatchProcessDocuments_async]
+# [END documentai_v1beta2_generated_DocumentUnderstandingService_BatchProcessDocuments_async]

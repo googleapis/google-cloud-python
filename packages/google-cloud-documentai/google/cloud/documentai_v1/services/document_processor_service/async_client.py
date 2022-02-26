@@ -233,7 +233,7 @@ class DocumentProcessorServiceAsyncClient:
     ) -> document_processor_service.ProcessResponse:
         r"""Processes a single document.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import documentai_v1
 
@@ -339,7 +339,7 @@ class DocumentProcessorServiceAsyncClient:
         written to Cloud Storage as JSON in the [Document] format.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import documentai_v1
 
@@ -456,7 +456,7 @@ class DocumentProcessorServiceAsyncClient:
         should be processed by the specified processor.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import documentai_v1
 

@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ListProcessors
+# Snippet for FetchProcessorTypes
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,24 +23,23 @@
 #   python3 -m pip install google-cloud-documentai
 
 
-# [START documentai_generated_documentai_v1beta3_DocumentProcessorService_ListProcessors_async]
+# [START documentai_v1beta3_generated_DocumentProcessorService_FetchProcessorTypes_async]
 from google.cloud import documentai_v1beta3
 
 
-async def sample_list_processors():
+async def sample_fetch_processor_types():
     # Create a client
     client = documentai_v1beta3.DocumentProcessorServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = documentai_v1beta3.ListProcessorsRequest(
+    request = documentai_v1beta3.FetchProcessorTypesRequest(
         parent="parent_value",
     )
 
     # Make the request
-    page_result = client.list_processors(request=request)
+    response = await client.fetch_processor_types(request=request)
 
     # Handle the response
-    async for response in page_result:
-        print(response)
+    print(response)
 
-# [END documentai_generated_documentai_v1beta3_DocumentProcessorService_ListProcessors_async]
+# [END documentai_v1beta3_generated_DocumentProcessorService_FetchProcessorTypes_async]
