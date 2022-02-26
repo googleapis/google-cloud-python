@@ -466,6 +466,26 @@ class AutoSuggestionServiceClient(metaclass=AutoSuggestionServiceClientMeta):
         r"""Gets a list of suggestions based on a prefix string.
         AutoSuggestion tolerance should be less than 1 second.
 
+
+        .. code-block:: python
+
+            from google.cloud import dataqna_v1alpha
+
+            def sample_suggest_queries():
+                # Create a client
+                client = dataqna_v1alpha.AutoSuggestionServiceClient()
+
+                # Initialize request argument(s)
+                request = dataqna_v1alpha.SuggestQueriesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.suggest_queries(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dataqna_v1alpha.types.SuggestQueriesRequest, dict]):
                 The request object. Request for query suggestions.

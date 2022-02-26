@@ -449,6 +449,25 @@ class QuestionServiceClient(metaclass=QuestionServiceClientMeta):
     ) -> question.Question:
         r"""Gets a previously created question.
 
+        .. code-block:: python
+
+            from google.cloud import dataqna_v1alpha
+
+            def sample_get_question():
+                # Create a client
+                client = dataqna_v1alpha.QuestionServiceClient()
+
+                # Initialize request argument(s)
+                request = dataqna_v1alpha.GetQuestionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_question(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dataqna_v1alpha.types.GetQuestionRequest, dict]):
                 The request object. A request to get a previously
@@ -523,6 +542,30 @@ class QuestionServiceClient(metaclass=QuestionServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_question.Question:
         r"""Creates a question.
+
+        .. code-block:: python
+
+            from google.cloud import dataqna_v1alpha
+
+            def sample_create_question():
+                # Create a client
+                client = dataqna_v1alpha.QuestionServiceClient()
+
+                # Initialize request argument(s)
+                question = dataqna_v1alpha.Question()
+                question.scopes = ['scopes_value_1', 'scopes_value_2']
+                question.query = "query_value"
+
+                request = dataqna_v1alpha.CreateQuestionRequest(
+                    parent="parent_value",
+                    question=question,
+                )
+
+                # Make the request
+                response = client.create_question(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dataqna_v1alpha.types.CreateQuestionRequest, dict]):
@@ -607,6 +650,26 @@ class QuestionServiceClient(metaclass=QuestionServiceClientMeta):
     ) -> question.Question:
         r"""Executes an interpretation.
 
+        .. code-block:: python
+
+            from google.cloud import dataqna_v1alpha
+
+            def sample_execute_question():
+                # Create a client
+                client = dataqna_v1alpha.QuestionServiceClient()
+
+                # Initialize request argument(s)
+                request = dataqna_v1alpha.ExecuteQuestionRequest(
+                    name="name_value",
+                    interpretation_index=2159,
+                )
+
+                # Make the request
+                response = client.execute_question(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dataqna_v1alpha.types.ExecuteQuestionRequest, dict]):
                 The request object. Request to execute an
@@ -690,6 +753,25 @@ class QuestionServiceClient(metaclass=QuestionServiceClientMeta):
     ) -> user_feedback.UserFeedback:
         r"""Gets previously created user feedback.
 
+        .. code-block:: python
+
+            from google.cloud import dataqna_v1alpha
+
+            def sample_get_user_feedback():
+                # Create a client
+                client = dataqna_v1alpha.QuestionServiceClient()
+
+                # Initialize request argument(s)
+                request = dataqna_v1alpha.GetUserFeedbackRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_user_feedback(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dataqna_v1alpha.types.GetUserFeedbackRequest, dict]):
                 The request object. Request to get user feedback.
@@ -761,6 +843,29 @@ class QuestionServiceClient(metaclass=QuestionServiceClientMeta):
     ) -> gcd_user_feedback.UserFeedback:
         r"""Updates user feedback. This creates user feedback if
         there was none before (upsert).
+
+
+        .. code-block:: python
+
+            from google.cloud import dataqna_v1alpha
+
+            def sample_update_user_feedback():
+                # Create a client
+                client = dataqna_v1alpha.QuestionServiceClient()
+
+                # Initialize request argument(s)
+                user_feedback = dataqna_v1alpha.UserFeedback()
+                user_feedback.name = "name_value"
+
+                request = dataqna_v1alpha.UpdateUserFeedbackRequest(
+                    user_feedback=user_feedback,
+                )
+
+                # Make the request
+                response = client.update_user_feedback(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dataqna_v1alpha.types.UpdateUserFeedbackRequest, dict]):
