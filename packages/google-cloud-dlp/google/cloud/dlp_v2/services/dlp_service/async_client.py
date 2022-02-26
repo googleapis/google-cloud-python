@@ -246,7 +246,7 @@ class DlpServiceAsyncClient:
         https://cloud.google.com/dlp/docs/inspecting-text,
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 
@@ -331,7 +331,7 @@ class DlpServiceAsyncClient:
         may change over time as detectors are updated.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 
@@ -417,7 +417,7 @@ class DlpServiceAsyncClient:
         may change over time as detectors are updated.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 
@@ -497,7 +497,7 @@ class DlpServiceAsyncClient:
         to learn more.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 
@@ -577,7 +577,7 @@ class DlpServiceAsyncClient:
         learn more.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 
@@ -680,7 +680,7 @@ class DlpServiceAsyncClient:
         learn more.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 
@@ -811,7 +811,7 @@ class DlpServiceAsyncClient:
         to learn more.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 
@@ -927,7 +927,7 @@ class DlpServiceAsyncClient:
         to learn more.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 
@@ -1037,7 +1037,7 @@ class DlpServiceAsyncClient:
         to learn more.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 
@@ -1172,7 +1172,7 @@ class DlpServiceAsyncClient:
         to learn more.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 
@@ -1270,7 +1270,7 @@ class DlpServiceAsyncClient:
         to learn more.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 
@@ -1400,7 +1400,7 @@ class DlpServiceAsyncClient:
         to learn more.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 
@@ -1515,7 +1515,7 @@ class DlpServiceAsyncClient:
         to learn more.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 
@@ -1624,7 +1624,7 @@ class DlpServiceAsyncClient:
         to learn more.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 
@@ -1760,7 +1760,7 @@ class DlpServiceAsyncClient:
         to learn more.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 
@@ -1858,7 +1858,7 @@ class DlpServiceAsyncClient:
         to learn more.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 
@@ -1984,7 +1984,7 @@ class DlpServiceAsyncClient:
         to learn more.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 
@@ -2097,7 +2097,7 @@ class DlpServiceAsyncClient:
         within the trigger.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 
@@ -2192,7 +2192,7 @@ class DlpServiceAsyncClient:
         to learn more.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 
@@ -2298,7 +2298,7 @@ class DlpServiceAsyncClient:
         to learn more.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 
@@ -2427,7 +2427,7 @@ class DlpServiceAsyncClient:
         to learn more.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 
@@ -2520,7 +2520,7 @@ class DlpServiceAsyncClient:
         occur.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 
@@ -2600,7 +2600,7 @@ class DlpServiceAsyncClient:
         may change over time as detectors are updated.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 
@@ -2733,7 +2733,7 @@ class DlpServiceAsyncClient:
         to learn more.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 
@@ -2865,7 +2865,7 @@ class DlpServiceAsyncClient:
         to learn more.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 
@@ -2972,7 +2972,7 @@ class DlpServiceAsyncClient:
         to learn more.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 
@@ -3068,7 +3068,7 @@ class DlpServiceAsyncClient:
         to learn more.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 
@@ -3132,7 +3132,7 @@ class DlpServiceAsyncClient:
         to learn more.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 
@@ -3261,7 +3261,7 @@ class DlpServiceAsyncClient:
         to learn more.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 
@@ -3378,7 +3378,7 @@ class DlpServiceAsyncClient:
         to learn more.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 
@@ -3485,7 +3485,7 @@ class DlpServiceAsyncClient:
         to learn more.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 
@@ -3621,7 +3621,7 @@ class DlpServiceAsyncClient:
         to learn more.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 
@@ -3716,7 +3716,7 @@ class DlpServiceAsyncClient:
         occur asynchronously.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 
@@ -3809,7 +3809,7 @@ class DlpServiceAsyncClient:
         that have not yet run.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 

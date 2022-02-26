@@ -516,8 +516,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         https://cloud.google.com/dlp/docs/inspecting-text,
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 
@@ -593,8 +592,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         may change over time as detectors are updated.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 
@@ -671,8 +669,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         may change over time as detectors are updated.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 
@@ -743,8 +740,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         to learn more.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 
@@ -815,8 +811,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         learn more.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 
@@ -909,8 +904,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         learn more.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 
@@ -1041,8 +1035,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         to learn more.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 
@@ -1158,8 +1151,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         to learn more.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 
@@ -1259,8 +1251,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         to learn more.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 
@@ -1385,8 +1376,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         to learn more.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 
@@ -1474,8 +1464,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         to learn more.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 
@@ -1607,8 +1596,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         to learn more.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 
@@ -1725,8 +1713,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         to learn more.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 
@@ -1825,8 +1812,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         to learn more.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 
@@ -1954,8 +1940,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         to learn more.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 
@@ -2045,8 +2030,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         to learn more.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 
@@ -2172,8 +2156,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         to learn more.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 
@@ -2286,8 +2269,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         within the trigger.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 
@@ -2384,8 +2366,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         to learn more.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 
@@ -2481,8 +2462,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         to learn more.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 
@@ -2601,8 +2581,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         to learn more.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 
@@ -2685,8 +2664,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         occur.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 
@@ -2767,8 +2745,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         may change over time as detectors are updated.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 
@@ -2901,8 +2878,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         to learn more.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 
@@ -3024,8 +3000,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         to learn more.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 
@@ -3122,8 +3097,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         to learn more.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 
@@ -3209,8 +3183,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         to learn more.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 
@@ -3275,8 +3248,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         to learn more.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 
@@ -3405,8 +3377,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         to learn more.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 
@@ -3523,8 +3494,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         to learn more.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 
@@ -3621,8 +3591,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         to learn more.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 
@@ -3748,8 +3717,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         to learn more.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 
@@ -3834,8 +3802,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         occur asynchronously.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 
@@ -3928,8 +3895,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         that have not yet run.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dlp_v2
 
