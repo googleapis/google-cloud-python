@@ -150,6 +150,25 @@ class GrafeasAsyncClient:
     ) -> grafeas.Occurrence:
         r"""Gets the specified occurrence.
 
+        .. code-block:: python
+
+            from grafeas import grafeas_v1
+
+            def sample_get_occurrence():
+                # Create a client
+                client = grafeas_v1.GrafeasClient()
+
+                # Initialize request argument(s)
+                request = grafeas_v1.GetOccurrenceRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_occurrence(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[grafeas.grafeas_v1.types.GetOccurrenceRequest, dict]):
                 The request object. Request to get an occurrence.
@@ -230,6 +249,26 @@ class GrafeasAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListOccurrencesAsyncPager:
         r"""Lists occurrences for the specified project.
+
+        .. code-block:: python
+
+            from grafeas import grafeas_v1
+
+            def sample_list_occurrences():
+                # Create a client
+                client = grafeas_v1.GrafeasClient()
+
+                # Initialize request argument(s)
+                request = grafeas_v1.ListOccurrencesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_occurrences(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[grafeas.grafeas_v1.types.ListOccurrencesRequest, dict]):
@@ -328,6 +367,23 @@ class GrafeasAsyncClient:
         this method to delete an occurrence when the occurrence
         is no longer applicable for the given resource.
 
+
+        .. code-block:: python
+
+            from grafeas import grafeas_v1
+
+            def sample_delete_occurrence():
+                # Create a client
+                client = grafeas_v1.GrafeasClient()
+
+                # Initialize request argument(s)
+                request = grafeas_v1.DeleteOccurrenceRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_occurrence(request=request)
+
         Args:
             request (Union[grafeas.grafeas_v1.types.DeleteOccurrenceRequest, dict]):
                 The request object. Request to delete an occurrence.
@@ -401,6 +457,25 @@ class GrafeasAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> grafeas.Occurrence:
         r"""Creates a new occurrence.
+
+        .. code-block:: python
+
+            from grafeas import grafeas_v1
+
+            def sample_create_occurrence():
+                # Create a client
+                client = grafeas_v1.GrafeasClient()
+
+                # Initialize request argument(s)
+                request = grafeas_v1.CreateOccurrenceRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.create_occurrence(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[grafeas.grafeas_v1.types.CreateOccurrenceRequest, dict]):
@@ -480,6 +555,25 @@ class GrafeasAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> grafeas.BatchCreateOccurrencesResponse:
         r"""Creates new occurrences in batch.
+
+        .. code-block:: python
+
+            from grafeas import grafeas_v1
+
+            def sample_batch_create_occurrences():
+                # Create a client
+                client = grafeas_v1.GrafeasClient()
+
+                # Initialize request argument(s)
+                request = grafeas_v1.BatchCreateOccurrencesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.batch_create_occurrences(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[grafeas.grafeas_v1.types.BatchCreateOccurrencesRequest, dict]):
@@ -563,6 +657,25 @@ class GrafeasAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> grafeas.Occurrence:
         r"""Updates the specified occurrence.
+
+        .. code-block:: python
+
+            from grafeas import grafeas_v1
+
+            def sample_update_occurrence():
+                # Create a client
+                client = grafeas_v1.GrafeasClient()
+
+                # Initialize request argument(s)
+                request = grafeas_v1.UpdateOccurrenceRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.update_occurrence(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[grafeas.grafeas_v1.types.UpdateOccurrenceRequest, dict]):
@@ -650,6 +763,26 @@ class GrafeasAsyncClient:
         Consumer projects can use this method to get a note that
         belongs to a provider project.
 
+
+        .. code-block:: python
+
+            from grafeas import grafeas_v1
+
+            def sample_get_occurrence_note():
+                # Create a client
+                client = grafeas_v1.GrafeasClient()
+
+                # Initialize request argument(s)
+                request = grafeas_v1.GetOccurrenceNoteRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_occurrence_note(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[grafeas.grafeas_v1.types.GetOccurrenceNoteRequest, dict]):
                 The request object. Request to get the note to which the
@@ -731,6 +864,25 @@ class GrafeasAsyncClient:
     ) -> grafeas.Note:
         r"""Gets the specified note.
 
+        .. code-block:: python
+
+            from grafeas import grafeas_v1
+
+            def sample_get_note():
+                # Create a client
+                client = grafeas_v1.GrafeasClient()
+
+                # Initialize request argument(s)
+                request = grafeas_v1.GetNoteRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_note(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[grafeas.grafeas_v1.types.GetNoteRequest, dict]):
                 The request object. Request to get a note.
@@ -811,6 +963,26 @@ class GrafeasAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListNotesAsyncPager:
         r"""Lists notes for the specified project.
+
+        .. code-block:: python
+
+            from grafeas import grafeas_v1
+
+            def sample_list_notes():
+                # Create a client
+                client = grafeas_v1.GrafeasClient()
+
+                # Initialize request argument(s)
+                request = grafeas_v1.ListNotesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_notes(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[grafeas.grafeas_v1.types.ListNotesRequest, dict]):
@@ -907,6 +1079,22 @@ class GrafeasAsyncClient:
     ) -> None:
         r"""Deletes the specified note.
 
+        .. code-block:: python
+
+            from grafeas import grafeas_v1
+
+            def sample_delete_note():
+                # Create a client
+                client = grafeas_v1.GrafeasClient()
+
+                # Initialize request argument(s)
+                request = grafeas_v1.DeleteNoteRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_note(request=request)
+
         Args:
             request (Union[grafeas.grafeas_v1.types.DeleteNoteRequest, dict]):
                 The request object. Request to delete a note.
@@ -981,6 +1169,26 @@ class GrafeasAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> grafeas.Note:
         r"""Creates a new note.
+
+        .. code-block:: python
+
+            from grafeas import grafeas_v1
+
+            def sample_create_note():
+                # Create a client
+                client = grafeas_v1.GrafeasClient()
+
+                # Initialize request argument(s)
+                request = grafeas_v1.CreateNoteRequest(
+                    parent="parent_value",
+                    note_id="note_id_value",
+                )
+
+                # Make the request
+                response = client.create_note(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[grafeas.grafeas_v1.types.CreateNoteRequest, dict]):
@@ -1068,6 +1276,25 @@ class GrafeasAsyncClient:
     ) -> grafeas.BatchCreateNotesResponse:
         r"""Creates new notes in batch.
 
+        .. code-block:: python
+
+            from grafeas import grafeas_v1
+
+            def sample_batch_create_notes():
+                # Create a client
+                client = grafeas_v1.GrafeasClient()
+
+                # Initialize request argument(s)
+                request = grafeas_v1.BatchCreateNotesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.batch_create_notes(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[grafeas.grafeas_v1.types.BatchCreateNotesRequest, dict]):
                 The request object. Request to create notes in batch.
@@ -1148,6 +1375,25 @@ class GrafeasAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> grafeas.Note:
         r"""Updates the specified note.
+
+        .. code-block:: python
+
+            from grafeas import grafeas_v1
+
+            def sample_update_note():
+                # Create a client
+                client = grafeas_v1.GrafeasClient()
+
+                # Initialize request argument(s)
+                request = grafeas_v1.UpdateNoteRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.update_note(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[grafeas.grafeas_v1.types.UpdateNoteRequest, dict]):
@@ -1236,6 +1482,27 @@ class GrafeasAsyncClient:
         Provider projects can use this method to get all
         occurrences across consumer projects referencing the
         specified note.
+
+
+        .. code-block:: python
+
+            from grafeas import grafeas_v1
+
+            def sample_list_note_occurrences():
+                # Create a client
+                client = grafeas_v1.GrafeasClient()
+
+                # Initialize request argument(s)
+                request = grafeas_v1.ListNoteOccurrencesRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                page_result = client.list_note_occurrences(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[grafeas.grafeas_v1.types.ListNoteOccurrencesRequest, dict]):
