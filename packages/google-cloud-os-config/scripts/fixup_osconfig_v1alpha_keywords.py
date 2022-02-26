@@ -1,6 +1,6 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -44,9 +44,11 @@ class osconfigCallTransformer(cst.CSTTransformer):
         'get_instance_os_policies_compliance': ('name', ),
         'get_inventory': ('name', 'view', ),
         'get_os_policy_assignment': ('name', ),
+        'get_os_policy_assignment_report': ('name', ),
         'get_vulnerability_report': ('name', ),
         'list_instance_os_policies_compliances': ('parent', 'page_size', 'page_token', 'filter', ),
         'list_inventories': ('parent', 'view', 'page_size', 'page_token', 'filter', ),
+        'list_os_policy_assignment_reports': ('parent', 'page_size', 'filter', 'page_token', ),
         'list_os_policy_assignment_revisions': ('name', 'page_size', 'page_token', ),
         'list_os_policy_assignments': ('parent', 'page_size', 'page_token', ),
         'list_vulnerability_reports': ('parent', 'page_size', 'page_token', 'filter', ),

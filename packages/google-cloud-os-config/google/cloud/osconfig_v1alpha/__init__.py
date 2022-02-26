@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -36,6 +36,10 @@ from .types.inventory import ListInventoriesRequest
 from .types.inventory import ListInventoriesResponse
 from .types.inventory import InventoryView
 from .types.os_policy import OSPolicy
+from .types.os_policy_assignment_reports import GetOSPolicyAssignmentReportRequest
+from .types.os_policy_assignment_reports import ListOSPolicyAssignmentReportsRequest
+from .types.os_policy_assignment_reports import ListOSPolicyAssignmentReportsResponse
+from .types.os_policy_assignment_reports import OSPolicyAssignmentReport
 from .types.os_policy_assignments import CreateOSPolicyAssignmentRequest
 from .types.os_policy_assignments import DeleteOSPolicyAssignmentRequest
 from .types.os_policy_assignments import GetOSPolicyAssignmentRequest
@@ -61,6 +65,7 @@ __all__ = (
     "FixedOrPercent",
     "GetInstanceOSPoliciesComplianceRequest",
     "GetInventoryRequest",
+    "GetOSPolicyAssignmentReportRequest",
     "GetOSPolicyAssignmentRequest",
     "GetVulnerabilityReportRequest",
     "InstanceOSPoliciesCompliance",
@@ -70,6 +75,8 @@ __all__ = (
     "ListInstanceOSPoliciesCompliancesResponse",
     "ListInventoriesRequest",
     "ListInventoriesResponse",
+    "ListOSPolicyAssignmentReportsRequest",
+    "ListOSPolicyAssignmentReportsResponse",
     "ListOSPolicyAssignmentRevisionsRequest",
     "ListOSPolicyAssignmentRevisionsResponse",
     "ListOSPolicyAssignmentsRequest",
@@ -79,6 +86,7 @@ __all__ = (
     "OSPolicy",
     "OSPolicyAssignment",
     "OSPolicyAssignmentOperationMetadata",
+    "OSPolicyAssignmentReport",
     "OSPolicyComplianceState",
     "OSPolicyResourceCompliance",
     "OSPolicyResourceConfigStep",

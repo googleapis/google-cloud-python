@@ -37,7 +37,7 @@ async def sample_delete_patch_deployment():
     )
 
     # Make the request
-    response = await client.delete_patch_deployment(request=request)
+    await client.delete_patch_deployment(request=request)
 
 
 # [END osconfig_generated_osconfig_v1_OsConfigService_DeletePatchDeployment_async]

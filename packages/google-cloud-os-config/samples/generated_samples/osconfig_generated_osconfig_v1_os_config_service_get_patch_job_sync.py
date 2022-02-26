@@ -39,7 +39,7 @@ def sample_get_patch_job():
     # Make the request
     response = client.get_patch_job(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END osconfig_generated_osconfig_v1_OsConfigService_GetPatchJob_sync]

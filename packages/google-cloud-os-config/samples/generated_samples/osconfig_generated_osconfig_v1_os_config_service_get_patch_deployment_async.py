@@ -39,7 +39,7 @@ async def sample_get_patch_deployment():
     # Make the request
     response = await client.get_patch_deployment(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END osconfig_generated_osconfig_v1_OsConfigService_GetPatchDeployment_async]

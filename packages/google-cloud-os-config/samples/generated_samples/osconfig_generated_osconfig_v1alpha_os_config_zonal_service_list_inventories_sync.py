@@ -38,6 +38,8 @@ def sample_list_inventories():
 
     # Make the request
     page_result = client.list_inventories(request=request)
+
+    # Handle the response
     for response in page_result:
         print(response)
 

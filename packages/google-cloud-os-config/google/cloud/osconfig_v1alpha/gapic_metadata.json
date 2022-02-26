@@ -35,6 +35,11 @@
                 "get_os_policy_assignment"
               ]
             },
+            "GetOSPolicyAssignmentReport": {
+              "methods": [
+                "get_os_policy_assignment_report"
+              ]
+            },
             "GetVulnerabilityReport": {
               "methods": [
                 "get_vulnerability_report"
@@ -48,6 +53,11 @@
             "ListInventories": {
               "methods": [
                 "list_inventories"
+              ]
+            },
+            "ListOSPolicyAssignmentReports": {
+              "methods": [
+                "list_os_policy_assignment_reports"
               ]
             },
             "ListOSPolicyAssignmentRevisions": {
@@ -100,6 +110,11 @@
                 "get_os_policy_assignment"
               ]
             },
+            "GetOSPolicyAssignmentReport": {
+              "methods": [
+                "get_os_policy_assignment_report"
+              ]
+            },
             "GetVulnerabilityReport": {
               "methods": [
                 "get_vulnerability_report"
@@ -113,6 +128,11 @@
             "ListInventories": {
               "methods": [
                 "list_inventories"
+              ]
+            },
+            "ListOSPolicyAssignmentReports": {
+              "methods": [
+                "list_os_policy_assignment_reports"
               ]
             },
             "ListOSPolicyAssignmentRevisions": {

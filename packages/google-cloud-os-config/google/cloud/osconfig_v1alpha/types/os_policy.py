@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -67,8 +67,7 @@ class OSPolicy(proto.Message):
         ENFORCEMENT = 2
 
     class OSFilter(proto.Message):
-        r"""The ``OSFilter`` is used to specify the OS filtering criteria for
-        the resource group.
+        r"""Filtering criteria to select VMs based on OS details.
 
         Attributes:
             os_short_name (str):
@@ -81,6 +80,26 @@ class OSPolicy(proto.Message):
                 is provided as the last character. For example, to match all
                 versions with a major version of ``7``, specify the
                 following value for this field ``7.*``
+        """
+
+        os_short_name = proto.Field(proto.STRING, number=1,)
+        os_version = proto.Field(proto.STRING, number=2,)
+
+    class InventoryFilter(proto.Message):
+        r"""Filtering criteria to select VMs based on inventory details.
+
+        Attributes:
+            os_short_name (str):
+                Required. The OS short name
+            os_version (str):
+                The OS version
+
+                Prefix matches are supported if asterisk(*) is provided as
+                the last character. For example, to match all versions with
+                a major version of ``7``, specify the following value for
+                this field ``7.*``
+
+                An empty string matches all OS versions.
         """
 
         os_short_name = proto.Field(proto.STRING, number=1,)
@@ -791,8 +810,23 @@ class OSPolicy(proto.Message):
 
         Attributes:
             os_filter (google.cloud.osconfig_v1alpha.types.OSPolicy.OSFilter):
-                Used to specify the OS filter for a resource
-                group
+                Deprecated. Use the ``inventory_filters`` field instead.
+                Used to specify the OS filter for a resource group
+            inventory_filters (Sequence[google.cloud.osconfig_v1alpha.types.OSPolicy.InventoryFilter]):
+                List of inventory filters for the resource group.
+
+                The resources in this resource group are applied to the
+                target VM if it satisfies at least one of the following
+                inventory filters.
+
+                For example, to apply this resource group to VMs running
+                either ``RHEL`` or ``CentOS`` operating systems, specify 2
+                items for the list with following values:
+                inventory_filters[0].os_short_name='rhel' and
+                inventory_filters[1].os_short_name='centos'
+
+                If the list is empty, this resource group will be applied to
+                the target VM unconditionally.
             resources (Sequence[google.cloud.osconfig_v1alpha.types.OSPolicy.Resource]):
                 Required. List of resources configured for
                 this resource group. The resources are executed
@@ -800,6 +834,9 @@ class OSPolicy(proto.Message):
         """
 
         os_filter = proto.Field(proto.MESSAGE, number=1, message="OSPolicy.OSFilter",)
+        inventory_filters = proto.RepeatedField(
+            proto.MESSAGE, number=3, message="OSPolicy.InventoryFilter",
+        )
         resources = proto.RepeatedField(
             proto.MESSAGE, number=2, message="OSPolicy.Resource",
         )

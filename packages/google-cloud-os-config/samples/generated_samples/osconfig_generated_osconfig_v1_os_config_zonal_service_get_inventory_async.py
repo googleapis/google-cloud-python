@@ -39,7 +39,7 @@ async def sample_get_inventory():
     # Make the request
     response = await client.get_inventory(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END osconfig_generated_osconfig_v1_OsConfigZonalService_GetInventory_async]

@@ -38,6 +38,8 @@ def sample_list_patch_jobs():
 
     # Make the request
     page_result = client.list_patch_jobs(request=request)
+
+    # Handle the response
     for response in page_result:
         print(response)
 

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -89,6 +89,10 @@ class OSPolicyAssignment(proto.Message):
         revision_create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The timestamp that the revision
             was created.
+        etag (str):
+            The etag for this OS policy assignment.
+            If this is provided on update, it must match the
+            server's etag.
         rollout_state (google.cloud.osconfig_v1alpha.types.OSPolicyAssignment.RolloutState):
             Output only. OS policy assignment rollout
             state
@@ -144,17 +148,18 @@ class OSPolicyAssignment(proto.Message):
         labels = proto.MapField(proto.STRING, proto.STRING, number=1,)
 
     class InstanceFilter(proto.Message):
-        r"""Message to represent the filters to select VMs for an
-        assignment
+        r"""Filters to select target VMs for an assignment.
+        If more than one filter criteria is specified below, a VM will
+        be selected if and only if it satisfies all of them.
 
         Attributes:
             all_ (bool):
                 Target all VMs in the project. If true, no
                 other criteria is permitted.
             os_short_names (Sequence[str]):
-                A VM is included if it's OS short name
-                matches with any of the values provided in this
-                list.
+                Deprecated. Use the ``inventories`` field instead. A VM is
+                selected if it's OS short name matches with any of the
+                values provided in this list.
             inclusion_labels (Sequence[google.cloud.osconfig_v1alpha.types.OSPolicyAssignment.LabelSet]):
                 List of label sets used for VM inclusion.
 
@@ -165,12 +170,31 @@ class OSPolicyAssignment(proto.Message):
                 If the list has more than one label set, the VM
                 is excluded if any of the label sets are
                 applicable for the VM.
-
-                This filter is applied last in the filtering
-                chain and therefore a VM is guaranteed to be
-                excluded if it satisfies one of the below label
-                sets.
+            inventories (Sequence[google.cloud.osconfig_v1alpha.types.OSPolicyAssignment.InstanceFilter.Inventory]):
+                List of inventories to select VMs.
+                A VM is selected if its inventory data matches
+                at least one of the following inventories.
         """
+
+        class Inventory(proto.Message):
+            r"""VM inventory details.
+
+            Attributes:
+                os_short_name (str):
+                    Required. The OS short name
+                os_version (str):
+                    The OS version
+
+                    Prefix matches are supported if asterisk(*) is provided as
+                    the last character. For example, to match all versions with
+                    a major version of ``7``, specify the following value for
+                    this field ``7.*``
+
+                    An empty string matches all OS versions.
+            """
+
+            os_short_name = proto.Field(proto.STRING, number=1,)
+            os_version = proto.Field(proto.STRING, number=2,)
 
         all_ = proto.Field(proto.BOOL, number=1,)
         os_short_names = proto.RepeatedField(proto.STRING, number=2,)
@@ -179,6 +203,11 @@ class OSPolicyAssignment(proto.Message):
         )
         exclusion_labels = proto.RepeatedField(
             proto.MESSAGE, number=4, message="OSPolicyAssignment.LabelSet",
+        )
+        inventories = proto.RepeatedField(
+            proto.MESSAGE,
+            number=5,
+            message="OSPolicyAssignment.InstanceFilter.Inventory",
         )
 
     class Rollout(proto.Message):
@@ -215,6 +244,7 @@ class OSPolicyAssignment(proto.Message):
     revision_create_time = proto.Field(
         proto.MESSAGE, number=7, message=timestamp_pb2.Timestamp,
     )
+    etag = proto.Field(proto.STRING, number=8,)
     rollout_state = proto.Field(proto.ENUM, number=9, enum=RolloutState,)
     baseline = proto.Field(proto.BOOL, number=10,)
     deleted = proto.Field(proto.BOOL, number=11,)

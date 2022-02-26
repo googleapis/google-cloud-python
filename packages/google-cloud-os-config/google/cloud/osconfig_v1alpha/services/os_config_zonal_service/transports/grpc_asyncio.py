@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@ from grpc.experimental import aio  # type: ignore
 
 from google.cloud.osconfig_v1alpha.types import instance_os_policies_compliance
 from google.cloud.osconfig_v1alpha.types import inventory
+from google.cloud.osconfig_v1alpha.types import os_policy_assignment_reports
 from google.cloud.osconfig_v1alpha.types import os_policy_assignments
 from google.cloud.osconfig_v1alpha.types import vulnerability
 from google.longrunning import operations_pb2  # type: ignore
@@ -538,6 +539,72 @@ class OsConfigZonalServiceGrpcAsyncIOTransport(OsConfigZonalServiceTransport):
                 response_deserializer=instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesResponse.deserialize,
             )
         return self._stubs["list_instance_os_policies_compliances"]
+
+    @property
+    def get_os_policy_assignment_report(
+        self,
+    ) -> Callable[
+        [os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest],
+        Awaitable[os_policy_assignment_reports.OSPolicyAssignmentReport],
+    ]:
+        r"""Return a callable for the get os policy assignment
+        report method over gRPC.
+
+        Get the OS policy asssignment report for the
+        specified Compute Engine VM instance.
+
+        Returns:
+            Callable[[~.GetOSPolicyAssignmentReportRequest],
+                    Awaitable[~.OSPolicyAssignmentReport]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_os_policy_assignment_report" not in self._stubs:
+            self._stubs[
+                "get_os_policy_assignment_report"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.osconfig.v1alpha.OsConfigZonalService/GetOSPolicyAssignmentReport",
+                request_serializer=os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest.serialize,
+                response_deserializer=os_policy_assignment_reports.OSPolicyAssignmentReport.deserialize,
+            )
+        return self._stubs["get_os_policy_assignment_report"]
+
+    @property
+    def list_os_policy_assignment_reports(
+        self,
+    ) -> Callable[
+        [os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest],
+        Awaitable[os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse],
+    ]:
+        r"""Return a callable for the list os policy assignment
+        reports method over gRPC.
+
+        List OS policy asssignment reports for all Compute
+        Engine VM instances in the specified zone.
+
+        Returns:
+            Callable[[~.ListOSPolicyAssignmentReportsRequest],
+                    Awaitable[~.ListOSPolicyAssignmentReportsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_os_policy_assignment_reports" not in self._stubs:
+            self._stubs[
+                "list_os_policy_assignment_reports"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.osconfig.v1alpha.OsConfigZonalService/ListOSPolicyAssignmentReports",
+                request_serializer=os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest.serialize,
+                response_deserializer=os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse.deserialize,
+            )
+        return self._stubs["list_os_policy_assignment_reports"]
 
     @property
     def get_inventory(

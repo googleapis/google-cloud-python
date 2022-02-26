@@ -38,6 +38,8 @@ async def sample_list_os_policy_assignment_reports():
 
     # Make the request
     page_result = client.list_os_policy_assignment_reports(request=request)
+
+    # Handle the response
     async for response in page_result:
         print(response)
 

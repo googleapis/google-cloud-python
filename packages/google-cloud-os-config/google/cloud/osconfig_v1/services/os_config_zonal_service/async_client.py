@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -268,7 +268,7 @@ class OsConfigZonalServiceAsyncClient:
         projects.locations.osPolicyAssignments.operations.cancel <https://cloud.google.com/compute/docs/osconfig/rest/v1/projects.locations.osPolicyAssignments.operations/cancel>`__.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import osconfig_v1
 
@@ -297,6 +297,8 @@ class OsConfigZonalServiceAsyncClient:
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -431,7 +433,7 @@ class OsConfigZonalServiceAsyncClient:
         projects.locations.osPolicyAssignments.operations.cancel <https://cloud.google.com/compute/docs/osconfig/rest/v1/projects.locations.osPolicyAssignments.operations/cancel>`__.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import osconfig_v1
 
@@ -458,6 +460,8 @@ class OsConfigZonalServiceAsyncClient:
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -568,7 +572,7 @@ class OsConfigZonalServiceAsyncClient:
         revision ID in the ``name`` parameter.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import osconfig_v1
 
@@ -584,7 +588,7 @@ class OsConfigZonalServiceAsyncClient:
                 # Make the request
                 response = client.get_os_policy_assignment(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -676,7 +680,7 @@ class OsConfigZonalServiceAsyncClient:
         returned.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import osconfig_v1
 
@@ -691,6 +695,8 @@ class OsConfigZonalServiceAsyncClient:
 
                 # Make the request
                 page_result = client.list_os_policy_assignments(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -776,7 +782,7 @@ class OsConfigZonalServiceAsyncClient:
         OS policy assignment.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import osconfig_v1
 
@@ -791,6 +797,8 @@ class OsConfigZonalServiceAsyncClient:
 
                 # Make the request
                 page_result = client.list_os_policy_assignment_revisions(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -889,7 +897,7 @@ class OsConfigZonalServiceAsyncClient:
         projects.locations.osPolicyAssignments.operations.cancel <https://cloud.google.com/compute/docs/osconfig/rest/v1/projects.locations.osPolicyAssignments.operations/cancel>`__.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import osconfig_v1
 
@@ -908,6 +916,8 @@ class OsConfigZonalServiceAsyncClient:
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -1006,7 +1016,7 @@ class OsConfigZonalServiceAsyncClient:
         specified Compute Engine VM instance.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import osconfig_v1
 
@@ -1022,7 +1032,7 @@ class OsConfigZonalServiceAsyncClient:
                 # Make the request
                 response = client.get_os_policy_assignment_report(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1112,7 +1122,7 @@ class OsConfigZonalServiceAsyncClient:
         Engine VM instances in the specified zone.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import osconfig_v1
 
@@ -1127,6 +1137,8 @@ class OsConfigZonalServiceAsyncClient:
 
                 # Make the request
                 page_result = client.list_os_policy_assignment_reports(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -1239,7 +1251,7 @@ class OsConfigZonalServiceAsyncClient:
         no associated inventory, the message ``NOT_FOUND`` is returned.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import osconfig_v1
 
@@ -1255,7 +1267,7 @@ class OsConfigZonalServiceAsyncClient:
                 # Make the request
                 response = client.get_inventory(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1346,7 +1358,7 @@ class OsConfigZonalServiceAsyncClient:
         specified zone.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import osconfig_v1
 
@@ -1361,6 +1373,8 @@ class OsConfigZonalServiceAsyncClient:
 
                 # Make the request
                 page_result = client.list_inventories(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -1453,7 +1467,7 @@ class OsConfigZonalServiceAsyncClient:
         vulnerability reports associated with them.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import osconfig_v1
 
@@ -1469,7 +1483,7 @@ class OsConfigZonalServiceAsyncClient:
                 # Make the request
                 response = client.get_vulnerability_report(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1556,7 +1570,7 @@ class OsConfigZonalServiceAsyncClient:
         the specified zone.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import osconfig_v1
 
@@ -1571,6 +1585,8 @@ class OsConfigZonalServiceAsyncClient:
 
                 # Make the request
                 page_result = client.list_vulnerability_reports(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 

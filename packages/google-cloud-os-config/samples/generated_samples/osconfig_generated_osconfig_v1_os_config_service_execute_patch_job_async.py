@@ -39,7 +39,7 @@ async def sample_execute_patch_job():
     # Make the request
     response = await client.execute_patch_job(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END osconfig_generated_osconfig_v1_OsConfigService_ExecutePatchJob_async]

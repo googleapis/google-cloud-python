@@ -39,7 +39,7 @@ def sample_get_os_policy_assignment_report():
     # Make the request
     response = client.get_os_policy_assignment_report(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END osconfig_generated_osconfig_v1_OsConfigZonalService_GetOSPolicyAssignmentReport_sync]

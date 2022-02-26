@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -28,6 +28,7 @@ from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.osconfig_v1alpha.types import instance_os_policies_compliance
 from google.cloud.osconfig_v1alpha.types import inventory
+from google.cloud.osconfig_v1alpha.types import os_policy_assignment_reports
 from google.cloud.osconfig_v1alpha.types import os_policy_assignments
 from google.cloud.osconfig_v1alpha.types import vulnerability
 from google.longrunning import operations_pb2  # type: ignore
@@ -163,6 +164,16 @@ class OsConfigZonalServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.get_os_policy_assignment_report: gapic_v1.method.wrap_method(
+                self.get_os_policy_assignment_report,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_os_policy_assignment_reports: gapic_v1.method.wrap_method(
+                self.list_os_policy_assignment_reports,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_inventory: gapic_v1.method.wrap_method(
                 self.get_inventory, default_timeout=None, client_info=client_info,
             ),
@@ -279,6 +290,32 @@ class OsConfigZonalServiceTransport(abc.ABC):
             instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesResponse,
             Awaitable[
                 instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesResponse
+            ],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_os_policy_assignment_report(
+        self,
+    ) -> Callable[
+        [os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest],
+        Union[
+            os_policy_assignment_reports.OSPolicyAssignmentReport,
+            Awaitable[os_policy_assignment_reports.OSPolicyAssignmentReport],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_os_policy_assignment_reports(
+        self,
+    ) -> Callable[
+        [os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest],
+        Union[
+            os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse,
+            Awaitable[
+                os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse
             ],
         ],
     ]:

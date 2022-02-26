@@ -50,6 +50,8 @@ async def sample_update_os_policy_assignment():
     print("Waiting for operation to complete...")
 
     response = await operation.result()
+
+    # Handle the response
     print(response)
 
 # [END osconfig_generated_osconfig_v1_OsConfigZonalService_UpdateOSPolicyAssignment_async]

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -32,6 +32,12 @@ from .inventory import (
     InventoryView,
 )
 from .os_policy import OSPolicy
+from .os_policy_assignment_reports import (
+    GetOSPolicyAssignmentReportRequest,
+    ListOSPolicyAssignmentReportsRequest,
+    ListOSPolicyAssignmentReportsResponse,
+    OSPolicyAssignmentReport,
+)
 from .os_policy_assignments import (
     CreateOSPolicyAssignmentRequest,
     DeleteOSPolicyAssignmentRequest,
@@ -67,6 +73,10 @@ __all__ = (
     "ListInventoriesResponse",
     "InventoryView",
     "OSPolicy",
+    "GetOSPolicyAssignmentReportRequest",
+    "ListOSPolicyAssignmentReportsRequest",
+    "ListOSPolicyAssignmentReportsResponse",
+    "OSPolicyAssignmentReport",
     "CreateOSPolicyAssignmentRequest",
     "DeleteOSPolicyAssignmentRequest",
     "GetOSPolicyAssignmentRequest",

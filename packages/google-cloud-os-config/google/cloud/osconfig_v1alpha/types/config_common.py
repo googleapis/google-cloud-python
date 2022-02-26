@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -28,6 +28,7 @@ __protobuf__ = proto.module(
 
 class OSPolicyComplianceState(proto.Enum):
     r"""Supported OSPolicy compliance states."""
+    _pb_options = {"deprecated": True}
     OS_POLICY_COMPLIANCE_STATE_UNSPECIFIED = 0
     COMPLIANT = 1
     NON_COMPLIANT = 2
@@ -52,6 +53,7 @@ class OSPolicyResourceConfigStep(proto.Message):
 
     class Type(proto.Enum):
         r"""Supported configuration step types"""
+        _pb_options = {"deprecated": True}
         TYPE_UNSPECIFIED = 0
         VALIDATION = 1
         DESIRED_STATE_CHECK = 2
@@ -60,6 +62,7 @@ class OSPolicyResourceConfigStep(proto.Message):
 
     class Outcome(proto.Enum):
         r"""Supported outcomes for a configuration step."""
+        _pb_options = {"deprecated": True}
         OUTCOME_UNSPECIFIED = 0
         SUCCEEDED = 1
         FAILED = 2

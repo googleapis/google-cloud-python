@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -228,7 +228,7 @@ class OsConfigServiceAsyncClient:
         job.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import osconfig_v1
 
@@ -244,7 +244,7 @@ class OsConfigServiceAsyncClient:
                 # Make the request
                 response = client.execute_patch_job(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -308,7 +308,7 @@ class OsConfigServiceAsyncClient:
         of completed jobs.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import osconfig_v1
 
@@ -324,7 +324,7 @@ class OsConfigServiceAsyncClient:
                 # Make the request
                 response = client.get_patch_job(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -407,7 +407,7 @@ class OsConfigServiceAsyncClient:
         Canceled patch jobs cannot be restarted.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import osconfig_v1
 
@@ -423,7 +423,7 @@ class OsConfigServiceAsyncClient:
                 # Make the request
                 response = client.cancel_patch_job(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -483,7 +483,7 @@ class OsConfigServiceAsyncClient:
     ) -> pagers.ListPatchJobsAsyncPager:
         r"""Get a list of patch jobs.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import osconfig_v1
 
@@ -498,6 +498,8 @@ class OsConfigServiceAsyncClient:
 
                 # Make the request
                 page_result = client.list_patch_jobs(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -579,7 +581,7 @@ class OsConfigServiceAsyncClient:
     ) -> pagers.ListPatchJobInstanceDetailsAsyncPager:
         r"""Get a list of instance details for a given patch job.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import osconfig_v1
 
@@ -594,6 +596,8 @@ class OsConfigServiceAsyncClient:
 
                 # Make the request
                 page_result = client.list_patch_job_instance_details(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -679,7 +683,7 @@ class OsConfigServiceAsyncClient:
     ) -> patch_deployments.PatchDeployment:
         r"""Create an OS Config patch deployment.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import osconfig_v1
 
@@ -696,7 +700,7 @@ class OsConfigServiceAsyncClient:
                 # Make the request
                 response = client.create_patch_deployment(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -799,7 +803,7 @@ class OsConfigServiceAsyncClient:
     ) -> patch_deployments.PatchDeployment:
         r"""Get an OS Config patch deployment.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import osconfig_v1
 
@@ -815,7 +819,7 @@ class OsConfigServiceAsyncClient:
                 # Make the request
                 response = client.get_patch_deployment(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -893,7 +897,7 @@ class OsConfigServiceAsyncClient:
     ) -> pagers.ListPatchDeploymentsAsyncPager:
         r"""Get a page of OS Config patch deployments.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import osconfig_v1
 
@@ -908,6 +912,8 @@ class OsConfigServiceAsyncClient:
 
                 # Make the request
                 page_result = client.list_patch_deployments(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -991,7 +997,7 @@ class OsConfigServiceAsyncClient:
     ) -> None:
         r"""Delete an OS Config patch deployment.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import osconfig_v1
 
@@ -1005,7 +1011,7 @@ class OsConfigServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.delete_patch_deployment(request=request)
+                client.delete_patch_deployment(request=request)
 
         Args:
             request (Union[google.cloud.osconfig_v1.types.DeletePatchDeploymentRequest, dict]):
@@ -1072,7 +1078,7 @@ class OsConfigServiceAsyncClient:
     ) -> patch_deployments.PatchDeployment:
         r"""Update an OS Config patch deployment.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import osconfig_v1
 
@@ -1087,7 +1093,7 @@ class OsConfigServiceAsyncClient:
                 # Make the request
                 response = client.update_patch_deployment(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1180,7 +1186,7 @@ class OsConfigServiceAsyncClient:
         jobs.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import osconfig_v1
 
@@ -1196,7 +1202,7 @@ class OsConfigServiceAsyncClient:
                 # Make the request
                 response = client.pause_patch_deployment(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1277,7 +1283,7 @@ class OsConfigServiceAsyncClient:
         patch jobs.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import osconfig_v1
 
@@ -1293,7 +1299,7 @@ class OsConfigServiceAsyncClient:
                 # Make the request
                 response = client.resume_patch_deployment(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -47,6 +47,7 @@ from google.cloud.osconfig_v1alpha.types import config_common
 from google.cloud.osconfig_v1alpha.types import instance_os_policies_compliance
 from google.cloud.osconfig_v1alpha.types import inventory
 from google.cloud.osconfig_v1alpha.types import os_policy
+from google.cloud.osconfig_v1alpha.types import os_policy_assignment_reports
 from google.cloud.osconfig_v1alpha.types import os_policy_assignments
 from google.cloud.osconfig_v1alpha.types import osconfig_common
 from google.cloud.osconfig_v1alpha.types import vulnerability
@@ -1197,6 +1198,7 @@ def test_get_os_policy_assignment(request_type, transport: str = "grpc"):
             name="name_value",
             description="description_value",
             revision_id="revision_id_value",
+            etag="etag_value",
             rollout_state=os_policy_assignments.OSPolicyAssignment.RolloutState.IN_PROGRESS,
             baseline=True,
             deleted=True,
@@ -1215,6 +1217,7 @@ def test_get_os_policy_assignment(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.description == "description_value"
     assert response.revision_id == "revision_id_value"
+    assert response.etag == "etag_value"
     assert (
         response.rollout_state
         == os_policy_assignments.OSPolicyAssignment.RolloutState.IN_PROGRESS
@@ -1265,6 +1268,7 @@ async def test_get_os_policy_assignment_async(
                 name="name_value",
                 description="description_value",
                 revision_id="revision_id_value",
+                etag="etag_value",
                 rollout_state=os_policy_assignments.OSPolicyAssignment.RolloutState.IN_PROGRESS,
                 baseline=True,
                 deleted=True,
@@ -1284,6 +1288,7 @@ async def test_get_os_policy_assignment_async(
     assert response.name == "name_value"
     assert response.description == "description_value"
     assert response.revision_id == "revision_id_value"
+    assert response.etag == "etag_value"
     assert (
         response.rollout_state
         == os_policy_assignments.OSPolicyAssignment.RolloutState.IN_PROGRESS
@@ -3205,6 +3210,697 @@ async def test_list_instance_os_policies_compliances_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest, dict,],
+)
+def test_get_os_policy_assignment_report(request_type, transport: str = "grpc"):
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_os_policy_assignment_report), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = os_policy_assignment_reports.OSPolicyAssignmentReport(
+            name="name_value",
+            instance="instance_value",
+            os_policy_assignment="os_policy_assignment_value",
+            last_run_id="last_run_id_value",
+        )
+        response = client.get_os_policy_assignment_report(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0] == os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest()
+        )
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, os_policy_assignment_reports.OSPolicyAssignmentReport)
+    assert response.name == "name_value"
+    assert response.instance == "instance_value"
+    assert response.os_policy_assignment == "os_policy_assignment_value"
+    assert response.last_run_id == "last_run_id_value"
+
+
+def test_get_os_policy_assignment_report_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_os_policy_assignment_report), "__call__"
+    ) as call:
+        client.get_os_policy_assignment_report()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0] == os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest()
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_os_policy_assignment_report_async(
+    transport: str = "grpc_asyncio",
+    request_type=os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest,
+):
+    client = OsConfigZonalServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_os_policy_assignment_report), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            os_policy_assignment_reports.OSPolicyAssignmentReport(
+                name="name_value",
+                instance="instance_value",
+                os_policy_assignment="os_policy_assignment_value",
+                last_run_id="last_run_id_value",
+            )
+        )
+        response = await client.get_os_policy_assignment_report(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0] == os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest()
+        )
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, os_policy_assignment_reports.OSPolicyAssignmentReport)
+    assert response.name == "name_value"
+    assert response.instance == "instance_value"
+    assert response.os_policy_assignment == "os_policy_assignment_value"
+    assert response.last_run_id == "last_run_id_value"
+
+
+@pytest.mark.asyncio
+async def test_get_os_policy_assignment_report_async_from_dict():
+    await test_get_os_policy_assignment_report_async(request_type=dict)
+
+
+def test_get_os_policy_assignment_report_field_headers():
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_os_policy_assignment_report), "__call__"
+    ) as call:
+        call.return_value = os_policy_assignment_reports.OSPolicyAssignmentReport()
+        client.get_os_policy_assignment_report(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_os_policy_assignment_report_field_headers_async():
+    client = OsConfigZonalServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_os_policy_assignment_report), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            os_policy_assignment_reports.OSPolicyAssignmentReport()
+        )
+        await client.get_os_policy_assignment_report(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+def test_get_os_policy_assignment_report_flattened():
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_os_policy_assignment_report), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = os_policy_assignment_reports.OSPolicyAssignmentReport()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_os_policy_assignment_report(name="name_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_os_policy_assignment_report_flattened_error():
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_os_policy_assignment_report(
+            os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_os_policy_assignment_report_flattened_async():
+    client = OsConfigZonalServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_os_policy_assignment_report), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = os_policy_assignment_reports.OSPolicyAssignmentReport()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            os_policy_assignment_reports.OSPolicyAssignmentReport()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_os_policy_assignment_report(name="name_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_os_policy_assignment_report_flattened_error_async():
+    client = OsConfigZonalServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_os_policy_assignment_report(
+            os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest, dict,],
+)
+def test_list_os_policy_assignment_reports(request_type, transport: str = "grpc"):
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_os_policy_assignment_reports), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.list_os_policy_assignment_reports(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest()
+        )
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListOSPolicyAssignmentReportsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_os_policy_assignment_reports_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_os_policy_assignment_reports), "__call__"
+    ) as call:
+        client.list_os_policy_assignment_reports()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest()
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_os_policy_assignment_reports_async(
+    transport: str = "grpc_asyncio",
+    request_type=os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest,
+):
+    client = OsConfigZonalServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_os_policy_assignment_reports), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_os_policy_assignment_reports(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest()
+        )
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListOSPolicyAssignmentReportsAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_os_policy_assignment_reports_async_from_dict():
+    await test_list_os_policy_assignment_reports_async(request_type=dict)
+
+
+def test_list_os_policy_assignment_reports_field_headers():
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest()
+
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_os_policy_assignment_reports), "__call__"
+    ) as call:
+        call.return_value = (
+            os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse()
+        )
+        client.list_os_policy_assignment_reports(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_os_policy_assignment_reports_field_headers_async():
+    client = OsConfigZonalServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest()
+
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_os_policy_assignment_reports), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse()
+        )
+        await client.list_os_policy_assignment_reports(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
+def test_list_os_policy_assignment_reports_flattened():
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_os_policy_assignment_reports), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = (
+            os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_os_policy_assignment_reports(parent="parent_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_os_policy_assignment_reports_flattened_error():
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_os_policy_assignment_reports(
+            os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_os_policy_assignment_reports_flattened_async():
+    client = OsConfigZonalServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_os_policy_assignment_reports), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = (
+            os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse()
+        )
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_os_policy_assignment_reports(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_os_policy_assignment_reports_flattened_error_async():
+    client = OsConfigZonalServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_os_policy_assignment_reports(
+            os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_os_policy_assignment_reports_pager(transport_name: str = "grpc"):
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_os_policy_assignment_reports), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse(
+                os_policy_assignment_reports=[
+                    os_policy_assignment_reports.OSPolicyAssignmentReport(),
+                    os_policy_assignment_reports.OSPolicyAssignmentReport(),
+                    os_policy_assignment_reports.OSPolicyAssignmentReport(),
+                ],
+                next_page_token="abc",
+            ),
+            os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse(
+                os_policy_assignment_reports=[], next_page_token="def",
+            ),
+            os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse(
+                os_policy_assignment_reports=[
+                    os_policy_assignment_reports.OSPolicyAssignmentReport(),
+                ],
+                next_page_token="ghi",
+            ),
+            os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse(
+                os_policy_assignment_reports=[
+                    os_policy_assignment_reports.OSPolicyAssignmentReport(),
+                    os_policy_assignment_reports.OSPolicyAssignmentReport(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_os_policy_assignment_reports(request={})
+
+        assert pager._metadata == metadata
+
+        results = [i for i in pager]
+        assert len(results) == 6
+        assert all(
+            isinstance(i, os_policy_assignment_reports.OSPolicyAssignmentReport)
+            for i in results
+        )
+
+
+def test_list_os_policy_assignment_reports_pages(transport_name: str = "grpc"):
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_os_policy_assignment_reports), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse(
+                os_policy_assignment_reports=[
+                    os_policy_assignment_reports.OSPolicyAssignmentReport(),
+                    os_policy_assignment_reports.OSPolicyAssignmentReport(),
+                    os_policy_assignment_reports.OSPolicyAssignmentReport(),
+                ],
+                next_page_token="abc",
+            ),
+            os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse(
+                os_policy_assignment_reports=[], next_page_token="def",
+            ),
+            os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse(
+                os_policy_assignment_reports=[
+                    os_policy_assignment_reports.OSPolicyAssignmentReport(),
+                ],
+                next_page_token="ghi",
+            ),
+            os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse(
+                os_policy_assignment_reports=[
+                    os_policy_assignment_reports.OSPolicyAssignmentReport(),
+                    os_policy_assignment_reports.OSPolicyAssignmentReport(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_os_policy_assignment_reports(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_os_policy_assignment_reports_async_pager():
+    client = OsConfigZonalServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_os_policy_assignment_reports),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse(
+                os_policy_assignment_reports=[
+                    os_policy_assignment_reports.OSPolicyAssignmentReport(),
+                    os_policy_assignment_reports.OSPolicyAssignmentReport(),
+                    os_policy_assignment_reports.OSPolicyAssignmentReport(),
+                ],
+                next_page_token="abc",
+            ),
+            os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse(
+                os_policy_assignment_reports=[], next_page_token="def",
+            ),
+            os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse(
+                os_policy_assignment_reports=[
+                    os_policy_assignment_reports.OSPolicyAssignmentReport(),
+                ],
+                next_page_token="ghi",
+            ),
+            os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse(
+                os_policy_assignment_reports=[
+                    os_policy_assignment_reports.OSPolicyAssignmentReport(),
+                    os_policy_assignment_reports.OSPolicyAssignmentReport(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_os_policy_assignment_reports(request={},)
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(
+            isinstance(i, os_policy_assignment_reports.OSPolicyAssignmentReport)
+            for i in responses
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_os_policy_assignment_reports_async_pages():
+    client = OsConfigZonalServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_os_policy_assignment_reports),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse(
+                os_policy_assignment_reports=[
+                    os_policy_assignment_reports.OSPolicyAssignmentReport(),
+                    os_policy_assignment_reports.OSPolicyAssignmentReport(),
+                    os_policy_assignment_reports.OSPolicyAssignmentReport(),
+                ],
+                next_page_token="abc",
+            ),
+            os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse(
+                os_policy_assignment_reports=[], next_page_token="def",
+            ),
+            os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse(
+                os_policy_assignment_reports=[
+                    os_policy_assignment_reports.OSPolicyAssignmentReport(),
+                ],
+                next_page_token="ghi",
+            ),
+            os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse(
+                os_policy_assignment_reports=[
+                    os_policy_assignment_reports.OSPolicyAssignmentReport(),
+                    os_policy_assignment_reports.OSPolicyAssignmentReport(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        async for page_ in (
+            await client.list_os_policy_assignment_reports(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
 @pytest.mark.parametrize("request_type", [inventory.GetInventoryRequest, dict,])
 def test_get_inventory(request_type, transport: str = "grpc"):
     client = OsConfigZonalServiceClient(
@@ -4519,6 +5215,8 @@ def test_os_config_zonal_service_base_transport():
         "delete_os_policy_assignment",
         "get_instance_os_policies_compliance",
         "list_instance_os_policies_compliances",
+        "get_os_policy_assignment_report",
+        "list_os_policy_assignment_reports",
         "get_inventory",
         "list_inventories",
         "get_vulnerability_report",
@@ -4904,10 +5602,38 @@ def test_parse_instance_os_policies_compliance_path():
     assert expected == actual
 
 
-def test_inventory_path():
+def test_instance_os_policy_assignment_path():
     project = "squid"
     location = "clam"
     instance = "whelk"
+    assignment = "octopus"
+    expected = "projects/{project}/locations/{location}/instances/{instance}/osPolicyAssignments/{assignment}".format(
+        project=project, location=location, instance=instance, assignment=assignment,
+    )
+    actual = OsConfigZonalServiceClient.instance_os_policy_assignment_path(
+        project, location, instance, assignment
+    )
+    assert expected == actual
+
+
+def test_parse_instance_os_policy_assignment_path():
+    expected = {
+        "project": "oyster",
+        "location": "nudibranch",
+        "instance": "cuttlefish",
+        "assignment": "mussel",
+    }
+    path = OsConfigZonalServiceClient.instance_os_policy_assignment_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = OsConfigZonalServiceClient.parse_instance_os_policy_assignment_path(path)
+    assert expected == actual
+
+
+def test_inventory_path():
+    project = "winkle"
+    location = "nautilus"
+    instance = "scallop"
     expected = "projects/{project}/locations/{location}/instances/{instance}/inventory".format(
         project=project, location=location, instance=instance,
     )
@@ -4917,9 +5643,9 @@ def test_inventory_path():
 
 def test_parse_inventory_path():
     expected = {
-        "project": "octopus",
-        "location": "oyster",
-        "instance": "nudibranch",
+        "project": "abalone",
+        "location": "squid",
+        "instance": "clam",
     }
     path = OsConfigZonalServiceClient.inventory_path(**expected)
 
@@ -4929,9 +5655,9 @@ def test_parse_inventory_path():
 
 
 def test_os_policy_assignment_path():
-    project = "cuttlefish"
-    location = "mussel"
-    os_policy_assignment = "winkle"
+    project = "whelk"
+    location = "octopus"
+    os_policy_assignment = "oyster"
     expected = "projects/{project}/locations/{location}/osPolicyAssignments/{os_policy_assignment}".format(
         project=project, location=location, os_policy_assignment=os_policy_assignment,
     )
@@ -4943,9 +5669,9 @@ def test_os_policy_assignment_path():
 
 def test_parse_os_policy_assignment_path():
     expected = {
-        "project": "nautilus",
-        "location": "scallop",
-        "os_policy_assignment": "abalone",
+        "project": "nudibranch",
+        "location": "cuttlefish",
+        "os_policy_assignment": "mussel",
     }
     path = OsConfigZonalServiceClient.os_policy_assignment_path(**expected)
 
@@ -4954,10 +5680,38 @@ def test_parse_os_policy_assignment_path():
     assert expected == actual
 
 
+def test_os_policy_assignment_report_path():
+    project = "winkle"
+    location = "nautilus"
+    instance = "scallop"
+    assignment = "abalone"
+    expected = "projects/{project}/locations/{location}/instances/{instance}/osPolicyAssignments/{assignment}/report".format(
+        project=project, location=location, instance=instance, assignment=assignment,
+    )
+    actual = OsConfigZonalServiceClient.os_policy_assignment_report_path(
+        project, location, instance, assignment
+    )
+    assert expected == actual
+
+
+def test_parse_os_policy_assignment_report_path():
+    expected = {
+        "project": "squid",
+        "location": "clam",
+        "instance": "whelk",
+        "assignment": "octopus",
+    }
+    path = OsConfigZonalServiceClient.os_policy_assignment_report_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = OsConfigZonalServiceClient.parse_os_policy_assignment_report_path(path)
+    assert expected == actual
+
+
 def test_vulnerability_report_path():
-    project = "squid"
-    location = "clam"
-    instance = "whelk"
+    project = "oyster"
+    location = "nudibranch"
+    instance = "cuttlefish"
     expected = "projects/{project}/locations/{location}/instances/{instance}/vulnerabilityReport".format(
         project=project, location=location, instance=instance,
     )
@@ -4969,9 +5723,9 @@ def test_vulnerability_report_path():
 
 def test_parse_vulnerability_report_path():
     expected = {
-        "project": "octopus",
-        "location": "oyster",
-        "instance": "nudibranch",
+        "project": "mussel",
+        "location": "winkle",
+        "instance": "nautilus",
     }
     path = OsConfigZonalServiceClient.vulnerability_report_path(**expected)
 
@@ -4981,7 +5735,7 @@ def test_parse_vulnerability_report_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "cuttlefish"
+    billing_account = "scallop"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -4991,7 +5745,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "mussel",
+        "billing_account": "abalone",
     }
     path = OsConfigZonalServiceClient.common_billing_account_path(**expected)
 
@@ -5001,7 +5755,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "winkle"
+    folder = "squid"
     expected = "folders/{folder}".format(folder=folder,)
     actual = OsConfigZonalServiceClient.common_folder_path(folder)
     assert expected == actual
@@ -5009,7 +5763,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nautilus",
+        "folder": "clam",
     }
     path = OsConfigZonalServiceClient.common_folder_path(**expected)
 
@@ -5019,7 +5773,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "scallop"
+    organization = "whelk"
     expected = "organizations/{organization}".format(organization=organization,)
     actual = OsConfigZonalServiceClient.common_organization_path(organization)
     assert expected == actual
@@ -5027,7 +5781,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "abalone",
+        "organization": "octopus",
     }
     path = OsConfigZonalServiceClient.common_organization_path(**expected)
 
@@ -5037,7 +5791,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "squid"
+    project = "oyster"
     expected = "projects/{project}".format(project=project,)
     actual = OsConfigZonalServiceClient.common_project_path(project)
     assert expected == actual
@@ -5045,7 +5799,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "clam",
+        "project": "nudibranch",
     }
     path = OsConfigZonalServiceClient.common_project_path(**expected)
 
@@ -5055,8 +5809,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "whelk"
-    location = "octopus"
+    project = "cuttlefish"
+    location = "mussel"
     expected = "projects/{project}/locations/{location}".format(
         project=project, location=location,
     )
@@ -5066,8 +5820,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "oyster",
-        "location": "nudibranch",
+        "project": "winkle",
+        "location": "nautilus",
     }
     path = OsConfigZonalServiceClient.common_location_path(**expected)
 

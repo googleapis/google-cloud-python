@@ -38,6 +38,8 @@ def sample_list_os_policy_assignments():
 
     # Make the request
     page_result = client.list_os_policy_assignments(request=request)
+
+    # Handle the response
     for response in page_result:
         print(response)
 
