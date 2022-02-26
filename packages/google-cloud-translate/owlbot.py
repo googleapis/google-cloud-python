@@ -41,18 +41,15 @@ for library in s.get_staging_dirs(default_version):
         "translation.py",
     ]
 
+    s.replace(library / ".coveragerc",
+        """google/cloud/translate/__init__.py""",
+        """google/__init__.py
+    google/cloud/__init__.py
+    google/cloud/translate/__init__.py""",
+    )
     s.move(library, excludes=excludes)
 
 s.remove_staging_dirs()
-
-s.replace(".coveragerc",
-    """omit =
-    google/cloud/translate/__init__.py""",
-    """omit =
-    google/__init__.py
-    google/cloud/__init__.py
-    google/cloud/translate/__init__.py""",
-)
 
 # ----------------------------------------------------------------------------
 # Add templated files
@@ -60,7 +57,6 @@ s.replace(".coveragerc",
 templated_files = common.py_library(
     samples=True,
     microgenerator=True,
-    cov_level=99,
 )
 s.move(templated_files, excludes=[".coveragerc"])  # microgenerator has a good .coveragerc file
 
