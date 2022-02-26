@@ -438,8 +438,7 @@ class WorkflowTemplateServiceClient(metaclass=WorkflowTemplateServiceClientMeta)
     ) -> workflow_templates.WorkflowTemplate:
         r"""Creates new workflow template.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataproc_v1
 
@@ -558,8 +557,7 @@ class WorkflowTemplateServiceClient(metaclass=WorkflowTemplateServiceClientMeta)
         specifying optional version parameter.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataproc_v1
 
@@ -686,8 +684,7 @@ class WorkflowTemplateServiceClient(metaclass=WorkflowTemplateServiceClientMeta)
         be [Empty][google.protobuf.Empty].
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataproc_v1
 
@@ -859,8 +856,7 @@ class WorkflowTemplateServiceClient(metaclass=WorkflowTemplateServiceClientMeta)
         be [Empty][google.protobuf.Empty].
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataproc_v1
 
@@ -1012,8 +1008,7 @@ class WorkflowTemplateServiceClient(metaclass=WorkflowTemplateServiceClientMeta)
         server version.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataproc_v1
 
@@ -1115,8 +1110,7 @@ class WorkflowTemplateServiceClient(metaclass=WorkflowTemplateServiceClientMeta)
         the request.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataproc_v1
 
@@ -1228,8 +1222,7 @@ class WorkflowTemplateServiceClient(metaclass=WorkflowTemplateServiceClientMeta)
         in-progress workflows.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataproc_v1
 

@@ -396,8 +396,7 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
     ) -> jobs.Job:
         r"""Submits a job to a cluster.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataproc_v1
 
@@ -503,8 +502,7 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
     ) -> operation.Operation:
         r"""Submits job to a cluster.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataproc_v1
 
@@ -629,8 +627,7 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
         project.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataproc_v1
 
@@ -733,8 +730,7 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
     ) -> pagers.ListJobsPager:
         r"""Lists regions/{region}/jobs in a project.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataproc_v1
 
@@ -860,8 +856,7 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
     ) -> jobs.Job:
         r"""Updates a job in a project.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataproc_v1
 
@@ -936,8 +931,7 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
         `regions/{region}/jobs.get <https://cloud.google.com/dataproc/docs/reference/rest/v1/projects.regions.jobs/get>`__.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataproc_v1
 
@@ -1041,8 +1035,7 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
         delete fails, and the response returns ``FAILED_PRECONDITION``.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataproc_v1
 

@@ -10,8 +10,8 @@
           "shortName": "CreateAutoscalingPolicy"
         }
       },
-      "file": "dataproc_generated_dataproc_v1_autoscaling_policy_service_create_autoscaling_policy_async.py",
-      "regionTag": "dataproc_generated_dataproc_v1_AutoscalingPolicyService_CreateAutoscalingPolicy_async",
+      "file": "dataproc_v1_generated_autoscaling_policy_service_create_autoscaling_policy_async.py",
+      "regionTag": "dataproc_v1_generated_AutoscalingPolicyService_CreateAutoscalingPolicy_async",
       "segments": [
         {
           "end": 50,
@@ -54,8 +54,8 @@
           "shortName": "CreateAutoscalingPolicy"
         }
       },
-      "file": "dataproc_generated_dataproc_v1_autoscaling_policy_service_create_autoscaling_policy_sync.py",
-      "regionTag": "dataproc_generated_dataproc_v1_AutoscalingPolicyService_CreateAutoscalingPolicy_sync",
+      "file": "dataproc_v1_generated_autoscaling_policy_service_create_autoscaling_policy_sync.py",
+      "regionTag": "dataproc_v1_generated_AutoscalingPolicyService_CreateAutoscalingPolicy_sync",
       "segments": [
         {
           "end": 50,
@@ -99,8 +99,8 @@
           "shortName": "DeleteAutoscalingPolicy"
         }
       },
-      "file": "dataproc_generated_dataproc_v1_autoscaling_policy_service_delete_autoscaling_policy_async.py",
-      "regionTag": "dataproc_generated_dataproc_v1_AutoscalingPolicyService_DeleteAutoscalingPolicy_async",
+      "file": "dataproc_v1_generated_autoscaling_policy_service_delete_autoscaling_policy_async.py",
+      "regionTag": "dataproc_v1_generated_AutoscalingPolicyService_DeleteAutoscalingPolicy_async",
       "segments": [
         {
           "end": 42,
@@ -141,8 +141,8 @@
           "shortName": "DeleteAutoscalingPolicy"
         }
       },
-      "file": "dataproc_generated_dataproc_v1_autoscaling_policy_service_delete_autoscaling_policy_sync.py",
-      "regionTag": "dataproc_generated_dataproc_v1_AutoscalingPolicyService_DeleteAutoscalingPolicy_sync",
+      "file": "dataproc_v1_generated_autoscaling_policy_service_delete_autoscaling_policy_sync.py",
+      "regionTag": "dataproc_v1_generated_AutoscalingPolicyService_DeleteAutoscalingPolicy_sync",
       "segments": [
         {
           "end": 42,
@@ -184,8 +184,8 @@
           "shortName": "GetAutoscalingPolicy"
         }
       },
-      "file": "dataproc_generated_dataproc_v1_autoscaling_policy_service_get_autoscaling_policy_async.py",
-      "regionTag": "dataproc_generated_dataproc_v1_AutoscalingPolicyService_GetAutoscalingPolicy_async",
+      "file": "dataproc_v1_generated_autoscaling_policy_service_get_autoscaling_policy_async.py",
+      "regionTag": "dataproc_v1_generated_AutoscalingPolicyService_GetAutoscalingPolicy_async",
       "segments": [
         {
           "end": 44,
@@ -228,8 +228,8 @@
           "shortName": "GetAutoscalingPolicy"
         }
       },
-      "file": "dataproc_generated_dataproc_v1_autoscaling_policy_service_get_autoscaling_policy_sync.py",
-      "regionTag": "dataproc_generated_dataproc_v1_AutoscalingPolicyService_GetAutoscalingPolicy_sync",
+      "file": "dataproc_v1_generated_autoscaling_policy_service_get_autoscaling_policy_sync.py",
+      "regionTag": "dataproc_v1_generated_AutoscalingPolicyService_GetAutoscalingPolicy_sync",
       "segments": [
         {
           "end": 44,
@@ -273,8 +273,8 @@
           "shortName": "ListAutoscalingPolicies"
         }
       },
-      "file": "dataproc_generated_dataproc_v1_autoscaling_policy_service_list_autoscaling_policies_async.py",
-      "regionTag": "dataproc_generated_dataproc_v1_AutoscalingPolicyService_ListAutoscalingPolicies_async",
+      "file": "dataproc_v1_generated_autoscaling_policy_service_list_autoscaling_policies_async.py",
+      "regionTag": "dataproc_v1_generated_AutoscalingPolicyService_ListAutoscalingPolicies_async",
       "segments": [
         {
           "end": 45,
@@ -317,8 +317,8 @@
           "shortName": "ListAutoscalingPolicies"
         }
       },
-      "file": "dataproc_generated_dataproc_v1_autoscaling_policy_service_list_autoscaling_policies_sync.py",
-      "regionTag": "dataproc_generated_dataproc_v1_AutoscalingPolicyService_ListAutoscalingPolicies_sync",
+      "file": "dataproc_v1_generated_autoscaling_policy_service_list_autoscaling_policies_sync.py",
+      "regionTag": "dataproc_v1_generated_AutoscalingPolicyService_ListAutoscalingPolicies_sync",
       "segments": [
         {
           "end": 45,
@@ -362,8 +362,8 @@
           "shortName": "UpdateAutoscalingPolicy"
         }
       },
-      "file": "dataproc_generated_dataproc_v1_autoscaling_policy_service_update_autoscaling_policy_async.py",
-      "regionTag": "dataproc_generated_dataproc_v1_AutoscalingPolicyService_UpdateAutoscalingPolicy_async",
+      "file": "dataproc_v1_generated_autoscaling_policy_service_update_autoscaling_policy_async.py",
+      "regionTag": "dataproc_v1_generated_AutoscalingPolicyService_UpdateAutoscalingPolicy_async",
       "segments": [
         {
           "end": 49,
@@ -406,8 +406,8 @@
           "shortName": "UpdateAutoscalingPolicy"
         }
       },
-      "file": "dataproc_generated_dataproc_v1_autoscaling_policy_service_update_autoscaling_policy_sync.py",
-      "regionTag": "dataproc_generated_dataproc_v1_AutoscalingPolicyService_UpdateAutoscalingPolicy_sync",
+      "file": "dataproc_v1_generated_autoscaling_policy_service_update_autoscaling_policy_sync.py",
+      "regionTag": "dataproc_v1_generated_AutoscalingPolicyService_UpdateAutoscalingPolicy_sync",
       "segments": [
         {
           "end": 49,
@@ -451,8 +451,8 @@
           "shortName": "CreateBatch"
         }
       },
-      "file": "dataproc_generated_dataproc_v1_batch_controller_create_batch_async.py",
-      "regionTag": "dataproc_generated_dataproc_v1_BatchController_CreateBatch_async",
+      "file": "dataproc_v1_generated_batch_controller_create_batch_async.py",
+      "regionTag": "dataproc_v1_generated_BatchController_CreateBatch_async",
       "segments": [
         {
           "end": 52,
@@ -495,8 +495,8 @@
           "shortName": "CreateBatch"
         }
       },
-      "file": "dataproc_generated_dataproc_v1_batch_controller_create_batch_sync.py",
-      "regionTag": "dataproc_generated_dataproc_v1_BatchController_CreateBatch_sync",
+      "file": "dataproc_v1_generated_batch_controller_create_batch_sync.py",
+      "regionTag": "dataproc_v1_generated_BatchController_CreateBatch_sync",
       "segments": [
         {
           "end": 52,
@@ -540,8 +540,8 @@
           "shortName": "DeleteBatch"
         }
       },
-      "file": "dataproc_generated_dataproc_v1_batch_controller_delete_batch_async.py",
-      "regionTag": "dataproc_generated_dataproc_v1_BatchController_DeleteBatch_async",
+      "file": "dataproc_v1_generated_batch_controller_delete_batch_async.py",
+      "regionTag": "dataproc_v1_generated_BatchController_DeleteBatch_async",
       "segments": [
         {
           "end": 42,
@@ -582,8 +582,8 @@
           "shortName": "DeleteBatch"
         }
       },
-      "file": "dataproc_generated_dataproc_v1_batch_controller_delete_batch_sync.py",
-      "regionTag": "dataproc_generated_dataproc_v1_BatchController_DeleteBatch_sync",
+      "file": "dataproc_v1_generated_batch_controller_delete_batch_sync.py",
+      "regionTag": "dataproc_v1_generated_BatchController_DeleteBatch_sync",
       "segments": [
         {
           "end": 42,
@@ -625,8 +625,8 @@
           "shortName": "GetBatch"
         }
       },
-      "file": "dataproc_generated_dataproc_v1_batch_controller_get_batch_async.py",
-      "regionTag": "dataproc_generated_dataproc_v1_BatchController_GetBatch_async",
+      "file": "dataproc_v1_generated_batch_controller_get_batch_async.py",
+      "regionTag": "dataproc_v1_generated_BatchController_GetBatch_async",
       "segments": [
         {
           "end": 44,
@@ -669,8 +669,8 @@
           "shortName": "GetBatch"
         }
       },
-      "file": "dataproc_generated_dataproc_v1_batch_controller_get_batch_sync.py",
-      "regionTag": "dataproc_generated_dataproc_v1_BatchController_GetBatch_sync",
+      "file": "dataproc_v1_generated_batch_controller_get_batch_sync.py",
+      "regionTag": "dataproc_v1_generated_BatchController_GetBatch_sync",
       "segments": [
         {
           "end": 44,
@@ -714,8 +714,8 @@
           "shortName": "ListBatches"
         }
       },
-      "file": "dataproc_generated_dataproc_v1_batch_controller_list_batches_async.py",
-      "regionTag": "dataproc_generated_dataproc_v1_BatchController_ListBatches_async",
+      "file": "dataproc_v1_generated_batch_controller_list_batches_async.py",
+      "regionTag": "dataproc_v1_generated_BatchController_ListBatches_async",
       "segments": [
         {
           "end": 45,
@@ -758,8 +758,8 @@
           "shortName": "ListBatches"
         }
       },
-      "file": "dataproc_generated_dataproc_v1_batch_controller_list_batches_sync.py",
-      "regionTag": "dataproc_generated_dataproc_v1_BatchController_ListBatches_sync",
+      "file": "dataproc_v1_generated_batch_controller_list_batches_sync.py",
+      "regionTag": "dataproc_v1_generated_BatchController_ListBatches_sync",
       "segments": [
         {
           "end": 45,
@@ -803,8 +803,8 @@
           "shortName": "CreateCluster"
         }
       },
-      "file": "dataproc_generated_dataproc_v1_cluster_controller_create_cluster_async.py",
-      "regionTag": "dataproc_generated_dataproc_v1_ClusterController_CreateCluster_async",
+      "file": "dataproc_v1_generated_cluster_controller_create_cluster_async.py",
+      "regionTag": "dataproc_v1_generated_ClusterController_CreateCluster_async",
       "segments": [
         {
           "end": 54,
@@ -847,8 +847,8 @@
           "shortName": "CreateCluster"
         }
       },
-      "file": "dataproc_generated_dataproc_v1_cluster_controller_create_cluster_sync.py",
-      "regionTag": "dataproc_generated_dataproc_v1_ClusterController_CreateCluster_sync",
+      "file": "dataproc_v1_generated_cluster_controller_create_cluster_sync.py",
+      "regionTag": "dataproc_v1_generated_ClusterController_CreateCluster_sync",
       "segments": [
         {
           "end": 54,
@@ -892,8 +892,8 @@
           "shortName": "DeleteCluster"
         }
       },
-      "file": "dataproc_generated_dataproc_v1_cluster_controller_delete_cluster_async.py",
-      "regionTag": "dataproc_generated_dataproc_v1_ClusterController_DeleteCluster_async",
+      "file": "dataproc_v1_generated_cluster_controller_delete_cluster_async.py",
+      "regionTag": "dataproc_v1_generated_ClusterController_DeleteCluster_async",
       "segments": [
         {
           "end": 50,
@@ -936,8 +936,8 @@
           "shortName": "DeleteCluster"
         }
       },
-      "file": "dataproc_generated_dataproc_v1_cluster_controller_delete_cluster_sync.py",
-      "regionTag": "dataproc_generated_dataproc_v1_ClusterController_DeleteCluster_sync",
+      "file": "dataproc_v1_generated_cluster_controller_delete_cluster_sync.py",
+      "regionTag": "dataproc_v1_generated_ClusterController_DeleteCluster_sync",
       "segments": [
         {
           "end": 50,
@@ -981,8 +981,8 @@
           "shortName": "DiagnoseCluster"
         }
       },
-      "file": "dataproc_generated_dataproc_v1_cluster_controller_diagnose_cluster_async.py",
-      "regionTag": "dataproc_generated_dataproc_v1_ClusterController_DiagnoseCluster_async",
+      "file": "dataproc_v1_generated_cluster_controller_diagnose_cluster_async.py",
+      "regionTag": "dataproc_v1_generated_ClusterController_DiagnoseCluster_async",
       "segments": [
         {
           "end": 50,
@@ -1025,8 +1025,8 @@
           "shortName": "DiagnoseCluster"
         }
       },
-      "file": "dataproc_generated_dataproc_v1_cluster_controller_diagnose_cluster_sync.py",
-      "regionTag": "dataproc_generated_dataproc_v1_ClusterController_DiagnoseCluster_sync",
+      "file": "dataproc_v1_generated_cluster_controller_diagnose_cluster_sync.py",
+      "regionTag": "dataproc_v1_generated_ClusterController_DiagnoseCluster_sync",
       "segments": [
         {
           "end": 50,
@@ -1070,8 +1070,8 @@
           "shortName": "GetCluster"
         }
       },
-      "file": "dataproc_generated_dataproc_v1_cluster_controller_get_cluster_async.py",
-      "regionTag": "dataproc_generated_dataproc_v1_ClusterController_GetCluster_async",
+      "file": "dataproc_v1_generated_cluster_controller_get_cluster_async.py",
+      "regionTag": "dataproc_v1_generated_ClusterController_GetCluster_async",
       "segments": [
         {
           "end": 46,
@@ -1114,8 +1114,8 @@
           "shortName": "GetCluster"
         }
       },
-      "file": "dataproc_generated_dataproc_v1_cluster_controller_get_cluster_sync.py",
-      "regionTag": "dataproc_generated_dataproc_v1_ClusterController_GetCluster_sync",
+      "file": "dataproc_v1_generated_cluster_controller_get_cluster_sync.py",
+      "regionTag": "dataproc_v1_generated_ClusterController_GetCluster_sync",
       "segments": [
         {
           "end": 46,
@@ -1159,8 +1159,8 @@
           "shortName": "ListClusters"
         }
       },
-      "file": "dataproc_generated_dataproc_v1_cluster_controller_list_clusters_async.py",
-      "regionTag": "dataproc_generated_dataproc_v1_ClusterController_ListClusters_async",
+      "file": "dataproc_v1_generated_cluster_controller_list_clusters_async.py",
+      "regionTag": "dataproc_v1_generated_ClusterController_ListClusters_async",
       "segments": [
         {
           "end": 46,
@@ -1203,8 +1203,8 @@
           "shortName": "ListClusters"
         }
       },
-      "file": "dataproc_generated_dataproc_v1_cluster_controller_list_clusters_sync.py",
-      "regionTag": "dataproc_generated_dataproc_v1_ClusterController_ListClusters_sync",
+      "file": "dataproc_v1_generated_cluster_controller_list_clusters_sync.py",
+      "regionTag": "dataproc_v1_generated_ClusterController_ListClusters_sync",
       "segments": [
         {
           "end": 46,
@@ -1248,8 +1248,8 @@
           "shortName": "StartCluster"
         }
       },
-      "file": "dataproc_generated_dataproc_v1_cluster_controller_start_cluster_async.py",
-      "regionTag": "dataproc_generated_dataproc_v1_ClusterController_StartCluster_async",
+      "file": "dataproc_v1_generated_cluster_controller_start_cluster_async.py",
+      "regionTag": "dataproc_v1_generated_ClusterController_StartCluster_async",
       "segments": [
         {
           "end": 50,
@@ -1292,8 +1292,8 @@
           "shortName": "StartCluster"
         }
       },
-      "file": "dataproc_generated_dataproc_v1_cluster_controller_start_cluster_sync.py",
-      "regionTag": "dataproc_generated_dataproc_v1_ClusterController_StartCluster_sync",
+      "file": "dataproc_v1_generated_cluster_controller_start_cluster_sync.py",
+      "regionTag": "dataproc_v1_generated_ClusterController_StartCluster_sync",
       "segments": [
         {
           "end": 50,
@@ -1337,8 +1337,8 @@
           "shortName": "StopCluster"
         }
       },
-      "file": "dataproc_generated_dataproc_v1_cluster_controller_stop_cluster_async.py",
-      "regionTag": "dataproc_generated_dataproc_v1_ClusterController_StopCluster_async",
+      "file": "dataproc_v1_generated_cluster_controller_stop_cluster_async.py",
+      "regionTag": "dataproc_v1_generated_ClusterController_StopCluster_async",
       "segments": [
         {
           "end": 50,
@@ -1381,8 +1381,8 @@
           "shortName": "StopCluster"
         }
       },
-      "file": "dataproc_generated_dataproc_v1_cluster_controller_stop_cluster_sync.py",
-      "regionTag": "dataproc_generated_dataproc_v1_ClusterController_StopCluster_sync",
+      "file": "dataproc_v1_generated_cluster_controller_stop_cluster_sync.py",
+      "regionTag": "dataproc_v1_generated_ClusterController_StopCluster_sync",
       "segments": [
         {
           "end": 50,
@@ -1426,8 +1426,8 @@
           "shortName": "UpdateCluster"
         }
       },
-      "file": "dataproc_generated_dataproc_v1_cluster_controller_update_cluster_async.py",
-      "regionTag": "dataproc_generated_dataproc_v1_ClusterController_UpdateCluster_async",
+      "file": "dataproc_v1_generated_cluster_controller_update_cluster_async.py",
+      "regionTag": "dataproc_v1_generated_ClusterController_UpdateCluster_async",
       "segments": [
         {
           "end": 55,
@@ -1470,8 +1470,8 @@
           "shortName": "UpdateCluster"
         }
       },
-      "file": "dataproc_generated_dataproc_v1_cluster_controller_update_cluster_sync.py",
-      "regionTag": "dataproc_generated_dataproc_v1_ClusterController_UpdateCluster_sync",
+      "file": "dataproc_v1_generated_cluster_controller_update_cluster_sync.py",
+      "regionTag": "dataproc_v1_generated_ClusterController_UpdateCluster_sync",
       "segments": [
         {
           "end": 55,
@@ -1515,8 +1515,8 @@
           "shortName": "CancelJob"
         }
       },
-      "file": "dataproc_generated_dataproc_v1_job_controller_cancel_job_async.py",
-      "regionTag": "dataproc_generated_dataproc_v1_JobController_CancelJob_async",
+      "file": "dataproc_v1_generated_job_controller_cancel_job_async.py",
+      "regionTag": "dataproc_v1_generated_JobController_CancelJob_async",
       "segments": [
         {
           "end": 46,
@@ -1559,8 +1559,8 @@
           "shortName": "CancelJob"
         }
       },
-      "file": "dataproc_generated_dataproc_v1_job_controller_cancel_job_sync.py",
-      "regionTag": "dataproc_generated_dataproc_v1_JobController_CancelJob_sync",
+      "file": "dataproc_v1_generated_job_controller_cancel_job_sync.py",
+      "regionTag": "dataproc_v1_generated_JobController_CancelJob_sync",
       "segments": [
         {
           "end": 46,
@@ -1604,8 +1604,8 @@
           "shortName": "DeleteJob"
         }
       },
-      "file": "dataproc_generated_dataproc_v1_job_controller_delete_job_async.py",
-      "regionTag": "dataproc_generated_dataproc_v1_JobController_DeleteJob_async",
+      "file": "dataproc_v1_generated_job_controller_delete_job_async.py",
+      "regionTag": "dataproc_v1_generated_JobController_DeleteJob_async",
       "segments": [
         {
           "end": 44,
@@ -1646,8 +1646,8 @@
           "shortName": "DeleteJob"
         }
       },
-      "file": "dataproc_generated_dataproc_v1_job_controller_delete_job_sync.py",
-      "regionTag": "dataproc_generated_dataproc_v1_JobController_DeleteJob_sync",
+      "file": "dataproc_v1_generated_job_controller_delete_job_sync.py",
+      "regionTag": "dataproc_v1_generated_JobController_DeleteJob_sync",
       "segments": [
         {
           "end": 44,
@@ -1689,8 +1689,8 @@
           "shortName": "GetJob"
         }
       },
-      "file": "dataproc_generated_dataproc_v1_job_controller_get_job_async.py",
-      "regionTag": "dataproc_generated_dataproc_v1_JobController_GetJob_async",
+      "file": "dataproc_v1_generated_job_controller_get_job_async.py",
+      "regionTag": "dataproc_v1_generated_JobController_GetJob_async",
       "segments": [
         {
           "end": 46,
@@ -1733,8 +1733,8 @@
           "shortName": "GetJob"
         }
       },
-      "file": "dataproc_generated_dataproc_v1_job_controller_get_job_sync.py",
-      "regionTag": "dataproc_generated_dataproc_v1_JobController_GetJob_sync",
+      "file": "dataproc_v1_generated_job_controller_get_job_sync.py",
+      "regionTag": "dataproc_v1_generated_JobController_GetJob_sync",
       "segments": [
         {
           "end": 46,
@@ -1778,8 +1778,8 @@
           "shortName": "ListJobs"
         }
       },
-      "file": "dataproc_generated_dataproc_v1_job_controller_list_jobs_async.py",
-      "regionTag": "dataproc_generated_dataproc_v1_JobController_ListJobs_async",
+      "file": "dataproc_v1_generated_job_controller_list_jobs_async.py",
+      "regionTag": "dataproc_v1_generated_JobController_ListJobs_async",
       "segments": [
         {
           "end": 46,
@@ -1822,8 +1822,8 @@
           "shortName": "ListJobs"
         }
       },
-      "file": "dataproc_generated_dataproc_v1_job_controller_list_jobs_sync.py",
-      "regionTag": "dataproc_generated_dataproc_v1_JobController_ListJobs_sync",
+      "file": "dataproc_v1_generated_job_controller_list_jobs_sync.py",
+      "regionTag": "dataproc_v1_generated_JobController_ListJobs_sync",
       "segments": [
         {
           "end": 46,
@@ -1867,8 +1867,8 @@
           "shortName": "SubmitJobAsOperation"
         }
       },
-      "file": "dataproc_generated_dataproc_v1_job_controller_submit_job_as_operation_async.py",
-      "regionTag": "dataproc_generated_dataproc_v1_JobController_SubmitJobAsOperation_async",
+      "file": "dataproc_v1_generated_job_controller_submit_job_as_operation_async.py",
+      "regionTag": "dataproc_v1_generated_JobController_SubmitJobAsOperation_async",
       "segments": [
         {
           "end": 54,
@@ -1911,8 +1911,8 @@
           "shortName": "SubmitJobAsOperation"
         }
       },
-      "file": "dataproc_generated_dataproc_v1_job_controller_submit_job_as_operation_sync.py",
-      "regionTag": "dataproc_generated_dataproc_v1_JobController_SubmitJobAsOperation_sync",
+      "file": "dataproc_v1_generated_job_controller_submit_job_as_operation_sync.py",
+      "regionTag": "dataproc_v1_generated_JobController_SubmitJobAsOperation_sync",
       "segments": [
         {
           "end": 54,
@@ -1956,8 +1956,8 @@
           "shortName": "SubmitJob"
         }
       },
-      "file": "dataproc_generated_dataproc_v1_job_controller_submit_job_async.py",
-      "regionTag": "dataproc_generated_dataproc_v1_JobController_SubmitJob_async",
+      "file": "dataproc_v1_generated_job_controller_submit_job_async.py",
+      "regionTag": "dataproc_v1_generated_JobController_SubmitJob_async",
       "segments": [
         {
           "end": 50,
@@ -2000,8 +2000,8 @@
           "shortName": "SubmitJob"
         }
       },
-      "file": "dataproc_generated_dataproc_v1_job_controller_submit_job_sync.py",
-      "regionTag": "dataproc_generated_dataproc_v1_JobController_SubmitJob_sync",
+      "file": "dataproc_v1_generated_job_controller_submit_job_sync.py",
+      "regionTag": "dataproc_v1_generated_JobController_SubmitJob_sync",
       "segments": [
         {
           "end": 50,
@@ -2045,8 +2045,8 @@
           "shortName": "UpdateJob"
         }
       },
-      "file": "dataproc_generated_dataproc_v1_job_controller_update_job_async.py",
-      "regionTag": "dataproc_generated_dataproc_v1_JobController_UpdateJob_async",
+      "file": "dataproc_v1_generated_job_controller_update_job_async.py",
+      "regionTag": "dataproc_v1_generated_JobController_UpdateJob_async",
       "segments": [
         {
           "end": 51,
@@ -2089,8 +2089,8 @@
           "shortName": "UpdateJob"
         }
       },
-      "file": "dataproc_generated_dataproc_v1_job_controller_update_job_sync.py",
-      "regionTag": "dataproc_generated_dataproc_v1_JobController_UpdateJob_sync",
+      "file": "dataproc_v1_generated_job_controller_update_job_sync.py",
+      "regionTag": "dataproc_v1_generated_JobController_UpdateJob_sync",
       "segments": [
         {
           "end": 51,
@@ -2134,8 +2134,8 @@
           "shortName": "CreateWorkflowTemplate"
         }
       },
-      "file": "dataproc_generated_dataproc_v1_workflow_template_service_create_workflow_template_async.py",
-      "regionTag": "dataproc_generated_dataproc_v1_WorkflowTemplateService_CreateWorkflowTemplate_async",
+      "file": "dataproc_v1_generated_workflow_template_service_create_workflow_template_async.py",
+      "regionTag": "dataproc_v1_generated_WorkflowTemplateService_CreateWorkflowTemplate_async",
       "segments": [
         {
           "end": 51,
@@ -2178,8 +2178,8 @@
           "shortName": "CreateWorkflowTemplate"
         }
       },
-      "file": "dataproc_generated_dataproc_v1_workflow_template_service_create_workflow_template_sync.py",
-      "regionTag": "dataproc_generated_dataproc_v1_WorkflowTemplateService_CreateWorkflowTemplate_sync",
+      "file": "dataproc_v1_generated_workflow_template_service_create_workflow_template_sync.py",
+      "regionTag": "dataproc_v1_generated_WorkflowTemplateService_CreateWorkflowTemplate_sync",
       "segments": [
         {
           "end": 51,
@@ -2223,8 +2223,8 @@
           "shortName": "DeleteWorkflowTemplate"
         }
       },
-      "file": "dataproc_generated_dataproc_v1_workflow_template_service_delete_workflow_template_async.py",
-      "regionTag": "dataproc_generated_dataproc_v1_WorkflowTemplateService_DeleteWorkflowTemplate_async",
+      "file": "dataproc_v1_generated_workflow_template_service_delete_workflow_template_async.py",
+      "regionTag": "dataproc_v1_generated_WorkflowTemplateService_DeleteWorkflowTemplate_async",
       "segments": [
         {
           "end": 42,
@@ -2265,8 +2265,8 @@
           "shortName": "DeleteWorkflowTemplate"
         }
       },
-      "file": "dataproc_generated_dataproc_v1_workflow_template_service_delete_workflow_template_sync.py",
-      "regionTag": "dataproc_generated_dataproc_v1_WorkflowTemplateService_DeleteWorkflowTemplate_sync",
+      "file": "dataproc_v1_generated_workflow_template_service_delete_workflow_template_sync.py",
+      "regionTag": "dataproc_v1_generated_WorkflowTemplateService_DeleteWorkflowTemplate_sync",
       "segments": [
         {
           "end": 42,
@@ -2308,8 +2308,8 @@
           "shortName": "GetWorkflowTemplate"
         }
       },
-      "file": "dataproc_generated_dataproc_v1_workflow_template_service_get_workflow_template_async.py",
-      "regionTag": "dataproc_generated_dataproc_v1_WorkflowTemplateService_GetWorkflowTemplate_async",
+      "file": "dataproc_v1_generated_workflow_template_service_get_workflow_template_async.py",
+      "regionTag": "dataproc_v1_generated_WorkflowTemplateService_GetWorkflowTemplate_async",
       "segments": [
         {
           "end": 44,
@@ -2352,8 +2352,8 @@
           "shortName": "GetWorkflowTemplate"
         }
       },
-      "file": "dataproc_generated_dataproc_v1_workflow_template_service_get_workflow_template_sync.py",
-      "regionTag": "dataproc_generated_dataproc_v1_WorkflowTemplateService_GetWorkflowTemplate_sync",
+      "file": "dataproc_v1_generated_workflow_template_service_get_workflow_template_sync.py",
+      "regionTag": "dataproc_v1_generated_WorkflowTemplateService_GetWorkflowTemplate_sync",
       "segments": [
         {
           "end": 44,
@@ -2397,8 +2397,8 @@
           "shortName": "InstantiateInlineWorkflowTemplate"
         }
       },
-      "file": "dataproc_generated_dataproc_v1_workflow_template_service_instantiate_inline_workflow_template_async.py",
-      "regionTag": "dataproc_generated_dataproc_v1_WorkflowTemplateService_InstantiateInlineWorkflowTemplate_async",
+      "file": "dataproc_v1_generated_workflow_template_service_instantiate_inline_workflow_template_async.py",
+      "regionTag": "dataproc_v1_generated_WorkflowTemplateService_InstantiateInlineWorkflowTemplate_async",
       "segments": [
         {
           "end": 55,
@@ -2441,8 +2441,8 @@
           "shortName": "InstantiateInlineWorkflowTemplate"
         }
       },
-      "file": "dataproc_generated_dataproc_v1_workflow_template_service_instantiate_inline_workflow_template_sync.py",
-      "regionTag": "dataproc_generated_dataproc_v1_WorkflowTemplateService_InstantiateInlineWorkflowTemplate_sync",
+      "file": "dataproc_v1_generated_workflow_template_service_instantiate_inline_workflow_template_sync.py",
+      "regionTag": "dataproc_v1_generated_WorkflowTemplateService_InstantiateInlineWorkflowTemplate_sync",
       "segments": [
         {
           "end": 55,
@@ -2486,8 +2486,8 @@
           "shortName": "InstantiateWorkflowTemplate"
         }
       },
-      "file": "dataproc_generated_dataproc_v1_workflow_template_service_instantiate_workflow_template_async.py",
-      "regionTag": "dataproc_generated_dataproc_v1_WorkflowTemplateService_InstantiateWorkflowTemplate_async",
+      "file": "dataproc_v1_generated_workflow_template_service_instantiate_workflow_template_async.py",
+      "regionTag": "dataproc_v1_generated_WorkflowTemplateService_InstantiateWorkflowTemplate_async",
       "segments": [
         {
           "end": 48,
@@ -2530,8 +2530,8 @@
           "shortName": "InstantiateWorkflowTemplate"
         }
       },
-      "file": "dataproc_generated_dataproc_v1_workflow_template_service_instantiate_workflow_template_sync.py",
-      "regionTag": "dataproc_generated_dataproc_v1_WorkflowTemplateService_InstantiateWorkflowTemplate_sync",
+      "file": "dataproc_v1_generated_workflow_template_service_instantiate_workflow_template_sync.py",
+      "regionTag": "dataproc_v1_generated_WorkflowTemplateService_InstantiateWorkflowTemplate_sync",
       "segments": [
         {
           "end": 48,
@@ -2575,8 +2575,8 @@
           "shortName": "ListWorkflowTemplates"
         }
       },
-      "file": "dataproc_generated_dataproc_v1_workflow_template_service_list_workflow_templates_async.py",
-      "regionTag": "dataproc_generated_dataproc_v1_WorkflowTemplateService_ListWorkflowTemplates_async",
+      "file": "dataproc_v1_generated_workflow_template_service_list_workflow_templates_async.py",
+      "regionTag": "dataproc_v1_generated_WorkflowTemplateService_ListWorkflowTemplates_async",
       "segments": [
         {
           "end": 45,
@@ -2619,8 +2619,8 @@
           "shortName": "ListWorkflowTemplates"
         }
       },
-      "file": "dataproc_generated_dataproc_v1_workflow_template_service_list_workflow_templates_sync.py",
-      "regionTag": "dataproc_generated_dataproc_v1_WorkflowTemplateService_ListWorkflowTemplates_sync",
+      "file": "dataproc_v1_generated_workflow_template_service_list_workflow_templates_sync.py",
+      "regionTag": "dataproc_v1_generated_WorkflowTemplateService_ListWorkflowTemplates_sync",
       "segments": [
         {
           "end": 45,
@@ -2664,8 +2664,8 @@
           "shortName": "UpdateWorkflowTemplate"
         }
       },
-      "file": "dataproc_generated_dataproc_v1_workflow_template_service_update_workflow_template_async.py",
-      "regionTag": "dataproc_generated_dataproc_v1_WorkflowTemplateService_UpdateWorkflowTemplate_async",
+      "file": "dataproc_v1_generated_workflow_template_service_update_workflow_template_async.py",
+      "regionTag": "dataproc_v1_generated_WorkflowTemplateService_UpdateWorkflowTemplate_async",
       "segments": [
         {
           "end": 50,
@@ -2708,8 +2708,8 @@
           "shortName": "UpdateWorkflowTemplate"
         }
       },
-      "file": "dataproc_generated_dataproc_v1_workflow_template_service_update_workflow_template_sync.py",
-      "regionTag": "dataproc_generated_dataproc_v1_WorkflowTemplateService_UpdateWorkflowTemplate_sync",
+      "file": "dataproc_v1_generated_workflow_template_service_update_workflow_template_sync.py",
+      "regionTag": "dataproc_v1_generated_WorkflowTemplateService_UpdateWorkflowTemplate_sync",
       "segments": [
         {
           "end": 50,

@@ -232,7 +232,7 @@ class WorkflowTemplateServiceAsyncClient:
     ) -> workflow_templates.WorkflowTemplate:
         r"""Creates new workflow template.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataproc_v1
 
@@ -360,7 +360,7 @@ class WorkflowTemplateServiceAsyncClient:
         specifying optional version parameter.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataproc_v1
 
@@ -498,7 +498,7 @@ class WorkflowTemplateServiceAsyncClient:
         be [Empty][google.protobuf.Empty].
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataproc_v1
 
@@ -676,7 +676,7 @@ class WorkflowTemplateServiceAsyncClient:
         be [Empty][google.protobuf.Empty].
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataproc_v1
 
@@ -831,7 +831,7 @@ class WorkflowTemplateServiceAsyncClient:
         server version.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataproc_v1
 
@@ -942,7 +942,7 @@ class WorkflowTemplateServiceAsyncClient:
         the request.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataproc_v1
 
@@ -1065,7 +1065,7 @@ class WorkflowTemplateServiceAsyncClient:
         in-progress workflows.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataproc_v1
 

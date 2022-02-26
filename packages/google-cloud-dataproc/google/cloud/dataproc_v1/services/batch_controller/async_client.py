@@ -224,7 +224,7 @@ class BatchControllerAsyncClient:
         asynchronously.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataproc_v1
 
@@ -352,7 +352,7 @@ class BatchControllerAsyncClient:
     ) -> batches.Batch:
         r"""Gets the batch workload resource representation.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataproc_v1
 
@@ -442,7 +442,7 @@ class BatchControllerAsyncClient:
     ) -> pagers.ListBatchesAsyncPager:
         r"""Lists batch workloads.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataproc_v1
 
@@ -544,7 +544,7 @@ class BatchControllerAsyncClient:
         ``FAILED_PRECONDITION``.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataproc_v1
 

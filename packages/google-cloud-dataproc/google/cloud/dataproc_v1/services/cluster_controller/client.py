@@ -425,8 +425,7 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
         `ClusterOperationMetadata <https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#clusteroperationmetadata>`__.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataproc_v1
 
@@ -557,8 +556,7 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
         state or an error is returned.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataproc_v1
 
@@ -755,8 +753,7 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
     ) -> operation.Operation:
         r"""Stops a cluster in a project.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataproc_v1
 
@@ -834,8 +831,7 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
     ) -> operation.Operation:
         r"""Starts a cluster in a project.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataproc_v1
 
@@ -920,8 +916,7 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
         `ClusterOperationMetadata <https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#clusteroperationmetadata>`__.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataproc_v1
 
@@ -1052,8 +1047,7 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
         project.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataproc_v1
 
@@ -1161,8 +1155,7 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
         alphabetically.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataproc_v1
 
@@ -1307,8 +1300,7 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
         `DiagnoseClusterResults <https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#diagnoseclusterresults>`__.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataproc_v1
 

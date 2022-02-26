@@ -421,8 +421,7 @@ class BatchControllerClient(metaclass=BatchControllerClientMeta):
         asynchronously.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataproc_v1
 
@@ -550,8 +549,7 @@ class BatchControllerClient(metaclass=BatchControllerClientMeta):
     ) -> batches.Batch:
         r"""Gets the batch workload resource representation.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataproc_v1
 
@@ -641,8 +639,7 @@ class BatchControllerClient(metaclass=BatchControllerClientMeta):
     ) -> pagers.ListBatchesPager:
         r"""Lists batch workloads.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataproc_v1
 
@@ -744,8 +741,7 @@ class BatchControllerClient(metaclass=BatchControllerClientMeta):
         ``FAILED_PRECONDITION``.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dataproc_v1
 
