@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,6 +23,8 @@ from .types.bigtable import MutateRowRequest
 from .types.bigtable import MutateRowResponse
 from .types.bigtable import MutateRowsRequest
 from .types.bigtable import MutateRowsResponse
+from .types.bigtable import PingAndWarmRequest
+from .types.bigtable import PingAndWarmResponse
 from .types.bigtable import ReadModifyWriteRowRequest
 from .types.bigtable import ReadModifyWriteRowResponse
 from .types.bigtable import ReadRowsRequest
@@ -56,6 +58,8 @@ __all__ = (
     "MutateRowsRequest",
     "MutateRowsResponse",
     "Mutation",
+    "PingAndWarmRequest",
+    "PingAndWarmResponse",
     "ReadModifyWriteRowRequest",
     "ReadModifyWriteRowResponse",
     "ReadModifyWriteRule",

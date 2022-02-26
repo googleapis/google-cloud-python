@@ -1,6 +1,6 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -42,6 +42,7 @@ class bigtableCallTransformer(cst.CSTTransformer):
         'check_and_mutate_row': ('table_name', 'row_key', 'app_profile_id', 'predicate_filter', 'true_mutations', 'false_mutations', ),
         'mutate_row': ('table_name', 'row_key', 'mutations', 'app_profile_id', ),
         'mutate_rows': ('table_name', 'entries', 'app_profile_id', ),
+        'ping_and_warm': ('name', 'app_profile_id', ),
         'read_modify_write_row': ('table_name', 'row_key', 'rules', 'app_profile_id', ),
         'read_rows': ('table_name', 'app_profile_id', 'rows', 'filter', 'rows_limit', ),
         'sample_row_keys': ('table_name', 'app_profile_id', ),

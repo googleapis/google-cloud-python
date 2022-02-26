@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -126,28 +126,10 @@ class BigtableTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.read_rows: gapic_v1.method.wrap_method(
-                self.read_rows,
-                default_retry=retries.Retry(
-                    initial=0.01,
-                    maximum=60.0,
-                    multiplier=2,
-                    predicate=retries.if_exception_type(),
-                    deadline=43200.0,
-                ),
-                default_timeout=43200.0,
-                client_info=client_info,
+                self.read_rows, default_timeout=43200.0, client_info=client_info,
             ),
             self.sample_row_keys: gapic_v1.method.wrap_method(
-                self.sample_row_keys,
-                default_retry=retries.Retry(
-                    initial=0.01,
-                    maximum=60.0,
-                    multiplier=2,
-                    predicate=retries.if_exception_type(),
-                    deadline=60.0,
-                ),
-                default_timeout=60.0,
-                client_info=client_info,
+                self.sample_row_keys, default_timeout=60.0, client_info=client_info,
             ),
             self.mutate_row: gapic_v1.method.wrap_method(
                 self.mutate_row,
@@ -165,38 +147,18 @@ class BigtableTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.mutate_rows: gapic_v1.method.wrap_method(
-                self.mutate_rows,
-                default_retry=retries.Retry(
-                    initial=0.01,
-                    maximum=60.0,
-                    multiplier=2,
-                    predicate=retries.if_exception_type(),
-                    deadline=600.0,
-                ),
-                default_timeout=600.0,
-                client_info=client_info,
+                self.mutate_rows, default_timeout=600.0, client_info=client_info,
             ),
             self.check_and_mutate_row: gapic_v1.method.wrap_method(
                 self.check_and_mutate_row,
-                default_retry=retries.Retry(
-                    initial=0.01,
-                    maximum=60.0,
-                    multiplier=2,
-                    predicate=retries.if_exception_type(),
-                    deadline=20.0,
-                ),
                 default_timeout=20.0,
                 client_info=client_info,
             ),
+            self.ping_and_warm: gapic_v1.method.wrap_method(
+                self.ping_and_warm, default_timeout=None, client_info=client_info,
+            ),
             self.read_modify_write_row: gapic_v1.method.wrap_method(
                 self.read_modify_write_row,
-                default_retry=retries.Retry(
-                    initial=0.01,
-                    maximum=60.0,
-                    multiplier=2,
-                    predicate=retries.if_exception_type(),
-                    deadline=20.0,
-                ),
                 default_timeout=20.0,
                 client_info=client_info,
             ),
@@ -258,6 +220,15 @@ class BigtableTransport(abc.ABC):
             bigtable.CheckAndMutateRowResponse,
             Awaitable[bigtable.CheckAndMutateRowResponse],
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def ping_and_warm(
+        self,
+    ) -> Callable[
+        [bigtable.PingAndWarmRequest],
+        Union[bigtable.PingAndWarmResponse, Awaitable[bigtable.PingAndWarmResponse]],
     ]:
         raise NotImplementedError()
 

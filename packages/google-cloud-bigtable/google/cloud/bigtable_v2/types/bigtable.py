@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -33,6 +33,8 @@ __protobuf__ = proto.module(
         "MutateRowsResponse",
         "CheckAndMutateRowRequest",
         "CheckAndMutateRowResponse",
+        "PingAndWarmRequest",
+        "PingAndWarmResponse",
         "ReadModifyWriteRowRequest",
         "ReadModifyWriteRowResponse",
     },
@@ -396,6 +398,31 @@ class CheckAndMutateRowResponse(proto.Message):
     """
 
     predicate_matched = proto.Field(proto.BOOL, number=1,)
+
+
+class PingAndWarmRequest(proto.Message):
+    r"""Request message for client connection keep-alive and warming.
+
+    Attributes:
+        name (str):
+            Required. The unique name of the instance to check
+            permissions for as well as respond. Values are of the form
+            ``projects/<project>/instances/<instance>``.
+        app_profile_id (str):
+            This value specifies routing for replication.
+            If not specified, the "default" application
+            profile will be used.
+    """
+
+    name = proto.Field(proto.STRING, number=1,)
+    app_profile_id = proto.Field(proto.STRING, number=2,)
+
+
+class PingAndWarmResponse(proto.Message):
+    r"""Response message for Bigtable.PingAndWarm connection
+    keepalive and warming.
+
+    """
 
 
 class ReadModifyWriteRowRequest(proto.Message):

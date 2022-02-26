@@ -181,7 +181,7 @@ def lint_setup_py(session):
 bad_clusters_typing = r"""
         clusters: Sequence\[
             bigtable_instance_admin\.CreateInstanceRequest\.ClustersEntry
-        \] = None,"""
+        \] \= None,"""
 
 good_clusters_typing = """
         clusters: Dict[str, gba_instance.Cluster] = None,"""

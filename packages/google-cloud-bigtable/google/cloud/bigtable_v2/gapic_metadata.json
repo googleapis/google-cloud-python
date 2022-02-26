@@ -25,6 +25,11 @@
                 "mutate_rows"
               ]
             },
+            "PingAndWarm": {
+              "methods": [
+                "ping_and_warm"
+              ]
+            },
             "ReadModifyWriteRow": {
               "methods": [
                 "read_modify_write_row"
@@ -58,6 +63,11 @@
             "MutateRows": {
               "methods": [
                 "mutate_rows"
+              ]
+            },
+            "PingAndWarm": {
+              "methods": [
+                "ping_and_warm"
               ]
             },
             "ReadModifyWriteRow": {
