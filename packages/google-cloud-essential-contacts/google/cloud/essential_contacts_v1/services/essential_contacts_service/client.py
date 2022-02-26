@@ -415,6 +415,25 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
     ) -> service.Contact:
         r"""Adds a new contact for a resource.
 
+        .. code-block:: python
+
+            from google.cloud import essential_contacts_v1
+
+            def sample_create_contact():
+                # Create a client
+                client = essential_contacts_v1.EssentialContactsServiceClient()
+
+                # Initialize request argument(s)
+                request = essential_contacts_v1.CreateContactRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.create_contact(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.essential_contacts_v1.types.CreateContactRequest, dict]):
                 The request object. Request message for the
@@ -498,6 +517,25 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
     ) -> service.Contact:
         r"""Updates a contact.
         Note: A contact's email address cannot be changed.
+
+
+        .. code-block:: python
+
+            from google.cloud import essential_contacts_v1
+
+            def sample_update_contact():
+                # Create a client
+                client = essential_contacts_v1.EssentialContactsServiceClient()
+
+                # Initialize request argument(s)
+                request = essential_contacts_v1.UpdateContactRequest(
+                )
+
+                # Make the request
+                response = client.update_contact(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.essential_contacts_v1.types.UpdateContactRequest, dict]):
@@ -584,6 +622,26 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
     ) -> pagers.ListContactsPager:
         r"""Lists the contacts that have been set on a resource.
 
+        .. code-block:: python
+
+            from google.cloud import essential_contacts_v1
+
+            def sample_list_contacts():
+                # Create a client
+                client = essential_contacts_v1.EssentialContactsServiceClient()
+
+                # Initialize request argument(s)
+                request = essential_contacts_v1.ListContactsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_contacts(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.essential_contacts_v1.types.ListContactsRequest, dict]):
                 The request object. Request message for the ListContacts
@@ -665,6 +723,25 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
     ) -> service.Contact:
         r"""Gets a single contact.
 
+        .. code-block:: python
+
+            from google.cloud import essential_contacts_v1
+
+            def sample_get_contact():
+                # Create a client
+                client = essential_contacts_v1.EssentialContactsServiceClient()
+
+                # Initialize request argument(s)
+                request = essential_contacts_v1.GetContactRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_contact(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.essential_contacts_v1.types.GetContactRequest, dict]):
                 The request object. Request message for the GetContact
@@ -738,6 +815,22 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
     ) -> None:
         r"""Deletes a contact.
 
+        .. code-block:: python
+
+            from google.cloud import essential_contacts_v1
+
+            def sample_delete_contact():
+                # Create a client
+                client = essential_contacts_v1.EssentialContactsServiceClient()
+
+                # Initialize request argument(s)
+                request = essential_contacts_v1.DeleteContactRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_contact(request=request)
+
         Args:
             request (Union[google.cloud.essential_contacts_v1.types.DeleteContactRequest, dict]):
                 The request object. Request message for the
@@ -805,6 +898,27 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
         subscribed to the specified notification categories,
         including contacts inherited from any parent resources.
 
+
+        .. code-block:: python
+
+            from google.cloud import essential_contacts_v1
+
+            def sample_compute_contacts():
+                # Create a client
+                client = essential_contacts_v1.EssentialContactsServiceClient()
+
+                # Initialize request argument(s)
+                request = essential_contacts_v1.ComputeContactsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.compute_contacts(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.essential_contacts_v1.types.ComputeContactsRequest, dict]):
                 The request object. Request message for the
@@ -864,6 +978,25 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
     ) -> None:
         r"""Allows a contact admin to send a test message to
         contact to verify that it has been configured correctly.
+
+
+        .. code-block:: python
+
+            from google.cloud import essential_contacts_v1
+
+            def sample_send_test_message():
+                # Create a client
+                client = essential_contacts_v1.EssentialContactsServiceClient()
+
+                # Initialize request argument(s)
+                request = essential_contacts_v1.SendTestMessageRequest(
+                    contacts=['contacts_value_1', 'contacts_value_2'],
+                    resource="resource_value",
+                    notification_category="TECHNICAL_INCIDENTS",
+                )
+
+                # Make the request
+                client.send_test_message(request=request)
 
         Args:
             request (Union[google.cloud.essential_contacts_v1.types.SendTestMessageRequest, dict]):
