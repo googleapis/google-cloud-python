@@ -406,6 +406,26 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
     ) -> document.Document:
         r"""Gets a single document.
 
+        .. code-block:: python
+
+            from google.cloud import firestore_v1
+
+            def sample_get_document():
+                # Create a client
+                client = firestore_v1.FirestoreClient()
+
+                # Initialize request argument(s)
+                request = firestore_v1.GetDocumentRequest(
+                    transaction=b'transaction_blob',
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_document(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.firestore_v1.types.GetDocumentRequest, dict]):
                 The request object. The request for
@@ -455,6 +475,28 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListDocumentsPager:
         r"""Lists documents.
+
+        .. code-block:: python
+
+            from google.cloud import firestore_v1
+
+            def sample_list_documents():
+                # Create a client
+                client = firestore_v1.FirestoreClient()
+
+                # Initialize request argument(s)
+                request = firestore_v1.ListDocumentsRequest(
+                    transaction=b'transaction_blob',
+                    parent="parent_value",
+                    collection_id="collection_id_value",
+                )
+
+                # Make the request
+                page_result = client.list_documents(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.firestore_v1.types.ListDocumentsRequest, dict]):
@@ -516,6 +558,24 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gf_document.Document:
         r"""Updates or inserts a document.
+
+        .. code-block:: python
+
+            from google.cloud import firestore_v1
+
+            def sample_update_document():
+                # Create a client
+                client = firestore_v1.FirestoreClient()
+
+                # Initialize request argument(s)
+                request = firestore_v1.UpdateDocumentRequest(
+                )
+
+                # Make the request
+                response = client.update_document(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.firestore_v1.types.UpdateDocumentRequest, dict]):
@@ -607,6 +667,22 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
     ) -> None:
         r"""Deletes a document.
 
+        .. code-block:: python
+
+            from google.cloud import firestore_v1
+
+            def sample_delete_document():
+                # Create a client
+                client = firestore_v1.FirestoreClient()
+
+                # Initialize request argument(s)
+                request = firestore_v1.DeleteDocumentRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_document(request=request)
+
         Args:
             request (Union[google.cloud.firestore_v1.types.DeleteDocumentRequest, dict]):
                 The request object. The request for
@@ -673,6 +749,28 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
         Documents returned by this method are not guaranteed to
         be returned in the same order that they were requested.
 
+
+        .. code-block:: python
+
+            from google.cloud import firestore_v1
+
+            def sample_batch_get_documents():
+                # Create a client
+                client = firestore_v1.FirestoreClient()
+
+                # Initialize request argument(s)
+                request = firestore_v1.BatchGetDocumentsRequest(
+                    transaction=b'transaction_blob',
+                    database="database_value",
+                )
+
+                # Make the request
+                stream = client.batch_get_documents(request=request)
+
+                # Handle the response
+                for response in stream:
+                    print(response)
+
         Args:
             request (Union[google.cloud.firestore_v1.types.BatchGetDocumentsRequest, dict]):
                 The request object. The request for
@@ -723,6 +821,25 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> firestore.BeginTransactionResponse:
         r"""Starts a new transaction.
+
+        .. code-block:: python
+
+            from google.cloud import firestore_v1
+
+            def sample_begin_transaction():
+                # Create a client
+                client = firestore_v1.FirestoreClient()
+
+                # Initialize request argument(s)
+                request = firestore_v1.BeginTransactionRequest(
+                    database="database_value",
+                )
+
+                # Make the request
+                response = client.begin_transaction(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.firestore_v1.types.BeginTransactionRequest, dict]):
@@ -796,6 +913,26 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
     ) -> firestore.CommitResponse:
         r"""Commits a transaction, while optionally updating
         documents.
+
+
+        .. code-block:: python
+
+            from google.cloud import firestore_v1
+
+            def sample_commit():
+                # Create a client
+                client = firestore_v1.FirestoreClient()
+
+                # Initialize request argument(s)
+                request = firestore_v1.CommitRequest(
+                    database="database_value",
+                )
+
+                # Make the request
+                response = client.commit(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.firestore_v1.types.CommitRequest, dict]):
@@ -878,6 +1015,23 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
     ) -> None:
         r"""Rolls back a transaction.
 
+        .. code-block:: python
+
+            from google.cloud import firestore_v1
+
+            def sample_rollback():
+                # Create a client
+                client = firestore_v1.FirestoreClient()
+
+                # Initialize request argument(s)
+                request = firestore_v1.RollbackRequest(
+                    database="database_value",
+                    transaction=b'transaction_blob',
+                )
+
+                # Make the request
+                client.rollback(request=request)
+
         Args:
             request (Union[google.cloud.firestore_v1.types.RollbackRequest, dict]):
                 The request object. The request for
@@ -950,6 +1104,27 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
     ) -> Iterable[firestore.RunQueryResponse]:
         r"""Runs a query.
 
+        .. code-block:: python
+
+            from google.cloud import firestore_v1
+
+            def sample_run_query():
+                # Create a client
+                client = firestore_v1.FirestoreClient()
+
+                # Initialize request argument(s)
+                request = firestore_v1.RunQueryRequest(
+                    transaction=b'transaction_blob',
+                    parent="parent_value",
+                )
+
+                # Make the request
+                stream = client.run_query(request=request)
+
+                # Handle the response
+                for response in stream:
+                    print(response)
+
         Args:
             request (Union[google.cloud.firestore_v1.types.RunQueryRequest, dict]):
                 The request object. The request for
@@ -1003,6 +1178,27 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
         returned partition cursors are split points that can be
         used by RunQuery as starting/end points for the query
         results.
+
+
+        .. code-block:: python
+
+            from google.cloud import firestore_v1
+
+            def sample_partition_query():
+                # Create a client
+                client = firestore_v1.FirestoreClient()
+
+                # Initialize request argument(s)
+                request = firestore_v1.PartitionQueryRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.partition_query(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.firestore_v1.types.PartitionQueryRequest, dict]):
@@ -1064,6 +1260,37 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
         r"""Streams batches of document updates and deletes, in
         order.
 
+
+        .. code-block:: python
+
+            from google.cloud import firestore_v1
+
+            def sample_write():
+                # Create a client
+                client = firestore_v1.FirestoreClient()
+
+                # Initialize request argument(s)
+                request = firestore_v1.WriteRequest(
+                    database="database_value",
+                )
+
+                # This method expects an iterator which contains
+                # 'firestore_v1.WriteRequest' objects
+                # Here we create a generator that yields a single `request` for
+                # demonstrative purposes.
+                requests = [request]
+
+                def request_generator():
+                    for request in requests:
+                        yield request
+
+                # Make the request
+                stream = client.write(requests=request_generator())
+
+                # Handle the response
+                for response in stream:
+                    print(response)
+
         Args:
             requests (Iterator[google.cloud.firestore_v1.types.WriteRequest]):
                 The request object iterator. The request for
@@ -1115,6 +1342,40 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
     ) -> Iterable[firestore.ListenResponse]:
         r"""Listens to changes.
 
+        .. code-block:: python
+
+            from google.cloud import firestore_v1
+
+            def sample_listen():
+                # Create a client
+                client = firestore_v1.FirestoreClient()
+
+                # Initialize request argument(s)
+                add_target = firestore_v1.Target()
+                add_target.resume_token = b'resume_token_blob'
+
+                request = firestore_v1.ListenRequest(
+                    add_target=add_target,
+                    database="database_value",
+                )
+
+                # This method expects an iterator which contains
+                # 'firestore_v1.ListenRequest' objects
+                # Here we create a generator that yields a single `request` for
+                # demonstrative purposes.
+                requests = [request]
+
+                def request_generator():
+                    for request in requests:
+                        yield request
+
+                # Make the request
+                stream = client.listen(requests=request_generator())
+
+                # Handle the response
+                for response in stream:
+                    print(response)
+
         Args:
             requests (Iterator[google.cloud.firestore_v1.types.ListenRequest]):
                 The request object iterator. A request for
@@ -1156,6 +1417,26 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListCollectionIdsPager:
         r"""Lists all the collection IDs underneath a document.
+
+        .. code-block:: python
+
+            from google.cloud import firestore_v1
+
+            def sample_list_collection_ids():
+                # Create a client
+                client = firestore_v1.FirestoreClient()
+
+                # Initialize request argument(s)
+                request = firestore_v1.ListCollectionIdsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_collection_ids(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.firestore_v1.types.ListCollectionIdsRequest, dict]):
@@ -1248,6 +1529,26 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
         If you require an atomically applied set of writes, use
         [Commit][google.firestore.v1.Firestore.Commit] instead.
 
+
+        .. code-block:: python
+
+            from google.cloud import firestore_v1
+
+            def sample_batch_write():
+                # Create a client
+                client = firestore_v1.FirestoreClient()
+
+                # Initialize request argument(s)
+                request = firestore_v1.BatchWriteRequest(
+                    database="database_value",
+                )
+
+                # Make the request
+                response = client.batch_write(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.firestore_v1.types.BatchWriteRequest, dict]):
                 The request object. The request for
@@ -1297,6 +1598,26 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> document.Document:
         r"""Creates a new document.
+
+        .. code-block:: python
+
+            from google.cloud import firestore_v1
+
+            def sample_create_document():
+                # Create a client
+                client = firestore_v1.FirestoreClient()
+
+                # Initialize request argument(s)
+                request = firestore_v1.CreateDocumentRequest(
+                    parent="parent_value",
+                    collection_id="collection_id_value",
+                )
+
+                # Make the request
+                response = client.create_document(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.firestore_v1.types.CreateDocumentRequest, dict]):

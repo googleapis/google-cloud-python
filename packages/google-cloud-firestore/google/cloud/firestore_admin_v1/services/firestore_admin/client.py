@@ -502,6 +502,30 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
         metadata for the operation will be the type
         [IndexOperationMetadata][google.firestore.admin.v1.IndexOperationMetadata].
 
+
+        .. code-block:: python
+
+            from google.cloud import firestore_admin_v1
+
+            def sample_create_index():
+                # Create a client
+                client = firestore_admin_v1.FirestoreAdminClient()
+
+                # Initialize request argument(s)
+                request = firestore_admin_v1.CreateIndexRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                operation = client.create_index(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.firestore_admin_v1.types.CreateIndexRequest, dict]):
                 The request object. The request for
@@ -592,6 +616,26 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
     ) -> pagers.ListIndexesPager:
         r"""Lists composite indexes.
 
+        .. code-block:: python
+
+            from google.cloud import firestore_admin_v1
+
+            def sample_list_indexes():
+                # Create a client
+                client = firestore_admin_v1.FirestoreAdminClient()
+
+                # Initialize request argument(s)
+                request = firestore_admin_v1.ListIndexesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_indexes(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.firestore_admin_v1.types.ListIndexesRequest, dict]):
                 The request object. The request for
@@ -672,6 +716,25 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
     ) -> index.Index:
         r"""Gets a composite index.
 
+        .. code-block:: python
+
+            from google.cloud import firestore_admin_v1
+
+            def sample_get_index():
+                # Create a client
+                client = firestore_admin_v1.FirestoreAdminClient()
+
+                # Initialize request argument(s)
+                request = firestore_admin_v1.GetIndexRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_index(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.firestore_admin_v1.types.GetIndexRequest, dict]):
                 The request object. The request for
@@ -744,6 +807,22 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
     ) -> None:
         r"""Deletes a composite index.
 
+        .. code-block:: python
+
+            from google.cloud import firestore_admin_v1
+
+            def sample_delete_index():
+                # Create a client
+                client = firestore_admin_v1.FirestoreAdminClient()
+
+                # Initialize request argument(s)
+                request = firestore_admin_v1.DeleteIndexRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_index(request=request)
+
         Args:
             request (Union[google.cloud.firestore_admin_v1.types.DeleteIndexRequest, dict]):
                 The request object. The request for
@@ -807,6 +886,25 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> field.Field:
         r"""Gets the metadata and configuration for a Field.
+
+        .. code-block:: python
+
+            from google.cloud import firestore_admin_v1
+
+            def sample_get_field():
+                # Create a client
+                client = firestore_admin_v1.FirestoreAdminClient()
+
+                # Initialize request argument(s)
+                request = firestore_admin_v1.GetFieldRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_field(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.firestore_admin_v1.types.GetFieldRequest, dict]):
@@ -896,6 +994,33 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
         To configure the default field settings for the database, use
         the special ``Field`` with resource name:
         ``projects/{project_id}/databases/{database_id}/collectionGroups/__default__/fields/*``.
+
+
+        .. code-block:: python
+
+            from google.cloud import firestore_admin_v1
+
+            def sample_update_field():
+                # Create a client
+                client = firestore_admin_v1.FirestoreAdminClient()
+
+                # Initialize request argument(s)
+                field = firestore_admin_v1.Field()
+                field.name = "name_value"
+
+                request = firestore_admin_v1.UpdateFieldRequest(
+                    field=field,
+                )
+
+                # Make the request
+                operation = client.update_field(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.firestore_admin_v1.types.UpdateFieldRequest, dict]):
@@ -991,6 +1116,27 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
         with the filter set to ``indexConfig.usesAncestorConfig:false``
         .
 
+
+        .. code-block:: python
+
+            from google.cloud import firestore_admin_v1
+
+            def sample_list_fields():
+                # Create a client
+                client = firestore_admin_v1.FirestoreAdminClient()
+
+                # Initialize request argument(s)
+                request = firestore_admin_v1.ListFieldsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_fields(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.firestore_admin_v1.types.ListFieldsRequest, dict]):
                 The request object. The request for
@@ -1084,6 +1230,30 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
         refer to:
         https://cloud.google.com/firestore/docs/manage-data/export-import
 
+
+        .. code-block:: python
+
+            from google.cloud import firestore_admin_v1
+
+            def sample_export_documents():
+                # Create a client
+                client = firestore_admin_v1.FirestoreAdminClient()
+
+                # Initialize request argument(s)
+                request = firestore_admin_v1.ExportDocumentsRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.export_documents(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.firestore_admin_v1.types.ExportDocumentsRequest, dict]):
                 The request object. The request for
@@ -1173,6 +1343,30 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
         is created. If an ImportDocuments operation is
         cancelled, it is possible that a subset of the data has
         already been imported to Cloud Firestore.
+
+
+        .. code-block:: python
+
+            from google.cloud import firestore_admin_v1
+
+            def sample_import_documents():
+                # Create a client
+                client = firestore_admin_v1.FirestoreAdminClient()
+
+                # Initialize request argument(s)
+                request = firestore_admin_v1.ImportDocumentsRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.import_documents(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.firestore_admin_v1.types.ImportDocumentsRequest, dict]):
@@ -1266,6 +1460,25 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
     ) -> database.Database:
         r"""Gets information about a database.
 
+        .. code-block:: python
+
+            from google.cloud import firestore_admin_v1
+
+            def sample_get_database():
+                # Create a client
+                client = firestore_admin_v1.FirestoreAdminClient()
+
+                # Initialize request argument(s)
+                request = firestore_admin_v1.GetDatabaseRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_database(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.firestore_admin_v1.types.GetDatabaseRequest, dict]):
                 The request object. The request for
@@ -1339,6 +1552,25 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
     ) -> firestore_admin.ListDatabasesResponse:
         r"""List all the databases in the project.
 
+        .. code-block:: python
+
+            from google.cloud import firestore_admin_v1
+
+            def sample_list_databases():
+                # Create a client
+                client = firestore_admin_v1.FirestoreAdminClient()
+
+                # Initialize request argument(s)
+                request = firestore_admin_v1.ListDatabasesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.list_databases(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.firestore_admin_v1.types.ListDatabasesRequest, dict]):
                 The request object. A request to list the Firestore
@@ -1408,6 +1640,28 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gac_operation.Operation:
         r"""Updates a database.
+
+        .. code-block:: python
+
+            from google.cloud import firestore_admin_v1
+
+            def sample_update_database():
+                # Create a client
+                client = firestore_admin_v1.FirestoreAdminClient()
+
+                # Initialize request argument(s)
+                request = firestore_admin_v1.UpdateDatabaseRequest(
+                )
+
+                # Make the request
+                operation = client.update_database(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.firestore_admin_v1.types.UpdateDatabaseRequest, dict]):
