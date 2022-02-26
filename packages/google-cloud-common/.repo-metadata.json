@@ -5,7 +5,7 @@
     "issue_tracker": "",
     "release_level": "stable",
     "language": "python",
-    "library_type": "GAPIC_AUTO",
+    "library_type": "CORE",
     "repo": "googleapis/python-cloud-common",
     "distribution_name": "google-cloud-common",
     "default_version": "",
