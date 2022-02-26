@@ -863,7 +863,7 @@ async def test_list_instances_async_pager():
         async_pager = await client.list_instances(request={},)
         assert async_pager.next_page_token == 'abc'
         responses = []
-        async for response in async_pager:
+        async for response in async_pager: # pragma: no branch
             responses.append(response)
 
         assert len(responses) == 6
@@ -910,7 +910,7 @@ async def test_list_instances_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (await client.list_instances(request={})).pages:
+        async for page_ in (await client.list_instances(request={})).pages: # pragma: no branch
             pages.append(page_)
         for page_, token in zip(pages, ['abc','def','ghi', '']):
             assert page_.raw_page.next_page_token == token

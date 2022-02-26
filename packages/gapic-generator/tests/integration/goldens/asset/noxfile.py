@@ -62,6 +62,7 @@ def unit(session):
         'py.test',
         '--quiet',
         '--cov=google/cloud/asset_v1/',
+        '--cov=tests/',
         '--cov-config=.coveragerc',
         '--cov-report=term',
         '--cov-report=html',

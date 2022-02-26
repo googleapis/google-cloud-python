@@ -857,7 +857,7 @@ async def test_list_buckets_async_pager():
         async_pager = await client.list_buckets(request={},)
         assert async_pager.next_page_token == 'abc'
         responses = []
-        async for response in async_pager:
+        async for response in async_pager: # pragma: no branch
             responses.append(response)
 
         assert len(responses) == 6
@@ -904,7 +904,7 @@ async def test_list_buckets_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (await client.list_buckets(request={})).pages:
+        async for page_ in (await client.list_buckets(request={})).pages: # pragma: no branch
             pages.append(page_)
         for page_, token in zip(pages, ['abc','def','ghi', '']):
             assert page_.raw_page.next_page_token == token
@@ -2071,7 +2071,7 @@ async def test_list_views_async_pager():
         async_pager = await client.list_views(request={},)
         assert async_pager.next_page_token == 'abc'
         responses = []
-        async for response in async_pager:
+        async for response in async_pager: # pragma: no branch
             responses.append(response)
 
         assert len(responses) == 6
@@ -2118,7 +2118,7 @@ async def test_list_views_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (await client.list_views(request={})).pages:
+        async for page_ in (await client.list_views(request={})).pages: # pragma: no branch
             pages.append(page_)
         for page_, token in zip(pages, ['abc','def','ghi', '']):
             assert page_.raw_page.next_page_token == token
@@ -3116,7 +3116,7 @@ async def test_list_sinks_async_pager():
         async_pager = await client.list_sinks(request={},)
         assert async_pager.next_page_token == 'abc'
         responses = []
-        async for response in async_pager:
+        async for response in async_pager: # pragma: no branch
             responses.append(response)
 
         assert len(responses) == 6
@@ -3163,7 +3163,7 @@ async def test_list_sinks_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (await client.list_sinks(request={})).pages:
+        async for page_ in (await client.list_sinks(request={})).pages: # pragma: no branch
             pages.append(page_)
         for page_, token in zip(pages, ['abc','def','ghi', '']):
             assert page_.raw_page.next_page_token == token
@@ -4590,7 +4590,7 @@ async def test_list_exclusions_async_pager():
         async_pager = await client.list_exclusions(request={},)
         assert async_pager.next_page_token == 'abc'
         responses = []
-        async for response in async_pager:
+        async for response in async_pager: # pragma: no branch
             responses.append(response)
 
         assert len(responses) == 6
@@ -4637,7 +4637,7 @@ async def test_list_exclusions_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (await client.list_exclusions(request={})).pages:
+        async for page_ in (await client.list_exclusions(request={})).pages: # pragma: no branch
             pages.append(page_)
         for page_, token in zip(pages, ['abc','def','ghi', '']):
             assert page_.raw_page.next_page_token == token
