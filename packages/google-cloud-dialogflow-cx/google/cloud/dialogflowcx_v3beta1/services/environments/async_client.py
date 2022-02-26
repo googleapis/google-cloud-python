@@ -233,7 +233,7 @@ class EnvironmentsAsyncClient:
         [Agent][google.cloud.dialogflow.cx.v3beta1.Agent].
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -337,7 +337,7 @@ class EnvironmentsAsyncClient:
         [Environment][google.cloud.dialogflow.cx.v3beta1.Environment].
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -456,7 +456,7 @@ class EnvironmentsAsyncClient:
            [Environment][google.cloud.dialogflow.cx.v3beta1.Environment]
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -598,7 +598,7 @@ class EnvironmentsAsyncClient:
            [Environment][google.cloud.dialogflow.cx.v3beta1.Environment]
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -726,7 +726,7 @@ class EnvironmentsAsyncClient:
         [Environment][google.cloud.dialogflow.cx.v3beta1.Environment].
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -810,7 +810,7 @@ class EnvironmentsAsyncClient:
         [Environment][google.cloud.dialogflow.cx.v3beta1.Environment].
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -922,7 +922,7 @@ class EnvironmentsAsyncClient:
            [RunContinuousTestResponse][google.cloud.dialogflow.cx.v3beta1.RunContinuousTestResponse]
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -1011,7 +1011,7 @@ class EnvironmentsAsyncClient:
         environment.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -1122,7 +1122,7 @@ class EnvironmentsAsyncClient:
            [DeployFlowResponse][google.cloud.dialogflow.cx.v3beta1.DeployFlowResponse]
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 

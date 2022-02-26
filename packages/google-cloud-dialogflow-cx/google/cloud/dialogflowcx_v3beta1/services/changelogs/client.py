@@ -411,8 +411,7 @@ class ChangelogsClient(metaclass=ChangelogsClientMeta):
     ) -> pagers.ListChangelogsPager:
         r"""Returns the list of Changelogs.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -512,8 +511,7 @@ class ChangelogsClient(metaclass=ChangelogsClientMeta):
     ) -> changelog.Changelog:
         r"""Retrieves the specified Changelog.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 

@@ -416,8 +416,7 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
         agent.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -518,8 +517,7 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
     ) -> entity_type.EntityType:
         r"""Retrieves the specified entity type.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -642,8 +640,7 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
     ) -> gcdc_entity_type.EntityType:
         r"""Creates an entity type in the specified agent.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -783,8 +780,7 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -924,8 +920,7 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 

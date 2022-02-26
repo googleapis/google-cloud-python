@@ -481,8 +481,7 @@ class DeploymentsClient(metaclass=DeploymentsClientMeta):
         [Environment][google.cloud.dialogflow.cx.v3.Environment].
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3
 
@@ -586,8 +585,7 @@ class DeploymentsClient(metaclass=DeploymentsClientMeta):
         [Deployment][google.cloud.dialogflow.cx.v3.Deployment].
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3
 

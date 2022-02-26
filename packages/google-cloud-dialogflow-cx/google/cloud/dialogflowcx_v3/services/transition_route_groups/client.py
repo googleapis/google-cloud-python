@@ -495,8 +495,7 @@ class TransitionRouteGroupsClient(metaclass=TransitionRouteGroupsClientMeta):
         the specified flow.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3
 
@@ -605,8 +604,7 @@ class TransitionRouteGroupsClient(metaclass=TransitionRouteGroupsClientMeta):
         [TransitionRouteGroup][google.cloud.dialogflow.cx.v3.TransitionRouteGroup].
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3
 
@@ -714,8 +712,7 @@ class TransitionRouteGroupsClient(metaclass=TransitionRouteGroupsClientMeta):
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3
 
@@ -837,8 +834,7 @@ class TransitionRouteGroupsClient(metaclass=TransitionRouteGroupsClientMeta):
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3
 
@@ -958,8 +954,7 @@ class TransitionRouteGroupsClient(metaclass=TransitionRouteGroupsClientMeta):
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3
 

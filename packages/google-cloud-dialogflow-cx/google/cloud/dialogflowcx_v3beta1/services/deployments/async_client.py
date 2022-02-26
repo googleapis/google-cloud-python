@@ -222,7 +222,7 @@ class DeploymentsAsyncClient:
         [Environment][google.cloud.dialogflow.cx.v3beta1.Environment].
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -326,7 +326,7 @@ class DeploymentsAsyncClient:
         [Deployment][google.cloud.dialogflow.cx.v3beta1.Deployment].
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 

@@ -515,8 +515,7 @@ class FlowsClient(metaclass=FlowsClientMeta):
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -638,8 +637,7 @@ class FlowsClient(metaclass=FlowsClientMeta):
     ) -> None:
         r"""Deletes a specified flow.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -719,8 +717,7 @@ class FlowsClient(metaclass=FlowsClientMeta):
     ) -> pagers.ListFlowsPager:
         r"""Returns the list of all flows in the specified agent.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -820,8 +817,7 @@ class FlowsClient(metaclass=FlowsClientMeta):
     ) -> flow.Flow:
         r"""Retrieves the specified flow.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -938,8 +934,7 @@ class FlowsClient(metaclass=FlowsClientMeta):
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -1079,8 +1074,7 @@ class FlowsClient(metaclass=FlowsClientMeta):
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -1198,8 +1192,7 @@ class FlowsClient(metaclass=FlowsClientMeta):
         results.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -1271,8 +1264,7 @@ class FlowsClient(metaclass=FlowsClientMeta):
         validation is performed when ValidateFlow is called.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -1379,8 +1371,7 @@ class FlowsClient(metaclass=FlowsClientMeta):
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -1480,8 +1471,7 @@ class FlowsClient(metaclass=FlowsClientMeta):
         flow references will also be exported.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 

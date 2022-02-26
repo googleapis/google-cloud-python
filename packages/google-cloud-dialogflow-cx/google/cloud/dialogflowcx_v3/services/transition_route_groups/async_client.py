@@ -239,7 +239,7 @@ class TransitionRouteGroupsAsyncClient:
         the specified flow.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3
 
@@ -344,7 +344,7 @@ class TransitionRouteGroupsAsyncClient:
         [TransitionRouteGroup][google.cloud.dialogflow.cx.v3.TransitionRouteGroup].
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3
 
@@ -448,7 +448,7 @@ class TransitionRouteGroupsAsyncClient:
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3
 
@@ -564,7 +564,7 @@ class TransitionRouteGroupsAsyncClient:
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3
 
@@ -678,7 +678,7 @@ class TransitionRouteGroupsAsyncClient:
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3
 

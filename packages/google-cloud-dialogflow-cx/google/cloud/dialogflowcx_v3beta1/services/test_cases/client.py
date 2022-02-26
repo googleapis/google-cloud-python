@@ -578,8 +578,7 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
     ) -> pagers.ListTestCasesPager:
         r"""Fetches a list of test cases for a given agent.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -679,8 +678,7 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
     ) -> None:
         r"""Batch deletes test cases.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -761,8 +759,7 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
     ) -> test_case.TestCase:
         r"""Gets a test case.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -851,8 +848,7 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
     ) -> gcdc_test_case.TestCase:
         r"""Creates a test case for the given agent.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -952,8 +948,7 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
     ) -> gcdc_test_case.TestCase:
         r"""Updates the specified test case.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -1067,8 +1062,7 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
            [RunTestCaseResponse][google.cloud.dialogflow.cx.v3beta1.RunTestCaseResponse]
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -1164,8 +1158,7 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
            [BatchRunTestCasesResponse][google.cloud.dialogflow.cx.v3beta1.BatchRunTestCasesResponse]
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -1251,8 +1244,7 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
     ) -> test_case.CalculateCoverageResponse:
         r"""Calculates the test coverage for an agent.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -1336,8 +1328,7 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
            [ImportTestCasesResponse][google.cloud.dialogflow.cx.v3beta1.ImportTestCasesResponse]
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -1436,8 +1427,7 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
            [ExportTestCasesResponse][google.cloud.dialogflow.cx.v3beta1.ExportTestCasesResponse]
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -1524,8 +1514,7 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
     ) -> pagers.ListTestCaseResultsPager:
         r"""Fetches a list of results for a given test case.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -1627,8 +1616,7 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
     ) -> test_case.TestCaseResult:
         r"""Gets a test case result.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 

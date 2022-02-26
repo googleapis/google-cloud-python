@@ -215,7 +215,7 @@ class EntityTypesAsyncClient:
         agent.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -316,7 +316,7 @@ class EntityTypesAsyncClient:
     ) -> entity_type.EntityType:
         r"""Retrieves the specified entity type.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -439,7 +439,7 @@ class EntityTypesAsyncClient:
     ) -> gcdc_entity_type.EntityType:
         r"""Creates an entity type in the specified agent.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -579,7 +579,7 @@ class EntityTypesAsyncClient:
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -719,7 +719,7 @@ class EntityTypesAsyncClient:
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 

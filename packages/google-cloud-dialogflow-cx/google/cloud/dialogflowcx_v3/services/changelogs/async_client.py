@@ -210,7 +210,7 @@ class ChangelogsAsyncClient:
     ) -> pagers.ListChangelogsAsyncPager:
         r"""Returns the list of Changelogs.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3
 
@@ -310,7 +310,7 @@ class ChangelogsAsyncClient:
     ) -> changelog.Changelog:
         r"""Retrieves the specified Changelog.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3
 

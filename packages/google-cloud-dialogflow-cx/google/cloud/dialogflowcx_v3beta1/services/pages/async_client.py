@@ -220,7 +220,7 @@ class PagesAsyncClient:
     ) -> pagers.ListPagesAsyncPager:
         r"""Returns the list of all pages in the specified flow.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -320,7 +320,7 @@ class PagesAsyncClient:
     ) -> page.Page:
         r"""Retrieves the specified page.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -431,7 +431,7 @@ class PagesAsyncClient:
     ) -> gcdc_page.Page:
         r"""Creates a page in the specified flow.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -553,7 +553,7 @@ class PagesAsyncClient:
     ) -> gcdc_page.Page:
         r"""Updates the specified page.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -676,7 +676,7 @@ class PagesAsyncClient:
     ) -> None:
         r"""Deletes the specified page.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 

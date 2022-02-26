@@ -217,7 +217,7 @@ class VersionsAsyncClient:
         [Flow][google.cloud.dialogflow.cx.v3.Flow].
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3
 
@@ -320,7 +320,7 @@ class VersionsAsyncClient:
         [Version][google.cloud.dialogflow.cx.v3.Version].
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3
 
@@ -423,7 +423,7 @@ class VersionsAsyncClient:
            [Version][google.cloud.dialogflow.cx.v3.Version]
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3
 
@@ -545,7 +545,7 @@ class VersionsAsyncClient:
         [Version][google.cloud.dialogflow.cx.v3.Version].
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3
 
@@ -648,7 +648,7 @@ class VersionsAsyncClient:
         [Version][google.cloud.dialogflow.cx.v3.Version].
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3
 
@@ -741,7 +741,7 @@ class VersionsAsyncClient:
            message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3
 
@@ -860,7 +860,7 @@ class VersionsAsyncClient:
         version.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3
 

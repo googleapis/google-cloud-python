@@ -427,8 +427,7 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
         specified session.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -535,8 +534,7 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
     ) -> session_entity_type.SessionEntityType:
         r"""Retrieves the specified session entity type.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -648,8 +646,7 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
     ) -> gcdc_session_entity_type.SessionEntityType:
         r"""Creates a session entity type.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -782,8 +779,7 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
     ) -> gcdc_session_entity_type.SessionEntityType:
         r"""Updates the specified session entity type.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -913,8 +909,7 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
     ) -> None:
         r"""Deletes the specified session entity type.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 

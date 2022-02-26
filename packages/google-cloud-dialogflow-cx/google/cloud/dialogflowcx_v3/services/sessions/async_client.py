@@ -249,7 +249,7 @@ class SessionsAsyncClient:
         environments <https://cloud.google.com/dialogflow/cx/docs/concept/version>`__.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3
 
@@ -338,7 +338,7 @@ class SessionsAsyncClient:
         environments <https://cloud.google.com/dialogflow/cx/docs/concept/version>`__.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3
 
@@ -477,7 +477,7 @@ class SessionsAsyncClient:
         change the session status.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3
 
@@ -554,7 +554,7 @@ class SessionsAsyncClient:
         Otherwise, the behavior is undefined.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3
 

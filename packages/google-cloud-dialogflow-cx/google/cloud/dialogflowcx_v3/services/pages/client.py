@@ -501,8 +501,7 @@ class PagesClient(metaclass=PagesClientMeta):
     ) -> pagers.ListPagesPager:
         r"""Returns the list of all pages in the specified flow.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3
 
@@ -602,8 +601,7 @@ class PagesClient(metaclass=PagesClientMeta):
     ) -> page.Page:
         r"""Retrieves the specified page.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3
 
@@ -719,8 +717,7 @@ class PagesClient(metaclass=PagesClientMeta):
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3
 
@@ -847,8 +844,7 @@ class PagesClient(metaclass=PagesClientMeta):
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3
 
@@ -976,8 +972,7 @@ class PagesClient(metaclass=PagesClientMeta):
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3
 

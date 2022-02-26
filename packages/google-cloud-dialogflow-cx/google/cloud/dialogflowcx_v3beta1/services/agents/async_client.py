@@ -233,7 +233,7 @@ class AgentsAsyncClient:
         location.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -333,7 +333,7 @@ class AgentsAsyncClient:
     ) -> agent.Agent:
         r"""Retrieves the specified agent.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -441,7 +441,7 @@ class AgentsAsyncClient:
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -562,7 +562,7 @@ class AgentsAsyncClient:
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -679,7 +679,7 @@ class AgentsAsyncClient:
     ) -> None:
         r"""Deletes the specified agent.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -769,7 +769,7 @@ class AgentsAsyncClient:
            [ExportAgentResponse][google.cloud.dialogflow.cx.v3beta1.ExportAgentResponse]
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -872,7 +872,7 @@ class AgentsAsyncClient:
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -970,7 +970,7 @@ class AgentsAsyncClient:
         completed to get the complete validation results.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -1041,7 +1041,7 @@ class AgentsAsyncClient:
         validation is performed when ValidateAgent is called.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 

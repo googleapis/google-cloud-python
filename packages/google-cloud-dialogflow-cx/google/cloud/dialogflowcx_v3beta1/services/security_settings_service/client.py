@@ -461,8 +461,7 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
     ) -> gcdc_security_settings.SecuritySettings:
         r"""Create security settings in the specified location.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -577,8 +576,7 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
         The returned settings may be stale by up to 1 minute.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -677,8 +675,7 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
         [SecuritySettings][google.cloud.dialogflow.cx.v3beta1.SecuritySettings].
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -792,8 +789,7 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
         specified location.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -896,8 +892,7 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
         [SecuritySettings][google.cloud.dialogflow.cx.v3beta1.SecuritySettings].
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 

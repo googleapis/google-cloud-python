@@ -431,8 +431,7 @@ class WebhooksClient(metaclass=WebhooksClientMeta):
         agent.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3
 
@@ -532,8 +531,7 @@ class WebhooksClient(metaclass=WebhooksClientMeta):
     ) -> webhook.Webhook:
         r"""Retrieves the specified webhook.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3
 
@@ -629,8 +627,7 @@ class WebhooksClient(metaclass=WebhooksClientMeta):
     ) -> gcdc_webhook.Webhook:
         r"""Creates a webhook in the specified agent.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3
 
@@ -738,8 +735,7 @@ class WebhooksClient(metaclass=WebhooksClientMeta):
     ) -> gcdc_webhook.Webhook:
         r"""Updates the specified webhook.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3
 
@@ -848,8 +844,7 @@ class WebhooksClient(metaclass=WebhooksClientMeta):
     ) -> None:
         r"""Deletes the specified webhook.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3
 

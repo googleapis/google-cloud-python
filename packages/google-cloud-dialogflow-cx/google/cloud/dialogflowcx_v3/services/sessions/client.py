@@ -566,8 +566,7 @@ class SessionsClient(metaclass=SessionsClientMeta):
         environments <https://cloud.google.com/dialogflow/cx/docs/concept/version>`__.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3
 
@@ -648,8 +647,7 @@ class SessionsClient(metaclass=SessionsClientMeta):
         environments <https://cloud.google.com/dialogflow/cx/docs/concept/version>`__.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3
 
@@ -784,8 +782,7 @@ class SessionsClient(metaclass=SessionsClientMeta):
         change the session status.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3
 
@@ -863,8 +860,7 @@ class SessionsClient(metaclass=SessionsClientMeta):
         Otherwise, the behavior is undefined.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3
 

@@ -422,8 +422,7 @@ class VersionsClient(metaclass=VersionsClientMeta):
         [Flow][google.cloud.dialogflow.cx.v3beta1.Flow].
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -527,8 +526,7 @@ class VersionsClient(metaclass=VersionsClientMeta):
         [Version][google.cloud.dialogflow.cx.v3beta1.Version].
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -632,8 +630,7 @@ class VersionsClient(metaclass=VersionsClientMeta):
            [Version][google.cloud.dialogflow.cx.v3beta1.Version]
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -756,8 +753,7 @@ class VersionsClient(metaclass=VersionsClientMeta):
         [Version][google.cloud.dialogflow.cx.v3beta1.Version].
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -860,8 +856,7 @@ class VersionsClient(metaclass=VersionsClientMeta):
         [Version][google.cloud.dialogflow.cx.v3beta1.Version].
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -954,8 +949,7 @@ class VersionsClient(metaclass=VersionsClientMeta):
            message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -1074,8 +1068,7 @@ class VersionsClient(metaclass=VersionsClientMeta):
         version.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 

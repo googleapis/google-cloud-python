@@ -504,8 +504,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
         location.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3
 
@@ -605,8 +604,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
     ) -> agent.Agent:
         r"""Retrieves the specified agent.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3
 
@@ -714,8 +712,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3
 
@@ -836,8 +833,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3
 
@@ -954,8 +950,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
     ) -> None:
         r"""Deletes the specified agent.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3
 
@@ -1045,8 +1040,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
            [ExportAgentResponse][google.cloud.dialogflow.cx.v3.ExportAgentResponse]
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3
 
@@ -1150,8 +1144,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3
 
@@ -1250,8 +1243,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
         completed to get the complete validation results.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3
 
@@ -1323,8 +1315,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
         validation is performed when ValidateAgent is called.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3
 

@@ -503,8 +503,7 @@ class PagesClient(metaclass=PagesClientMeta):
     ) -> pagers.ListPagesPager:
         r"""Returns the list of all pages in the specified flow.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -604,8 +603,7 @@ class PagesClient(metaclass=PagesClientMeta):
     ) -> page.Page:
         r"""Retrieves the specified page.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -716,8 +714,7 @@ class PagesClient(metaclass=PagesClientMeta):
     ) -> gcdc_page.Page:
         r"""Creates a page in the specified flow.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -839,8 +836,7 @@ class PagesClient(metaclass=PagesClientMeta):
     ) -> gcdc_page.Page:
         r"""Updates the specified page.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -963,8 +959,7 @@ class PagesClient(metaclass=PagesClientMeta):
     ) -> None:
         r"""Deletes the specified page.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 

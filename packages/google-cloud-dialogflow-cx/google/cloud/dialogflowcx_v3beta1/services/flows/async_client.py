@@ -234,7 +234,7 @@ class FlowsAsyncClient:
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -356,7 +356,7 @@ class FlowsAsyncClient:
     ) -> None:
         r"""Deletes a specified flow.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -436,7 +436,7 @@ class FlowsAsyncClient:
     ) -> pagers.ListFlowsAsyncPager:
         r"""Returns the list of all flows in the specified agent.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -536,7 +536,7 @@ class FlowsAsyncClient:
     ) -> flow.Flow:
         r"""Retrieves the specified flow.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -653,7 +653,7 @@ class FlowsAsyncClient:
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -793,7 +793,7 @@ class FlowsAsyncClient:
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -911,7 +911,7 @@ class FlowsAsyncClient:
         results.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -982,7 +982,7 @@ class FlowsAsyncClient:
         validation is performed when ValidateFlow is called.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -1087,7 +1087,7 @@ class FlowsAsyncClient:
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
@@ -1186,7 +1186,7 @@ class FlowsAsyncClient:
         flow references will also be exported.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
 
