@@ -222,6 +222,27 @@ class TranslationServiceAsyncClient:
     ) -> translation_service.TranslateTextResponse:
         r"""Translates input text and returns translated text.
 
+        .. code-block:: python
+
+            from google.cloud import translate_v3
+
+            def sample_translate_text():
+                # Create a client
+                client = translate_v3.TranslationServiceClient()
+
+                # Initialize request argument(s)
+                request = translate_v3.TranslateTextRequest(
+                    contents=['contents_value_1', 'contents_value_2'],
+                    target_language_code="target_language_code_value",
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.translate_text(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.translate_v3.types.TranslateTextRequest, dict]):
                 The request object. The request message for synchronous
@@ -390,6 +411,26 @@ class TranslationServiceAsyncClient:
     ) -> translation_service.DetectLanguageResponse:
         r"""Detects the language of text within a request.
 
+        .. code-block:: python
+
+            from google.cloud import translate_v3
+
+            def sample_detect_language():
+                # Create a client
+                client = translate_v3.TranslationServiceClient()
+
+                # Initialize request argument(s)
+                request = translate_v3.DetectLanguageRequest(
+                    content="content_value",
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.detect_language(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.translate_v3.types.DetectLanguageRequest, dict]):
                 The request object. The request message for language
@@ -512,6 +553,26 @@ class TranslationServiceAsyncClient:
     ) -> translation_service.SupportedLanguages:
         r"""Returns a list of supported languages for
         translation.
+
+
+        .. code-block:: python
+
+            from google.cloud import translate_v3
+
+            def sample_get_supported_languages():
+                # Create a client
+                client = translate_v3.TranslationServiceClient()
+
+                # Initialize request argument(s)
+                request = translate_v3.GetSupportedLanguagesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.get_supported_languages(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.translate_v3.types.GetSupportedLanguagesRequest, dict]):
@@ -638,6 +699,30 @@ class TranslationServiceAsyncClient:
     ) -> translation_service.TranslateDocumentResponse:
         r"""Translates documents in synchronous mode.
 
+        .. code-block:: python
+
+            from google.cloud import translate_v3
+
+            def sample_translate_document():
+                # Create a client
+                client = translate_v3.TranslationServiceClient()
+
+                # Initialize request argument(s)
+                document_input_config = translate_v3.DocumentInputConfig()
+                document_input_config.content = b'content_blob'
+
+                request = translate_v3.TranslateDocumentRequest(
+                    parent="parent_value",
+                    target_language_code="target_language_code_value",
+                    document_input_config=document_input_config,
+                )
+
+                # Make the request
+                response = client.translate_document(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.translate_v3.types.TranslateDocumentRequest, dict]):
                 The request object. A document translation request.
@@ -693,6 +778,40 @@ class TranslationServiceAsyncClient:
         This call returns immediately and you can
         use google.longrunning.Operation.name to poll the status
         of the call.
+
+
+        .. code-block:: python
+
+            from google.cloud import translate_v3
+
+            def sample_batch_translate_text():
+                # Create a client
+                client = translate_v3.TranslationServiceClient()
+
+                # Initialize request argument(s)
+                input_configs = translate_v3.InputConfig()
+                input_configs.gcs_source.input_uri = "input_uri_value"
+
+                output_config = translate_v3.OutputConfig()
+                output_config.gcs_destination.output_uri_prefix = "output_uri_prefix_value"
+
+                request = translate_v3.BatchTranslateTextRequest(
+                    parent="parent_value",
+                    source_language_code="source_language_code_value",
+                    target_language_codes=['target_language_codes_value_1', 'target_language_codes_value_2'],
+                    input_configs=input_configs,
+                    output_config=output_config,
+                )
+
+                # Make the request
+                operation = client.batch_translate_text(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.translate_v3.types.BatchTranslateTextRequest, dict]):
@@ -766,6 +885,40 @@ class TranslationServiceAsyncClient:
         This call returns immediately and you can use
         google.longrunning.Operation.name to poll the status of
         the call.
+
+
+        .. code-block:: python
+
+            from google.cloud import translate_v3
+
+            def sample_batch_translate_document():
+                # Create a client
+                client = translate_v3.TranslationServiceClient()
+
+                # Initialize request argument(s)
+                input_configs = translate_v3.BatchDocumentInputConfig()
+                input_configs.gcs_source.input_uri = "input_uri_value"
+
+                output_config = translate_v3.BatchDocumentOutputConfig()
+                output_config.gcs_destination.output_uri_prefix = "output_uri_prefix_value"
+
+                request = translate_v3.BatchTranslateDocumentRequest(
+                    parent="parent_value",
+                    source_language_code="source_language_code_value",
+                    target_language_codes=['target_language_codes_value_1', 'target_language_codes_value_2'],
+                    input_configs=input_configs,
+                    output_config=output_config,
+                )
+
+                # Make the request
+                operation = client.batch_translate_document(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.translate_v3.types.BatchTranslateDocumentRequest, dict]):
@@ -917,6 +1070,34 @@ class TranslationServiceAsyncClient:
         r"""Creates a glossary and returns the long-running operation.
         Returns NOT_FOUND, if the project doesn't exist.
 
+
+        .. code-block:: python
+
+            from google.cloud import translate_v3
+
+            def sample_create_glossary():
+                # Create a client
+                client = translate_v3.TranslationServiceClient()
+
+                # Initialize request argument(s)
+                glossary = translate_v3.Glossary()
+                glossary.name = "name_value"
+
+                request = translate_v3.CreateGlossaryRequest(
+                    parent="parent_value",
+                    glossary=glossary,
+                )
+
+                # Make the request
+                operation = client.create_glossary(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.translate_v3.types.CreateGlossaryRequest, dict]):
                 The request object. Request message for CreateGlossary.
@@ -1003,6 +1184,27 @@ class TranslationServiceAsyncClient:
     ) -> pagers.ListGlossariesAsyncPager:
         r"""Lists glossaries in a project. Returns NOT_FOUND, if the project
         doesn't exist.
+
+
+        .. code-block:: python
+
+            from google.cloud import translate_v3
+
+            def sample_list_glossaries():
+                # Create a client
+                client = translate_v3.TranslationServiceClient()
+
+                # Initialize request argument(s)
+                request = translate_v3.ListGlossariesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_glossaries(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.translate_v3.types.ListGlossariesRequest, dict]):
@@ -1094,6 +1296,26 @@ class TranslationServiceAsyncClient:
         r"""Gets a glossary. Returns NOT_FOUND, if the glossary doesn't
         exist.
 
+
+        .. code-block:: python
+
+            from google.cloud import translate_v3
+
+            def sample_get_glossary():
+                # Create a client
+                client = translate_v3.TranslationServiceClient()
+
+                # Initialize request argument(s)
+                request = translate_v3.GetGlossaryRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_glossary(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.translate_v3.types.GetGlossaryRequest, dict]):
                 The request object. Request message for GetGlossary.
@@ -1175,6 +1397,30 @@ class TranslationServiceAsyncClient:
         r"""Deletes a glossary, or cancels glossary construction if the
         glossary isn't created yet. Returns NOT_FOUND, if the glossary
         doesn't exist.
+
+
+        .. code-block:: python
+
+            from google.cloud import translate_v3
+
+            def sample_delete_glossary():
+                # Create a client
+                client = translate_v3.TranslationServiceClient()
+
+                # Initialize request argument(s)
+                request = translate_v3.DeleteGlossaryRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_glossary(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.translate_v3.types.DeleteGlossaryRequest, dict]):
