@@ -425,6 +425,27 @@ class UptimeCheckServiceClient(metaclass=UptimeCheckServiceClientMeta):
         for the project (leaving out any invalid
         configurations).
 
+
+        .. code-block:: python
+
+            from google.cloud import monitoring_v3
+
+            def sample_list_uptime_check_configs():
+                # Create a client
+                client = monitoring_v3.UptimeCheckServiceClient()
+
+                # Initialize request argument(s)
+                request = monitoring_v3.ListUptimeCheckConfigsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_uptime_check_configs(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.monitoring_v3.types.ListUptimeCheckConfigsRequest, dict]):
                 The request object. The protocol for the
@@ -512,6 +533,25 @@ class UptimeCheckServiceClient(metaclass=UptimeCheckServiceClientMeta):
     ) -> uptime.UptimeCheckConfig:
         r"""Gets a single Uptime check configuration.
 
+        .. code-block:: python
+
+            from google.cloud import monitoring_v3
+
+            def sample_get_uptime_check_config():
+                # Create a client
+                client = monitoring_v3.UptimeCheckServiceClient()
+
+                # Initialize request argument(s)
+                request = monitoring_v3.GetUptimeCheckConfigRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_uptime_check_config(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.monitoring_v3.types.GetUptimeCheckConfigRequest, dict]):
                 The request object. The protocol for the
@@ -588,6 +628,25 @@ class UptimeCheckServiceClient(metaclass=UptimeCheckServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> uptime.UptimeCheckConfig:
         r"""Creates a new Uptime check configuration.
+
+        .. code-block:: python
+
+            from google.cloud import monitoring_v3
+
+            def sample_create_uptime_check_config():
+                # Create a client
+                client = monitoring_v3.UptimeCheckServiceClient()
+
+                # Initialize request argument(s)
+                request = monitoring_v3.CreateUptimeCheckConfigRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.create_uptime_check_config(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.monitoring_v3.types.CreateUptimeCheckConfigRequest, dict]):
@@ -681,6 +740,25 @@ class UptimeCheckServiceClient(metaclass=UptimeCheckServiceClientMeta):
         be updated via ``updateMask``. Returns the updated
         configuration.
 
+
+        .. code-block:: python
+
+            from google.cloud import monitoring_v3
+
+            def sample_update_uptime_check_config():
+                # Create a client
+                client = monitoring_v3.UptimeCheckServiceClient()
+
+                # Initialize request argument(s)
+                request = monitoring_v3.UpdateUptimeCheckConfigRequest(
+                )
+
+                # Make the request
+                response = client.update_uptime_check_config(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.monitoring_v3.types.UpdateUptimeCheckConfigRequest, dict]):
                 The request object. The protocol for the
@@ -771,6 +849,23 @@ class UptimeCheckServiceClient(metaclass=UptimeCheckServiceClientMeta):
         referenced by an alert policy or other dependent configs
         that would be rendered invalid by the deletion.
 
+
+        .. code-block:: python
+
+            from google.cloud import monitoring_v3
+
+            def sample_delete_uptime_check_config():
+                # Create a client
+                client = monitoring_v3.UptimeCheckServiceClient()
+
+                # Initialize request argument(s)
+                request = monitoring_v3.DeleteUptimeCheckConfigRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_uptime_check_config(request=request)
+
         Args:
             request (Union[google.cloud.monitoring_v3.types.DeleteUptimeCheckConfigRequest, dict]):
                 The request object. The protocol for the
@@ -840,6 +935,26 @@ class UptimeCheckServiceClient(metaclass=UptimeCheckServiceClientMeta):
     ) -> pagers.ListUptimeCheckIpsPager:
         r"""Returns the list of IP addresses that checkers run
         from
+
+
+        .. code-block:: python
+
+            from google.cloud import monitoring_v3
+
+            def sample_list_uptime_check_ips():
+                # Create a client
+                client = monitoring_v3.UptimeCheckServiceClient()
+
+                # Initialize request argument(s)
+                request = monitoring_v3.ListUptimeCheckIpsRequest(
+                )
+
+                # Make the request
+                page_result = client.list_uptime_check_ips(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.monitoring_v3.types.ListUptimeCheckIpsRequest, dict]):

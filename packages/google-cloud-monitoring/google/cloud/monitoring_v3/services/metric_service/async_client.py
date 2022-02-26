@@ -232,6 +232,27 @@ class MetricServiceAsyncClient:
         r"""Lists monitored resource descriptors that match a
         filter. This method does not require a Workspace.
 
+
+        .. code-block:: python
+
+            from google.cloud import monitoring_v3
+
+            def sample_list_monitored_resource_descriptors():
+                # Create a client
+                client = monitoring_v3.MetricServiceClient()
+
+                # Initialize request argument(s)
+                request = monitoring_v3.ListMonitoredResourceDescriptorsRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                page_result = client.list_monitored_resource_descriptors(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.monitoring_v3.types.ListMonitoredResourceDescriptorsRequest, dict]):
                 The request object. The
@@ -327,6 +348,26 @@ class MetricServiceAsyncClient:
     ) -> monitored_resource_pb2.MonitoredResourceDescriptor:
         r"""Gets a single monitored resource descriptor. This
         method does not require a Workspace.
+
+
+        .. code-block:: python
+
+            from google.cloud import monitoring_v3
+
+            def sample_get_monitored_resource_descriptor():
+                # Create a client
+                client = monitoring_v3.MetricServiceClient()
+
+                # Initialize request argument(s)
+                request = monitoring_v3.GetMonitoredResourceDescriptorRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_monitored_resource_descriptor(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.monitoring_v3.types.GetMonitoredResourceDescriptorRequest, dict]):
@@ -425,6 +466,27 @@ class MetricServiceAsyncClient:
         r"""Lists metric descriptors that match a filter. This
         method does not require a Workspace.
 
+
+        .. code-block:: python
+
+            from google.cloud import monitoring_v3
+
+            def sample_list_metric_descriptors():
+                # Create a client
+                client = monitoring_v3.MetricServiceClient()
+
+                # Initialize request argument(s)
+                request = monitoring_v3.ListMetricDescriptorsRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                page_result = client.list_metric_descriptors(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.monitoring_v3.types.ListMetricDescriptorsRequest, dict]):
                 The request object. The `ListMetricDescriptors` request.
@@ -517,6 +579,26 @@ class MetricServiceAsyncClient:
     ) -> metric_pb2.MetricDescriptor:
         r"""Gets a single metric descriptor. This method does not
         require a Workspace.
+
+
+        .. code-block:: python
+
+            from google.cloud import monitoring_v3
+
+            def sample_get_metric_descriptor():
+                # Create a client
+                client = monitoring_v3.MetricServiceClient()
+
+                # Initialize request argument(s)
+                request = monitoring_v3.GetMetricDescriptorRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_metric_descriptor(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.monitoring_v3.types.GetMetricDescriptorRequest, dict]):
@@ -612,6 +694,26 @@ class MetricServiceAsyncClient:
         `custom
         metrics <https://cloud.google.com/monitoring/custom-metrics>`__.
 
+
+        .. code-block:: python
+
+            from google.cloud import monitoring_v3
+
+            def sample_create_metric_descriptor():
+                # Create a client
+                client = monitoring_v3.MetricServiceClient()
+
+                # Initialize request argument(s)
+                request = monitoring_v3.CreateMetricDescriptorRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.create_metric_descriptor(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.monitoring_v3.types.CreateMetricDescriptorRequest, dict]):
                 The request object. The `CreateMetricDescriptor`
@@ -700,6 +802,23 @@ class MetricServiceAsyncClient:
         metrics <https://cloud.google.com/monitoring/custom-metrics>`__
         can be deleted.
 
+
+        .. code-block:: python
+
+            from google.cloud import monitoring_v3
+
+            def sample_delete_metric_descriptor():
+                # Create a client
+                client = monitoring_v3.MetricServiceClient()
+
+                # Initialize request argument(s)
+                request = monitoring_v3.DeleteMetricDescriptorRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_metric_descriptor(request=request)
+
         Args:
             request (Union[google.cloud.monitoring_v3.types.DeleteMetricDescriptorRequest, dict]):
                 The request object. The `DeleteMetricDescriptor`
@@ -783,6 +902,29 @@ class MetricServiceAsyncClient:
     ) -> pagers.ListTimeSeriesAsyncPager:
         r"""Lists time series that match a filter. This method
         does not require a Workspace.
+
+
+        .. code-block:: python
+
+            from google.cloud import monitoring_v3
+
+            def sample_list_time_series():
+                # Create a client
+                client = monitoring_v3.MetricServiceClient()
+
+                # Initialize request argument(s)
+                request = monitoring_v3.ListTimeSeriesRequest(
+                    name="name_value",
+                    filter="filter_value",
+                    view="HEADERS",
+                )
+
+                # Make the request
+                page_result = client.list_time_series(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.monitoring_v3.types.ListTimeSeriesRequest, dict]):
@@ -923,6 +1065,23 @@ class MetricServiceAsyncClient:
         corresponding failure message is included in the error
         response.
 
+
+        .. code-block:: python
+
+            from google.cloud import monitoring_v3
+
+            def sample_create_time_series():
+                # Create a client
+                client = monitoring_v3.MetricServiceClient()
+
+                # Initialize request argument(s)
+                request = monitoring_v3.CreateTimeSeriesRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.create_time_series(request=request)
+
         Args:
             request (Union[google.cloud.monitoring_v3.types.CreateTimeSeriesRequest, dict]):
                 The request object. The `CreateTimeSeries` request.
@@ -1016,6 +1175,23 @@ class MetricServiceAsyncClient:
         method is only for use by Google Cloud services. Use
         [projects.timeSeries.create][google.monitoring.v3.MetricService.CreateTimeSeries]
         instead.
+
+
+        .. code-block:: python
+
+            from google.cloud import monitoring_v3
+
+            def sample_create_service_time_series():
+                # Create a client
+                client = monitoring_v3.MetricServiceClient()
+
+                # Initialize request argument(s)
+                request = monitoring_v3.CreateTimeSeriesRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.create_service_time_series(request=request)
 
         Args:
             request (Union[google.cloud.monitoring_v3.types.CreateTimeSeriesRequest, dict]):

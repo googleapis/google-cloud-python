@@ -233,6 +233,25 @@ class ServiceMonitoringServiceAsyncClient:
     ) -> gm_service.Service:
         r"""Create a ``Service``.
 
+        .. code-block:: python
+
+            from google.cloud import monitoring_v3
+
+            def sample_create_service():
+                # Create a client
+                client = monitoring_v3.ServiceMonitoringServiceClient()
+
+                # Initialize request argument(s)
+                request = monitoring_v3.CreateServiceRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.create_service(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.monitoring_v3.types.CreateServiceRequest, dict]):
                 The request object. The `CreateService` request.
@@ -318,6 +337,25 @@ class ServiceMonitoringServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service.Service:
         r"""Get the named ``Service``.
+
+        .. code-block:: python
+
+            from google.cloud import monitoring_v3
+
+            def sample_get_service():
+                # Create a client
+                client = monitoring_v3.ServiceMonitoringServiceClient()
+
+                # Initialize request argument(s)
+                request = monitoring_v3.GetServiceRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_service(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.monitoring_v3.types.GetServiceRequest, dict]):
@@ -405,6 +443,26 @@ class ServiceMonitoringServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListServicesAsyncPager:
         r"""List ``Service``\ s for this workspace.
+
+        .. code-block:: python
+
+            from google.cloud import monitoring_v3
+
+            def sample_list_services():
+                # Create a client
+                client = monitoring_v3.ServiceMonitoringServiceClient()
+
+                # Initialize request argument(s)
+                request = monitoring_v3.ListServicesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_services(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.monitoring_v3.types.ListServicesRequest, dict]):
@@ -500,6 +558,24 @@ class ServiceMonitoringServiceAsyncClient:
     ) -> gm_service.Service:
         r"""Update this ``Service``.
 
+        .. code-block:: python
+
+            from google.cloud import monitoring_v3
+
+            def sample_update_service():
+                # Create a client
+                client = monitoring_v3.ServiceMonitoringServiceClient()
+
+                # Initialize request argument(s)
+                request = monitoring_v3.UpdateServiceRequest(
+                )
+
+                # Make the request
+                response = client.update_service(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.monitoring_v3.types.UpdateServiceRequest, dict]):
                 The request object. The `UpdateService` request.
@@ -575,6 +651,22 @@ class ServiceMonitoringServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Soft delete this ``Service``.
+
+        .. code-block:: python
+
+            from google.cloud import monitoring_v3
+
+            def sample_delete_service():
+                # Create a client
+                client = monitoring_v3.ServiceMonitoringServiceClient()
+
+                # Initialize request argument(s)
+                request = monitoring_v3.DeleteServiceRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_service(request=request)
 
         Args:
             request (Union[google.cloud.monitoring_v3.types.DeleteServiceRequest, dict]):
@@ -652,6 +744,25 @@ class ServiceMonitoringServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service.ServiceLevelObjective:
         r"""Create a ``ServiceLevelObjective`` for the given ``Service``.
+
+        .. code-block:: python
+
+            from google.cloud import monitoring_v3
+
+            def sample_create_service_level_objective():
+                # Create a client
+                client = monitoring_v3.ServiceMonitoringServiceClient()
+
+                # Initialize request argument(s)
+                request = monitoring_v3.CreateServiceLevelObjectiveRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.create_service_level_objective(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.monitoring_v3.types.CreateServiceLevelObjectiveRequest, dict]):
@@ -749,6 +860,25 @@ class ServiceMonitoringServiceAsyncClient:
     ) -> service.ServiceLevelObjective:
         r"""Get a ``ServiceLevelObjective`` by name.
 
+        .. code-block:: python
+
+            from google.cloud import monitoring_v3
+
+            def sample_get_service_level_objective():
+                # Create a client
+                client = monitoring_v3.ServiceMonitoringServiceClient()
+
+                # Initialize request argument(s)
+                request = monitoring_v3.GetServiceLevelObjectiveRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_service_level_objective(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.monitoring_v3.types.GetServiceLevelObjectiveRequest, dict]):
                 The request object. The `GetServiceLevelObjective`
@@ -844,6 +974,26 @@ class ServiceMonitoringServiceAsyncClient:
     ) -> pagers.ListServiceLevelObjectivesAsyncPager:
         r"""List the ``ServiceLevelObjective``\ s for the given ``Service``.
 
+        .. code-block:: python
+
+            from google.cloud import monitoring_v3
+
+            def sample_list_service_level_objectives():
+                # Create a client
+                client = monitoring_v3.ServiceMonitoringServiceClient()
+
+                # Initialize request argument(s)
+                request = monitoring_v3.ListServiceLevelObjectivesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_service_level_objectives(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.monitoring_v3.types.ListServiceLevelObjectivesRequest, dict]):
                 The request object. The `ListServiceLevelObjectives`
@@ -938,6 +1088,24 @@ class ServiceMonitoringServiceAsyncClient:
     ) -> service.ServiceLevelObjective:
         r"""Update the given ``ServiceLevelObjective``.
 
+        .. code-block:: python
+
+            from google.cloud import monitoring_v3
+
+            def sample_update_service_level_objective():
+                # Create a client
+                client = monitoring_v3.ServiceMonitoringServiceClient()
+
+                # Initialize request argument(s)
+                request = monitoring_v3.UpdateServiceLevelObjectiveRequest(
+                )
+
+                # Make the request
+                response = client.update_service_level_objective(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.monitoring_v3.types.UpdateServiceLevelObjectiveRequest, dict]):
                 The request object. The `UpdateServiceLevelObjective`
@@ -1027,6 +1195,22 @@ class ServiceMonitoringServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Delete the given ``ServiceLevelObjective``.
+
+        .. code-block:: python
+
+            from google.cloud import monitoring_v3
+
+            def sample_delete_service_level_objective():
+                # Create a client
+                client = monitoring_v3.ServiceMonitoringServiceClient()
+
+                # Initialize request argument(s)
+                request = monitoring_v3.DeleteServiceLevelObjectiveRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_service_level_objective(request=request)
 
         Args:
             request (Union[google.cloud.monitoring_v3.types.DeleteServiceLevelObjectiveRequest, dict]):

@@ -211,6 +211,28 @@ class QueryServiceAsyncClient:
         r"""Queries time series using Monitoring Query Language.
         This method does not require a Workspace.
 
+
+        .. code-block:: python
+
+            from google.cloud import monitoring_v3
+
+            def sample_query_time_series():
+                # Create a client
+                client = monitoring_v3.QueryServiceClient()
+
+                # Initialize request argument(s)
+                request = monitoring_v3.QueryTimeSeriesRequest(
+                    name="name_value",
+                    query="query_value",
+                )
+
+                # Make the request
+                page_result = client.query_time_series(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.monitoring_v3.types.QueryTimeSeriesRequest, dict]):
                 The request object. The `QueryTimeSeries` request.

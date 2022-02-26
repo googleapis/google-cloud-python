@@ -418,6 +418,27 @@ class GroupServiceClient(metaclass=GroupServiceClientMeta):
     ) -> pagers.ListGroupsPager:
         r"""Lists the existing groups.
 
+        .. code-block:: python
+
+            from google.cloud import monitoring_v3
+
+            def sample_list_groups():
+                # Create a client
+                client = monitoring_v3.GroupServiceClient()
+
+                # Initialize request argument(s)
+                request = monitoring_v3.ListGroupsRequest(
+                    children_of_group="children_of_group_value",
+                    name="name_value",
+                )
+
+                # Make the request
+                page_result = client.list_groups(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.monitoring_v3.types.ListGroupsRequest, dict]):
                 The request object. The `ListGroup` request.
@@ -500,6 +521,25 @@ class GroupServiceClient(metaclass=GroupServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> group.Group:
         r"""Gets a single group.
+
+        .. code-block:: python
+
+            from google.cloud import monitoring_v3
+
+            def sample_get_group():
+                # Create a client
+                client = monitoring_v3.GroupServiceClient()
+
+                # Initialize request argument(s)
+                request = monitoring_v3.GetGroupRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_group(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.monitoring_v3.types.GetGroupRequest, dict]):
@@ -605,6 +645,25 @@ class GroupServiceClient(metaclass=GroupServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gm_group.Group:
         r"""Creates a new group.
+
+        .. code-block:: python
+
+            from google.cloud import monitoring_v3
+
+            def sample_create_group():
+                # Create a client
+                client = monitoring_v3.GroupServiceClient()
+
+                # Initialize request argument(s)
+                request = monitoring_v3.CreateGroupRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.create_group(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.monitoring_v3.types.CreateGroupRequest, dict]):
@@ -722,6 +781,25 @@ class GroupServiceClient(metaclass=GroupServiceClientMeta):
         r"""Updates an existing group. You can change any group attributes
         except ``name``.
 
+
+        .. code-block:: python
+
+            from google.cloud import monitoring_v3
+
+            def sample_update_group():
+                # Create a client
+                client = monitoring_v3.GroupServiceClient()
+
+                # Initialize request argument(s)
+                request = monitoring_v3.UpdateGroupRequest(
+                )
+
+                # Make the request
+                response = client.update_group(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.monitoring_v3.types.UpdateGroupRequest, dict]):
                 The request object. The `UpdateGroup` request.
@@ -826,6 +904,22 @@ class GroupServiceClient(metaclass=GroupServiceClientMeta):
     ) -> None:
         r"""Deletes an existing group.
 
+        .. code-block:: python
+
+            from google.cloud import monitoring_v3
+
+            def sample_delete_group():
+                # Create a client
+                client = monitoring_v3.GroupServiceClient()
+
+                # Initialize request argument(s)
+                request = monitoring_v3.DeleteGroupRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_group(request=request)
+
         Args:
             request (Union[google.cloud.monitoring_v3.types.DeleteGroupRequest, dict]):
                 The request object. The `DeleteGroup` request. The
@@ -894,6 +988,27 @@ class GroupServiceClient(metaclass=GroupServiceClientMeta):
     ) -> pagers.ListGroupMembersPager:
         r"""Lists the monitored resources that are members of a
         group.
+
+
+        .. code-block:: python
+
+            from google.cloud import monitoring_v3
+
+            def sample_list_group_members():
+                # Create a client
+                client = monitoring_v3.GroupServiceClient()
+
+                # Initialize request argument(s)
+                request = monitoring_v3.ListGroupMembersRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                page_result = client.list_group_members(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.monitoring_v3.types.ListGroupMembersRequest, dict]):
