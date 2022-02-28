@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.4.0](https://github.com/googleapis/python-dataflow-client/compare/v0.3.1...v0.4.0) (2022-02-26)
+
+
+### Features
+
+* add api key support ([#65](https://github.com/googleapis/python-dataflow-client/issues/65)) ([888664b](https://github.com/googleapis/python-dataflow-client/commit/888664b70baefe7acb7e46c82a06c24e7ba06af2))
+* new parameters in FlexTemplateRuntimeEnvironment ([#69](https://github.com/googleapis/python-dataflow-client/issues/69)) ([f8bd373](https://github.com/googleapis/python-dataflow-client/commit/f8bd3730da138532aa90f6bc90ff3a8c1075fa01))
+
+
+### Bug Fixes
+
+* resolve DuplicateCredentialArgs error when using credentials_file ([f8bd373](https://github.com/googleapis/python-dataflow-client/commit/f8bd3730da138532aa90f6bc90ff3a8c1075fa01))
+
+
+### Documentation
+
+* remove typo in docstring ([#72](https://github.com/googleapis/python-dataflow-client/issues/72)) ([db91cc2](https://github.com/googleapis/python-dataflow-client/commit/db91cc2c65cf43f766385c0f973dd58c4233c9c7))
+
 ### [0.3.1](https://www.github.com/googleapis/python-dataflow-client/compare/v0.3.0...v0.3.1) (2021-11-01)
 
 
