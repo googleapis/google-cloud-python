@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.4.0](https://github.com/googleapis/python-managed-identities/compare/v1.3.1...v1.4.0) (2022-02-26)
+
+
+### Features
+
+* add api key support ([#103](https://github.com/googleapis/python-managed-identities/issues/103)) ([91b316a](https://github.com/googleapis/python-managed-identities/commit/91b316a5da34c8ecec852d811c2e7a9bd5254379))
+
+
+### Bug Fixes
+
+* **deps:** remove unused dependency libcst ([#109](https://github.com/googleapis/python-managed-identities/issues/109)) ([8d92706](https://github.com/googleapis/python-managed-identities/commit/8d9270668ae4f9ee090d84559e45f6ba4d1756eb))
+* resolve DuplicateCredentialArgs error when using credentials_file ([ed0bec5](https://github.com/googleapis/python-managed-identities/commit/ed0bec5588b9e0809d37e7902a375ce776ecdfc5))
+
 ### [1.3.1](https://www.github.com/googleapis/python-managed-identities/compare/v1.3.0...v1.3.1) (2021-11-01)
 
 
