@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-texttospeech/#history
 
+### [2.10.1](https://github.com/googleapis/python-texttospeech/compare/v2.10.0...v2.10.1) (2022-02-26)
+
+
+### Documentation
+
+* add generated snippets ([#249](https://github.com/googleapis/python-texttospeech/issues/249)) ([f918e82](https://github.com/googleapis/python-texttospeech/commit/f918e82df2e0c499356fa1e095b13f7ac2cd3b6b))
+
 ## [2.10.0](https://github.com/googleapis/python-texttospeech/compare/v2.9.1...v2.10.0) (2022-02-03)
 
 
