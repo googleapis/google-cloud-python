@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.0](https://github.com/googleapis/python-deploy/compare/v1.0.0...v1.1.0) (2022-02-26)
+
+
+### Features
+
+* add api key support ([#35](https://github.com/googleapis/python-deploy/issues/35)) ([aaa957f](https://github.com/googleapis/python-deploy/commit/aaa957f2673db673c3a8e38275d4689323ded044))
+
+
+### Bug Fixes
+
+* resolve DuplicateCredentialArgs error when using credentials_file ([9bd690d](https://github.com/googleapis/python-deploy/commit/9bd690d27c07159059aa26a86df44e304dc431fd))
+
 ## [1.0.0](https://www.github.com/googleapis/python-deploy/compare/v0.3.0...v1.0.0) (2021-11-01)
 
 
