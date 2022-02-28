@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.6.1](https://github.com/googleapis/python-data-qna/compare/v0.6.0...v0.6.1) (2022-02-26)
+
+
+### Documentation
+
+* add generated snippets ([#121](https://github.com/googleapis/python-data-qna/issues/121)) ([6e1fac9](https://github.com/googleapis/python-data-qna/commit/6e1fac9085d7c9b931b121ac4969cece1d3b7fba))
+
 ## [0.6.0](https://github.com/googleapis/python-data-qna/compare/v0.5.1...v0.6.0) (2022-02-03)
 
 
