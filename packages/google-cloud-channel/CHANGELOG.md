@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.7.0](https://github.com/googleapis/python-channel/compare/v1.6.3...v1.7.0) (2022-02-26)
+
+
+### Features
+
+* add api key support ([#133](https://github.com/googleapis/python-channel/issues/133)) ([df6f6d7](https://github.com/googleapis/python-channel/commit/df6f6d723d507cb332b70c343c92468b90298327))
+
+
+### Bug Fixes
+
+* resolve DuplicateCredentialArgs error when using credentials_file ([f57605e](https://github.com/googleapis/python-channel/commit/f57605ec93277a32f88d33967b704c45e3fc060a))
+
+
+### Documentation
+
+* clarify language for provisioning_id ([#140](https://github.com/googleapis/python-channel/issues/140)) ([a925354](https://github.com/googleapis/python-channel/commit/a925354a36a6587219a6525da100afbd36f48a68))
+* Update description for ProvisionedService.provisioning_id ([#137](https://github.com/googleapis/python-channel/issues/137)) ([9b24071](https://github.com/googleapis/python-channel/commit/9b24071c8701355bf29916c0a35cc1d8f067d12e))
+
 ### [1.6.3](https://www.github.com/googleapis/python-channel/compare/v1.6.2...v1.6.3) (2021-11-13)
 
 
