@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.0](https://github.com/googleapis/python-contact-center-insights/compare/v1.2.1...v1.3.0) (2022-02-26)
+
+
+### Features
+
+* add api key support ([#126](https://github.com/googleapis/python-contact-center-insights/issues/126)) ([976ac64](https://github.com/googleapis/python-contact-center-insights/commit/976ac649548ed78ccb4f4ad562104a66f4bf77fa))
+
+
+### Bug Fixes
+
+* resolve DuplicateCredentialArgs error when using credentials_file ([02ad5e1](https://github.com/googleapis/python-contact-center-insights/commit/02ad5e18a4e95e6c4d57e2dbc823e9c9505f19fd))
+
 ### [1.2.1](https://github.com/googleapis/python-contact-center-insights/compare/v1.2.0...v1.2.1) (2022-01-20)
 
 
