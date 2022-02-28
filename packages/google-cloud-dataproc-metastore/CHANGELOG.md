@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.4.0](https://github.com/googleapis/python-dataproc-metastore/compare/v1.3.1...v1.4.0) (2022-02-26)
+
+
+### Features
+
+* add api key support ([#105](https://github.com/googleapis/python-dataproc-metastore/issues/105)) ([f8d7bb8](https://github.com/googleapis/python-dataproc-metastore/commit/f8d7bb845079cb98a1f4d18ad68a6b3958541d51))
+
+
+### Bug Fixes
+
+* resolve DuplicateCredentialArgs error when using credentials_file ([61baf5c](https://github.com/googleapis/python-dataproc-metastore/commit/61baf5c79541ce85a8012bf8ada5127381a4c813))
+
+
+### Documentation
+
+* add generated snippets ([#110](https://github.com/googleapis/python-dataproc-metastore/issues/110)) ([30373ff](https://github.com/googleapis/python-dataproc-metastore/commit/30373ffee9aa49c4c23a421ad36da141bf06156d))
+
 ### [1.3.1](https://www.github.com/googleapis/python-dataproc-metastore/compare/v1.3.0...v1.3.1) (2021-11-01)
 
 
