@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.2.0](https://github.com/googleapis/python-notebooks/compare/v1.1.1...v1.2.0) (2022-02-26)
+
+
+### Features
+
+* add api key support ([#125](https://github.com/googleapis/python-notebooks/issues/125)) ([72925ba](https://github.com/googleapis/python-notebooks/commit/72925babe34fb97639336e443b2ee588d6727680))
+
+
+### Bug Fixes
+
+* resolve DuplicateCredentialArgs error when using credentials_file ([a0cab1c](https://github.com/googleapis/python-notebooks/commit/a0cab1cbd33f80906dc74bf21d3ca3df62052ef1))
+
+
+### Documentation
+
+* add generated snippets ([#130](https://github.com/googleapis/python-notebooks/issues/130)) ([dd62813](https://github.com/googleapis/python-notebooks/commit/dd628139a7ec75537342c289d571cacbbba58492))
+
 ### [1.1.1](https://www.github.com/googleapis/python-notebooks/compare/v1.1.0...v1.1.1) (2021-11-01)
 
 
