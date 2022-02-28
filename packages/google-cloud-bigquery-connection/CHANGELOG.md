@@ -1,5 +1,17 @@
 # Changelog
 
+### [1.3.3](https://github.com/googleapis/python-bigquery-connection/compare/v1.3.2...v1.3.3) (2022-02-26)
+
+
+### Bug Fixes
+
+* resolve DuplicateCredentialArgs error when using credentials_file ([d1e6767](https://github.com/googleapis/python-bigquery-connection/commit/d1e676705826962072919c51d881f22d540377b5))
+
+
+### Documentation
+
+* add generated snippets ([#165](https://github.com/googleapis/python-bigquery-connection/issues/165)) ([53edc14](https://github.com/googleapis/python-bigquery-connection/commit/53edc14b8f976985549856ac0823565b88a1a4ee))
+
 ### [1.3.2](https://www.github.com/googleapis/python-bigquery-connection/compare/v1.3.1...v1.3.2) (2022-01-08)
 
 
