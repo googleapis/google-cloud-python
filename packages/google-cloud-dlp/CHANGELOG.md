@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-dlp/#history
 
+### [3.6.1](https://github.com/googleapis/python-dlp/compare/v3.6.0...v3.6.1) (2022-02-26)
+
+
+### Bug Fixes
+
+* resolve DuplicateCredentialArgs error when using credentials_file ([#325](https://github.com/googleapis/python-dlp/issues/325)) ([676f1d7](https://github.com/googleapis/python-dlp/commit/676f1d76158c6c0951e75362d5eb34f57d901712))
+
+
+### Documentation
+
+* **dlp-samples:** modified region tags and fixed comment ([#330](https://github.com/googleapis/python-dlp/issues/330)) ([6375f90](https://github.com/googleapis/python-dlp/commit/6375f90805c5e30c995c47d1538fb08882afb518))
+
 ## [3.6.0](https://github.com/googleapis/python-dlp/compare/v3.5.0...v3.6.0) (2022-01-26)
 
 
