@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.4.0](https://github.com/googleapis/python-network-security/compare/v0.3.2...v0.4.0) (2022-02-26)
+
+
+### Features
+
+* add api key support ([#63](https://github.com/googleapis/python-network-security/issues/63)) ([3f15e76](https://github.com/googleapis/python-network-security/commit/3f15e7688638adfa55eda09c466cb75e7a793b12))
+
+
+### Bug Fixes
+
+* resolve DuplicateCredentialArgs error when using credentials_file ([a531e63](https://github.com/googleapis/python-network-security/commit/a531e6371651a5036afbc82d6ee10c1bc50e7610))
+
 ### [0.3.2](https://www.github.com/googleapis/python-network-security/compare/v0.3.1...v0.3.2) (2022-01-09)
 
 
