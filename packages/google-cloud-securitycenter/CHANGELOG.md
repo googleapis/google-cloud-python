@@ -4,6 +4,26 @@
 
 [1]: https://pypi.org/project/google-cloud-securitycenter/#history
 
+## [1.9.0](https://github.com/googleapis/python-securitycenter/compare/v1.8.0...v1.9.0) (2022-02-26)
+
+
+### Features
+
+* add access field in the v1 finding proto ([#279](https://github.com/googleapis/python-securitycenter/issues/279)) ([7fdd2a8](https://github.com/googleapis/python-securitycenter/commit/7fdd2a8013ad610d1e836f1327889ff187930e9d))
+* add api key support ([#273](https://github.com/googleapis/python-securitycenter/issues/273)) ([96e1e0c](https://github.com/googleapis/python-securitycenter/commit/96e1e0c752f62faf4898f60e269dbbbb0d37887f))
+
+
+### Bug Fixes
+
+* resolve DuplicateCredentialArgs error when using credentials_file ([7fdd2a8](https://github.com/googleapis/python-securitycenter/commit/7fdd2a8013ad610d1e836f1327889ff187930e9d))
+
+
+### Documentation
+
+* added more clarification around what event_time means on a v1 finding ([7fdd2a8](https://github.com/googleapis/python-securitycenter/commit/7fdd2a8013ad610d1e836f1327889ff187930e9d))
+* Update documentation for the Finding resource field "project_display_name" ([#282](https://github.com/googleapis/python-securitycenter/issues/282)) ([5e02432](https://github.com/googleapis/python-securitycenter/commit/5e02432f489f00d9f136cf6b86c159db8d1cd120))
+* Update documentation for the Mute fields on Findings ([5e02432](https://github.com/googleapis/python-securitycenter/commit/5e02432f489f00d9f136cf6b86c159db8d1cd120))
+
 ## [1.8.0](https://github.com/googleapis/python-securitycenter/compare/v1.7.0...v1.8.0) (2022-01-14)
 
 
