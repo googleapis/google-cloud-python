@@ -1,5 +1,13 @@
 # Changelog
 
+### [1.2.3](https://github.com/googleapis/python-security-private-ca/compare/v1.2.2...v1.2.3) (2022-02-26)
+
+
+### Documentation
+
+* add generated snippets ([#180](https://github.com/googleapis/python-security-private-ca/issues/180)) ([35054f8](https://github.com/googleapis/python-security-private-ca/commit/35054f85db310ac3b0e6393557e42f40d0018995))
+* **samples:** add template/monitoring samples ([#174](https://github.com/googleapis/python-security-private-ca/issues/174)) ([9fbd3e1](https://github.com/googleapis/python-security-private-ca/commit/9fbd3e11b5f5d6370ffbd1702dd18c8774dc41be))
+
 ### [1.2.2](https://github.com/googleapis/python-security-private-ca/compare/v1.2.1...v1.2.2) (2022-02-03)
 
 
