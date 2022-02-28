@@ -1,5 +1,25 @@
 # Changelog
 
+## [1.11.0](https://github.com/googleapis/python-os-config/compare/v1.10.0...v1.11.0) (2022-02-26)
+
+
+### Features
+
+* Add existing os_policy_assignment_reports.proto ([eb6bbb7](https://github.com/googleapis/python-os-config/commit/eb6bbb7a5e99dc22377d49a4c739c2a22f8e0558))
+* Add GetOsPolicyAssignmentReport and analogous List rpc method ([eb6bbb7](https://github.com/googleapis/python-os-config/commit/eb6bbb7a5e99dc22377d49a4c739c2a22f8e0558))
+* Add Inventory to InstanceFilter ([eb6bbb7](https://github.com/googleapis/python-os-config/commit/eb6bbb7a5e99dc22377d49a4c739c2a22f8e0558))
+* Add item that is affected by vulnerability ([eb6bbb7](https://github.com/googleapis/python-os-config/commit/eb6bbb7a5e99dc22377d49a4c739c2a22f8e0558))
+
+
+### Bug Fixes
+
+* Mark methods as deprecated ([eb6bbb7](https://github.com/googleapis/python-os-config/commit/eb6bbb7a5e99dc22377d49a4c739c2a22f8e0558))
+
+
+### Documentation
+
+* add generated snippets ([eb6bbb7](https://github.com/googleapis/python-os-config/commit/eb6bbb7a5e99dc22377d49a4c739c2a22f8e0558))
+
 ## [1.10.0](https://github.com/googleapis/python-os-config/compare/v1.9.0...v1.10.0) (2022-02-08)
 
 
