@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.3.0](https://github.com/googleapis/python-service-control/compare/v1.2.1...v1.3.0) (2022-02-26)
+
+
+### Features
+
+* add api key support ([#98](https://github.com/googleapis/python-service-control/issues/98)) ([ca4238f](https://github.com/googleapis/python-service-control/commit/ca4238f594bfd2cfb851b6f2e354b130f269c09d))
+
+
+### Bug Fixes
+
+* **deps:** remove unused libcst dependency ([#104](https://github.com/googleapis/python-service-control/issues/104)) ([d6f7ded](https://github.com/googleapis/python-service-control/commit/d6f7dedbbc6620cdd74f63c19ccba82a847fa8d4))
+* resolve DuplicateCredentialArgs error when using credentials_file ([91d18fa](https://github.com/googleapis/python-service-control/commit/91d18fae62221a55202ded68ec0d0551ca3202a4))
+
 ### [1.2.1](https://www.github.com/googleapis/python-service-control/compare/v1.2.0...v1.2.1) (2021-11-01)
 
 
