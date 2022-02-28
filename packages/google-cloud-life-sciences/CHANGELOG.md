@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.5.0](https://github.com/googleapis/python-life-sciences/compare/v0.4.1...v0.5.0) (2022-02-26)
+
+
+### Features
+
+* add api key support ([#68](https://github.com/googleapis/python-life-sciences/issues/68)) ([4230050](https://github.com/googleapis/python-life-sciences/commit/423005091b64d5a0cc495b6f4f5c73443f748089))
+
+
+### Bug Fixes
+
+* resolve DuplicateCredentialArgs error when using credentials_file ([ffbd3c9](https://github.com/googleapis/python-life-sciences/commit/ffbd3c967c50d477290abca39eaecef24a171e31))
+
 ### [0.4.1](https://www.github.com/googleapis/python-life-sciences/compare/v0.4.0...v0.4.1) (2021-11-01)
 
 
