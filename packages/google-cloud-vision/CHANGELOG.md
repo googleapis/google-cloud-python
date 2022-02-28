@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-cloud-vision/#history
 
+## [2.7.0](https://github.com/googleapis/python-vision/compare/v2.6.3...v2.7.0) (2022-02-28)
+
+
+### Features
+
+* add api key support ([#300](https://github.com/googleapis/python-vision/issues/300)) ([25fc254](https://github.com/googleapis/python-vision/commit/25fc254a117f025bd0c7bddbc7b246b3c5a2b760))
+
+
+### Bug Fixes
+
+* resolve DuplicateCredentialArgs error when using credentials_file ([#304](https://github.com/googleapis/python-vision/issues/304)) ([6cca548](https://github.com/googleapis/python-vision/commit/6cca5487296127d7690734fdc610672b983607f2))
+
+
+### Documentation
+
+* add auto-generated samples ([#309](https://github.com/googleapis/python-vision/issues/309)) ([efc022d](https://github.com/googleapis/python-vision/commit/efc022d6b850dffbb621c066aa8fd1ff69cb0519))
+
 ### [2.6.3](https://www.github.com/googleapis/python-vision/compare/v2.6.2...v2.6.3) (2021-12-12)
 
 
