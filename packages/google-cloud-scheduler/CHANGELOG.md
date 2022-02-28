@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-scheduler/#history
 
+### [2.6.1](https://github.com/googleapis/python-scheduler/compare/v2.6.0...v2.6.1) (2022-02-26)
+
+
+### Bug Fixes
+
+* resolve DuplicateCredentialArgs error when using credentials_file ([993ac1a](https://github.com/googleapis/python-scheduler/commit/993ac1a793fef60730546f1faae269624efb98f7))
+
+
+### Documentation
+
+* add generated snippets ([#189](https://github.com/googleapis/python-scheduler/issues/189)) ([eccf8c6](https://github.com/googleapis/python-scheduler/commit/eccf8c635d1c2a93d933ed1381da42a18d128fec))
+
 ## [2.6.0](https://github.com/googleapis/python-scheduler/compare/v2.5.1...v2.6.0) (2022-01-25)
 
 
