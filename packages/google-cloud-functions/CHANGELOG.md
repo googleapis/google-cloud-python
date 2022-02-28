@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.5.1](https://github.com/googleapis/python-functions/compare/v1.5.0...v1.5.1) (2022-02-26)
+
+
+### Bug Fixes
+
+* resolve DuplicateCredentialArgs error when using credentials_file ([80fe038](https://github.com/googleapis/python-functions/commit/80fe038f05f695177cb2366bb92063b485c2bc38))
+
 ## [1.5.0](https://github.com/googleapis/python-functions/compare/v1.4.0...v1.5.0) (2022-01-25)
 
 
