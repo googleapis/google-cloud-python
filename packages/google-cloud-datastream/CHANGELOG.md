@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.4.1](https://github.com/googleapis/python-datastream/compare/v0.4.0...v0.4.1) (2022-02-26)
+
+
+### Documentation
+
+* add generated snippets ([#66](https://github.com/googleapis/python-datastream/issues/66)) ([75656c1](https://github.com/googleapis/python-datastream/commit/75656c11c8e9ff8e0ffc509476477db268aca08d))
+
 ## [0.4.0](https://github.com/googleapis/python-datastream/compare/v0.3.1...v0.4.0) (2022-02-03)
 
 
