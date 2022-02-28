@@ -4,6 +4,25 @@
 
 [1]: https://pypi.org/project/google-cloud-datastore/#history
 
+## [2.5.0](https://github.com/googleapis/python-datastore/compare/v2.4.0...v2.5.0) (2022-02-26)
+
+
+### Features
+
+* add api key support ([e166d7b](https://github.com/googleapis/python-datastore/commit/e166d7b3bc5b70d668df19e4b3a6d63b7c9c6599))
+* define Datastore -> Firestore in Datastore mode migration long running operation metadata ([#270](https://github.com/googleapis/python-datastore/issues/270)) ([e166d7b](https://github.com/googleapis/python-datastore/commit/e166d7b3bc5b70d668df19e4b3a6d63b7c9c6599))
+
+
+### Bug Fixes
+
+* **deps:** move libcst to extras ([#271](https://github.com/googleapis/python-datastore/issues/271)) ([d53fcce](https://github.com/googleapis/python-datastore/commit/d53fcce361d1585be9b0793fb6cc7fc4b27b07a7))
+* resolve DuplicateCredentialArgs error when using credentials_file ([e166d7b](https://github.com/googleapis/python-datastore/commit/e166d7b3bc5b70d668df19e4b3a6d63b7c9c6599))
+
+
+### Documentation
+
+* add generated snippets ([e166d7b](https://github.com/googleapis/python-datastore/commit/e166d7b3bc5b70d668df19e4b3a6d63b7c9c6599))
+
 ## [2.4.0](https://www.github.com/googleapis/python-datastore/compare/v2.3.0...v2.4.0) (2021-11-08)
 
 
