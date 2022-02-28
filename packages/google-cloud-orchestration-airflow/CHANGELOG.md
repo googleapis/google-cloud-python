@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.0](https://github.com/googleapis/python-orchestration-airflow/compare/v1.2.1...v1.3.0) (2022-02-26)
+
+
+### Features
+
+* add api key support ([#60](https://github.com/googleapis/python-orchestration-airflow/issues/60)) ([8e05a90](https://github.com/googleapis/python-orchestration-airflow/commit/8e05a905ea8a5c760eeb65d15cea73da41eac4ab))
+
+
+### Bug Fixes
+
+* resolve DuplicateCredentialArgs error when using credentials_file ([#63](https://github.com/googleapis/python-orchestration-airflow/issues/63)) ([d2bd1b9](https://github.com/googleapis/python-orchestration-airflow/commit/d2bd1b9c76fe16f180f55b4c046c719ee1fbec46))
+
 ### [1.2.1](https://www.github.com/googleapis/python-orchestration-airflow/compare/v1.2.0...v1.2.1) (2021-11-01)
 
 
