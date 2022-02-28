@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-automl/#history
 
+### [2.7.1](https://github.com/googleapis/python-automl/compare/v2.7.0...v2.7.1) (2022-02-26)
+
+
+### Bug Fixes
+
+* handle AttributeError in automl_v1beta1.TablesClient ([#338](https://github.com/googleapis/python-automl/issues/338)) ([0cd309f](https://github.com/googleapis/python-automl/commit/0cd309f33520043227bfc31b6570ccc025c1b252))
+
 ## [2.7.0](https://github.com/googleapis/python-automl/compare/v2.6.0...v2.7.0) (2022-02-11)
 
 
