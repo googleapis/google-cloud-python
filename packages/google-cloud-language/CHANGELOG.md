@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-language/#history
 
+## [2.4.0](https://github.com/googleapis/python-language/compare/v2.3.2...v2.4.0) (2022-02-28)
+
+
+### Features
+
+* add api key support ([#256](https://github.com/googleapis/python-language/issues/256)) ([593ec8a](https://github.com/googleapis/python-language/commit/593ec8a998c612b3a87b4b9a53bd166c0b2c10f6))
+
+
+### Bug Fixes
+
+* resolve DuplicateCredentialArgs error when using credentials_file ([3e7c964](https://github.com/googleapis/python-language/commit/3e7c96410914d9080ecd0325c61bdc624adf08e1))
+
 ### [2.3.2](https://github.com/googleapis/python-language/compare/v2.3.1...v2.3.2) (2022-01-20)
 
 
