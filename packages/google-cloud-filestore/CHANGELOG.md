@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.0](https://github.com/googleapis/python-filestore/compare/v1.0.0...v1.1.0) (2022-02-26)
+
+
+### Features
+
+* add api key support ([#29](https://github.com/googleapis/python-filestore/issues/29)) ([a72a4fe](https://github.com/googleapis/python-filestore/commit/a72a4fe7f506bc3a6a43d368784b17b4e00695ff))
+
+
+### Bug Fixes
+
+* resolve DuplicateCredentialArgs error when using credentials_file ([314d78e](https://github.com/googleapis/python-filestore/commit/314d78e8e35f4a9cb03b372ec45428dc841e6681))
+
 ## [1.0.0](https://www.github.com/googleapis/python-filestore/compare/v0.2.1...v1.0.0) (2021-11-03)
 
 
