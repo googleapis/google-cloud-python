@@ -247,3 +247,6 @@ It is recommended that you go through that list.
 
 Django spanner has a set of limitations as well, which you can find
 `here <https://github.com/googleapis/python-spanner-django/blob/main/docs/limitations.rst>`__.
+
+Features from spanner that are not supported in Django-spanner are listed 
+`here <https://github.com/googleapis/python-spanner-django/blob/main/docs/limitations-spanner.rst>`__.
