@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-translate/#history
 
+### [3.7.1](https://github.com/googleapis/python-translate/compare/v3.7.0...v3.7.1) (2022-02-26)
+
+
+### Documentation
+
+* add generated snippets ([#336](https://github.com/googleapis/python-translate/issues/336)) ([36c4483](https://github.com/googleapis/python-translate/commit/36c4483e9fac4933fc024fcae24ae8fbbdb470a0))
+
 ## [3.7.0](https://github.com/googleapis/python-translate/compare/v3.6.1...v3.7.0) (2022-02-03)
 
 
