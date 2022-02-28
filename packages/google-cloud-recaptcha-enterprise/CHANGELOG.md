@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.6.0](https://github.com/googleapis/python-recaptcha-enterprise/compare/v1.5.0...v1.6.0) (2022-02-28)
+
+
+### Features
+
+* add api key support ([#181](https://github.com/googleapis/python-recaptcha-enterprise/issues/181)) ([e9935ce](https://github.com/googleapis/python-recaptcha-enterprise/commit/e9935ce310b44d076e4590034b392f9681748f31))
+
+
+### Bug Fixes
+
+* resolve DuplicateCredentialArgs error when using credentials_file ([d5cc843](https://github.com/googleapis/python-recaptcha-enterprise/commit/d5cc843a1c6789c85751abe610b16fc6622029df))
+
 ## [1.5.0](https://github.com/googleapis/python-recaptcha-enterprise/compare/v1.4.1...v1.5.0) (2022-01-14)
 
 
