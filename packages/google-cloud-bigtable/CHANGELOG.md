@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+## [2.6.0](https://github.com/googleapis/python-bigtable/compare/v2.5.2...v2.6.0) (2022-02-26)
+
+
+### Features
+
+* add WarmAndPing request for channel priming ([#504](https://github.com/googleapis/python-bigtable/issues/504)) ([df5fc1f](https://github.com/googleapis/python-bigtable/commit/df5fc1f7d6ded88d9bce67f7cc6989981745931f))
+
 ### [2.5.2](https://github.com/googleapis/python-bigtable/compare/v2.5.1...v2.5.2) (2022-02-24)
 
 
