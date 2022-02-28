@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/grafeas/#history
 
+### [1.4.2](https://github.com/googleapis/python-grafeas/compare/v1.4.1...v1.4.2) (2022-02-26)
+
+
+### Bug Fixes
+
+* resolve DuplicateCredentialArgs error when using credentials_file ([71ab2a6](https://github.com/googleapis/python-grafeas/commit/71ab2a6719a1ff50ba13dc521dfee54f238b7dc3))
+
+
+### Documentation
+
+* add generated snippets ([#147](https://github.com/googleapis/python-grafeas/issues/147)) ([6fcc520](https://github.com/googleapis/python-grafeas/commit/6fcc52016e3feca62b171ea4e6c70644302263c9))
+
 ### [1.4.1](https://github.com/googleapis/python-grafeas/compare/v1.4.0...v1.4.1) (2022-01-11)
 
 
