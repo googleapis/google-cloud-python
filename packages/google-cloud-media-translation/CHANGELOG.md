@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.8.0](https://github.com/googleapis/python-media-translation/compare/v0.7.1...v0.8.0) (2022-02-26)
+
+
+### Features
+
+* add api key support ([#149](https://github.com/googleapis/python-media-translation/issues/149)) ([c1210da](https://github.com/googleapis/python-media-translation/commit/c1210da198758da06697df99e614b7bd1b2d6e7f))
+
+
+### Bug Fixes
+
+* resolve DuplicateCredentialArgs error when using credentials_file ([55a75a9](https://github.com/googleapis/python-media-translation/commit/55a75a96d8880a5e1a45934e828cef526ba9c423))
+
+
+### Documentation
+
+* add generated snippets ([#155](https://github.com/googleapis/python-media-translation/issues/155)) ([17cc6bb](https://github.com/googleapis/python-media-translation/commit/17cc6bb8e82f16486b1520bceb0bf6a1b438f6ae))
+
 ### [0.7.1](https://www.github.com/googleapis/python-media-translation/compare/v0.7.0...v0.7.1) (2021-11-01)
 
 
