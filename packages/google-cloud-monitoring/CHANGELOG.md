@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-cloud-monitoring/#history
 
+## [2.9.0](https://github.com/googleapis/python-monitoring/compare/v2.8.0...v2.9.0) (2022-02-26)
+
+
+### Features
+
+* add api key support ([#270](https://github.com/googleapis/python-monitoring/issues/270)) ([412b9fc](https://github.com/googleapis/python-monitoring/commit/412b9fc844b8be1a5c763c02a244c2cbecb8091d))
+
+
+### Bug Fixes
+
+* resolve DuplicateCredentialArgs error when using credentials_file ([c58bcce](https://github.com/googleapis/python-monitoring/commit/c58bcce924ff8603bc5596f5c7dc5afd0517216f))
+
+
+### Documentation
+
+* add generated snippets ([#276](https://github.com/googleapis/python-monitoring/issues/276)) ([2340cc9](https://github.com/googleapis/python-monitoring/commit/2340cc959bbde2de885f2fce9b36cfc884a1341e))
+
 ## [2.8.0](https://www.github.com/googleapis/python-monitoring/compare/v2.7.0...v2.8.0) (2021-11-16)
 
 
