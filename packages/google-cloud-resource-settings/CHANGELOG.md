@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.0](https://github.com/googleapis/python-resource-settings/compare/v1.2.1...v1.3.0) (2022-02-26)
+
+
+### Features
+
+* add api key support ([#74](https://github.com/googleapis/python-resource-settings/issues/74)) ([4059c1c](https://github.com/googleapis/python-resource-settings/commit/4059c1c704803e60a7341b483ead53defa8ac39a))
+
+
+### Bug Fixes
+
+* resolve DuplicateCredentialArgs error when using credentials_file ([26211ca](https://github.com/googleapis/python-resource-settings/commit/26211cab0ffad79a7049b9819eba89bbc7ea2998))
+
 ### [1.2.1](https://www.github.com/googleapis/python-resource-settings/compare/v1.2.0...v1.2.1) (2021-11-01)
 
 
