@@ -1,5 +1,30 @@
 # Changelog
 
+## [1.4.0](https://github.com/googleapis/python-retail/compare/v1.3.0...v1.4.0) (2022-02-28)
+
+
+### Features
+
+* add api key support ([#134](https://github.com/googleapis/python-retail/issues/134)) ([234883d](https://github.com/googleapis/python-retail/commit/234883dcd9a02521c76905fc64d79afe6b5782a5))
+
+
+### Bug Fixes
+
+* resolve DuplicateCredentialArgs error when using credentials_file ([#146](https://github.com/googleapis/python-retail/issues/146)) ([6861dae](https://github.com/googleapis/python-retail/commit/6861dae6d83a8e76950763d83a1926fa5fee465a))
+
+
+### Documentation
+
+* **samples:** add product import samples ([#149](https://github.com/googleapis/python-retail/issues/149)) ([b4c8608](https://github.com/googleapis/python-retail/commit/b4c860891f2dae7cc4548fe25c4a6b89a36d6987))
+* **samples:** add resources for interactive tutorials ([#145](https://github.com/googleapis/python-retail/issues/145)) ([bc60b00](https://github.com/googleapis/python-retail/commit/bc60b00665eee25bf3a6dab701004c0b4171e0dc))
+* **samples:** add retail search service samples ([#133](https://github.com/googleapis/python-retail/issues/133)) ([3b5f938](https://github.com/googleapis/python-retail/commit/3b5f9389e19a5ad7b60ea327ebebff3bc561dae7))
+* **samples:** add samples for events ([#155](https://github.com/googleapis/python-retail/issues/155)) ([cc475f7](https://github.com/googleapis/python-retail/commit/cc475f7bdfaa5ff8244abca14438d8feea98eacd))
+* **samples:** add samples for write/rejoin/purge user events ([#157](https://github.com/googleapis/python-retail/issues/157)) ([4dba447](https://github.com/googleapis/python-retail/commit/4dba4470ebfab01193a4fe39247f121d1af2009e))
+* **samples:** add samples to create, read, update, and delete products ([#150](https://github.com/googleapis/python-retail/issues/150)) ([d8f8e34](https://github.com/googleapis/python-retail/commit/d8f8e34885146b0a8386c73a5b820cd5216a4ec7))
+* **samples:** Additional guidance in samples/interactive-tutorials/README.md ([#162](https://github.com/googleapis/python-retail/issues/162)) ([47d2388](https://github.com/googleapis/python-retail/commit/47d2388030788022a09302d9556459b4ed62b19e))
+* **samples:** read the project id from google.auth ([#160](https://github.com/googleapis/python-retail/issues/160)) ([f6192c8](https://github.com/googleapis/python-retail/commit/f6192c882975565193fc70765e9c97bfd685e5fd))
+* **samples:** remove project_number in interactive-tutorials ([#158](https://github.com/googleapis/python-retail/issues/158)) ([017202a](https://github.com/googleapis/python-retail/commit/017202a9e5904fc2e449060791572e6fbd09e60a))
+
 ## [1.3.0](https://github.com/googleapis/python-retail/compare/v1.2.1...v1.3.0) (2022-01-14)
 
 
