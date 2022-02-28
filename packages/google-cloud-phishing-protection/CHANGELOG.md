@@ -5,6 +5,18 @@
 [1]: https://pypi.org/project/google-cloud-phishing-protection/#history
 
 
+## [1.5.0](https://github.com/googleapis/python-phishingprotection/compare/v1.4.1...v1.5.0) (2022-02-26)
+
+
+### Features
+
+* add api key support ([#144](https://github.com/googleapis/python-phishingprotection/issues/144)) ([dc83a72](https://github.com/googleapis/python-phishingprotection/commit/dc83a725bfff5062193b1c29f6ee00ebddd972ba))
+
+
+### Bug Fixes
+
+* resolve DuplicateCredentialArgs error when using credentials_file ([f5abff9](https://github.com/googleapis/python-phishingprotection/commit/f5abff9ba017069ada02f8e65b82f1ed62c8710d))
+
 ### [1.4.1](https://www.github.com/googleapis/python-phishingprotection/compare/v1.4.0...v1.4.1) (2021-11-01)
 
 
