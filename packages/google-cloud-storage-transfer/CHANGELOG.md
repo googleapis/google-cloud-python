@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.2.0](https://github.com/googleapis/python-storage-transfer/compare/v1.1.1...v1.2.0) (2022-02-26)
+
+
+### Features
+
+* add api key support ([#52](https://github.com/googleapis/python-storage-transfer/issues/52)) ([156018b](https://github.com/googleapis/python-storage-transfer/commit/156018bebebd48b7755bda1edf04503277ea698c))
+
+
+### Bug Fixes
+
+* resolve DuplicateCredentialArgs error when using credentials_file ([a4047a2](https://github.com/googleapis/python-storage-transfer/commit/a4047a2365a528be06b98c0ac378138796e78289))
+
+
+### Documentation
+
+* add generated snippets ([#60](https://github.com/googleapis/python-storage-transfer/issues/60)) ([68c14e6](https://github.com/googleapis/python-storage-transfer/commit/68c14e6783eb51ba0820ba73757afd61b17ce16c))
+
 ### [1.1.1](https://www.github.com/googleapis/python-storage-transfer/compare/v1.1.0...v1.1.1) (2021-11-01)
 
 
