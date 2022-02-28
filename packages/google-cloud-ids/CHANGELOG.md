@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.0](https://github.com/googleapis/python-ids/compare/v1.0.0...v1.1.0) (2022-02-26)
+
+
+### Features
+
+* add api key support ([#15](https://github.com/googleapis/python-ids/issues/15)) ([8e562db](https://github.com/googleapis/python-ids/commit/8e562db176932dd9413e10ada79d8460b647a56f))
+
+
+### Bug Fixes
+
+* resolve DuplicateCredentialArgs error when using credentials_file ([31be484](https://github.com/googleapis/python-ids/commit/31be484920c0cedec5ede6e97e068b1b113f1ee4))
+
 ## [1.0.0](https://github.com/googleapis/python-ids/compare/v0.1.0...v1.0.0) (2022-01-24)
 
 
