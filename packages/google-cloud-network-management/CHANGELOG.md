@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.3.0](https://github.com/googleapis/python-network-management/compare/v1.2.1...v1.3.0) (2022-02-26)
+
+
+### Features
+
+* add api key support ([#62](https://github.com/googleapis/python-network-management/issues/62)) ([ab2afd2](https://github.com/googleapis/python-network-management/commit/ab2afd27624fd5d8932f74533cb04292f89fe0e0))
+
+
+### Bug Fixes
+
+* resolve DuplicateCredentialArgs error when using credentials_file ([297c119](https://github.com/googleapis/python-network-management/commit/297c119c3317ea766bd52d328a34a9079e874acd))
+
+
+### Documentation
+
+* add generated snippets ([#68](https://github.com/googleapis/python-network-management/issues/68)) ([190d825](https://github.com/googleapis/python-network-management/commit/190d8257841cb4d2417733f8bba795ff11e635bd))
+
 ### [1.2.1](https://www.github.com/googleapis/python-network-management/compare/v1.2.0...v1.2.1) (2021-11-01)
 
 

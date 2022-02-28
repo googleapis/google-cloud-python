@@ -22,7 +22,7 @@ import setuptools
 
 name = "google-cloud-network-management"
 description = "Network Management API client library"
-version = "1.2.1"
+version = "1.3.0"
 release_status = "Development Status :: 5 - Production/Stable"
 url = "https://github.com/googleapis/python-network-management"
 dependencies = [
