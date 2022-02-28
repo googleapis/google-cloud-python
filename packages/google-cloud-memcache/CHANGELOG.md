@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.0](https://github.com/googleapis/python-memcache/compare/v1.2.1...v1.3.0) (2022-02-26)
+
+
+### Features
+
+* add api key support ([#135](https://github.com/googleapis/python-memcache/issues/135)) ([ef5104e](https://github.com/googleapis/python-memcache/commit/ef5104e0922d980c0023b65665f29f27c14cddcc))
+
+
+### Bug Fixes
+
+* resolve DuplicateCredentialArgs error when using credentials_file ([5f8a2b4](https://github.com/googleapis/python-memcache/commit/5f8a2b4fe5fcc0c4a2be6b9f8529f4ceacbf6421))
+
 ### [1.2.1](https://www.github.com/googleapis/python-memcache/compare/v1.2.0...v1.2.1) (2021-11-01)
 
 
