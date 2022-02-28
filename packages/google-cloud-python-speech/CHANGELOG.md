@@ -4,6 +4,24 @@
 
 [1]: https://pypi.org/project/google-cloud-speech/#history
 
+## [2.13.0](https://github.com/googleapis/python-speech/compare/v2.12.0...v2.13.0) (2022-02-26)
+
+
+### Features
+
+* add api key support ([#313](https://github.com/googleapis/python-speech/issues/313)) ([86fe8ea](https://github.com/googleapis/python-speech/commit/86fe8ea626c95b9dd98345777739013b9fd1b0f3))
+
+
+### Bug Fixes
+
+* **deps:** move libcst to extras ([#322](https://github.com/googleapis/python-speech/issues/322)) ([de6e7c1](https://github.com/googleapis/python-speech/commit/de6e7c193edeff69376ec94da26c76dbeaa24d36))
+* resolve DuplicateCredentialArgs error when using credentials_file ([#318](https://github.com/googleapis/python-speech/issues/318)) ([1348765](https://github.com/googleapis/python-speech/commit/1348765cbf8d682ba49983a3e991cb408d59171e))
+
+
+### Documentation
+
+* add generated snippets ([#321](https://github.com/googleapis/python-speech/issues/321)) ([ca99f96](https://github.com/googleapis/python-speech/commit/ca99f96d081eed4d2d1409fc5e688a243fa78ae3))
+
 ## [2.12.0](https://github.com/googleapis/python-speech/compare/v2.11.1...v2.12.0) (2022-01-17)
 
 
