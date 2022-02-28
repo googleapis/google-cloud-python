@@ -1,5 +1,24 @@
 # Changelog
 
+## [2.9.0](https://github.com/googleapis/python-secret-manager/compare/v2.8.0...v2.9.0) (2022-02-26)
+
+
+### Features
+
+* add api key support ([#240](https://github.com/googleapis/python-secret-manager/issues/240)) ([4056e97](https://github.com/googleapis/python-secret-manager/commit/4056e97028a638934de9deea68d29e523fa45a1f))
+* add checksums in Secret Manager  ([#244](https://github.com/googleapis/python-secret-manager/issues/244)) ([6c24f70](https://github.com/googleapis/python-secret-manager/commit/6c24f70276333e74b32ba0992e77e24f5f453de5))
+
+
+### Bug Fixes
+
+* **deps:** move libcst to extras ([#248](https://github.com/googleapis/python-secret-manager/issues/248)) ([9acb791](https://github.com/googleapis/python-secret-manager/commit/9acb7913adc01f41928b85641aea184ffccdf121))
+* resolve DuplicateCredentialArgs error when using credentials_file ([6c24f70](https://github.com/googleapis/python-secret-manager/commit/6c24f70276333e74b32ba0992e77e24f5f453de5))
+
+
+### Documentation
+
+* add generated snippets ([#247](https://github.com/googleapis/python-secret-manager/issues/247)) ([a84c252](https://github.com/googleapis/python-secret-manager/commit/a84c2520b522c8c5d60d7fa32050fe917a30dff2))
+
 ## [2.8.0](https://www.github.com/googleapis/python-secret-manager/compare/v2.7.3...v2.8.0) (2021-11-08)
 
 
