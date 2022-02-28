@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.4.0](https://github.com/googleapis/python-policy-troubleshooter/compare/v1.3.1...v1.4.0) (2022-02-26)
+
+
+### Features
+
+* add api key support ([#92](https://github.com/googleapis/python-policy-troubleshooter/issues/92)) ([21285cc](https://github.com/googleapis/python-policy-troubleshooter/commit/21285ccdb9743f82a56ca1e35bd96803bd61f20a))
+
+
+### Bug Fixes
+
+* **deps:** remove libcst dependency ([#98](https://github.com/googleapis/python-policy-troubleshooter/issues/98)) ([b3448ba](https://github.com/googleapis/python-policy-troubleshooter/commit/b3448ba7248e8f41dbba9d639edaf14013dfa2f5))
+* resolve DuplicateCredentialArgs error when using credentials_file ([5c1826e](https://github.com/googleapis/python-policy-troubleshooter/commit/5c1826ea807cb90366a125a6c62d198e6fc5823c))
+
+
+### Documentation
+
+* add generated snippets ([#97](https://github.com/googleapis/python-policy-troubleshooter/issues/97)) ([2aa1400](https://github.com/googleapis/python-policy-troubleshooter/commit/2aa1400e34f2dcd032e78bb89420a0766e81a866))
+
 ### [1.3.1](https://www.github.com/googleapis/python-policy-troubleshooter/compare/v1.3.0...v1.3.1) (2021-11-01)
 
 
