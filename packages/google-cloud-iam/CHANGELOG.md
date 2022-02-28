@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-cloud-iam/#history
 
+## [2.6.0](https://github.com/googleapis/python-iam/compare/v2.5.1...v2.6.0) (2022-02-26)
+
+
+### Features
+
+* add api key support ([#147](https://github.com/googleapis/python-iam/issues/147)) ([8145ace](https://github.com/googleapis/python-iam/commit/8145ace353fe863117cf35bd28df1e3dbcd9ba6d))
+
+
+### Bug Fixes
+
+* resolve DuplicateCredentialArgs error when using credentials_file ([4e6e3fc](https://github.com/googleapis/python-iam/commit/4e6e3fca6f4bc1e3764cd2ce2d1a0c760cac0d5f))
+
+
+### Documentation
+
+* add generated snippets ([#152](https://github.com/googleapis/python-iam/issues/152)) ([a213fdc](https://github.com/googleapis/python-iam/commit/a213fdc92f4feb7777692ad918cb99acaf064b1a))
+
 ### [2.5.1](https://www.github.com/googleapis/python-iam/compare/v2.5.0...v2.5.1) (2021-11-01)
 
 
