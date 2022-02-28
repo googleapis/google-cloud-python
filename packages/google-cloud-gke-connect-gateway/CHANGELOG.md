@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.5.0](https://github.com/googleapis/python-gke-connect-gateway/compare/v0.4.1...v0.5.0) (2022-02-26)
+
+
+### Features
+
+* add api key support ([#65](https://github.com/googleapis/python-gke-connect-gateway/issues/65)) ([19b0ddd](https://github.com/googleapis/python-gke-connect-gateway/commit/19b0dddf8031a40ad01b2252c2399789d75d0be0))
+
+
+### Bug Fixes
+
+* resolve DuplicateCredentialArgs error when using credentials_file ([f9c770c](https://github.com/googleapis/python-gke-connect-gateway/commit/f9c770c584f5e388651e15d349b5ff1edff33b84))
+
+
+### Documentation
+
+* add generated snippets ([#70](https://github.com/googleapis/python-gke-connect-gateway/issues/70)) ([011d98d](https://github.com/googleapis/python-gke-connect-gateway/commit/011d98d0b206c62728d3279c01ca79fe1527d0ee))
+
 ### [0.4.1](https://www.github.com/googleapis/python-gke-connect-gateway/compare/v0.4.0...v0.4.1) (2021-11-01)
 
 
