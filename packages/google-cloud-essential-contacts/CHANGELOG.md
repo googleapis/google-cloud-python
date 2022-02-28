@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.0](https://github.com/googleapis/python-essential-contacts/compare/v1.0.1...v1.1.0) (2022-02-26)
+
+
+### Features
+
+* add api key support ([#78](https://github.com/googleapis/python-essential-contacts/issues/78)) ([e9014c4](https://github.com/googleapis/python-essential-contacts/commit/e9014c4615aee317b3887e743ce93393675579e8))
+
+
+### Bug Fixes
+
+* resolve DuplicateCredentialArgs error when using credentials_file ([#81](https://github.com/googleapis/python-essential-contacts/issues/81)) ([17fc687](https://github.com/googleapis/python-essential-contacts/commit/17fc687330360f000982a5b6bd5460693bc7cb3c))
+
 ### [1.0.1](https://www.github.com/googleapis/python-essential-contacts/compare/v1.0.0...v1.0.1) (2021-11-01)
 
 
