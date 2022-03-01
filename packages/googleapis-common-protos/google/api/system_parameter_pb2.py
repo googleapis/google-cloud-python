@@ -18,6 +18,7 @@
 # source: google/api/system_parameter.proto
 """Generated protocol buffer code."""
 from google.protobuf import descriptor as _descriptor
+from google.protobuf import descriptor_pool as _descriptor_pool
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
@@ -27,202 +28,14 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
-DESCRIPTOR = _descriptor.FileDescriptor(
-    name="google/api/system_parameter.proto",
-    package="google.api",
-    syntax="proto3",
-    serialized_options=b"\n\016com.google.apiB\024SystemParameterProtoP\001ZEgoogle.golang.org/genproto/googleapis/api/serviceconfig;serviceconfig\242\002\004GAPI",
-    create_key=_descriptor._internal_create_key,
-    serialized_pb=b'\n!google/api/system_parameter.proto\x12\ngoogle.api"B\n\x10SystemParameters\x12.\n\x05rules\x18\x01 \x03(\x0b\x32\x1f.google.api.SystemParameterRule"X\n\x13SystemParameterRule\x12\x10\n\x08selector\x18\x01 \x01(\t\x12/\n\nparameters\x18\x02 \x03(\x0b\x32\x1b.google.api.SystemParameter"Q\n\x0fSystemParameter\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x13\n\x0bhttp_header\x18\x02 \x01(\t\x12\x1b\n\x13url_query_parameter\x18\x03 \x01(\tBv\n\x0e\x63om.google.apiB\x14SystemParameterProtoP\x01ZEgoogle.golang.org/genproto/googleapis/api/serviceconfig;serviceconfig\xa2\x02\x04GAPIb\x06proto3',
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(
+    b'\n!google/api/system_parameter.proto\x12\ngoogle.api"B\n\x10SystemParameters\x12.\n\x05rules\x18\x01 \x03(\x0b\x32\x1f.google.api.SystemParameterRule"X\n\x13SystemParameterRule\x12\x10\n\x08selector\x18\x01 \x01(\t\x12/\n\nparameters\x18\x02 \x03(\x0b\x32\x1b.google.api.SystemParameter"Q\n\x0fSystemParameter\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x13\n\x0bhttp_header\x18\x02 \x01(\t\x12\x1b\n\x13url_query_parameter\x18\x03 \x01(\tBv\n\x0e\x63om.google.apiB\x14SystemParameterProtoP\x01ZEgoogle.golang.org/genproto/googleapis/api/serviceconfig;serviceconfig\xa2\x02\x04GAPIb\x06proto3'
 )
 
 
-_SYSTEMPARAMETERS = _descriptor.Descriptor(
-    name="SystemParameters",
-    full_name="google.api.SystemParameters",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    create_key=_descriptor._internal_create_key,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="rules",
-            full_name="google.api.SystemParameters.rules",
-            index=0,
-            number=1,
-            type=11,
-            cpp_type=10,
-            label=3,
-            has_default_value=False,
-            default_value=[],
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-            create_key=_descriptor._internal_create_key,
-        )
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=49,
-    serialized_end=115,
-)
-
-
-_SYSTEMPARAMETERRULE = _descriptor.Descriptor(
-    name="SystemParameterRule",
-    full_name="google.api.SystemParameterRule",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    create_key=_descriptor._internal_create_key,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="selector",
-            full_name="google.api.SystemParameterRule.selector",
-            index=0,
-            number=1,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=b"".decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-            create_key=_descriptor._internal_create_key,
-        ),
-        _descriptor.FieldDescriptor(
-            name="parameters",
-            full_name="google.api.SystemParameterRule.parameters",
-            index=1,
-            number=2,
-            type=11,
-            cpp_type=10,
-            label=3,
-            has_default_value=False,
-            default_value=[],
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-            create_key=_descriptor._internal_create_key,
-        ),
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=117,
-    serialized_end=205,
-)
-
-
-_SYSTEMPARAMETER = _descriptor.Descriptor(
-    name="SystemParameter",
-    full_name="google.api.SystemParameter",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    create_key=_descriptor._internal_create_key,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="name",
-            full_name="google.api.SystemParameter.name",
-            index=0,
-            number=1,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=b"".decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-            create_key=_descriptor._internal_create_key,
-        ),
-        _descriptor.FieldDescriptor(
-            name="http_header",
-            full_name="google.api.SystemParameter.http_header",
-            index=1,
-            number=2,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=b"".decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-            create_key=_descriptor._internal_create_key,
-        ),
-        _descriptor.FieldDescriptor(
-            name="url_query_parameter",
-            full_name="google.api.SystemParameter.url_query_parameter",
-            index=2,
-            number=3,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=b"".decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-            create_key=_descriptor._internal_create_key,
-        ),
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=207,
-    serialized_end=288,
-)
-
-_SYSTEMPARAMETERS.fields_by_name["rules"].message_type = _SYSTEMPARAMETERRULE
-_SYSTEMPARAMETERRULE.fields_by_name["parameters"].message_type = _SYSTEMPARAMETER
-DESCRIPTOR.message_types_by_name["SystemParameters"] = _SYSTEMPARAMETERS
-DESCRIPTOR.message_types_by_name["SystemParameterRule"] = _SYSTEMPARAMETERRULE
-DESCRIPTOR.message_types_by_name["SystemParameter"] = _SYSTEMPARAMETER
-_sym_db.RegisterFileDescriptor(DESCRIPTOR)
-
+_SYSTEMPARAMETERS = DESCRIPTOR.message_types_by_name["SystemParameters"]
+_SYSTEMPARAMETERRULE = DESCRIPTOR.message_types_by_name["SystemParameterRule"]
+_SYSTEMPARAMETER = DESCRIPTOR.message_types_by_name["SystemParameter"]
 SystemParameters = _reflection.GeneratedProtocolMessageType(
     "SystemParameters",
     (_message.Message,),
@@ -256,6 +69,14 @@ SystemParameter = _reflection.GeneratedProtocolMessageType(
 )
 _sym_db.RegisterMessage(SystemParameter)
 
+if _descriptor._USE_C_DESCRIPTORS == False:
 
-DESCRIPTOR._options = None
+    DESCRIPTOR._options = None
+    DESCRIPTOR._serialized_options = b"\n\016com.google.apiB\024SystemParameterProtoP\001ZEgoogle.golang.org/genproto/googleapis/api/serviceconfig;serviceconfig\242\002\004GAPI"
+    _SYSTEMPARAMETERS._serialized_start = 49
+    _SYSTEMPARAMETERS._serialized_end = 115
+    _SYSTEMPARAMETERRULE._serialized_start = 117
+    _SYSTEMPARAMETERRULE._serialized_end = 205
+    _SYSTEMPARAMETER._serialized_start = 207
+    _SYSTEMPARAMETER._serialized_end = 288
 # @@protoc_insertion_point(module_scope)

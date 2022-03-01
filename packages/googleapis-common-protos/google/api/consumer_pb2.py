@@ -18,6 +18,7 @@
 # source: google/api/consumer.proto
 """Generated protocol buffer code."""
 from google.protobuf import descriptor as _descriptor
+from google.protobuf import descriptor_pool as _descriptor_pool
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
@@ -27,198 +28,14 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
-DESCRIPTOR = _descriptor.FileDescriptor(
-    name="google/api/consumer.proto",
-    package="google.api",
-    syntax="proto3",
-    serialized_options=b"\n\016com.google.apiB\rConsumerProtoP\001ZEgoogle.golang.org/genproto/googleapis/api/serviceconfig;serviceconfig",
-    create_key=_descriptor._internal_create_key,
-    serialized_pb=b'\n\x19google/api/consumer.proto\x12\ngoogle.api"=\n\x11ProjectProperties\x12(\n\nproperties\x18\x01 \x03(\x0b\x32\x14.google.api.Property"\xac\x01\n\x08Property\x12\x0c\n\x04name\x18\x01 \x01(\t\x12/\n\x04type\x18\x02 \x01(\x0e\x32!.google.api.Property.PropertyType\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t"L\n\x0cPropertyType\x12\x0f\n\x0bUNSPECIFIED\x10\x00\x12\t\n\x05INT64\x10\x01\x12\x08\n\x04\x42OOL\x10\x02\x12\n\n\x06STRING\x10\x03\x12\n\n\x06\x44OUBLE\x10\x04\x42h\n\x0e\x63om.google.apiB\rConsumerProtoP\x01ZEgoogle.golang.org/genproto/googleapis/api/serviceconfig;serviceconfigb\x06proto3',
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(
+    b'\n\x19google/api/consumer.proto\x12\ngoogle.api"=\n\x11ProjectProperties\x12(\n\nproperties\x18\x01 \x03(\x0b\x32\x14.google.api.Property"\xac\x01\n\x08Property\x12\x0c\n\x04name\x18\x01 \x01(\t\x12/\n\x04type\x18\x02 \x01(\x0e\x32!.google.api.Property.PropertyType\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t"L\n\x0cPropertyType\x12\x0f\n\x0bUNSPECIFIED\x10\x00\x12\t\n\x05INT64\x10\x01\x12\x08\n\x04\x42OOL\x10\x02\x12\n\n\x06STRING\x10\x03\x12\n\n\x06\x44OUBLE\x10\x04\x42h\n\x0e\x63om.google.apiB\rConsumerProtoP\x01ZEgoogle.golang.org/genproto/googleapis/api/serviceconfig;serviceconfigb\x06proto3'
 )
 
 
-_PROPERTY_PROPERTYTYPE = _descriptor.EnumDescriptor(
-    name="PropertyType",
-    full_name="google.api.Property.PropertyType",
-    filename=None,
-    file=DESCRIPTOR,
-    create_key=_descriptor._internal_create_key,
-    values=[
-        _descriptor.EnumValueDescriptor(
-            name="UNSPECIFIED",
-            index=0,
-            number=0,
-            serialized_options=None,
-            type=None,
-            create_key=_descriptor._internal_create_key,
-        ),
-        _descriptor.EnumValueDescriptor(
-            name="INT64",
-            index=1,
-            number=1,
-            serialized_options=None,
-            type=None,
-            create_key=_descriptor._internal_create_key,
-        ),
-        _descriptor.EnumValueDescriptor(
-            name="BOOL",
-            index=2,
-            number=2,
-            serialized_options=None,
-            type=None,
-            create_key=_descriptor._internal_create_key,
-        ),
-        _descriptor.EnumValueDescriptor(
-            name="STRING",
-            index=3,
-            number=3,
-            serialized_options=None,
-            type=None,
-            create_key=_descriptor._internal_create_key,
-        ),
-        _descriptor.EnumValueDescriptor(
-            name="DOUBLE",
-            index=4,
-            number=4,
-            serialized_options=None,
-            type=None,
-            create_key=_descriptor._internal_create_key,
-        ),
-    ],
-    containing_type=None,
-    serialized_options=None,
-    serialized_start=201,
-    serialized_end=277,
-)
-_sym_db.RegisterEnumDescriptor(_PROPERTY_PROPERTYTYPE)
-
-
-_PROJECTPROPERTIES = _descriptor.Descriptor(
-    name="ProjectProperties",
-    full_name="google.api.ProjectProperties",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    create_key=_descriptor._internal_create_key,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="properties",
-            full_name="google.api.ProjectProperties.properties",
-            index=0,
-            number=1,
-            type=11,
-            cpp_type=10,
-            label=3,
-            has_default_value=False,
-            default_value=[],
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-            create_key=_descriptor._internal_create_key,
-        )
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=41,
-    serialized_end=102,
-)
-
-
-_PROPERTY = _descriptor.Descriptor(
-    name="Property",
-    full_name="google.api.Property",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    create_key=_descriptor._internal_create_key,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="name",
-            full_name="google.api.Property.name",
-            index=0,
-            number=1,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=b"".decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-            create_key=_descriptor._internal_create_key,
-        ),
-        _descriptor.FieldDescriptor(
-            name="type",
-            full_name="google.api.Property.type",
-            index=1,
-            number=2,
-            type=14,
-            cpp_type=8,
-            label=1,
-            has_default_value=False,
-            default_value=0,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-            create_key=_descriptor._internal_create_key,
-        ),
-        _descriptor.FieldDescriptor(
-            name="description",
-            full_name="google.api.Property.description",
-            index=2,
-            number=3,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=b"".decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-            create_key=_descriptor._internal_create_key,
-        ),
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[_PROPERTY_PROPERTYTYPE],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=105,
-    serialized_end=277,
-)
-
-_PROJECTPROPERTIES.fields_by_name["properties"].message_type = _PROPERTY
-_PROPERTY.fields_by_name["type"].enum_type = _PROPERTY_PROPERTYTYPE
-_PROPERTY_PROPERTYTYPE.containing_type = _PROPERTY
-DESCRIPTOR.message_types_by_name["ProjectProperties"] = _PROJECTPROPERTIES
-DESCRIPTOR.message_types_by_name["Property"] = _PROPERTY
-_sym_db.RegisterFileDescriptor(DESCRIPTOR)
-
+_PROJECTPROPERTIES = DESCRIPTOR.message_types_by_name["ProjectProperties"]
+_PROPERTY = DESCRIPTOR.message_types_by_name["Property"]
+_PROPERTY_PROPERTYTYPE = _PROPERTY.enum_types_by_name["PropertyType"]
 ProjectProperties = _reflection.GeneratedProtocolMessageType(
     "ProjectProperties",
     (_message.Message,),
@@ -241,6 +58,14 @@ Property = _reflection.GeneratedProtocolMessageType(
 )
 _sym_db.RegisterMessage(Property)
 
+if _descriptor._USE_C_DESCRIPTORS == False:
 
-DESCRIPTOR._options = None
+    DESCRIPTOR._options = None
+    DESCRIPTOR._serialized_options = b"\n\016com.google.apiB\rConsumerProtoP\001ZEgoogle.golang.org/genproto/googleapis/api/serviceconfig;serviceconfig"
+    _PROJECTPROPERTIES._serialized_start = 41
+    _PROJECTPROPERTIES._serialized_end = 102
+    _PROPERTY._serialized_start = 105
+    _PROPERTY._serialized_end = 277
+    _PROPERTY_PROPERTYTYPE._serialized_start = 201
+    _PROPERTY_PROPERTYTYPE._serialized_end = 277
 # @@protoc_insertion_point(module_scope)
