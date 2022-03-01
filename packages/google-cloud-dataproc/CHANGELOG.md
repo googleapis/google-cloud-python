@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-cloud-dataproc/#history
 
+## [4.0.0](https://github.com/googleapis/python-dataproc/compare/v3.3.0...v4.0.0) (2022-02-26)
+
+
+### ⚠ BREAKING CHANGES
+
+* add support for Virtual Dataproc cluster running on GKE cluster (#344)
+
+### Features
+
+* add support for Virtual Dataproc cluster running on GKE cluster ([#344](https://github.com/googleapis/python-dataproc/issues/344)) ([116077b](https://github.com/googleapis/python-dataproc/commit/116077b45abaccb1814002284e05e34ef387e045))
+
+
+### Bug Fixes
+
+* move GkeClusterConfig to google.cloud.dataproc_v1.types.shared ([116077b](https://github.com/googleapis/python-dataproc/commit/116077b45abaccb1814002284e05e34ef387e045))
+* remove namespaced_gke_deployment_target ([116077b](https://github.com/googleapis/python-dataproc/commit/116077b45abaccb1814002284e05e34ef387e045))
+
 ## [3.3.0](https://github.com/googleapis/python-dataproc/compare/v3.2.0...v3.3.0) (2022-02-18)
 
 
