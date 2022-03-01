@@ -31,7 +31,7 @@ jobs:
       - name: Get current date
         id: date
         run: echo "::set-output name=current_date::$(date +'%Y-%m-%d')"
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Set up Python 3.9
         uses: actions/setup-python@v3
         with:
