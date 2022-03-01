@@ -18,7 +18,7 @@ jobs:
     # Don't upgrade python version; there's a bug in 3.10 sphinx
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Set up Python
         uses: actions/setup-python@v3
         with:
@@ -31,7 +31,7 @@ jobs:
   mypy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Set up Python "3.10"
         uses: actions/setup-python@v3
         with:
@@ -47,7 +47,7 @@ jobs:
         target: [showcase, showcase_alternative_templates]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Set up Python "3.10"
         uses: actions/setup-python@v3
         with:
@@ -88,7 +88,7 @@ jobs:
       max-parallel: 1
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Setup temp directory
         run: |
           sudo mkdir -p /tmp/workspace/tests/cert/
@@ -138,7 +138,7 @@ jobs:
             variant: _alternative_templates
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Set up Python "${{ matrix.python }}"
         uses: actions/setup-python@v3
         with:
@@ -165,7 +165,7 @@ jobs:
   showcase-unit-add-iam-methods:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Set up Python "3.10"
         uses: actions/setup-python@v3
         with:
@@ -195,7 +195,7 @@ jobs:
       matrix:
         variant: ['', _alternative_templates]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Set up Python "3.10"
         uses: actions/setup-python@v3
         with:
@@ -222,7 +222,7 @@ jobs:
   snippetgen:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Set up Python "3.10"
         uses: actions/setup-python@v3
         with:
@@ -242,7 +242,7 @@ jobs:
         python: ["3.6", "3.7", "3.8", "3.9", "3.10"]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python }}
         uses: actions/setup-python@v3
         with:
@@ -267,7 +267,7 @@ jobs:
             variant: _alternative_templates
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python }}
         uses: actions/setup-python@v3
         with:
@@ -286,7 +286,7 @@ jobs:
     runs-on: ubuntu-latest
     container: gcr.io/gapic-images/googleapis
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Cache Bazel files
         id: cache-bazel
         uses: actions/cache@v2
@@ -313,7 +313,7 @@ jobs:
   goldens-lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Set up Python 3.10
         uses: actions/setup-python@v3
         with:
@@ -331,7 +331,7 @@ jobs:
   style-check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Set up Python "3.10"
         uses: actions/setup-python@v3
         with:
