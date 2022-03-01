@@ -79,8 +79,6 @@ def default(session, install_extras=True):
         install_target = "."
     session.install("-e", install_target, "-c", constraints_path)
 
-    session.install("ipython", "-c", constraints_path)
-
     # Run py.test against the unit tests.
     session.run(
         "py.test",
@@ -119,7 +117,6 @@ def unit_noextras(session):
 def mypy(session):
     """Run type checks with mypy."""
     session.install("-e", ".[all]")
-    session.install("ipython")
     session.install(MYPY_VERSION)
 
     # Just install the dependencies' type info directly, since "mypy --install-types"
@@ -138,7 +135,6 @@ def pytype(session):
     # https://github.com/googleapis/python-bigquery/issues/655
     session.install("attrs==20.3.0")
     session.install("-e", ".[all]")
-    session.install("ipython")
     session.install(PYTYPE_VERSION)
     session.run("pytype")
 
@@ -180,7 +176,6 @@ def system(session):
     else:
         extras = "[all]"
     session.install("-e", f".{extras}", "-c", constraints_path)
-    session.install("ipython", "-c", constraints_path)
 
     # Run py.test against the system tests.
     session.run("py.test", "--quiet", os.path.join("tests", "system"), *session.posargs)
@@ -355,7 +350,7 @@ def blacken(session):
 def docs(session):
     """Build the docs."""
 
-    session.install("ipython", "recommonmark", "sphinx==4.0.1", "sphinx_rtd_theme")
+    session.install("recommonmark", "sphinx==4.0.1", "sphinx_rtd_theme")
     session.install("google-cloud-storage")
     session.install("-e", ".[all]")
 

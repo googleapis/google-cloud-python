@@ -14,6 +14,8 @@
 
 import pytest
 
+IPython = pytest.importorskip("IPython")
+
 
 @pytest.fixture(scope="session")
 def lexer_class():

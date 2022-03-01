@@ -17,31 +17,30 @@ import re
 from concurrent import futures
 import warnings
 
-import mock
-import pytest
-
-try:
-    import pandas
-except ImportError:  # pragma: NO COVER
-    pandas = None
-
 from google.api_core import exceptions
 import google.auth.credentials
+import mock
+import pytest
+from tests.unit.helpers import make_connection
+from test_utils.imports import maybe_fail_import
 
 from google.cloud import bigquery
 from google.cloud.bigquery import job
 from google.cloud.bigquery import table
-from google.cloud.bigquery.magics import magics
 from google.cloud.bigquery.retry import DEFAULT_TIMEOUT
-from tests.unit.helpers import make_connection
-from test_utils.imports import maybe_fail_import
 
 
-IPython = pytest.importorskip("IPython")
-io = pytest.importorskip("IPython.utils.io")
-tools = pytest.importorskip("IPython.testing.tools")
-interactiveshell = pytest.importorskip("IPython.terminal.interactiveshell")
+try:
+    from google.cloud.bigquery.magics import magics
+except ImportError:
+    magics = None
+
 bigquery_storage = pytest.importorskip("google.cloud.bigquery_storage")
+IPython = pytest.importorskip("IPython")
+interactiveshell = pytest.importorskip("IPython.terminal.interactiveshell")
+tools = pytest.importorskip("IPython.testing.tools")
+io = pytest.importorskip("IPython.utils.io")
+pandas = pytest.importorskip("pandas")
 
 
 @pytest.fixture(scope="session")
