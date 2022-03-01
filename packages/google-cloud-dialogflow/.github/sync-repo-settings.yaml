@@ -7,19 +7,19 @@ branchProtectionRules:
   requiresCodeOwnerReviews: true
   requiresStrictStatusChecks: true
   requiredStatusCheckContexts:
-    - 'cla/google',
-    - 'OwlBot Post Processor',
-    - 'docs',
-    - 'docfx',
-    - 'lint',
-    - 'unit (3.6)',
-    - 'unit (3.7)',
-    - 'unit (3.8)',
-    - 'unit (3.9)',
-    - 'unit (3.10)',
+    - 'cla/google'
+    - 'OwlBot Post Processor'
+    - 'docs'
+    - 'docfx'
+    - 'lint'
+    - 'unit (3.6)'
+    - 'unit (3.7)'
+    - 'unit (3.8)'
+    - 'unit (3.9)'
+    - 'unit (3.10)'
     - 'cover'
     - 'Samples - Lint'
     - 'Samples - Python 3.7'
-    - 'Samples - Python 3.8' 
+    - 'Samples - Python 3.8'
     - 'Samples - Python 3.9'
-    - 'Samples - Python 3.10' 
+    - 'Samples - Python 3.10'
