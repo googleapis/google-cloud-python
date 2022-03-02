@@ -92,7 +92,7 @@ def default(session, install_grpc=True):
     )
 
     # Install all test dependencies, then install this package in-place.
-    session.install("mock", "pytest", "pytest-cov")
+    session.install("dataclasses", "mock", "pytest", "pytest-cov", "pytest-xdist")
     if install_grpc:
         session.install("-e", ".[grpc]", "-c", constraints_path)
     else:
@@ -102,28 +102,36 @@ def default(session, install_grpc=True):
         "python",
         "-m",
         "py.test",
-        "--quiet",
-        "--cov=google.api_core",
-        "--cov=tests.unit",
-        "--cov-append",
-        "--cov-config=.coveragerc",
-        "--cov-report=",
-        "--cov-fail-under=0",
-        os.path.join("tests", "unit"),
+        *(
+            # Helpful for running a single test or testfile.
+            session.posargs
+            or [
+                "--quiet",
+                "--cov=google.api_core",
+                "--cov=tests.unit",
+                "--cov-append",
+                "--cov-config=.coveragerc",
+                "--cov-report=",
+                "--cov-fail-under=0",
+                # Running individual tests with parallelism enabled is usually not helpful.
+                "-n=auto",
+                os.path.join("tests", "unit"),
+            ]
+        ),
     ]
-    pytest_args.extend(session.posargs)
 
     # Inject AsyncIO content and proto-plus, if version >= 3.6.
     # proto-plus is needed for a field mask test in test_protobuf_helpers.py
     if _greater_or_equal_than_36(session.python):
         session.install("asyncmock", "pytest-asyncio", "proto-plus")
 
-        pytest_args.append("--cov=tests.asyncio")
-        pytest_args.append(os.path.join("tests", "asyncio"))
-        session.run(*pytest_args)
-    else:
-        # Run py.test against the unit tests.
-        session.run(*pytest_args)
+        # Having positional arguments means the user wants to run specific tests.
+        # Best not to add additional tests to that list.
+        if not session.posargs:
+            pytest_args.append("--cov=tests.asyncio")
+            pytest_args.append(os.path.join("tests", "asyncio"))
+
+    session.run(*pytest_args)
 
 
 @nox.session(python=["3.6", "3.7", "3.8", "3.9", "3.10"])
@@ -171,7 +179,11 @@ def mypy(session):
     """Run type-checking."""
     session.install(".[grpc, grpcgcp]", "mypy")
     session.install(
-        "types-setuptools", "types-requests", "types-protobuf", "types-mock"
+        "types-setuptools",
+        "types-requests",
+        "types-protobuf",
+        "types-mock",
+        "types-dataclasses",
     )
     session.run("mypy", "google", "tests")
 
