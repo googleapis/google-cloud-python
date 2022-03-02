@@ -28,7 +28,7 @@ description = "Google BigQuery API client library"
 # 'Development Status :: 4 - Beta'
 # 'Development Status :: 5 - Production/Stable'
 release_status = "Development Status :: 5 - Production/Stable"
-pyarrow_dep = ["pyarrow >= 3.0.0, < 7.0dev"]
+pyarrow_dep = ["pyarrow >=3.0.0, <8.0dev"]
 dependencies = [
     "grpcio >= 1.38.1, < 2.0dev",  # https://github.com/googleapis/python-bigquery/issues/695
     # NOTE: Maintainers, please do not require google-api-core>=2.x.x
