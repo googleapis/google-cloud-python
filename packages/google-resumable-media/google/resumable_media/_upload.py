@@ -619,6 +619,7 @@ class ResumableUpload(UploadBase):
         self._update_checksum(start_byte, payload)
 
         headers = {
+            **self._headers,
             _CONTENT_TYPE_HEADER: self._content_type,
             _helpers.CONTENT_RANGE_HEADER: content_range,
         }
