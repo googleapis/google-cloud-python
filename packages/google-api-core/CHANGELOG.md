@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## [2.6.0](https://github.com/googleapis/python-api-core/compare/v2.5.0...v2.6.0) (2022-03-03)
+
+
+### Features
+
+* initial support for Extended Operations ([#344](https://github.com/googleapis/python-api-core/issues/344)) ([021bb7d](https://github.com/googleapis/python-api-core/commit/021bb7d5bf0a1d8ac58dbf0c738fac309135ba7d))
+
 ## [2.5.0](https://github.com/googleapis/python-api-core/compare/v2.4.0...v2.5.0) (2022-02-02)
 
 
