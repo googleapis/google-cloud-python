@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-resumable-media/#history
 
+### [2.3.1](https://github.com/googleapis/google-resumable-media-python/compare/v2.3.0...v2.3.1) (2022-03-03)
+
+
+### Bug Fixes
+
+* include existing headers in prepare request ([#309](https://github.com/googleapis/google-resumable-media-python/issues/309)) ([010680b](https://github.com/googleapis/google-resumable-media-python/commit/010680b942365bb8bcfd326015a3d99a9f0ec825))
+
 ## [2.3.0](https://github.com/googleapis/google-resumable-media-python/compare/v2.2.1...v2.3.0) (2022-02-11)
 
 
