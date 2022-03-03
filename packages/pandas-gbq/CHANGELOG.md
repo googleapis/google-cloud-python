@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.17.2](https://github.com/googleapis/python-bigquery-pandas/compare/v0.17.1...v0.17.2) (2022-03-02)
+
+
+### Dependencies
+
+* allow pyarrow 7.0 ([#487](https://github.com/googleapis/python-bigquery-pandas/issues/487)) ([39441b6](https://github.com/googleapis/python-bigquery-pandas/commit/39441b63fadd95810c535e7079d781e9eec72189))
+
 ### [0.17.1](https://github.com/googleapis/python-bigquery-pandas/compare/v0.17.0...v0.17.1) (2022-02-24)
 
 
