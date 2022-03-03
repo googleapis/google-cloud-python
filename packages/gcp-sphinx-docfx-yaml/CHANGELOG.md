@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.4.4](https://github.com/googleapis/sphinx-docfx-yaml/compare/v1.4.3...v1.4.4) (2022-03-03)
+
+
+### Bug Fixes
+
+* parse docstring that come without summaries ([#187](https://github.com/googleapis/sphinx-docfx-yaml/issues/187)) ([8282604](https://github.com/googleapis/sphinx-docfx-yaml/commit/8282604105893a8834cbee09cd9e0080340f31de))
+
 ### [1.4.3](https://github.com/googleapis/sphinx-docfx-yaml/compare/v1.4.2...v1.4.3) (2022-02-15)
 
 
