@@ -1674,8 +1674,9 @@ class ArtifactRegistryAsyncClient:
             request (Union[google.cloud.artifactregistry_v1beta2.types.ListFilesRequest, dict]):
                 The request object. The request to list files.
             parent (:class:`str`):
-                The name of the parent resource whose
-                files will be listed.
+                The name of the repository whose
+                files will be listed. For example:
+                "projects/p1/locations/us-central1/repositories/repo1
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this

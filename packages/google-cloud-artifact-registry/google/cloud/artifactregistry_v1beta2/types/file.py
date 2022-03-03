@@ -86,8 +86,9 @@ class ListFilesRequest(proto.Message):
 
     Attributes:
         parent (str):
-            The name of the parent resource whose files
-            will be listed.
+            The name of the repository whose files will
+            be listed. For example:
+            "projects/p1/locations/us-central1/repositories/repo1
         filter (str):
             An expression for filtering the results of the request.
             Filter rules are case insensitive. The fields eligible for
