@@ -582,8 +582,8 @@ def _extract_docstring_info(summary_info, summary, name):
     # if we found empty array for indexes, stop processing further.
     index = min(indexes) if indexes else 0
 
-    # Store the top summary separately.
-    if index == 0:
+    # Store the top summary separately. Ensure that the docstring is not empty.
+    if index == 0 and not indexes:
         return summary
 
     top_summary = parsed_text[:index]

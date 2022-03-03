@@ -431,6 +431,31 @@ Simple test for docstring.
         self.assertDictEqual(summary_info_got, summary_info_want)
 
 
+    def test_extract_docstring_info_no_summary(self):
+        ## Test parsing docstring with no summary.
+        summary =(
+"""Args:
+    arg1(int): simple description.
+    arg2(str): simple description for `arg2`.
+
+Returns:
+    str: simple description for return value.
+
+Raises:
+    AttributeError: if `condition x`.
+"""
+        )
+        summary_info_got = {
+            'variables': {},
+            'returns': [],
+            'exceptions': []
+        }
+
+        top_summary_got = _extract_docstring_info(summary_info_got, summary, "")
+        self.assertEqual(top_summary_got, "")
+        self.assertDictEqual(summary_info_got, self.summary_info1_want)
+
+
     def test_find_package_group(self):
         package_group_want = "google.cloud.spanner_v1beta2"
         uid = "google.cloud.spanner_v1beta2.services.admin_database_v1.types"
