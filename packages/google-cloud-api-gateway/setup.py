@@ -28,8 +28,8 @@ dependencies = [
     # NOTE: Maintainers, please do not require google-api-core>=2.x.x
     # Until this issue is closed
     # https://github.com/googleapis/google-cloud-python/issues/10566
-    "google-api-core[grpc] >= 1.28.0, <3.0.0dev",
-    "proto-plus >= 1.4.0",
+    "google-api-core[grpc] >= 1.31.5, <3.0.0dev,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.0",
+    "proto-plus >= 1.15.0",
 ]
 
 package_root = os.path.abspath(os.path.dirname(__file__))
