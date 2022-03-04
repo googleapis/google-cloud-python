@@ -5119,3644 +5119,6 @@ async def test_batch_delete_user_links_field_headers_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [analytics_admin.GetWebDataStreamRequest, dict,]
-)
-def test_get_web_data_stream(request_type, transport: str = "grpc"):
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_web_data_stream), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = resources.WebDataStream(
-            name="name_value",
-            measurement_id="measurement_id_value",
-            firebase_app_id="firebase_app_id_value",
-            default_uri="default_uri_value",
-            display_name="display_name_value",
-        )
-        response = client.get_web_data_stream(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.GetWebDataStreamRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, resources.WebDataStream)
-    assert response.name == "name_value"
-    assert response.measurement_id == "measurement_id_value"
-    assert response.firebase_app_id == "firebase_app_id_value"
-    assert response.default_uri == "default_uri_value"
-    assert response.display_name == "display_name_value"
-
-
-def test_get_web_data_stream_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_web_data_stream), "__call__"
-    ) as call:
-        client.get_web_data_stream()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.GetWebDataStreamRequest()
-
-
-@pytest.mark.asyncio
-async def test_get_web_data_stream_async(
-    transport: str = "grpc_asyncio",
-    request_type=analytics_admin.GetWebDataStreamRequest,
-):
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_web_data_stream), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            resources.WebDataStream(
-                name="name_value",
-                measurement_id="measurement_id_value",
-                firebase_app_id="firebase_app_id_value",
-                default_uri="default_uri_value",
-                display_name="display_name_value",
-            )
-        )
-        response = await client.get_web_data_stream(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.GetWebDataStreamRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, resources.WebDataStream)
-    assert response.name == "name_value"
-    assert response.measurement_id == "measurement_id_value"
-    assert response.firebase_app_id == "firebase_app_id_value"
-    assert response.default_uri == "default_uri_value"
-    assert response.display_name == "display_name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_web_data_stream_async_from_dict():
-    await test_get_web_data_stream_async(request_type=dict)
-
-
-def test_get_web_data_stream_field_headers():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = analytics_admin.GetWebDataStreamRequest()
-
-    request.name = "name/value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_web_data_stream), "__call__"
-    ) as call:
-        call.return_value = resources.WebDataStream()
-        client.get_web_data_stream(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_get_web_data_stream_field_headers_async():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = analytics_admin.GetWebDataStreamRequest()
-
-    request.name = "name/value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_web_data_stream), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            resources.WebDataStream()
-        )
-        await client.get_web_data_stream(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
-
-
-def test_get_web_data_stream_flattened():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_web_data_stream), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = resources.WebDataStream()
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.get_web_data_stream(name="name_value",)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].name
-        mock_val = "name_value"
-        assert arg == mock_val
-
-
-def test_get_web_data_stream_flattened_error():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.get_web_data_stream(
-            analytics_admin.GetWebDataStreamRequest(), name="name_value",
-        )
-
-
-@pytest.mark.asyncio
-async def test_get_web_data_stream_flattened_async():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_web_data_stream), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = resources.WebDataStream()
-
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            resources.WebDataStream()
-        )
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        response = await client.get_web_data_stream(name="name_value",)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].name
-        mock_val = "name_value"
-        assert arg == mock_val
-
-
-@pytest.mark.asyncio
-async def test_get_web_data_stream_flattened_error_async():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        await client.get_web_data_stream(
-            analytics_admin.GetWebDataStreamRequest(), name="name_value",
-        )
-
-
-@pytest.mark.parametrize(
-    "request_type", [analytics_admin.DeleteWebDataStreamRequest, dict,]
-)
-def test_delete_web_data_stream(request_type, transport: str = "grpc"):
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_web_data_stream), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = None
-        response = client.delete_web_data_stream(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.DeleteWebDataStreamRequest()
-
-    # Establish that the response is the type that we expect.
-    assert response is None
-
-
-def test_delete_web_data_stream_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_web_data_stream), "__call__"
-    ) as call:
-        client.delete_web_data_stream()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.DeleteWebDataStreamRequest()
-
-
-@pytest.mark.asyncio
-async def test_delete_web_data_stream_async(
-    transport: str = "grpc_asyncio",
-    request_type=analytics_admin.DeleteWebDataStreamRequest,
-):
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_web_data_stream), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.delete_web_data_stream(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.DeleteWebDataStreamRequest()
-
-    # Establish that the response is the type that we expect.
-    assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_web_data_stream_async_from_dict():
-    await test_delete_web_data_stream_async(request_type=dict)
-
-
-def test_delete_web_data_stream_field_headers():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = analytics_admin.DeleteWebDataStreamRequest()
-
-    request.name = "name/value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_web_data_stream), "__call__"
-    ) as call:
-        call.return_value = None
-        client.delete_web_data_stream(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_delete_web_data_stream_field_headers_async():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = analytics_admin.DeleteWebDataStreamRequest()
-
-    request.name = "name/value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_web_data_stream), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        await client.delete_web_data_stream(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
-
-
-def test_delete_web_data_stream_flattened():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_web_data_stream), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = None
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.delete_web_data_stream(name="name_value",)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].name
-        mock_val = "name_value"
-        assert arg == mock_val
-
-
-def test_delete_web_data_stream_flattened_error():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.delete_web_data_stream(
-            analytics_admin.DeleteWebDataStreamRequest(), name="name_value",
-        )
-
-
-@pytest.mark.asyncio
-async def test_delete_web_data_stream_flattened_async():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_web_data_stream), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = None
-
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        response = await client.delete_web_data_stream(name="name_value",)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].name
-        mock_val = "name_value"
-        assert arg == mock_val
-
-
-@pytest.mark.asyncio
-async def test_delete_web_data_stream_flattened_error_async():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        await client.delete_web_data_stream(
-            analytics_admin.DeleteWebDataStreamRequest(), name="name_value",
-        )
-
-
-@pytest.mark.parametrize(
-    "request_type", [analytics_admin.UpdateWebDataStreamRequest, dict,]
-)
-def test_update_web_data_stream(request_type, transport: str = "grpc"):
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_web_data_stream), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = resources.WebDataStream(
-            name="name_value",
-            measurement_id="measurement_id_value",
-            firebase_app_id="firebase_app_id_value",
-            default_uri="default_uri_value",
-            display_name="display_name_value",
-        )
-        response = client.update_web_data_stream(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.UpdateWebDataStreamRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, resources.WebDataStream)
-    assert response.name == "name_value"
-    assert response.measurement_id == "measurement_id_value"
-    assert response.firebase_app_id == "firebase_app_id_value"
-    assert response.default_uri == "default_uri_value"
-    assert response.display_name == "display_name_value"
-
-
-def test_update_web_data_stream_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_web_data_stream), "__call__"
-    ) as call:
-        client.update_web_data_stream()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.UpdateWebDataStreamRequest()
-
-
-@pytest.mark.asyncio
-async def test_update_web_data_stream_async(
-    transport: str = "grpc_asyncio",
-    request_type=analytics_admin.UpdateWebDataStreamRequest,
-):
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_web_data_stream), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            resources.WebDataStream(
-                name="name_value",
-                measurement_id="measurement_id_value",
-                firebase_app_id="firebase_app_id_value",
-                default_uri="default_uri_value",
-                display_name="display_name_value",
-            )
-        )
-        response = await client.update_web_data_stream(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.UpdateWebDataStreamRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, resources.WebDataStream)
-    assert response.name == "name_value"
-    assert response.measurement_id == "measurement_id_value"
-    assert response.firebase_app_id == "firebase_app_id_value"
-    assert response.default_uri == "default_uri_value"
-    assert response.display_name == "display_name_value"
-
-
-@pytest.mark.asyncio
-async def test_update_web_data_stream_async_from_dict():
-    await test_update_web_data_stream_async(request_type=dict)
-
-
-def test_update_web_data_stream_field_headers():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = analytics_admin.UpdateWebDataStreamRequest()
-
-    request.web_data_stream.name = "web_data_stream.name/value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_web_data_stream), "__call__"
-    ) as call:
-        call.return_value = resources.WebDataStream()
-        client.update_web_data_stream(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "web_data_stream.name=web_data_stream.name/value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_update_web_data_stream_field_headers_async():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = analytics_admin.UpdateWebDataStreamRequest()
-
-    request.web_data_stream.name = "web_data_stream.name/value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_web_data_stream), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            resources.WebDataStream()
-        )
-        await client.update_web_data_stream(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "web_data_stream.name=web_data_stream.name/value",
-    ) in kw["metadata"]
-
-
-def test_update_web_data_stream_flattened():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_web_data_stream), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = resources.WebDataStream()
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.update_web_data_stream(
-            web_data_stream=resources.WebDataStream(name="name_value"),
-            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].web_data_stream
-        mock_val = resources.WebDataStream(name="name_value")
-        assert arg == mock_val
-        arg = args[0].update_mask
-        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
-        assert arg == mock_val
-
-
-def test_update_web_data_stream_flattened_error():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.update_web_data_stream(
-            analytics_admin.UpdateWebDataStreamRequest(),
-            web_data_stream=resources.WebDataStream(name="name_value"),
-            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
-        )
-
-
-@pytest.mark.asyncio
-async def test_update_web_data_stream_flattened_async():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_web_data_stream), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = resources.WebDataStream()
-
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            resources.WebDataStream()
-        )
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        response = await client.update_web_data_stream(
-            web_data_stream=resources.WebDataStream(name="name_value"),
-            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].web_data_stream
-        mock_val = resources.WebDataStream(name="name_value")
-        assert arg == mock_val
-        arg = args[0].update_mask
-        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
-        assert arg == mock_val
-
-
-@pytest.mark.asyncio
-async def test_update_web_data_stream_flattened_error_async():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        await client.update_web_data_stream(
-            analytics_admin.UpdateWebDataStreamRequest(),
-            web_data_stream=resources.WebDataStream(name="name_value"),
-            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
-        )
-
-
-@pytest.mark.parametrize(
-    "request_type", [analytics_admin.CreateWebDataStreamRequest, dict,]
-)
-def test_create_web_data_stream(request_type, transport: str = "grpc"):
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_web_data_stream), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = resources.WebDataStream(
-            name="name_value",
-            measurement_id="measurement_id_value",
-            firebase_app_id="firebase_app_id_value",
-            default_uri="default_uri_value",
-            display_name="display_name_value",
-        )
-        response = client.create_web_data_stream(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.CreateWebDataStreamRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, resources.WebDataStream)
-    assert response.name == "name_value"
-    assert response.measurement_id == "measurement_id_value"
-    assert response.firebase_app_id == "firebase_app_id_value"
-    assert response.default_uri == "default_uri_value"
-    assert response.display_name == "display_name_value"
-
-
-def test_create_web_data_stream_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_web_data_stream), "__call__"
-    ) as call:
-        client.create_web_data_stream()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.CreateWebDataStreamRequest()
-
-
-@pytest.mark.asyncio
-async def test_create_web_data_stream_async(
-    transport: str = "grpc_asyncio",
-    request_type=analytics_admin.CreateWebDataStreamRequest,
-):
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_web_data_stream), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            resources.WebDataStream(
-                name="name_value",
-                measurement_id="measurement_id_value",
-                firebase_app_id="firebase_app_id_value",
-                default_uri="default_uri_value",
-                display_name="display_name_value",
-            )
-        )
-        response = await client.create_web_data_stream(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.CreateWebDataStreamRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, resources.WebDataStream)
-    assert response.name == "name_value"
-    assert response.measurement_id == "measurement_id_value"
-    assert response.firebase_app_id == "firebase_app_id_value"
-    assert response.default_uri == "default_uri_value"
-    assert response.display_name == "display_name_value"
-
-
-@pytest.mark.asyncio
-async def test_create_web_data_stream_async_from_dict():
-    await test_create_web_data_stream_async(request_type=dict)
-
-
-def test_create_web_data_stream_field_headers():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = analytics_admin.CreateWebDataStreamRequest()
-
-    request.parent = "parent/value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_web_data_stream), "__call__"
-    ) as call:
-        call.return_value = resources.WebDataStream()
-        client.create_web_data_stream(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_create_web_data_stream_field_headers_async():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = analytics_admin.CreateWebDataStreamRequest()
-
-    request.parent = "parent/value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_web_data_stream), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            resources.WebDataStream()
-        )
-        await client.create_web_data_stream(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
-
-
-def test_create_web_data_stream_flattened():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_web_data_stream), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = resources.WebDataStream()
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.create_web_data_stream(
-            parent="parent_value",
-            web_data_stream=resources.WebDataStream(name="name_value"),
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].parent
-        mock_val = "parent_value"
-        assert arg == mock_val
-        arg = args[0].web_data_stream
-        mock_val = resources.WebDataStream(name="name_value")
-        assert arg == mock_val
-
-
-def test_create_web_data_stream_flattened_error():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.create_web_data_stream(
-            analytics_admin.CreateWebDataStreamRequest(),
-            parent="parent_value",
-            web_data_stream=resources.WebDataStream(name="name_value"),
-        )
-
-
-@pytest.mark.asyncio
-async def test_create_web_data_stream_flattened_async():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_web_data_stream), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = resources.WebDataStream()
-
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            resources.WebDataStream()
-        )
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        response = await client.create_web_data_stream(
-            parent="parent_value",
-            web_data_stream=resources.WebDataStream(name="name_value"),
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].parent
-        mock_val = "parent_value"
-        assert arg == mock_val
-        arg = args[0].web_data_stream
-        mock_val = resources.WebDataStream(name="name_value")
-        assert arg == mock_val
-
-
-@pytest.mark.asyncio
-async def test_create_web_data_stream_flattened_error_async():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        await client.create_web_data_stream(
-            analytics_admin.CreateWebDataStreamRequest(),
-            parent="parent_value",
-            web_data_stream=resources.WebDataStream(name="name_value"),
-        )
-
-
-@pytest.mark.parametrize(
-    "request_type", [analytics_admin.ListWebDataStreamsRequest, dict,]
-)
-def test_list_web_data_streams(request_type, transport: str = "grpc"):
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_web_data_streams), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = analytics_admin.ListWebDataStreamsResponse(
-            next_page_token="next_page_token_value",
-        )
-        response = client.list_web_data_streams(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.ListWebDataStreamsRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListWebDataStreamsPager)
-    assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_web_data_streams_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_web_data_streams), "__call__"
-    ) as call:
-        client.list_web_data_streams()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.ListWebDataStreamsRequest()
-
-
-@pytest.mark.asyncio
-async def test_list_web_data_streams_async(
-    transport: str = "grpc_asyncio",
-    request_type=analytics_admin.ListWebDataStreamsRequest,
-):
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_web_data_streams), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            analytics_admin.ListWebDataStreamsResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_web_data_streams(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.ListWebDataStreamsRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListWebDataStreamsAsyncPager)
-    assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_web_data_streams_async_from_dict():
-    await test_list_web_data_streams_async(request_type=dict)
-
-
-def test_list_web_data_streams_field_headers():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = analytics_admin.ListWebDataStreamsRequest()
-
-    request.parent = "parent/value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_web_data_streams), "__call__"
-    ) as call:
-        call.return_value = analytics_admin.ListWebDataStreamsResponse()
-        client.list_web_data_streams(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_list_web_data_streams_field_headers_async():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = analytics_admin.ListWebDataStreamsRequest()
-
-    request.parent = "parent/value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_web_data_streams), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            analytics_admin.ListWebDataStreamsResponse()
-        )
-        await client.list_web_data_streams(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
-
-
-def test_list_web_data_streams_flattened():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_web_data_streams), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = analytics_admin.ListWebDataStreamsResponse()
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.list_web_data_streams(parent="parent_value",)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].parent
-        mock_val = "parent_value"
-        assert arg == mock_val
-
-
-def test_list_web_data_streams_flattened_error():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.list_web_data_streams(
-            analytics_admin.ListWebDataStreamsRequest(), parent="parent_value",
-        )
-
-
-@pytest.mark.asyncio
-async def test_list_web_data_streams_flattened_async():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_web_data_streams), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = analytics_admin.ListWebDataStreamsResponse()
-
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            analytics_admin.ListWebDataStreamsResponse()
-        )
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        response = await client.list_web_data_streams(parent="parent_value",)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].parent
-        mock_val = "parent_value"
-        assert arg == mock_val
-
-
-@pytest.mark.asyncio
-async def test_list_web_data_streams_flattened_error_async():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        await client.list_web_data_streams(
-            analytics_admin.ListWebDataStreamsRequest(), parent="parent_value",
-        )
-
-
-def test_list_web_data_streams_pager(transport_name: str = "grpc"):
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_web_data_streams), "__call__"
-    ) as call:
-        # Set the response to a series of pages.
-        call.side_effect = (
-            analytics_admin.ListWebDataStreamsResponse(
-                web_data_streams=[
-                    resources.WebDataStream(),
-                    resources.WebDataStream(),
-                    resources.WebDataStream(),
-                ],
-                next_page_token="abc",
-            ),
-            analytics_admin.ListWebDataStreamsResponse(
-                web_data_streams=[], next_page_token="def",
-            ),
-            analytics_admin.ListWebDataStreamsResponse(
-                web_data_streams=[resources.WebDataStream(),], next_page_token="ghi",
-            ),
-            analytics_admin.ListWebDataStreamsResponse(
-                web_data_streams=[
-                    resources.WebDataStream(),
-                    resources.WebDataStream(),
-                ],
-            ),
-            RuntimeError,
-        )
-
-        metadata = ()
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
-        )
-        pager = client.list_web_data_streams(request={})
-
-        assert pager._metadata == metadata
-
-        results = [i for i in pager]
-        assert len(results) == 6
-        assert all(isinstance(i, resources.WebDataStream) for i in results)
-
-
-def test_list_web_data_streams_pages(transport_name: str = "grpc"):
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_web_data_streams), "__call__"
-    ) as call:
-        # Set the response to a series of pages.
-        call.side_effect = (
-            analytics_admin.ListWebDataStreamsResponse(
-                web_data_streams=[
-                    resources.WebDataStream(),
-                    resources.WebDataStream(),
-                    resources.WebDataStream(),
-                ],
-                next_page_token="abc",
-            ),
-            analytics_admin.ListWebDataStreamsResponse(
-                web_data_streams=[], next_page_token="def",
-            ),
-            analytics_admin.ListWebDataStreamsResponse(
-                web_data_streams=[resources.WebDataStream(),], next_page_token="ghi",
-            ),
-            analytics_admin.ListWebDataStreamsResponse(
-                web_data_streams=[
-                    resources.WebDataStream(),
-                    resources.WebDataStream(),
-                ],
-            ),
-            RuntimeError,
-        )
-        pages = list(client.list_web_data_streams(request={}).pages)
-        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.asyncio
-async def test_list_web_data_streams_async_pager():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_web_data_streams),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
-        # Set the response to a series of pages.
-        call.side_effect = (
-            analytics_admin.ListWebDataStreamsResponse(
-                web_data_streams=[
-                    resources.WebDataStream(),
-                    resources.WebDataStream(),
-                    resources.WebDataStream(),
-                ],
-                next_page_token="abc",
-            ),
-            analytics_admin.ListWebDataStreamsResponse(
-                web_data_streams=[], next_page_token="def",
-            ),
-            analytics_admin.ListWebDataStreamsResponse(
-                web_data_streams=[resources.WebDataStream(),], next_page_token="ghi",
-            ),
-            analytics_admin.ListWebDataStreamsResponse(
-                web_data_streams=[
-                    resources.WebDataStream(),
-                    resources.WebDataStream(),
-                ],
-            ),
-            RuntimeError,
-        )
-        async_pager = await client.list_web_data_streams(request={},)
-        assert async_pager.next_page_token == "abc"
-        responses = []
-        async for response in async_pager:
-            responses.append(response)
-
-        assert len(responses) == 6
-        assert all(isinstance(i, resources.WebDataStream) for i in responses)
-
-
-@pytest.mark.asyncio
-async def test_list_web_data_streams_async_pages():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_web_data_streams),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
-        # Set the response to a series of pages.
-        call.side_effect = (
-            analytics_admin.ListWebDataStreamsResponse(
-                web_data_streams=[
-                    resources.WebDataStream(),
-                    resources.WebDataStream(),
-                    resources.WebDataStream(),
-                ],
-                next_page_token="abc",
-            ),
-            analytics_admin.ListWebDataStreamsResponse(
-                web_data_streams=[], next_page_token="def",
-            ),
-            analytics_admin.ListWebDataStreamsResponse(
-                web_data_streams=[resources.WebDataStream(),], next_page_token="ghi",
-            ),
-            analytics_admin.ListWebDataStreamsResponse(
-                web_data_streams=[
-                    resources.WebDataStream(),
-                    resources.WebDataStream(),
-                ],
-            ),
-            RuntimeError,
-        )
-        pages = []
-        async for page_ in (await client.list_web_data_streams(request={})).pages:
-            pages.append(page_)
-        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type", [analytics_admin.GetIosAppDataStreamRequest, dict,]
-)
-def test_get_ios_app_data_stream(request_type, transport: str = "grpc"):
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_ios_app_data_stream), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = resources.IosAppDataStream(
-            name="name_value",
-            firebase_app_id="firebase_app_id_value",
-            bundle_id="bundle_id_value",
-            display_name="display_name_value",
-        )
-        response = client.get_ios_app_data_stream(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.GetIosAppDataStreamRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, resources.IosAppDataStream)
-    assert response.name == "name_value"
-    assert response.firebase_app_id == "firebase_app_id_value"
-    assert response.bundle_id == "bundle_id_value"
-    assert response.display_name == "display_name_value"
-
-
-def test_get_ios_app_data_stream_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_ios_app_data_stream), "__call__"
-    ) as call:
-        client.get_ios_app_data_stream()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.GetIosAppDataStreamRequest()
-
-
-@pytest.mark.asyncio
-async def test_get_ios_app_data_stream_async(
-    transport: str = "grpc_asyncio",
-    request_type=analytics_admin.GetIosAppDataStreamRequest,
-):
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_ios_app_data_stream), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            resources.IosAppDataStream(
-                name="name_value",
-                firebase_app_id="firebase_app_id_value",
-                bundle_id="bundle_id_value",
-                display_name="display_name_value",
-            )
-        )
-        response = await client.get_ios_app_data_stream(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.GetIosAppDataStreamRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, resources.IosAppDataStream)
-    assert response.name == "name_value"
-    assert response.firebase_app_id == "firebase_app_id_value"
-    assert response.bundle_id == "bundle_id_value"
-    assert response.display_name == "display_name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_ios_app_data_stream_async_from_dict():
-    await test_get_ios_app_data_stream_async(request_type=dict)
-
-
-def test_get_ios_app_data_stream_field_headers():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = analytics_admin.GetIosAppDataStreamRequest()
-
-    request.name = "name/value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_ios_app_data_stream), "__call__"
-    ) as call:
-        call.return_value = resources.IosAppDataStream()
-        client.get_ios_app_data_stream(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_get_ios_app_data_stream_field_headers_async():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = analytics_admin.GetIosAppDataStreamRequest()
-
-    request.name = "name/value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_ios_app_data_stream), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            resources.IosAppDataStream()
-        )
-        await client.get_ios_app_data_stream(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
-
-
-def test_get_ios_app_data_stream_flattened():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_ios_app_data_stream), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = resources.IosAppDataStream()
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.get_ios_app_data_stream(name="name_value",)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].name
-        mock_val = "name_value"
-        assert arg == mock_val
-
-
-def test_get_ios_app_data_stream_flattened_error():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.get_ios_app_data_stream(
-            analytics_admin.GetIosAppDataStreamRequest(), name="name_value",
-        )
-
-
-@pytest.mark.asyncio
-async def test_get_ios_app_data_stream_flattened_async():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_ios_app_data_stream), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = resources.IosAppDataStream()
-
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            resources.IosAppDataStream()
-        )
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        response = await client.get_ios_app_data_stream(name="name_value",)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].name
-        mock_val = "name_value"
-        assert arg == mock_val
-
-
-@pytest.mark.asyncio
-async def test_get_ios_app_data_stream_flattened_error_async():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        await client.get_ios_app_data_stream(
-            analytics_admin.GetIosAppDataStreamRequest(), name="name_value",
-        )
-
-
-@pytest.mark.parametrize(
-    "request_type", [analytics_admin.DeleteIosAppDataStreamRequest, dict,]
-)
-def test_delete_ios_app_data_stream(request_type, transport: str = "grpc"):
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_ios_app_data_stream), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = None
-        response = client.delete_ios_app_data_stream(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.DeleteIosAppDataStreamRequest()
-
-    # Establish that the response is the type that we expect.
-    assert response is None
-
-
-def test_delete_ios_app_data_stream_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_ios_app_data_stream), "__call__"
-    ) as call:
-        client.delete_ios_app_data_stream()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.DeleteIosAppDataStreamRequest()
-
-
-@pytest.mark.asyncio
-async def test_delete_ios_app_data_stream_async(
-    transport: str = "grpc_asyncio",
-    request_type=analytics_admin.DeleteIosAppDataStreamRequest,
-):
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_ios_app_data_stream), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.delete_ios_app_data_stream(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.DeleteIosAppDataStreamRequest()
-
-    # Establish that the response is the type that we expect.
-    assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_ios_app_data_stream_async_from_dict():
-    await test_delete_ios_app_data_stream_async(request_type=dict)
-
-
-def test_delete_ios_app_data_stream_field_headers():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = analytics_admin.DeleteIosAppDataStreamRequest()
-
-    request.name = "name/value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_ios_app_data_stream), "__call__"
-    ) as call:
-        call.return_value = None
-        client.delete_ios_app_data_stream(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_delete_ios_app_data_stream_field_headers_async():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = analytics_admin.DeleteIosAppDataStreamRequest()
-
-    request.name = "name/value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_ios_app_data_stream), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        await client.delete_ios_app_data_stream(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
-
-
-def test_delete_ios_app_data_stream_flattened():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_ios_app_data_stream), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = None
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.delete_ios_app_data_stream(name="name_value",)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].name
-        mock_val = "name_value"
-        assert arg == mock_val
-
-
-def test_delete_ios_app_data_stream_flattened_error():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.delete_ios_app_data_stream(
-            analytics_admin.DeleteIosAppDataStreamRequest(), name="name_value",
-        )
-
-
-@pytest.mark.asyncio
-async def test_delete_ios_app_data_stream_flattened_async():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_ios_app_data_stream), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = None
-
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        response = await client.delete_ios_app_data_stream(name="name_value",)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].name
-        mock_val = "name_value"
-        assert arg == mock_val
-
-
-@pytest.mark.asyncio
-async def test_delete_ios_app_data_stream_flattened_error_async():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        await client.delete_ios_app_data_stream(
-            analytics_admin.DeleteIosAppDataStreamRequest(), name="name_value",
-        )
-
-
-@pytest.mark.parametrize(
-    "request_type", [analytics_admin.UpdateIosAppDataStreamRequest, dict,]
-)
-def test_update_ios_app_data_stream(request_type, transport: str = "grpc"):
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_ios_app_data_stream), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = resources.IosAppDataStream(
-            name="name_value",
-            firebase_app_id="firebase_app_id_value",
-            bundle_id="bundle_id_value",
-            display_name="display_name_value",
-        )
-        response = client.update_ios_app_data_stream(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.UpdateIosAppDataStreamRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, resources.IosAppDataStream)
-    assert response.name == "name_value"
-    assert response.firebase_app_id == "firebase_app_id_value"
-    assert response.bundle_id == "bundle_id_value"
-    assert response.display_name == "display_name_value"
-
-
-def test_update_ios_app_data_stream_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_ios_app_data_stream), "__call__"
-    ) as call:
-        client.update_ios_app_data_stream()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.UpdateIosAppDataStreamRequest()
-
-
-@pytest.mark.asyncio
-async def test_update_ios_app_data_stream_async(
-    transport: str = "grpc_asyncio",
-    request_type=analytics_admin.UpdateIosAppDataStreamRequest,
-):
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_ios_app_data_stream), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            resources.IosAppDataStream(
-                name="name_value",
-                firebase_app_id="firebase_app_id_value",
-                bundle_id="bundle_id_value",
-                display_name="display_name_value",
-            )
-        )
-        response = await client.update_ios_app_data_stream(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.UpdateIosAppDataStreamRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, resources.IosAppDataStream)
-    assert response.name == "name_value"
-    assert response.firebase_app_id == "firebase_app_id_value"
-    assert response.bundle_id == "bundle_id_value"
-    assert response.display_name == "display_name_value"
-
-
-@pytest.mark.asyncio
-async def test_update_ios_app_data_stream_async_from_dict():
-    await test_update_ios_app_data_stream_async(request_type=dict)
-
-
-def test_update_ios_app_data_stream_field_headers():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = analytics_admin.UpdateIosAppDataStreamRequest()
-
-    request.ios_app_data_stream.name = "ios_app_data_stream.name/value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_ios_app_data_stream), "__call__"
-    ) as call:
-        call.return_value = resources.IosAppDataStream()
-        client.update_ios_app_data_stream(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "ios_app_data_stream.name=ios_app_data_stream.name/value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_update_ios_app_data_stream_field_headers_async():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = analytics_admin.UpdateIosAppDataStreamRequest()
-
-    request.ios_app_data_stream.name = "ios_app_data_stream.name/value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_ios_app_data_stream), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            resources.IosAppDataStream()
-        )
-        await client.update_ios_app_data_stream(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "ios_app_data_stream.name=ios_app_data_stream.name/value",
-    ) in kw["metadata"]
-
-
-def test_update_ios_app_data_stream_flattened():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_ios_app_data_stream), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = resources.IosAppDataStream()
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.update_ios_app_data_stream(
-            ios_app_data_stream=resources.IosAppDataStream(name="name_value"),
-            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].ios_app_data_stream
-        mock_val = resources.IosAppDataStream(name="name_value")
-        assert arg == mock_val
-        arg = args[0].update_mask
-        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
-        assert arg == mock_val
-
-
-def test_update_ios_app_data_stream_flattened_error():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.update_ios_app_data_stream(
-            analytics_admin.UpdateIosAppDataStreamRequest(),
-            ios_app_data_stream=resources.IosAppDataStream(name="name_value"),
-            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
-        )
-
-
-@pytest.mark.asyncio
-async def test_update_ios_app_data_stream_flattened_async():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_ios_app_data_stream), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = resources.IosAppDataStream()
-
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            resources.IosAppDataStream()
-        )
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        response = await client.update_ios_app_data_stream(
-            ios_app_data_stream=resources.IosAppDataStream(name="name_value"),
-            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].ios_app_data_stream
-        mock_val = resources.IosAppDataStream(name="name_value")
-        assert arg == mock_val
-        arg = args[0].update_mask
-        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
-        assert arg == mock_val
-
-
-@pytest.mark.asyncio
-async def test_update_ios_app_data_stream_flattened_error_async():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        await client.update_ios_app_data_stream(
-            analytics_admin.UpdateIosAppDataStreamRequest(),
-            ios_app_data_stream=resources.IosAppDataStream(name="name_value"),
-            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
-        )
-
-
-@pytest.mark.parametrize(
-    "request_type", [analytics_admin.ListIosAppDataStreamsRequest, dict,]
-)
-def test_list_ios_app_data_streams(request_type, transport: str = "grpc"):
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_ios_app_data_streams), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = analytics_admin.ListIosAppDataStreamsResponse(
-            next_page_token="next_page_token_value",
-        )
-        response = client.list_ios_app_data_streams(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.ListIosAppDataStreamsRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListIosAppDataStreamsPager)
-    assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_ios_app_data_streams_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_ios_app_data_streams), "__call__"
-    ) as call:
-        client.list_ios_app_data_streams()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.ListIosAppDataStreamsRequest()
-
-
-@pytest.mark.asyncio
-async def test_list_ios_app_data_streams_async(
-    transport: str = "grpc_asyncio",
-    request_type=analytics_admin.ListIosAppDataStreamsRequest,
-):
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_ios_app_data_streams), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            analytics_admin.ListIosAppDataStreamsResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_ios_app_data_streams(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.ListIosAppDataStreamsRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListIosAppDataStreamsAsyncPager)
-    assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_ios_app_data_streams_async_from_dict():
-    await test_list_ios_app_data_streams_async(request_type=dict)
-
-
-def test_list_ios_app_data_streams_field_headers():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = analytics_admin.ListIosAppDataStreamsRequest()
-
-    request.parent = "parent/value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_ios_app_data_streams), "__call__"
-    ) as call:
-        call.return_value = analytics_admin.ListIosAppDataStreamsResponse()
-        client.list_ios_app_data_streams(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_list_ios_app_data_streams_field_headers_async():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = analytics_admin.ListIosAppDataStreamsRequest()
-
-    request.parent = "parent/value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_ios_app_data_streams), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            analytics_admin.ListIosAppDataStreamsResponse()
-        )
-        await client.list_ios_app_data_streams(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
-
-
-def test_list_ios_app_data_streams_flattened():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_ios_app_data_streams), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = analytics_admin.ListIosAppDataStreamsResponse()
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.list_ios_app_data_streams(parent="parent_value",)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].parent
-        mock_val = "parent_value"
-        assert arg == mock_val
-
-
-def test_list_ios_app_data_streams_flattened_error():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.list_ios_app_data_streams(
-            analytics_admin.ListIosAppDataStreamsRequest(), parent="parent_value",
-        )
-
-
-@pytest.mark.asyncio
-async def test_list_ios_app_data_streams_flattened_async():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_ios_app_data_streams), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = analytics_admin.ListIosAppDataStreamsResponse()
-
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            analytics_admin.ListIosAppDataStreamsResponse()
-        )
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        response = await client.list_ios_app_data_streams(parent="parent_value",)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].parent
-        mock_val = "parent_value"
-        assert arg == mock_val
-
-
-@pytest.mark.asyncio
-async def test_list_ios_app_data_streams_flattened_error_async():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        await client.list_ios_app_data_streams(
-            analytics_admin.ListIosAppDataStreamsRequest(), parent="parent_value",
-        )
-
-
-def test_list_ios_app_data_streams_pager(transport_name: str = "grpc"):
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_ios_app_data_streams), "__call__"
-    ) as call:
-        # Set the response to a series of pages.
-        call.side_effect = (
-            analytics_admin.ListIosAppDataStreamsResponse(
-                ios_app_data_streams=[
-                    resources.IosAppDataStream(),
-                    resources.IosAppDataStream(),
-                    resources.IosAppDataStream(),
-                ],
-                next_page_token="abc",
-            ),
-            analytics_admin.ListIosAppDataStreamsResponse(
-                ios_app_data_streams=[], next_page_token="def",
-            ),
-            analytics_admin.ListIosAppDataStreamsResponse(
-                ios_app_data_streams=[resources.IosAppDataStream(),],
-                next_page_token="ghi",
-            ),
-            analytics_admin.ListIosAppDataStreamsResponse(
-                ios_app_data_streams=[
-                    resources.IosAppDataStream(),
-                    resources.IosAppDataStream(),
-                ],
-            ),
-            RuntimeError,
-        )
-
-        metadata = ()
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
-        )
-        pager = client.list_ios_app_data_streams(request={})
-
-        assert pager._metadata == metadata
-
-        results = [i for i in pager]
-        assert len(results) == 6
-        assert all(isinstance(i, resources.IosAppDataStream) for i in results)
-
-
-def test_list_ios_app_data_streams_pages(transport_name: str = "grpc"):
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_ios_app_data_streams), "__call__"
-    ) as call:
-        # Set the response to a series of pages.
-        call.side_effect = (
-            analytics_admin.ListIosAppDataStreamsResponse(
-                ios_app_data_streams=[
-                    resources.IosAppDataStream(),
-                    resources.IosAppDataStream(),
-                    resources.IosAppDataStream(),
-                ],
-                next_page_token="abc",
-            ),
-            analytics_admin.ListIosAppDataStreamsResponse(
-                ios_app_data_streams=[], next_page_token="def",
-            ),
-            analytics_admin.ListIosAppDataStreamsResponse(
-                ios_app_data_streams=[resources.IosAppDataStream(),],
-                next_page_token="ghi",
-            ),
-            analytics_admin.ListIosAppDataStreamsResponse(
-                ios_app_data_streams=[
-                    resources.IosAppDataStream(),
-                    resources.IosAppDataStream(),
-                ],
-            ),
-            RuntimeError,
-        )
-        pages = list(client.list_ios_app_data_streams(request={}).pages)
-        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.asyncio
-async def test_list_ios_app_data_streams_async_pager():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_ios_app_data_streams),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
-        # Set the response to a series of pages.
-        call.side_effect = (
-            analytics_admin.ListIosAppDataStreamsResponse(
-                ios_app_data_streams=[
-                    resources.IosAppDataStream(),
-                    resources.IosAppDataStream(),
-                    resources.IosAppDataStream(),
-                ],
-                next_page_token="abc",
-            ),
-            analytics_admin.ListIosAppDataStreamsResponse(
-                ios_app_data_streams=[], next_page_token="def",
-            ),
-            analytics_admin.ListIosAppDataStreamsResponse(
-                ios_app_data_streams=[resources.IosAppDataStream(),],
-                next_page_token="ghi",
-            ),
-            analytics_admin.ListIosAppDataStreamsResponse(
-                ios_app_data_streams=[
-                    resources.IosAppDataStream(),
-                    resources.IosAppDataStream(),
-                ],
-            ),
-            RuntimeError,
-        )
-        async_pager = await client.list_ios_app_data_streams(request={},)
-        assert async_pager.next_page_token == "abc"
-        responses = []
-        async for response in async_pager:
-            responses.append(response)
-
-        assert len(responses) == 6
-        assert all(isinstance(i, resources.IosAppDataStream) for i in responses)
-
-
-@pytest.mark.asyncio
-async def test_list_ios_app_data_streams_async_pages():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_ios_app_data_streams),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
-        # Set the response to a series of pages.
-        call.side_effect = (
-            analytics_admin.ListIosAppDataStreamsResponse(
-                ios_app_data_streams=[
-                    resources.IosAppDataStream(),
-                    resources.IosAppDataStream(),
-                    resources.IosAppDataStream(),
-                ],
-                next_page_token="abc",
-            ),
-            analytics_admin.ListIosAppDataStreamsResponse(
-                ios_app_data_streams=[], next_page_token="def",
-            ),
-            analytics_admin.ListIosAppDataStreamsResponse(
-                ios_app_data_streams=[resources.IosAppDataStream(),],
-                next_page_token="ghi",
-            ),
-            analytics_admin.ListIosAppDataStreamsResponse(
-                ios_app_data_streams=[
-                    resources.IosAppDataStream(),
-                    resources.IosAppDataStream(),
-                ],
-            ),
-            RuntimeError,
-        )
-        pages = []
-        async for page_ in (await client.list_ios_app_data_streams(request={})).pages:
-            pages.append(page_)
-        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type", [analytics_admin.GetAndroidAppDataStreamRequest, dict,]
-)
-def test_get_android_app_data_stream(request_type, transport: str = "grpc"):
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_android_app_data_stream), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = resources.AndroidAppDataStream(
-            name="name_value",
-            firebase_app_id="firebase_app_id_value",
-            package_name="package_name_value",
-            display_name="display_name_value",
-        )
-        response = client.get_android_app_data_stream(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.GetAndroidAppDataStreamRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, resources.AndroidAppDataStream)
-    assert response.name == "name_value"
-    assert response.firebase_app_id == "firebase_app_id_value"
-    assert response.package_name == "package_name_value"
-    assert response.display_name == "display_name_value"
-
-
-def test_get_android_app_data_stream_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_android_app_data_stream), "__call__"
-    ) as call:
-        client.get_android_app_data_stream()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.GetAndroidAppDataStreamRequest()
-
-
-@pytest.mark.asyncio
-async def test_get_android_app_data_stream_async(
-    transport: str = "grpc_asyncio",
-    request_type=analytics_admin.GetAndroidAppDataStreamRequest,
-):
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_android_app_data_stream), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            resources.AndroidAppDataStream(
-                name="name_value",
-                firebase_app_id="firebase_app_id_value",
-                package_name="package_name_value",
-                display_name="display_name_value",
-            )
-        )
-        response = await client.get_android_app_data_stream(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.GetAndroidAppDataStreamRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, resources.AndroidAppDataStream)
-    assert response.name == "name_value"
-    assert response.firebase_app_id == "firebase_app_id_value"
-    assert response.package_name == "package_name_value"
-    assert response.display_name == "display_name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_android_app_data_stream_async_from_dict():
-    await test_get_android_app_data_stream_async(request_type=dict)
-
-
-def test_get_android_app_data_stream_field_headers():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = analytics_admin.GetAndroidAppDataStreamRequest()
-
-    request.name = "name/value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_android_app_data_stream), "__call__"
-    ) as call:
-        call.return_value = resources.AndroidAppDataStream()
-        client.get_android_app_data_stream(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_get_android_app_data_stream_field_headers_async():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = analytics_admin.GetAndroidAppDataStreamRequest()
-
-    request.name = "name/value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_android_app_data_stream), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            resources.AndroidAppDataStream()
-        )
-        await client.get_android_app_data_stream(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
-
-
-def test_get_android_app_data_stream_flattened():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_android_app_data_stream), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = resources.AndroidAppDataStream()
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.get_android_app_data_stream(name="name_value",)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].name
-        mock_val = "name_value"
-        assert arg == mock_val
-
-
-def test_get_android_app_data_stream_flattened_error():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.get_android_app_data_stream(
-            analytics_admin.GetAndroidAppDataStreamRequest(), name="name_value",
-        )
-
-
-@pytest.mark.asyncio
-async def test_get_android_app_data_stream_flattened_async():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_android_app_data_stream), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = resources.AndroidAppDataStream()
-
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            resources.AndroidAppDataStream()
-        )
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        response = await client.get_android_app_data_stream(name="name_value",)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].name
-        mock_val = "name_value"
-        assert arg == mock_val
-
-
-@pytest.mark.asyncio
-async def test_get_android_app_data_stream_flattened_error_async():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        await client.get_android_app_data_stream(
-            analytics_admin.GetAndroidAppDataStreamRequest(), name="name_value",
-        )
-
-
-@pytest.mark.parametrize(
-    "request_type", [analytics_admin.DeleteAndroidAppDataStreamRequest, dict,]
-)
-def test_delete_android_app_data_stream(request_type, transport: str = "grpc"):
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_android_app_data_stream), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = None
-        response = client.delete_android_app_data_stream(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.DeleteAndroidAppDataStreamRequest()
-
-    # Establish that the response is the type that we expect.
-    assert response is None
-
-
-def test_delete_android_app_data_stream_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_android_app_data_stream), "__call__"
-    ) as call:
-        client.delete_android_app_data_stream()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.DeleteAndroidAppDataStreamRequest()
-
-
-@pytest.mark.asyncio
-async def test_delete_android_app_data_stream_async(
-    transport: str = "grpc_asyncio",
-    request_type=analytics_admin.DeleteAndroidAppDataStreamRequest,
-):
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_android_app_data_stream), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.delete_android_app_data_stream(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.DeleteAndroidAppDataStreamRequest()
-
-    # Establish that the response is the type that we expect.
-    assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_android_app_data_stream_async_from_dict():
-    await test_delete_android_app_data_stream_async(request_type=dict)
-
-
-def test_delete_android_app_data_stream_field_headers():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = analytics_admin.DeleteAndroidAppDataStreamRequest()
-
-    request.name = "name/value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_android_app_data_stream), "__call__"
-    ) as call:
-        call.return_value = None
-        client.delete_android_app_data_stream(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_delete_android_app_data_stream_field_headers_async():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = analytics_admin.DeleteAndroidAppDataStreamRequest()
-
-    request.name = "name/value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_android_app_data_stream), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        await client.delete_android_app_data_stream(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
-
-
-def test_delete_android_app_data_stream_flattened():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_android_app_data_stream), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = None
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.delete_android_app_data_stream(name="name_value",)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].name
-        mock_val = "name_value"
-        assert arg == mock_val
-
-
-def test_delete_android_app_data_stream_flattened_error():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.delete_android_app_data_stream(
-            analytics_admin.DeleteAndroidAppDataStreamRequest(), name="name_value",
-        )
-
-
-@pytest.mark.asyncio
-async def test_delete_android_app_data_stream_flattened_async():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_android_app_data_stream), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = None
-
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        response = await client.delete_android_app_data_stream(name="name_value",)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].name
-        mock_val = "name_value"
-        assert arg == mock_val
-
-
-@pytest.mark.asyncio
-async def test_delete_android_app_data_stream_flattened_error_async():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        await client.delete_android_app_data_stream(
-            analytics_admin.DeleteAndroidAppDataStreamRequest(), name="name_value",
-        )
-
-
-@pytest.mark.parametrize(
-    "request_type", [analytics_admin.UpdateAndroidAppDataStreamRequest, dict,]
-)
-def test_update_android_app_data_stream(request_type, transport: str = "grpc"):
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_android_app_data_stream), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = resources.AndroidAppDataStream(
-            name="name_value",
-            firebase_app_id="firebase_app_id_value",
-            package_name="package_name_value",
-            display_name="display_name_value",
-        )
-        response = client.update_android_app_data_stream(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.UpdateAndroidAppDataStreamRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, resources.AndroidAppDataStream)
-    assert response.name == "name_value"
-    assert response.firebase_app_id == "firebase_app_id_value"
-    assert response.package_name == "package_name_value"
-    assert response.display_name == "display_name_value"
-
-
-def test_update_android_app_data_stream_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_android_app_data_stream), "__call__"
-    ) as call:
-        client.update_android_app_data_stream()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.UpdateAndroidAppDataStreamRequest()
-
-
-@pytest.mark.asyncio
-async def test_update_android_app_data_stream_async(
-    transport: str = "grpc_asyncio",
-    request_type=analytics_admin.UpdateAndroidAppDataStreamRequest,
-):
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_android_app_data_stream), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            resources.AndroidAppDataStream(
-                name="name_value",
-                firebase_app_id="firebase_app_id_value",
-                package_name="package_name_value",
-                display_name="display_name_value",
-            )
-        )
-        response = await client.update_android_app_data_stream(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.UpdateAndroidAppDataStreamRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, resources.AndroidAppDataStream)
-    assert response.name == "name_value"
-    assert response.firebase_app_id == "firebase_app_id_value"
-    assert response.package_name == "package_name_value"
-    assert response.display_name == "display_name_value"
-
-
-@pytest.mark.asyncio
-async def test_update_android_app_data_stream_async_from_dict():
-    await test_update_android_app_data_stream_async(request_type=dict)
-
-
-def test_update_android_app_data_stream_field_headers():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = analytics_admin.UpdateAndroidAppDataStreamRequest()
-
-    request.android_app_data_stream.name = "android_app_data_stream.name/value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_android_app_data_stream), "__call__"
-    ) as call:
-        call.return_value = resources.AndroidAppDataStream()
-        client.update_android_app_data_stream(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "android_app_data_stream.name=android_app_data_stream.name/value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_update_android_app_data_stream_field_headers_async():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = analytics_admin.UpdateAndroidAppDataStreamRequest()
-
-    request.android_app_data_stream.name = "android_app_data_stream.name/value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_android_app_data_stream), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            resources.AndroidAppDataStream()
-        )
-        await client.update_android_app_data_stream(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "android_app_data_stream.name=android_app_data_stream.name/value",
-    ) in kw["metadata"]
-
-
-def test_update_android_app_data_stream_flattened():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_android_app_data_stream), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = resources.AndroidAppDataStream()
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.update_android_app_data_stream(
-            android_app_data_stream=resources.AndroidAppDataStream(name="name_value"),
-            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].android_app_data_stream
-        mock_val = resources.AndroidAppDataStream(name="name_value")
-        assert arg == mock_val
-        arg = args[0].update_mask
-        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
-        assert arg == mock_val
-
-
-def test_update_android_app_data_stream_flattened_error():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.update_android_app_data_stream(
-            analytics_admin.UpdateAndroidAppDataStreamRequest(),
-            android_app_data_stream=resources.AndroidAppDataStream(name="name_value"),
-            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
-        )
-
-
-@pytest.mark.asyncio
-async def test_update_android_app_data_stream_flattened_async():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_android_app_data_stream), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = resources.AndroidAppDataStream()
-
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            resources.AndroidAppDataStream()
-        )
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        response = await client.update_android_app_data_stream(
-            android_app_data_stream=resources.AndroidAppDataStream(name="name_value"),
-            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].android_app_data_stream
-        mock_val = resources.AndroidAppDataStream(name="name_value")
-        assert arg == mock_val
-        arg = args[0].update_mask
-        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
-        assert arg == mock_val
-
-
-@pytest.mark.asyncio
-async def test_update_android_app_data_stream_flattened_error_async():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        await client.update_android_app_data_stream(
-            analytics_admin.UpdateAndroidAppDataStreamRequest(),
-            android_app_data_stream=resources.AndroidAppDataStream(name="name_value"),
-            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
-        )
-
-
-@pytest.mark.parametrize(
-    "request_type", [analytics_admin.ListAndroidAppDataStreamsRequest, dict,]
-)
-def test_list_android_app_data_streams(request_type, transport: str = "grpc"):
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_android_app_data_streams), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = analytics_admin.ListAndroidAppDataStreamsResponse(
-            next_page_token="next_page_token_value",
-        )
-        response = client.list_android_app_data_streams(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.ListAndroidAppDataStreamsRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListAndroidAppDataStreamsPager)
-    assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_android_app_data_streams_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_android_app_data_streams), "__call__"
-    ) as call:
-        client.list_android_app_data_streams()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.ListAndroidAppDataStreamsRequest()
-
-
-@pytest.mark.asyncio
-async def test_list_android_app_data_streams_async(
-    transport: str = "grpc_asyncio",
-    request_type=analytics_admin.ListAndroidAppDataStreamsRequest,
-):
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_android_app_data_streams), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            analytics_admin.ListAndroidAppDataStreamsResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_android_app_data_streams(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.ListAndroidAppDataStreamsRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListAndroidAppDataStreamsAsyncPager)
-    assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_android_app_data_streams_async_from_dict():
-    await test_list_android_app_data_streams_async(request_type=dict)
-
-
-def test_list_android_app_data_streams_field_headers():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = analytics_admin.ListAndroidAppDataStreamsRequest()
-
-    request.parent = "parent/value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_android_app_data_streams), "__call__"
-    ) as call:
-        call.return_value = analytics_admin.ListAndroidAppDataStreamsResponse()
-        client.list_android_app_data_streams(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_list_android_app_data_streams_field_headers_async():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = analytics_admin.ListAndroidAppDataStreamsRequest()
-
-    request.parent = "parent/value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_android_app_data_streams), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            analytics_admin.ListAndroidAppDataStreamsResponse()
-        )
-        await client.list_android_app_data_streams(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
-
-
-def test_list_android_app_data_streams_flattened():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_android_app_data_streams), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = analytics_admin.ListAndroidAppDataStreamsResponse()
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.list_android_app_data_streams(parent="parent_value",)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].parent
-        mock_val = "parent_value"
-        assert arg == mock_val
-
-
-def test_list_android_app_data_streams_flattened_error():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.list_android_app_data_streams(
-            analytics_admin.ListAndroidAppDataStreamsRequest(), parent="parent_value",
-        )
-
-
-@pytest.mark.asyncio
-async def test_list_android_app_data_streams_flattened_async():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_android_app_data_streams), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = analytics_admin.ListAndroidAppDataStreamsResponse()
-
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            analytics_admin.ListAndroidAppDataStreamsResponse()
-        )
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        response = await client.list_android_app_data_streams(parent="parent_value",)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].parent
-        mock_val = "parent_value"
-        assert arg == mock_val
-
-
-@pytest.mark.asyncio
-async def test_list_android_app_data_streams_flattened_error_async():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        await client.list_android_app_data_streams(
-            analytics_admin.ListAndroidAppDataStreamsRequest(), parent="parent_value",
-        )
-
-
-def test_list_android_app_data_streams_pager(transport_name: str = "grpc"):
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_android_app_data_streams), "__call__"
-    ) as call:
-        # Set the response to a series of pages.
-        call.side_effect = (
-            analytics_admin.ListAndroidAppDataStreamsResponse(
-                android_app_data_streams=[
-                    resources.AndroidAppDataStream(),
-                    resources.AndroidAppDataStream(),
-                    resources.AndroidAppDataStream(),
-                ],
-                next_page_token="abc",
-            ),
-            analytics_admin.ListAndroidAppDataStreamsResponse(
-                android_app_data_streams=[], next_page_token="def",
-            ),
-            analytics_admin.ListAndroidAppDataStreamsResponse(
-                android_app_data_streams=[resources.AndroidAppDataStream(),],
-                next_page_token="ghi",
-            ),
-            analytics_admin.ListAndroidAppDataStreamsResponse(
-                android_app_data_streams=[
-                    resources.AndroidAppDataStream(),
-                    resources.AndroidAppDataStream(),
-                ],
-            ),
-            RuntimeError,
-        )
-
-        metadata = ()
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
-        )
-        pager = client.list_android_app_data_streams(request={})
-
-        assert pager._metadata == metadata
-
-        results = [i for i in pager]
-        assert len(results) == 6
-        assert all(isinstance(i, resources.AndroidAppDataStream) for i in results)
-
-
-def test_list_android_app_data_streams_pages(transport_name: str = "grpc"):
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_android_app_data_streams), "__call__"
-    ) as call:
-        # Set the response to a series of pages.
-        call.side_effect = (
-            analytics_admin.ListAndroidAppDataStreamsResponse(
-                android_app_data_streams=[
-                    resources.AndroidAppDataStream(),
-                    resources.AndroidAppDataStream(),
-                    resources.AndroidAppDataStream(),
-                ],
-                next_page_token="abc",
-            ),
-            analytics_admin.ListAndroidAppDataStreamsResponse(
-                android_app_data_streams=[], next_page_token="def",
-            ),
-            analytics_admin.ListAndroidAppDataStreamsResponse(
-                android_app_data_streams=[resources.AndroidAppDataStream(),],
-                next_page_token="ghi",
-            ),
-            analytics_admin.ListAndroidAppDataStreamsResponse(
-                android_app_data_streams=[
-                    resources.AndroidAppDataStream(),
-                    resources.AndroidAppDataStream(),
-                ],
-            ),
-            RuntimeError,
-        )
-        pages = list(client.list_android_app_data_streams(request={}).pages)
-        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.asyncio
-async def test_list_android_app_data_streams_async_pager():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_android_app_data_streams),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
-        # Set the response to a series of pages.
-        call.side_effect = (
-            analytics_admin.ListAndroidAppDataStreamsResponse(
-                android_app_data_streams=[
-                    resources.AndroidAppDataStream(),
-                    resources.AndroidAppDataStream(),
-                    resources.AndroidAppDataStream(),
-                ],
-                next_page_token="abc",
-            ),
-            analytics_admin.ListAndroidAppDataStreamsResponse(
-                android_app_data_streams=[], next_page_token="def",
-            ),
-            analytics_admin.ListAndroidAppDataStreamsResponse(
-                android_app_data_streams=[resources.AndroidAppDataStream(),],
-                next_page_token="ghi",
-            ),
-            analytics_admin.ListAndroidAppDataStreamsResponse(
-                android_app_data_streams=[
-                    resources.AndroidAppDataStream(),
-                    resources.AndroidAppDataStream(),
-                ],
-            ),
-            RuntimeError,
-        )
-        async_pager = await client.list_android_app_data_streams(request={},)
-        assert async_pager.next_page_token == "abc"
-        responses = []
-        async for response in async_pager:
-            responses.append(response)
-
-        assert len(responses) == 6
-        assert all(isinstance(i, resources.AndroidAppDataStream) for i in responses)
-
-
-@pytest.mark.asyncio
-async def test_list_android_app_data_streams_async_pages():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_android_app_data_streams),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
-        # Set the response to a series of pages.
-        call.side_effect = (
-            analytics_admin.ListAndroidAppDataStreamsResponse(
-                android_app_data_streams=[
-                    resources.AndroidAppDataStream(),
-                    resources.AndroidAppDataStream(),
-                    resources.AndroidAppDataStream(),
-                ],
-                next_page_token="abc",
-            ),
-            analytics_admin.ListAndroidAppDataStreamsResponse(
-                android_app_data_streams=[], next_page_token="def",
-            ),
-            analytics_admin.ListAndroidAppDataStreamsResponse(
-                android_app_data_streams=[resources.AndroidAppDataStream(),],
-                next_page_token="ghi",
-            ),
-            analytics_admin.ListAndroidAppDataStreamsResponse(
-                android_app_data_streams=[
-                    resources.AndroidAppDataStream(),
-                    resources.AndroidAppDataStream(),
-                ],
-            ),
-            RuntimeError,
-        )
-        pages = []
-        async for page_ in (
-            await client.list_android_app_data_streams(request={})
-        ).pages:
-            pages.append(page_)
-        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
     "request_type", [analytics_admin.CreateFirebaseLinkRequest, dict,]
 )
 def test_create_firebase_link(request_type, transport: str = "grpc"):
@@ -19128,6 +15490,9 @@ def test_create_custom_metric(request_type, transport: str = "grpc"):
             description="description_value",
             measurement_unit=resources.CustomMetric.MeasurementUnit.STANDARD,
             scope=resources.CustomMetric.MetricScope.EVENT,
+            restricted_metric_type=[
+                resources.CustomMetric.RestrictedMetricType.COST_DATA
+            ],
         )
         response = client.create_custom_metric(request)
 
@@ -19144,6 +15509,9 @@ def test_create_custom_metric(request_type, transport: str = "grpc"):
     assert response.description == "description_value"
     assert response.measurement_unit == resources.CustomMetric.MeasurementUnit.STANDARD
     assert response.scope == resources.CustomMetric.MetricScope.EVENT
+    assert response.restricted_metric_type == [
+        resources.CustomMetric.RestrictedMetricType.COST_DATA
+    ]
 
 
 def test_create_custom_metric_empty_call():
@@ -19189,6 +15557,9 @@ async def test_create_custom_metric_async(
                 description="description_value",
                 measurement_unit=resources.CustomMetric.MeasurementUnit.STANDARD,
                 scope=resources.CustomMetric.MetricScope.EVENT,
+                restricted_metric_type=[
+                    resources.CustomMetric.RestrictedMetricType.COST_DATA
+                ],
             )
         )
         response = await client.create_custom_metric(request)
@@ -19206,6 +15577,9 @@ async def test_create_custom_metric_async(
     assert response.description == "description_value"
     assert response.measurement_unit == resources.CustomMetric.MeasurementUnit.STANDARD
     assert response.scope == resources.CustomMetric.MetricScope.EVENT
+    assert response.restricted_metric_type == [
+        resources.CustomMetric.RestrictedMetricType.COST_DATA
+    ]
 
 
 @pytest.mark.asyncio
@@ -19392,6 +15766,9 @@ def test_update_custom_metric(request_type, transport: str = "grpc"):
             description="description_value",
             measurement_unit=resources.CustomMetric.MeasurementUnit.STANDARD,
             scope=resources.CustomMetric.MetricScope.EVENT,
+            restricted_metric_type=[
+                resources.CustomMetric.RestrictedMetricType.COST_DATA
+            ],
         )
         response = client.update_custom_metric(request)
 
@@ -19408,6 +15785,9 @@ def test_update_custom_metric(request_type, transport: str = "grpc"):
     assert response.description == "description_value"
     assert response.measurement_unit == resources.CustomMetric.MeasurementUnit.STANDARD
     assert response.scope == resources.CustomMetric.MetricScope.EVENT
+    assert response.restricted_metric_type == [
+        resources.CustomMetric.RestrictedMetricType.COST_DATA
+    ]
 
 
 def test_update_custom_metric_empty_call():
@@ -19453,6 +15833,9 @@ async def test_update_custom_metric_async(
                 description="description_value",
                 measurement_unit=resources.CustomMetric.MeasurementUnit.STANDARD,
                 scope=resources.CustomMetric.MetricScope.EVENT,
+                restricted_metric_type=[
+                    resources.CustomMetric.RestrictedMetricType.COST_DATA
+                ],
             )
         )
         response = await client.update_custom_metric(request)
@@ -19470,6 +15853,9 @@ async def test_update_custom_metric_async(
     assert response.description == "description_value"
     assert response.measurement_unit == resources.CustomMetric.MeasurementUnit.STANDARD
     assert response.scope == resources.CustomMetric.MetricScope.EVENT
+    assert response.restricted_metric_type == [
+        resources.CustomMetric.RestrictedMetricType.COST_DATA
+    ]
 
 
 @pytest.mark.asyncio
@@ -20268,6 +16654,9 @@ def test_get_custom_metric(request_type, transport: str = "grpc"):
             description="description_value",
             measurement_unit=resources.CustomMetric.MeasurementUnit.STANDARD,
             scope=resources.CustomMetric.MetricScope.EVENT,
+            restricted_metric_type=[
+                resources.CustomMetric.RestrictedMetricType.COST_DATA
+            ],
         )
         response = client.get_custom_metric(request)
 
@@ -20284,6 +16673,9 @@ def test_get_custom_metric(request_type, transport: str = "grpc"):
     assert response.description == "description_value"
     assert response.measurement_unit == resources.CustomMetric.MeasurementUnit.STANDARD
     assert response.scope == resources.CustomMetric.MetricScope.EVENT
+    assert response.restricted_metric_type == [
+        resources.CustomMetric.RestrictedMetricType.COST_DATA
+    ]
 
 
 def test_get_custom_metric_empty_call():
@@ -20328,6 +16720,9 @@ async def test_get_custom_metric_async(
                 description="description_value",
                 measurement_unit=resources.CustomMetric.MeasurementUnit.STANDARD,
                 scope=resources.CustomMetric.MetricScope.EVENT,
+                restricted_metric_type=[
+                    resources.CustomMetric.RestrictedMetricType.COST_DATA
+                ],
             )
         )
         response = await client.get_custom_metric(request)
@@ -20345,6 +16740,9 @@ async def test_get_custom_metric_async(
     assert response.description == "description_value"
     assert response.measurement_unit == resources.CustomMetric.MeasurementUnit.STANDARD
     assert response.scope == resources.CustomMetric.MetricScope.EVENT
+    assert response.restricted_metric_type == [
+        resources.CustomMetric.RestrictedMetricType.COST_DATA
+    ]
 
 
 @pytest.mark.asyncio
@@ -22525,19 +18923,6 @@ def test_analytics_admin_service_base_transport():
         "batch_update_user_links",
         "delete_user_link",
         "batch_delete_user_links",
-        "get_web_data_stream",
-        "delete_web_data_stream",
-        "update_web_data_stream",
-        "create_web_data_stream",
-        "list_web_data_streams",
-        "get_ios_app_data_stream",
-        "delete_ios_app_data_stream",
-        "update_ios_app_data_stream",
-        "list_ios_app_data_streams",
-        "get_android_app_data_stream",
-        "delete_android_app_data_stream",
-        "update_android_app_data_stream",
-        "list_android_app_data_streams",
         "create_firebase_link",
         "delete_firebase_link",
         "list_firebase_links",
@@ -22946,33 +19331,9 @@ def test_parse_account_summary_path():
     assert expected == actual
 
 
-def test_android_app_data_stream_path():
-    property = "oyster"
-    android_app_data_stream = "nudibranch"
-    expected = "properties/{property}/androidAppDataStreams/{android_app_data_stream}".format(
-        property=property, android_app_data_stream=android_app_data_stream,
-    )
-    actual = AnalyticsAdminServiceClient.android_app_data_stream_path(
-        property, android_app_data_stream
-    )
-    assert expected == actual
-
-
-def test_parse_android_app_data_stream_path():
-    expected = {
-        "property": "cuttlefish",
-        "android_app_data_stream": "mussel",
-    }
-    path = AnalyticsAdminServiceClient.android_app_data_stream_path(**expected)
-
-    # Check that the path construction is reversible.
-    actual = AnalyticsAdminServiceClient.parse_android_app_data_stream_path(path)
-    assert expected == actual
-
-
 def test_conversion_event_path():
-    property = "winkle"
-    conversion_event = "nautilus"
+    property = "oyster"
+    conversion_event = "nudibranch"
     expected = "properties/{property}/conversionEvents/{conversion_event}".format(
         property=property, conversion_event=conversion_event,
     )
@@ -22984,8 +19345,8 @@ def test_conversion_event_path():
 
 def test_parse_conversion_event_path():
     expected = {
-        "property": "scallop",
-        "conversion_event": "abalone",
+        "property": "cuttlefish",
+        "conversion_event": "mussel",
     }
     path = AnalyticsAdminServiceClient.conversion_event_path(**expected)
 
@@ -22995,7 +19356,7 @@ def test_parse_conversion_event_path():
 
 
 def test_custom_dimension_path():
-    property = "squid"
+    property = "winkle"
     expected = "properties/{property}/customDimensions".format(property=property,)
     actual = AnalyticsAdminServiceClient.custom_dimension_path(property)
     assert expected == actual
@@ -23003,7 +19364,7 @@ def test_custom_dimension_path():
 
 def test_parse_custom_dimension_path():
     expected = {
-        "property": "clam",
+        "property": "nautilus",
     }
     path = AnalyticsAdminServiceClient.custom_dimension_path(**expected)
 
@@ -23013,7 +19374,7 @@ def test_parse_custom_dimension_path():
 
 
 def test_custom_metric_path():
-    property = "whelk"
+    property = "scallop"
     expected = "properties/{property}/customMetrics".format(property=property,)
     actual = AnalyticsAdminServiceClient.custom_metric_path(property)
     assert expected == actual
@@ -23021,7 +19382,7 @@ def test_custom_metric_path():
 
 def test_parse_custom_metric_path():
     expected = {
-        "property": "octopus",
+        "property": "abalone",
     }
     path = AnalyticsAdminServiceClient.custom_metric_path(**expected)
 
@@ -23031,7 +19392,7 @@ def test_parse_custom_metric_path():
 
 
 def test_data_retention_settings_path():
-    property = "oyster"
+    property = "squid"
     expected = "properties/{property}/dataRetentionSettings".format(property=property,)
     actual = AnalyticsAdminServiceClient.data_retention_settings_path(property)
     assert expected == actual
@@ -23039,7 +19400,7 @@ def test_data_retention_settings_path():
 
 def test_parse_data_retention_settings_path():
     expected = {
-        "property": "nudibranch",
+        "property": "clam",
     }
     path = AnalyticsAdminServiceClient.data_retention_settings_path(**expected)
 
@@ -23049,7 +19410,7 @@ def test_parse_data_retention_settings_path():
 
 
 def test_data_sharing_settings_path():
-    account = "cuttlefish"
+    account = "whelk"
     expected = "accounts/{account}/dataSharingSettings".format(account=account,)
     actual = AnalyticsAdminServiceClient.data_sharing_settings_path(account)
     assert expected == actual
@@ -23057,7 +19418,7 @@ def test_data_sharing_settings_path():
 
 def test_parse_data_sharing_settings_path():
     expected = {
-        "account": "mussel",
+        "account": "octopus",
     }
     path = AnalyticsAdminServiceClient.data_sharing_settings_path(**expected)
 
@@ -23067,8 +19428,8 @@ def test_parse_data_sharing_settings_path():
 
 
 def test_data_stream_path():
-    property = "winkle"
-    data_stream = "nautilus"
+    property = "oyster"
+    data_stream = "nudibranch"
     expected = "properties/{property}/dataStreams/{data_stream}".format(
         property=property, data_stream=data_stream,
     )
@@ -23078,8 +19439,8 @@ def test_data_stream_path():
 
 def test_parse_data_stream_path():
     expected = {
-        "property": "scallop",
-        "data_stream": "abalone",
+        "property": "cuttlefish",
+        "data_stream": "mussel",
     }
     path = AnalyticsAdminServiceClient.data_stream_path(**expected)
 
@@ -23089,8 +19450,8 @@ def test_parse_data_stream_path():
 
 
 def test_display_video360_advertiser_link_path():
-    property = "squid"
-    display_video_360_advertiser_link = "clam"
+    property = "winkle"
+    display_video_360_advertiser_link = "nautilus"
     expected = "properties/{property}/displayVideo360AdvertiserLinks/{display_video_360_advertiser_link}".format(
         property=property,
         display_video_360_advertiser_link=display_video_360_advertiser_link,
@@ -23103,8 +19464,8 @@ def test_display_video360_advertiser_link_path():
 
 def test_parse_display_video360_advertiser_link_path():
     expected = {
-        "property": "whelk",
-        "display_video_360_advertiser_link": "octopus",
+        "property": "scallop",
+        "display_video_360_advertiser_link": "abalone",
     }
     path = AnalyticsAdminServiceClient.display_video360_advertiser_link_path(**expected)
 
@@ -23116,8 +19477,8 @@ def test_parse_display_video360_advertiser_link_path():
 
 
 def test_display_video360_advertiser_link_proposal_path():
-    property = "oyster"
-    display_video_360_advertiser_link_proposal = "nudibranch"
+    property = "squid"
+    display_video_360_advertiser_link_proposal = "clam"
     expected = "properties/{property}/displayVideo360AdvertiserLinkProposals/{display_video_360_advertiser_link_proposal}".format(
         property=property,
         display_video_360_advertiser_link_proposal=display_video_360_advertiser_link_proposal,
@@ -23130,8 +19491,8 @@ def test_display_video360_advertiser_link_proposal_path():
 
 def test_parse_display_video360_advertiser_link_proposal_path():
     expected = {
-        "property": "cuttlefish",
-        "display_video_360_advertiser_link_proposal": "mussel",
+        "property": "whelk",
+        "display_video_360_advertiser_link_proposal": "octopus",
     }
     path = AnalyticsAdminServiceClient.display_video360_advertiser_link_proposal_path(
         **expected
@@ -23145,8 +19506,8 @@ def test_parse_display_video360_advertiser_link_proposal_path():
 
 
 def test_firebase_link_path():
-    property = "winkle"
-    firebase_link = "nautilus"
+    property = "oyster"
+    firebase_link = "nudibranch"
     expected = "properties/{property}/firebaseLinks/{firebase_link}".format(
         property=property, firebase_link=firebase_link,
     )
@@ -23156,8 +19517,8 @@ def test_firebase_link_path():
 
 def test_parse_firebase_link_path():
     expected = {
-        "property": "scallop",
-        "firebase_link": "abalone",
+        "property": "cuttlefish",
+        "firebase_link": "mussel",
     }
     path = AnalyticsAdminServiceClient.firebase_link_path(**expected)
 
@@ -23167,15 +19528,19 @@ def test_parse_firebase_link_path():
 
 
 def test_global_site_tag_path():
-    property = "squid"
-    expected = "properties/{property}/globalSiteTag".format(property=property,)
-    actual = AnalyticsAdminServiceClient.global_site_tag_path(property)
+    property = "winkle"
+    data_stream = "nautilus"
+    expected = "properties/{property}/dataStreams/{data_stream}/globalSiteTag".format(
+        property=property, data_stream=data_stream,
+    )
+    actual = AnalyticsAdminServiceClient.global_site_tag_path(property, data_stream)
     assert expected == actual
 
 
 def test_parse_global_site_tag_path():
     expected = {
-        "property": "clam",
+        "property": "scallop",
+        "data_stream": "abalone",
     }
     path = AnalyticsAdminServiceClient.global_site_tag_path(**expected)
 
@@ -23185,8 +19550,8 @@ def test_parse_global_site_tag_path():
 
 
 def test_google_ads_link_path():
-    property = "whelk"
-    google_ads_link = "octopus"
+    property = "squid"
+    google_ads_link = "clam"
     expected = "properties/{property}/googleAdsLinks/{google_ads_link}".format(
         property=property, google_ads_link=google_ads_link,
     )
@@ -23196,8 +19561,8 @@ def test_google_ads_link_path():
 
 def test_parse_google_ads_link_path():
     expected = {
-        "property": "oyster",
-        "google_ads_link": "nudibranch",
+        "property": "whelk",
+        "google_ads_link": "octopus",
     }
     path = AnalyticsAdminServiceClient.google_ads_link_path(**expected)
 
@@ -23207,7 +19572,7 @@ def test_parse_google_ads_link_path():
 
 
 def test_google_signals_settings_path():
-    property = "cuttlefish"
+    property = "oyster"
     expected = "properties/{property}/googleSignalsSettings".format(property=property,)
     actual = AnalyticsAdminServiceClient.google_signals_settings_path(property)
     assert expected == actual
@@ -23215,7 +19580,7 @@ def test_google_signals_settings_path():
 
 def test_parse_google_signals_settings_path():
     expected = {
-        "property": "mussel",
+        "property": "nudibranch",
     }
     path = AnalyticsAdminServiceClient.google_signals_settings_path(**expected)
 
@@ -23224,50 +19589,26 @@ def test_parse_google_signals_settings_path():
     assert expected == actual
 
 
-def test_ios_app_data_stream_path():
-    property = "winkle"
-    ios_app_data_stream = "nautilus"
-    expected = "properties/{property}/iosAppDataStreams/{ios_app_data_stream}".format(
-        property=property, ios_app_data_stream=ios_app_data_stream,
-    )
-    actual = AnalyticsAdminServiceClient.ios_app_data_stream_path(
-        property, ios_app_data_stream
-    )
-    assert expected == actual
-
-
-def test_parse_ios_app_data_stream_path():
-    expected = {
-        "property": "scallop",
-        "ios_app_data_stream": "abalone",
-    }
-    path = AnalyticsAdminServiceClient.ios_app_data_stream_path(**expected)
-
-    # Check that the path construction is reversible.
-    actual = AnalyticsAdminServiceClient.parse_ios_app_data_stream_path(path)
-    assert expected == actual
-
-
 def test_measurement_protocol_secret_path():
-    property = "squid"
-    web_data_stream = "clam"
-    measurement_protocol_secret = "whelk"
-    expected = "properties/{property}/webDataStreams/{web_data_stream}/measurementProtocolSecrets/{measurement_protocol_secret}".format(
+    property = "cuttlefish"
+    data_stream = "mussel"
+    measurement_protocol_secret = "winkle"
+    expected = "properties/{property}/dataStreams/{data_stream}/measurementProtocolSecrets/{measurement_protocol_secret}".format(
         property=property,
-        web_data_stream=web_data_stream,
+        data_stream=data_stream,
         measurement_protocol_secret=measurement_protocol_secret,
     )
     actual = AnalyticsAdminServiceClient.measurement_protocol_secret_path(
-        property, web_data_stream, measurement_protocol_secret
+        property, data_stream, measurement_protocol_secret
     )
     assert expected == actual
 
 
 def test_parse_measurement_protocol_secret_path():
     expected = {
-        "property": "octopus",
-        "web_data_stream": "oyster",
-        "measurement_protocol_secret": "nudibranch",
+        "property": "nautilus",
+        "data_stream": "scallop",
+        "measurement_protocol_secret": "abalone",
     }
     path = AnalyticsAdminServiceClient.measurement_protocol_secret_path(**expected)
 
@@ -23277,7 +19618,7 @@ def test_parse_measurement_protocol_secret_path():
 
 
 def test_property_path():
-    property = "cuttlefish"
+    property = "squid"
     expected = "properties/{property}".format(property=property,)
     actual = AnalyticsAdminServiceClient.property_path(property)
     assert expected == actual
@@ -23285,7 +19626,7 @@ def test_property_path():
 
 def test_parse_property_path():
     expected = {
-        "property": "mussel",
+        "property": "clam",
     }
     path = AnalyticsAdminServiceClient.property_path(**expected)
 
@@ -23295,8 +19636,8 @@ def test_parse_property_path():
 
 
 def test_user_link_path():
-    account = "winkle"
-    user_link = "nautilus"
+    account = "whelk"
+    user_link = "octopus"
     expected = "accounts/{account}/userLinks/{user_link}".format(
         account=account, user_link=user_link,
     )
@@ -23306,8 +19647,8 @@ def test_user_link_path():
 
 def test_parse_user_link_path():
     expected = {
-        "account": "scallop",
-        "user_link": "abalone",
+        "account": "oyster",
+        "user_link": "nudibranch",
     }
     path = AnalyticsAdminServiceClient.user_link_path(**expected)
 
@@ -23316,30 +19657,8 @@ def test_parse_user_link_path():
     assert expected == actual
 
 
-def test_web_data_stream_path():
-    property = "squid"
-    web_data_stream = "clam"
-    expected = "properties/{property}/webDataStreams/{web_data_stream}".format(
-        property=property, web_data_stream=web_data_stream,
-    )
-    actual = AnalyticsAdminServiceClient.web_data_stream_path(property, web_data_stream)
-    assert expected == actual
-
-
-def test_parse_web_data_stream_path():
-    expected = {
-        "property": "whelk",
-        "web_data_stream": "octopus",
-    }
-    path = AnalyticsAdminServiceClient.web_data_stream_path(**expected)
-
-    # Check that the path construction is reversible.
-    actual = AnalyticsAdminServiceClient.parse_web_data_stream_path(path)
-    assert expected == actual
-
-
 def test_common_billing_account_path():
-    billing_account = "oyster"
+    billing_account = "cuttlefish"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -23349,7 +19668,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nudibranch",
+        "billing_account": "mussel",
     }
     path = AnalyticsAdminServiceClient.common_billing_account_path(**expected)
 
@@ -23359,7 +19678,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "cuttlefish"
+    folder = "winkle"
     expected = "folders/{folder}".format(folder=folder,)
     actual = AnalyticsAdminServiceClient.common_folder_path(folder)
     assert expected == actual
@@ -23367,7 +19686,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "mussel",
+        "folder": "nautilus",
     }
     path = AnalyticsAdminServiceClient.common_folder_path(**expected)
 
@@ -23377,7 +19696,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "winkle"
+    organization = "scallop"
     expected = "organizations/{organization}".format(organization=organization,)
     actual = AnalyticsAdminServiceClient.common_organization_path(organization)
     assert expected == actual
@@ -23385,7 +19704,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nautilus",
+        "organization": "abalone",
     }
     path = AnalyticsAdminServiceClient.common_organization_path(**expected)
 
@@ -23395,7 +19714,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "scallop"
+    project = "squid"
     expected = "projects/{project}".format(project=project,)
     actual = AnalyticsAdminServiceClient.common_project_path(project)
     assert expected == actual
@@ -23403,7 +19722,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "abalone",
+        "project": "clam",
     }
     path = AnalyticsAdminServiceClient.common_project_path(**expected)
 
@@ -23413,8 +19732,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "squid"
-    location = "clam"
+    project = "whelk"
+    location = "octopus"
     expected = "projects/{project}/locations/{location}".format(
         project=project, location=location,
     )
@@ -23424,8 +19743,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "whelk",
-        "location": "octopus",
+        "project": "oyster",
+        "location": "nudibranch",
     }
     path = AnalyticsAdminServiceClient.common_location_path(**expected)
 

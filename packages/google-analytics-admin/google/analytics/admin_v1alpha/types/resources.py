@@ -33,9 +33,6 @@ __protobuf__ = proto.module(
         "LinkProposalState",
         "Account",
         "Property",
-        "AndroidAppDataStream",
-        "IosAppDataStream",
-        "WebDataStream",
         "DataStream",
         "UserLink",
         "AuditUserLink",
@@ -125,9 +122,6 @@ class ChangeHistoryResourceType(proto.Enum):
     CHANGE_HISTORY_RESOURCE_TYPE_UNSPECIFIED = 0
     ACCOUNT = 1
     PROPERTY = 2
-    WEB_DATA_STREAM = 3
-    ANDROID_APP_DATA_STREAM = 4
-    IOS_APP_DATA_STREAM = 5
     FIREBASE_LINK = 6
     GOOGLE_ADS_LINK = 7
     GOOGLE_SIGNALS_SETTINGS = 8
@@ -138,6 +132,7 @@ class ChangeHistoryResourceType(proto.Enum):
     DATA_RETENTION_SETTINGS = 13
     DISPLAY_VIDEO_360_ADVERTISER_LINK = 14
     DISPLAY_VIDEO_360_ADVERTISER_LINK_PROPOSAL = 15
+    DATA_STREAM = 18
 
 
 class GoogleSignalsState(proto.Enum):
@@ -290,125 +285,6 @@ class Property(proto.Message):
         proto.MESSAGE, number=12, message=timestamp_pb2.Timestamp,
     )
     account = proto.Field(proto.STRING, number=13,)
-
-
-class AndroidAppDataStream(proto.Message):
-    r"""A resource message representing a Google Analytics Android
-    app stream.
-
-    Attributes:
-        name (str):
-            Output only. Resource name of this Data Stream. Format:
-            properties/{property_id}/androidAppDataStreams/{stream_id}
-            Example: "properties/1000/androidAppDataStreams/2000".
-        firebase_app_id (str):
-            Output only. ID of the corresponding Android
-            app in Firebase, if any. This ID can change if
-            the Android app is deleted and recreated.
-        create_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. Time when this stream was
-            originally created.
-        update_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. Time when stream payload fields
-            were last updated.
-        package_name (str):
-            Immutable. The package name for the app being
-            measured. Example: "com.example.myandroidapp".
-        display_name (str):
-            Human-readable display name for the Data
-            Stream.
-            The max allowed display name length is 255
-            UTF-16 code units.
-    """
-
-    name = proto.Field(proto.STRING, number=1,)
-    firebase_app_id = proto.Field(proto.STRING, number=2,)
-    create_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
-    package_name = proto.Field(proto.STRING, number=5,)
-    display_name = proto.Field(proto.STRING, number=6,)
-
-
-class IosAppDataStream(proto.Message):
-    r"""A resource message representing a Google Analytics IOS app
-    stream.
-
-    Attributes:
-        name (str):
-            Output only. Resource name of this Data Stream. Format:
-            properties/{property_id}/iosAppDataStreams/{stream_id}
-            Example: "properties/1000/iosAppDataStreams/2000".
-        firebase_app_id (str):
-            Output only. ID of the corresponding iOS app
-            in Firebase, if any. This ID can change if the
-            iOS app is deleted and recreated.
-        create_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. Time when this stream was
-            originally created.
-        update_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. Time when stream payload fields
-            were last updated.
-        bundle_id (str):
-            Required. Immutable. The Apple App Store
-            Bundle ID for the app Example:
-            "com.example.myiosapp".
-        display_name (str):
-            Human-readable display name for the Data
-            Stream.
-            The max allowed display name length is 255
-            UTF-16 code units.
-    """
-
-    name = proto.Field(proto.STRING, number=1,)
-    firebase_app_id = proto.Field(proto.STRING, number=2,)
-    create_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
-    bundle_id = proto.Field(proto.STRING, number=5,)
-    display_name = proto.Field(proto.STRING, number=6,)
-
-
-class WebDataStream(proto.Message):
-    r"""A resource message representing a Google Analytics web
-    stream.
-
-    Attributes:
-        name (str):
-            Output only. Resource name of this Data Stream. Format:
-            properties/{property_id}/webDataStreams/{stream_id} Example:
-            "properties/1000/webDataStreams/2000".
-        measurement_id (str):
-            Output only. Analytics "Measurement ID",
-            without the "G-" prefix. Example: "G-1A2BCD345E"
-            would just be "1A2BCD345E".
-        firebase_app_id (str):
-            Output only. ID of the corresponding web app
-            in Firebase, if any. This ID can change if the
-            web app is deleted and recreated.
-        create_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. Time when this stream was
-            originally created.
-        update_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. Time when stream payload fields
-            were last updated.
-        default_uri (str):
-            Immutable. Domain name of the web app being
-            measured, or empty. Example:
-            "http://www.google.com",
-            "https://www.google.com".
-        display_name (str):
-            Required. Human-readable display name for the
-            Data Stream.
-            The max allowed display name length is 255
-            UTF-16 code units.
-    """
-
-    name = proto.Field(proto.STRING, number=1,)
-    measurement_id = proto.Field(proto.STRING, number=2,)
-    firebase_app_id = proto.Field(proto.STRING, number=3,)
-    create_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
-    default_uri = proto.Field(proto.STRING, number=6,)
-    display_name = proto.Field(proto.STRING, number=7,)
 
 
 class DataStream(proto.Message):
@@ -626,13 +502,15 @@ class FirebaseLink(proto.Message):
 
 class GlobalSiteTag(proto.Message):
     r"""Read-only resource with the tag for sending data from a
-    website to a WebDataStream.
+    website to a DataStream. Only present for web DataStream
+    resources.
 
     Attributes:
         name (str):
-            Output only. Resource name for this
-            GlobalSiteTag resource. Format:
-            properties/{propertyId}/globalSiteTag
+            Output only. Resource name for this GlobalSiteTag resource.
+            Format:
+            properties/{property_id}/dataStreams/{stream_id}/globalSiteTag
+            Example: "properties/123/dataStreams/456/globalSiteTag".
         snippet (str):
             Immutable. JavaScript code snippet to be
             pasted as the first item into the head tag of
@@ -880,21 +758,6 @@ class ChangeHistoryChange(proto.Message):
                 history.
 
                 This field is a member of `oneof`_ ``resource``.
-            web_data_stream (google.analytics.admin_v1alpha.types.WebDataStream):
-                A snapshot of a WebDataStream resource in
-                change history.
-
-                This field is a member of `oneof`_ ``resource``.
-            android_app_data_stream (google.analytics.admin_v1alpha.types.AndroidAppDataStream):
-                A snapshot of an AndroidAppDataStream
-                resource in change history.
-
-                This field is a member of `oneof`_ ``resource``.
-            ios_app_data_stream (google.analytics.admin_v1alpha.types.IosAppDataStream):
-                A snapshot of an IosAppDataStream resource in
-                change history.
-
-                This field is a member of `oneof`_ ``resource``.
             firebase_link (google.analytics.admin_v1alpha.types.FirebaseLink):
                 A snapshot of a FirebaseLink resource in
                 change history.
@@ -946,6 +809,11 @@ class ChangeHistoryChange(proto.Message):
                 resource in change history.
 
                 This field is a member of `oneof`_ ``resource``.
+            data_stream (google.analytics.admin_v1alpha.types.DataStream):
+                A snapshot of a DataStream resource in change
+                history.
+
+                This field is a member of `oneof`_ ``resource``.
         """
 
         account = proto.Field(
@@ -953,15 +821,6 @@ class ChangeHistoryChange(proto.Message):
         )
         property = proto.Field(
             proto.MESSAGE, number=2, oneof="resource", message="Property",
-        )
-        web_data_stream = proto.Field(
-            proto.MESSAGE, number=3, oneof="resource", message="WebDataStream",
-        )
-        android_app_data_stream = proto.Field(
-            proto.MESSAGE, number=4, oneof="resource", message="AndroidAppDataStream",
-        )
-        ios_app_data_stream = proto.Field(
-            proto.MESSAGE, number=5, oneof="resource", message="IosAppDataStream",
         )
         firebase_link = proto.Field(
             proto.MESSAGE, number=6, oneof="resource", message="FirebaseLink",
@@ -1001,6 +860,9 @@ class ChangeHistoryChange(proto.Message):
         )
         data_retention_settings = proto.Field(
             proto.MESSAGE, number=15, oneof="resource", message="DataRetentionSettings",
+        )
+        data_stream = proto.Field(
+            proto.MESSAGE, number=18, oneof="resource", message="DataStream",
         )
 
     resource = proto.Field(proto.STRING, number=1,)
@@ -1298,6 +1160,11 @@ class CustomMetric(proto.Message):
         scope (google.analytics.admin_v1alpha.types.CustomMetric.MetricScope):
             Required. Immutable. The scope of this custom
             metric.
+        restricted_metric_type (Sequence[google.analytics.admin_v1alpha.types.CustomMetric.RestrictedMetricType]):
+            Optional. Types of restricted data that this
+            metric may contain. Required for metrics with
+            CURRENCY measurement unit. Must be empty for
+            metrics with a non-CURRENCY measurement unit.
     """
 
     class MeasurementUnit(proto.Enum):
@@ -1322,12 +1189,23 @@ class CustomMetric(proto.Message):
         METRIC_SCOPE_UNSPECIFIED = 0
         EVENT = 1
 
+    class RestrictedMetricType(proto.Enum):
+        r"""Labels that mark the data in this custom metric as data that
+        should be restricted to specific users.
+        """
+        RESTRICTED_METRIC_TYPE_UNSPECIFIED = 0
+        COST_DATA = 1
+        REVENUE_DATA = 2
+
     name = proto.Field(proto.STRING, number=1,)
     parameter_name = proto.Field(proto.STRING, number=2,)
     display_name = proto.Field(proto.STRING, number=3,)
     description = proto.Field(proto.STRING, number=4,)
     measurement_unit = proto.Field(proto.ENUM, number=5, enum=MeasurementUnit,)
     scope = proto.Field(proto.ENUM, number=6, enum=MetricScope,)
+    restricted_metric_type = proto.RepeatedField(
+        proto.ENUM, number=8, enum=RestrictedMetricType,
+    )
 
 
 class DataRetentionSettings(proto.Message):

@@ -86,12 +86,8 @@ def print_resource(resource):
         print("  Property resource")
     elif resource.account:
         print("  Account resource")
-    elif resource.web_data_stream:
-        print("  WebDataStream resource")
-    elif resource.android_app_data_stream:
-        print("  AndroidAppDataStream resource")
-    elif resource.ios_app_data_stream:
-        print("  IosAppDataStream resource")
+    elif resource.data_stream:
+        print("  DataStream resource")
     elif resource.firebase_link:
         print("  FirebaseLink resource")
     elif resource.google_ads_link:

@@ -51,22 +51,6 @@ __protobuf__ = proto.module(
         "BatchUpdateUserLinksResponse",
         "DeleteUserLinkRequest",
         "BatchDeleteUserLinksRequest",
-        "GetWebDataStreamRequest",
-        "DeleteWebDataStreamRequest",
-        "UpdateWebDataStreamRequest",
-        "CreateWebDataStreamRequest",
-        "ListWebDataStreamsRequest",
-        "ListWebDataStreamsResponse",
-        "GetIosAppDataStreamRequest",
-        "DeleteIosAppDataStreamRequest",
-        "UpdateIosAppDataStreamRequest",
-        "ListIosAppDataStreamsRequest",
-        "ListIosAppDataStreamsResponse",
-        "GetAndroidAppDataStreamRequest",
-        "DeleteAndroidAppDataStreamRequest",
-        "UpdateAndroidAppDataStreamRequest",
-        "ListAndroidAppDataStreamsRequest",
-        "ListAndroidAppDataStreamsResponse",
         "CreateFirebaseLinkRequest",
         "DeleteFirebaseLinkRequest",
         "ListFirebaseLinksRequest",
@@ -277,15 +261,19 @@ class ListPropertiesRequest(proto.Message):
         filter (str):
             Required. An expression for filtering the results of the
             request. Fields eligible for filtering are:
-            ``parent:``\ (The resource name of the parent account) or
-            ``firebase_project:``\ (The id or number of the linked
-            firebase project). Some examples of filters:
+            ``parent:``\ (The resource name of the parent
+            account/property) or ``ancestor:``\ (The resource name of
+            the parent account) or ``firebase_project:``\ (The id or
+            number of the linked firebase project). Some examples of
+            filters:
 
             ::
 
                | Filter                      | Description                               |
                |-----------------------------|-------------------------------------------|
-               | parent:accounts/123         | The account with account id: 123.         |
+               | parent:accounts/123         | The account with account id: 123.       |
+               | parent:properties/123       | The property with property id: 123.       |
+               | ancestor:accounts/123       | The account with account id: 123.         |
                | firebase_project:project-id | The firebase project with id: project-id. |
                | firebase_project:123        | The firebase project with number: 123.    |
         page_size (int):
@@ -672,319 +660,6 @@ class BatchDeleteUserLinksRequest(proto.Message):
     )
 
 
-class GetWebDataStreamRequest(proto.Message):
-    r"""Request message for GetWebDataStream RPC.
-
-    Attributes:
-        name (str):
-            Required. The name of the web data stream to lookup. Format:
-            properties/{property_id}/webDataStreams/{stream_id} Example:
-            "properties/123/webDataStreams/456".
-    """
-
-    name = proto.Field(proto.STRING, number=1,)
-
-
-class DeleteWebDataStreamRequest(proto.Message):
-    r"""Request message for DeleteWebDataStream RPC.
-
-    Attributes:
-        name (str):
-            Required. The name of the web data stream to delete. Format:
-            properties/{property_id}/webDataStreams/{stream_id} Example:
-            "properties/123/webDataStreams/456".
-    """
-
-    name = proto.Field(proto.STRING, number=1,)
-
-
-class UpdateWebDataStreamRequest(proto.Message):
-    r"""Request message for UpdateWebDataStream RPC.
-
-    Attributes:
-        web_data_stream (google.analytics.admin_v1alpha.types.WebDataStream):
-            Required. The web stream to update. The ``name`` field is
-            used to identify the web stream to be updated.
-        update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. The list of fields to be updated. Field names must
-            be in snake case (e.g., "field_to_update"). Omitted fields
-            will not be updated. To replace the entire entity, use one
-            path with the string "*" to match all fields.
-    """
-
-    web_data_stream = proto.Field(
-        proto.MESSAGE, number=1, message=resources.WebDataStream,
-    )
-    update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
-    )
-
-
-class CreateWebDataStreamRequest(proto.Message):
-    r"""Request message for CreateWebDataStream RPC.
-
-    Attributes:
-        web_data_stream (google.analytics.admin_v1alpha.types.WebDataStream):
-            Required. The web stream to create.
-        parent (str):
-            Required. The parent resource where this web
-            data stream will be created. Format:
-            properties/123
-    """
-
-    web_data_stream = proto.Field(
-        proto.MESSAGE, number=1, message=resources.WebDataStream,
-    )
-    parent = proto.Field(proto.STRING, number=2,)
-
-
-class ListWebDataStreamsRequest(proto.Message):
-    r"""Request message for ListWebDataStreams RPC.
-
-    Attributes:
-        parent (str):
-            Required. The name of the parent property.
-            For example, to list results of web streams
-            under the property with Id 123: "properties/123".
-        page_size (int):
-            The maximum number of resources to return.
-            If unspecified, at most 50 resources will be
-            returned. The maximum value is 200; (higher
-            values will be coerced to the maximum)
-        page_token (str):
-            A page token, received from a previous
-            ``ListWebDataStreams`` call. Provide this to retrieve the
-            subsequent page. When paginating, all other parameters
-            provided to ``ListWebDataStreams`` must match the call that
-            provided the page token.
-    """
-
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-
-
-class ListWebDataStreamsResponse(proto.Message):
-    r"""Request message for ListWebDataStreams RPC.
-
-    Attributes:
-        web_data_streams (Sequence[google.analytics.admin_v1alpha.types.WebDataStream]):
-            Results that matched the filter criteria and
-            were accessible to the caller.
-        next_page_token (str):
-            A token, which can be sent as ``page_token`` to retrieve the
-            next page. If this field is omitted, there are no subsequent
-            pages.
-    """
-
-    @property
-    def raw_page(self):
-        return self
-
-    web_data_streams = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=resources.WebDataStream,
-    )
-    next_page_token = proto.Field(proto.STRING, number=2,)
-
-
-class GetIosAppDataStreamRequest(proto.Message):
-    r"""Request message for GetIosAppDataStream RPC.
-
-    Attributes:
-        name (str):
-            Required. The name of the iOS app data stream to lookup.
-            Format:
-            properties/{property_id}/iosAppDataStreams/{stream_id}
-            Example: "properties/123/iosAppDataStreams/456".
-    """
-
-    name = proto.Field(proto.STRING, number=1,)
-
-
-class DeleteIosAppDataStreamRequest(proto.Message):
-    r"""Request message for DeleteIosAppDataStream RPC.
-
-    Attributes:
-        name (str):
-            Required. The name of the iOS app data stream to delete.
-            Format:
-            properties/{property_id}/iosAppDataStreams/{stream_id}
-            Example: "properties/123/iosAppDataStreams/456".
-    """
-
-    name = proto.Field(proto.STRING, number=1,)
-
-
-class UpdateIosAppDataStreamRequest(proto.Message):
-    r"""Request message for UpdateIosAppDataStream RPC.
-
-    Attributes:
-        ios_app_data_stream (google.analytics.admin_v1alpha.types.IosAppDataStream):
-            Required. The iOS app stream to update. The ``name`` field
-            is used to identify the iOS app stream to be updated.
-        update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. The list of fields to be updated. Field names must
-            be in snake case (e.g., "field_to_update"). Omitted fields
-            will not be updated. To replace the entire entity, use one
-            path with the string "*" to match all fields.
-    """
-
-    ios_app_data_stream = proto.Field(
-        proto.MESSAGE, number=1, message=resources.IosAppDataStream,
-    )
-    update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
-    )
-
-
-class ListIosAppDataStreamsRequest(proto.Message):
-    r"""Request message for ListIosAppDataStreams RPC.
-
-    Attributes:
-        parent (str):
-            Required. The name of the parent property.
-            For example, to list results of app streams
-            under the property with Id 123: "properties/123".
-        page_size (int):
-            The maximum number of resources to return.
-            If unspecified, at most 50 resources will be
-            returned. The maximum value is 200; (higher
-            values will be coerced to the maximum)
-        page_token (str):
-            A page token, received from a previous
-            ``ListIosAppDataStreams`` call. Provide this to retrieve the
-            subsequent page. When paginating, all other parameters
-            provided to ``ListIosAppDataStreams`` must match the call
-            that provided the page token.
-    """
-
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-
-
-class ListIosAppDataStreamsResponse(proto.Message):
-    r"""Request message for ListIosAppDataStreams RPC.
-
-    Attributes:
-        ios_app_data_streams (Sequence[google.analytics.admin_v1alpha.types.IosAppDataStream]):
-            Results that matched the filter criteria and
-            were accessible to the caller.
-        next_page_token (str):
-            A token, which can be sent as ``page_token`` to retrieve the
-            next page. If this field is omitted, there are no subsequent
-            pages.
-    """
-
-    @property
-    def raw_page(self):
-        return self
-
-    ios_app_data_streams = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=resources.IosAppDataStream,
-    )
-    next_page_token = proto.Field(proto.STRING, number=2,)
-
-
-class GetAndroidAppDataStreamRequest(proto.Message):
-    r"""Request message for GetAndroidAppDataStream RPC.
-
-    Attributes:
-        name (str):
-            Required. The name of the android app data stream to lookup.
-            Format:
-            properties/{property_id}/androidAppDataStreams/{stream_id}
-            Example: "properties/123/androidAppDataStreams/456".
-    """
-
-    name = proto.Field(proto.STRING, number=1,)
-
-
-class DeleteAndroidAppDataStreamRequest(proto.Message):
-    r"""Request message for DeleteAndroidAppDataStream RPC.
-
-    Attributes:
-        name (str):
-            Required. The name of the android app data stream to delete.
-            Format:
-            properties/{property_id}/androidAppDataStreams/{stream_id}
-            Example: "properties/123/androidAppDataStreams/456".
-    """
-
-    name = proto.Field(proto.STRING, number=1,)
-
-
-class UpdateAndroidAppDataStreamRequest(proto.Message):
-    r"""Request message for UpdateAndroidAppDataStream RPC.
-
-    Attributes:
-        android_app_data_stream (google.analytics.admin_v1alpha.types.AndroidAppDataStream):
-            Required. The android app stream to update. The ``name``
-            field is used to identify the android app stream to be
-            updated.
-        update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. The list of fields to be updated. Field names must
-            be in snake case (e.g., "field_to_update"). Omitted fields
-            will not be updated. To replace the entire entity, use one
-            path with the string "*" to match all fields.
-    """
-
-    android_app_data_stream = proto.Field(
-        proto.MESSAGE, number=1, message=resources.AndroidAppDataStream,
-    )
-    update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
-    )
-
-
-class ListAndroidAppDataStreamsRequest(proto.Message):
-    r"""Request message for ListAndroidAppDataStreams RPC.
-
-    Attributes:
-        parent (str):
-            Required. The name of the parent property.
-            For example, to limit results to app streams
-            under the property with Id 123: "properties/123".
-        page_size (int):
-            The maximum number of resources to return.
-            If unspecified, at most 50 resources will be
-            returned. The maximum value is 200; (higher
-            values will be coerced to the maximum)
-        page_token (str):
-            A page token, received from a previous call. Provide this to
-            retrieve the subsequent page. When paginating, all other
-            parameters provided to ``ListAndroidAppDataStreams`` must
-            match the call that provided the page token.
-    """
-
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-
-
-class ListAndroidAppDataStreamsResponse(proto.Message):
-    r"""Request message for ListAndroidDataStreams RPC.
-
-    Attributes:
-        android_app_data_streams (Sequence[google.analytics.admin_v1alpha.types.AndroidAppDataStream]):
-            Results that matched the filter criteria and
-            were accessible to the caller.
-        next_page_token (str):
-            A token, which can be sent as ``page_token`` to retrieve the
-            next page. If this field is omitted, there are no subsequent
-            pages.
-    """
-
-    @property
-    def raw_page(self):
-        return self
-
-    android_app_data_streams = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=resources.AndroidAppDataStream,
-    )
-    next_page_token = proto.Field(proto.STRING, number=2,)
-
-
 class CreateFirebaseLinkRequest(proto.Message):
     r"""Request message for CreateFirebaseLink RPC
 
@@ -1073,8 +748,8 @@ class GetGlobalSiteTagRequest(proto.Message):
         name (str):
             Required. The name of the site tag to lookup. Note that site
             tags are singletons and do not have unique IDs. Format:
-            properties/{property_id}/webDataStreams/{stream_id}/globalSiteTag
-            Example: "properties/123/webDataStreams/456/globalSiteTag".
+            properties/{property_id}/dataStreams/{stream_id}/globalSiteTag
+            Example: "properties/123/dataStreams/456/globalSiteTag".
     """
 
     name = proto.Field(proto.STRING, number=1,)
@@ -1354,10 +1029,7 @@ class GetMeasurementProtocolSecretRequest(proto.Message):
         name (str):
             Required. The name of the measurement
             protocol secret to lookup. Format:
-            properties/{property}/webDataStreams/{webDataStream}/measurementProtocolSecrets/{measurementProtocolSecret}
-            Note: Any type of stream (WebDataStream,
-            IosAppDataStream, AndroidAppDataStream) may be a
-            parent.
+            properties/{property}/dataStreams/{dataStream}/measurementProtocolSecrets/{measurementProtocolSecret}
     """
 
     name = proto.Field(proto.STRING, number=1,)
@@ -1369,11 +1041,8 @@ class CreateMeasurementProtocolSecretRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The parent resource where this
-            secret will be created. Any type of stream
-            (WebDataStream, IosAppDataStream,
-            AndroidAppDataStream) may be a parent.
-            Format:
-            properties/{property}/webDataStreams/{webDataStream}
+            secret will be created. Format:
+            properties/{property}/dataStreams/{dataStream}
         measurement_protocol_secret (google.analytics.admin_v1alpha.types.MeasurementProtocolSecret):
             Required. The measurement protocol secret to
             create.
@@ -1392,10 +1061,7 @@ class DeleteMeasurementProtocolSecretRequest(proto.Message):
         name (str):
             Required. The name of the
             MeasurementProtocolSecret to delete. Format:
-            properties/{property}/webDataStreams/{webDataStream}/measurementProtocolSecrets/{measurementProtocolSecret}
-            Note: Any type of stream (WebDataStream,
-            IosAppDataStream, AndroidAppDataStream) may be a
-            parent.
+            properties/{property}/dataStreams/{dataStream}/measurementProtocolSecrets/{measurementProtocolSecret}
     """
 
     name = proto.Field(proto.STRING, number=1,)
@@ -1427,11 +1093,8 @@ class ListMeasurementProtocolSecretsRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The resource name of the parent
-            stream. Any type of stream (WebDataStream,
-            IosAppDataStream, AndroidAppDataStream) may be a
-            parent.
-            Format:
-            properties/{property}/webDataStreams/{webDataStream}/measurementProtocolSecrets
+            stream. Format:
+            properties/{property}/dataStreams/{dataStream}/measurementProtocolSecrets
         page_size (int):
             The maximum number of resources to return.
             If unspecified, at most 10 resources will be

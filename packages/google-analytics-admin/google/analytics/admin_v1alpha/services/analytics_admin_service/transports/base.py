@@ -126,20 +126,20 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.get_account: gapic_v1.method.wrap_method(
-                self.get_account, default_timeout=60.0, client_info=client_info,
+                self.get_account, default_timeout=None, client_info=client_info,
             ),
             self.list_accounts: gapic_v1.method.wrap_method(
-                self.list_accounts, default_timeout=60.0, client_info=client_info,
+                self.list_accounts, default_timeout=None, client_info=client_info,
             ),
             self.delete_account: gapic_v1.method.wrap_method(
-                self.delete_account, default_timeout=60.0, client_info=client_info,
+                self.delete_account, default_timeout=None, client_info=client_info,
             ),
             self.update_account: gapic_v1.method.wrap_method(
-                self.update_account, default_timeout=60.0, client_info=client_info,
+                self.update_account, default_timeout=None, client_info=client_info,
             ),
             self.provision_account_ticket: gapic_v1.method.wrap_method(
                 self.provision_account_ticket,
-                default_timeout=60.0,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.list_account_summaries: gapic_v1.method.wrap_method(
@@ -148,155 +148,92 @@ class AnalyticsAdminServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.get_property: gapic_v1.method.wrap_method(
-                self.get_property, default_timeout=60.0, client_info=client_info,
+                self.get_property, default_timeout=None, client_info=client_info,
             ),
             self.list_properties: gapic_v1.method.wrap_method(
-                self.list_properties, default_timeout=60.0, client_info=client_info,
+                self.list_properties, default_timeout=None, client_info=client_info,
             ),
             self.create_property: gapic_v1.method.wrap_method(
-                self.create_property, default_timeout=60.0, client_info=client_info,
+                self.create_property, default_timeout=None, client_info=client_info,
             ),
             self.delete_property: gapic_v1.method.wrap_method(
-                self.delete_property, default_timeout=60.0, client_info=client_info,
+                self.delete_property, default_timeout=None, client_info=client_info,
             ),
             self.update_property: gapic_v1.method.wrap_method(
-                self.update_property, default_timeout=60.0, client_info=client_info,
+                self.update_property, default_timeout=None, client_info=client_info,
             ),
             self.get_user_link: gapic_v1.method.wrap_method(
-                self.get_user_link, default_timeout=60.0, client_info=client_info,
+                self.get_user_link, default_timeout=None, client_info=client_info,
             ),
             self.batch_get_user_links: gapic_v1.method.wrap_method(
                 self.batch_get_user_links,
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.list_user_links: gapic_v1.method.wrap_method(
-                self.list_user_links, default_timeout=60.0, client_info=client_info,
-            ),
-            self.audit_user_links: gapic_v1.method.wrap_method(
-                self.audit_user_links, default_timeout=60.0, client_info=client_info,
-            ),
-            self.create_user_link: gapic_v1.method.wrap_method(
-                self.create_user_link, default_timeout=60.0, client_info=client_info,
-            ),
-            self.batch_create_user_links: gapic_v1.method.wrap_method(
-                self.batch_create_user_links,
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.update_user_link: gapic_v1.method.wrap_method(
-                self.update_user_link, default_timeout=60.0, client_info=client_info,
-            ),
-            self.batch_update_user_links: gapic_v1.method.wrap_method(
-                self.batch_update_user_links,
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.delete_user_link: gapic_v1.method.wrap_method(
-                self.delete_user_link, default_timeout=60.0, client_info=client_info,
-            ),
-            self.batch_delete_user_links: gapic_v1.method.wrap_method(
-                self.batch_delete_user_links,
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.get_web_data_stream: gapic_v1.method.wrap_method(
-                self.get_web_data_stream, default_timeout=60.0, client_info=client_info,
-            ),
-            self.delete_web_data_stream: gapic_v1.method.wrap_method(
-                self.delete_web_data_stream,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_web_data_stream: gapic_v1.method.wrap_method(
-                self.update_web_data_stream,
-                default_timeout=60.0,
+            self.list_user_links: gapic_v1.method.wrap_method(
+                self.list_user_links, default_timeout=None, client_info=client_info,
+            ),
+            self.audit_user_links: gapic_v1.method.wrap_method(
+                self.audit_user_links, default_timeout=None, client_info=client_info,
+            ),
+            self.create_user_link: gapic_v1.method.wrap_method(
+                self.create_user_link, default_timeout=None, client_info=client_info,
+            ),
+            self.batch_create_user_links: gapic_v1.method.wrap_method(
+                self.batch_create_user_links,
+                default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_web_data_stream: gapic_v1.method.wrap_method(
-                self.create_web_data_stream,
-                default_timeout=60.0,
+            self.update_user_link: gapic_v1.method.wrap_method(
+                self.update_user_link, default_timeout=None, client_info=client_info,
+            ),
+            self.batch_update_user_links: gapic_v1.method.wrap_method(
+                self.batch_update_user_links,
+                default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_web_data_streams: gapic_v1.method.wrap_method(
-                self.list_web_data_streams,
-                default_timeout=60.0,
-                client_info=client_info,
+            self.delete_user_link: gapic_v1.method.wrap_method(
+                self.delete_user_link, default_timeout=None, client_info=client_info,
             ),
-            self.get_ios_app_data_stream: gapic_v1.method.wrap_method(
-                self.get_ios_app_data_stream,
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.delete_ios_app_data_stream: gapic_v1.method.wrap_method(
-                self.delete_ios_app_data_stream,
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.update_ios_app_data_stream: gapic_v1.method.wrap_method(
-                self.update_ios_app_data_stream,
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.list_ios_app_data_streams: gapic_v1.method.wrap_method(
-                self.list_ios_app_data_streams,
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.get_android_app_data_stream: gapic_v1.method.wrap_method(
-                self.get_android_app_data_stream,
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.delete_android_app_data_stream: gapic_v1.method.wrap_method(
-                self.delete_android_app_data_stream,
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.update_android_app_data_stream: gapic_v1.method.wrap_method(
-                self.update_android_app_data_stream,
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.list_android_app_data_streams: gapic_v1.method.wrap_method(
-                self.list_android_app_data_streams,
-                default_timeout=60.0,
+            self.batch_delete_user_links: gapic_v1.method.wrap_method(
+                self.batch_delete_user_links,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.create_firebase_link: gapic_v1.method.wrap_method(
                 self.create_firebase_link,
-                default_timeout=60.0,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.delete_firebase_link: gapic_v1.method.wrap_method(
                 self.delete_firebase_link,
-                default_timeout=60.0,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.list_firebase_links: gapic_v1.method.wrap_method(
-                self.list_firebase_links, default_timeout=60.0, client_info=client_info,
+                self.list_firebase_links, default_timeout=None, client_info=client_info,
             ),
             self.get_global_site_tag: gapic_v1.method.wrap_method(
-                self.get_global_site_tag, default_timeout=60.0, client_info=client_info,
+                self.get_global_site_tag, default_timeout=None, client_info=client_info,
             ),
             self.create_google_ads_link: gapic_v1.method.wrap_method(
                 self.create_google_ads_link,
-                default_timeout=60.0,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.update_google_ads_link: gapic_v1.method.wrap_method(
                 self.update_google_ads_link,
-                default_timeout=60.0,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.delete_google_ads_link: gapic_v1.method.wrap_method(
                 self.delete_google_ads_link,
-                default_timeout=60.0,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.list_google_ads_links: gapic_v1.method.wrap_method(
                 self.list_google_ads_links,
-                default_timeout=60.0,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.get_data_sharing_settings: gapic_v1.method.wrap_method(
@@ -719,136 +656,6 @@ class AnalyticsAdminServiceTransport(abc.ABC):
     ) -> Callable[
         [analytics_admin.BatchDeleteUserLinksRequest],
         Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def get_web_data_stream(
-        self,
-    ) -> Callable[
-        [analytics_admin.GetWebDataStreamRequest],
-        Union[resources.WebDataStream, Awaitable[resources.WebDataStream]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def delete_web_data_stream(
-        self,
-    ) -> Callable[
-        [analytics_admin.DeleteWebDataStreamRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def update_web_data_stream(
-        self,
-    ) -> Callable[
-        [analytics_admin.UpdateWebDataStreamRequest],
-        Union[resources.WebDataStream, Awaitable[resources.WebDataStream]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def create_web_data_stream(
-        self,
-    ) -> Callable[
-        [analytics_admin.CreateWebDataStreamRequest],
-        Union[resources.WebDataStream, Awaitable[resources.WebDataStream]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def list_web_data_streams(
-        self,
-    ) -> Callable[
-        [analytics_admin.ListWebDataStreamsRequest],
-        Union[
-            analytics_admin.ListWebDataStreamsResponse,
-            Awaitable[analytics_admin.ListWebDataStreamsResponse],
-        ],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def get_ios_app_data_stream(
-        self,
-    ) -> Callable[
-        [analytics_admin.GetIosAppDataStreamRequest],
-        Union[resources.IosAppDataStream, Awaitable[resources.IosAppDataStream]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def delete_ios_app_data_stream(
-        self,
-    ) -> Callable[
-        [analytics_admin.DeleteIosAppDataStreamRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def update_ios_app_data_stream(
-        self,
-    ) -> Callable[
-        [analytics_admin.UpdateIosAppDataStreamRequest],
-        Union[resources.IosAppDataStream, Awaitable[resources.IosAppDataStream]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def list_ios_app_data_streams(
-        self,
-    ) -> Callable[
-        [analytics_admin.ListIosAppDataStreamsRequest],
-        Union[
-            analytics_admin.ListIosAppDataStreamsResponse,
-            Awaitable[analytics_admin.ListIosAppDataStreamsResponse],
-        ],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def get_android_app_data_stream(
-        self,
-    ) -> Callable[
-        [analytics_admin.GetAndroidAppDataStreamRequest],
-        Union[
-            resources.AndroidAppDataStream, Awaitable[resources.AndroidAppDataStream]
-        ],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def delete_android_app_data_stream(
-        self,
-    ) -> Callable[
-        [analytics_admin.DeleteAndroidAppDataStreamRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def update_android_app_data_stream(
-        self,
-    ) -> Callable[
-        [analytics_admin.UpdateAndroidAppDataStreamRequest],
-        Union[
-            resources.AndroidAppDataStream, Awaitable[resources.AndroidAppDataStream]
-        ],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def list_android_app_data_streams(
-        self,
-    ) -> Callable[
-        [analytics_admin.ListAndroidAppDataStreamsRequest],
-        Union[
-            analytics_admin.ListAndroidAppDataStreamsResponse,
-            Awaitable[analytics_admin.ListAndroidAppDataStreamsResponse],
-        ],
     ]:
         raise NotImplementedError()
 

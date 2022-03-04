@@ -115,19 +115,9 @@
                 "create_user_link"
               ]
             },
-            "CreateWebDataStream": {
-              "methods": [
-                "create_web_data_stream"
-              ]
-            },
             "DeleteAccount": {
               "methods": [
                 "delete_account"
-              ]
-            },
-            "DeleteAndroidAppDataStream": {
-              "methods": [
-                "delete_android_app_data_stream"
               ]
             },
             "DeleteConversionEvent": {
@@ -160,11 +150,6 @@
                 "delete_google_ads_link"
               ]
             },
-            "DeleteIosAppDataStream": {
-              "methods": [
-                "delete_ios_app_data_stream"
-              ]
-            },
             "DeleteMeasurementProtocolSecret": {
               "methods": [
                 "delete_measurement_protocol_secret"
@@ -180,19 +165,9 @@
                 "delete_user_link"
               ]
             },
-            "DeleteWebDataStream": {
-              "methods": [
-                "delete_web_data_stream"
-              ]
-            },
             "GetAccount": {
               "methods": [
                 "get_account"
-              ]
-            },
-            "GetAndroidAppDataStream": {
-              "methods": [
-                "get_android_app_data_stream"
               ]
             },
             "GetConversionEvent": {
@@ -245,11 +220,6 @@
                 "get_google_signals_settings"
               ]
             },
-            "GetIosAppDataStream": {
-              "methods": [
-                "get_ios_app_data_stream"
-              ]
-            },
             "GetMeasurementProtocolSecret": {
               "methods": [
                 "get_measurement_protocol_secret"
@@ -265,11 +235,6 @@
                 "get_user_link"
               ]
             },
-            "GetWebDataStream": {
-              "methods": [
-                "get_web_data_stream"
-              ]
-            },
             "ListAccountSummaries": {
               "methods": [
                 "list_account_summaries"
@@ -278,11 +243,6 @@
             "ListAccounts": {
               "methods": [
                 "list_accounts"
-              ]
-            },
-            "ListAndroidAppDataStreams": {
-              "methods": [
-                "list_android_app_data_streams"
               ]
             },
             "ListConversionEvents": {
@@ -325,11 +285,6 @@
                 "list_google_ads_links"
               ]
             },
-            "ListIosAppDataStreams": {
-              "methods": [
-                "list_ios_app_data_streams"
-              ]
-            },
             "ListMeasurementProtocolSecrets": {
               "methods": [
                 "list_measurement_protocol_secrets"
@@ -345,11 +300,6 @@
                 "list_user_links"
               ]
             },
-            "ListWebDataStreams": {
-              "methods": [
-                "list_web_data_streams"
-              ]
-            },
             "ProvisionAccountTicket": {
               "methods": [
                 "provision_account_ticket"
@@ -363,11 +313,6 @@
             "UpdateAccount": {
               "methods": [
                 "update_account"
-              ]
-            },
-            "UpdateAndroidAppDataStream": {
-              "methods": [
-                "update_android_app_data_stream"
               ]
             },
             "UpdateCustomDimension": {
@@ -405,11 +350,6 @@
                 "update_google_signals_settings"
               ]
             },
-            "UpdateIosAppDataStream": {
-              "methods": [
-                "update_ios_app_data_stream"
-              ]
-            },
             "UpdateMeasurementProtocolSecret": {
               "methods": [
                 "update_measurement_protocol_secret"
@@ -423,11 +363,6 @@
             "UpdateUserLink": {
               "methods": [
                 "update_user_link"
-              ]
-            },
-            "UpdateWebDataStream": {
-              "methods": [
-                "update_web_data_stream"
               ]
             }
           }
@@ -540,19 +475,9 @@
                 "create_user_link"
               ]
             },
-            "CreateWebDataStream": {
-              "methods": [
-                "create_web_data_stream"
-              ]
-            },
             "DeleteAccount": {
               "methods": [
                 "delete_account"
-              ]
-            },
-            "DeleteAndroidAppDataStream": {
-              "methods": [
-                "delete_android_app_data_stream"
               ]
             },
             "DeleteConversionEvent": {
@@ -585,11 +510,6 @@
                 "delete_google_ads_link"
               ]
             },
-            "DeleteIosAppDataStream": {
-              "methods": [
-                "delete_ios_app_data_stream"
-              ]
-            },
             "DeleteMeasurementProtocolSecret": {
               "methods": [
                 "delete_measurement_protocol_secret"
@@ -605,19 +525,9 @@
                 "delete_user_link"
               ]
             },
-            "DeleteWebDataStream": {
-              "methods": [
-                "delete_web_data_stream"
-              ]
-            },
             "GetAccount": {
               "methods": [
                 "get_account"
-              ]
-            },
-            "GetAndroidAppDataStream": {
-              "methods": [
-                "get_android_app_data_stream"
               ]
             },
             "GetConversionEvent": {
@@ -670,11 +580,6 @@
                 "get_google_signals_settings"
               ]
             },
-            "GetIosAppDataStream": {
-              "methods": [
-                "get_ios_app_data_stream"
-              ]
-            },
             "GetMeasurementProtocolSecret": {
               "methods": [
                 "get_measurement_protocol_secret"
@@ -690,11 +595,6 @@
                 "get_user_link"
               ]
             },
-            "GetWebDataStream": {
-              "methods": [
-                "get_web_data_stream"
-              ]
-            },
             "ListAccountSummaries": {
               "methods": [
                 "list_account_summaries"
@@ -703,11 +603,6 @@
             "ListAccounts": {
               "methods": [
                 "list_accounts"
-              ]
-            },
-            "ListAndroidAppDataStreams": {
-              "methods": [
-                "list_android_app_data_streams"
               ]
             },
             "ListConversionEvents": {
@@ -750,11 +645,6 @@
                 "list_google_ads_links"
               ]
             },
-            "ListIosAppDataStreams": {
-              "methods": [
-                "list_ios_app_data_streams"
-              ]
-            },
             "ListMeasurementProtocolSecrets": {
               "methods": [
                 "list_measurement_protocol_secrets"
@@ -770,11 +660,6 @@
                 "list_user_links"
               ]
             },
-            "ListWebDataStreams": {
-              "methods": [
-                "list_web_data_streams"
-              ]
-            },
             "ProvisionAccountTicket": {
               "methods": [
                 "provision_account_ticket"
@@ -788,11 +673,6 @@
             "UpdateAccount": {
               "methods": [
                 "update_account"
-              ]
-            },
-            "UpdateAndroidAppDataStream": {
-              "methods": [
-                "update_android_app_data_stream"
               ]
             },
             "UpdateCustomDimension": {
@@ -830,11 +710,6 @@
                 "update_google_signals_settings"
               ]
             },
-            "UpdateIosAppDataStream": {
-              "methods": [
-                "update_ios_app_data_stream"
-              ]
-            },
             "UpdateMeasurementProtocolSecret": {
               "methods": [
                 "update_measurement_protocol_secret"
@@ -848,11 +723,6 @@
             "UpdateUserLink": {
               "methods": [
                 "update_user_link"
-              ]
-            },
-            "UpdateWebDataStream": {
-              "methods": [
-                "update_web_data_stream"
               ]
             }
           }

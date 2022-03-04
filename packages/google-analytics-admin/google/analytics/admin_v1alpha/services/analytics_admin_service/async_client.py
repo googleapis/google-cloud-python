@@ -58,12 +58,6 @@ class AnalyticsAdminServiceAsyncClient:
     parse_account_summary_path = staticmethod(
         AnalyticsAdminServiceClient.parse_account_summary_path
     )
-    android_app_data_stream_path = staticmethod(
-        AnalyticsAdminServiceClient.android_app_data_stream_path
-    )
-    parse_android_app_data_stream_path = staticmethod(
-        AnalyticsAdminServiceClient.parse_android_app_data_stream_path
-    )
     conversion_event_path = staticmethod(
         AnalyticsAdminServiceClient.conversion_event_path
     )
@@ -130,12 +124,6 @@ class AnalyticsAdminServiceAsyncClient:
     parse_google_signals_settings_path = staticmethod(
         AnalyticsAdminServiceClient.parse_google_signals_settings_path
     )
-    ios_app_data_stream_path = staticmethod(
-        AnalyticsAdminServiceClient.ios_app_data_stream_path
-    )
-    parse_ios_app_data_stream_path = staticmethod(
-        AnalyticsAdminServiceClient.parse_ios_app_data_stream_path
-    )
     measurement_protocol_secret_path = staticmethod(
         AnalyticsAdminServiceClient.measurement_protocol_secret_path
     )
@@ -147,12 +135,6 @@ class AnalyticsAdminServiceAsyncClient:
     user_link_path = staticmethod(AnalyticsAdminServiceClient.user_link_path)
     parse_user_link_path = staticmethod(
         AnalyticsAdminServiceClient.parse_user_link_path
-    )
-    web_data_stream_path = staticmethod(
-        AnalyticsAdminServiceClient.web_data_stream_path
-    )
-    parse_web_data_stream_path = staticmethod(
-        AnalyticsAdminServiceClient.parse_web_data_stream_path
     )
     common_billing_account_path = staticmethod(
         AnalyticsAdminServiceClient.common_billing_account_path
@@ -385,7 +367,7 @@ class AnalyticsAdminServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.get_account,
-            default_timeout=60.0,
+            default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -460,7 +442,7 @@ class AnalyticsAdminServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.list_accounts,
-            default_timeout=60.0,
+            default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -553,7 +535,7 @@ class AnalyticsAdminServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.delete_account,
-            default_timeout=60.0,
+            default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -658,7 +640,7 @@ class AnalyticsAdminServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.update_account,
-            default_timeout=60.0,
+            default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -727,7 +709,7 @@ class AnalyticsAdminServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.provision_account_ticket,
-            default_timeout=60.0,
+            default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -883,7 +865,7 @@ class AnalyticsAdminServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.get_property,
-            default_timeout=60.0,
+            default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -962,7 +944,7 @@ class AnalyticsAdminServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.list_properties,
-            default_timeout=60.0,
+            default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -1059,7 +1041,7 @@ class AnalyticsAdminServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.create_property,
-            default_timeout=60.0,
+            default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -1156,7 +1138,7 @@ class AnalyticsAdminServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.delete_property,
-            default_timeout=60.0,
+            default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -1264,7 +1246,7 @@ class AnalyticsAdminServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.update_property,
-            default_timeout=60.0,
+            default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -1358,7 +1340,7 @@ class AnalyticsAdminServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.get_user_link,
-            default_timeout=60.0,
+            default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -1429,7 +1411,7 @@ class AnalyticsAdminServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.batch_get_user_links,
-            default_timeout=60.0,
+            default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -1523,7 +1505,7 @@ class AnalyticsAdminServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.list_user_links,
-            default_timeout=60.0,
+            default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -1612,7 +1594,7 @@ class AnalyticsAdminServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.audit_user_links,
-            default_timeout=60.0,
+            default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -1730,7 +1712,7 @@ class AnalyticsAdminServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.create_user_link,
-            default_timeout=60.0,
+            default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -1806,7 +1788,7 @@ class AnalyticsAdminServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.batch_create_user_links,
-            default_timeout=60.0,
+            default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -1894,7 +1876,7 @@ class AnalyticsAdminServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.update_user_link,
-            default_timeout=60.0,
+            default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -1966,7 +1948,7 @@ class AnalyticsAdminServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.batch_update_user_links,
-            default_timeout=60.0,
+            default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -2047,7 +2029,7 @@ class AnalyticsAdminServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.delete_user_link,
-            default_timeout=60.0,
+            default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -2111,180 +2093,6 @@ class AnalyticsAdminServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.batch_delete_user_links,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
-
-        # Send the request.
-        await rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
-        )
-
-    async def get_web_data_stream(
-        self,
-        request: Union[analytics_admin.GetWebDataStreamRequest, dict] = None,
-        *,
-        name: str = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> resources.WebDataStream:
-        r"""Lookup for a single WebDataStream
-
-        .. code-block:: python
-
-            from google.analytics import admin_v1alpha
-
-            def sample_get_web_data_stream():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.GetWebDataStreamRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                response = client.get_web_data_stream(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Union[google.analytics.admin_v1alpha.types.GetWebDataStreamRequest, dict]):
-                The request object. Request message for GetWebDataStream
-                RPC.
-            name (:class:`str`):
-                Required. The name of the web data stream to lookup.
-                Format:
-                properties/{property_id}/webDataStreams/{stream_id}
-                Example: "properties/123/webDataStreams/456"
-
-                This corresponds to the ``name`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.analytics.admin_v1alpha.types.WebDataStream:
-                A resource message representing a
-                Google Analytics web stream.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        request = analytics_admin.GetWebDataStreamRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if name is not None:
-            request.name = name
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_web_data_stream,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
-
-        # Done; return the response.
-        return response
-
-    async def delete_web_data_stream(
-        self,
-        request: Union[analytics_admin.DeleteWebDataStreamRequest, dict] = None,
-        *,
-        name: str = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> None:
-        r"""Deletes a web stream on a property.
-
-        .. code-block:: python
-
-            from google.analytics import admin_v1alpha
-
-            def sample_delete_web_data_stream():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.DeleteWebDataStreamRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                client.delete_web_data_stream(request=request)
-
-        Args:
-            request (Union[google.analytics.admin_v1alpha.types.DeleteWebDataStreamRequest, dict]):
-                The request object. Request message for
-                DeleteWebDataStream RPC.
-            name (:class:`str`):
-                Required. The name of the web data stream to delete.
-                Format:
-                properties/{property_id}/webDataStreams/{stream_id}
-                Example: "properties/123/webDataStreams/456"
-
-                This corresponds to the ``name`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-        """
-        # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        request = analytics_admin.DeleteWebDataStreamRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if name is not None:
-            request.name = name
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_web_data_stream,
             default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
         )
@@ -2292,1114 +2100,13 @@ class AnalyticsAdminServiceAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
 
         # Send the request.
         await rpc(
             request, retry=retry, timeout=timeout, metadata=metadata,
         )
-
-    async def update_web_data_stream(
-        self,
-        request: Union[analytics_admin.UpdateWebDataStreamRequest, dict] = None,
-        *,
-        web_data_stream: resources.WebDataStream = None,
-        update_mask: field_mask_pb2.FieldMask = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> resources.WebDataStream:
-        r"""Updates a web stream on a property.
-
-        .. code-block:: python
-
-            from google.analytics import admin_v1alpha
-
-            def sample_update_web_data_stream():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                web_data_stream = admin_v1alpha.WebDataStream()
-                web_data_stream.display_name = "display_name_value"
-
-                request = admin_v1alpha.UpdateWebDataStreamRequest(
-                    web_data_stream=web_data_stream,
-                )
-
-                # Make the request
-                response = client.update_web_data_stream(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Union[google.analytics.admin_v1alpha.types.UpdateWebDataStreamRequest, dict]):
-                The request object. Request message for
-                UpdateWebDataStream RPC.
-            web_data_stream (:class:`google.analytics.admin_v1alpha.types.WebDataStream`):
-                Required. The web stream to update. The ``name`` field
-                is used to identify the web stream to be updated.
-
-                This corresponds to the ``web_data_stream`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Required. The list of fields to be updated. Field names
-                must be in snake case (e.g., "field_to_update"). Omitted
-                fields will not be updated. To replace the entire
-                entity, use one path with the string "*" to match all
-                fields.
-
-                This corresponds to the ``update_mask`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.analytics.admin_v1alpha.types.WebDataStream:
-                A resource message representing a
-                Google Analytics web stream.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([web_data_stream, update_mask])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        request = analytics_admin.UpdateWebDataStreamRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if web_data_stream is not None:
-            request.web_data_stream = web_data_stream
-        if update_mask is not None:
-            request.update_mask = update_mask
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_web_data_stream,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("web_data_stream.name", request.web_data_stream.name),)
-            ),
-        )
-
-        # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
-
-        # Done; return the response.
-        return response
-
-    async def create_web_data_stream(
-        self,
-        request: Union[analytics_admin.CreateWebDataStreamRequest, dict] = None,
-        *,
-        parent: str = None,
-        web_data_stream: resources.WebDataStream = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> resources.WebDataStream:
-        r"""Creates a web stream with the specified location and
-        attributes.
-
-
-        .. code-block:: python
-
-            from google.analytics import admin_v1alpha
-
-            def sample_create_web_data_stream():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                web_data_stream = admin_v1alpha.WebDataStream()
-                web_data_stream.display_name = "display_name_value"
-
-                request = admin_v1alpha.CreateWebDataStreamRequest(
-                    web_data_stream=web_data_stream,
-                    parent="parent_value",
-                )
-
-                # Make the request
-                response = client.create_web_data_stream(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Union[google.analytics.admin_v1alpha.types.CreateWebDataStreamRequest, dict]):
-                The request object. Request message for
-                CreateWebDataStream RPC.
-            parent (:class:`str`):
-                Required. The parent resource where
-                this web data stream will be created.
-                Format: properties/123
-
-                This corresponds to the ``parent`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            web_data_stream (:class:`google.analytics.admin_v1alpha.types.WebDataStream`):
-                Required. The web stream to create.
-                This corresponds to the ``web_data_stream`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.analytics.admin_v1alpha.types.WebDataStream:
-                A resource message representing a
-                Google Analytics web stream.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent, web_data_stream])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        request = analytics_admin.CreateWebDataStreamRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if parent is not None:
-            request.parent = parent
-        if web_data_stream is not None:
-            request.web_data_stream = web_data_stream
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_web_data_stream,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
-
-        # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
-
-        # Done; return the response.
-        return response
-
-    async def list_web_data_streams(
-        self,
-        request: Union[analytics_admin.ListWebDataStreamsRequest, dict] = None,
-        *,
-        parent: str = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pagers.ListWebDataStreamsAsyncPager:
-        r"""Returns child web data streams under the specified
-        parent property.
-        Web data streams will be excluded if the caller does not
-        have access. Returns an empty list if no relevant web
-        data streams are found.
-
-
-        .. code-block:: python
-
-            from google.analytics import admin_v1alpha
-
-            def sample_list_web_data_streams():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.ListWebDataStreamsRequest(
-                    parent="parent_value",
-                )
-
-                # Make the request
-                page_result = client.list_web_data_streams(request=request)
-
-                # Handle the response
-                for response in page_result:
-                    print(response)
-
-        Args:
-            request (Union[google.analytics.admin_v1alpha.types.ListWebDataStreamsRequest, dict]):
-                The request object. Request message for
-                ListWebDataStreams RPC.
-            parent (:class:`str`):
-                Required. The name of the parent
-                property. For example, to list results
-                of web streams under the property with
-                Id 123: "properties/123"
-
-                This corresponds to the ``parent`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.analytics.admin_v1alpha.services.analytics_admin_service.pagers.ListWebDataStreamsAsyncPager:
-                Request message for
-                ListWebDataStreams RPC.
-                Iterating over this object will yield
-                results and resolve additional pages
-                automatically.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        request = analytics_admin.ListWebDataStreamsRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if parent is not None:
-            request.parent = parent
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_web_data_streams,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
-
-        # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
-
-        # This method is paged; wrap the response in a pager, which provides
-        # an `__aiter__` convenience method.
-        response = pagers.ListWebDataStreamsAsyncPager(
-            method=rpc, request=request, response=response, metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def get_ios_app_data_stream(
-        self,
-        request: Union[analytics_admin.GetIosAppDataStreamRequest, dict] = None,
-        *,
-        name: str = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> resources.IosAppDataStream:
-        r"""Lookup for a single IosAppDataStream
-
-        .. code-block:: python
-
-            from google.analytics import admin_v1alpha
-
-            def sample_get_ios_app_data_stream():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.GetIosAppDataStreamRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                response = client.get_ios_app_data_stream(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Union[google.analytics.admin_v1alpha.types.GetIosAppDataStreamRequest, dict]):
-                The request object. Request message for
-                GetIosAppDataStream RPC.
-            name (:class:`str`):
-                Required. The name of the iOS app data stream to lookup.
-                Format:
-                properties/{property_id}/iosAppDataStreams/{stream_id}
-                Example: "properties/123/iosAppDataStreams/456"
-
-                This corresponds to the ``name`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.analytics.admin_v1alpha.types.IosAppDataStream:
-                A resource message representing a
-                Google Analytics IOS app stream.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        request = analytics_admin.GetIosAppDataStreamRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if name is not None:
-            request.name = name
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_ios_app_data_stream,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
-
-        # Done; return the response.
-        return response
-
-    async def delete_ios_app_data_stream(
-        self,
-        request: Union[analytics_admin.DeleteIosAppDataStreamRequest, dict] = None,
-        *,
-        name: str = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> None:
-        r"""Deletes an iOS app stream on a property.
-
-        .. code-block:: python
-
-            from google.analytics import admin_v1alpha
-
-            def sample_delete_ios_app_data_stream():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.DeleteIosAppDataStreamRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                client.delete_ios_app_data_stream(request=request)
-
-        Args:
-            request (Union[google.analytics.admin_v1alpha.types.DeleteIosAppDataStreamRequest, dict]):
-                The request object. Request message for
-                DeleteIosAppDataStream RPC.
-            name (:class:`str`):
-                Required. The name of the iOS app data stream to delete.
-                Format:
-                properties/{property_id}/iosAppDataStreams/{stream_id}
-                Example: "properties/123/iosAppDataStreams/456"
-
-                This corresponds to the ``name`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-        """
-        # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        request = analytics_admin.DeleteIosAppDataStreamRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if name is not None:
-            request.name = name
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_ios_app_data_stream,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Send the request.
-        await rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
-        )
-
-    async def update_ios_app_data_stream(
-        self,
-        request: Union[analytics_admin.UpdateIosAppDataStreamRequest, dict] = None,
-        *,
-        ios_app_data_stream: resources.IosAppDataStream = None,
-        update_mask: field_mask_pb2.FieldMask = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> resources.IosAppDataStream:
-        r"""Updates an iOS app stream on a property.
-
-        .. code-block:: python
-
-            from google.analytics import admin_v1alpha
-
-            def sample_update_ios_app_data_stream():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                ios_app_data_stream = admin_v1alpha.IosAppDataStream()
-                ios_app_data_stream.bundle_id = "bundle_id_value"
-
-                request = admin_v1alpha.UpdateIosAppDataStreamRequest(
-                    ios_app_data_stream=ios_app_data_stream,
-                )
-
-                # Make the request
-                response = client.update_ios_app_data_stream(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Union[google.analytics.admin_v1alpha.types.UpdateIosAppDataStreamRequest, dict]):
-                The request object. Request message for
-                UpdateIosAppDataStream RPC.
-            ios_app_data_stream (:class:`google.analytics.admin_v1alpha.types.IosAppDataStream`):
-                Required. The iOS app stream to update. The ``name``
-                field is used to identify the iOS app stream to be
-                updated.
-
-                This corresponds to the ``ios_app_data_stream`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Required. The list of fields to be updated. Field names
-                must be in snake case (e.g., "field_to_update"). Omitted
-                fields will not be updated. To replace the entire
-                entity, use one path with the string "*" to match all
-                fields.
-
-                This corresponds to the ``update_mask`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.analytics.admin_v1alpha.types.IosAppDataStream:
-                A resource message representing a
-                Google Analytics IOS app stream.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([ios_app_data_stream, update_mask])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        request = analytics_admin.UpdateIosAppDataStreamRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if ios_app_data_stream is not None:
-            request.ios_app_data_stream = ios_app_data_stream
-        if update_mask is not None:
-            request.update_mask = update_mask
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_ios_app_data_stream,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("ios_app_data_stream.name", request.ios_app_data_stream.name),)
-            ),
-        )
-
-        # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
-
-        # Done; return the response.
-        return response
-
-    async def list_ios_app_data_streams(
-        self,
-        request: Union[analytics_admin.ListIosAppDataStreamsRequest, dict] = None,
-        *,
-        parent: str = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pagers.ListIosAppDataStreamsAsyncPager:
-        r"""Returns child iOS app data streams under the
-        specified parent property.
-        iOS app data streams will be excluded if the caller does
-        not have access. Returns an empty list if no relevant
-        iOS app data streams are found.
-
-
-        .. code-block:: python
-
-            from google.analytics import admin_v1alpha
-
-            def sample_list_ios_app_data_streams():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.ListIosAppDataStreamsRequest(
-                    parent="parent_value",
-                )
-
-                # Make the request
-                page_result = client.list_ios_app_data_streams(request=request)
-
-                # Handle the response
-                for response in page_result:
-                    print(response)
-
-        Args:
-            request (Union[google.analytics.admin_v1alpha.types.ListIosAppDataStreamsRequest, dict]):
-                The request object. Request message for
-                ListIosAppDataStreams RPC.
-            parent (:class:`str`):
-                Required. The name of the parent
-                property. For example, to list results
-                of app streams under the property with
-                Id 123: "properties/123"
-
-                This corresponds to the ``parent`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.analytics.admin_v1alpha.services.analytics_admin_service.pagers.ListIosAppDataStreamsAsyncPager:
-                Request message for
-                ListIosAppDataStreams RPC.
-                Iterating over this object will yield
-                results and resolve additional pages
-                automatically.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        request = analytics_admin.ListIosAppDataStreamsRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if parent is not None:
-            request.parent = parent
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_ios_app_data_streams,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
-
-        # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
-
-        # This method is paged; wrap the response in a pager, which provides
-        # an `__aiter__` convenience method.
-        response = pagers.ListIosAppDataStreamsAsyncPager(
-            method=rpc, request=request, response=response, metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def get_android_app_data_stream(
-        self,
-        request: Union[analytics_admin.GetAndroidAppDataStreamRequest, dict] = None,
-        *,
-        name: str = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> resources.AndroidAppDataStream:
-        r"""Lookup for a single AndroidAppDataStream
-
-        .. code-block:: python
-
-            from google.analytics import admin_v1alpha
-
-            def sample_get_android_app_data_stream():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.GetAndroidAppDataStreamRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                response = client.get_android_app_data_stream(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Union[google.analytics.admin_v1alpha.types.GetAndroidAppDataStreamRequest, dict]):
-                The request object. Request message for
-                GetAndroidAppDataStream RPC.
-            name (:class:`str`):
-                Required. The name of the android app data stream to
-                lookup. Format:
-                properties/{property_id}/androidAppDataStreams/{stream_id}
-                Example: "properties/123/androidAppDataStreams/456"
-
-                This corresponds to the ``name`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.analytics.admin_v1alpha.types.AndroidAppDataStream:
-                A resource message representing a
-                Google Analytics Android app stream.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        request = analytics_admin.GetAndroidAppDataStreamRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if name is not None:
-            request.name = name
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_android_app_data_stream,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
-
-        # Done; return the response.
-        return response
-
-    async def delete_android_app_data_stream(
-        self,
-        request: Union[analytics_admin.DeleteAndroidAppDataStreamRequest, dict] = None,
-        *,
-        name: str = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> None:
-        r"""Deletes an android app stream on a property.
-
-        .. code-block:: python
-
-            from google.analytics import admin_v1alpha
-
-            def sample_delete_android_app_data_stream():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.DeleteAndroidAppDataStreamRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                client.delete_android_app_data_stream(request=request)
-
-        Args:
-            request (Union[google.analytics.admin_v1alpha.types.DeleteAndroidAppDataStreamRequest, dict]):
-                The request object. Request message for
-                DeleteAndroidAppDataStream RPC.
-            name (:class:`str`):
-                Required. The name of the android app data stream to
-                delete. Format:
-                properties/{property_id}/androidAppDataStreams/{stream_id}
-                Example: "properties/123/androidAppDataStreams/456"
-
-                This corresponds to the ``name`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-        """
-        # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        request = analytics_admin.DeleteAndroidAppDataStreamRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if name is not None:
-            request.name = name
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_android_app_data_stream,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Send the request.
-        await rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
-        )
-
-    async def update_android_app_data_stream(
-        self,
-        request: Union[analytics_admin.UpdateAndroidAppDataStreamRequest, dict] = None,
-        *,
-        android_app_data_stream: resources.AndroidAppDataStream = None,
-        update_mask: field_mask_pb2.FieldMask = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> resources.AndroidAppDataStream:
-        r"""Updates an android app stream on a property.
-
-        .. code-block:: python
-
-            from google.analytics import admin_v1alpha
-
-            def sample_update_android_app_data_stream():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.UpdateAndroidAppDataStreamRequest(
-                )
-
-                # Make the request
-                response = client.update_android_app_data_stream(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Union[google.analytics.admin_v1alpha.types.UpdateAndroidAppDataStreamRequest, dict]):
-                The request object. Request message for
-                UpdateAndroidAppDataStream RPC.
-            android_app_data_stream (:class:`google.analytics.admin_v1alpha.types.AndroidAppDataStream`):
-                Required. The android app stream to update. The ``name``
-                field is used to identify the android app stream to be
-                updated.
-
-                This corresponds to the ``android_app_data_stream`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Required. The list of fields to be updated. Field names
-                must be in snake case (e.g., "field_to_update"). Omitted
-                fields will not be updated. To replace the entire
-                entity, use one path with the string "*" to match all
-                fields.
-
-                This corresponds to the ``update_mask`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.analytics.admin_v1alpha.types.AndroidAppDataStream:
-                A resource message representing a
-                Google Analytics Android app stream.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([android_app_data_stream, update_mask])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        request = analytics_admin.UpdateAndroidAppDataStreamRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if android_app_data_stream is not None:
-            request.android_app_data_stream = android_app_data_stream
-        if update_mask is not None:
-            request.update_mask = update_mask
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_android_app_data_stream,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (
-                    (
-                        "android_app_data_stream.name",
-                        request.android_app_data_stream.name,
-                    ),
-                )
-            ),
-        )
-
-        # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
-
-        # Done; return the response.
-        return response
-
-    async def list_android_app_data_streams(
-        self,
-        request: Union[analytics_admin.ListAndroidAppDataStreamsRequest, dict] = None,
-        *,
-        parent: str = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pagers.ListAndroidAppDataStreamsAsyncPager:
-        r"""Returns child android app streams under the specified
-        parent property.
-        Android app streams will be excluded if the caller does
-        not have access. Returns an empty list if no relevant
-        android app streams are found.
-
-
-        .. code-block:: python
-
-            from google.analytics import admin_v1alpha
-
-            def sample_list_android_app_data_streams():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.ListAndroidAppDataStreamsRequest(
-                    parent="parent_value",
-                )
-
-                # Make the request
-                page_result = client.list_android_app_data_streams(request=request)
-
-                # Handle the response
-                for response in page_result:
-                    print(response)
-
-        Args:
-            request (Union[google.analytics.admin_v1alpha.types.ListAndroidAppDataStreamsRequest, dict]):
-                The request object. Request message for
-                ListAndroidAppDataStreams RPC.
-            parent (:class:`str`):
-                Required. The name of the parent
-                property. For example, to limit results
-                to app streams under the property with
-                Id 123: "properties/123"
-
-                This corresponds to the ``parent`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.analytics.admin_v1alpha.services.analytics_admin_service.pagers.ListAndroidAppDataStreamsAsyncPager:
-                Request message for
-                ListAndroidDataStreams RPC.
-                Iterating over this object will yield
-                results and resolve additional pages
-                automatically.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        request = analytics_admin.ListAndroidAppDataStreamsRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if parent is not None:
-            request.parent = parent
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_android_app_data_streams,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
-
-        # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
-
-        # This method is paged; wrap the response in a pager, which provides
-        # an `__aiter__` convenience method.
-        response = pagers.ListAndroidAppDataStreamsAsyncPager(
-            method=rpc, request=request, response=response, metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
 
     async def create_firebase_link(
         self,
@@ -3487,7 +2194,7 @@ class AnalyticsAdminServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.create_firebase_link,
-            default_timeout=60.0,
+            default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -3569,7 +2276,7 @@ class AnalyticsAdminServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.delete_firebase_link,
-            default_timeout=60.0,
+            default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -3664,7 +2371,7 @@ class AnalyticsAdminServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.list_firebase_links,
-            default_timeout=60.0,
+            default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -3726,9 +2433,8 @@ class AnalyticsAdminServiceAsyncClient:
                 Required. The name of the site tag to lookup. Note that
                 site tags are singletons and do not have unique IDs.
                 Format:
-                properties/{property_id}/webDataStreams/{stream_id}/globalSiteTag
-                Example:
-                "properties/123/webDataStreams/456/globalSiteTag"
+                properties/{property_id}/dataStreams/{stream_id}/globalSiteTag
+                Example: "properties/123/dataStreams/456/globalSiteTag"
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3743,7 +2449,8 @@ class AnalyticsAdminServiceAsyncClient:
             google.analytics.admin_v1alpha.types.GlobalSiteTag:
                 Read-only resource with the tag for
                 sending data from a website to a
-                WebDataStream.
+                DataStream. Only present for web
+                DataStream resources.
 
         """
         # Create or coerce a protobuf request object.
@@ -3767,7 +2474,7 @@ class AnalyticsAdminServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.get_global_site_tag,
-            default_timeout=60.0,
+            default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -3867,7 +2574,7 @@ class AnalyticsAdminServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.create_google_ads_link,
-            default_timeout=60.0,
+            default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -3967,7 +2674,7 @@ class AnalyticsAdminServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.update_google_ads_link,
-            default_timeout=60.0,
+            default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -4050,7 +2757,7 @@ class AnalyticsAdminServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.delete_google_ads_link,
-            default_timeout=60.0,
+            default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -4143,7 +2850,7 @@ class AnalyticsAdminServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.list_google_ads_links,
-            default_timeout=60.0,
+            default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -4300,10 +3007,7 @@ class AnalyticsAdminServiceAsyncClient:
             name (:class:`str`):
                 Required. The name of the measurement
                 protocol secret to lookup. Format:
-                properties/{property}/webDataStreams/{webDataStream}/measurementProtocolSecrets/{measurementProtocolSecret}
-                Note: Any type of stream (WebDataStream,
-                IosAppDataStream, AndroidAppDataStream)
-                may be a parent.
+                properties/{property}/dataStreams/{dataStream}/measurementProtocolSecrets/{measurementProtocolSecret}
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -4398,11 +3102,8 @@ class AnalyticsAdminServiceAsyncClient:
                 ListMeasurementProtocolSecret RPC
             parent (:class:`str`):
                 Required. The resource name of the
-                parent stream. Any type of stream
-                (WebDataStream, IosAppDataStream,
-                AndroidAppDataStream) may be a parent.
-                Format:
-                properties/{property}/webDataStreams/{webDataStream}/measurementProtocolSecrets
+                parent stream. Format:
+                properties/{property}/dataStreams/{dataStream}/measurementProtocolSecrets
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -4508,11 +3209,8 @@ class AnalyticsAdminServiceAsyncClient:
                 CreateMeasurementProtocolSecret RPC
             parent (:class:`str`):
                 Required. The parent resource where
-                this secret will be created. Any type of
-                stream (WebDataStream, IosAppDataStream,
-                AndroidAppDataStream) may be a parent.
-                Format:
-                properties/{property}/webDataStreams/{webDataStream}
+                this secret will be created. Format:
+                properties/{property}/dataStreams/{dataStream}
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -4612,10 +3310,7 @@ class AnalyticsAdminServiceAsyncClient:
                 Required. The name of the
                 MeasurementProtocolSecret to delete.
                 Format:
-                properties/{property}/webDataStreams/{webDataStream}/measurementProtocolSecrets/{measurementProtocolSecret}
-                Note: Any type of stream (WebDataStream,
-                IosAppDataStream, AndroidAppDataStream)
-                may be a parent.
+                properties/{property}/dataStreams/{dataStream}/measurementProtocolSecrets/{measurementProtocolSecret}
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
