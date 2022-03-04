@@ -401,6 +401,25 @@ def test_bigtable_update_cluster():
     assert cluster.serve_nodes == 4
 
 
+def test_bigtable_cluster_disable_autoscaling():
+    # [START bigtable_api_cluster_disable_autoscaling]
+    from google.cloud.bigtable import Client
+
+    client = Client(admin=True)
+    instance = client.instance(INSTANCE_ID)
+    # Create a cluster with autoscaling enabled
+    cluster = instance.cluster(
+        CLUSTER_ID, min_serve_nodes=1, max_serve_nodes=2, cpu_utilization_percent=10
+    )
+    instance.create(clusters=[cluster])
+
+    # Disable autoscaling
+    cluster.disable_autoscaling(serve_nodes=4)
+    # [END bigtable_api_cluster_disable_autoscaling]
+
+    assert cluster.serve_nodes == 4
+
+
 def test_bigtable_create_table():
     # [START bigtable_api_create_table]
     from google.api_core import exceptions

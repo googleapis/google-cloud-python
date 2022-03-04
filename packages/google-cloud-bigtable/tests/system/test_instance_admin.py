@@ -591,6 +591,44 @@ def test_cluster_create(
     assert not cluster_2.exists()
 
 
+def test_cluster_create_w_autoscaling(
+    admin_instance_populated, admin_instance_id, skip_on_emulator,
+):
+    alt_cluster_id = f"{admin_instance_id}-c2"
+    alt_location_id = "us-central1-f"
+    min_serve_nodes = 1
+    max_serve_nodes = 8
+    cpu_utilization_percent = 20
+
+    cluster_2 = admin_instance_populated.cluster(
+        alt_cluster_id,
+        location_id=alt_location_id,
+        min_serve_nodes=min_serve_nodes,
+        max_serve_nodes=max_serve_nodes,
+        cpu_utilization_percent=cpu_utilization_percent,
+        default_storage_type=(enums.StorageType.SSD),
+    )
+    operation = cluster_2.create()
+    operation.result(timeout=60)  # Ensure the operation completes.
+
+    # Create a new object instance, reload  and make sure it is the same.
+    alt_cluster = admin_instance_populated.cluster(alt_cluster_id)
+    alt_cluster.reload()
+
+    assert cluster_2 == alt_cluster
+    assert cluster_2.location_id == alt_cluster.location_id
+    assert alt_cluster.state == enums.Cluster.State.READY
+    assert cluster_2.min_serve_nodes == alt_cluster.min_serve_nodes
+    assert cluster_2.max_serve_nodes == alt_cluster.max_serve_nodes
+    assert cluster_2.cpu_utilization_percent == alt_cluster.cpu_utilization_percent
+    assert cluster_2.default_storage_type == alt_cluster.default_storage_type
+
+    # Delete the newly created cluster and confirm
+    assert cluster_2.exists()
+    cluster_2.delete()
+    assert not cluster_2.exists()
+
+
 def test_cluster_update(
     admin_instance_populated,
     admin_cluster_id,
@@ -613,4 +651,104 @@ def test_cluster_update(
     # Put the cluster back the way it was for the other test cases.
     admin_cluster.serve_nodes = serve_nodes
     operation = admin_cluster.update()
+    operation.result(timeout=60)  # Ensure the operation completes.
+
+
+def test_cluster_update_w_autoscaling(
+    admin_instance_populated,
+    admin_cluster_id,
+    admin_cluster_with_autoscaling,
+    min_serve_nodes,
+    max_serve_nodes,
+    cpu_utilization_percent,
+    skip_on_emulator,
+):
+    new_min_serve_nodes = min_serve_nodes + 1
+    new_max_serve_nodes = max_serve_nodes + 1
+    new_cpu_utilization_percent = cpu_utilization_percent + 10
+    admin_cluster_with_autoscaling.min_serve_nodes = new_min_serve_nodes
+    admin_cluster_with_autoscaling.max_serve_nodes = new_max_serve_nodes
+    admin_cluster_with_autoscaling.cpu_utilization_percent = new_cpu_utilization_percent
+
+    operation = admin_cluster_with_autoscaling.update()
+    operation.result(timeout=60)  # Ensure the operation completes.
+
+    # Create a new cluster instance and reload it.
+    alt_cluster = admin_instance_populated.cluster(admin_cluster_id)
+    alt_cluster.reload()
+    assert alt_cluster.min_serve_nodes == new_min_serve_nodes
+    assert alt_cluster.max_serve_nodes == new_max_serve_nodes
+    assert alt_cluster.cpu_utilization_percent == new_cpu_utilization_percent
+
+    # Put the cluster back the way it was for the other test cases.
+    admin_cluster_with_autoscaling.min_serve_nodes = min_serve_nodes
+    admin_cluster_with_autoscaling.max_serve_nodes = max_serve_nodes
+    admin_cluster_with_autoscaling.cpu_utilization_percent = cpu_utilization_percent
+    operation = admin_cluster_with_autoscaling.update()
+    operation.result(timeout=60)  # Ensure the operation completes.
+
+
+def test_cluster_update_w_autoscaling_partial(
+    admin_instance_populated,
+    admin_cluster_id,
+    admin_cluster_with_autoscaling,
+    min_serve_nodes,
+    max_serve_nodes,
+    cpu_utilization_percent,
+    skip_on_emulator,
+):
+    new_min_serve_nodes = min_serve_nodes + 1
+
+    admin_cluster_with_autoscaling.min_serve_nodes = new_min_serve_nodes
+
+    operation = admin_cluster_with_autoscaling.update()
+    operation.result(timeout=60)  # Ensure the operation completes.
+
+    # Create a new cluster instance and reload it.
+    alt_cluster = admin_instance_populated.cluster(admin_cluster_id)
+    alt_cluster.reload()
+
+    # assert that only the min_serve_nodes was changed
+
+    assert alt_cluster.min_serve_nodes == new_min_serve_nodes
+    assert alt_cluster.max_serve_nodes == max_serve_nodes
+    assert alt_cluster.cpu_utilization_percent == cpu_utilization_percent
+
+    # Put the cluster back the way it was for the other test cases.
+    admin_cluster_with_autoscaling.min_serve_nodes = min_serve_nodes
+    admin_cluster_with_autoscaling.max_serve_nodes = max_serve_nodes
+    admin_cluster_with_autoscaling.cpu_utilization_percent = cpu_utilization_percent
+    operation = admin_cluster_with_autoscaling.update()
+    operation.result(timeout=60)  # Ensure the operation completes.
+
+
+def test_cluster_disable_autoscaling(
+    admin_instance_populated,
+    admin_cluster_id,
+    admin_cluster_with_autoscaling,
+    serve_nodes,
+    min_serve_nodes,
+    max_serve_nodes,
+    cpu_utilization_percent,
+    skip_on_emulator,
+):
+    operation = admin_cluster_with_autoscaling.disable_autoscaling(
+        serve_nodes=serve_nodes
+    )
+    operation.result(timeout=60)  # Ensure the operation completes.
+
+    # Create a new cluster instance and reload it.
+    alt_cluster = admin_instance_populated.cluster(admin_cluster_id)
+    alt_cluster.reload()
+    assert alt_cluster.min_serve_nodes == 0
+    assert alt_cluster.max_serve_nodes == 0
+    assert alt_cluster.cpu_utilization_percent == 0
+    assert alt_cluster.serve_nodes == serve_nodes
+
+    # Put the cluster back the way it was for the other test cases.
+    admin_cluster_with_autoscaling.min_serve_nodes = min_serve_nodes
+    admin_cluster_with_autoscaling.max_serve_nodes = max_serve_nodes
+    admin_cluster_with_autoscaling.cpu_utilization_percent = cpu_utilization_percent
+    admin_cluster_with_autoscaling.serve_nodes = 0
+    operation = admin_cluster_with_autoscaling.update()
     operation.result(timeout=60)  # Ensure the operation completes.

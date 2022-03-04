@@ -228,6 +228,9 @@ class Instance(object):
         serve_nodes=None,
         default_storage_type=None,
         clusters=None,
+        min_serve_nodes=None,
+        max_serve_nodes=None,
+        cpu_utilization_percent=None,
     ):
         """Create this instance.
 
@@ -303,12 +306,18 @@ class Instance(object):
                     location_id=location_id,
                     serve_nodes=serve_nodes,
                     default_storage_type=default_storage_type,
+                    min_serve_nodes=None,
+                    max_serve_nodes=None,
+                    cpu_utilization_percent=None,
                 )
             ]
         elif (
             location_id is not None
             or serve_nodes is not None
             or default_storage_type is not None
+            or min_serve_nodes is not None
+            or max_serve_nodes is not None
+            or cpu_utilization_percent is not None
         ):
             raise ValueError(
                 "clusters and one of location_id, serve_nodes, \
@@ -546,6 +555,9 @@ class Instance(object):
         serve_nodes=None,
         default_storage_type=None,
         kms_key_name=None,
+        min_serve_nodes=None,
+        max_serve_nodes=None,
+        cpu_utilization_percent=None,
     ):
         """Factory to create a cluster associated with this instance.
 
@@ -605,6 +617,9 @@ class Instance(object):
             serve_nodes=serve_nodes,
             default_storage_type=default_storage_type,
             kms_key_name=kms_key_name,
+            min_serve_nodes=min_serve_nodes,
+            max_serve_nodes=max_serve_nodes,
+            cpu_utilization_percent=cpu_utilization_percent,
         )
 
     def list_clusters(self):

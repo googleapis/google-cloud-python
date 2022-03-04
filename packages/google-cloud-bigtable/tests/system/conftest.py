@@ -108,6 +108,24 @@ def admin_cluster(admin_instance, admin_cluster_id, location_id, serve_nodes):
 
 
 @pytest.fixture(scope="session")
+def admin_cluster_with_autoscaling(
+    admin_instance,
+    admin_cluster_id,
+    location_id,
+    min_serve_nodes,
+    max_serve_nodes,
+    cpu_utilization_percent,
+):
+    return admin_instance.cluster(
+        admin_cluster_id,
+        location_id=location_id,
+        min_serve_nodes=min_serve_nodes,
+        max_serve_nodes=max_serve_nodes,
+        cpu_utilization_percent=cpu_utilization_percent,
+    )
+
+
+@pytest.fixture(scope="session")
 def admin_instance_populated(admin_instance, admin_cluster, in_emulator):
     # Emulator does not support instance admin operations (create / delete).
     # See: https://cloud.google.com/bigtable/docs/emulator
@@ -170,3 +188,18 @@ def instances_to_delete():
 
     for instance in instances_to_delete:
         _helpers.retry_429(instance.delete)()
+
+
+@pytest.fixture(scope="session")
+def min_serve_nodes(in_emulator):
+    return 1
+
+
+@pytest.fixture(scope="session")
+def max_serve_nodes(in_emulator):
+    return 8
+
+
+@pytest.fixture(scope="session")
+def cpu_utilization_percent(in_emulator):
+    return 10
