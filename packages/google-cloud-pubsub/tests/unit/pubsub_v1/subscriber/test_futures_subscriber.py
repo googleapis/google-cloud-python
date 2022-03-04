@@ -19,6 +19,10 @@ import pytest
 
 from google.cloud.pubsub_v1.subscriber import futures
 from google.cloud.pubsub_v1.subscriber._protocol import streaming_pull_manager
+from google.cloud.pubsub_v1.subscriber.exceptions import (
+    AcknowledgeError,
+    AcknowledgeStatus,
+)
 
 
 class TestStreamingPullFuture(object):
@@ -76,3 +80,30 @@ class TestStreamingPullFuture(object):
 
         manager.close.assert_called_once()
         assert future.cancelled()
+
+
+class TestFuture(object):
+    def test_cancel(self):
+        future = futures.Future()
+        assert future.cancel() is False
+
+    def test_cancelled(self):
+        future = futures.Future()
+        assert future.cancelled() is False
+
+    def test_result_on_success(self):
+        future = futures.Future()
+        future.set_result(AcknowledgeStatus.SUCCESS)
+        assert future.result() == AcknowledgeStatus.SUCCESS
+
+    def test_result_on_failure(self):
+        future = futures.Future()
+        future.set_exception(
+            AcknowledgeError(
+                AcknowledgeStatus.PERMISSION_DENIED, "Something bad happened."
+            )
+        )
+        with pytest.raises(AcknowledgeError) as e:
+            future.result()
+        assert e.value.error_code == AcknowledgeStatus.PERMISSION_DENIED
+        assert e.value.info == "Something bad happened."

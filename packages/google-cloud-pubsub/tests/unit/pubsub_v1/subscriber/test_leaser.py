@@ -102,7 +102,7 @@ def test_maintain_leases_inactive_manager(caplog):
     leaser_.maintain_leases()
 
     # Leases should still be maintained even if the manager is inactive.
-    manager.dispatcher.modify_ack_deadline.assert_called()
+    manager._send_lease_modacks.assert_called()
     assert "exiting" in caplog.text
 
 
@@ -138,9 +138,11 @@ def test_maintain_leases_ack_ids():
 
     leaser_.maintain_leases()
 
-    manager.dispatcher.modify_ack_deadline.assert_called_once_with(
-        [requests.ModAckRequest(ack_id="my ack id", seconds=10)]
-    )
+    assert len(manager._send_lease_modacks.mock_calls) == 1
+    call = manager._send_lease_modacks.mock_calls[0]
+    ack_ids = list(call.args[0])
+    assert ack_ids == ["my ack id"]
+    assert call.args[1] == 10
 
 
 def test_maintain_leases_no_ack_ids():
@@ -182,14 +184,11 @@ def test_maintain_leases_outdated_items(time):
     leaser_.maintain_leases()
 
     # ack2, ack3, and ack4 should be renewed. ack1 should've been dropped
-    modacks = manager.dispatcher.modify_ack_deadline.call_args.args[0]
-    expected = [
-        requests.ModAckRequest(ack_id="ack2", seconds=10),
-        requests.ModAckRequest(ack_id="ack3", seconds=10),
-        requests.ModAckRequest(ack_id="ack4", seconds=10),
-    ]
-    # Use sorting to allow for ordering variance.
-    assert sorted(modacks) == sorted(expected)
+    assert len(manager._send_lease_modacks.mock_calls) == 1
+    call = manager._send_lease_modacks.mock_calls[0]
+    ack_ids = list(call.args[0])
+    assert ack_ids == ["ack2", "ack3", "ack4"]
+    assert call.args[1] == 10
 
     manager.dispatcher.drop.assert_called_once_with(
         [requests.DropRequest(ack_id="ack1", byte_size=50, ordering_key="")]

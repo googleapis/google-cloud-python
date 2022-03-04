@@ -162,6 +162,13 @@ class FlowControl(NamedTuple):
         "before dropping it from the lease management."
     )
 
+    min_duration_per_lease_extension: float = 0
+    (
+        "The min amount of time in seconds for a single lease extension attempt. "
+        "Must be between 10 and 600 (inclusive). Ignored by default, but set to "
+        "60 seconds if the subscription has exactly-once delivery enabled."
+    )
+
     max_duration_per_lease_extension: float = 0  # disabled by default
     (
         "The max amount of time in seconds for a single lease extension attempt. "

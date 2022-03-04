@@ -205,7 +205,7 @@ def test_context_manager_raises_if_closed(creds):
     expetect_msg = r"(?i).*closed.*cannot.*context manager.*"
     with pytest.raises(RuntimeError, match=expetect_msg):
         with client:
-            pass
+            pass  # pragma: NO COVER
 
 
 def test_api_property_deprecated(creds):

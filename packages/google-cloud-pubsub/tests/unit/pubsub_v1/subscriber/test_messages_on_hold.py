@@ -21,7 +21,13 @@ from google.pubsub_v1 import types as gapic_types
 
 def make_message(ack_id, ordering_key):
     proto_msg = gapic_types.PubsubMessage(data=b"Q", ordering_key=ordering_key)
-    return message.Message(proto_msg._pb, ack_id, 0, queue.Queue())
+    return message.Message(
+        proto_msg._pb,
+        ack_id,
+        0,
+        queue.Queue(),
+        exactly_once_delivery_enabled_func=lambda: False,  # pragma: NO COVER
+    )
 
 
 def test_init():

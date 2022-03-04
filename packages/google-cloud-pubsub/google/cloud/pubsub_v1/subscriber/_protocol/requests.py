@@ -12,7 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import typing
 from typing import NamedTuple, Optional
+
+if typing.TYPE_CHECKING:  # pragma: NO COVER
+    from google.cloud.pubsub_v1.subscriber import futures
 
 
 # Namedtuples for management requests. Used by the Message class to communicate
@@ -22,6 +26,7 @@ class AckRequest(NamedTuple):
     byte_size: int
     time_to_ack: float
     ordering_key: Optional[str]
+    future: Optional["futures.Future"]
 
 
 class DropRequest(NamedTuple):
@@ -39,9 +44,11 @@ class LeaseRequest(NamedTuple):
 class ModAckRequest(NamedTuple):
     ack_id: str
     seconds: float
+    future: Optional["futures.Future"]
 
 
 class NackRequest(NamedTuple):
     ack_id: str
     byte_size: int
     ordering_key: Optional[str]
+    future: Optional["futures.Future"]

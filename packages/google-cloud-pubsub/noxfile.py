@@ -146,6 +146,9 @@ def default(session):
     session.install("-e", ".", "-c", constraints_path)
 
     # Run py.test against the unit tests.
+    # THe following flags are useful during development:
+    # "-s" -> show print() statement output
+    # "-k <test case prefix>" -> filter test cases
     session.run(
         "py.test",
         "--quiet",
@@ -156,6 +159,7 @@ def default(session):
         "--cov-config=.coveragerc",
         "--cov-report=",
         "--cov-fail-under=0",
+        "-s",
         os.path.join("tests", "unit"),
         *session.posargs,
     )
@@ -200,6 +204,9 @@ def system(session):
     session.install("-e", ".", "-c", constraints_path)
 
     # Run py.test against the system tests.
+    # THe following flags are useful during development:
+    # "-s" -> show print() statement output
+    # "-k <test case prefix>" -> filter test cases
     if system_test_exists:
         session.run(
             "py.test",
@@ -226,7 +233,8 @@ def cover(session):
     test runs (not system test runs), and then erases coverage data.
     """
     session.install("coverage", "pytest-cov")
-    session.run("coverage", "report", "--show-missing", "--fail-under=100")
+    # Tip: The "-i" flag lets you ignore errors with specific files.
+    session.run("coverage", "report", "-i", "--show-missing", "--fail-under=100")
 
     session.run("coverage", "erase")
 

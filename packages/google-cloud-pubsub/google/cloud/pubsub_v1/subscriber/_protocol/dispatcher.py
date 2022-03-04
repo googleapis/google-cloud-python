@@ -15,17 +15,19 @@
 from __future__ import absolute_import
 from __future__ import division
 
+import functools
 import itertools
 import logging
 import math
+import time
 import threading
 import typing
 from typing import List, Optional, Sequence, Union
 import warnings
+from google.api_core.retry import exponential_sleep_generator
 
 from google.cloud.pubsub_v1.subscriber._protocol import helper_threads
 from google.cloud.pubsub_v1.subscriber._protocol import requests
-from google.pubsub_v1 import types as gapic_types
 
 if typing.TYPE_CHECKING:  # pragma: NO COVER
     import queue
@@ -65,6 +67,14 @@ StreamingPullRequest message.
 Accounting for some overhead, we should thus only send a maximum of 2500 ACK
 IDs at a time.
 """
+
+_MIN_EXACTLY_ONCE_DELIVERY_ACK_MODACK_RETRY_DURATION_SECS = 1
+"""The time to wait for the first retry of failed acks and modacks when exactly-once
+delivery is enabled."""
+
+_MAX_EXACTLY_ONCE_DELIVERY_ACK_MODACK_RETRY_DURATION_SECS = 10 * 60
+"""The maximum amount of time in seconds to retry failed acks and modacks when
+exactly-once delivery is enabled."""
 
 
 class Dispatcher(object):
@@ -168,17 +178,66 @@ class Dispatcher(object):
 
         # We must potentially split the request into multiple smaller requests
         # to avoid the server-side max request size limit.
-        ack_ids = (item.ack_id for item in items)
+        items_gen = iter(items)
+        ack_ids_gen = (item.ack_id for item in items)
         total_chunks = int(math.ceil(len(items) / _ACK_IDS_BATCH_SIZE))
 
         for _ in range(total_chunks):
-            request = gapic_types.StreamingPullRequest(
-                ack_ids=itertools.islice(ack_ids, _ACK_IDS_BATCH_SIZE)
+            ack_reqs_dict = {
+                req.ack_id: req
+                for req in itertools.islice(items_gen, _ACK_IDS_BATCH_SIZE)
+            }
+            requests_completed, requests_to_retry = self._manager.send_unary_ack(
+                ack_ids=list(itertools.islice(ack_ids_gen, _ACK_IDS_BATCH_SIZE)),
+                ack_reqs_dict=ack_reqs_dict,
             )
-            self._manager.send(request)
 
-        # Remove the message from lease management.
-        self.drop(items)
+            # Remove the completed messages from lease management.
+            self.drop(requests_completed)
+
+            # Retry on a separate thread so the dispatcher thread isn't blocked
+            # by sleeps.
+            if requests_to_retry:
+                self._start_retry_thread(
+                    "Thread-RetryAcks",
+                    functools.partial(self._retry_acks, requests_to_retry),
+                )
+
+    def _start_retry_thread(self, thread_name, thread_target):
+        # note: if the thread is *not* a daemon, a memory leak exists due to a cpython issue.
+        # https://github.com/googleapis/python-pubsub/issues/395#issuecomment-829910303
+        # https://github.com/googleapis/python-pubsub/issues/395#issuecomment-830092418
+        retry_thread = threading.Thread(
+            name=thread_name, target=thread_target, daemon=True,
+        )
+        # The thread finishes when the requests succeed or eventually fail with
+        # a back-end timeout error or other permanent failure.
+        retry_thread.start()
+
+    def _retry_acks(self, requests_to_retry):
+        retry_delay_gen = exponential_sleep_generator(
+            initial=_MIN_EXACTLY_ONCE_DELIVERY_ACK_MODACK_RETRY_DURATION_SECS,
+            maximum=_MAX_EXACTLY_ONCE_DELIVERY_ACK_MODACK_RETRY_DURATION_SECS,
+        )
+        while requests_to_retry:
+            time_to_wait = next(retry_delay_gen)
+            _LOGGER.debug(
+                "Retrying {len(requests_to_retry)} ack(s) after delay of "
+                + str(time_to_wait)
+                + " seconds"
+            )
+            time.sleep(time_to_wait)
+
+            ack_reqs_dict = {req.ack_id: req for req in requests_to_retry}
+            requests_completed, requests_to_retry = self._manager.send_unary_ack(
+                ack_ids=[req.ack_id for req in requests_to_retry],
+                ack_reqs_dict=ack_reqs_dict,
+            )
+            assert (
+                len(requests_to_retry) <= _ACK_IDS_BATCH_SIZE
+            ), "Too many requests to be retried."
+            # Remove the completed messages from lease management.
+            self.drop(requests_completed)
 
     def drop(
         self,
@@ -215,16 +274,58 @@ class Dispatcher(object):
         """
         # We must potentially split the request into multiple smaller requests
         # to avoid the server-side max request size limit.
-        ack_ids = (item.ack_id for item in items)
-        seconds = (item.seconds for item in items)
+        items_gen = iter(items)
+        ack_ids_gen = (item.ack_id for item in items)
+        deadline_seconds_gen = (item.seconds for item in items)
         total_chunks = int(math.ceil(len(items) / _ACK_IDS_BATCH_SIZE))
 
         for _ in range(total_chunks):
-            request = gapic_types.StreamingPullRequest(
-                modify_deadline_ack_ids=itertools.islice(ack_ids, _ACK_IDS_BATCH_SIZE),
-                modify_deadline_seconds=itertools.islice(seconds, _ACK_IDS_BATCH_SIZE),
+            ack_reqs_dict = {
+                req.ack_id: req
+                for req in itertools.islice(items_gen, _ACK_IDS_BATCH_SIZE)
+            }
+            # no further work needs to be done for `requests_to_retry`
+            requests_completed, requests_to_retry = self._manager.send_unary_modack(
+                modify_deadline_ack_ids=list(
+                    itertools.islice(ack_ids_gen, _ACK_IDS_BATCH_SIZE)
+                ),
+                modify_deadline_seconds=list(
+                    itertools.islice(deadline_seconds_gen, _ACK_IDS_BATCH_SIZE)
+                ),
+                ack_reqs_dict=ack_reqs_dict,
             )
-            self._manager.send(request)
+            assert (
+                len(requests_to_retry) <= _ACK_IDS_BATCH_SIZE
+            ), "Too many requests to be retried."
+
+            # Retry on a separate thread so the dispatcher thread isn't blocked
+            # by sleeps.
+            if requests_to_retry:
+                self._start_retry_thread(
+                    "Thread-RetryModAcks",
+                    functools.partial(self._retry_modacks, requests_to_retry),
+                )
+
+    def _retry_modacks(self, requests_to_retry):
+        retry_delay_gen = exponential_sleep_generator(
+            initial=_MIN_EXACTLY_ONCE_DELIVERY_ACK_MODACK_RETRY_DURATION_SECS,
+            maximum=_MAX_EXACTLY_ONCE_DELIVERY_ACK_MODACK_RETRY_DURATION_SECS,
+        )
+        while requests_to_retry:
+            time_to_wait = next(retry_delay_gen)
+            _LOGGER.debug(
+                "Retrying {len(requests_to_retry)} modack(s) after delay of "
+                + str(time_to_wait)
+                + " seconds"
+            )
+            time.sleep(time_to_wait)
+
+            ack_reqs_dict = {req.ack_id: req for req in requests_to_retry}
+            requests_completed, requests_to_retry = self._manager.send_unary_modack(
+                modify_deadline_ack_ids=[req.ack_id for req in requests_to_retry],
+                modify_deadline_seconds=[req.seconds for req in requests_to_retry],
+                ack_reqs_dict=ack_reqs_dict,
+            )
 
     def nack(self, items: Sequence[requests.NackRequest]) -> None:
         """Explicitly deny receipt of messages.
@@ -233,6 +334,20 @@ class Dispatcher(object):
             items: The items to deny.
         """
         self.modify_ack_deadline(
-            [requests.ModAckRequest(ack_id=item.ack_id, seconds=0) for item in items]
+            [
+                requests.ModAckRequest(
+                    ack_id=item.ack_id, seconds=0, future=item.future
+                )
+                for item in items
+            ]
         )
-        self.drop([requests.DropRequest(*item) for item in items])
+        self.drop(
+            [
+                requests.DropRequest(
+                    ack_id=item.ack_id,
+                    byte_size=item.byte_size,
+                    ordering_key=item.ordering_key,
+                )
+                for item in items
+            ]
+        )

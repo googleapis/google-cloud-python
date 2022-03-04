@@ -19,9 +19,12 @@ import json
 import math
 import time
 import typing
-from typing import Optional
+from typing import Optional, Callable
 
 from google.cloud.pubsub_v1.subscriber._protocol import requests
+from google.cloud.pubsub_v1.subscriber import futures
+from google.cloud.pubsub_v1.subscriber.exceptions import AcknowledgeStatus
+
 
 if typing.TYPE_CHECKING:  # pragma: NO COVER
     import datetime
@@ -87,6 +90,7 @@ class Message(object):
         ack_id: str,
         delivery_attempt: int,
         request_queue: "queue.Queue",
+        exactly_once_delivery_enabled_func: Callable[[], bool] = lambda: False,
     ):
         """Construct the Message.
 
@@ -110,11 +114,14 @@ class Message(object):
             request_queue:
                 A queue provided by the policy that can accept requests; the policy is
                 responsible for handling those requests.
+            exactly_once_delivery_enabled_func:
+                A Callable that returns whether exactly-once delivery is currently-enabled. Defaults to a lambda that always returns False.
         """
         self._message = message
         self._ack_id = ack_id
         self._delivery_attempt = delivery_attempt if delivery_attempt > 0 else None
         self._request_queue = request_queue
+        self._exactly_once_delivery_enabled_func = exactly_once_delivery_enabled_func
         self.message_id = message.message_id
 
         # The instantiation time is the time that this message
@@ -233,7 +240,10 @@ class Message(object):
         .. warning::
             Acks in Pub/Sub are best effort. You should always
             ensure that your processing code is idempotent, as you may
-            receive any given message more than once.
+            receive any given message more than once. If you need strong
+            guarantees about acks and re-deliveres, enable exactly-once
+            delivery on your subscription and use the `ack_with_response`
+            method instead.
         """
         time_to_ack = math.ceil(time.time() - self._received_timestamp)
         self._request_queue.put(
@@ -242,8 +252,62 @@ class Message(object):
                 byte_size=self.size,
                 time_to_ack=time_to_ack,
                 ordering_key=self.ordering_key,
+                future=None,
             )
         )
+
+    def ack_with_response(self) -> "futures.Future":
+        """Acknowledge the given message.
+
+        Acknowledging a message in Pub/Sub means that you are done
+        with it, and it will not be delivered to this subscription again.
+        You should avoid acknowledging messages until you have
+        *finished* processing them, so that in the event of a failure,
+        you receive the message again.
+
+        If exactly-once delivery is enabled on the subscription, the
+        future returned by this method tracks the state of acknowledgement
+        operation. If the future completes successfully, the message is
+        guaranteed NOT to be re-delivered. Otherwise, the future will
+        contain an exception with more details about the failure and the
+        message may be re-delivered.
+
+        If exactly-once delivery is NOT enabled on the subscription, the
+        future returns immediately with an AcknowledgeStatus.SUCCESS.
+        Since acks in Cloud Pub/Sub are best effort when exactly-once
+        delivery is disabled, the message may be re-delivered. Because
+        re-deliveries are possible, you should ensure that your processing
+        code is idempotent, as you may receive any given message more than
+        once.
+
+        Returns:
+            A :class:`~google.cloud.pubsub_v1.subscriber.futures.Future`
+            instance that conforms to Python Standard library's
+            :class:`~concurrent.futures.Future` interface (but not an
+            instance of that class). Call `result()` to get the result
+            of the operation; upon success, a
+            pubsub_v1.subscriber.exceptions.AcknowledgeStatus.SUCCESS
+            will be returned and upon an error, an
+            pubsub_v1.subscriber.exceptions.AcknowledgeError exception
+            will be thrown.
+        """
+        future = futures.Future()
+        req_future = None
+        if self._exactly_once_delivery_enabled_func():
+            req_future = future
+        else:
+            future.set_result(AcknowledgeStatus.SUCCESS)
+        time_to_ack = math.ceil(time.time() - self._received_timestamp)
+        self._request_queue.put(
+            requests.AckRequest(
+                ack_id=self._ack_id,
+                byte_size=self.size,
+                time_to_ack=time_to_ack,
+                ordering_key=self.ordering_key,
+                future=req_future,
+            )
+        )
+        return future
 
     def drop(self) -> None:
         """Release the message from lease management.
@@ -269,8 +333,8 @@ class Message(object):
 
         New deadline will be the given value of seconds from now.
 
-        The default implementation handles this for you; you should not need
-        to manually deal with setting ack deadlines. The exception case is
+        The default implementation handles automatically modacking received messages for you;
+        you should not need to manually deal with setting ack deadlines. The exception case is
         if you are implementing your own custom subclass of
         :class:`~.pubsub_v1.subcriber._consumer.Consumer`.
 
@@ -281,16 +345,126 @@ class Message(object):
                 against.
         """
         self._request_queue.put(
-            requests.ModAckRequest(ack_id=self._ack_id, seconds=seconds)
+            requests.ModAckRequest(ack_id=self._ack_id, seconds=seconds, future=None)
         )
 
-    def nack(self) -> None:
-        """Decline to acknowldge the given message.
+    def modify_ack_deadline_with_response(self, seconds: int) -> "futures.Future":
+        """Resets the deadline for acknowledgement and returns the response
+        status via a future.
 
-        This will cause the message to be re-delivered to the subscription.
+        New deadline will be the given value of seconds from now.
+
+        The default implementation handles automatically modacking received messages for you;
+        you should not need to manually deal with setting ack deadlines. The exception case is
+        if you are implementing your own custom subclass of
+        :class:`~.pubsub_v1.subcriber._consumer.Consumer`.
+
+        If exactly-once delivery is enabled on the subscription, the
+        future returned by this method tracks the state of the
+        modify-ack-deadline operation. If the future completes successfully,
+        the message is guaranteed NOT to be re-delivered within the new deadline.
+        Otherwise, the future will contain an exception with more details about
+        the failure and the message will be redelivered according to its
+        currently-set ack deadline.
+
+        If exactly-once delivery is NOT enabled on the subscription, the
+        future returns immediately with an AcknowledgeStatus.SUCCESS.
+        Since modify-ack-deadline operations in Cloud Pub/Sub are best effort
+        when exactly-once delivery is disabled, the message may be re-delivered
+        within the set deadline.
+
+        Args:
+            seconds:
+                The number of seconds to set the lease deadline to. This should be
+                between 0 and 600. Due to network latency, values below 10 are advised
+                against.
+        Returns:
+            A :class:`~google.cloud.pubsub_v1.subscriber.futures.Future`
+            instance that conforms to Python Standard library's
+            :class:`~concurrent.futures.Future` interface (but not an
+            instance of that class). Call `result()` to get the result
+            of the operation; upon success, a
+            pubsub_v1.subscriber.exceptions.AcknowledgeStatus.SUCCESS
+            will be returned and upon an error, an
+            pubsub_v1.subscriber.exceptions.AcknowledgeError exception
+            will be thrown.
+
+        """
+        future = futures.Future()
+        req_future = None
+        if self._exactly_once_delivery_enabled_func():
+            req_future = future
+        else:
+            future.set_result(AcknowledgeStatus.SUCCESS)
+
+        self._request_queue.put(
+            requests.ModAckRequest(
+                ack_id=self._ack_id, seconds=seconds, future=req_future
+            )
+        )
+
+        return future
+
+    def nack(self) -> None:
+        """Decline to acknowledge the given message.
+
+        This will cause the message to be re-delivered to subscribers. Re-deliveries
+        may take place immediately or after a delay, and may arrive at this subscriber
+        or another.
         """
         self._request_queue.put(
             requests.NackRequest(
-                ack_id=self._ack_id, byte_size=self.size, ordering_key=self.ordering_key
+                ack_id=self._ack_id,
+                byte_size=self.size,
+                ordering_key=self.ordering_key,
+                future=None,
             )
         )
+
+    def nack_with_response(self) -> "futures.Future":
+        """Decline to acknowledge the given message, returning the response status via
+        a future.
+
+        This will cause the message to be re-delivered to subscribers. Re-deliveries
+        may take place immediately or after a delay, and may arrive at this subscriber
+        or another.
+
+        If exactly-once delivery is enabled on the subscription, the
+        future returned by this method tracks the state of the
+        nack operation. If the future completes successfully,
+        the future's result will be an AcknowledgeStatus.SUCCESS.
+        Otherwise, the future will contain an exception with more details about
+        the failure.
+
+        If exactly-once delivery is NOT enabled on the subscription, the
+        future returns immediately with an AcknowledgeStatus.SUCCESS.
+
+        Returns:
+            A :class:`~google.cloud.pubsub_v1.subscriber.futures.Future`
+            instance that conforms to Python Standard library's
+            :class:`~concurrent.futures.Future` interface (but not an
+            instance of that class). Call `result()` to get the result
+            of the operation; upon success, a
+            pubsub_v1.subscriber.exceptions.AcknowledgeStatus.SUCCESS
+            will be returned and upon an error, an
+            pubsub_v1.subscriber.exceptions.AcknowledgeError exception
+            will be thrown.
+
+        """
+        future = futures.Future()
+        req_future = None
+        if self._exactly_once_delivery_enabled_func():
+            req_future = future
+        else:
+            future.set_result(AcknowledgeStatus.SUCCESS)
+
+        self._request_queue.put(
+            requests.NackRequest(
+                ack_id=self._ack_id,
+                byte_size=self.size,
+                ordering_key=self.ordering_key,
+                future=req_future,
+            )
+        )
+
+        return future

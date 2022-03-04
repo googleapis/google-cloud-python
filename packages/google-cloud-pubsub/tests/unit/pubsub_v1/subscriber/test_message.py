@@ -23,6 +23,7 @@ from google.cloud.pubsub_v1.subscriber import message
 from google.cloud.pubsub_v1.subscriber._protocol import requests
 from google.protobuf import timestamp_pb2
 from google.pubsub_v1 import types as gapic_types
+from google.cloud.pubsub_v1.subscriber.exceptions import AcknowledgeStatus
 
 
 RECEIVED = datetime.datetime(2012, 4, 21, 15, 0, tzinfo=datetime.timezone.utc)
@@ -32,7 +33,14 @@ PUBLISHED = RECEIVED + datetime.timedelta(days=1, microseconds=PUBLISHED_MICROS)
 PUBLISHED_SECONDS = datetime_helpers.to_milliseconds(PUBLISHED) // 1000
 
 
-def create_message(data, ack_id="ACKID", delivery_attempt=0, ordering_key="", **attrs):
+def create_message(
+    data,
+    ack_id="ACKID",
+    delivery_attempt=0,
+    ordering_key="",
+    exactly_once_delivery_enabled=False,
+    **attrs
+):
     with mock.patch.object(time, "time") as time_:
         time_.return_value = RECEIVED_SECONDS
         gapic_pubsub_message = gapic_types.PubsubMessage(
@@ -51,6 +59,7 @@ def create_message(data, ack_id="ACKID", delivery_attempt=0, ordering_key="", **
             ack_id=ack_id,
             delivery_attempt=delivery_attempt,
             request_queue=queue.Queue(),
+            exactly_once_delivery_enabled_func=lambda: exactly_once_delivery_enabled,
         )
         return msg
 
@@ -127,6 +136,42 @@ def test_ack():
                 byte_size=30,
                 time_to_ack=mock.ANY,
                 ordering_key="",
+                future=None,
+            )
+        )
+        check_call_types(put, requests.AckRequest)
+
+
+def test_ack_with_response_exactly_once_delivery_disabled():
+    msg = create_message(b"foo", ack_id="bogus_ack_id")
+    with mock.patch.object(msg._request_queue, "put") as put:
+        future = msg.ack_with_response()
+        put.assert_called_once_with(
+            requests.AckRequest(
+                ack_id="bogus_ack_id",
+                byte_size=30,
+                time_to_ack=mock.ANY,
+                ordering_key="",
+                future=None,
+            )
+        )
+        assert future.result() == AcknowledgeStatus.SUCCESS
+        check_call_types(put, requests.AckRequest)
+
+
+def test_ack_with_response_exactly_once_delivery_enabled():
+    msg = create_message(
+        b"foo", ack_id="bogus_ack_id", exactly_once_delivery_enabled=True
+    )
+    with mock.patch.object(msg._request_queue, "put") as put:
+        future = msg.ack_with_response()
+        put.assert_called_once_with(
+            requests.AckRequest(
+                ack_id="bogus_ack_id",
+                byte_size=30,
+                time_to_ack=mock.ANY,
+                ordering_key="",
+                future=future,
             )
         )
         check_call_types(put, requests.AckRequest)
@@ -147,7 +192,30 @@ def test_modify_ack_deadline():
     with mock.patch.object(msg._request_queue, "put") as put:
         msg.modify_ack_deadline(60)
         put.assert_called_once_with(
-            requests.ModAckRequest(ack_id="bogus_ack_id", seconds=60)
+            requests.ModAckRequest(ack_id="bogus_ack_id", seconds=60, future=None)
+        )
+        check_call_types(put, requests.ModAckRequest)
+
+
+def test_modify_ack_deadline_with_response_exactly_once_delivery_disabled():
+    msg = create_message(b"foo", ack_id="bogus_ack_id")
+    with mock.patch.object(msg._request_queue, "put") as put:
+        future = msg.modify_ack_deadline_with_response(60)
+        put.assert_called_once_with(
+            requests.ModAckRequest(ack_id="bogus_ack_id", seconds=60, future=None)
+        )
+        assert future.result() == AcknowledgeStatus.SUCCESS
+        check_call_types(put, requests.ModAckRequest)
+
+
+def test_modify_ack_deadline_with_response_exactly_once_delivery_enabled():
+    msg = create_message(
+        b"foo", ack_id="bogus_ack_id", exactly_once_delivery_enabled=True
+    )
+    with mock.patch.object(msg._request_queue, "put") as put:
+        future = msg.modify_ack_deadline_with_response(60)
+        put.assert_called_once_with(
+            requests.ModAckRequest(ack_id="bogus_ack_id", seconds=60, future=future)
         )
         check_call_types(put, requests.ModAckRequest)
 
@@ -157,7 +225,36 @@ def test_nack():
     with mock.patch.object(msg._request_queue, "put") as put:
         msg.nack()
         put.assert_called_once_with(
-            requests.NackRequest(ack_id="bogus_ack_id", byte_size=30, ordering_key="")
+            requests.NackRequest(
+                ack_id="bogus_ack_id", byte_size=30, ordering_key="", future=None
+            )
+        )
+        check_call_types(put, requests.NackRequest)
+
+
+def test_nack_with_response_exactly_once_delivery_disabled():
+    msg = create_message(b"foo", ack_id="bogus_ack_id")
+    with mock.patch.object(msg._request_queue, "put") as put:
+        future = msg.nack_with_response()
+        put.assert_called_once_with(
+            requests.NackRequest(
+                ack_id="bogus_ack_id", byte_size=30, ordering_key="", future=None
+            )
+        )
+        assert future.result() == AcknowledgeStatus.SUCCESS
+        check_call_types(put, requests.NackRequest)
+
+
+def test_nack_with_response_exactly_once_delivery_enabled():
+    msg = create_message(
+        b"foo", ack_id="bogus_ack_id", exactly_once_delivery_enabled=True
+    )
+    with mock.patch.object(msg._request_queue, "put") as put:
+        future = msg.nack_with_response()
+        put.assert_called_once_with(
+            requests.NackRequest(
+                ack_id="bogus_ack_id", byte_size=30, ordering_key="", future=future
+            )
         )
         check_call_types(put, requests.NackRequest)
 

@@ -181,7 +181,7 @@ class Leaser(object):
             for item in to_drop:
                 leased_messages.pop(item.ack_id)
 
-            # Create a streaming pull request.
+            # Create a modack request.
             # We do not actually call `modify_ack_deadline` over and over
             # because it is more efficient to make a single request.
             ack_ids = leased_messages.keys()
@@ -194,9 +194,8 @@ class Leaser(object):
                 #       way for ``send_request`` to fail when the consumer
                 #       is inactive.
                 assert self._manager.dispatcher is not None
-                self._manager.dispatcher.modify_ack_deadline(
-                    [requests.ModAckRequest(ack_id, deadline) for ack_id in ack_ids]
-                )
+                ack_id_gen = (ack_id for ack_id in ack_ids)
+                self._manager._send_lease_modacks(ack_id_gen, deadline)
 
             # Now wait an appropriate period of time and do this again.
             #

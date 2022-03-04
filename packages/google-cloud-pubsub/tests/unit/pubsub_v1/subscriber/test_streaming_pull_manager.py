@@ -33,8 +33,13 @@ from google.cloud.pubsub_v1.subscriber._protocol import leaser
 from google.cloud.pubsub_v1.subscriber._protocol import messages_on_hold
 from google.cloud.pubsub_v1.subscriber._protocol import requests
 from google.cloud.pubsub_v1.subscriber._protocol import streaming_pull_manager
+from google.cloud.pubsub_v1.subscriber import exceptions as subscriber_exceptions
+from google.cloud.pubsub_v1.subscriber import futures
 from google.pubsub_v1 import types as gapic_types
 import grpc
+from google.rpc import status_pb2
+from google.rpc import code_pb2
+from google.rpc import error_details_pb2
 
 
 @pytest.mark.parametrize(
@@ -122,6 +127,16 @@ def make_manager(**kwargs):
     )
 
 
+def complete_modify_ack_deadline_calls(dispatcher):
+    def complete_futures(*args, **kwargs):
+        modack_requests = args[0]
+        for req in modack_requests:
+            if req.future:
+                req.future.set_result(subscriber_exceptions.AcknowledgeStatus.SUCCESS)
+
+    dispatcher.modify_ack_deadline.side_effect = complete_futures
+
+
 def fake_leaser_add(leaser, init_msg_count=0, assumed_msg_size=10):
     """Add a simplified fake add() method to a leaser instance.
 
@@ -144,8 +159,11 @@ def test__obtain_ack_deadline_no_custom_flow_control_setting():
 
     manager = make_manager()
 
-    # Make sure that max_duration_per_lease_extension is disabled.
-    manager._flow_control = types.FlowControl(max_duration_per_lease_extension=0)
+    # Make sure that min_duration_per_lease_extension and
+    # max_duration_per_lease_extension is disabled.
+    manager._flow_control = types.FlowControl(
+        min_duration_per_lease_extension=0, max_duration_per_lease_extension=0
+    )
 
     deadline = manager._obtain_ack_deadline(maybe_update=True)
     assert deadline == histogram.MIN_ACK_DEADLINE
@@ -175,6 +193,20 @@ def test__obtain_ack_deadline_with_max_duration_per_lease_extension():
     assert deadline == histogram.MIN_ACK_DEADLINE + 1
 
 
+def test__obtain_ack_deadline_with_min_duration_per_lease_extension():
+    from google.cloud.pubsub_v1.subscriber._protocol import histogram
+
+    manager = make_manager()
+    manager._flow_control = types.FlowControl(
+        min_duration_per_lease_extension=histogram.MAX_ACK_DEADLINE
+    )
+    manager.ack_histogram.add(histogram.MIN_ACK_DEADLINE)  # make p99 value small
+
+    # The deadline configured in flow control should prevail.
+    deadline = manager._obtain_ack_deadline(maybe_update=True)
+    assert deadline == histogram.MAX_ACK_DEADLINE
+
+
 def test__obtain_ack_deadline_with_max_duration_per_lease_extension_too_low():
     from google.cloud.pubsub_v1.subscriber._protocol import histogram
 
@@ -182,11 +214,56 @@ def test__obtain_ack_deadline_with_max_duration_per_lease_extension_too_low():
     manager._flow_control = types.FlowControl(
         max_duration_per_lease_extension=histogram.MIN_ACK_DEADLINE - 1
     )
-    manager.ack_histogram.add(histogram.MIN_ACK_DEADLINE * 3)  # make p99 value large
 
     # The deadline configured in flow control should be adjusted to the minimum allowed.
     deadline = manager._obtain_ack_deadline(maybe_update=True)
     assert deadline == histogram.MIN_ACK_DEADLINE
+
+
+def test__obtain_ack_deadline_with_min_duration_per_lease_extension_too_high():
+    from google.cloud.pubsub_v1.subscriber._protocol import histogram
+
+    manager = make_manager()
+    manager._flow_control = types.FlowControl(
+        min_duration_per_lease_extension=histogram.MAX_ACK_DEADLINE + 1
+    )
+
+    # The deadline configured in flow control should be adjusted to the maximum allowed.
+    deadline = manager._obtain_ack_deadline(maybe_update=True)
+    assert deadline == histogram.MAX_ACK_DEADLINE
+
+
+def test__obtain_ack_deadline_with_exactly_once_enabled():
+    manager = make_manager()
+    manager._flow_control = types.FlowControl(
+        min_duration_per_lease_extension=0  # leave as default value
+    )
+    manager._exactly_once_enabled = True
+    manager.ack_histogram.add(
+        10
+    )  # reduce p99 value below 60s min for exactly_once subscriptions
+
+    deadline = manager._obtain_ack_deadline(maybe_update=True)
+    # Since the 60-second min ack_deadline value for exactly_once subscriptions
+    # seconds is higher than the histogram value, the deadline should be 60 sec.
+    assert deadline == 60
+
+
+def test__obtain_ack_deadline_with_min_duration_per_lease_extension_with_exactly_once_enabled():
+    from google.cloud.pubsub_v1.subscriber._protocol import histogram
+
+    manager = make_manager()
+    manager._flow_control = types.FlowControl(
+        min_duration_per_lease_extension=histogram.MAX_ACK_DEADLINE
+    )
+    manager._exactly_once_enabled = True
+    manager.ack_histogram.add(histogram.MIN_ACK_DEADLINE)  # make p99 value small
+
+    # The deadline configured in flow control should prevail.
+    deadline = manager._obtain_ack_deadline(maybe_update=True)
+    # User-defined custom min ack_deadline value takes precedence over
+    # exactly_once default of 60 seconds.
+    assert deadline == histogram.MAX_ACK_DEADLINE
 
 
 def test__obtain_ack_deadline_no_value_update():
@@ -426,19 +503,36 @@ def test__maybe_release_messages_negative_on_hold_bytes_warning(caplog):
     assert manager._on_hold_bytes == 0  # should be auto-corrected
 
 
-def test_send_unary():
+def test_send_unary_ack():
     manager = make_manager()
 
-    manager.send(
-        gapic_types.StreamingPullRequest(
-            ack_ids=["ack_id1", "ack_id2"],
-            modify_deadline_ack_ids=["ack_id3", "ack_id4", "ack_id5"],
-            modify_deadline_seconds=[10, 20, 20],
-        )
-    )
+    ack_reqs_dict = {
+        "ack_id1": requests.AckRequest(
+            ack_id="ack_id1", byte_size=0, time_to_ack=20, ordering_key="", future=None
+        ),
+        "ack_id2": requests.AckRequest(
+            ack_id="ack_id2", byte_size=0, time_to_ack=20, ordering_key="", future=None
+        ),
+    }
+    manager.send_unary_ack(ack_ids=["ack_id1", "ack_id2"], ack_reqs_dict=ack_reqs_dict)
 
     manager._client.acknowledge.assert_called_once_with(
         subscription=manager._subscription, ack_ids=["ack_id1", "ack_id2"]
+    )
+
+
+def test_send_unary_modack():
+    manager = make_manager()
+
+    ack_reqs_dict = {
+        "ack_id3": requests.ModAckRequest(ack_id="ack_id3", seconds=60, future=None),
+        "ack_id4": requests.ModAckRequest(ack_id="ack_id4", seconds=60, future=None),
+        "ack_id5": requests.ModAckRequest(ack_id="ack_id5", seconds=60, future=None),
+    }
+    manager.send_unary_modack(
+        modify_deadline_ack_ids=["ack_id3", "ack_id4", "ack_id5"],
+        modify_deadline_seconds=[10, 20, 20],
+        ack_reqs_dict=ack_reqs_dict,
     )
 
     manager._client.modify_ack_deadline.assert_has_calls(
@@ -458,16 +552,7 @@ def test_send_unary():
     )
 
 
-def test_send_unary_empty():
-    manager = make_manager()
-
-    manager.send(gapic_types.StreamingPullRequest())
-
-    manager._client.acknowledge.assert_not_called()
-    manager._client.modify_ack_deadline.assert_not_called()
-
-
-def test_send_unary_api_call_error(caplog):
+def test_send_unary_ack_api_call_error(caplog):
     caplog.set_level(logging.DEBUG)
 
     manager = make_manager()
@@ -475,12 +560,53 @@ def test_send_unary_api_call_error(caplog):
     error = exceptions.GoogleAPICallError("The front fell off")
     manager._client.acknowledge.side_effect = error
 
-    manager.send(gapic_types.StreamingPullRequest(ack_ids=["ack_id1", "ack_id2"]))
+    ack_reqs_dict = {
+        "ack_id1": requests.AckRequest(
+            ack_id="ack_id1", byte_size=0, time_to_ack=20, ordering_key="", future=None
+        ),
+        "ack_id2": requests.AckRequest(
+            ack_id="ack_id2", byte_size=0, time_to_ack=20, ordering_key="", future=None
+        ),
+    }
+    manager.send_unary_ack(ack_ids=["ack_id1", "ack_id2"], ack_reqs_dict=ack_reqs_dict)
 
     assert "The front fell off" in caplog.text
 
 
-def test_send_unary_retry_error(caplog):
+def test_send_unary_modack_api_call_error(caplog):
+    caplog.set_level(logging.DEBUG)
+
+    manager = make_manager()
+
+    error = exceptions.GoogleAPICallError("The front fell off")
+    manager._client.modify_ack_deadline.side_effect = error
+
+    ack_reqs_dict = {
+        "ack_id1": requests.AckRequest(
+            ack_id="ack_id1",
+            byte_size=0,
+            time_to_ack=20,
+            ordering_key="",
+            future=futures.Future(),
+        ),
+        "ack_id2": requests.AckRequest(
+            ack_id="ack_id2",
+            byte_size=0,
+            time_to_ack=20,
+            ordering_key="",
+            future=futures.Future(),
+        ),
+    }
+    manager.send_unary_modack(
+        modify_deadline_ack_ids=["ack_id_string"],
+        modify_deadline_seconds=[0],
+        ack_reqs_dict=ack_reqs_dict,
+    )
+
+    assert "The front fell off" in caplog.text
+
+
+def test_send_unary_ack_retry_error(caplog):
     caplog.set_level(logging.DEBUG)
 
     manager, _, _, _, _, _ = make_running_manager()
@@ -490,11 +616,68 @@ def test_send_unary_retry_error(caplog):
     )
     manager._client.acknowledge.side_effect = error
 
+    future1 = futures.Future()
+    future2 = futures.Future()
+    ack_reqs_dict = {
+        "ack_id1": requests.AckRequest(
+            ack_id="ack_id1",
+            byte_size=0,
+            time_to_ack=20,
+            ordering_key="",
+            future=future1,
+        ),
+        "ack_id2": requests.AckRequest(
+            ack_id="ack_id2",
+            byte_size=0,
+            time_to_ack=20,
+            ordering_key="",
+            future=future2,
+        ),
+    }
     with pytest.raises(exceptions.RetryError):
-        manager.send(gapic_types.StreamingPullRequest(ack_ids=["ack_id1", "ack_id2"]))
+        manager.send_unary_ack(
+            ack_ids=["ack_id1", "ack_id2"], ack_reqs_dict=ack_reqs_dict
+        )
 
     assert "RetryError while sending unary RPC" in caplog.text
     assert "signaled streaming pull manager shutdown" in caplog.text
+    assert isinstance(future1.exception(), subscriber_exceptions.AcknowledgeError)
+    assert (
+        future1.exception().error_code is subscriber_exceptions.AcknowledgeStatus.OTHER
+    )
+    assert isinstance(future2.exception(), subscriber_exceptions.AcknowledgeError)
+    assert (
+        future2.exception().error_code is subscriber_exceptions.AcknowledgeStatus.OTHER
+    )
+
+
+def test_send_unary_modack_retry_error(caplog):
+    caplog.set_level(logging.DEBUG)
+
+    manager, _, _, _, _, _ = make_running_manager()
+
+    error = exceptions.RetryError(
+        "Too long a transient error", cause=Exception("Out of time!")
+    )
+    manager._client.modify_ack_deadline.side_effect = error
+
+    future = futures.Future()
+    ack_reqs_dict = {
+        "ackid1": requests.ModAckRequest(ack_id="ackid1", seconds=60, future=future)
+    }
+    with pytest.raises(exceptions.RetryError):
+        manager.send_unary_modack(
+            modify_deadline_ack_ids=["ackid1"],
+            modify_deadline_seconds=[0],
+            ack_reqs_dict=ack_reqs_dict,
+        )
+
+    assert "RetryError while sending unary RPC" in caplog.text
+    assert "signaled streaming pull manager shutdown" in caplog.text
+    assert isinstance(future.exception(), subscriber_exceptions.AcknowledgeError)
+    assert (
+        future.exception().error_code is subscriber_exceptions.AcknowledgeStatus.OTHER
+    )
 
 
 def test_heartbeat():
@@ -517,6 +700,23 @@ def test_heartbeat_inactive():
 
     result = manager._rpc.send.assert_not_called()
     assert not result
+
+
+def test_heartbeat_stream_ack_deadline_seconds():
+    manager = make_manager()
+    manager._rpc = mock.create_autospec(bidi.BidiRpc, instance=True)
+    manager._rpc.is_active = True
+    # Send new ack deadline with next heartbeat.
+    manager._send_new_ack_deadline = True
+
+    result = manager.heartbeat()
+
+    manager._rpc.send.assert_called_once_with(
+        gapic_types.StreamingPullRequest(stream_ack_deadline_seconds=10)
+    )
+    assert result
+    # Set to false after a send is initiated.
+    assert not manager._send_new_ack_deadline
 
 
 @mock.patch("google.api_core.bidi.ResumableBidiRpc", autospec=True)
@@ -860,7 +1060,127 @@ def test__on_response_modifies_ack_deadline():
         manager._on_response(response)
 
     dispatcher.modify_ack_deadline.assert_called_once_with(
-        [requests.ModAckRequest("ack_1", 18), requests.ModAckRequest("ack_2", 18)]
+        [
+            requests.ModAckRequest("ack_1", 18, None),
+            requests.ModAckRequest("ack_2", 18, None),
+        ]
+    )
+
+
+def test__on_response_modifies_ack_deadline_with_exactly_once_min_lease():
+    # exactly_once is disabled by default.
+    manager, _, dispatcher, leaser, _, scheduler = make_running_manager()
+    manager._callback = mock.sentinel.callback
+    complete_modify_ack_deadline_calls(dispatcher)
+
+    # make p99 value smaller than exactly_once min lease
+    manager.ack_histogram.add(10)
+
+    # adjust message bookkeeping in leaser
+    fake_leaser_add(leaser, init_msg_count=0, assumed_msg_size=42)
+
+    # Set up the response with the first set of messages and exactly_once not
+    # enabled.
+    response1 = gapic_types.StreamingPullResponse(
+        received_messages=[
+            gapic_types.ReceivedMessage(
+                ack_id="ack_1",
+                message=gapic_types.PubsubMessage(data=b"foo", message_id="1"),
+            ),
+            gapic_types.ReceivedMessage(
+                ack_id="ack_2",
+                message=gapic_types.PubsubMessage(data=b"bar", message_id="2"),
+            ),
+        ],
+        subscription_properties=gapic_types.StreamingPullResponse.SubscriptionProperties(
+            exactly_once_delivery_enabled=False
+        ),
+    )
+
+    # Set up the response with the second set of messages and exactly_once enabled.
+    response2 = gapic_types.StreamingPullResponse(
+        received_messages=[
+            gapic_types.ReceivedMessage(
+                ack_id="ack_3",
+                message=gapic_types.PubsubMessage(data=b"foo", message_id="1"),
+            ),
+            gapic_types.ReceivedMessage(
+                ack_id="ack_4",
+                message=gapic_types.PubsubMessage(data=b"bar", message_id="2"),
+            ),
+        ],
+        subscription_properties=gapic_types.StreamingPullResponse.SubscriptionProperties(
+            exactly_once_delivery_enabled=True
+        ),
+    )
+
+    # exactly_once is still disabled b/c subscription_properties says so
+    manager._on_response(response1)
+
+    # expect mod-acks are called with histogram-based lease value
+    assert len(dispatcher.modify_ack_deadline.mock_calls) == 1
+    call = dispatcher.modify_ack_deadline.mock_calls[0]
+    assert call.args[0] == [
+        requests.ModAckRequest("ack_1", 10, None),
+        requests.ModAckRequest("ack_2", 10, None),
+    ]
+
+    # exactly_once should be enabled after this request b/c subscription_properties says so
+    manager._on_response(response2)
+
+    # expect mod-acks called with 60 sec min lease value for exactly_once subscriptions
+    # ignore the futures here
+    assert len(dispatcher.modify_ack_deadline.mock_calls) == 2
+    call = dispatcher.modify_ack_deadline.mock_calls[1]
+    modack_reqs = call.args[0]
+    assert modack_reqs[0].ack_id == "ack_3"
+    assert modack_reqs[0].seconds == 60
+    assert modack_reqs[1].ack_id == "ack_4"
+    assert modack_reqs[1].seconds == 60
+
+
+def test__on_response_send_ack_deadline_after_enabling_exactly_once():
+    # exactly_once is disabled by default.
+    manager, _, dispatcher, leaser, _, scheduler = make_running_manager()
+    manager._callback = mock.sentinel.callback
+    complete_modify_ack_deadline_calls(dispatcher)
+
+    # set up an active RPC
+    manager._rpc = mock.create_autospec(bidi.BidiRpc, instance=True)
+    manager._rpc.is_active = True
+
+    # make p99 value smaller than exactly_once min lease
+    manager.ack_histogram.add(10)
+
+    # adjust message bookkeeping in leaser
+    fake_leaser_add(leaser, init_msg_count=0, assumed_msg_size=42)
+
+    # Set up the response with the a message and exactly_once enabled.
+    response2 = gapic_types.StreamingPullResponse(
+        received_messages=[
+            gapic_types.ReceivedMessage(
+                ack_id="ack_1",
+                message=gapic_types.PubsubMessage(data=b"foo", message_id="1"),
+            )
+        ],
+        subscription_properties=gapic_types.StreamingPullResponse.SubscriptionProperties(
+            exactly_once_delivery_enabled=True
+        ),
+    )
+
+    # exactly_once should be enabled after this request b/c subscription_properties says so
+    # when exactly_once is enabled or disabled, we send a new ack_deadline via
+    # the heartbeat
+    # should satisfy assertion 1
+    manager._on_response(response2)
+
+    # simulate periodic heartbeat trigger
+    heartbeat_request_sent = manager.heartbeat()
+    assert heartbeat_request_sent
+
+    # heartbeat request is sent with the 60 sec min lease value for exactly_once subscriptions
+    manager._rpc.send.assert_called_once_with(
+        gapic_types.StreamingPullRequest(stream_ack_deadline_seconds=60)
     )
 
 
@@ -890,7 +1210,10 @@ def test__on_response_no_leaser_overload():
     manager._on_response(response)
 
     dispatcher.modify_ack_deadline.assert_called_once_with(
-        [requests.ModAckRequest("fack", 10), requests.ModAckRequest("back", 10)]
+        [
+            requests.ModAckRequest("fack", 10, None),
+            requests.ModAckRequest("back", 10, None),
+        ]
     )
 
     schedule_calls = scheduler.schedule.mock_calls
@@ -937,9 +1260,9 @@ def test__on_response_with_leaser_overload():
     # deadline extended, even those not dispatched to callbacks
     dispatcher.modify_ack_deadline.assert_called_once_with(
         [
-            requests.ModAckRequest("fack", 10),
-            requests.ModAckRequest("back", 10),
-            requests.ModAckRequest("zack", 10),
+            requests.ModAckRequest("fack", 10, None),
+            requests.ModAckRequest("back", 10, None),
+            requests.ModAckRequest("zack", 10, None),
         ]
     )
 
@@ -1017,9 +1340,9 @@ def test__on_response_with_ordering_keys():
     # deadline extended, even those not dispatched to callbacks.
     dispatcher.modify_ack_deadline.assert_called_once_with(
         [
-            requests.ModAckRequest("fack", 10),
-            requests.ModAckRequest("back", 10),
-            requests.ModAckRequest("zack", 10),
+            requests.ModAckRequest("fack", 10, None),
+            requests.ModAckRequest("back", 10, None),
+            requests.ModAckRequest("zack", 10, None),
         ]
     )
 
@@ -1056,6 +1379,109 @@ def test__on_response_with_ordering_keys():
 
     # No messages available in the queue.
     assert manager._messages_on_hold.get() is None
+
+
+def test__on_response_enable_exactly_once():
+    manager, _, dispatcher, leaser, _, scheduler = make_running_manager()
+    manager._callback = mock.sentinel.callback
+    complete_modify_ack_deadline_calls(dispatcher)
+
+    # Set up the messages.
+    response = gapic_types.StreamingPullResponse(
+        received_messages=[
+            gapic_types.ReceivedMessage(
+                ack_id="fack",
+                message=gapic_types.PubsubMessage(data=b"foo", message_id="1"),
+            )
+        ],
+        subscription_properties=gapic_types.StreamingPullResponse.SubscriptionProperties(
+            exactly_once_delivery_enabled=True
+        ),
+    )
+
+    # adjust message bookkeeping in leaser
+    fake_leaser_add(leaser, init_msg_count=0, assumed_msg_size=42)
+
+    # exactly_once should be enabled
+    manager._on_response(response)
+
+    assert manager._exactly_once_delivery_enabled()
+    # new deadline for exactly_once subscriptions should be used
+    assert manager.ack_deadline == 60
+
+
+def test__on_response_disable_exactly_once():
+    from google.cloud.pubsub_v1.subscriber._protocol import histogram
+
+    manager, _, dispatcher, leaser, _, scheduler = make_running_manager()
+    manager._callback = mock.sentinel.callback
+
+    manager._flow_control = types.FlowControl(
+        min_duration_per_lease_extension=histogram.MIN_ACK_DEADLINE
+    )
+    # enable exactly_once
+    manager._exactly_once_enabled = True
+
+    # Set up the messages.
+    response = gapic_types.StreamingPullResponse(
+        received_messages=[
+            gapic_types.ReceivedMessage(
+                ack_id="fack",
+                message=gapic_types.PubsubMessage(data=b"foo", message_id="1"),
+            )
+        ],
+        subscription_properties=gapic_types.StreamingPullResponse.SubscriptionProperties(
+            exactly_once_delivery_enabled=False
+        ),
+    )
+
+    # adjust message bookkeeping in leaser
+    fake_leaser_add(leaser, init_msg_count=0, assumed_msg_size=42)
+
+    # exactly_once should be disabled
+    manager._on_response(response)
+
+    assert not manager._exactly_once_enabled
+    # The deadline configured in flow control should be used, not the
+    # exactly_once minimum since exactly_once has been disabled.
+    deadline = manager._obtain_ack_deadline(maybe_update=True)
+    assert deadline == histogram.MIN_ACK_DEADLINE
+
+
+def test__on_response_exactly_once_immediate_modacks_fail():
+    manager, _, dispatcher, leaser, _, scheduler = make_running_manager()
+    manager._callback = mock.sentinel.callback
+
+    def complete_futures_with_error(*args, **kwargs):
+        modack_requests = args[0]
+        for req in modack_requests:
+            req.future.set_exception(
+                subscriber_exceptions.AcknowledgeError(
+                    subscriber_exceptions.AcknowledgeStatus.SUCCESS, None
+                )
+            )
+
+    dispatcher.modify_ack_deadline.side_effect = complete_futures_with_error
+
+    # Set up the messages.
+    response = gapic_types.StreamingPullResponse(
+        received_messages=[
+            gapic_types.ReceivedMessage(
+                ack_id="fack",
+                message=gapic_types.PubsubMessage(data=b"foo", message_id="1"),
+            )
+        ],
+        subscription_properties=gapic_types.StreamingPullResponse.SubscriptionProperties(
+            exactly_once_delivery_enabled=True
+        ),
+    )
+
+    # adjust message bookkeeping in leaser
+    fake_leaser_add(leaser, init_msg_count=0, assumed_msg_size=42)
+
+    # exactly_once should be enabled
+    manager._on_response(response)
+    # exceptions are logged, but otherwise no effect
 
 
 def test__should_recover_true():
@@ -1130,3 +1556,369 @@ def test_activate_ordering_keys_stopped_scheduler():
     manager.activate_ordering_keys(["key1", "key2"])
 
     manager._messages_on_hold.activate_ordering_keys.assert_not_called()
+
+
+@mock.patch("grpc_status.rpc_status.from_call")
+@mock.patch("google.protobuf.any_pb2.Any.Unpack")
+def test_get_ack_errors_unable_to_unpack(from_call, unpack):
+    st = status_pb2.Status()
+    st.code = code_pb2.Code.INTERNAL
+    st.message = "qmsg"
+    error_info = error_details_pb2.ErrorInfo()
+    error_info.metadata["ack_1"] = "error1"
+    st.details.add().Pack(error_info)
+    mock_gprc_call = mock.Mock(spec=grpc.Call)
+    exception = exceptions.InternalServerError(
+        "msg", errors=(), response=mock_gprc_call
+    )
+    from_call.return_value = st
+    # Unpack() failed
+    unpack.return_value = None
+
+    assert not streaming_pull_manager._get_ack_errors(exception)
+
+
+@mock.patch("grpc_status.rpc_status.from_call")
+def test_get_ack_errors_no_response_obj(from_call):
+    exception = exceptions.InternalServerError("msg", errors=(), response=None)
+    # No response obj
+    assert not streaming_pull_manager._get_ack_errors(exception)
+
+
+@mock.patch("grpc_status.rpc_status.from_call")
+def test_get_ack_errors_from_call_returned_none(from_call):
+    mock_gprc_call = mock.Mock(spec=grpc.Call)
+    exception = exceptions.InternalServerError(
+        "msg", errors=(), response=mock_gprc_call
+    )
+    from_call.return_value = None
+    # rpc_status.from_call() returned None
+    assert not streaming_pull_manager._get_ack_errors(exception)
+
+
+@mock.patch("grpc_status.rpc_status.from_call")
+def test_get_ack_errors_value_error_thrown(from_call):
+    mock_gprc_call = mock.Mock(spec=grpc.Call)
+    exception = exceptions.InternalServerError(
+        "msg", errors=(), response=mock_gprc_call
+    )
+    from_call.side_effect = ValueError("val error msg")
+    # ValueError thrown, so return None
+    assert not streaming_pull_manager._get_ack_errors(exception)
+
+
+@mock.patch("grpc_status.rpc_status.from_call")
+def test_get_ack_errors_no_error_details(from_call):
+    st = status_pb2.Status()
+    st.code = code_pb2.Code.INTERNAL
+    st.message = "qmsg"
+    mock_gprc_call = mock.Mock(spec=grpc.Call)
+    exception = exceptions.InternalServerError(
+        "msg", errors=(), response=mock_gprc_call
+    )
+    from_call.side_effect = None
+    from_call.return_value = st
+    # status has no details to extract exactly-once error info from
+    assert not streaming_pull_manager._get_ack_errors(exception)
+
+
+@mock.patch("grpc_status.rpc_status.from_call")
+def test_get_ack_errors_detail_not_error_info(from_call):
+    st = status_pb2.Status()
+    st.code = code_pb2.Code.INTERNAL
+    st.message = "qmsg"
+    # pack a dummy status instead of an ErrorInfo
+    dummy_status = status_pb2.Status()
+    st.details.add().Pack(dummy_status)
+    mock_gprc_call = mock.Mock(spec=grpc.Call)
+    exception = exceptions.InternalServerError(
+        "msg", errors=(), response=mock_gprc_call
+    )
+    from_call.side_effect = None
+    from_call.return_value = st
+    assert not streaming_pull_manager._get_ack_errors(exception)
+
+
+@mock.patch("grpc_status.rpc_status.from_call")
+def test_get_ack_errors_happy_case(from_call):
+    st = status_pb2.Status()
+    st.code = code_pb2.Code.INTERNAL
+    st.message = "qmsg"
+    error_info = error_details_pb2.ErrorInfo()
+    error_info.metadata["ack_1"] = "error1"
+    st.details.add().Pack(error_info)
+    mock_gprc_call = mock.Mock(spec=grpc.Call)
+    exception = exceptions.InternalServerError(
+        "msg", errors=(), response=mock_gprc_call
+    )
+    from_call.side_effect = None
+    from_call.return_value = st
+    # happy case - errors returned in a map
+    ack_errors = streaming_pull_manager._get_ack_errors(exception)
+    assert ack_errors
+    assert ack_errors["ack_1"] == "error1"
+
+
+def test_process_requests_no_requests():
+    # no requests so no items in results lists
+    ack_reqs_dict = {}
+    errors_dict = {}
+    requests_completed, requests_to_retry = streaming_pull_manager._process_requests(
+        None, ack_reqs_dict, errors_dict
+    )
+    assert not requests_completed
+    assert not requests_to_retry
+
+
+def test_process_requests_error_dict_is_none():
+    # it's valid to pass in `None` for `errors_dict`
+    ack_reqs_dict = {}
+    errors_dict = None
+    requests_completed, requests_to_retry = streaming_pull_manager._process_requests(
+        None, ack_reqs_dict, errors_dict
+    )
+    assert not requests_completed
+    assert not requests_to_retry
+
+
+def test_process_requests_no_errors_has_no_future():
+    # no errors so request should be completed, even with no future
+    ack_reqs_dict = {
+        "ackid1": requests.AckRequest(
+            ack_id="ackid1", byte_size=0, time_to_ack=20, ordering_key="", future=None
+        )
+    }
+    errors_dict = {}
+    requests_completed, requests_to_retry = streaming_pull_manager._process_requests(
+        None, ack_reqs_dict, errors_dict
+    )
+    assert requests_completed[0].ack_id == "ackid1"
+    assert not requests_to_retry
+
+
+def test_process_requests_no_errors():
+    # no errors so request and its future should be completed
+    future = futures.Future()
+    ack_reqs_dict = {
+        "ackid1": requests.AckRequest(
+            ack_id="ackid1", byte_size=0, time_to_ack=20, ordering_key="", future=future
+        )
+    }
+    errors_dict = {}
+    requests_completed, requests_to_retry = streaming_pull_manager._process_requests(
+        None, ack_reqs_dict, errors_dict
+    )
+    assert requests_completed[0].ack_id == "ackid1"
+    assert future.result() == subscriber_exceptions.AcknowledgeStatus.SUCCESS
+    assert not requests_to_retry
+
+
+def test_process_requests_permanent_error_raises_exception():
+    # a permanent error raises an exception
+    future = futures.Future()
+    ack_reqs_dict = {
+        "ackid1": requests.AckRequest(
+            ack_id="ackid1", byte_size=0, time_to_ack=20, ordering_key="", future=future
+        )
+    }
+    errors_dict = {"ackid1": "PERMANENT_FAILURE_INVALID_ACK_ID"}
+    requests_completed, requests_to_retry = streaming_pull_manager._process_requests(
+        None, ack_reqs_dict, errors_dict
+    )
+    assert requests_completed[0].ack_id == "ackid1"
+    with pytest.raises(subscriber_exceptions.AcknowledgeError) as exc_info:
+        future.result()
+    assert (
+        exc_info.value.error_code
+        == subscriber_exceptions.AcknowledgeStatus.INVALID_ACK_ID
+    )
+    assert not requests_to_retry
+
+
+def test_process_requests_transient_error_returns_request():
+    # a transient error returns the request in `requests_to_retry`
+    future = futures.Future()
+    ack_reqs_dict = {
+        "ackid1": requests.AckRequest(
+            ack_id="ackid1", byte_size=0, time_to_ack=20, ordering_key="", future=future
+        )
+    }
+    errors_dict = {"ackid1": "TRANSIENT_FAILURE_INVALID_ACK_ID"}
+    requests_completed, requests_to_retry = streaming_pull_manager._process_requests(
+        None, ack_reqs_dict, errors_dict
+    )
+    assert not requests_completed
+    assert requests_to_retry[0].ack_id == "ackid1"
+    assert not future.done()
+
+
+def test_process_requests_unknown_error_raises_exception():
+    # an unknown error raises an exception
+    future = futures.Future()
+    ack_reqs_dict = {
+        "ackid1": requests.AckRequest(
+            ack_id="ackid1", byte_size=0, time_to_ack=20, ordering_key="", future=future
+        )
+    }
+    errors_dict = {"ackid1": "unknown_error"}
+    requests_completed, requests_to_retry = streaming_pull_manager._process_requests(
+        None, ack_reqs_dict, errors_dict
+    )
+    assert requests_completed[0].ack_id == "ackid1"
+    with pytest.raises(subscriber_exceptions.AcknowledgeError) as exc_info:
+        future.result()
+    assert exc_info.value.error_code == subscriber_exceptions.AcknowledgeStatus.OTHER
+    assert exc_info.value.info == "unknown_error"
+    assert not requests_to_retry
+
+
+def test_process_requests_permission_denied_error_status_raises_exception():
+    # a permission-denied error status raises an exception
+    future = futures.Future()
+    ack_reqs_dict = {
+        "ackid1": requests.AckRequest(
+            ack_id="ackid1", byte_size=0, time_to_ack=20, ordering_key="", future=future
+        )
+    }
+    st = status_pb2.Status()
+    st.code = code_pb2.Code.PERMISSION_DENIED
+    requests_completed, requests_to_retry = streaming_pull_manager._process_requests(
+        st, ack_reqs_dict, None
+    )
+    assert requests_completed[0].ack_id == "ackid1"
+    with pytest.raises(subscriber_exceptions.AcknowledgeError) as exc_info:
+        future.result()
+    assert (
+        exc_info.value.error_code
+        == subscriber_exceptions.AcknowledgeStatus.PERMISSION_DENIED
+    )
+    assert exc_info.value.info is None
+    assert not requests_to_retry
+
+
+def test_process_requests_failed_precondition_error_status_raises_exception():
+    # a failed-precondition error status raises an exception
+    future = futures.Future()
+    ack_reqs_dict = {
+        "ackid1": requests.AckRequest(
+            ack_id="ackid1", byte_size=0, time_to_ack=20, ordering_key="", future=future
+        )
+    }
+    st = status_pb2.Status()
+    st.code = code_pb2.Code.FAILED_PRECONDITION
+    requests_completed, requests_to_retry = streaming_pull_manager._process_requests(
+        st, ack_reqs_dict, None
+    )
+    assert requests_completed[0].ack_id == "ackid1"
+    with pytest.raises(subscriber_exceptions.AcknowledgeError) as exc_info:
+        future.result()
+    assert (
+        exc_info.value.error_code
+        == subscriber_exceptions.AcknowledgeStatus.FAILED_PRECONDITION
+    )
+    assert exc_info.value.info is None
+    assert not requests_to_retry
+
+
+def test_process_requests_other_error_status_raises_exception():
+    # an unrecognized error status raises an exception
+    future = futures.Future()
+    ack_reqs_dict = {
+        "ackid1": requests.AckRequest(
+            ack_id="ackid1", byte_size=0, time_to_ack=20, ordering_key="", future=future
+        )
+    }
+    st = status_pb2.Status()
+    st.code = code_pb2.Code.OUT_OF_RANGE
+    requests_completed, requests_to_retry = streaming_pull_manager._process_requests(
+        st, ack_reqs_dict, None
+    )
+    assert requests_completed[0].ack_id == "ackid1"
+    with pytest.raises(subscriber_exceptions.AcknowledgeError) as exc_info:
+        future.result()
+    assert exc_info.value.error_code == subscriber_exceptions.AcknowledgeStatus.OTHER
+    assert not requests_to_retry
+
+
+def test_process_requests_mixed_success_and_failure_acks():
+    # mixed success and failure (acks)
+    future1 = futures.Future()
+    future2 = futures.Future()
+    future3 = futures.Future()
+    ack_reqs_dict = {
+        "ackid1": requests.AckRequest(
+            ack_id="ackid1",
+            byte_size=0,
+            time_to_ack=20,
+            ordering_key="",
+            future=future1,
+        ),
+        "ackid2": requests.AckRequest(
+            ack_id="ackid2",
+            byte_size=0,
+            time_to_ack=20,
+            ordering_key="",
+            future=future2,
+        ),
+        "ackid3": requests.AckRequest(
+            ack_id="ackid3",
+            byte_size=0,
+            time_to_ack=20,
+            ordering_key="",
+            future=future3,
+        ),
+    }
+    errors_dict = {
+        "ackid1": "PERMANENT_FAILURE_INVALID_ACK_ID",
+        "ackid2": "TRANSIENT_FAILURE_INVALID_ACK_ID",
+    }
+    requests_completed, requests_to_retry = streaming_pull_manager._process_requests(
+        None, ack_reqs_dict, errors_dict
+    )
+    # message with ack_id 'ackid1' fails with an exception
+    assert requests_completed[0].ack_id == "ackid1"
+    with pytest.raises(subscriber_exceptions.AcknowledgeError) as exc_info:
+        future1.result()
+    assert (
+        exc_info.value.error_code
+        == subscriber_exceptions.AcknowledgeStatus.INVALID_ACK_ID
+    )
+    # message with ack_id 'ackid2' is to be retried
+    assert requests_to_retry[0].ack_id == "ackid2"
+    assert not requests_to_retry[0].future.done()
+    # message with ack_id 'ackid3' succeeds
+    assert requests_completed[1].ack_id == "ackid3"
+    assert future3.result() == subscriber_exceptions.AcknowledgeStatus.SUCCESS
+
+
+def test_process_requests_mixed_success_and_failure_modacks():
+    # mixed success and failure (modacks)
+    future1 = futures.Future()
+    future2 = futures.Future()
+    future3 = futures.Future()
+    ack_reqs_dict = {
+        "ackid1": requests.ModAckRequest(ack_id="ackid1", seconds=60, future=future1),
+        "ackid2": requests.ModAckRequest(ack_id="ackid2", seconds=60, future=future2),
+        "ackid3": requests.ModAckRequest(ack_id="ackid3", seconds=60, future=future3),
+    }
+    errors_dict = {
+        "ackid1": "PERMANENT_FAILURE_INVALID_ACK_ID",
+        "ackid2": "TRANSIENT_FAILURE_INVALID_ACK_ID",
+    }
+    requests_completed, requests_to_retry = streaming_pull_manager._process_requests(
+        None, ack_reqs_dict, errors_dict
+    )
+    # message with ack_id 'ackid1' fails with an exception
+    assert requests_completed[0].ack_id == "ackid1"
+    with pytest.raises(subscriber_exceptions.AcknowledgeError) as exc_info:
+        future1.result()
+    assert (
+        exc_info.value.error_code
+        == subscriber_exceptions.AcknowledgeStatus.INVALID_ACK_ID
+    )
+    # message with ack_id 'ackid2' is to be retried
+    assert requests_to_retry[0].ack_id == "ackid2"
+    assert not requests_to_retry[0].future.done()
+    # message with ack_id 'ackid3' succeeds
+    assert requests_completed[1].ack_id == "ackid3"
+    assert future3.result() == subscriber_exceptions.AcknowledgeStatus.SUCCESS

@@ -20,7 +20,7 @@ import itertools
 import logging
 import threading
 import typing
-from typing import Any, Callable, Iterable, List, Optional, Union
+from typing import Any, Callable, Iterable, List, Optional, Tuple, Union
 import uuid
 
 import grpc  # type: ignore
@@ -34,12 +34,22 @@ from google.cloud.pubsub_v1.subscriber._protocol import histogram
 from google.cloud.pubsub_v1.subscriber._protocol import leaser
 from google.cloud.pubsub_v1.subscriber._protocol import messages_on_hold
 from google.cloud.pubsub_v1.subscriber._protocol import requests
+from google.cloud.pubsub_v1.subscriber.exceptions import (
+    AcknowledgeError,
+    AcknowledgeStatus,
+)
 import google.cloud.pubsub_v1.subscriber.message
+from google.cloud.pubsub_v1.subscriber import futures
 from google.cloud.pubsub_v1.subscriber.scheduler import ThreadScheduler
 from google.pubsub_v1 import types as gapic_types
+from grpc_status import rpc_status  # type: ignore
+from google.rpc.error_details_pb2 import ErrorInfo  # type: ignore
+from google.rpc import code_pb2  # type: ignore
+from google.rpc import status_pb2
 
 if typing.TYPE_CHECKING:  # pragma: NO COVER
     from google.cloud.pubsub_v1 import subscriber
+    from google.protobuf.internal import containers
 
 
 _LOGGER = logging.getLogger(__name__)
@@ -59,6 +69,11 @@ _MAX_LOAD = 1.0
 
 _RESUME_THRESHOLD = 0.8
 """The load threshold below which to resume the incoming message stream."""
+
+_MIN_ACK_DEADLINE_SECS_WHEN_EXACTLY_ONCE_ENABLED = 60
+"""The minimum ack_deadline, in seconds, for when exactly_once is enabled for
+a subscription. We do this to reduce premature ack expiration.
+"""
 
 
 def _wrap_as_exception(maybe_exception: Any) -> BaseException:
@@ -102,6 +117,86 @@ def _wrap_callback_errors(
         )
         message.nack()
         on_callback_error(exc)
+
+
+def _get_status(exc: exceptions.GoogleAPICallError,) -> Optional["status_pb2.Status"]:
+    if not exc.response:
+        _LOGGER.debug("No response obj in errored RPC call.")
+        return None
+    try:
+        return rpc_status.from_call(exc.response)
+    # Possible "If the gRPC call’s code or details are inconsistent
+    # with the status code and message inside of the
+    # google.rpc.status.Status"
+    except ValueError:
+        _LOGGER.debug("ValueError when parsing ErrorInfo.", exc_info=True)
+        return None
+
+
+def _get_ack_errors(
+    exc: exceptions.GoogleAPICallError,
+) -> Optional["containers.ScalarMap"]:
+    status = _get_status(exc)
+    if not status:
+        _LOGGER.debug("Unable to get status of errored RPC.")
+        return None
+    for detail in status.details:
+        info = ErrorInfo()
+        if not (detail.Is(ErrorInfo.DESCRIPTOR) and detail.Unpack(info)):
+            _LOGGER.debug("Unable to unpack ErrorInfo.")
+            return None
+        return info.metadata
+    return None
+
+
+def _process_requests(
+    error_status: Optional["status_pb2.Status"],
+    ack_reqs_dict: "containers.ScalarMap",
+    errors_dict: Optional["containers.ScalarMap"],
+):
+    """Process requests by referring to error_status and errors_dict.
+
+    The errors returned by the server in as `error_status` or in `errors_dict`
+    are used to complete the request futures in `ack_reqs_dict` (with a success
+    or exception) or to return requests for further retries.
+    """
+    requests_completed = []
+    requests_to_retry = []
+    for ack_id in ack_reqs_dict:
+        if errors_dict and ack_id in errors_dict:
+            exactly_once_error = errors_dict[ack_id]
+            if exactly_once_error.startswith("TRANSIENT_"):
+                requests_to_retry.append(ack_reqs_dict[ack_id])
+            else:
+                if exactly_once_error == "PERMANENT_FAILURE_INVALID_ACK_ID":
+                    exc = AcknowledgeError(AcknowledgeStatus.INVALID_ACK_ID, info=None)
+                else:
+                    exc = AcknowledgeError(AcknowledgeStatus.OTHER, exactly_once_error)
+
+                future = ack_reqs_dict[ack_id].future
+                future.set_exception(exc)
+                requests_completed.append(ack_reqs_dict[ack_id])
+        elif error_status:
+            # Only permanent errors are expected here b/c retriable errors are
+            # retried at the lower, GRPC level.
+            if error_status.code == code_pb2.PERMISSION_DENIED:
+                exc = AcknowledgeError(AcknowledgeStatus.PERMISSION_DENIED, info=None)
+            elif error_status.code == code_pb2.FAILED_PRECONDITION:
+                exc = AcknowledgeError(AcknowledgeStatus.FAILED_PRECONDITION, info=None)
+            else:
+                exc = AcknowledgeError(AcknowledgeStatus.OTHER, str(error_status))
+            future = ack_reqs_dict[ack_id].future
+            future.set_exception(exc)
+            requests_completed.append(ack_reqs_dict[ack_id])
+        elif ack_reqs_dict[ack_id].future:
+            future = ack_reqs_dict[ack_id].future
+            # success
+            future.set_result(AcknowledgeStatus.SUCCESS)
+            requests_completed.append(ack_reqs_dict[ack_id])
+        else:
+            requests_completed.append(ack_reqs_dict[ack_id])
+
+    return requests_completed, requests_to_retry
 
 
 class StreamingPullManager(object):
@@ -148,6 +243,7 @@ class StreamingPullManager(object):
     ):
         self._client = client
         self._subscription = subscription
+        self._exactly_once_enabled = False
         self._flow_control = flow_control
         self._use_legacy_flow_control = use_legacy_flow_control
         self._await_callbacks_on_shutdown = await_callbacks_on_shutdown
@@ -159,6 +255,8 @@ class StreamingPullManager(object):
         self._closing = threading.Lock()
         self._closed = False
         self._close_callbacks: List[Callable[["StreamingPullManager", Any], Any]] = []
+        # Guarded by self._exactly_once_enabled_lock
+        self._send_new_ack_deadline = False
 
         # A shutdown thread is created on intentional shutdown.
         self._regular_shutdown_thread: Optional[threading.Thread] = None
@@ -188,6 +286,12 @@ class StreamingPullManager(object):
         # affects the load computation, i.e. the count and size of the messages
         # currently on hold.
         self._pause_resume_lock = threading.Lock()
+
+        # A lock guarding the self._exactly_once_enabled variable. We may also
+        # acquire the self._ack_deadline_lock while this lock is held, but not
+        # the reverse. So, we maintain a simple ordering of these two locks to
+        # prevent deadlocks.
+        self._exactly_once_enabled_lock = threading.Lock()
 
         # A lock protecting the current ACK deadline used in the lease management. This
         # value can be potentially updated both by the leaser thread and by the message
@@ -273,6 +377,22 @@ class StreamingPullManager(object):
                     histogram.MIN_ACK_DEADLINE,
                 )
                 self._ack_deadline = min(self._ack_deadline, flow_control_setting)
+
+            # If the user explicitly sets a min ack_deadline, respect it.
+            if self.flow_control.min_duration_per_lease_extension > 0:
+                # The setting in flow control could be too high, adjust if needed.
+                flow_control_setting = min(
+                    self.flow_control.min_duration_per_lease_extension,
+                    histogram.MAX_ACK_DEADLINE,
+                )
+                self._ack_deadline = max(self._ack_deadline, flow_control_setting)
+            elif self._exactly_once_enabled:
+                # Higher minimum ack_deadline for subscriptions with
+                # exactly-once delivery enabled.
+                self._ack_deadline = max(
+                    self._ack_deadline, _MIN_ACK_DEADLINE_SECS_WHEN_EXACTLY_ONCE_ENABLED
+                )
+
             return self._ack_deadline
 
     @property
@@ -311,7 +431,7 @@ class StreamingPullManager(object):
         )
 
     def add_close_callback(
-        self, callback: Callable[["StreamingPullManager", Any], Any],
+        self, callback: Callable[["StreamingPullManager", Any], Any]
     ) -> None:
         """Schedules a callable when the manager closes.
 
@@ -435,49 +555,34 @@ class StreamingPullManager(object):
         assert self._callback is not None
         self._scheduler.schedule(self._callback, msg)
 
-    def _send_unary_request(self, request: gapic_types.StreamingPullRequest) -> None:
+    def send_unary_ack(
+        self, ack_ids, ack_reqs_dict
+    ) -> Tuple[List[requests.AckRequest], List[requests.AckRequest]]:
         """Send a request using a separate unary request instead of over the stream.
-
-        Args:
-            request: The stream request to be mapped into unary requests.
-        """
-        if request.ack_ids:
-            self._client.acknowledge(  # type: ignore
-                subscription=self._subscription, ack_ids=list(request.ack_ids)
-            )
-
-        if request.modify_deadline_ack_ids:
-            # Send ack_ids with the same deadline seconds together.
-            deadline_to_ack_ids = collections.defaultdict(list)
-
-            for n, ack_id in enumerate(request.modify_deadline_ack_ids):
-                deadline = request.modify_deadline_seconds[n]
-                deadline_to_ack_ids[deadline].append(ack_id)
-
-            for deadline, ack_ids in deadline_to_ack_ids.items():
-                self._client.modify_ack_deadline(  # type: ignore
-                    subscription=self._subscription,
-                    ack_ids=ack_ids,
-                    ack_deadline_seconds=deadline,
-                )
-
-        _LOGGER.debug("Sent request(s) over unary RPC.")
-
-    def send(self, request: gapic_types.StreamingPullRequest) -> None:
-        """Queue a request to be sent to the RPC.
 
         If a RetryError occurs, the manager shutdown is triggered, and the
         error is re-raised.
         """
+        assert ack_ids
+        assert len(ack_ids) == len(ack_reqs_dict)
+
+        error_status = None
+        ack_errors_dict = None
         try:
-            self._send_unary_request(request)
-        except exceptions.GoogleAPICallError:
+            self._client.acknowledge(subscription=self._subscription, ack_ids=ack_ids)
+        except exceptions.GoogleAPICallError as exc:
             _LOGGER.debug(
                 "Exception while sending unary RPC. This is typically "
                 "non-fatal as stream requests are best-effort.",
                 exc_info=True,
             )
+            error_status = _get_status(exc)
+            ack_errors_dict = _get_ack_errors(exc)
         except exceptions.RetryError as exc:
+            status = status_pb2.Status()
+            status.code = code_pb2.DEADLINE_EXCEEDED
+            # Makes sure to complete futures so they don't block forever.
+            _process_requests(status, ack_reqs_dict, None)
             _LOGGER.debug(
                 "RetryError while sending unary RPC. Waiting on a transient "
                 "error resolution for too long, will now trigger shutdown.",
@@ -488,14 +593,88 @@ class StreamingPullManager(object):
             self._on_rpc_done(exc)
             raise
 
+        requests_completed, requests_to_retry = _process_requests(
+            error_status, ack_reqs_dict, ack_errors_dict
+        )
+        return requests_completed, requests_to_retry
+
+    def send_unary_modack(
+        self, modify_deadline_ack_ids, modify_deadline_seconds, ack_reqs_dict
+    ) -> Tuple[List[requests.ModAckRequest], List[requests.ModAckRequest]]:
+        """Send a request using a separate unary request instead of over the stream.
+
+        If a RetryError occurs, the manager shutdown is triggered, and the
+        error is re-raised.
+        """
+        assert modify_deadline_ack_ids
+
+        error_status = None
+        modack_errors_dict = None
+        try:
+            # Send ack_ids with the same deadline seconds together.
+            deadline_to_ack_ids = collections.defaultdict(list)
+
+            for n, ack_id in enumerate(modify_deadline_ack_ids):
+                deadline = modify_deadline_seconds[n]
+                deadline_to_ack_ids[deadline].append(ack_id)
+
+            for deadline, ack_ids in deadline_to_ack_ids.items():
+                self._client.modify_ack_deadline(
+                    subscription=self._subscription,
+                    ack_ids=ack_ids,
+                    ack_deadline_seconds=deadline,
+                )
+        except exceptions.GoogleAPICallError as exc:
+            _LOGGER.debug(
+                "Exception while sending unary RPC. This is typically "
+                "non-fatal as stream requests are best-effort.",
+                exc_info=True,
+            )
+            error_status = _get_status(exc)
+            modack_errors_dict = _get_ack_errors(exc)
+        except exceptions.RetryError as exc:
+            status = status_pb2.Status()
+            status.code = code_pb2.DEADLINE_EXCEEDED
+            # Makes sure to complete futures so they don't block forever.
+            _process_requests(status, ack_reqs_dict, None)
+            _LOGGER.debug(
+                "RetryError while sending unary RPC. Waiting on a transient "
+                "error resolution for too long, will now trigger shutdown.",
+                exc_info=False,
+            )
+            # The underlying channel has been suffering from a retryable error
+            # for too long, time to give up and shut the streaming pull down.
+            self._on_rpc_done(exc)
+            raise
+
+        requests_completed, requests_to_retry = _process_requests(
+            error_status, ack_reqs_dict, modack_errors_dict
+        )
+        return requests_completed, requests_to_retry
+
     def heartbeat(self) -> bool:
-        """Sends an empty request over the streaming pull RPC.
+        """Sends a heartbeat request over the streaming pull RPC.
+
+        The request is empty by default, but may contain the current ack_deadline
+        if the self._exactly_once_enabled flag has changed.
 
         Returns:
             If a heartbeat request has actually been sent.
         """
         if self._rpc is not None and self._rpc.is_active:
-            self._rpc.send(gapic_types.StreamingPullRequest())
+            send_new_ack_deadline = False
+            with self._exactly_once_enabled_lock:
+                send_new_ack_deadline = self._send_new_ack_deadline
+                self._send_new_ack_deadline = False
+
+            if send_new_ack_deadline:
+                request = gapic_types.StreamingPullRequest(
+                    stream_ack_deadline_seconds=self.ack_deadline
+                )
+            else:
+                request = gapic_types.StreamingPullRequest()
+
+            self._rpc.send(request)
             return True
 
         return False
@@ -700,6 +879,42 @@ class StreamingPullManager(object):
         # Return the initial request.
         return request
 
+    def _send_lease_modacks(self, ack_ids: Iterable[str], ack_deadline: float):
+        exactly_once_enabled = False
+        with self._exactly_once_enabled_lock:
+            exactly_once_enabled = self._exactly_once_enabled
+        if exactly_once_enabled:
+            items = []
+            for ack_id in ack_ids:
+                future = futures.Future()
+                request = requests.ModAckRequest(ack_id, ack_deadline, future)
+                items.append(request)
+
+            assert self._dispatcher is not None
+            self._dispatcher.modify_ack_deadline(items)
+
+            for req in items:
+                try:
+                    assert req.future is not None
+                    req.future.result()
+                except AcknowledgeError:
+                    _LOGGER.warning(
+                        "AcknowledgeError when lease-modacking a message.",
+                        exc_info=True,
+                    )
+        else:
+            items = [
+                requests.ModAckRequest(ack_id, self.ack_deadline, None)
+                for ack_id in ack_ids
+            ]
+            assert self._dispatcher is not None
+            self._dispatcher.modify_ack_deadline(items)
+
+    def _exactly_once_delivery_enabled(self) -> bool:
+        """Whether exactly-once delivery is enabled for the subscription."""
+        with self._exactly_once_enabled_lock:
+            return self._exactly_once_enabled
+
     def _on_response(self, response: gapic_types.StreamingPullResponse) -> None:
         """Process all received Pub/Sub messages.
 
@@ -730,15 +945,24 @@ class StreamingPullManager(object):
             self._on_hold_bytes,
         )
 
+        with self._exactly_once_enabled_lock:
+            if (
+                response.subscription_properties.exactly_once_delivery_enabled
+                != self._exactly_once_enabled
+            ):
+                self._exactly_once_enabled = (
+                    response.subscription_properties.exactly_once_delivery_enabled
+                )
+                # Update ack_deadline, whose minimum depends on self._exactly_once_enabled
+                # This method acquires the self._ack_deadline_lock lock.
+                self._obtain_ack_deadline(maybe_update=True)
+                self._send_new_ack_deadline = True
+
         # Immediately (i.e. without waiting for the auto lease management)
         # modack the messages we received, as this tells the server that we've
         # received them.
-        items = [
-            requests.ModAckRequest(message.ack_id, self.ack_deadline)
-            for message in received_messages
-        ]
-        assert self._dispatcher is not None
-        self._dispatcher.modify_ack_deadline(items)
+        ack_id_gen = (message.ack_id for message in received_messages)
+        self._send_lease_modacks(ack_id_gen, self.ack_deadline)
 
         with self._pause_resume_lock:
             assert self._scheduler is not None
@@ -750,6 +974,7 @@ class StreamingPullManager(object):
                     received_message.ack_id,
                     received_message.delivery_attempt,
                     self._scheduler.queue,
+                    self._exactly_once_delivery_enabled,
                 )
                 self._messages_on_hold.put(message)
                 self._on_hold_bytes += message.size

@@ -1164,6 +1164,7 @@ message StreamingPullRequest {
 message StreamingPullResponse {
   // Subscription properties sent as part of the response.
   message SubscriptionProperties {
+    bool exactly_once_delivery_enabled = 1;
     // True iff message ordering is enabled for this subscription.
     bool message_ordering_enabled = 2;
   }
