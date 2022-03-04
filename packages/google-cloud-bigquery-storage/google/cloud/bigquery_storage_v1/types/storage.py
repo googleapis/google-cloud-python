@@ -280,10 +280,12 @@ class AppendRowsRequest(proto.Message):
             request.
 
             For explicitly created write streams, the format is:
-            ``projects/{project}/datasets/{dataset}/tables/{table}/streams/{id}``
+
+            -  ``projects/{project}/datasets/{dataset}/tables/{table}/streams/{id}``
 
             For the special default stream, the format is:
-            ``projects/{project}/datasets/{dataset}/tables/{table}/_default``.
+
+            -  ``projects/{project}/datasets/{dataset}/tables/{table}/streams/_default``.
         offset (google.protobuf.wrappers_pb2.Int64Value):
             If present, the write is only performed if the next append
             offset is same as the provided value. If not present, the
@@ -529,6 +531,8 @@ class StorageError(proto.Message):
         INVALID_STREAM_STATE = 5
         STREAM_FINALIZED = 6
         SCHEMA_MISMATCH_EXTRA_FIELDS = 7
+        OFFSET_ALREADY_EXISTS = 8
+        OFFSET_OUT_OF_RANGE = 9
 
     code = proto.Field(proto.ENUM, number=1, enum=StorageErrorCode,)
     entity = proto.Field(proto.STRING, number=2,)

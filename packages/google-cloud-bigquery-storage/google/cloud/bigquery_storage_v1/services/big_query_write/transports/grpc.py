@@ -305,6 +305,13 @@ class BigQueryWriteGrpcTransport(BigQueryWriteTransport):
            rpc), and the stream is explicitly committed via the
            ``BatchCommitWriteStreams`` rpc.
 
+        Note: For users coding against the gRPC api directly, it may be
+        necessary to supply the x-goog-request-params system parameter
+        with ``write_stream=<full_write_stream_name>``.
+
+        More information about system parameters:
+        https://cloud.google.com/apis/docs/system-parameters
+
         Returns:
             Callable[[~.AppendRowsRequest],
                     ~.AppendRowsResponse]:
