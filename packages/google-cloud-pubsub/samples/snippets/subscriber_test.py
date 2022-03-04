@@ -624,6 +624,34 @@ def test_receive_with_blocking_shutdown(
     eventually_consistent_test()
 
 
+def test_receive_messages_with_exactly_once_delivery_enabled(
+    publisher_client: pubsub_v1.PublisherClient,
+    topic: str,
+    subscription_async: str,
+    capsys: CaptureFixture[str],
+) -> None:
+
+    typed_backoff = cast(
+        Callable[[C], C], backoff.on_exception(backoff.expo, Unknown, max_time=60),
+    )
+
+    @typed_backoff
+    def eventually_consistent_test() -> None:
+        _publish_messages(publisher_client, topic)
+
+        subscriber.receive_messages_with_exactly_once_delivery_enabled(
+            PROJECT_ID, SUBSCRIPTION_ASYNC, 10
+        )
+
+        out, _ = capsys.readouterr()
+        assert "Listening" in out
+        assert subscription_async in out
+        assert "Received" in out
+        assert "Ack" in out
+
+    eventually_consistent_test()
+
+
 def test_listen_for_errors(
     publisher_client: pubsub_v1.PublisherClient,
     topic: str,
