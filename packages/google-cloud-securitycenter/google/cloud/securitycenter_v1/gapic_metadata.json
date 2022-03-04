@@ -15,6 +15,11 @@
                 "bulk_mute_findings"
               ]
             },
+            "CreateBigQueryExport": {
+              "methods": [
+                "create_big_query_export"
+              ]
+            },
             "CreateFinding": {
               "methods": [
                 "create_finding"
@@ -35,6 +40,11 @@
                 "create_source"
               ]
             },
+            "DeleteBigQueryExport": {
+              "methods": [
+                "delete_big_query_export"
+              ]
+            },
             "DeleteMuteConfig": {
               "methods": [
                 "delete_mute_config"
@@ -43,6 +53,11 @@
             "DeleteNotificationConfig": {
               "methods": [
                 "delete_notification_config"
+              ]
+            },
+            "GetBigQueryExport": {
+              "methods": [
+                "get_big_query_export"
               ]
             },
             "GetIamPolicy": {
@@ -83,6 +98,11 @@
             "ListAssets": {
               "methods": [
                 "list_assets"
+              ]
+            },
+            "ListBigQueryExports": {
+              "methods": [
+                "list_big_query_exports"
               ]
             },
             "ListFindings": {
@@ -128,6 +148,11 @@
             "TestIamPermissions": {
               "methods": [
                 "test_iam_permissions"
+              ]
+            },
+            "UpdateBigQueryExport": {
+              "methods": [
+                "update_big_query_export"
               ]
             },
             "UpdateExternalSystem": {
@@ -175,6 +200,11 @@
                 "bulk_mute_findings"
               ]
             },
+            "CreateBigQueryExport": {
+              "methods": [
+                "create_big_query_export"
+              ]
+            },
             "CreateFinding": {
               "methods": [
                 "create_finding"
@@ -195,6 +225,11 @@
                 "create_source"
               ]
             },
+            "DeleteBigQueryExport": {
+              "methods": [
+                "delete_big_query_export"
+              ]
+            },
             "DeleteMuteConfig": {
               "methods": [
                 "delete_mute_config"
@@ -203,6 +238,11 @@
             "DeleteNotificationConfig": {
               "methods": [
                 "delete_notification_config"
+              ]
+            },
+            "GetBigQueryExport": {
+              "methods": [
+                "get_big_query_export"
               ]
             },
             "GetIamPolicy": {
@@ -243,6 +283,11 @@
             "ListAssets": {
               "methods": [
                 "list_assets"
+              ]
+            },
+            "ListBigQueryExports": {
+              "methods": [
+                "list_big_query_exports"
               ]
             },
             "ListFindings": {
@@ -288,6 +333,11 @@
             "TestIamPermissions": {
               "methods": [
                 "test_iam_permissions"
+              ]
+            },
+            "UpdateBigQueryExport": {
+              "methods": [
+                "update_big_query_export"
               ]
             },
             "UpdateExternalSystem": {

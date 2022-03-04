@@ -18,6 +18,7 @@ import proto  # type: ignore
 from google.cloud.securitycenter_v1.types import access as gcs_access
 from google.cloud.securitycenter_v1.types import external_system
 from google.cloud.securitycenter_v1.types import indicator as gcs_indicator
+from google.cloud.securitycenter_v1.types import mitre_attack as gcs_mitre_attack
 from google.cloud.securitycenter_v1.types import security_marks as gcs_security_marks
 from google.cloud.securitycenter_v1.types import vulnerability as gcs_vulnerability
 from google.protobuf import struct_pb2  # type: ignore
@@ -129,6 +130,9 @@ class Finding(proto.Message):
             Output only. Third party SIEM/SOAR fields
             within SCC, contains external system information
             and external system finding fields.
+        mitre_attack (google.cloud.securitycenter_v1.types.MitreAttack):
+            MITRE ATT&CK tactics and techniques related
+            to this finding. See: https://attack.mitre.org
         access (google.cloud.securitycenter_v1.types.Access):
             Access details associated to the Finding,
             such as more information on the caller, which
@@ -169,6 +173,7 @@ class Finding(proto.Message):
         VULNERABILITY = 2
         MISCONFIGURATION = 3
         OBSERVATION = 4
+        SCC_ERROR = 5
 
     name = proto.Field(proto.STRING, number=1,)
     parent = proto.Field(proto.STRING, number=2,)
@@ -199,6 +204,9 @@ class Finding(proto.Message):
     )
     external_systems = proto.MapField(
         proto.STRING, proto.MESSAGE, number=22, message=external_system.ExternalSystem,
+    )
+    mitre_attack = proto.Field(
+        proto.MESSAGE, number=25, message=gcs_mitre_attack.MitreAttack,
     )
     access = proto.Field(proto.MESSAGE, number=26, message=gcs_access.Access,)
     mute_initiator = proto.Field(proto.STRING, number=28,)

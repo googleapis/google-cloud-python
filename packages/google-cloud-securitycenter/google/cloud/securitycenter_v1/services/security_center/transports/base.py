@@ -26,6 +26,7 @@ from google.api_core import operations_v1
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+from google.cloud.securitycenter_v1.types import bigquery_export
 from google.cloud.securitycenter_v1.types import external_system as gcs_external_system
 from google.cloud.securitycenter_v1.types import finding
 from google.cloud.securitycenter_v1.types import finding as gcs_finding
@@ -164,6 +165,11 @@ class SecurityCenterTransport(abc.ABC):
             self.delete_notification_config: gapic_v1.method.wrap_method(
                 self.delete_notification_config,
                 default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_big_query_export: gapic_v1.method.wrap_method(
+                self.get_big_query_export,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.get_iam_policy: gapic_v1.method.wrap_method(
@@ -378,6 +384,26 @@ class SecurityCenterTransport(abc.ABC):
                 default_timeout=480.0,
                 client_info=client_info,
             ),
+            self.create_big_query_export: gapic_v1.method.wrap_method(
+                self.create_big_query_export,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_big_query_export: gapic_v1.method.wrap_method(
+                self.delete_big_query_export,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_big_query_export: gapic_v1.method.wrap_method(
+                self.update_big_query_export,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_big_query_exports: gapic_v1.method.wrap_method(
+                self.list_big_query_exports,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -457,6 +483,17 @@ class SecurityCenterTransport(abc.ABC):
     ) -> Callable[
         [securitycenter_service.DeleteNotificationConfigRequest],
         Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_big_query_export(
+        self,
+    ) -> Callable[
+        [securitycenter_service.GetBigQueryExportRequest],
+        Union[
+            bigquery_export.BigQueryExport, Awaitable[bigquery_export.BigQueryExport]
+        ],
     ]:
         raise NotImplementedError()
 
@@ -714,6 +751,49 @@ class SecurityCenterTransport(abc.ABC):
         Union[
             gcs_security_marks.SecurityMarks,
             Awaitable[gcs_security_marks.SecurityMarks],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_big_query_export(
+        self,
+    ) -> Callable[
+        [securitycenter_service.CreateBigQueryExportRequest],
+        Union[
+            bigquery_export.BigQueryExport, Awaitable[bigquery_export.BigQueryExport]
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_big_query_export(
+        self,
+    ) -> Callable[
+        [securitycenter_service.DeleteBigQueryExportRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_big_query_export(
+        self,
+    ) -> Callable[
+        [securitycenter_service.UpdateBigQueryExportRequest],
+        Union[
+            bigquery_export.BigQueryExport, Awaitable[bigquery_export.BigQueryExport]
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_big_query_exports(
+        self,
+    ) -> Callable[
+        [securitycenter_service.ListBigQueryExportsRequest],
+        Union[
+            securitycenter_service.ListBigQueryExportsResponse,
+            Awaitable[securitycenter_service.ListBigQueryExportsResponse],
         ],
     ]:
         raise NotImplementedError()

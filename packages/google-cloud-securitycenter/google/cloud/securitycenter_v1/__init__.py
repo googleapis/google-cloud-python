@@ -20,10 +20,12 @@ from .services.security_center import SecurityCenterAsyncClient
 from .types.access import Access
 from .types.access import Geolocation
 from .types.asset import Asset
+from .types.bigquery_export import BigQueryExport
 from .types.external_system import ExternalSystem
 from .types.finding import Finding
 from .types.folder import Folder
 from .types.indicator import Indicator
+from .types.mitre_attack import MitreAttack
 from .types.mute_config import MuteConfig
 from .types.notification_config import NotificationConfig
 from .types.notification_message import NotificationMessage
@@ -33,12 +35,15 @@ from .types.run_asset_discovery_response import RunAssetDiscoveryResponse
 from .types.security_marks import SecurityMarks
 from .types.securitycenter_service import BulkMuteFindingsRequest
 from .types.securitycenter_service import BulkMuteFindingsResponse
+from .types.securitycenter_service import CreateBigQueryExportRequest
 from .types.securitycenter_service import CreateFindingRequest
 from .types.securitycenter_service import CreateMuteConfigRequest
 from .types.securitycenter_service import CreateNotificationConfigRequest
 from .types.securitycenter_service import CreateSourceRequest
+from .types.securitycenter_service import DeleteBigQueryExportRequest
 from .types.securitycenter_service import DeleteMuteConfigRequest
 from .types.securitycenter_service import DeleteNotificationConfigRequest
+from .types.securitycenter_service import GetBigQueryExportRequest
 from .types.securitycenter_service import GetMuteConfigRequest
 from .types.securitycenter_service import GetNotificationConfigRequest
 from .types.securitycenter_service import GetOrganizationSettingsRequest
@@ -50,6 +55,8 @@ from .types.securitycenter_service import GroupFindingsResponse
 from .types.securitycenter_service import GroupResult
 from .types.securitycenter_service import ListAssetsRequest
 from .types.securitycenter_service import ListAssetsResponse
+from .types.securitycenter_service import ListBigQueryExportsRequest
+from .types.securitycenter_service import ListBigQueryExportsResponse
 from .types.securitycenter_service import ListFindingsRequest
 from .types.securitycenter_service import ListFindingsResponse
 from .types.securitycenter_service import ListMuteConfigsRequest
@@ -61,6 +68,7 @@ from .types.securitycenter_service import ListSourcesResponse
 from .types.securitycenter_service import RunAssetDiscoveryRequest
 from .types.securitycenter_service import SetFindingStateRequest
 from .types.securitycenter_service import SetMuteRequest
+from .types.securitycenter_service import UpdateBigQueryExportRequest
 from .types.securitycenter_service import UpdateExternalSystemRequest
 from .types.securitycenter_service import UpdateFindingRequest
 from .types.securitycenter_service import UpdateMuteConfigRequest
@@ -78,20 +86,24 @@ __all__ = (
     "SecurityCenterAsyncClient",
     "Access",
     "Asset",
+    "BigQueryExport",
     "BulkMuteFindingsRequest",
     "BulkMuteFindingsResponse",
+    "CreateBigQueryExportRequest",
     "CreateFindingRequest",
     "CreateMuteConfigRequest",
     "CreateNotificationConfigRequest",
     "CreateSourceRequest",
     "Cve",
     "Cvssv3",
+    "DeleteBigQueryExportRequest",
     "DeleteMuteConfigRequest",
     "DeleteNotificationConfigRequest",
     "ExternalSystem",
     "Finding",
     "Folder",
     "Geolocation",
+    "GetBigQueryExportRequest",
     "GetMuteConfigRequest",
     "GetNotificationConfigRequest",
     "GetOrganizationSettingsRequest",
@@ -104,6 +116,8 @@ __all__ = (
     "Indicator",
     "ListAssetsRequest",
     "ListAssetsResponse",
+    "ListBigQueryExportsRequest",
+    "ListBigQueryExportsResponse",
     "ListFindingsRequest",
     "ListFindingsResponse",
     "ListMuteConfigsRequest",
@@ -112,6 +126,7 @@ __all__ = (
     "ListNotificationConfigsResponse",
     "ListSourcesRequest",
     "ListSourcesResponse",
+    "MitreAttack",
     "MuteConfig",
     "NotificationConfig",
     "NotificationMessage",
@@ -125,6 +140,7 @@ __all__ = (
     "SetFindingStateRequest",
     "SetMuteRequest",
     "Source",
+    "UpdateBigQueryExportRequest",
     "UpdateExternalSystemRequest",
     "UpdateFindingRequest",
     "UpdateMuteConfigRequest",

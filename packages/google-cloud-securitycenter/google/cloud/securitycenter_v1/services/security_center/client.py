@@ -38,10 +38,12 @@ from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.securitycenter_v1.services.security_center import pagers
 from google.cloud.securitycenter_v1.types import access
+from google.cloud.securitycenter_v1.types import bigquery_export
 from google.cloud.securitycenter_v1.types import external_system as gcs_external_system
 from google.cloud.securitycenter_v1.types import finding
 from google.cloud.securitycenter_v1.types import finding as gcs_finding
 from google.cloud.securitycenter_v1.types import indicator
+from google.cloud.securitycenter_v1.types import mitre_attack
 from google.cloud.securitycenter_v1.types import mute_config
 from google.cloud.securitycenter_v1.types import mute_config as gcs_mute_config
 from google.cloud.securitycenter_v1.types import notification_config
@@ -199,6 +201,22 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         """Parses a asset path into its component segments."""
         m = re.match(
             r"^organizations/(?P<organization>.+?)/assets/(?P<asset>.+?)$", path
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def big_query_export_path(organization: str, export: str,) -> str:
+        """Returns a fully-qualified big_query_export string."""
+        return "organizations/{organization}/bigQueryExports/{export}".format(
+            organization=organization, export=export,
+        )
+
+    @staticmethod
+    def parse_big_query_export_path(path: str) -> Dict[str, str]:
+        """Parses a big_query_export path into its component segments."""
+        m = re.match(
+            r"^organizations/(?P<organization>.+?)/bigQueryExports/(?P<export>.+?)$",
+            path,
         )
         return m.groupdict() if m else {}
 
@@ -1316,6 +1334,99 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         rpc(
             request, retry=retry, timeout=timeout, metadata=metadata,
         )
+
+    def get_big_query_export(
+        self,
+        request: Union[securitycenter_service.GetBigQueryExportRequest, dict] = None,
+        *,
+        name: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> bigquery_export.BigQueryExport:
+        r"""Gets a big query export.
+
+        .. code-block:: python
+
+            from google.cloud import securitycenter_v1
+
+            def sample_get_big_query_export():
+                # Create a client
+                client = securitycenter_v1.SecurityCenterClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1.GetBigQueryExportRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_big_query_export(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.securitycenter_v1.types.GetBigQueryExportRequest, dict]):
+                The request object. Request message for retrieving a big
+                query export.
+            name (str):
+                Required. Name of the big query export to retrieve. Its
+                format is
+                organizations/{organization}/bigQueryExports/{export_id},
+                folders/{folder}/bigQueryExports/{export_id}, or
+                projects/{project}/bigQueryExports/{export_id}
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.securitycenter_v1.types.BigQueryExport:
+                Configures how to deliver Findings to
+                BigQuery Instance.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a securitycenter_service.GetBigQueryExportRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, securitycenter_service.GetBigQueryExportRequest):
+            request = securitycenter_service.GetBigQueryExportRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_big_query_export]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
 
     def get_iam_policy(
         self,
@@ -3850,6 +3961,416 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    def create_big_query_export(
+        self,
+        request: Union[securitycenter_service.CreateBigQueryExportRequest, dict] = None,
+        *,
+        parent: str = None,
+        big_query_export: bigquery_export.BigQueryExport = None,
+        big_query_export_id: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> bigquery_export.BigQueryExport:
+        r"""Creates a big query export.
+
+        .. code-block:: python
+
+            from google.cloud import securitycenter_v1
+
+            def sample_create_big_query_export():
+                # Create a client
+                client = securitycenter_v1.SecurityCenterClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1.CreateBigQueryExportRequest(
+                    parent="parent_value",
+                    big_query_export_id="big_query_export_id_value",
+                )
+
+                # Make the request
+                response = client.create_big_query_export(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.securitycenter_v1.types.CreateBigQueryExportRequest, dict]):
+                The request object. Request message for creating a big
+                query export.
+            parent (str):
+                Required. Resource name of the new big query export's
+                parent. Its format is "organizations/[organization_id]",
+                "folders/[folder_id]", or "projects/[project_id]".
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            big_query_export (google.cloud.securitycenter_v1.types.BigQueryExport):
+                Required. The big query export being
+                created.
+
+                This corresponds to the ``big_query_export`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            big_query_export_id (str):
+                Required. Unique identifier provided
+                by the client within the parent scope.
+                It must consist of lower case letters,
+                numbers, and hyphen, with the first
+                character a letter, the last a letter or
+                a number, and a 63 character maximum.
+
+                This corresponds to the ``big_query_export_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.securitycenter_v1.types.BigQueryExport:
+                Configures how to deliver Findings to
+                BigQuery Instance.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, big_query_export, big_query_export_id])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a securitycenter_service.CreateBigQueryExportRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, securitycenter_service.CreateBigQueryExportRequest):
+            request = securitycenter_service.CreateBigQueryExportRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if big_query_export is not None:
+                request.big_query_export = big_query_export
+            if big_query_export_id is not None:
+                request.big_query_export_id = big_query_export_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.create_big_query_export]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    def delete_big_query_export(
+        self,
+        request: Union[securitycenter_service.DeleteBigQueryExportRequest, dict] = None,
+        *,
+        name: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Deletes an existing big query export.
+
+        .. code-block:: python
+
+            from google.cloud import securitycenter_v1
+
+            def sample_delete_big_query_export():
+                # Create a client
+                client = securitycenter_v1.SecurityCenterClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1.DeleteBigQueryExportRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_big_query_export(request=request)
+
+        Args:
+            request (Union[google.cloud.securitycenter_v1.types.DeleteBigQueryExportRequest, dict]):
+                The request object. Request message for deleting a big
+                query export.
+            name (str):
+                Required. Name of the big query export to delete. Its
+                format is
+                organizations/{organization}/bigQueryExports/{export_id},
+                folders/{folder}/bigQueryExports/{export_id}, or
+                projects/{project}/bigQueryExports/{export_id}
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a securitycenter_service.DeleteBigQueryExportRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, securitycenter_service.DeleteBigQueryExportRequest):
+            request = securitycenter_service.DeleteBigQueryExportRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.delete_big_query_export]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        rpc(
+            request, retry=retry, timeout=timeout, metadata=metadata,
+        )
+
+    def update_big_query_export(
+        self,
+        request: Union[securitycenter_service.UpdateBigQueryExportRequest, dict] = None,
+        *,
+        big_query_export: bigquery_export.BigQueryExport = None,
+        update_mask: field_mask_pb2.FieldMask = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> bigquery_export.BigQueryExport:
+        r"""Updates a BigQuery export.
+
+        .. code-block:: python
+
+            from google.cloud import securitycenter_v1
+
+            def sample_update_big_query_export():
+                # Create a client
+                client = securitycenter_v1.SecurityCenterClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1.UpdateBigQueryExportRequest(
+                )
+
+                # Make the request
+                response = client.update_big_query_export(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.securitycenter_v1.types.UpdateBigQueryExportRequest, dict]):
+                The request object. Request message for updating a
+                BigQuery export.
+            big_query_export (google.cloud.securitycenter_v1.types.BigQueryExport):
+                Required. The BigQuery export being
+                updated.
+
+                This corresponds to the ``big_query_export`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+                The list of fields to be updated.
+                If empty all mutable fields will be
+                updated.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.securitycenter_v1.types.BigQueryExport:
+                Configures how to deliver Findings to
+                BigQuery Instance.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([big_query_export, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a securitycenter_service.UpdateBigQueryExportRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, securitycenter_service.UpdateBigQueryExportRequest):
+            request = securitycenter_service.UpdateBigQueryExportRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if big_query_export is not None:
+                request.big_query_export = big_query_export
+            if update_mask is not None:
+                request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.update_big_query_export]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("big_query_export.name", request.big_query_export.name),)
+            ),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    def list_big_query_exports(
+        self,
+        request: Union[securitycenter_service.ListBigQueryExportsRequest, dict] = None,
+        *,
+        parent: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListBigQueryExportsPager:
+        r"""Lists BigQuery exports. Note that when requesting
+        BigQuery exports at a given level all exports under that
+        level are also returned e.g. if requesting BigQuery
+        exports under a folder, then all BigQuery exports
+        immediately under the folder plus the ones created under
+        the projects within the folder are returned.
+
+
+        .. code-block:: python
+
+            from google.cloud import securitycenter_v1
+
+            def sample_list_big_query_exports():
+                # Create a client
+                client = securitycenter_v1.SecurityCenterClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1.ListBigQueryExportsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_big_query_exports(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.securitycenter_v1.types.ListBigQueryExportsRequest, dict]):
+                The request object. Request message for listing
+                BigQuery exports at a given scope e.g. organization,
+                folder or project.
+            parent (str):
+                Required. The parent, which owns the collection of
+                BigQuery exports. Its format is
+                "organizations/[organization_id]",
+                "folders/[folder_id]", "projects/[project_id]".
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.securitycenter_v1.services.security_center.pagers.ListBigQueryExportsPager:
+                Response message for listing BigQuery
+                exports.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a securitycenter_service.ListBigQueryExportsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, securitycenter_service.ListBigQueryExportsRequest):
+            request = securitycenter_service.ListBigQueryExportsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_big_query_exports]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListBigQueryExportsPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
 
         # Done; return the response.
         return response

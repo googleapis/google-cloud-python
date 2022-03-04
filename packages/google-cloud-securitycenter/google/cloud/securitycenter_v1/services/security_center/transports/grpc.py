@@ -25,6 +25,7 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 
 import grpc  # type: ignore
 
+from google.cloud.securitycenter_v1.types import bigquery_export
 from google.cloud.securitycenter_v1.types import external_system as gcs_external_system
 from google.cloud.securitycenter_v1.types import finding
 from google.cloud.securitycenter_v1.types import finding as gcs_finding
@@ -458,6 +459,35 @@ class SecurityCenterGrpcTransport(SecurityCenterTransport):
                 response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_notification_config"]
+
+    @property
+    def get_big_query_export(
+        self,
+    ) -> Callable[
+        [securitycenter_service.GetBigQueryExportRequest],
+        bigquery_export.BigQueryExport,
+    ]:
+        r"""Return a callable for the get big query export method over gRPC.
+
+        Gets a big query export.
+
+        Returns:
+            Callable[[~.GetBigQueryExportRequest],
+                    ~.BigQueryExport]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_big_query_export" not in self._stubs:
+            self._stubs["get_big_query_export"] = self.grpc_channel.unary_unary(
+                "/google.cloud.securitycenter.v1.SecurityCenter/GetBigQueryExport",
+                request_serializer=securitycenter_service.GetBigQueryExportRequest.serialize,
+                response_deserializer=bigquery_export.BigQueryExport.deserialize,
+            )
+        return self._stubs["get_big_query_export"]
 
     @property
     def get_iam_policy(
@@ -1150,6 +1180,126 @@ class SecurityCenterGrpcTransport(SecurityCenterTransport):
                 response_deserializer=gcs_security_marks.SecurityMarks.deserialize,
             )
         return self._stubs["update_security_marks"]
+
+    @property
+    def create_big_query_export(
+        self,
+    ) -> Callable[
+        [securitycenter_service.CreateBigQueryExportRequest],
+        bigquery_export.BigQueryExport,
+    ]:
+        r"""Return a callable for the create big query export method over gRPC.
+
+        Creates a big query export.
+
+        Returns:
+            Callable[[~.CreateBigQueryExportRequest],
+                    ~.BigQueryExport]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_big_query_export" not in self._stubs:
+            self._stubs["create_big_query_export"] = self.grpc_channel.unary_unary(
+                "/google.cloud.securitycenter.v1.SecurityCenter/CreateBigQueryExport",
+                request_serializer=securitycenter_service.CreateBigQueryExportRequest.serialize,
+                response_deserializer=bigquery_export.BigQueryExport.deserialize,
+            )
+        return self._stubs["create_big_query_export"]
+
+    @property
+    def delete_big_query_export(
+        self,
+    ) -> Callable[
+        [securitycenter_service.DeleteBigQueryExportRequest], empty_pb2.Empty
+    ]:
+        r"""Return a callable for the delete big query export method over gRPC.
+
+        Deletes an existing big query export.
+
+        Returns:
+            Callable[[~.DeleteBigQueryExportRequest],
+                    ~.Empty]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_big_query_export" not in self._stubs:
+            self._stubs["delete_big_query_export"] = self.grpc_channel.unary_unary(
+                "/google.cloud.securitycenter.v1.SecurityCenter/DeleteBigQueryExport",
+                request_serializer=securitycenter_service.DeleteBigQueryExportRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_big_query_export"]
+
+    @property
+    def update_big_query_export(
+        self,
+    ) -> Callable[
+        [securitycenter_service.UpdateBigQueryExportRequest],
+        bigquery_export.BigQueryExport,
+    ]:
+        r"""Return a callable for the update big query export method over gRPC.
+
+        Updates a BigQuery export.
+
+        Returns:
+            Callable[[~.UpdateBigQueryExportRequest],
+                    ~.BigQueryExport]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_big_query_export" not in self._stubs:
+            self._stubs["update_big_query_export"] = self.grpc_channel.unary_unary(
+                "/google.cloud.securitycenter.v1.SecurityCenter/UpdateBigQueryExport",
+                request_serializer=securitycenter_service.UpdateBigQueryExportRequest.serialize,
+                response_deserializer=bigquery_export.BigQueryExport.deserialize,
+            )
+        return self._stubs["update_big_query_export"]
+
+    @property
+    def list_big_query_exports(
+        self,
+    ) -> Callable[
+        [securitycenter_service.ListBigQueryExportsRequest],
+        securitycenter_service.ListBigQueryExportsResponse,
+    ]:
+        r"""Return a callable for the list big query exports method over gRPC.
+
+        Lists BigQuery exports. Note that when requesting
+        BigQuery exports at a given level all exports under that
+        level are also returned e.g. if requesting BigQuery
+        exports under a folder, then all BigQuery exports
+        immediately under the folder plus the ones created under
+        the projects within the folder are returned.
+
+        Returns:
+            Callable[[~.ListBigQueryExportsRequest],
+                    ~.ListBigQueryExportsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_big_query_exports" not in self._stubs:
+            self._stubs["list_big_query_exports"] = self.grpc_channel.unary_unary(
+                "/google.cloud.securitycenter.v1.SecurityCenter/ListBigQueryExports",
+                request_serializer=securitycenter_service.ListBigQueryExportsRequest.serialize,
+                response_deserializer=securitycenter_service.ListBigQueryExportsResponse.deserialize,
+            )
+        return self._stubs["list_big_query_exports"]
 
     def close(self):
         self.grpc_channel.close()

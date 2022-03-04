@@ -18,10 +18,12 @@ from .access import (
     Geolocation,
 )
 from .asset import Asset
+from .bigquery_export import BigQueryExport
 from .external_system import ExternalSystem
 from .finding import Finding
 from .folder import Folder
 from .indicator import Indicator
+from .mitre_attack import MitreAttack
 from .mute_config import MuteConfig
 from .notification_config import NotificationConfig
 from .notification_message import NotificationMessage
@@ -32,12 +34,15 @@ from .security_marks import SecurityMarks
 from .securitycenter_service import (
     BulkMuteFindingsRequest,
     BulkMuteFindingsResponse,
+    CreateBigQueryExportRequest,
     CreateFindingRequest,
     CreateMuteConfigRequest,
     CreateNotificationConfigRequest,
     CreateSourceRequest,
+    DeleteBigQueryExportRequest,
     DeleteMuteConfigRequest,
     DeleteNotificationConfigRequest,
+    GetBigQueryExportRequest,
     GetMuteConfigRequest,
     GetNotificationConfigRequest,
     GetOrganizationSettingsRequest,
@@ -49,6 +54,8 @@ from .securitycenter_service import (
     GroupResult,
     ListAssetsRequest,
     ListAssetsResponse,
+    ListBigQueryExportsRequest,
+    ListBigQueryExportsResponse,
     ListFindingsRequest,
     ListFindingsResponse,
     ListMuteConfigsRequest,
@@ -60,6 +67,7 @@ from .securitycenter_service import (
     RunAssetDiscoveryRequest,
     SetFindingStateRequest,
     SetMuteRequest,
+    UpdateBigQueryExportRequest,
     UpdateExternalSystemRequest,
     UpdateFindingRequest,
     UpdateMuteConfigRequest,
@@ -80,10 +88,12 @@ __all__ = (
     "Access",
     "Geolocation",
     "Asset",
+    "BigQueryExport",
     "ExternalSystem",
     "Finding",
     "Folder",
     "Indicator",
+    "MitreAttack",
     "MuteConfig",
     "NotificationConfig",
     "NotificationMessage",
@@ -93,12 +103,15 @@ __all__ = (
     "SecurityMarks",
     "BulkMuteFindingsRequest",
     "BulkMuteFindingsResponse",
+    "CreateBigQueryExportRequest",
     "CreateFindingRequest",
     "CreateMuteConfigRequest",
     "CreateNotificationConfigRequest",
     "CreateSourceRequest",
+    "DeleteBigQueryExportRequest",
     "DeleteMuteConfigRequest",
     "DeleteNotificationConfigRequest",
+    "GetBigQueryExportRequest",
     "GetMuteConfigRequest",
     "GetNotificationConfigRequest",
     "GetOrganizationSettingsRequest",
@@ -110,6 +123,8 @@ __all__ = (
     "GroupResult",
     "ListAssetsRequest",
     "ListAssetsResponse",
+    "ListBigQueryExportsRequest",
+    "ListBigQueryExportsResponse",
     "ListFindingsRequest",
     "ListFindingsResponse",
     "ListMuteConfigsRequest",
@@ -121,6 +136,7 @@ __all__ = (
     "RunAssetDiscoveryRequest",
     "SetFindingStateRequest",
     "SetMuteRequest",
+    "UpdateBigQueryExportRequest",
     "UpdateExternalSystemRequest",
     "UpdateFindingRequest",
     "UpdateMuteConfigRequest",

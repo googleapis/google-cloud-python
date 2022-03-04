@@ -96,6 +96,95 @@
           "service": {
             "shortName": "SecurityCenter"
           },
+          "shortName": "CreateBigQueryExport"
+        }
+      },
+      "file": "securitycenter_v1_generated_security_center_create_big_query_export_async.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_CreateBigQueryExport_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "SecurityCenter"
+          },
+          "shortName": "CreateBigQueryExport"
+        }
+      },
+      "file": "securitycenter_v1_generated_security_center_create_big_query_export_sync.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_CreateBigQueryExport_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "SecurityCenter"
+          },
           "shortName": "CreateFinding"
         }
       },
@@ -452,6 +541,91 @@
           "service": {
             "shortName": "SecurityCenter"
           },
+          "shortName": "DeleteBigQueryExport"
+        }
+      },
+      "file": "securitycenter_v1_generated_security_center_delete_big_query_export_async.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_DeleteBigQueryExport_async",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "SecurityCenter"
+          },
+          "shortName": "DeleteBigQueryExport"
+        }
+      },
+      "file": "securitycenter_v1_generated_security_center_delete_big_query_export_sync.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_DeleteBigQueryExport_sync",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "SecurityCenter"
+          },
           "shortName": "DeleteMuteConfig"
         }
       },
@@ -611,6 +785,95 @@
         },
         {
           "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "SecurityCenter"
+          },
+          "shortName": "GetBigQueryExport"
+        }
+      },
+      "file": "securitycenter_v1_generated_security_center_get_big_query_export_async.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_GetBigQueryExport_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "SecurityCenter"
+          },
+          "shortName": "GetBigQueryExport"
+        }
+      },
+      "file": "securitycenter_v1_generated_security_center_get_big_query_export_sync.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_GetBigQueryExport_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -1294,6 +1557,95 @@
       },
       "file": "securitycenter_v1_generated_security_center_list_assets_sync.py",
       "regionTag": "securitycenter_v1_generated_SecurityCenter_ListAssets_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "SecurityCenter"
+          },
+          "shortName": "ListBigQueryExports"
+        }
+      },
+      "file": "securitycenter_v1_generated_security_center_list_big_query_exports_async.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_ListBigQueryExports_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "SecurityCenter"
+          },
+          "shortName": "ListBigQueryExports"
+        }
+      },
+      "file": "securitycenter_v1_generated_security_center_list_big_query_exports_sync.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_ListBigQueryExports_sync",
       "segments": [
         {
           "end": 45,
@@ -2124,6 +2476,95 @@
         {
           "end": 46,
           "start": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "SecurityCenter"
+          },
+          "shortName": "UpdateBigQueryExport"
+        }
+      },
+      "file": "securitycenter_v1_generated_security_center_update_big_query_export_async.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_UpdateBigQueryExport_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "SecurityCenter"
+          },
+          "shortName": "UpdateBigQueryExport"
+        }
+      },
+      "file": "securitycenter_v1_generated_security_center_update_big_query_export_sync.py",
+      "regionTag": "securitycenter_v1_generated_SecurityCenter_UpdateBigQueryExport_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
           "type": "RESPONSE_HANDLING"
         }
       ]

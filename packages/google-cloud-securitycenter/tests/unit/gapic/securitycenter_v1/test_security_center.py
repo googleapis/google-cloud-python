@@ -42,11 +42,13 @@ from google.cloud.securitycenter_v1.services.security_center import SecurityCent
 from google.cloud.securitycenter_v1.services.security_center import pagers
 from google.cloud.securitycenter_v1.services.security_center import transports
 from google.cloud.securitycenter_v1.types import access
+from google.cloud.securitycenter_v1.types import bigquery_export
 from google.cloud.securitycenter_v1.types import external_system
 from google.cloud.securitycenter_v1.types import external_system as gcs_external_system
 from google.cloud.securitycenter_v1.types import finding
 from google.cloud.securitycenter_v1.types import finding as gcs_finding
 from google.cloud.securitycenter_v1.types import indicator
+from google.cloud.securitycenter_v1.types import mitre_attack
 from google.cloud.securitycenter_v1.types import mute_config
 from google.cloud.securitycenter_v1.types import mute_config as gcs_mute_config
 from google.cloud.securitycenter_v1.types import notification_config
@@ -2336,6 +2338,248 @@ async def test_delete_notification_config_flattened_error_async():
     with pytest.raises(ValueError):
         await client.delete_notification_config(
             securitycenter_service.DeleteNotificationConfigRequest(), name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type", [securitycenter_service.GetBigQueryExportRequest, dict,]
+)
+def test_get_big_query_export(request_type, transport: str = "grpc"):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_big_query_export), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = bigquery_export.BigQueryExport(
+            name="name_value",
+            description="description_value",
+            filter="filter_value",
+            dataset="dataset_value",
+            most_recent_editor="most_recent_editor_value",
+            principal="principal_value",
+        )
+        response = client.get_big_query_export(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.GetBigQueryExportRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, bigquery_export.BigQueryExport)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.filter == "filter_value"
+    assert response.dataset == "dataset_value"
+    assert response.most_recent_editor == "most_recent_editor_value"
+    assert response.principal == "principal_value"
+
+
+def test_get_big_query_export_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_big_query_export), "__call__"
+    ) as call:
+        client.get_big_query_export()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.GetBigQueryExportRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_big_query_export_async(
+    transport: str = "grpc_asyncio",
+    request_type=securitycenter_service.GetBigQueryExportRequest,
+):
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_big_query_export), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            bigquery_export.BigQueryExport(
+                name="name_value",
+                description="description_value",
+                filter="filter_value",
+                dataset="dataset_value",
+                most_recent_editor="most_recent_editor_value",
+                principal="principal_value",
+            )
+        )
+        response = await client.get_big_query_export(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.GetBigQueryExportRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, bigquery_export.BigQueryExport)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.filter == "filter_value"
+    assert response.dataset == "dataset_value"
+    assert response.most_recent_editor == "most_recent_editor_value"
+    assert response.principal == "principal_value"
+
+
+@pytest.mark.asyncio
+async def test_get_big_query_export_async_from_dict():
+    await test_get_big_query_export_async(request_type=dict)
+
+
+def test_get_big_query_export_field_headers():
+    client = SecurityCenterClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = securitycenter_service.GetBigQueryExportRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_big_query_export), "__call__"
+    ) as call:
+        call.return_value = bigquery_export.BigQueryExport()
+        client.get_big_query_export(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_big_query_export_field_headers_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = securitycenter_service.GetBigQueryExportRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_big_query_export), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            bigquery_export.BigQueryExport()
+        )
+        await client.get_big_query_export(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+def test_get_big_query_export_flattened():
+    client = SecurityCenterClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_big_query_export), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = bigquery_export.BigQueryExport()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_big_query_export(name="name_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_big_query_export_flattened_error():
+    client = SecurityCenterClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_big_query_export(
+            securitycenter_service.GetBigQueryExportRequest(), name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_big_query_export_flattened_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_big_query_export), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = bigquery_export.BigQueryExport()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            bigquery_export.BigQueryExport()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_big_query_export(name="name_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_big_query_export_flattened_error_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_big_query_export(
+            securitycenter_service.GetBigQueryExportRequest(), name="name_value",
         )
 
 
@@ -8867,6 +9111,1144 @@ async def test_update_security_marks_flattened_error_async():
         )
 
 
+@pytest.mark.parametrize(
+    "request_type", [securitycenter_service.CreateBigQueryExportRequest, dict,]
+)
+def test_create_big_query_export(request_type, transport: str = "grpc"):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_big_query_export), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = bigquery_export.BigQueryExport(
+            name="name_value",
+            description="description_value",
+            filter="filter_value",
+            dataset="dataset_value",
+            most_recent_editor="most_recent_editor_value",
+            principal="principal_value",
+        )
+        response = client.create_big_query_export(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.CreateBigQueryExportRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, bigquery_export.BigQueryExport)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.filter == "filter_value"
+    assert response.dataset == "dataset_value"
+    assert response.most_recent_editor == "most_recent_editor_value"
+    assert response.principal == "principal_value"
+
+
+def test_create_big_query_export_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_big_query_export), "__call__"
+    ) as call:
+        client.create_big_query_export()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.CreateBigQueryExportRequest()
+
+
+@pytest.mark.asyncio
+async def test_create_big_query_export_async(
+    transport: str = "grpc_asyncio",
+    request_type=securitycenter_service.CreateBigQueryExportRequest,
+):
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_big_query_export), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            bigquery_export.BigQueryExport(
+                name="name_value",
+                description="description_value",
+                filter="filter_value",
+                dataset="dataset_value",
+                most_recent_editor="most_recent_editor_value",
+                principal="principal_value",
+            )
+        )
+        response = await client.create_big_query_export(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.CreateBigQueryExportRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, bigquery_export.BigQueryExport)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.filter == "filter_value"
+    assert response.dataset == "dataset_value"
+    assert response.most_recent_editor == "most_recent_editor_value"
+    assert response.principal == "principal_value"
+
+
+@pytest.mark.asyncio
+async def test_create_big_query_export_async_from_dict():
+    await test_create_big_query_export_async(request_type=dict)
+
+
+def test_create_big_query_export_field_headers():
+    client = SecurityCenterClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = securitycenter_service.CreateBigQueryExportRequest()
+
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_big_query_export), "__call__"
+    ) as call:
+        call.return_value = bigquery_export.BigQueryExport()
+        client.create_big_query_export(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_create_big_query_export_field_headers_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = securitycenter_service.CreateBigQueryExportRequest()
+
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_big_query_export), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            bigquery_export.BigQueryExport()
+        )
+        await client.create_big_query_export(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
+def test_create_big_query_export_flattened():
+    client = SecurityCenterClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_big_query_export), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = bigquery_export.BigQueryExport()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.create_big_query_export(
+            parent="parent_value",
+            big_query_export=bigquery_export.BigQueryExport(name="name_value"),
+            big_query_export_id="big_query_export_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].big_query_export
+        mock_val = bigquery_export.BigQueryExport(name="name_value")
+        assert arg == mock_val
+        arg = args[0].big_query_export_id
+        mock_val = "big_query_export_id_value"
+        assert arg == mock_val
+
+
+def test_create_big_query_export_flattened_error():
+    client = SecurityCenterClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_big_query_export(
+            securitycenter_service.CreateBigQueryExportRequest(),
+            parent="parent_value",
+            big_query_export=bigquery_export.BigQueryExport(name="name_value"),
+            big_query_export_id="big_query_export_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_big_query_export_flattened_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_big_query_export), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = bigquery_export.BigQueryExport()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            bigquery_export.BigQueryExport()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.create_big_query_export(
+            parent="parent_value",
+            big_query_export=bigquery_export.BigQueryExport(name="name_value"),
+            big_query_export_id="big_query_export_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].big_query_export
+        mock_val = bigquery_export.BigQueryExport(name="name_value")
+        assert arg == mock_val
+        arg = args[0].big_query_export_id
+        mock_val = "big_query_export_id_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_create_big_query_export_flattened_error_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.create_big_query_export(
+            securitycenter_service.CreateBigQueryExportRequest(),
+            parent="parent_value",
+            big_query_export=bigquery_export.BigQueryExport(name="name_value"),
+            big_query_export_id="big_query_export_id_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type", [securitycenter_service.DeleteBigQueryExportRequest, dict,]
+)
+def test_delete_big_query_export(request_type, transport: str = "grpc"):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_big_query_export), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        response = client.delete_big_query_export(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.DeleteBigQueryExportRequest()
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_big_query_export_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_big_query_export), "__call__"
+    ) as call:
+        client.delete_big_query_export()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.DeleteBigQueryExportRequest()
+
+
+@pytest.mark.asyncio
+async def test_delete_big_query_export_async(
+    transport: str = "grpc_asyncio",
+    request_type=securitycenter_service.DeleteBigQueryExportRequest,
+):
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_big_query_export), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_big_query_export(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.DeleteBigQueryExportRequest()
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.asyncio
+async def test_delete_big_query_export_async_from_dict():
+    await test_delete_big_query_export_async(request_type=dict)
+
+
+def test_delete_big_query_export_field_headers():
+    client = SecurityCenterClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = securitycenter_service.DeleteBigQueryExportRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_big_query_export), "__call__"
+    ) as call:
+        call.return_value = None
+        client.delete_big_query_export(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_big_query_export_field_headers_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = securitycenter_service.DeleteBigQueryExportRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_big_query_export), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_big_query_export(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+def test_delete_big_query_export_flattened():
+    client = SecurityCenterClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_big_query_export), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.delete_big_query_export(name="name_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_delete_big_query_export_flattened_error():
+    client = SecurityCenterClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_big_query_export(
+            securitycenter_service.DeleteBigQueryExportRequest(), name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_big_query_export_flattened_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_big_query_export), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.delete_big_query_export(name="name_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_delete_big_query_export_flattened_error_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.delete_big_query_export(
+            securitycenter_service.DeleteBigQueryExportRequest(), name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type", [securitycenter_service.UpdateBigQueryExportRequest, dict,]
+)
+def test_update_big_query_export(request_type, transport: str = "grpc"):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_big_query_export), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = bigquery_export.BigQueryExport(
+            name="name_value",
+            description="description_value",
+            filter="filter_value",
+            dataset="dataset_value",
+            most_recent_editor="most_recent_editor_value",
+            principal="principal_value",
+        )
+        response = client.update_big_query_export(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.UpdateBigQueryExportRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, bigquery_export.BigQueryExport)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.filter == "filter_value"
+    assert response.dataset == "dataset_value"
+    assert response.most_recent_editor == "most_recent_editor_value"
+    assert response.principal == "principal_value"
+
+
+def test_update_big_query_export_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_big_query_export), "__call__"
+    ) as call:
+        client.update_big_query_export()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.UpdateBigQueryExportRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_big_query_export_async(
+    transport: str = "grpc_asyncio",
+    request_type=securitycenter_service.UpdateBigQueryExportRequest,
+):
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_big_query_export), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            bigquery_export.BigQueryExport(
+                name="name_value",
+                description="description_value",
+                filter="filter_value",
+                dataset="dataset_value",
+                most_recent_editor="most_recent_editor_value",
+                principal="principal_value",
+            )
+        )
+        response = await client.update_big_query_export(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.UpdateBigQueryExportRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, bigquery_export.BigQueryExport)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.filter == "filter_value"
+    assert response.dataset == "dataset_value"
+    assert response.most_recent_editor == "most_recent_editor_value"
+    assert response.principal == "principal_value"
+
+
+@pytest.mark.asyncio
+async def test_update_big_query_export_async_from_dict():
+    await test_update_big_query_export_async(request_type=dict)
+
+
+def test_update_big_query_export_field_headers():
+    client = SecurityCenterClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = securitycenter_service.UpdateBigQueryExportRequest()
+
+    request.big_query_export.name = "big_query_export.name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_big_query_export), "__call__"
+    ) as call:
+        call.return_value = bigquery_export.BigQueryExport()
+        client.update_big_query_export(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "big_query_export.name=big_query_export.name/value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_big_query_export_field_headers_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = securitycenter_service.UpdateBigQueryExportRequest()
+
+    request.big_query_export.name = "big_query_export.name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_big_query_export), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            bigquery_export.BigQueryExport()
+        )
+        await client.update_big_query_export(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "big_query_export.name=big_query_export.name/value",
+    ) in kw["metadata"]
+
+
+def test_update_big_query_export_flattened():
+    client = SecurityCenterClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_big_query_export), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = bigquery_export.BigQueryExport()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_big_query_export(
+            big_query_export=bigquery_export.BigQueryExport(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].big_query_export
+        mock_val = bigquery_export.BigQueryExport(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+def test_update_big_query_export_flattened_error():
+    client = SecurityCenterClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_big_query_export(
+            securitycenter_service.UpdateBigQueryExportRequest(),
+            big_query_export=bigquery_export.BigQueryExport(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_big_query_export_flattened_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_big_query_export), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = bigquery_export.BigQueryExport()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            bigquery_export.BigQueryExport()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_big_query_export(
+            big_query_export=bigquery_export.BigQueryExport(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].big_query_export
+        mock_val = bigquery_export.BigQueryExport(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_big_query_export_flattened_error_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_big_query_export(
+            securitycenter_service.UpdateBigQueryExportRequest(),
+            big_query_export=bigquery_export.BigQueryExport(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type", [securitycenter_service.ListBigQueryExportsRequest, dict,]
+)
+def test_list_big_query_exports(request_type, transport: str = "grpc"):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_big_query_exports), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = securitycenter_service.ListBigQueryExportsResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.list_big_query_exports(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.ListBigQueryExportsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListBigQueryExportsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_big_query_exports_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_big_query_exports), "__call__"
+    ) as call:
+        client.list_big_query_exports()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.ListBigQueryExportsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_big_query_exports_async(
+    transport: str = "grpc_asyncio",
+    request_type=securitycenter_service.ListBigQueryExportsRequest,
+):
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_big_query_exports), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            securitycenter_service.ListBigQueryExportsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_big_query_exports(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.ListBigQueryExportsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListBigQueryExportsAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_big_query_exports_async_from_dict():
+    await test_list_big_query_exports_async(request_type=dict)
+
+
+def test_list_big_query_exports_field_headers():
+    client = SecurityCenterClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = securitycenter_service.ListBigQueryExportsRequest()
+
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_big_query_exports), "__call__"
+    ) as call:
+        call.return_value = securitycenter_service.ListBigQueryExportsResponse()
+        client.list_big_query_exports(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_big_query_exports_field_headers_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = securitycenter_service.ListBigQueryExportsRequest()
+
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_big_query_exports), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            securitycenter_service.ListBigQueryExportsResponse()
+        )
+        await client.list_big_query_exports(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
+def test_list_big_query_exports_flattened():
+    client = SecurityCenterClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_big_query_exports), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = securitycenter_service.ListBigQueryExportsResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_big_query_exports(parent="parent_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_big_query_exports_flattened_error():
+    client = SecurityCenterClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_big_query_exports(
+            securitycenter_service.ListBigQueryExportsRequest(), parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_big_query_exports_flattened_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_big_query_exports), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = securitycenter_service.ListBigQueryExportsResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            securitycenter_service.ListBigQueryExportsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_big_query_exports(parent="parent_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_big_query_exports_flattened_error_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_big_query_exports(
+            securitycenter_service.ListBigQueryExportsRequest(), parent="parent_value",
+        )
+
+
+def test_list_big_query_exports_pager(transport_name: str = "grpc"):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_big_query_exports), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            securitycenter_service.ListBigQueryExportsResponse(
+                big_query_exports=[
+                    bigquery_export.BigQueryExport(),
+                    bigquery_export.BigQueryExport(),
+                    bigquery_export.BigQueryExport(),
+                ],
+                next_page_token="abc",
+            ),
+            securitycenter_service.ListBigQueryExportsResponse(
+                big_query_exports=[], next_page_token="def",
+            ),
+            securitycenter_service.ListBigQueryExportsResponse(
+                big_query_exports=[bigquery_export.BigQueryExport(),],
+                next_page_token="ghi",
+            ),
+            securitycenter_service.ListBigQueryExportsResponse(
+                big_query_exports=[
+                    bigquery_export.BigQueryExport(),
+                    bigquery_export.BigQueryExport(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_big_query_exports(request={})
+
+        assert pager._metadata == metadata
+
+        results = [i for i in pager]
+        assert len(results) == 6
+        assert all(isinstance(i, bigquery_export.BigQueryExport) for i in results)
+
+
+def test_list_big_query_exports_pages(transport_name: str = "grpc"):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_big_query_exports), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            securitycenter_service.ListBigQueryExportsResponse(
+                big_query_exports=[
+                    bigquery_export.BigQueryExport(),
+                    bigquery_export.BigQueryExport(),
+                    bigquery_export.BigQueryExport(),
+                ],
+                next_page_token="abc",
+            ),
+            securitycenter_service.ListBigQueryExportsResponse(
+                big_query_exports=[], next_page_token="def",
+            ),
+            securitycenter_service.ListBigQueryExportsResponse(
+                big_query_exports=[bigquery_export.BigQueryExport(),],
+                next_page_token="ghi",
+            ),
+            securitycenter_service.ListBigQueryExportsResponse(
+                big_query_exports=[
+                    bigquery_export.BigQueryExport(),
+                    bigquery_export.BigQueryExport(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_big_query_exports(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_big_query_exports_async_pager():
+    client = SecurityCenterAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_big_query_exports),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            securitycenter_service.ListBigQueryExportsResponse(
+                big_query_exports=[
+                    bigquery_export.BigQueryExport(),
+                    bigquery_export.BigQueryExport(),
+                    bigquery_export.BigQueryExport(),
+                ],
+                next_page_token="abc",
+            ),
+            securitycenter_service.ListBigQueryExportsResponse(
+                big_query_exports=[], next_page_token="def",
+            ),
+            securitycenter_service.ListBigQueryExportsResponse(
+                big_query_exports=[bigquery_export.BigQueryExport(),],
+                next_page_token="ghi",
+            ),
+            securitycenter_service.ListBigQueryExportsResponse(
+                big_query_exports=[
+                    bigquery_export.BigQueryExport(),
+                    bigquery_export.BigQueryExport(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_big_query_exports(request={},)
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, bigquery_export.BigQueryExport) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_big_query_exports_async_pages():
+    client = SecurityCenterAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_big_query_exports),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            securitycenter_service.ListBigQueryExportsResponse(
+                big_query_exports=[
+                    bigquery_export.BigQueryExport(),
+                    bigquery_export.BigQueryExport(),
+                    bigquery_export.BigQueryExport(),
+                ],
+                next_page_token="abc",
+            ),
+            securitycenter_service.ListBigQueryExportsResponse(
+                big_query_exports=[], next_page_token="def",
+            ),
+            securitycenter_service.ListBigQueryExportsResponse(
+                big_query_exports=[bigquery_export.BigQueryExport(),],
+                next_page_token="ghi",
+            ),
+            securitycenter_service.ListBigQueryExportsResponse(
+                big_query_exports=[
+                    bigquery_export.BigQueryExport(),
+                    bigquery_export.BigQueryExport(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        async for page_ in (await client.list_big_query_exports(request={})).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.SecurityCenterGrpcTransport(
@@ -8988,6 +10370,7 @@ def test_security_center_base_transport():
         "create_notification_config",
         "delete_mute_config",
         "delete_notification_config",
+        "get_big_query_export",
         "get_iam_policy",
         "get_mute_config",
         "get_notification_config",
@@ -9012,6 +10395,10 @@ def test_security_center_base_transport():
         "update_organization_settings",
         "update_source",
         "update_security_marks",
+        "create_big_query_export",
+        "delete_big_query_export",
+        "update_big_query_export",
+        "list_big_query_exports",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -9361,11 +10748,33 @@ def test_parse_asset_path():
     assert expected == actual
 
 
-def test_external_system_path():
+def test_big_query_export_path():
     organization = "oyster"
-    source = "nudibranch"
-    finding = "cuttlefish"
-    externalsystem = "mussel"
+    export = "nudibranch"
+    expected = "organizations/{organization}/bigQueryExports/{export}".format(
+        organization=organization, export=export,
+    )
+    actual = SecurityCenterClient.big_query_export_path(organization, export)
+    assert expected == actual
+
+
+def test_parse_big_query_export_path():
+    expected = {
+        "organization": "cuttlefish",
+        "export": "mussel",
+    }
+    path = SecurityCenterClient.big_query_export_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = SecurityCenterClient.parse_big_query_export_path(path)
+    assert expected == actual
+
+
+def test_external_system_path():
+    organization = "winkle"
+    source = "nautilus"
+    finding = "scallop"
+    externalsystem = "abalone"
     expected = "organizations/{organization}/sources/{source}/findings/{finding}/externalSystems/{externalsystem}".format(
         organization=organization,
         source=source,
@@ -9380,10 +10789,10 @@ def test_external_system_path():
 
 def test_parse_external_system_path():
     expected = {
-        "organization": "winkle",
-        "source": "nautilus",
-        "finding": "scallop",
-        "externalsystem": "abalone",
+        "organization": "squid",
+        "source": "clam",
+        "finding": "whelk",
+        "externalsystem": "octopus",
     }
     path = SecurityCenterClient.external_system_path(**expected)
 
@@ -9393,9 +10802,9 @@ def test_parse_external_system_path():
 
 
 def test_finding_path():
-    organization = "squid"
-    source = "clam"
-    finding = "whelk"
+    organization = "oyster"
+    source = "nudibranch"
+    finding = "cuttlefish"
     expected = "organizations/{organization}/sources/{source}/findings/{finding}".format(
         organization=organization, source=source, finding=finding,
     )
@@ -9405,9 +10814,9 @@ def test_finding_path():
 
 def test_parse_finding_path():
     expected = {
-        "organization": "octopus",
-        "source": "oyster",
-        "finding": "nudibranch",
+        "organization": "mussel",
+        "source": "winkle",
+        "finding": "nautilus",
     }
     path = SecurityCenterClient.finding_path(**expected)
 
@@ -9417,8 +10826,8 @@ def test_parse_finding_path():
 
 
 def test_mute_config_path():
-    organization = "cuttlefish"
-    mute_config = "mussel"
+    organization = "scallop"
+    mute_config = "abalone"
     expected = "organizations/{organization}/muteConfigs/{mute_config}".format(
         organization=organization, mute_config=mute_config,
     )
@@ -9428,8 +10837,8 @@ def test_mute_config_path():
 
 def test_parse_mute_config_path():
     expected = {
-        "organization": "winkle",
-        "mute_config": "nautilus",
+        "organization": "squid",
+        "mute_config": "clam",
     }
     path = SecurityCenterClient.mute_config_path(**expected)
 
@@ -9439,8 +10848,8 @@ def test_parse_mute_config_path():
 
 
 def test_notification_config_path():
-    organization = "scallop"
-    notification_config = "abalone"
+    organization = "whelk"
+    notification_config = "octopus"
     expected = "organizations/{organization}/notificationConfigs/{notification_config}".format(
         organization=organization, notification_config=notification_config,
     )
@@ -9452,8 +10861,8 @@ def test_notification_config_path():
 
 def test_parse_notification_config_path():
     expected = {
-        "organization": "squid",
-        "notification_config": "clam",
+        "organization": "oyster",
+        "notification_config": "nudibranch",
     }
     path = SecurityCenterClient.notification_config_path(**expected)
 
@@ -9463,7 +10872,7 @@ def test_parse_notification_config_path():
 
 
 def test_organization_settings_path():
-    organization = "whelk"
+    organization = "cuttlefish"
     expected = "organizations/{organization}/organizationSettings".format(
         organization=organization,
     )
@@ -9473,7 +10882,7 @@ def test_organization_settings_path():
 
 def test_parse_organization_settings_path():
     expected = {
-        "organization": "octopus",
+        "organization": "mussel",
     }
     path = SecurityCenterClient.organization_settings_path(**expected)
 
@@ -9483,8 +10892,8 @@ def test_parse_organization_settings_path():
 
 
 def test_security_marks_path():
-    organization = "oyster"
-    asset = "nudibranch"
+    organization = "winkle"
+    asset = "nautilus"
     expected = "organizations/{organization}/assets/{asset}/securityMarks".format(
         organization=organization, asset=asset,
     )
@@ -9494,8 +10903,8 @@ def test_security_marks_path():
 
 def test_parse_security_marks_path():
     expected = {
-        "organization": "cuttlefish",
-        "asset": "mussel",
+        "organization": "scallop",
+        "asset": "abalone",
     }
     path = SecurityCenterClient.security_marks_path(**expected)
 
@@ -9505,8 +10914,8 @@ def test_parse_security_marks_path():
 
 
 def test_source_path():
-    organization = "winkle"
-    source = "nautilus"
+    organization = "squid"
+    source = "clam"
     expected = "organizations/{organization}/sources/{source}".format(
         organization=organization, source=source,
     )
@@ -9516,8 +10925,8 @@ def test_source_path():
 
 def test_parse_source_path():
     expected = {
-        "organization": "scallop",
-        "source": "abalone",
+        "organization": "whelk",
+        "source": "octopus",
     }
     path = SecurityCenterClient.source_path(**expected)
 
@@ -9527,8 +10936,8 @@ def test_parse_source_path():
 
 
 def test_topic_path():
-    project = "squid"
-    topic = "clam"
+    project = "oyster"
+    topic = "nudibranch"
     expected = "projects/{project}/topics/{topic}".format(project=project, topic=topic,)
     actual = SecurityCenterClient.topic_path(project, topic)
     assert expected == actual
@@ -9536,8 +10945,8 @@ def test_topic_path():
 
 def test_parse_topic_path():
     expected = {
-        "project": "whelk",
-        "topic": "octopus",
+        "project": "cuttlefish",
+        "topic": "mussel",
     }
     path = SecurityCenterClient.topic_path(**expected)
 
@@ -9547,7 +10956,7 @@ def test_parse_topic_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "oyster"
+    billing_account = "winkle"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -9557,7 +10966,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nudibranch",
+        "billing_account": "nautilus",
     }
     path = SecurityCenterClient.common_billing_account_path(**expected)
 
@@ -9567,7 +10976,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "cuttlefish"
+    folder = "scallop"
     expected = "folders/{folder}".format(folder=folder,)
     actual = SecurityCenterClient.common_folder_path(folder)
     assert expected == actual
@@ -9575,7 +10984,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "mussel",
+        "folder": "abalone",
     }
     path = SecurityCenterClient.common_folder_path(**expected)
 
@@ -9585,7 +10994,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "winkle"
+    organization = "squid"
     expected = "organizations/{organization}".format(organization=organization,)
     actual = SecurityCenterClient.common_organization_path(organization)
     assert expected == actual
@@ -9593,7 +11002,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nautilus",
+        "organization": "clam",
     }
     path = SecurityCenterClient.common_organization_path(**expected)
 
@@ -9603,7 +11012,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "scallop"
+    project = "whelk"
     expected = "projects/{project}".format(project=project,)
     actual = SecurityCenterClient.common_project_path(project)
     assert expected == actual
@@ -9611,7 +11020,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "abalone",
+        "project": "octopus",
     }
     path = SecurityCenterClient.common_project_path(**expected)
 
@@ -9621,8 +11030,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "squid"
-    location = "clam"
+    project = "oyster"
+    location = "nudibranch"
     expected = "projects/{project}/locations/{location}".format(
         project=project, location=location,
     )
@@ -9632,8 +11041,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "whelk",
-        "location": "octopus",
+        "project": "cuttlefish",
+        "location": "mussel",
     }
     path = SecurityCenterClient.common_location_path(**expected)
 

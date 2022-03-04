@@ -24,10 +24,12 @@ from google.cloud.securitycenter_v1.services.security_center.async_client import
 from google.cloud.securitycenter_v1.types.access import Access
 from google.cloud.securitycenter_v1.types.access import Geolocation
 from google.cloud.securitycenter_v1.types.asset import Asset
+from google.cloud.securitycenter_v1.types.bigquery_export import BigQueryExport
 from google.cloud.securitycenter_v1.types.external_system import ExternalSystem
 from google.cloud.securitycenter_v1.types.finding import Finding
 from google.cloud.securitycenter_v1.types.folder import Folder
 from google.cloud.securitycenter_v1.types.indicator import Indicator
+from google.cloud.securitycenter_v1.types.mitre_attack import MitreAttack
 from google.cloud.securitycenter_v1.types.mute_config import MuteConfig
 from google.cloud.securitycenter_v1.types.notification_config import NotificationConfig
 from google.cloud.securitycenter_v1.types.notification_message import (
@@ -48,6 +50,9 @@ from google.cloud.securitycenter_v1.types.securitycenter_service import (
     BulkMuteFindingsResponse,
 )
 from google.cloud.securitycenter_v1.types.securitycenter_service import (
+    CreateBigQueryExportRequest,
+)
+from google.cloud.securitycenter_v1.types.securitycenter_service import (
     CreateFindingRequest,
 )
 from google.cloud.securitycenter_v1.types.securitycenter_service import (
@@ -60,10 +65,16 @@ from google.cloud.securitycenter_v1.types.securitycenter_service import (
     CreateSourceRequest,
 )
 from google.cloud.securitycenter_v1.types.securitycenter_service import (
+    DeleteBigQueryExportRequest,
+)
+from google.cloud.securitycenter_v1.types.securitycenter_service import (
     DeleteMuteConfigRequest,
 )
 from google.cloud.securitycenter_v1.types.securitycenter_service import (
     DeleteNotificationConfigRequest,
+)
+from google.cloud.securitycenter_v1.types.securitycenter_service import (
+    GetBigQueryExportRequest,
 )
 from google.cloud.securitycenter_v1.types.securitycenter_service import (
     GetMuteConfigRequest,
@@ -93,6 +104,12 @@ from google.cloud.securitycenter_v1.types.securitycenter_service import (
 )
 from google.cloud.securitycenter_v1.types.securitycenter_service import (
     ListAssetsResponse,
+)
+from google.cloud.securitycenter_v1.types.securitycenter_service import (
+    ListBigQueryExportsRequest,
+)
+from google.cloud.securitycenter_v1.types.securitycenter_service import (
+    ListBigQueryExportsResponse,
 )
 from google.cloud.securitycenter_v1.types.securitycenter_service import (
     ListFindingsRequest,
@@ -126,6 +143,9 @@ from google.cloud.securitycenter_v1.types.securitycenter_service import (
 )
 from google.cloud.securitycenter_v1.types.securitycenter_service import SetMuteRequest
 from google.cloud.securitycenter_v1.types.securitycenter_service import (
+    UpdateBigQueryExportRequest,
+)
+from google.cloud.securitycenter_v1.types.securitycenter_service import (
     UpdateExternalSystemRequest,
 )
 from google.cloud.securitycenter_v1.types.securitycenter_service import (
@@ -158,10 +178,12 @@ __all__ = (
     "Access",
     "Geolocation",
     "Asset",
+    "BigQueryExport",
     "ExternalSystem",
     "Finding",
     "Folder",
     "Indicator",
+    "MitreAttack",
     "MuteConfig",
     "NotificationConfig",
     "NotificationMessage",
@@ -171,12 +193,15 @@ __all__ = (
     "SecurityMarks",
     "BulkMuteFindingsRequest",
     "BulkMuteFindingsResponse",
+    "CreateBigQueryExportRequest",
     "CreateFindingRequest",
     "CreateMuteConfigRequest",
     "CreateNotificationConfigRequest",
     "CreateSourceRequest",
+    "DeleteBigQueryExportRequest",
     "DeleteMuteConfigRequest",
     "DeleteNotificationConfigRequest",
+    "GetBigQueryExportRequest",
     "GetMuteConfigRequest",
     "GetNotificationConfigRequest",
     "GetOrganizationSettingsRequest",
@@ -188,6 +213,8 @@ __all__ = (
     "GroupResult",
     "ListAssetsRequest",
     "ListAssetsResponse",
+    "ListBigQueryExportsRequest",
+    "ListBigQueryExportsResponse",
     "ListFindingsRequest",
     "ListFindingsResponse",
     "ListMuteConfigsRequest",
@@ -199,6 +226,7 @@ __all__ = (
     "RunAssetDiscoveryRequest",
     "SetFindingStateRequest",
     "SetMuteRequest",
+    "UpdateBigQueryExportRequest",
     "UpdateExternalSystemRequest",
     "UpdateFindingRequest",
     "UpdateMuteConfigRequest",

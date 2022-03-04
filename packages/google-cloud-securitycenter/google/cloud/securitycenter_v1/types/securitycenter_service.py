@@ -16,6 +16,7 @@
 import proto  # type: ignore
 
 from google.cloud.securitycenter_v1.types import asset as gcs_asset
+from google.cloud.securitycenter_v1.types import bigquery_export
 from google.cloud.securitycenter_v1.types import external_system as gcs_external_system
 from google.cloud.securitycenter_v1.types import finding as gcs_finding
 from google.cloud.securitycenter_v1.types import folder
@@ -45,6 +46,7 @@ __protobuf__ = proto.module(
         "CreateSourceRequest",
         "DeleteMuteConfigRequest",
         "DeleteNotificationConfigRequest",
+        "GetBigQueryExportRequest",
         "GetMuteConfigRequest",
         "GetNotificationConfigRequest",
         "GetOrganizationSettingsRequest",
@@ -74,6 +76,11 @@ __protobuf__ = proto.module(
         "UpdateOrganizationSettingsRequest",
         "UpdateSourceRequest",
         "UpdateSecurityMarksRequest",
+        "CreateBigQueryExportRequest",
+        "UpdateBigQueryExportRequest",
+        "ListBigQueryExportsRequest",
+        "ListBigQueryExportsResponse",
+        "DeleteBigQueryExportRequest",
     },
 )
 
@@ -247,6 +254,21 @@ class DeleteNotificationConfigRequest(proto.Message):
             Required. Name of the notification config to delete. Its
             format is
             "organizations/[organization_id]/notificationConfigs/[config_id]".
+    """
+
+    name = proto.Field(proto.STRING, number=1,)
+
+
+class GetBigQueryExportRequest(proto.Message):
+    r"""Request message for retrieving a big query export.
+
+    Attributes:
+        name (str):
+            Required. Name of the big query export to retrieve. Its
+            format is
+            organizations/{organization}/bigQueryExports/{export_id},
+            folders/{folder}/bigQueryExports/{export_id}, or
+            projects/{project}/bigQueryExports/{export_id}
     """
 
     name = proto.Field(proto.STRING, number=1,)
@@ -1594,6 +1616,115 @@ class UpdateSecurityMarksRequest(proto.Message):
         proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
     )
     start_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
+
+
+class CreateBigQueryExportRequest(proto.Message):
+    r"""Request message for creating a big query export.
+
+    Attributes:
+        parent (str):
+            Required. Resource name of the new big query export's
+            parent. Its format is "organizations/[organization_id]",
+            "folders/[folder_id]", or "projects/[project_id]".
+        big_query_export (google.cloud.securitycenter_v1.types.BigQueryExport):
+            Required. The big query export being created.
+        big_query_export_id (str):
+            Required. Unique identifier provided by the
+            client within the parent scope. It must consist
+            of lower case letters, numbers, and hyphen, with
+            the first character a letter, the last a letter
+            or a number, and a 63 character maximum.
+    """
+
+    parent = proto.Field(proto.STRING, number=1,)
+    big_query_export = proto.Field(
+        proto.MESSAGE, number=2, message=bigquery_export.BigQueryExport,
+    )
+    big_query_export_id = proto.Field(proto.STRING, number=3,)
+
+
+class UpdateBigQueryExportRequest(proto.Message):
+    r"""Request message for updating a BigQuery export.
+
+    Attributes:
+        big_query_export (google.cloud.securitycenter_v1.types.BigQueryExport):
+            Required. The BigQuery export being updated.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            The list of fields to be updated.
+            If empty all mutable fields will be updated.
+    """
+
+    big_query_export = proto.Field(
+        proto.MESSAGE, number=1, message=bigquery_export.BigQueryExport,
+    )
+    update_mask = proto.Field(
+        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+    )
+
+
+class ListBigQueryExportsRequest(proto.Message):
+    r"""Request message for listing  BigQuery exports at a given
+    scope e.g. organization, folder or project.
+
+    Attributes:
+        parent (str):
+            Required. The parent, which owns the collection of BigQuery
+            exports. Its format is "organizations/[organization_id]",
+            "folders/[folder_id]", "projects/[project_id]".
+        page_size (int):
+            The maximum number of configs to return. The
+            service may return fewer than this value.
+            If unspecified, at most 10 configs will be
+            returned. The maximum value is 1000; values
+            above 1000 will be coerced to 1000.
+        page_token (str):
+            A page token, received from a previous
+            ``ListBigQueryExports`` call. Provide this to retrieve the
+            subsequent page. When paginating, all other parameters
+            provided to ``ListBigQueryExports`` must match the call that
+            provided the page token.
+    """
+
+    parent = proto.Field(proto.STRING, number=1,)
+    page_size = proto.Field(proto.INT32, number=2,)
+    page_token = proto.Field(proto.STRING, number=3,)
+
+
+class ListBigQueryExportsResponse(proto.Message):
+    r"""Response message for listing BigQuery exports.
+
+    Attributes:
+        big_query_exports (Sequence[google.cloud.securitycenter_v1.types.BigQueryExport]):
+            The BigQuery exports from the specified
+            parent.
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    big_query_exports = proto.RepeatedField(
+        proto.MESSAGE, number=1, message=bigquery_export.BigQueryExport,
+    )
+    next_page_token = proto.Field(proto.STRING, number=2,)
+
+
+class DeleteBigQueryExportRequest(proto.Message):
+    r"""Request message for deleting a big query export.
+
+    Attributes:
+        name (str):
+            Required. Name of the big query export to delete. Its format
+            is organizations/{organization}/bigQueryExports/{export_id},
+            folders/{folder}/bigQueryExports/{export_id}, or
+            projects/{project}/bigQueryExports/{export_id}
+    """
+
+    name = proto.Field(proto.STRING, number=1,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
