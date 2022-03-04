@@ -511,7 +511,10 @@ class RunQueryRequest(proto.Message):
 
             This field is a member of `oneof`_ ``query_type``.
         transaction (bytes):
-            Reads documents in a transaction.
+            Run the query within an already active
+            transaction.
+            The value here is the opaque transaction ID to
+            execute the query in.
 
             This field is a member of `oneof`_ ``consistency_selector``.
         new_transaction (google.cloud.firestore_v1.types.TransactionOptions):
@@ -559,8 +562,8 @@ class RunQueryResponse(proto.Message):
             was set in the request. If set, no other fields will be set
             in this response.
         document (google.cloud.firestore_v1.types.Document):
-            A query result.
-            Not set when reporting partial progress.
+            A query result, not set when reporting
+            partial progress.
         read_time (google.protobuf.timestamp_pb2.Timestamp):
             The time at which the document was read. This may be
             monotonically increasing; in this case, the previous

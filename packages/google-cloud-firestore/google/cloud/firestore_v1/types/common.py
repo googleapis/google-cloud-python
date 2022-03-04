@@ -60,7 +60,8 @@ class Precondition(proto.Message):
             This field is a member of `oneof`_ ``condition_type``.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             When set, the target document must exist and
-            have been last updated at that time.
+            have been last updated at that time. Timestamp
+            must be microsecond aligned.
 
             This field is a member of `oneof`_ ``condition_type``.
     """
