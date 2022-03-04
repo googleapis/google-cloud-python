@@ -242,6 +242,37 @@ def create_subscription_with_filtering(
     # [END pubsub_create_subscription_with_filter]
 
 
+def create_subscription_with_exactly_once_delivery(
+    project_id: str, topic_id: str, subscription_id: str
+) -> None:
+    """Create a subscription with exactly once delivery enabled."""
+    # [START pubsub_create_subscription_with_exactly_once_delivery]
+    from google.cloud import pubsub_v1
+
+    # TODO(developer): Choose an existing topic.
+    # project_id = "your-project-id"
+    # topic_id = "your-topic-id"
+    # subscription_id = "your-subscription-id"
+
+    publisher = pubsub_v1.PublisherClient()
+    subscriber = pubsub_v1.SubscriberClient()
+    topic_path = publisher.topic_path(project_id, topic_id)
+    subscription_path = subscriber.subscription_path(project_id, subscription_id)
+
+    with subscriber:
+        subscription = subscriber.create_subscription(
+            request={
+                "name": subscription_path,
+                "topic": topic_path,
+                "enable_exactly_once_delivery": True,
+            }
+        )
+        print(
+            f"Created subscription with exactly once delivery enabled: {subscription}"
+        )
+    # [END pubsub_create_subscription_with_exactly_once_delivery]
+
+
 def delete_subscription(project_id: str, subscription_id: str) -> None:
     """Deletes an existing Pub/Sub topic."""
     # [START pubsub_delete_subscription]
@@ -879,6 +910,15 @@ if __name__ == "__main__":  # noqa
     create_subscription_with_filtering_parser.add_argument("subscription_id")
     create_subscription_with_filtering_parser.add_argument("filter")
 
+    create_subscription_with_exactly_once_delivery_parser = subparsers.add_parser(
+        "create-with-exactly-once",
+        help=create_subscription_with_exactly_once_delivery.__doc__,
+    )
+    create_subscription_with_exactly_once_delivery_parser.add_argument("topic_id")
+    create_subscription_with_exactly_once_delivery_parser.add_argument(
+        "subscription_id"
+    )
+
     delete_parser = subparsers.add_parser("delete", help=delete_subscription.__doc__)
     delete_parser.add_argument("subscription_id")
 
@@ -1002,6 +1042,10 @@ if __name__ == "__main__":  # noqa
     elif args.command == "create-with-filtering":
         create_subscription_with_filtering(
             args.project_id, args.topic_id, args.subscription_id, args.filter
+        )
+    elif args.command == "create-with-exactly-once":
+        create_subscription_with_exactly_once_delivery(
+            args.project_id, args.topic_id, args.subscription_id
         )
     elif args.command == "delete":
         delete_subscription(args.project_id, args.subscription_id)

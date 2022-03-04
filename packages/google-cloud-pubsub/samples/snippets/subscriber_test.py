@@ -411,6 +411,31 @@ def test_create_subscription_with_filtering(
     assert '"attributes.author=\\"unknown\\""' in out
 
 
+def test_create_subscription_with_exactly_once_delivery(
+    subscriber_client: pubsub_v1.SubscriberClient,
+    subscription_admin: str,
+    capsys: CaptureFixture[str],
+) -> None:
+    subscription_path = subscriber_client.subscription_path(
+        PROJECT_ID, SUBSCRIPTION_ADMIN
+    )
+    try:
+        subscriber_client.delete_subscription(
+            request={"subscription": subscription_path}
+        )
+    except NotFound:
+        pass
+
+    subscriber.create_subscription_with_exactly_once_delivery(
+        PROJECT_ID, TOPIC, SUBSCRIPTION_ADMIN
+    )
+
+    out, _ = capsys.readouterr()
+    assert "Created subscription with exactly once delivery enabled" in out
+    assert f"{subscription_admin}" in out
+    assert "enable_exactly_once_delivery: true" in out
+
+
 def test_create_push_subscription(
     subscriber_client: pubsub_v1.SubscriberClient,
     subscription_admin: str,
