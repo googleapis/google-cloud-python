@@ -79,7 +79,7 @@ setup(
     ],
     platforms="Posix; MacOS X; Windows",
     install_requires=[
-        "google-api-core>=1.30.0",  # Work-around bug in cloud core deps.
+        "google-api-core >= 1.31.5, <3.0.0dev,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.0",
         # NOTE: Maintainers, please do not require google-auth>=2.x.x
         # Until this issue is closed
         # https://github.com/googleapis/google-cloud-python/issues/10566
