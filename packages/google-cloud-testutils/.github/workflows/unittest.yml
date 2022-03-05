@@ -26,7 +26,7 @@ jobs:
       run: |
         nox -s unit-${{ matrix.python }}
     - name: Upload coverage results
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: coverage-artifacts
         path: .coverage-${{ matrix.python }}
@@ -47,7 +47,7 @@ jobs:
         python -m pip install --upgrade setuptools pip wheel
         python -m pip install coverage
     - name: Download coverage results
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v3
       with:
         name: coverage-artifacts
         path: .coverage-results/
