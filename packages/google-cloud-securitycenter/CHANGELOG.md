@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-securitycenter/#history
 
+## [1.10.0](https://github.com/googleapis/python-securitycenter/compare/v1.9.0...v1.10.0) (2022-03-05)
+
+
+### Features
+
+* Add BigQuery export APIs ([#289](https://github.com/googleapis/python-securitycenter/issues/289)) ([0a29512](https://github.com/googleapis/python-securitycenter/commit/0a29512a1b1e22a2205311a39f40759bfeafe468))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#293](https://github.com/googleapis/python-securitycenter/issues/293)) ([ae90fee](https://github.com/googleapis/python-securitycenter/commit/ae90feee4d04057b505b8dda7cd0b4c99b22e530))
+* **deps:** require proto-plus>=1.15.0 ([ae90fee](https://github.com/googleapis/python-securitycenter/commit/ae90feee4d04057b505b8dda7cd0b4c99b22e530))
+
 ## [1.9.0](https://github.com/googleapis/python-securitycenter/compare/v1.8.0...v1.9.0) (2022-02-26)
 
 
