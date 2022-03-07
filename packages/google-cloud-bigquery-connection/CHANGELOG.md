@@ -1,5 +1,13 @@
 # Changelog
 
+### [1.3.4](https://github.com/googleapis/python-bigquery-connection/compare/v1.3.3...v1.3.4) (2022-03-05)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#176](https://github.com/googleapis/python-bigquery-connection/issues/176)) ([a6cfa8f](https://github.com/googleapis/python-bigquery-connection/commit/a6cfa8f0c27ffa507305618d16a7ae5fb6fb15f9))
+* **deps:** require proto-plus>=1.15.0 ([a6cfa8f](https://github.com/googleapis/python-bigquery-connection/commit/a6cfa8f0c27ffa507305618d16a7ae5fb6fb15f9))
+
 ### [1.3.3](https://github.com/googleapis/python-bigquery-connection/compare/v1.3.2...v1.3.3) (2022-02-26)
 
 
