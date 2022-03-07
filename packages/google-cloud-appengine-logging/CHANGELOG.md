@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.1.1](https://github.com/googleapis/python-appengine-logging/compare/v1.1.0...v1.1.1) (2022-03-05)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#75](https://github.com/googleapis/python-appengine-logging/issues/75)) ([0803952](https://github.com/googleapis/python-appengine-logging/commit/0803952880a92f2acbff02c7d2f6529f517e6caa))
+
 ## [1.1.0](https://www.github.com/googleapis/python-appengine-logging/compare/v1.0.0...v1.1.0) (2021-10-18)
 
 
