@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-scheduler/#history
 
+### [2.6.2](https://github.com/googleapis/python-scheduler/compare/v2.6.1...v2.6.2) (2022-03-05)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#203](https://github.com/googleapis/python-scheduler/issues/203)) ([3e68808](https://github.com/googleapis/python-scheduler/commit/3e688088d09b0ff5af55571b4e47109638a47825))
+* **deps:** require proto-plus>=1.15.0 ([3e68808](https://github.com/googleapis/python-scheduler/commit/3e688088d09b0ff5af55571b4e47109638a47825))
+
 ### [2.6.1](https://github.com/googleapis/python-scheduler/compare/v2.6.0...v2.6.1) (2022-02-26)
 
 
