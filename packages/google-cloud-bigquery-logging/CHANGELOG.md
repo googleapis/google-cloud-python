@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.0.2](https://github.com/googleapis/python-bigquery-logging/compare/v1.0.1...v1.0.2) (2022-03-05)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#72](https://github.com/googleapis/python-bigquery-logging/issues/72)) ([609bf19](https://github.com/googleapis/python-bigquery-logging/commit/609bf19d1b3d4b7dc594f8e4a0904af0351143c7))
+
 ### [1.0.1](https://www.github.com/googleapis/python-bigquery-logging/compare/v1.0.0...v1.0.1) (2021-11-01)
 
 ### Bug Fixes
