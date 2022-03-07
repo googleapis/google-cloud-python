@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.3.1](https://github.com/googleapis/python-contact-center-insights/compare/v1.3.0...v1.3.1) (2022-03-07)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#136](https://github.com/googleapis/python-contact-center-insights/issues/136)) ([dc326bc](https://github.com/googleapis/python-contact-center-insights/commit/dc326bc2d8c9f5b49041a05eb2aa4dcb77e332d2))
+
 ## [1.3.0](https://github.com/googleapis/python-contact-center-insights/compare/v1.2.1...v1.3.0) (2022-02-26)
 
 
