@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.3.1](https://github.com/googleapis/python-video-transcoder/compare/v1.3.0...v1.3.1) (2022-03-05)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#153](https://github.com/googleapis/python-video-transcoder/issues/153)) ([03ba693](https://github.com/googleapis/python-video-transcoder/commit/03ba693031d605a3e61b3fd1e7e0c5529bc3c399))
+
 ## [1.3.0](https://github.com/googleapis/python-video-transcoder/compare/v1.2.1...v1.3.0) (2022-02-24)
 
 
