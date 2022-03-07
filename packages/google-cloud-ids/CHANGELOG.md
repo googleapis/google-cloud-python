@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.1.1](https://github.com/googleapis/python-ids/compare/v1.1.0...v1.1.1) (2022-03-05)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#29](https://github.com/googleapis/python-ids/issues/29)) ([b006c4d](https://github.com/googleapis/python-ids/commit/b006c4d9cc4fb9983aa901332db4f1247eea6900))
+
 ## [1.1.0](https://github.com/googleapis/python-ids/compare/v1.0.0...v1.1.0) (2022-02-26)
 
 
