@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.2.1](https://github.com/googleapis/python-dataplex/compare/v0.2.0...v0.2.1) (2022-03-05)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#18](https://github.com/googleapis/python-dataplex/issues/18)) ([10b7809](https://github.com/googleapis/python-dataplex/commit/10b7809287befb914fdbe7cef3b1bded0eb7b63b))
+
 ## [0.2.0](https://github.com/googleapis/python-dataplex/compare/v0.1.0...v0.2.0) (2022-02-26)
 
 
