@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-core/#history
 
+### [2.2.3](https://github.com/googleapis/python-cloud-core/compare/v2.2.2...v2.2.3) (2022-03-07)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#178](https://github.com/googleapis/python-cloud-core/issues/178)) ([c65ad44](https://github.com/googleapis/python-cloud-core/commit/c65ad44df0b058120aea0686eddeaffbe9bbdda7))
+* **deps:** require google-auth 1.25.0 ([c65ad44](https://github.com/googleapis/python-cloud-core/commit/c65ad44df0b058120aea0686eddeaffbe9bbdda7))
+
 ### [2.2.2](https://github.com/googleapis/python-cloud-core/compare/v2.2.1...v2.2.2) (2022-01-17)
 
 
