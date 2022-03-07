@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.5.1](https://github.com/googleapis/python-life-sciences/compare/v0.5.0...v0.5.1) (2022-03-05)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#82](https://github.com/googleapis/python-life-sciences/issues/82)) ([ec11d9a](https://github.com/googleapis/python-life-sciences/commit/ec11d9ab37600e679be5cb7875811545c17bd3dc))
+
 ## [0.5.0](https://github.com/googleapis/python-life-sciences/compare/v0.4.1...v0.5.0) (2022-02-26)
 
 
