@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.3.1](https://github.com/googleapis/python-resource-settings/compare/v1.3.0...v1.3.1) (2022-03-05)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#89](https://github.com/googleapis/python-resource-settings/issues/89)) ([ba70731](https://github.com/googleapis/python-resource-settings/commit/ba707319f31bf65f3e120d144260b0d5d3aa742f))
+
 ## [1.3.0](https://github.com/googleapis/python-resource-settings/compare/v1.2.1...v1.3.0) (2022-02-26)
 
 
