@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.3.1](https://github.com/googleapis/python-service-usage/compare/v1.3.0...v1.3.1) (2022-03-05)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#88](https://github.com/googleapis/python-service-usage/issues/88)) ([bee9ae0](https://github.com/googleapis/python-service-usage/commit/bee9ae00c8dd77fcc423ceb4b0023b0041d6c395))
+
 ## [1.3.0](https://github.com/googleapis/python-service-usage/compare/v1.2.1...v1.3.0) (2022-02-26)
 
 
