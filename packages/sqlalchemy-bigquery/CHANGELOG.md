@@ -14,6 +14,13 @@ Older versions of this project were distributed as [pybigquery][0].
 [2]: https://pypi.org/project/pybigquery/#history
 
 
+### [1.4.1](https://github.com/googleapis/python-bigquery-sqlalchemy/compare/v1.4.0...v1.4.1) (2022-03-07)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#419](https://github.com/googleapis/python-bigquery-sqlalchemy/issues/419)) ([52339f7](https://github.com/googleapis/python-bigquery-sqlalchemy/commit/52339f70340eb8f497c816f36f71c8232928e57b))
+
 ## [1.4.0](https://github.com/googleapis/python-bigquery-sqlalchemy/compare/v1.3.0...v1.4.0) (2022-02-22)
 
 
