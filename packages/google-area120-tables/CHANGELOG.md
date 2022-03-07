@@ -1,5 +1,13 @@
 # Changelog
 
+### [0.6.1](https://github.com/googleapis/python-area120-tables/compare/v0.6.0...v0.6.1) (2022-03-05)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#130](https://github.com/googleapis/python-area120-tables/issues/130)) ([0e565da](https://github.com/googleapis/python-area120-tables/commit/0e565da03fe9a5f32c9e08435e0674ca4ef0e0ae))
+* **deps:** require proto-plus>=1.15.0 ([0e565da](https://github.com/googleapis/python-area120-tables/commit/0e565da03fe9a5f32c9e08435e0674ca4ef0e0ae))
+
 ## [0.6.0](https://github.com/googleapis/python-area120-tables/compare/v0.5.1...v0.6.0) (2022-02-26)
 
 
