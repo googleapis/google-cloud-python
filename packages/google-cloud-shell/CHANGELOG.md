@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.3.2](https://github.com/googleapis/python-shell/compare/v1.3.1...v1.3.2) (2022-03-05)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#85](https://github.com/googleapis/python-shell/issues/85)) ([b3271c5](https://github.com/googleapis/python-shell/commit/b3271c5f07fc1326a614ab8fb365cc9b7c46c897))
+
 ### [1.3.1](https://github.com/googleapis/python-shell/compare/v1.3.0...v1.3.1) (2022-02-11)
 
 
