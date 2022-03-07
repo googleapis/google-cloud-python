@@ -1,5 +1,13 @@
 # Changelog
 
+### [1.2.2](https://github.com/googleapis/python-assured-workloads/compare/v1.2.1...v1.2.2) (2022-03-05)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#136](https://github.com/googleapis/python-assured-workloads/issues/136)) ([a287c38](https://github.com/googleapis/python-assured-workloads/commit/a287c38712eb08ef30f80e5ab64203926cb8f12a))
+* **deps:** require proto-plus>=1.15.0 ([a287c38](https://github.com/googleapis/python-assured-workloads/commit/a287c38712eb08ef30f80e5ab64203926cb8f12a))
+
 ### [1.2.1](https://github.com/googleapis/python-assured-workloads/compare/v1.2.0...v1.2.1) (2022-02-26)
 
 
