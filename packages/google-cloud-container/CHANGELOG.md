@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+### [2.10.6](https://github.com/googleapis/python-container/compare/v2.10.5...v2.10.6) (2022-03-07)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#202](https://github.com/googleapis/python-container/issues/202)) ([444b806](https://github.com/googleapis/python-container/commit/444b8065a22da4c261b8b33ae8564d8329d3435d))
+* **deps:** require proto-plus>=1.15.0 ([444b806](https://github.com/googleapis/python-container/commit/444b8065a22da4c261b8b33ae8564d8329d3435d))
+
 ### [2.10.5](https://github.com/googleapis/python-container/compare/v2.10.4...v2.10.5) (2022-02-16)
 
 
