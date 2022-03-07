@@ -1,5 +1,13 @@
 # Changelog
 
+### [0.1.10](https://github.com/googleapis/python-access-context-manager/compare/v0.1.9...v0.1.10) (2022-03-04)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#110](https://github.com/googleapis/python-access-context-manager/issues/110)) ([386dc8d](https://github.com/googleapis/python-access-context-manager/commit/386dc8dccbfa4ffee275ae92543b83e9dfc6f05e))
+* regenerate pb2 files ([#108](https://github.com/googleapis/python-access-context-manager/issues/108)) ([f3ae216](https://github.com/googleapis/python-access-context-manager/commit/f3ae216524db604166447ccec2d646fb038ce3bb))
+
 ### [0.1.9](https://www.github.com/googleapis/python-access-context-manager/compare/v0.1.8...v0.1.9) (2021-11-12)
 
 
