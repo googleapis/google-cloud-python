@@ -1,5 +1,18 @@
 # Changelog
 
+### [1.4.1](https://github.com/googleapis/python-retail/compare/v1.4.0...v1.4.1) (2022-03-05)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#179](https://github.com/googleapis/python-retail/issues/179)) ([398f86d](https://github.com/googleapis/python-retail/commit/398f86d0806f94788e6cb6d4428e4b988ede43f0))
+* **deps:** require proto-plus>=1.15.0 ([398f86d](https://github.com/googleapis/python-retail/commit/398f86d0806f94788e6cb6d4428e4b988ede43f0))
+
+
+### Documentation
+
+* **samples:** fix create bucket for user events ([#173](https://github.com/googleapis/python-retail/issues/173)) ([264f2d4](https://github.com/googleapis/python-retail/commit/264f2d43341ca75284ca30c42e2d9bf6f98195ba))
+
 ## [1.4.0](https://github.com/googleapis/python-retail/compare/v1.3.0...v1.4.0) (2022-02-28)
 
 
