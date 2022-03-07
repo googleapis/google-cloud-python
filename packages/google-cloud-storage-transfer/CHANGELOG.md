@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.2.1](https://github.com/googleapis/python-storage-transfer/compare/v1.2.0...v1.2.1) (2022-03-05)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#65](https://github.com/googleapis/python-storage-transfer/issues/65)) ([346af01](https://github.com/googleapis/python-storage-transfer/commit/346af014507c865762df837ef55c15e16e804dd7))
+
 ## [1.2.0](https://github.com/googleapis/python-storage-transfer/compare/v1.1.1...v1.2.0) (2022-02-26)
 
 
