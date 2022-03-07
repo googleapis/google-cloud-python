@@ -1,5 +1,13 @@
 # Changelog
 
+### [2.9.1](https://github.com/googleapis/python-secret-manager/compare/v2.9.0...v2.9.1) (2022-03-05)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#260](https://github.com/googleapis/python-secret-manager/issues/260)) ([b6b800b](https://github.com/googleapis/python-secret-manager/commit/b6b800bbb26fbe08dd86ff0d876a70fe67274491))
+* **deps:** require proto-plus>=1.15.0 ([b6b800b](https://github.com/googleapis/python-secret-manager/commit/b6b800bbb26fbe08dd86ff0d876a70fe67274491))
+
 ## [2.9.0](https://github.com/googleapis/python-secret-manager/compare/v2.8.0...v2.9.0) (2022-02-26)
 
 
