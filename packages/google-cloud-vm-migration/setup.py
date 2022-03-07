@@ -22,7 +22,7 @@ import setuptools
 
 name = "google-cloud-vm-migration"
 description = "Cloud VM Migration API client library"
-version = "1.1.0"
+version = "1.1.1"
 url = "https://github.com/googleapis/python-vm-migration"
 release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [

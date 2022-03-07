@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.1.1](https://github.com/googleapis/python-vm-migration/compare/v1.1.0...v1.1.1) (2022-03-05)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#24](https://github.com/googleapis/python-vm-migration/issues/24)) ([0ee06fd](https://github.com/googleapis/python-vm-migration/commit/0ee06fda92a66981f21b0fe546335362f4fc8d80))
+
 ## [1.1.0](https://github.com/googleapis/python-vm-migration/compare/v1.0.0...v1.1.0) (2022-02-11)
 
 
