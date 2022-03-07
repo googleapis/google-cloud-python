@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-redis/#history
 
+### [2.7.1](https://github.com/googleapis/python-redis/compare/v2.7.0...v2.7.1) (2022-03-05)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#168](https://github.com/googleapis/python-redis/issues/168)) ([2fd9d9e](https://github.com/googleapis/python-redis/commit/2fd9d9e44b80ae9b8d66c5eb413a04c4e9a92792))
+* **deps:** require proto-plus>=1.15.0 ([2fd9d9e](https://github.com/googleapis/python-redis/commit/2fd9d9e44b80ae9b8d66c5eb413a04c4e9a92792))
+
 ## [2.7.0](https://github.com/googleapis/python-redis/compare/v2.6.0...v2.7.0) (2022-02-24)
 
 
