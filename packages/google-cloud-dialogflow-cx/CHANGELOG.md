@@ -1,5 +1,13 @@
 # Changelog
 
+### [1.9.1](https://github.com/googleapis/python-dialogflow-cx/compare/v1.9.0...v1.9.1) (2022-03-05)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#263](https://github.com/googleapis/python-dialogflow-cx/issues/263)) ([6235775](https://github.com/googleapis/python-dialogflow-cx/commit/623577550fc96786c2142d971dea4c31c116181a))
+* **deps:** require proto-plus>=1.15.0 ([6235775](https://github.com/googleapis/python-dialogflow-cx/commit/623577550fc96786c2142d971dea4c31c116181a))
+
 ## [1.9.0](https://github.com/googleapis/python-dialogflow-cx/compare/v1.8.0...v1.9.0) (2022-02-26)
 
 
