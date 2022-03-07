@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.3.2](https://github.com/googleapis/python-appengine-admin/compare/v1.3.1...v1.3.2) (2022-03-05)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#115](https://github.com/googleapis/python-appengine-admin/issues/115)) ([a4b3624](https://github.com/googleapis/python-appengine-admin/commit/a4b36244e2e566770f3cca84aac9bb003ca47f56))
+
 ### [1.3.1](https://github.com/googleapis/python-appengine-admin/compare/v1.3.0...v1.3.1) (2022-02-11)
 
 
