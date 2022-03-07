@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.3.2](https://github.com/googleapis/python-tpu/compare/v1.3.1...v1.3.2) (2022-03-05)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#89](https://github.com/googleapis/python-tpu/issues/89)) ([07b8c1a](https://github.com/googleapis/python-tpu/commit/07b8c1acd38d029fb792378f2970191f36b80445))
+
 ### [1.3.1](https://github.com/googleapis/python-tpu/compare/v1.3.0...v1.3.1) (2022-02-11)
 
 
