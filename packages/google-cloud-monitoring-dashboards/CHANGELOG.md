@@ -1,5 +1,13 @@
 # Changelog
 
+### [2.5.1](https://github.com/googleapis/python-monitoring-dashboards/compare/v2.5.0...v2.5.1) (2022-03-05)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#160](https://github.com/googleapis/python-monitoring-dashboards/issues/160)) ([c258537](https://github.com/googleapis/python-monitoring-dashboards/commit/c2585379c535e207333390d5aac3e85e4218a8e8))
+* **deps:** require proto-plus>=1.15.0 ([c258537](https://github.com/googleapis/python-monitoring-dashboards/commit/c2585379c535e207333390d5aac3e85e4218a8e8))
+
 ## [2.5.0](https://github.com/googleapis/python-monitoring-dashboards/compare/v2.4.1...v2.5.0) (2022-02-11)
 
 
