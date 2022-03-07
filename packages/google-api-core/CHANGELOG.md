@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+### [2.6.1](https://github.com/googleapis/python-api-core/compare/v2.6.0...v2.6.1) (2022-03-05)
+
+
+### Bug Fixes
+
+* Remove py2 tag from wheel ([#343](https://github.com/googleapis/python-api-core/issues/343)) ([7e21e9e](https://github.com/googleapis/python-api-core/commit/7e21e9e34892472a34f9b44175fa761f0e3fd9ed))
+
 ## [2.6.0](https://github.com/googleapis/python-api-core/compare/v2.5.0...v2.6.0) (2022-03-03)
 
 
