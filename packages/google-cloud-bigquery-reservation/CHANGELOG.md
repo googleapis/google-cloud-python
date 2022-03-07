@@ -1,5 +1,18 @@
 # Changelog
 
+### [1.6.1](https://github.com/googleapis/python-bigquery-reservation/compare/v1.6.0...v1.6.1) (2022-03-05)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#233](https://github.com/googleapis/python-bigquery-reservation/issues/233)) ([14eee3f](https://github.com/googleapis/python-bigquery-reservation/commit/14eee3ff6a19aa1199c36c314210f4b8f23bc367))
+* **deps:** require proto-plus>=1.15.0 ([14eee3f](https://github.com/googleapis/python-bigquery-reservation/commit/14eee3ff6a19aa1199c36c314210f4b8f23bc367))
+
+
+### Documentation
+
+* fix README typo in PyPI link ([#225](https://github.com/googleapis/python-bigquery-reservation/issues/225)) ([6eea2a3](https://github.com/googleapis/python-bigquery-reservation/commit/6eea2a39fbf22f09d6791aded8bd7bdda0b52425))
+
 ## [1.6.0](https://github.com/googleapis/python-bigquery-reservation/compare/v1.5.0...v1.6.0) (2022-02-03)
 
 
