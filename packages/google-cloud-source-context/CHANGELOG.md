@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.2.2](https://github.com/googleapis/python-source-context/compare/v1.2.1...v1.2.2) (2022-03-05)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#66](https://github.com/googleapis/python-source-context/issues/66)) ([0b06641](https://github.com/googleapis/python-source-context/commit/0b06641e0a648bdebf1539eaf12f666845795b80))
+
 ### [1.2.1](https://www.github.com/googleapis/python-source-context/compare/v1.2.0...v1.2.1) (2021-11-01)
 
 
