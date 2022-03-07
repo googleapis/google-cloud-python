@@ -1,5 +1,13 @@
 # Changelog
 
+### [1.2.4](https://github.com/googleapis/python-security-private-ca/compare/v1.2.3...v1.2.4) (2022-03-05)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#192](https://github.com/googleapis/python-security-private-ca/issues/192)) ([3b4a00b](https://github.com/googleapis/python-security-private-ca/commit/3b4a00b60a35c99780e7090191553c622b353055))
+* **deps:** require proto-plus>=1.15.0 ([3b4a00b](https://github.com/googleapis/python-security-private-ca/commit/3b4a00b60a35c99780e7090191553c622b353055))
+
 ### [1.2.3](https://github.com/googleapis/python-security-private-ca/compare/v1.2.2...v1.2.3) (2022-02-26)
 
 
