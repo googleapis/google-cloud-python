@@ -1,5 +1,13 @@
 # Changelog
 
+### [0.11.1](https://github.com/googleapis/python-analytics-data/compare/v0.11.0...v0.11.1) (2022-03-05)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#202](https://github.com/googleapis/python-analytics-data/issues/202)) ([cc351cd](https://github.com/googleapis/python-analytics-data/commit/cc351cd9d65daf9d6546717cebf212bcb2ddf16e))
+* **deps:** require proto-plus>=1.15.0 ([cc351cd](https://github.com/googleapis/python-analytics-data/commit/cc351cd9d65daf9d6546717cebf212bcb2ddf16e))
+
 ## [0.11.0](https://github.com/googleapis/python-analytics-data/compare/v0.10.0...v0.11.0) (2022-02-24)
 
 
