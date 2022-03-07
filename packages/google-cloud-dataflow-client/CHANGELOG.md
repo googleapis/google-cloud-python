@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.4.1](https://github.com/googleapis/python-dataflow-client/compare/v0.4.0...v0.4.1) (2022-03-05)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#81](https://github.com/googleapis/python-dataflow-client/issues/81)) ([9783339](https://github.com/googleapis/python-dataflow-client/commit/97833397e1a4e06cf7a7cae88c813f9ca071fa49))
+
 ## [0.4.0](https://github.com/googleapis/python-dataflow-client/compare/v0.3.1...v0.4.0) (2022-02-26)
 
 
