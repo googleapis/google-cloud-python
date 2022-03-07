@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.1.1](https://github.com/googleapis/python-domains/compare/v1.1.0...v1.1.1) (2022-03-05)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#117](https://github.com/googleapis/python-domains/issues/117)) ([e42d933](https://github.com/googleapis/python-domains/commit/e42d933fed8433e44fadf4bba410d65d1e21b491))
+
 ## [1.1.0](https://github.com/googleapis/python-domains/compare/v1.0.0...v1.1.0) (2022-02-11)
 
 
