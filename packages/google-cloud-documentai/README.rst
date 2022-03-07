@@ -13,12 +13,12 @@ language, computer vision, translation, and AutoML.
 .. |GA| image:: https://img.shields.io/badge/support-ga-gold.svg
    :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#general-availability
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-service-directory.svg
-   :target: https://pypi.org/project/google-cloud-service-directory/
+   :target: https://pypi.org/project/google-cloud-documentai/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-documentai.svg
    :target: https://pypi.org/project/google-cloud-documentai/
-.. _Cloud Document AI API: https://cloud.google.com/document-understanding/docs/
+.. _Cloud Document AI API: https://cloud.google.com/document-ai/docs/overview
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/documentai/latest
-.. _Product Documentation: https://cloud.google.com/document-understanding/docs/
+.. _Product Documentation: https://cloud.google.com/document-ai/docs
 
 Quick Start
 -----------
@@ -32,7 +32,7 @@ In order to use this library, you first need to go through the following steps:
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Cloud Document AI API.:  https://cloud.google.com/document-understanding/docs/
+.. _Enable the Cloud Document AI API.:  https://cloud.google.com/document-ai/docs
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -80,5 +80,5 @@ Next Steps
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Cloud Document AI API Product documentation:  https://cloud.google.com/document-understanding/docs/
+.. _Cloud Document AI API Product documentation: https://cloud.google.com/document-ai/docs/overview
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
