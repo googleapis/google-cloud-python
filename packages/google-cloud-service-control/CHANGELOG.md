@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.3.1](https://github.com/googleapis/python-service-control/compare/v1.3.0...v1.3.1) (2022-03-05)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#114](https://github.com/googleapis/python-service-control/issues/114)) ([96a6319](https://github.com/googleapis/python-service-control/commit/96a6319266369e04dd8cebc703435c6fa05d5a73))
+
 ## [1.3.0](https://github.com/googleapis/python-service-control/compare/v1.2.1...v1.3.0) (2022-02-26)
 
 
