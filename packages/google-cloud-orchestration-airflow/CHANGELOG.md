@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.3.1](https://github.com/googleapis/python-orchestration-airflow/compare/v1.3.0...v1.3.1) (2022-03-05)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#70](https://github.com/googleapis/python-orchestration-airflow/issues/70)) ([5847489](https://github.com/googleapis/python-orchestration-airflow/commit/58474891762075088806b1da8894da5ed4dd6741))
+
 ## [1.3.0](https://github.com/googleapis/python-orchestration-airflow/compare/v1.2.1...v1.3.0) (2022-02-26)
 
 
