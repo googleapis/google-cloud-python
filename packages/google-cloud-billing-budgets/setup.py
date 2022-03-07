@@ -22,7 +22,7 @@ import setuptools
 
 name = "google-cloud-billing-budgets"
 description = "Cloud Billing Budget API API client library"
-version = "1.6.0"
+version = "1.6.1"
 release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
     # NOTE: Maintainers, please do not require google-api-core>=2.x.x

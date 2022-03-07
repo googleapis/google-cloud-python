@@ -1,4 +1,12 @@
 # Changelog
+### [1.6.1](https://github.com/googleapis/python-billingbudgets/compare/v1.6.0...v1.6.1) (2022-03-05)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#183](https://github.com/googleapis/python-billingbudgets/issues/183)) ([812fc65](https://github.com/googleapis/python-billingbudgets/commit/812fc6509498090d75a025bbdee8c9771225408e))
+* **deps:** require proto-plus>=1.15.0 ([812fc65](https://github.com/googleapis/python-billingbudgets/commit/812fc6509498090d75a025bbdee8c9771225408e))
+
 ## [1.6.0](https://github.com/googleapis/python-billingbudgets/compare/v1.5.1...v1.6.0) (2022-02-11)
 
 
