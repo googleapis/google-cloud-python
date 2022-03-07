@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.4.2](https://github.com/googleapis/python-datastream/compare/v0.4.1...v0.4.2) (2022-03-05)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#76](https://github.com/googleapis/python-datastream/issues/76)) ([f29eba0](https://github.com/googleapis/python-datastream/commit/f29eba05290746af2cb84463ad505eb427e36d98))
+
 ### [0.4.1](https://github.com/googleapis/python-datastream/compare/v0.4.0...v0.4.1) (2022-02-26)
 
 
