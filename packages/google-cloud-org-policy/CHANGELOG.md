@@ -1,5 +1,13 @@
 # Changelog
 
+### [1.3.1](https://github.com/googleapis/python-org-policy/compare/v1.3.0...v1.3.1) (2022-03-05)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#126](https://github.com/googleapis/python-org-policy/issues/126)) ([ad3f4f4](https://github.com/googleapis/python-org-policy/commit/ad3f4f49d15f290db7ac19258960a5731a73544e))
+* **deps:** require proto-plus>=1.15.0 ([ad3f4f4](https://github.com/googleapis/python-org-policy/commit/ad3f4f49d15f290db7ac19258960a5731a73544e))
+
 ## [1.3.0](https://github.com/googleapis/python-org-policy/compare/v1.2.1...v1.3.0) (2022-02-18)
 
 
