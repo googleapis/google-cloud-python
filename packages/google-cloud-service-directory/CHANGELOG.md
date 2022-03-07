@@ -1,5 +1,13 @@
 # Changelog
 
+### [1.3.1](https://github.com/googleapis/python-service-directory/compare/v1.3.0...v1.3.1) (2022-03-05)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#162](https://github.com/googleapis/python-service-directory/issues/162)) ([8cf5f69](https://github.com/googleapis/python-service-directory/commit/8cf5f6950ccb302aac014a539855206403a50baf))
+* **deps:** require proto-plus>=1.15.0 ([8cf5f69](https://github.com/googleapis/python-service-directory/commit/8cf5f6950ccb302aac014a539855206403a50baf))
+
 ## [1.3.0](https://github.com/googleapis/python-service-directory/compare/v1.2.1...v1.3.0) (2022-02-26)
 
 
