@@ -1,5 +1,14 @@
 # Changelog
 
+### [0.17.3](https://github.com/googleapis/python-bigquery-pandas/compare/v0.17.2...v0.17.3) (2022-03-05)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#493](https://github.com/googleapis/python-bigquery-pandas/issues/493)) ([744a71c](https://github.com/googleapis/python-bigquery-pandas/commit/744a71c3d265d0e9a2ac25ca98dd0fa3ca68af6a))
+* **deps:** require google-auth>=1.25.0 ([744a71c](https://github.com/googleapis/python-bigquery-pandas/commit/744a71c3d265d0e9a2ac25ca98dd0fa3ca68af6a))
+* **deps:** require proto-plus>=1.15.0 ([744a71c](https://github.com/googleapis/python-bigquery-pandas/commit/744a71c3d265d0e9a2ac25ca98dd0fa3ca68af6a))
+
 ### [0.17.2](https://github.com/googleapis/python-bigquery-pandas/compare/v0.17.1...v0.17.2) (2022-03-02)
 
 
