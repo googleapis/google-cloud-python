@@ -1,5 +1,13 @@
 # Changelog
 
+### [1.2.1](https://github.com/googleapis/python-api-gateway/compare/v1.2.0...v1.2.1) (2022-03-05)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#113](https://github.com/googleapis/python-api-gateway/issues/113)) ([729cc99](https://github.com/googleapis/python-api-gateway/commit/729cc997ad63feed9475580c63004efc14375d1a))
+* **deps:** require proto-plus>=1.15.0 ([729cc99](https://github.com/googleapis/python-api-gateway/commit/729cc997ad63feed9475580c63004efc14375d1a))
+
 ## [1.2.0](https://github.com/googleapis/python-api-gateway/compare/v1.1.1...v1.2.0) (2022-02-11)
 
 
