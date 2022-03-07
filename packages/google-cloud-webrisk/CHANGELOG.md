@@ -3,6 +3,14 @@
 [PyPI History][1]
 
 [1]: https://pypi.org/project/google-cloud-webrisk/#history
+### [1.7.1](https://github.com/googleapis/python-webrisk/compare/v1.7.0...v1.7.1) (2022-03-05)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#171](https://github.com/googleapis/python-webrisk/issues/171)) ([a9ff394](https://github.com/googleapis/python-webrisk/commit/a9ff394f8cd6d8bc909c2922448e37337b090ca2))
+* **deps:** require proto-plus>=1.15.0 ([a9ff394](https://github.com/googleapis/python-webrisk/commit/a9ff394f8cd6d8bc909c2922448e37337b090ca2))
+
 ## [1.7.0](https://github.com/googleapis/python-webrisk/compare/v1.6.1...v1.7.0) (2022-02-11)
 
 
