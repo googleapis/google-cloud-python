@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.4.1](https://github.com/googleapis/python-network-security/compare/v0.4.0...v0.4.1) (2022-03-05)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#77](https://github.com/googleapis/python-network-security/issues/77)) ([6f0a9cb](https://github.com/googleapis/python-network-security/commit/6f0a9cbd206d99a8d4b1f3a3af5e8da1c88c838c))
+
 ## [0.4.0](https://github.com/googleapis/python-network-security/compare/v0.3.2...v0.4.0) (2022-02-26)
 
 
