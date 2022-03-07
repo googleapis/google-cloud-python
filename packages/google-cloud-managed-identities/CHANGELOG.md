@@ -1,5 +1,13 @@
 # Changelog
 
+### [1.4.1](https://github.com/googleapis/python-managed-identities/compare/v1.4.0...v1.4.1) (2022-03-05)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#118](https://github.com/googleapis/python-managed-identities/issues/118)) ([72e501f](https://github.com/googleapis/python-managed-identities/commit/72e501f2739087c5f43e631608a0bdb4c2222c87))
+* **deps:** require proto-plus>=1.15.0 ([72e501f](https://github.com/googleapis/python-managed-identities/commit/72e501f2739087c5f43e631608a0bdb4c2222c87))
+
 ## [1.4.0](https://github.com/googleapis/python-managed-identities/compare/v1.3.1...v1.4.0) (2022-02-26)
 
 
