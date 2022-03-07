@@ -29,7 +29,7 @@ version = "1.5.0"
 # 'Development Status :: 5 - Production/Stable'
 release_status = "Development Status :: 4 - Beta"
 dependencies = [
-    "google-cloud-logging>=1.14.0, <3.0.1",
+    "google-cloud-logging>=1.14.0, <4.0.0dev",
     # NOTE: Maintainers, please do not require google-api-core>=2.x.x
     # Until this issue is closed
     # https://github.com/googleapis/google-cloud-python/issues/10566
