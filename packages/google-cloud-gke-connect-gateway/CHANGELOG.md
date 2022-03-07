@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.5.1](https://github.com/googleapis/python-gke-connect-gateway/compare/v0.5.0...v0.5.1) (2022-03-05)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#79](https://github.com/googleapis/python-gke-connect-gateway/issues/79)) ([adfeb74](https://github.com/googleapis/python-gke-connect-gateway/commit/adfeb74a498ad71128725a8be0be73f6cdbd1955))
+
 ## [0.5.0](https://github.com/googleapis/python-gke-connect-gateway/compare/v0.4.1...v0.5.0) (2022-02-26)
 
 
