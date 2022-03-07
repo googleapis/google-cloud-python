@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-talent/#history
 
+### [2.5.1](https://github.com/googleapis/python-talent/compare/v2.5.0...v2.5.1) (2022-03-05)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#213](https://github.com/googleapis/python-talent/issues/213)) ([bca14ed](https://github.com/googleapis/python-talent/commit/bca14ed0c94d91dfdf1d4c14715cdb8e8834cebd))
+
 ## [2.5.0](https://github.com/googleapis/python-talent/compare/v2.4.0...v2.5.0) (2022-02-11)
 
 
