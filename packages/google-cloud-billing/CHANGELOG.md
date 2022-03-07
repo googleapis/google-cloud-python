@@ -1,5 +1,13 @@
 # Changelog
 
+### [1.5.1](https://github.com/googleapis/python-billing/compare/v1.5.0...v1.5.1) (2022-03-05)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#159](https://github.com/googleapis/python-billing/issues/159)) ([d5511db](https://github.com/googleapis/python-billing/commit/d5511dbae66858b39f95ab989a1049d84ea57e49))
+* **deps:** require proto-plus>=1.15.0 ([d5511db](https://github.com/googleapis/python-billing/commit/d5511dbae66858b39f95ab989a1049d84ea57e49))
+
 ## [1.5.0](https://github.com/googleapis/python-billing/compare/v1.4.1...v1.5.0) (2022-02-26)
 
 
