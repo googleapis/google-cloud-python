@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+## [2.7.0](https://github.com/googleapis/python-bigtable/compare/v2.6.0...v2.7.0) (2022-03-06)
+
+
+### Features
+
+* Add support for autoscaling ([#509](https://github.com/googleapis/python-bigtable/issues/509)) ([8f4e197](https://github.com/googleapis/python-bigtable/commit/8f4e197148644ded934190814ff44fa132a2dda6))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#526](https://github.com/googleapis/python-bigtable/issues/526)) ([a8a92ee](https://github.com/googleapis/python-bigtable/commit/a8a92ee1b6bd284055fee3e1029a9a6aacbc5f1c))
+* **deps:** require proto-plus>=1.15.0 ([a8a92ee](https://github.com/googleapis/python-bigtable/commit/a8a92ee1b6bd284055fee3e1029a9a6aacbc5f1c))
+
 ## [2.6.0](https://github.com/googleapis/python-bigtable/compare/v2.5.2...v2.6.0) (2022-02-26)
 
 
