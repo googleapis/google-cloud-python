@@ -1,5 +1,13 @@
 # Changelog
 
+### [1.3.1](https://github.com/googleapis/python-memcache/compare/v1.3.0...v1.3.1) (2022-03-05)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#150](https://github.com/googleapis/python-memcache/issues/150)) ([fba1303](https://github.com/googleapis/python-memcache/commit/fba130344bb07512d8fc0355c2c2da158d9be8ff))
+* **deps:** require proto-plus>=1.15.0 ([fba1303](https://github.com/googleapis/python-memcache/commit/fba130344bb07512d8fc0355c2c2da158d9be8ff))
+
 ## [1.3.0](https://github.com/googleapis/python-memcache/compare/v1.2.1...v1.3.0) (2022-02-26)
 
 
