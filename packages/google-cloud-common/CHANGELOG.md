@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.0.1](https://github.com/googleapis/python-cloud-common/compare/v1.0.0...v1.0.1) (2022-03-05)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#38](https://github.com/googleapis/python-cloud-common/issues/38)) ([756847f](https://github.com/googleapis/python-cloud-common/commit/756847fc408db91a42738f2253a96f9132f886e8))
+
 ## [1.0.0](https://www.github.com/googleapis/python-cloud-common/compare/v0.2.0...v1.0.0) (2021-11-03)
 
 
