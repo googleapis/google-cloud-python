@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.3.1](https://github.com/googleapis/python-apigee-connect/compare/v1.3.0...v1.3.1) (2022-03-05)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#92](https://github.com/googleapis/python-apigee-connect/issues/92)) ([2cee45c](https://github.com/googleapis/python-apigee-connect/commit/2cee45c4aa1873e30a461586432f94ba1f5e04fe))
+
 ## [1.3.0](https://github.com/googleapis/python-apigee-connect/compare/v1.2.1...v1.3.0) (2022-02-26)
 
 
