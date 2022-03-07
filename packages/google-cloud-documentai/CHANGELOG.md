@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.3.0](https://github.com/googleapis/python-documentai/compare/v1.2.1...v1.3.0) (2022-03-05)
+
+
+### Features
+
+* add `symbols` field, and auto-format comments ([#277](https://github.com/googleapis/python-documentai/issues/277)) ([ca016dd](https://github.com/googleapis/python-documentai/commit/ca016dd0cfaa5df0e4ced218423245a5ba2eb669))
+* add api key support ([#267](https://github.com/googleapis/python-documentai/issues/267)) ([061eb45](https://github.com/googleapis/python-documentai/commit/061eb454d3fafa405f90d6b73240b4c130db845f))
+* add question_id field in ReviewDocumentOperationMetadata ([#269](https://github.com/googleapis/python-documentai/issues/269)) ([1c61b73](https://github.com/googleapis/python-documentai/commit/1c61b737ce02185bad04c7bd58c12e6772b8569f))
+* add question_id field in ReviewDocumentOperationMetadata ([#273](https://github.com/googleapis/python-documentai/issues/273)) ([530f2ba](https://github.com/googleapis/python-documentai/commit/530f2ba88cc5abc8f888722246a3610adca001a9))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#285](https://github.com/googleapis/python-documentai/issues/285)) ([573deee](https://github.com/googleapis/python-documentai/commit/573deee85e91a7e0a02c411703467e89be36c734))
+* **deps:** require proto-plus>=1.15.0 ([573deee](https://github.com/googleapis/python-documentai/commit/573deee85e91a7e0a02c411703467e89be36c734))
+* remove libcst from setup_requires ([#276](https://github.com/googleapis/python-documentai/issues/276)) ([56c96e4](https://github.com/googleapis/python-documentai/commit/56c96e4cd3427321dac0e8c979aa4e34eefa0b12))
+* resolve DuplicateCredentialArgs error when using credentials_file ([530f2ba](https://github.com/googleapis/python-documentai/commit/530f2ba88cc5abc8f888722246a3610adca001a9))
+
 ### [1.2.1](https://github.com/googleapis/python-documentai/compare/v1.2.0...v1.2.1) (2022-01-17)
 
 
