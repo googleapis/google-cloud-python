@@ -1,5 +1,13 @@
 # Changelog
 
+### [2.7.2](https://github.com/googleapis/python-containeranalysis/compare/v2.7.1...v2.7.2) (2022-03-04)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#250](https://github.com/googleapis/python-containeranalysis/issues/250)) ([b35be6a](https://github.com/googleapis/python-containeranalysis/commit/b35be6a5d9fe629f4a575c66fa6e198e784f3035))
+* **deps:** require proto-plus>=1.15.0 ([b35be6a](https://github.com/googleapis/python-containeranalysis/commit/b35be6a5d9fe629f4a575c66fa6e198e784f3035))
+
 ### [2.7.1](https://github.com/googleapis/python-containeranalysis/compare/v2.7.0...v2.7.1) (2022-02-11)
 
 
