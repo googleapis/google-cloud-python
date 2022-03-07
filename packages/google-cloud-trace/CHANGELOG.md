@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-trace/#history
 
+### [1.6.1](https://github.com/googleapis/python-trace/compare/v1.6.0...v1.6.1) (2022-03-05)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#193](https://github.com/googleapis/python-trace/issues/193)) ([cef4d52](https://github.com/googleapis/python-trace/commit/cef4d524dcc06216e8d32d738f698b21082ae50f))
+* **deps:** require proto-plus>=1.15.0 ([cef4d52](https://github.com/googleapis/python-trace/commit/cef4d524dcc06216e8d32d738f698b21082ae50f))
+
 ## [1.6.0](https://github.com/googleapis/python-trace/compare/v1.5.1...v1.6.0) (2022-02-11)
 
 
