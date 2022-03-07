@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.2.2](https://github.com/googleapis/python-binary-authorization/compare/v1.2.1...v1.2.2) (2022-03-05)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#126](https://github.com/googleapis/python-binary-authorization/issues/126)) ([2b7e982](https://github.com/googleapis/python-binary-authorization/commit/2b7e982e09b85570af842acba3ca6c48831a49e2))
+
 ### [1.2.1](https://github.com/googleapis/python-binary-authorization/compare/v1.2.0...v1.2.1) (2022-02-11)
 
 
