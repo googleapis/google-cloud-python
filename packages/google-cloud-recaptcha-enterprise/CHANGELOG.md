@@ -1,5 +1,13 @@
 # Changelog
 
+### [1.6.1](https://github.com/googleapis/python-recaptcha-enterprise/compare/v1.6.0...v1.6.1) (2022-03-05)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#198](https://github.com/googleapis/python-recaptcha-enterprise/issues/198)) ([beee21d](https://github.com/googleapis/python-recaptcha-enterprise/commit/beee21d72f3d165d77d1d096e54e5b9c143f122d))
+* **deps:** require proto-plus>=1.15.0 ([beee21d](https://github.com/googleapis/python-recaptcha-enterprise/commit/beee21d72f3d165d77d1d096e54e5b9c143f122d))
+
 ## [1.6.0](https://github.com/googleapis/python-recaptcha-enterprise/compare/v1.5.0...v1.6.0) (2022-02-28)
 
 
