@@ -1,5 +1,13 @@
 # Changelog
 
+### [1.7.1](https://github.com/googleapis/python-channel/compare/v1.7.0...v1.7.1) (2022-03-05)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#149](https://github.com/googleapis/python-channel/issues/149)) ([5c2908e](https://github.com/googleapis/python-channel/commit/5c2908e5f02336d3457d9625b54c73d02745e47d))
+* **deps:** require proto-plus>=1.15.0 ([5c2908e](https://github.com/googleapis/python-channel/commit/5c2908e5f02336d3457d9625b54c73d02745e47d))
+
 ## [1.7.0](https://github.com/googleapis/python-channel/compare/v1.6.3...v1.7.0) (2022-02-26)
 
 
