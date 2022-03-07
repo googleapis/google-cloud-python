@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.3.1](https://github.com/googleapis/python-bigquery-migration/compare/v0.3.0...v0.3.1) (2022-03-05)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#48](https://github.com/googleapis/python-bigquery-migration/issues/48)) ([2d8b0b5](https://github.com/googleapis/python-bigquery-migration/commit/2d8b0b5845573d2784b6bfa925285c6ddac5c1e7))
+
 ## [0.3.0](https://github.com/googleapis/python-bigquery-migration/compare/v0.2.1...v0.3.0) (2022-02-14)
 
 
