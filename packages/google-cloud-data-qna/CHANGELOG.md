@@ -1,5 +1,13 @@
 # Changelog
 
+### [0.6.2](https://github.com/googleapis/python-data-qna/compare/v0.6.1...v0.6.2) (2022-03-05)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#130](https://github.com/googleapis/python-data-qna/issues/130)) ([dd16b4e](https://github.com/googleapis/python-data-qna/commit/dd16b4ec0ece088065f4d1e59dc6ba4e9b586054))
+* **deps:** require proto-plus>=1.15.0 ([dd16b4e](https://github.com/googleapis/python-data-qna/commit/dd16b4ec0ece088065f4d1e59dc6ba4e9b586054))
+
 ### [0.6.1](https://github.com/googleapis/python-data-qna/compare/v0.6.0...v0.6.1) (2022-02-26)
 
 
