@@ -1,5 +1,18 @@
 # Changelog
 
+### [1.1.2](https://github.com/googleapis/python-artifact-registry/compare/v1.1.1...v1.1.2) (2022-03-05)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#136](https://github.com/googleapis/python-artifact-registry/issues/136)) ([9bc4ec5](https://github.com/googleapis/python-artifact-registry/commit/9bc4ec5ec05e8efaf9b45725782c9ca29d1c5076))
+* **deps:** require proto-plus>=1.15.0 ([9bc4ec5](https://github.com/googleapis/python-artifact-registry/commit/9bc4ec5ec05e8efaf9b45725782c9ca29d1c5076))
+
+
+### Documentation
+
+* more details for ListFilesRequest parent field ([#133](https://github.com/googleapis/python-artifact-registry/issues/133)) ([f4ef78b](https://github.com/googleapis/python-artifact-registry/commit/f4ef78b6b108543bf07d8c564f4316a8314e8d54))
+
 ### [1.1.1](https://github.com/googleapis/python-artifact-registry/compare/v1.1.0...v1.1.1) (2022-02-15)
 
 
