@@ -1,5 +1,13 @@
 # Changelog
 
+### [1.5.1](https://github.com/googleapis/python-access-approval/compare/v1.5.0...v1.5.1) (2022-03-05)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#170](https://github.com/googleapis/python-access-approval/issues/170)) ([721487c](https://github.com/googleapis/python-access-approval/commit/721487c88fe0b87046663d46768f1492a95ce065))
+* **deps:** require proto-plus>=1.15.0 ([721487c](https://github.com/googleapis/python-access-approval/commit/721487c88fe0b87046663d46768f1492a95ce065))
+
 ## [1.5.0](https://github.com/googleapis/python-access-approval/compare/v1.4.1...v1.5.0) (2022-02-17)
 
 
