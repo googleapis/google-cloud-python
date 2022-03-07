@@ -221,9 +221,14 @@ class ContainerAnalysisAsyncClient:
         )
 
     def get_grafeas_client(self) -> grafeas_v1.GrafeasClient:
-        transport = type(self).get_transport_class("grpc_asyncio")()
         grafeas_transport = grafeas_v1.services.grafeas.transports.GrafeasGrpcTransport(
-            host=transport._host, scopes=transport.AUTH_SCOPES
+            credentials=self.transport._credentials,
+            # Set ``credentials_file`` to ``None`` here as
+            # transport._credentials contains the credentials
+            # which are saved
+            credentials_file=None,
+            host=self.transport._host,
+            scopes=self.transport.AUTH_SCOPES,
         )
         return grafeas_v1.GrafeasClient(transport=grafeas_transport)
 

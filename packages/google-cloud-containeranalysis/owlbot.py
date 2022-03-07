@@ -69,10 +69,14 @@ for library in s.get_staging_dirs(default_version):
         r'''\n\g<1>def get_grafeas_client(
             self
         ) -> grafeas_v1.GrafeasClient:
-            transport = type(self).get_transport_class("grpc")()
             grafeas_transport = grafeas_v1.services.grafeas.transports.GrafeasGrpcTransport(
-                host=transport._host,
-                scopes=transport.AUTH_SCOPES
+                credentials=self.transport._credentials,
+                # Set ``credentials_file`` to ``None`` here as
+                # transport._credentials contains the credentials
+                # which are saved
+                credentials_file=None,
+                host = self.transport._host,
+                scopes=self.transport.AUTH_SCOPES
             )
             return grafeas_v1.GrafeasClient(transport=grafeas_transport)
 
@@ -86,16 +90,62 @@ for library in s.get_staging_dirs(default_version):
         r'''\n\g<1>def get_grafeas_client(
             self
         ) -> grafeas_v1.GrafeasClient:
-            transport = type(self).get_transport_class("grpc_asyncio")()
             grafeas_transport = grafeas_v1.services.grafeas.transports.GrafeasGrpcTransport(
-                host=transport._host,
-                scopes=transport.AUTH_SCOPES
+                credentials=self.transport._credentials,
+                # Set ``credentials_file`` to ``None`` here as
+                # transport._credentials contains the credentials
+                # which are saved
+                credentials_file=None,
+                host = self.transport._host,
+                scopes=self.transport.AUTH_SCOPES
             )
             return grafeas_v1.GrafeasClient(transport=grafeas_transport)
 
     \g<1># Service calls
     \g<1>async def set_iam_policy(''',
     )
+
+    # Add test to ensure that credentials propagate to client.get_grafeas_client()
+    num_replacements = s.replace(library / "tests/**/test_container_analysis.py",
+        """create_channel.assert_called_with\(
+            "containeranalysis.googleapis.com:443",
+            credentials=file_creds,
+            credentials_file=None,
+            quota_project_id=None,
+            default_scopes=\(
+                'https://www.googleapis.com/auth/cloud-platform',
+\),
+            scopes=None,
+            default_host="containeranalysis.googleapis.com",
+            ssl_credentials=None,
+            options=\[
+                \("grpc.max_send_message_length", -1\),
+                \("grpc.max_receive_message_length", -1\),
+            \],
+        \)""",
+        """create_channel.assert_called_with(
+            "containeranalysis.googleapis.com:443",
+            credentials=file_creds,
+            credentials_file=None,
+            quota_project_id=None,
+            default_scopes=(
+                'https://www.googleapis.com/auth/cloud-platform',
+),
+            scopes=None,
+            default_host="containeranalysis.googleapis.com",
+            ssl_credentials=None,
+            options=[
+                ("grpc.max_send_message_length", -1),
+                ("grpc.max_receive_message_length", -1),
+            ],
+        )
+
+        # Also check client.get_grafeas_client() to make sure that the file credentials are used
+        assert file_creds == client.get_grafeas_client().transport._credentials
+        """
+    )
+
+    assert num_replacements == 1
 
     s.move(library, excludes=["setup.py", "README.rst", "docs/index.rst"])
 

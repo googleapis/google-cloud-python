@@ -650,6 +650,9 @@ def test_container_analysis_client_create_channel_credentials_file(
             ],
         )
 
+        # Also check client.get_grafeas_client() to make sure that the file credentials are used
+        assert file_creds == client.get_grafeas_client().transport._credentials
+
 
 @pytest.mark.parametrize("request_type", [iam_policy_pb2.SetIamPolicyRequest, dict,])
 def test_set_iam_policy(request_type, transport: str = "grpc"):
