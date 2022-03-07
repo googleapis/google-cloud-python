@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.2.1](https://github.com/googleapis/python-service-management/compare/v1.2.0...v1.2.1) (2022-03-05)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#107](https://github.com/googleapis/python-service-management/issues/107)) ([4fc6a16](https://github.com/googleapis/python-service-management/commit/4fc6a16ac804b65cf5a9443b07a3522cbfbf68af))
+
 ## [1.2.0](https://github.com/googleapis/python-service-management/compare/v1.1.1...v1.2.0) (2022-02-18)
 
 
