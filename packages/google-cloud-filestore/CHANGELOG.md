@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.1.1](https://github.com/googleapis/python-filestore/compare/v1.1.0...v1.1.1) (2022-03-05)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#43](https://github.com/googleapis/python-filestore/issues/43)) ([4f5dd38](https://github.com/googleapis/python-filestore/commit/4f5dd3862fd7dc7b9e226ed7df99623818cf156c))
+
 ## [1.1.0](https://github.com/googleapis/python-filestore/compare/v1.0.0...v1.1.0) (2022-02-26)
 
 
