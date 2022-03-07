@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.6.1](https://github.com/googleapis/python-recommendations-ai/compare/v0.6.0...v0.6.1) (2022-03-05)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#131](https://github.com/googleapis/python-recommendations-ai/issues/131)) ([aa44b15](https://github.com/googleapis/python-recommendations-ai/commit/aa44b15420c767e51506ec5907ae71ba26e75353))
+
 ## [0.6.0](https://github.com/googleapis/python-recommendations-ai/compare/v0.5.1...v0.6.0) (2022-02-26)
 
 
