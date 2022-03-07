@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-tasks/#history
 
+### [2.8.1](https://github.com/googleapis/python-tasks/compare/v2.8.0...v2.8.1) (2022-03-05)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#232](https://github.com/googleapis/python-tasks/issues/232)) ([2b35888](https://github.com/googleapis/python-tasks/commit/2b3588834794ce7ac6d5c762f2d45849122ddc1b))
+* **deps:** require proto-plus>=1.15.0 ([2b35888](https://github.com/googleapis/python-tasks/commit/2b3588834794ce7ac6d5c762f2d45849122ddc1b))
+
 ## [2.8.0](https://github.com/googleapis/python-tasks/compare/v2.7.2...v2.8.0) (2022-02-14)
 
 
