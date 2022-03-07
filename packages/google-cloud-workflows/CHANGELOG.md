@@ -1,5 +1,13 @@
 # Changelog
 
+### [1.6.1](https://github.com/googleapis/python-workflows/compare/v1.6.0...v1.6.1) (2022-03-05)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >2.3.0 ([#142](https://github.com/googleapis/python-workflows/issues/142)) ([0a0280a](https://github.com/googleapis/python-workflows/commit/0a0280aa9fa93faadb1e69a0808c680f40972d24))
+* **deps:** require proto-plus>=1.15.0 ([0a0280a](https://github.com/googleapis/python-workflows/commit/0a0280aa9fa93faadb1e69a0808c680f40972d24))
+
 ## [1.6.0](https://github.com/googleapis/python-workflows/compare/v1.5.0...v1.6.0) (2022-02-15)
 
 
