@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-websecurityscanner/#history
 
+### [1.7.1](https://github.com/googleapis/python-websecurityscanner/compare/v1.7.0...v1.7.1) (2022-03-06)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#151](https://github.com/googleapis/python-websecurityscanner/issues/151)) ([f1d97d8](https://github.com/googleapis/python-websecurityscanner/commit/f1d97d812f4ad11f20e7315eee7704055f78600a))
+
 ## [1.7.0](https://github.com/googleapis/python-websecurityscanner/compare/v1.6.1...v1.7.0) (2022-02-15)
 
 
