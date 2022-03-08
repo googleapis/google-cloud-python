@@ -1735,7 +1735,7 @@ def test_process_requests_permanent_error_raises_exception():
     assert not requests_to_retry
 
 
-def test_process_requests_transient_error_returns_request():
+def test_process_requests_transient_error_returns_request_for_retrying():
     # a transient error returns the request in `requests_to_retry`
     future = futures.Future()
     ack_reqs_dict = {
@@ -1770,6 +1770,38 @@ def test_process_requests_unknown_error_raises_exception():
     assert exc_info.value.error_code == subscriber_exceptions.AcknowledgeStatus.OTHER
     assert exc_info.value.info == "unknown_error"
     assert not requests_to_retry
+
+
+def test_process_requests_retriable_error_status_returns_request_for_retrying():
+    # a retriable error status returns the request in `requests_to_retry`
+    retriable_errors = [
+        code_pb2.DEADLINE_EXCEEDED,
+        code_pb2.RESOURCE_EXHAUSTED,
+        code_pb2.ABORTED,
+        code_pb2.INTERNAL,
+        code_pb2.UNAVAILABLE,
+    ]
+
+    for retriable_error in retriable_errors:
+        future = futures.Future()
+        ack_reqs_dict = {
+            "ackid1": requests.AckRequest(
+                ack_id="ackid1",
+                byte_size=0,
+                time_to_ack=20,
+                ordering_key="",
+                future=future,
+            )
+        }
+        st = status_pb2.Status()
+        st.code = retriable_error
+        (
+            requests_completed,
+            requests_to_retry,
+        ) = streaming_pull_manager._process_requests(st, ack_reqs_dict, None)
+        assert not requests_completed
+        assert requests_to_retry[0].ack_id == "ackid1"
+        assert not future.done()
 
 
 def test_process_requests_permission_denied_error_status_raises_exception():

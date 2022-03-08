@@ -75,6 +75,14 @@ _MIN_ACK_DEADLINE_SECS_WHEN_EXACTLY_ONCE_ENABLED = 60
 a subscription. We do this to reduce premature ack expiration.
 """
 
+_EXACTLY_ONCE_DELIVERY_TEMPORARY_RETRY_ERRORS = {
+    code_pb2.DEADLINE_EXCEEDED,
+    code_pb2.RESOURCE_EXHAUSTED,
+    code_pb2.ABORTED,
+    code_pb2.INTERNAL,
+    code_pb2.UNAVAILABLE,
+}
+
 
 def _wrap_as_exception(maybe_exception: Any) -> BaseException:
     """Wrap an object as a Python exception, if needed.
@@ -163,6 +171,8 @@ def _process_requests(
     requests_completed = []
     requests_to_retry = []
     for ack_id in ack_reqs_dict:
+        # Handle special errors returned for ack/modack RPCs via the ErrorInfo
+        # sidecar metadata when exactly-once delivery is enabled.
         if errors_dict and ack_id in errors_dict:
             exactly_once_error = errors_dict[ack_id]
             if exactly_once_error.startswith("TRANSIENT_"):
@@ -176,9 +186,14 @@ def _process_requests(
                 future = ack_reqs_dict[ack_id].future
                 future.set_exception(exc)
                 requests_completed.append(ack_reqs_dict[ack_id])
+        # Temporary GRPC errors are retried
+        elif (
+            error_status
+            and error_status.code in _EXACTLY_ONCE_DELIVERY_TEMPORARY_RETRY_ERRORS
+        ):
+            requests_to_retry.append(ack_reqs_dict[ack_id])
+        # Other GRPC errors are NOT retried
         elif error_status:
-            # Only permanent errors are expected here b/c retriable errors are
-            # retried at the lower, GRPC level.
             if error_status.code == code_pb2.PERMISSION_DENIED:
                 exc = AcknowledgeError(AcknowledgeStatus.PERMISSION_DENIED, info=None)
             elif error_status.code == code_pb2.FAILED_PRECONDITION:
@@ -188,11 +203,13 @@ def _process_requests(
             future = ack_reqs_dict[ack_id].future
             future.set_exception(exc)
             requests_completed.append(ack_reqs_dict[ack_id])
+        # Since no error occurred, requests with futures are completed successfully.
         elif ack_reqs_dict[ack_id].future:
             future = ack_reqs_dict[ack_id].future
             # success
             future.set_result(AcknowledgeStatus.SUCCESS)
             requests_completed.append(ack_reqs_dict[ack_id])
+        # All other requests are considered completed.
         else:
             requests_completed.append(ack_reqs_dict[ack_id])
 
@@ -580,7 +597,9 @@ class StreamingPullManager(object):
             ack_errors_dict = _get_ack_errors(exc)
         except exceptions.RetryError as exc:
             status = status_pb2.Status()
-            status.code = code_pb2.DEADLINE_EXCEEDED
+            # Choose a non-retriable error code so the futures fail with
+            # exceptions.
+            status.code = code_pb2.UNKNOWN
             # Makes sure to complete futures so they don't block forever.
             _process_requests(status, ack_reqs_dict, None)
             _LOGGER.debug(
@@ -634,7 +653,9 @@ class StreamingPullManager(object):
             modack_errors_dict = _get_ack_errors(exc)
         except exceptions.RetryError as exc:
             status = status_pb2.Status()
-            status.code = code_pb2.DEADLINE_EXCEEDED
+            # Choose a non-retriable error code so the futures fail with
+            # exceptions.
+            status.code = code_pb2.UNKNOWN
             # Makes sure to complete futures so they don't block forever.
             _process_requests(status, ack_reqs_dict, None)
             _LOGGER.debug(
