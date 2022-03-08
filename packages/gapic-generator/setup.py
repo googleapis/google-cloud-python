@@ -20,7 +20,7 @@ from setuptools import find_packages, setup  # type: ignore
 
 PACKAGE_ROOT = os.path.abspath(os.path.dirname(__file__))
 
-version = "0.63.6"
+version = "0.63.7"
 
 with io.open(os.path.join(PACKAGE_ROOT, "README.rst")) as file_obj:
     README = file_obj.read()

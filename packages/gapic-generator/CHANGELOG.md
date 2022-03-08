@@ -1,6 +1,13 @@
 # Changelog
 
 
+### [0.63.7](https://github.com/googleapis/gapic-generator-python/compare/v0.63.6...v0.63.7) (2022-03-08)
+
+
+### Bug Fixes
+
+* resolve issue where rest transport is not used in certain tests ([#1231](https://github.com/googleapis/gapic-generator-python/issues/1231)) ([90ab41a](https://github.com/googleapis/gapic-generator-python/commit/90ab41ab1f1b058ec0eb4a96b973031898f64df0))
+
 ### [0.63.6](https://github.com/googleapis/gapic-generator-python/compare/v0.63.5...v0.63.6) (2022-03-04)
 
 
