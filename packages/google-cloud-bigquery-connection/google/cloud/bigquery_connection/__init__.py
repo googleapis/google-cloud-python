@@ -24,6 +24,7 @@ from google.cloud.bigquery_connection_v1.services.connection_service.async_clien
 from google.cloud.bigquery_connection_v1.types.connection import AwsAccessRole
 from google.cloud.bigquery_connection_v1.types.connection import AwsCrossAccountRole
 from google.cloud.bigquery_connection_v1.types.connection import AwsProperties
+from google.cloud.bigquery_connection_v1.types.connection import CloudResourceProperties
 from google.cloud.bigquery_connection_v1.types.connection import CloudSpannerProperties
 from google.cloud.bigquery_connection_v1.types.connection import CloudSqlCredential
 from google.cloud.bigquery_connection_v1.types.connection import CloudSqlProperties
@@ -41,6 +42,7 @@ __all__ = (
     "AwsAccessRole",
     "AwsCrossAccountRole",
     "AwsProperties",
+    "CloudResourceProperties",
     "CloudSpannerProperties",
     "CloudSqlCredential",
     "CloudSqlProperties",

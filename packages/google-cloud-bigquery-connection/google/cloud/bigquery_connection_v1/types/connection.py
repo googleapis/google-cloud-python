@@ -34,6 +34,7 @@ __protobuf__ = proto.module(
         "AwsProperties",
         "AwsCrossAccountRole",
         "AwsAccessRole",
+        "CloudResourceProperties",
     },
 )
 
@@ -176,6 +177,10 @@ class Connection(proto.Message):
             Cloud Spanner properties.
 
             This field is a member of `oneof`_ ``properties``.
+        cloud_resource (google.cloud.bigquery_connection_v1.types.CloudResourceProperties):
+            Cloud Resource properties.
+
+            This field is a member of `oneof`_ ``properties``.
         creation_time (int):
             Output only. The creation timestamp of the
             connection.
@@ -198,6 +203,9 @@ class Connection(proto.Message):
     )
     cloud_spanner = proto.Field(
         proto.MESSAGE, number=21, oneof="properties", message="CloudSpannerProperties",
+    )
+    cloud_resource = proto.Field(
+        proto.MESSAGE, number=22, oneof="properties", message="CloudResourceProperties",
     )
     creation_time = proto.Field(proto.INT64, number=5,)
     last_modified_time = proto.Field(proto.INT64, number=6,)
@@ -337,6 +345,30 @@ class AwsAccessRole(proto.Message):
 
     iam_role_id = proto.Field(proto.STRING, number=1,)
     identity = proto.Field(proto.STRING, number=2,)
+
+
+class CloudResourceProperties(proto.Message):
+    r"""Container for connection properties for delegation of access
+    to GCP resources.
+
+    Attributes:
+        service_account_id (str):
+            Output only. The account ID of the service
+            created for the purpose of this connection.
+            The service account does not have any
+            permissions associated with it when it is
+            created. After creation, customers delegate
+            permissions to the service account. When the
+            connection is used in the context of an
+            operation in BigQuery, the service account will
+            be used to connect to the desired resources in
+            GCP.
+
+            The account ID is in the form of:
+            <service-1234>@gcp-sa-bigquery-cloudresource.iam.gserviceaccount.com
+    """
+
+    service_account_id = proto.Field(proto.STRING, number=1,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
