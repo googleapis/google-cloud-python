@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/googleapis/python-service-control/compare/v1.3.1...v1.4.0) (2022-03-08)
+
+
+### Features
+
+* Added Service Controller v2 API ([#108](https://github.com/googleapis/python-service-control/issues/108)) ([4f5f315](https://github.com/googleapis/python-service-control/commit/4f5f3159c913adf924843489bb7283fb118ac142))
+
 ### [1.3.1](https://github.com/googleapis/python-service-control/compare/v1.3.0...v1.3.1) (2022-03-05)
 
 
