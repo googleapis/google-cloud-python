@@ -2,6 +2,9 @@
 
 .. include:: multiprocessing.rst
 
+This package includes clients for multiple versions of Service Control API.
+By default, you will get version ``servicecontrol_v1``.
+
 
 API Reference
 -------------
@@ -10,6 +13,14 @@ API Reference
 
     servicecontrol_v1/services
     servicecontrol_v1/types
+
+API Reference
+-------------
+.. toctree::
+    :maxdepth: 2
+
+    servicecontrol_v2/services
+    servicecontrol_v2/types
 
 
 Changelog
