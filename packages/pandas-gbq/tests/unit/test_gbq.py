@@ -4,10 +4,12 @@
 
 # -*- coding: utf-8 -*-
 
+import concurrent.futures
 import copy
 import datetime
 from unittest import mock
 
+import freezegun
 import google.api_core.exceptions
 import numpy
 import pandas
@@ -114,6 +116,61 @@ def test__is_query(query_or_table, expected):
     assert result == expected
 
 
+@pytest.mark.parametrize(
+    ["original", "expected"],
+    [
+        (None, None),
+        ({}, {}),
+        ({"query": {"useQueryCache": False}}, {"query": {"useQueryCache": False}}),
+        ({"jobTimeoutMs": "1234"}, {"jobTimeoutMs": "1234"}),
+        ({"query": {"timeoutMs": "1234"}}, {"query": {}, "jobTimeoutMs": "1234"}),
+    ],
+)
+def test__transform_read_gbq_configuration_makes_copy(original, expected):
+    should_change = original == expected
+    got = gbq._transform_read_gbq_configuration(original)
+    assert got == expected
+    # Catch if we accidentally modified the original.
+    did_change = original == got
+    assert did_change == should_change
+
+
+def test__wait_for_query_job_exits_when_done(mock_bigquery_client):
+    connector = _make_connector()
+    connector.client = mock_bigquery_client
+    connector.start = datetime.datetime(2020, 1, 1).timestamp()
+
+    mock_query = mock.create_autospec(google.cloud.bigquery.QueryJob)
+    type(mock_query).state = mock.PropertyMock(side_effect=("RUNNING", "DONE"))
+    mock_query.result.side_effect = concurrent.futures.TimeoutError("fake timeout")
+
+    with freezegun.freeze_time("2020-01-01 00:00:00", tick=False):
+        connector._wait_for_query_job(mock_query, 60)
+
+    mock_bigquery_client.cancel_job.assert_not_called()
+
+
+def test__wait_for_query_job_cancels_after_timeout(mock_bigquery_client):
+    connector = _make_connector()
+    connector.client = mock_bigquery_client
+    connector.start = datetime.datetime(2020, 1, 1).timestamp()
+
+    mock_query = mock.create_autospec(google.cloud.bigquery.QueryJob)
+    mock_query.job_id = "a-random-id"
+    mock_query.location = "job-location"
+    mock_query.state = "RUNNING"
+    mock_query.result.side_effect = concurrent.futures.TimeoutError("fake timeout")
+
+    with freezegun.freeze_time(
+        "2020-01-01 00:00:00", auto_tick_seconds=15
+    ), pytest.raises(gbq.QueryTimeout):
+        connector._wait_for_query_job(mock_query, 60)
+
+    mock_bigquery_client.cancel_job.assert_called_with(
+        "a-random-id", location="job-location"
+    )
+
+
 def test_GbqConnector_get_client_w_new_bq(mock_bigquery_client):
     gbq._test_google_api_imports()
     pytest.importorskip("google.api_core.client_info")
@@ -123,6 +180,14 @@ def test_GbqConnector_get_client_w_new_bq(mock_bigquery_client):
 
     _, kwargs = mock_bigquery_client.call_args
     assert kwargs["client_info"].user_agent == "pandas-{}".format(pandas.__version__)
+
+
+def test_GbqConnector_process_http_error_transforms_timeout():
+    original = google.api_core.exceptions.GoogleAPICallError(
+        "Job execution was cancelled: Job timed out after 0s"
+    )
+    with pytest.raises(gbq.QueryTimeout):
+        gbq.GbqConnector.process_http_error(original)
 
 
 def test_to_gbq_should_fail_if_invalid_table_name_passed():

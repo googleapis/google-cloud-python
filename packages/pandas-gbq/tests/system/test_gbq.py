@@ -473,22 +473,13 @@ class TestReadGBQIntegration(object):
 
     def test_timeout_configuration(self, project_id):
         sql_statement = """
-        SELECT
-          SUM(bottles_sold) total_bottles,
-          UPPER(category_name) category_name,
-          magnitude,
-          liquor.zip_code zip_code
-        FROM `bigquery-public-data.iowa_liquor_sales.sales` liquor
-        JOIN `bigquery-public-data.geo_us_boundaries.zip_codes` zip_codes
-        ON liquor.zip_code = zip_codes.zip_code
-        JOIN `bigquery-public-data.noaa_historic_severe_storms.tornado_paths` tornados
-        ON liquor.date = tornados.storm_date
-        WHERE ST_INTERSECTS(tornado_path_geom, zip_code_geom)
-        GROUP BY category_name, magnitude, zip_code
-        ORDER BY magnitude ASC, total_bottles DESC
+        select count(*) from unnest(generate_array(1,1000000)), unnest(generate_array(1, 10000))
         """
         configs = [
+            # pandas-gbq timeout configuration. Transformed to REST API compatible version.
             {"query": {"useQueryCache": False, "timeoutMs": 1}},
+            # REST API job timeout. See:
+            # https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobConfiguration.FIELDS.job_timeout_ms
             {"query": {"useQueryCache": False}, "jobTimeoutMs": 1},
         ]
         for config in configs:

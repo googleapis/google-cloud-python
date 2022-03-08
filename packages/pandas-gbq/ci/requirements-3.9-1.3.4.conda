@@ -3,6 +3,7 @@ coverage
 db-dtypes
 fastavro
 flake8
+freezegun
 google-cloud-bigquery
 google-cloud-bigquery-storage
 numpy

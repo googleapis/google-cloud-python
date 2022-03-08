@@ -94,6 +94,7 @@ def default(session):
         "-c",
         constraints_path,
     )
+    session.install("freezegun", "-c", constraints_path)
 
     if session.python == "3.9":
         extras = ""

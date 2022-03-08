@@ -38,6 +38,7 @@ templated_files = common.py_library(
     unit_test_python_versions=["3.7", "3.8", "3.9", "3.10"],
     system_test_python_versions=["3.7", "3.8", "3.9", "3.10"],
     cov_level=96,
+    unit_test_external_dependencies=["freezegun"],
     unit_test_extras=extras,
     unit_test_extras_by_python=extras_by_python,
     system_test_extras=extras,
