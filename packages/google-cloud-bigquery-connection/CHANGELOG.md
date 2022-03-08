@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/googleapis/python-bigquery-connection/compare/v1.3.4...v1.4.0) (2022-03-08)
+
+
+### Features
+
+* Add Cloud_Resource Connection Support ([#181](https://github.com/googleapis/python-bigquery-connection/issues/181)) ([1be012a](https://github.com/googleapis/python-bigquery-connection/commit/1be012a7d7f585365cfd6c1e499188784838965a))
+
 ### [1.3.4](https://github.com/googleapis/python-bigquery-connection/compare/v1.3.3...v1.3.4) (2022-03-05)
 
 
