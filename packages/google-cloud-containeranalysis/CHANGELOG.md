@@ -1,5 +1,12 @@
 # Changelog
 
+### [2.7.3](https://github.com/googleapis/python-containeranalysis/compare/v2.7.2...v2.7.3) (2022-03-07)
+
+
+### Bug Fixes
+
+* allow credentials to propagate when using get_grafeas_client() ([#251](https://github.com/googleapis/python-containeranalysis/issues/251)) ([237c204](https://github.com/googleapis/python-containeranalysis/commit/237c2043fd526457fc04ebc5d53346067c011c28))
+
 ### [2.7.2](https://github.com/googleapis/python-containeranalysis/compare/v2.7.1...v2.7.2) (2022-03-04)
 
 
