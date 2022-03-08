@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,11 +22,14 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 from google.api_core import rest_helpers
+from google.api_core import rest_streaming
 from google.api_core import path_template
 from google.api_core import gapic_v1
+
 from requests import __version__ as requests_version
 import dataclasses
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
+import re
+from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 try:
@@ -50,10 +53,325 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
 )
 
 
+class TargetHttpsProxiesRestInterceptor:
+    """Interceptor for TargetHttpsProxies.
+
+    Interceptors are used to manipulate requests, request metadata, and responses
+    in arbitrary ways.
+    Example use cases include:
+    * Logging
+    * Verifying requests according to service or custom semantics
+    * Stripping extraneous information from responses
+
+    These use cases and more can be enabled by injecting an
+    instance of a custom subclass when constructing the TargetHttpsProxiesRestTransport.
+
+    .. code-block:: python
+        class MyCustomTargetHttpsProxiesInterceptor(TargetHttpsProxiesRestInterceptor):
+            def pre_aggregated_list(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_aggregated_list(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_delete(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_get(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_insert(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_insert(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_list(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_patch(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_patch(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_set_quic_override(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_set_quic_override(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_set_ssl_certificates(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_set_ssl_certificates(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_set_ssl_policy(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_set_ssl_policy(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_set_url_map(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_set_url_map(response):
+                logging.log(f"Received response: {response}")
+
+        transport = TargetHttpsProxiesRestTransport(interceptor=MyCustomTargetHttpsProxiesInterceptor())
+        client = TargetHttpsProxiesClient(transport=transport)
+
+
+    """
+
+    def pre_aggregated_list(
+        self,
+        request: compute.AggregatedListTargetHttpsProxiesRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        compute.AggregatedListTargetHttpsProxiesRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for aggregated_list
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the TargetHttpsProxies server.
+        """
+        return request, metadata
+
+    def post_aggregated_list(
+        self, response: compute.TargetHttpsProxyAggregatedList
+    ) -> compute.TargetHttpsProxyAggregatedList:
+        """Post-rpc interceptor for aggregated_list
+
+        Override in a subclass to manipulate the response
+        after it is returned by the TargetHttpsProxies server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_delete(
+        self,
+        request: compute.DeleteTargetHttpsProxyRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.DeleteTargetHttpsProxyRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for delete
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the TargetHttpsProxies server.
+        """
+        return request, metadata
+
+    def post_delete(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for delete
+
+        Override in a subclass to manipulate the response
+        after it is returned by the TargetHttpsProxies server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get(
+        self,
+        request: compute.GetTargetHttpsProxyRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.GetTargetHttpsProxyRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the TargetHttpsProxies server.
+        """
+        return request, metadata
+
+    def post_get(self, response: compute.TargetHttpsProxy) -> compute.TargetHttpsProxy:
+        """Post-rpc interceptor for get
+
+        Override in a subclass to manipulate the response
+        after it is returned by the TargetHttpsProxies server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_insert(
+        self,
+        request: compute.InsertTargetHttpsProxyRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.InsertTargetHttpsProxyRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for insert
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the TargetHttpsProxies server.
+        """
+        return request, metadata
+
+    def post_insert(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for insert
+
+        Override in a subclass to manipulate the response
+        after it is returned by the TargetHttpsProxies server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list(
+        self,
+        request: compute.ListTargetHttpsProxiesRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.ListTargetHttpsProxiesRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the TargetHttpsProxies server.
+        """
+        return request, metadata
+
+    def post_list(
+        self, response: compute.TargetHttpsProxyList
+    ) -> compute.TargetHttpsProxyList:
+        """Post-rpc interceptor for list
+
+        Override in a subclass to manipulate the response
+        after it is returned by the TargetHttpsProxies server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_patch(
+        self,
+        request: compute.PatchTargetHttpsProxyRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.PatchTargetHttpsProxyRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for patch
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the TargetHttpsProxies server.
+        """
+        return request, metadata
+
+    def post_patch(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for patch
+
+        Override in a subclass to manipulate the response
+        after it is returned by the TargetHttpsProxies server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_set_quic_override(
+        self,
+        request: compute.SetQuicOverrideTargetHttpsProxyRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        compute.SetQuicOverrideTargetHttpsProxyRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for set_quic_override
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the TargetHttpsProxies server.
+        """
+        return request, metadata
+
+    def post_set_quic_override(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for set_quic_override
+
+        Override in a subclass to manipulate the response
+        after it is returned by the TargetHttpsProxies server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_set_ssl_certificates(
+        self,
+        request: compute.SetSslCertificatesTargetHttpsProxyRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        compute.SetSslCertificatesTargetHttpsProxyRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for set_ssl_certificates
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the TargetHttpsProxies server.
+        """
+        return request, metadata
+
+    def post_set_ssl_certificates(
+        self, response: compute.Operation
+    ) -> compute.Operation:
+        """Post-rpc interceptor for set_ssl_certificates
+
+        Override in a subclass to manipulate the response
+        after it is returned by the TargetHttpsProxies server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_set_ssl_policy(
+        self,
+        request: compute.SetSslPolicyTargetHttpsProxyRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.SetSslPolicyTargetHttpsProxyRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for set_ssl_policy
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the TargetHttpsProxies server.
+        """
+        return request, metadata
+
+    def post_set_ssl_policy(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for set_ssl_policy
+
+        Override in a subclass to manipulate the response
+        after it is returned by the TargetHttpsProxies server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_set_url_map(
+        self,
+        request: compute.SetUrlMapTargetHttpsProxyRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.SetUrlMapTargetHttpsProxyRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for set_url_map
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the TargetHttpsProxies server.
+        """
+        return request, metadata
+
+    def post_set_url_map(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for set_url_map
+
+        Override in a subclass to manipulate the response
+        after it is returned by the TargetHttpsProxies server but before
+        it is returned to user code.
+        """
+        return response
+
+
 @dataclasses.dataclass
 class TargetHttpsProxiesRestStub:
     _session: AuthorizedSession
     _host: str
+    _interceptor: TargetHttpsProxiesRestInterceptor
 
 
 class TargetHttpsProxiesRestTransport(TargetHttpsProxiesTransport):
@@ -82,6 +400,7 @@ class TargetHttpsProxiesRestTransport(TargetHttpsProxiesTransport):
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
         url_scheme: str = "https",
+        interceptor: Optional[TargetHttpsProxiesRestInterceptor] = None,
     ) -> None:
         """Instantiate the transport.
 
@@ -119,6 +438,16 @@ class TargetHttpsProxiesRestTransport(TargetHttpsProxiesTransport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
+        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
+        if maybe_url_match is None:
+            raise ValueError(
+                f"Unexpected hostname structure: {host}"
+            )  # pragma: NO COVER
+
+        url_match_items = maybe_url_match.groupdict()
+
+        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
+
         super().__init__(
             host=host,
             credentials=credentials,
@@ -130,13 +459,14 @@ class TargetHttpsProxiesRestTransport(TargetHttpsProxiesTransport):
         )
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
+        self._interceptor = interceptor or TargetHttpsProxiesRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
     class _AggregatedList(TargetHttpsProxiesRestStub):
         def __hash__(self):
             return hash("AggregatedList")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -173,13 +503,13 @@ class TargetHttpsProxiesRestTransport(TargetHttpsProxiesTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
                     "uri": "/compute/v1/projects/{project}/aggregated/targetHttpsProxies",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_aggregated_list(request, metadata)
             request_kwargs = compute.AggregatedListTargetHttpsProxiesRequest.to_dict(
                 request
             )
@@ -205,8 +535,7 @@ class TargetHttpsProxiesRestTransport(TargetHttpsProxiesTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -216,16 +545,19 @@ class TargetHttpsProxiesRestTransport(TargetHttpsProxiesTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.TargetHttpsProxyAggregatedList.from_json(
+            resp = compute.TargetHttpsProxyAggregatedList.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_aggregated_list(resp)
+            return resp
 
     class _Delete(TargetHttpsProxiesRestStub):
         def __hash__(self):
             return hash("Delete")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -277,13 +609,13 @@ class TargetHttpsProxiesRestTransport(TargetHttpsProxiesTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "delete",
                     "uri": "/compute/v1/projects/{project}/global/targetHttpsProxies/{target_https_proxy}",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_delete(request, metadata)
             request_kwargs = compute.DeleteTargetHttpsProxyRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -307,8 +639,7 @@ class TargetHttpsProxiesRestTransport(TargetHttpsProxiesTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -318,16 +649,19 @@ class TargetHttpsProxiesRestTransport(TargetHttpsProxiesTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_delete(resp)
+            return resp
 
     class _Get(TargetHttpsProxiesRestStub):
         def __hash__(self):
             return hash("Get")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -376,13 +710,13 @@ class TargetHttpsProxiesRestTransport(TargetHttpsProxiesTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
                     "uri": "/compute/v1/projects/{project}/global/targetHttpsProxies/{target_https_proxy}",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_get(request, metadata)
             request_kwargs = compute.GetTargetHttpsProxyRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -406,8 +740,7 @@ class TargetHttpsProxiesRestTransport(TargetHttpsProxiesTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -417,16 +750,19 @@ class TargetHttpsProxiesRestTransport(TargetHttpsProxiesTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.TargetHttpsProxy.from_json(
+            resp = compute.TargetHttpsProxy.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_get(resp)
+            return resp
 
     class _Insert(TargetHttpsProxiesRestStub):
         def __hash__(self):
             return hash("Insert")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -478,14 +814,14 @@ class TargetHttpsProxiesRestTransport(TargetHttpsProxiesTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/projects/{project}/global/targetHttpsProxies",
                     "body": "target_https_proxy_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_insert(request, metadata)
             request_kwargs = compute.InsertTargetHttpsProxyRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -515,8 +851,7 @@ class TargetHttpsProxiesRestTransport(TargetHttpsProxiesTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -527,16 +862,19 @@ class TargetHttpsProxiesRestTransport(TargetHttpsProxiesTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_insert(resp)
+            return resp
 
     class _List(TargetHttpsProxiesRestStub):
         def __hash__(self):
             return hash("List")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -575,13 +913,13 @@ class TargetHttpsProxiesRestTransport(TargetHttpsProxiesTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
                     "uri": "/compute/v1/projects/{project}/global/targetHttpsProxies",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_list(request, metadata)
             request_kwargs = compute.ListTargetHttpsProxiesRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -605,8 +943,7 @@ class TargetHttpsProxiesRestTransport(TargetHttpsProxiesTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -616,16 +953,19 @@ class TargetHttpsProxiesRestTransport(TargetHttpsProxiesTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.TargetHttpsProxyList.from_json(
+            resp = compute.TargetHttpsProxyList.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_list(resp)
+            return resp
 
     class _Patch(TargetHttpsProxiesRestStub):
         def __hash__(self):
             return hash("Patch")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -677,14 +1017,14 @@ class TargetHttpsProxiesRestTransport(TargetHttpsProxiesTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "patch",
                     "uri": "/compute/v1/projects/{project}/global/targetHttpsProxies/{target_https_proxy}",
                     "body": "target_https_proxy_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_patch(request, metadata)
             request_kwargs = compute.PatchTargetHttpsProxyRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -714,8 +1054,7 @@ class TargetHttpsProxiesRestTransport(TargetHttpsProxiesTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -726,16 +1065,19 @@ class TargetHttpsProxiesRestTransport(TargetHttpsProxiesTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_patch(resp)
+            return resp
 
     class _SetQuicOverride(TargetHttpsProxiesRestStub):
         def __hash__(self):
             return hash("SetQuicOverride")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -787,14 +1129,16 @@ class TargetHttpsProxiesRestTransport(TargetHttpsProxiesTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/projects/{project}/global/targetHttpsProxies/{target_https_proxy}/setQuicOverride",
                     "body": "target_https_proxies_set_quic_override_request_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_set_quic_override(
+                request, metadata
+            )
             request_kwargs = compute.SetQuicOverrideTargetHttpsProxyRequest.to_dict(
                 request
             )
@@ -828,8 +1172,7 @@ class TargetHttpsProxiesRestTransport(TargetHttpsProxiesTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -840,16 +1183,19 @@ class TargetHttpsProxiesRestTransport(TargetHttpsProxiesTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_set_quic_override(resp)
+            return resp
 
     class _SetSslCertificates(TargetHttpsProxiesRestStub):
         def __hash__(self):
             return hash("SetSslCertificates")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -901,14 +1247,16 @@ class TargetHttpsProxiesRestTransport(TargetHttpsProxiesTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/projects/{project}/targetHttpsProxies/{target_https_proxy}/setSslCertificates",
                     "body": "target_https_proxies_set_ssl_certificates_request_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_set_ssl_certificates(
+                request, metadata
+            )
             request_kwargs = compute.SetSslCertificatesTargetHttpsProxyRequest.to_dict(
                 request
             )
@@ -942,8 +1290,7 @@ class TargetHttpsProxiesRestTransport(TargetHttpsProxiesTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -954,16 +1301,19 @@ class TargetHttpsProxiesRestTransport(TargetHttpsProxiesTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_set_ssl_certificates(resp)
+            return resp
 
     class _SetSslPolicy(TargetHttpsProxiesRestStub):
         def __hash__(self):
             return hash("SetSslPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1015,14 +1365,14 @@ class TargetHttpsProxiesRestTransport(TargetHttpsProxiesTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/projects/{project}/global/targetHttpsProxies/{target_https_proxy}/setSslPolicy",
                     "body": "ssl_policy_reference_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_set_ssl_policy(request, metadata)
             request_kwargs = compute.SetSslPolicyTargetHttpsProxyRequest.to_dict(
                 request
             )
@@ -1054,8 +1404,7 @@ class TargetHttpsProxiesRestTransport(TargetHttpsProxiesTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -1066,16 +1415,19 @@ class TargetHttpsProxiesRestTransport(TargetHttpsProxiesTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_set_ssl_policy(resp)
+            return resp
 
     class _SetUrlMap(TargetHttpsProxiesRestStub):
         def __hash__(self):
             return hash("SetUrlMap")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1127,14 +1479,14 @@ class TargetHttpsProxiesRestTransport(TargetHttpsProxiesTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/projects/{project}/targetHttpsProxies/{target_https_proxy}/setUrlMap",
                     "body": "url_map_reference_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_set_url_map(request, metadata)
             request_kwargs = compute.SetUrlMapTargetHttpsProxyRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -1164,8 +1516,7 @@ class TargetHttpsProxiesRestTransport(TargetHttpsProxiesTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -1176,10 +1527,13 @@ class TargetHttpsProxiesRestTransport(TargetHttpsProxiesTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_set_url_map(resp)
+            return resp
 
     @property
     def aggregated_list(
@@ -1191,10 +1545,12 @@ class TargetHttpsProxiesRestTransport(TargetHttpsProxiesTransport):
         stub = self._STUBS.get("aggregated_list")
         if not stub:
             stub = self._STUBS["aggregated_list"] = self._AggregatedList(
-                self._session, self._host
+                self._session, self._host, self._interceptor
             )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def delete(
@@ -1202,9 +1558,13 @@ class TargetHttpsProxiesRestTransport(TargetHttpsProxiesTransport):
     ) -> Callable[[compute.DeleteTargetHttpsProxyRequest], compute.Operation]:
         stub = self._STUBS.get("delete")
         if not stub:
-            stub = self._STUBS["delete"] = self._Delete(self._session, self._host)
+            stub = self._STUBS["delete"] = self._Delete(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def get(
@@ -1212,9 +1572,13 @@ class TargetHttpsProxiesRestTransport(TargetHttpsProxiesTransport):
     ) -> Callable[[compute.GetTargetHttpsProxyRequest], compute.TargetHttpsProxy]:
         stub = self._STUBS.get("get")
         if not stub:
-            stub = self._STUBS["get"] = self._Get(self._session, self._host)
+            stub = self._STUBS["get"] = self._Get(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def insert(
@@ -1222,9 +1586,13 @@ class TargetHttpsProxiesRestTransport(TargetHttpsProxiesTransport):
     ) -> Callable[[compute.InsertTargetHttpsProxyRequest], compute.Operation]:
         stub = self._STUBS.get("insert")
         if not stub:
-            stub = self._STUBS["insert"] = self._Insert(self._session, self._host)
+            stub = self._STUBS["insert"] = self._Insert(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def list(
@@ -1234,9 +1602,13 @@ class TargetHttpsProxiesRestTransport(TargetHttpsProxiesTransport):
     ]:
         stub = self._STUBS.get("list")
         if not stub:
-            stub = self._STUBS["list"] = self._List(self._session, self._host)
+            stub = self._STUBS["list"] = self._List(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def patch(
@@ -1244,9 +1616,13 @@ class TargetHttpsProxiesRestTransport(TargetHttpsProxiesTransport):
     ) -> Callable[[compute.PatchTargetHttpsProxyRequest], compute.Operation]:
         stub = self._STUBS.get("patch")
         if not stub:
-            stub = self._STUBS["patch"] = self._Patch(self._session, self._host)
+            stub = self._STUBS["patch"] = self._Patch(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def set_quic_override(
@@ -1255,10 +1631,12 @@ class TargetHttpsProxiesRestTransport(TargetHttpsProxiesTransport):
         stub = self._STUBS.get("set_quic_override")
         if not stub:
             stub = self._STUBS["set_quic_override"] = self._SetQuicOverride(
-                self._session, self._host
+                self._session, self._host, self._interceptor
             )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def set_ssl_certificates(
@@ -1269,10 +1647,12 @@ class TargetHttpsProxiesRestTransport(TargetHttpsProxiesTransport):
         stub = self._STUBS.get("set_ssl_certificates")
         if not stub:
             stub = self._STUBS["set_ssl_certificates"] = self._SetSslCertificates(
-                self._session, self._host
+                self._session, self._host, self._interceptor
             )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def set_ssl_policy(
@@ -1281,10 +1661,12 @@ class TargetHttpsProxiesRestTransport(TargetHttpsProxiesTransport):
         stub = self._STUBS.get("set_ssl_policy")
         if not stub:
             stub = self._STUBS["set_ssl_policy"] = self._SetSslPolicy(
-                self._session, self._host
+                self._session, self._host, self._interceptor
             )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def set_url_map(
@@ -1293,10 +1675,12 @@ class TargetHttpsProxiesRestTransport(TargetHttpsProxiesTransport):
         stub = self._STUBS.get("set_url_map")
         if not stub:
             stub = self._STUBS["set_url_map"] = self._SetUrlMap(
-                self._session, self._host
+                self._session, self._host, self._interceptor
             )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     def close(self):
         self._session.close()

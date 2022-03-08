@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,11 +22,14 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 from google.api_core import rest_helpers
+from google.api_core import rest_streaming
 from google.api_core import path_template
 from google.api_core import gapic_v1
+
 from requests import __version__ as requests_version
 import dataclasses
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
+import re
+from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 try:
@@ -47,10 +50,277 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
 )
 
 
+class UrlMapsRestInterceptor:
+    """Interceptor for UrlMaps.
+
+    Interceptors are used to manipulate requests, request metadata, and responses
+    in arbitrary ways.
+    Example use cases include:
+    * Logging
+    * Verifying requests according to service or custom semantics
+    * Stripping extraneous information from responses
+
+    These use cases and more can be enabled by injecting an
+    instance of a custom subclass when constructing the UrlMapsRestTransport.
+
+    .. code-block:: python
+        class MyCustomUrlMapsInterceptor(UrlMapsRestInterceptor):
+            def pre_aggregated_list(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_aggregated_list(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_delete(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_get(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_insert(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_insert(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_invalidate_cache(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_invalidate_cache(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_list(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_patch(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_patch(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_update(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_validate(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_validate(response):
+                logging.log(f"Received response: {response}")
+
+        transport = UrlMapsRestTransport(interceptor=MyCustomUrlMapsInterceptor())
+        client = UrlMapsClient(transport=transport)
+
+
+    """
+
+    def pre_aggregated_list(
+        self,
+        request: compute.AggregatedListUrlMapsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.AggregatedListUrlMapsRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for aggregated_list
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the UrlMaps server.
+        """
+        return request, metadata
+
+    def post_aggregated_list(
+        self, response: compute.UrlMapsAggregatedList
+    ) -> compute.UrlMapsAggregatedList:
+        """Post-rpc interceptor for aggregated_list
+
+        Override in a subclass to manipulate the response
+        after it is returned by the UrlMaps server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_delete(
+        self, request: compute.DeleteUrlMapRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[compute.DeleteUrlMapRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for delete
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the UrlMaps server.
+        """
+        return request, metadata
+
+    def post_delete(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for delete
+
+        Override in a subclass to manipulate the response
+        after it is returned by the UrlMaps server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get(
+        self, request: compute.GetUrlMapRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[compute.GetUrlMapRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the UrlMaps server.
+        """
+        return request, metadata
+
+    def post_get(self, response: compute.UrlMap) -> compute.UrlMap:
+        """Post-rpc interceptor for get
+
+        Override in a subclass to manipulate the response
+        after it is returned by the UrlMaps server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_insert(
+        self, request: compute.InsertUrlMapRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[compute.InsertUrlMapRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for insert
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the UrlMaps server.
+        """
+        return request, metadata
+
+    def post_insert(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for insert
+
+        Override in a subclass to manipulate the response
+        after it is returned by the UrlMaps server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_invalidate_cache(
+        self,
+        request: compute.InvalidateCacheUrlMapRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.InvalidateCacheUrlMapRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for invalidate_cache
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the UrlMaps server.
+        """
+        return request, metadata
+
+    def post_invalidate_cache(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for invalidate_cache
+
+        Override in a subclass to manipulate the response
+        after it is returned by the UrlMaps server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list(
+        self, request: compute.ListUrlMapsRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[compute.ListUrlMapsRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the UrlMaps server.
+        """
+        return request, metadata
+
+    def post_list(self, response: compute.UrlMapList) -> compute.UrlMapList:
+        """Post-rpc interceptor for list
+
+        Override in a subclass to manipulate the response
+        after it is returned by the UrlMaps server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_patch(
+        self, request: compute.PatchUrlMapRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[compute.PatchUrlMapRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for patch
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the UrlMaps server.
+        """
+        return request, metadata
+
+    def post_patch(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for patch
+
+        Override in a subclass to manipulate the response
+        after it is returned by the UrlMaps server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_update(
+        self, request: compute.UpdateUrlMapRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[compute.UpdateUrlMapRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for update
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the UrlMaps server.
+        """
+        return request, metadata
+
+    def post_update(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for update
+
+        Override in a subclass to manipulate the response
+        after it is returned by the UrlMaps server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_validate(
+        self,
+        request: compute.ValidateUrlMapRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.ValidateUrlMapRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for validate
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the UrlMaps server.
+        """
+        return request, metadata
+
+    def post_validate(
+        self, response: compute.UrlMapsValidateResponse
+    ) -> compute.UrlMapsValidateResponse:
+        """Post-rpc interceptor for validate
+
+        Override in a subclass to manipulate the response
+        after it is returned by the UrlMaps server but before
+        it is returned to user code.
+        """
+        return response
+
+
 @dataclasses.dataclass
 class UrlMapsRestStub:
     _session: AuthorizedSession
     _host: str
+    _interceptor: UrlMapsRestInterceptor
 
 
 class UrlMapsRestTransport(UrlMapsTransport):
@@ -79,6 +349,7 @@ class UrlMapsRestTransport(UrlMapsTransport):
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
         url_scheme: str = "https",
+        interceptor: Optional[UrlMapsRestInterceptor] = None,
     ) -> None:
         """Instantiate the transport.
 
@@ -116,6 +387,16 @@ class UrlMapsRestTransport(UrlMapsTransport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
+        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
+        if maybe_url_match is None:
+            raise ValueError(
+                f"Unexpected hostname structure: {host}"
+            )  # pragma: NO COVER
+
+        url_match_items = maybe_url_match.groupdict()
+
+        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
+
         super().__init__(
             host=host,
             credentials=credentials,
@@ -127,13 +408,14 @@ class UrlMapsRestTransport(UrlMapsTransport):
         )
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
+        self._interceptor = interceptor or UrlMapsRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
     class _AggregatedList(UrlMapsRestStub):
         def __hash__(self):
             return hash("AggregatedList")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -170,13 +452,13 @@ class UrlMapsRestTransport(UrlMapsTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
                     "uri": "/compute/v1/projects/{project}/aggregated/urlMaps",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_aggregated_list(request, metadata)
             request_kwargs = compute.AggregatedListUrlMapsRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -200,8 +482,7 @@ class UrlMapsRestTransport(UrlMapsTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -211,16 +492,19 @@ class UrlMapsRestTransport(UrlMapsTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.UrlMapsAggregatedList.from_json(
+            resp = compute.UrlMapsAggregatedList.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_aggregated_list(resp)
+            return resp
 
     class _Delete(UrlMapsRestStub):
         def __hash__(self):
             return hash("Delete")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -271,13 +555,13 @@ class UrlMapsRestTransport(UrlMapsTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "delete",
                     "uri": "/compute/v1/projects/{project}/global/urlMaps/{url_map}",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_delete(request, metadata)
             request_kwargs = compute.DeleteUrlMapRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -299,8 +583,7 @@ class UrlMapsRestTransport(UrlMapsTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -310,16 +593,19 @@ class UrlMapsRestTransport(UrlMapsTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_delete(resp)
+            return resp
 
     class _Get(UrlMapsRestStub):
         def __hash__(self):
             return hash("Get")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -352,23 +638,23 @@ class UrlMapsRestTransport(UrlMapsTransport):
 
             Returns:
                 ~.compute.UrlMap:
-                    Represents a URL Map resource. Google Compute Engine has
-                two URL Map resources: \*
+                    Represents a URL Map resource. Compute Engine has two
+                URL Map resources: \*
                 `Global </compute/docs/reference/rest/v1/urlMaps>`__ \*
                 `Regional </compute/docs/reference/rest/v1/regionUrlMaps>`__
                 A URL map resource is a component of certain types of
-                GCP load balancers and Traffic Director. \* urlMaps are
-                used by external HTTP(S) load balancers and Traffic
+                cloud load balancers and Traffic Director: \* urlMaps
+                are used by external HTTP(S) load balancers and Traffic
                 Director. \* regionUrlMaps are used by internal HTTP(S)
                 load balancers. For a list of supported URL map features
-                by load balancer type, see the Load balancing features:
-                Routing and traffic management table. For a list of
-                supported URL map features for Traffic Director, see the
-                Traffic Director features: Routing and traffic
+                by the load balancer type, see the Load balancing
+                features: Routing and traffic management table. For a
+                list of supported URL map features for Traffic Director,
+                see the Traffic Director features: Routing and traffic
                 management table. This resource defines mappings from
-                host names and URL paths to either a backend service or
-                a backend bucket. To use the global urlMaps resource,
-                the backend service must have a loadBalancingScheme of
+                hostnames and URL paths to either a backend service or a
+                backend bucket. To use the global urlMaps resource, the
+                backend service must have a loadBalancingScheme of
                 either EXTERNAL or INTERNAL_SELF_MANAGED. To use the
                 regionUrlMaps resource, the backend service must have a
                 loadBalancingScheme of INTERNAL_MANAGED. For more
@@ -376,13 +662,13 @@ class UrlMapsRestTransport(UrlMapsTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
                     "uri": "/compute/v1/projects/{project}/global/urlMaps/{url_map}",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_get(request, metadata)
             request_kwargs = compute.GetUrlMapRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -404,8 +690,7 @@ class UrlMapsRestTransport(UrlMapsTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -415,16 +700,19 @@ class UrlMapsRestTransport(UrlMapsTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.UrlMap.from_json(
+            resp = compute.UrlMap.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_get(resp)
+            return resp
 
     class _Insert(UrlMapsRestStub):
         def __hash__(self):
             return hash("Insert")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -475,14 +763,14 @@ class UrlMapsRestTransport(UrlMapsTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/projects/{project}/global/urlMaps",
                     "body": "url_map_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_insert(request, metadata)
             request_kwargs = compute.InsertUrlMapRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -510,8 +798,7 @@ class UrlMapsRestTransport(UrlMapsTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -522,16 +809,19 @@ class UrlMapsRestTransport(UrlMapsTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_insert(resp)
+            return resp
 
     class _InvalidateCache(UrlMapsRestStub):
         def __hash__(self):
             return hash("InvalidateCache")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -583,14 +873,16 @@ class UrlMapsRestTransport(UrlMapsTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/projects/{project}/global/urlMaps/{url_map}/invalidateCache",
                     "body": "cache_invalidation_rule_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_invalidate_cache(
+                request, metadata
+            )
             request_kwargs = compute.InvalidateCacheUrlMapRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -620,8 +912,7 @@ class UrlMapsRestTransport(UrlMapsTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -632,16 +923,19 @@ class UrlMapsRestTransport(UrlMapsTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_invalidate_cache(resp)
+            return resp
 
     class _List(UrlMapsRestStub):
         def __hash__(self):
             return hash("List")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -677,13 +971,13 @@ class UrlMapsRestTransport(UrlMapsTransport):
                     Contains a list of UrlMap resources.
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
                     "uri": "/compute/v1/projects/{project}/global/urlMaps",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_list(request, metadata)
             request_kwargs = compute.ListUrlMapsRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -705,8 +999,7 @@ class UrlMapsRestTransport(UrlMapsTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -716,16 +1009,19 @@ class UrlMapsRestTransport(UrlMapsTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.UrlMapList.from_json(
+            resp = compute.UrlMapList.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_list(resp)
+            return resp
 
     class _Patch(UrlMapsRestStub):
         def __hash__(self):
             return hash("Patch")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -776,14 +1072,14 @@ class UrlMapsRestTransport(UrlMapsTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "patch",
                     "uri": "/compute/v1/projects/{project}/global/urlMaps/{url_map}",
                     "body": "url_map_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_patch(request, metadata)
             request_kwargs = compute.PatchUrlMapRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -811,8 +1107,7 @@ class UrlMapsRestTransport(UrlMapsTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -823,16 +1118,19 @@ class UrlMapsRestTransport(UrlMapsTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_patch(resp)
+            return resp
 
     class _Update(UrlMapsRestStub):
         def __hash__(self):
             return hash("Update")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -883,14 +1181,14 @@ class UrlMapsRestTransport(UrlMapsTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "put",
                     "uri": "/compute/v1/projects/{project}/global/urlMaps/{url_map}",
                     "body": "url_map_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_update(request, metadata)
             request_kwargs = compute.UpdateUrlMapRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -918,8 +1216,7 @@ class UrlMapsRestTransport(UrlMapsTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -930,16 +1227,19 @@ class UrlMapsRestTransport(UrlMapsTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_update(resp)
+            return resp
 
     class _Validate(UrlMapsRestStub):
         def __hash__(self):
             return hash("Validate")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -976,14 +1276,14 @@ class UrlMapsRestTransport(UrlMapsTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/projects/{project}/global/urlMaps/{url_map}/validate",
                     "body": "url_maps_validate_request_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_validate(request, metadata)
             request_kwargs = compute.ValidateUrlMapRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -1011,8 +1311,7 @@ class UrlMapsRestTransport(UrlMapsTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -1023,10 +1322,13 @@ class UrlMapsRestTransport(UrlMapsTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.UrlMapsValidateResponse.from_json(
+            resp = compute.UrlMapsValidateResponse.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_validate(resp)
+            return resp
 
     @property
     def aggregated_list(
@@ -1037,34 +1339,48 @@ class UrlMapsRestTransport(UrlMapsTransport):
         stub = self._STUBS.get("aggregated_list")
         if not stub:
             stub = self._STUBS["aggregated_list"] = self._AggregatedList(
-                self._session, self._host
+                self._session, self._host, self._interceptor
             )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def delete(self) -> Callable[[compute.DeleteUrlMapRequest], compute.Operation]:
         stub = self._STUBS.get("delete")
         if not stub:
-            stub = self._STUBS["delete"] = self._Delete(self._session, self._host)
+            stub = self._STUBS["delete"] = self._Delete(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def get(self) -> Callable[[compute.GetUrlMapRequest], compute.UrlMap]:
         stub = self._STUBS.get("get")
         if not stub:
-            stub = self._STUBS["get"] = self._Get(self._session, self._host)
+            stub = self._STUBS["get"] = self._Get(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def insert(self) -> Callable[[compute.InsertUrlMapRequest], compute.Operation]:
         stub = self._STUBS.get("insert")
         if not stub:
-            stub = self._STUBS["insert"] = self._Insert(self._session, self._host)
+            stub = self._STUBS["insert"] = self._Insert(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def invalidate_cache(
@@ -1073,34 +1389,48 @@ class UrlMapsRestTransport(UrlMapsTransport):
         stub = self._STUBS.get("invalidate_cache")
         if not stub:
             stub = self._STUBS["invalidate_cache"] = self._InvalidateCache(
-                self._session, self._host
+                self._session, self._host, self._interceptor
             )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def list(self) -> Callable[[compute.ListUrlMapsRequest], compute.UrlMapList]:
         stub = self._STUBS.get("list")
         if not stub:
-            stub = self._STUBS["list"] = self._List(self._session, self._host)
+            stub = self._STUBS["list"] = self._List(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def patch(self) -> Callable[[compute.PatchUrlMapRequest], compute.Operation]:
         stub = self._STUBS.get("patch")
         if not stub:
-            stub = self._STUBS["patch"] = self._Patch(self._session, self._host)
+            stub = self._STUBS["patch"] = self._Patch(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def update(self) -> Callable[[compute.UpdateUrlMapRequest], compute.Operation]:
         stub = self._STUBS.get("update")
         if not stub:
-            stub = self._STUBS["update"] = self._Update(self._session, self._host)
+            stub = self._STUBS["update"] = self._Update(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def validate(
@@ -1108,9 +1438,13 @@ class UrlMapsRestTransport(UrlMapsTransport):
     ) -> Callable[[compute.ValidateUrlMapRequest], compute.UrlMapsValidateResponse]:
         stub = self._STUBS.get("validate")
         if not stub:
-            stub = self._STUBS["validate"] = self._Validate(self._session, self._host)
+            stub = self._STUBS["validate"] = self._Validate(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     def close(self):
         self._session.close()

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -447,7 +447,7 @@ class RegionHealthCheckServicesClient(metaclass=RegionHealthCheckServicesClientM
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, health_check_service])
         if request is not None and has_flattened_params:
@@ -533,7 +533,7 @@ class RegionHealthCheckServicesClient(metaclass=RegionHealthCheckServicesClientM
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, health_check_service])
         if request is not None and has_flattened_params:
@@ -630,7 +630,7 @@ class RegionHealthCheckServicesClient(metaclass=RegionHealthCheckServicesClientM
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, health_check_service_resource])
         if request is not None and has_flattened_params:
@@ -709,7 +709,7 @@ class RegionHealthCheckServicesClient(metaclass=RegionHealthCheckServicesClientM
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region])
         if request is not None and has_flattened_params:
@@ -820,7 +820,7 @@ class RegionHealthCheckServicesClient(metaclass=RegionHealthCheckServicesClientM
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, region, health_check_service, health_check_service_resource]

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ import mock
 
 import grpc
 from grpc.experimental import aio
+from collections.abc import Iterable
 import json
 import math
 import pytest
@@ -88,19 +89,27 @@ def test__get_default_mtls_endpoint():
     )
 
 
-@pytest.mark.parametrize("client_class", [RegionAutoscalersClient,])
-def test_region_autoscalers_client_from_service_account_info(client_class):
+@pytest.mark.parametrize(
+    "client_class,transport_name", [(RegionAutoscalersClient, "rest"),]
+)
+def test_region_autoscalers_client_from_service_account_info(
+    client_class, transport_name
+):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_info"
     ) as factory:
         factory.return_value = creds
         info = {"valid": True}
-        client = client_class.from_service_account_info(info)
+        client = client_class.from_service_account_info(info, transport=transport_name)
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == "compute.googleapis.com:443"
+        assert client.transport._host == (
+            "compute.googleapis.com{}".format(":443")
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://{}".format("compute.googleapis.com")
+        )
 
 
 @pytest.mark.parametrize(
@@ -125,22 +134,34 @@ def test_region_autoscalers_client_service_account_always_use_jwt(
         use_jwt.assert_not_called()
 
 
-@pytest.mark.parametrize("client_class", [RegionAutoscalersClient,])
-def test_region_autoscalers_client_from_service_account_file(client_class):
+@pytest.mark.parametrize(
+    "client_class,transport_name", [(RegionAutoscalersClient, "rest"),]
+)
+def test_region_autoscalers_client_from_service_account_file(
+    client_class, transport_name
+):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_file"
     ) as factory:
         factory.return_value = creds
-        client = client_class.from_service_account_file("dummy/file/path.json")
+        client = client_class.from_service_account_file(
+            "dummy/file/path.json", transport=transport_name
+        )
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        client = client_class.from_service_account_json("dummy/file/path.json")
+        client = client_class.from_service_account_json(
+            "dummy/file/path.json", transport=transport_name
+        )
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == "compute.googleapis.com:443"
+        assert client.transport._host == (
+            "compute.googleapis.com{}".format(":443")
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://{}".format("compute.googleapis.com")
+        )
 
 
 def test_region_autoscalers_client_get_transport_class():
@@ -472,14 +493,22 @@ def test_region_autoscalers_client_client_options_scopes(
 
 
 @pytest.mark.parametrize(
-    "client_class,transport_class,transport_name",
-    [(RegionAutoscalersClient, transports.RegionAutoscalersRestTransport, "rest"),],
+    "client_class,transport_class,transport_name,grpc_helpers",
+    [
+        (
+            RegionAutoscalersClient,
+            transports.RegionAutoscalersRestTransport,
+            "rest",
+            None,
+        ),
+    ],
 )
 def test_region_autoscalers_client_client_options_credentials_file(
-    client_class, transport_class, transport_name
+    client_class, transport_class, transport_name, grpc_helpers
 ):
     # Check the case credentials file is provided.
     options = client_options.ClientOptions(credentials_file="credentials.json")
+
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -657,6 +686,55 @@ def test_delete_unary_rest_unset_required_fields():
     )
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_unary_rest_interceptors(null_interceptor):
+    transport = transports.RegionAutoscalersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.RegionAutoscalersRestInterceptor(),
+    )
+    client = RegionAutoscalersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RegionAutoscalersRestInterceptor, "post_delete"
+    ) as post, mock.patch.object(
+        transports.RegionAutoscalersRestInterceptor, "pre_delete"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": None,
+            "query_params": {},
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.Operation.to_json(compute.Operation())
+
+        request = compute.DeleteRegionAutoscalerRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation
+
+        client.delete_unary(
+            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_delete_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.DeleteRegionAutoscalerRequest
 ):
@@ -690,14 +768,6 @@ def test_delete_unary_rest_flattened():
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation()
 
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
         # get arguments that satisfy an http rule for this method
         sample_request = {
             "project": "sample1",
@@ -712,6 +782,15 @@ def test_delete_unary_rest_flattened():
             autoscaler="autoscaler_value",
         )
         mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
         client.delete_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
@@ -719,7 +798,7 @@ def test_delete_unary_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "https://%s/compute/v1/projects/{project}/regions/{region}/autoscalers/{autoscaler}"
+            "%s/compute/v1/projects/{project}/regions/{region}/autoscalers/{autoscaler}"
             % client.transport._host,
             args[1],
         )
@@ -881,6 +960,53 @@ def test_get_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("autoscaler", "project", "region",)))
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_rest_interceptors(null_interceptor):
+    transport = transports.RegionAutoscalersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.RegionAutoscalersRestInterceptor(),
+    )
+    client = RegionAutoscalersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RegionAutoscalersRestInterceptor, "post_get"
+    ) as post, mock.patch.object(
+        transports.RegionAutoscalersRestInterceptor, "pre_get"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": None,
+            "query_params": {},
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.Autoscaler.to_json(compute.Autoscaler())
+
+        request = compute.GetRegionAutoscalerRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Autoscaler
+
+        client.get(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_get_rest_bad_request(
     transport: str = "rest", request_type=compute.GetRegionAutoscalerRequest
 ):
@@ -914,14 +1040,6 @@ def test_get_rest_flattened():
         # Designate an appropriate value for the returned response.
         return_value = compute.Autoscaler()
 
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = compute.Autoscaler.to_json(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
         # get arguments that satisfy an http rule for this method
         sample_request = {
             "project": "sample1",
@@ -936,6 +1054,15 @@ def test_get_rest_flattened():
             autoscaler="autoscaler_value",
         )
         mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = compute.Autoscaler.to_json(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
         client.get(**mock_args)
 
         # Establish that the underlying call was made with the expected
@@ -943,7 +1070,7 @@ def test_get_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "https://%s/compute/v1/projects/{project}/regions/{region}/autoscalers/{autoscaler}"
+            "%s/compute/v1/projects/{project}/regions/{region}/autoscalers/{autoscaler}"
             % client.transport._host,
             args[1],
         )
@@ -1174,6 +1301,55 @@ def test_insert_unary_rest_unset_required_fields():
     )
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_insert_unary_rest_interceptors(null_interceptor):
+    transport = transports.RegionAutoscalersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.RegionAutoscalersRestInterceptor(),
+    )
+    client = RegionAutoscalersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RegionAutoscalersRestInterceptor, "post_insert"
+    ) as post, mock.patch.object(
+        transports.RegionAutoscalersRestInterceptor, "pre_insert"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": None,
+            "query_params": {},
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.Operation.to_json(compute.Operation())
+
+        request = compute.InsertRegionAutoscalerRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation
+
+        client.insert_unary(
+            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_insert_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.InsertRegionAutoscalerRequest
 ):
@@ -1251,14 +1427,6 @@ def test_insert_unary_rest_flattened():
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation()
 
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
         # get arguments that satisfy an http rule for this method
         sample_request = {"project": "sample1", "region": "sample2"}
 
@@ -1271,6 +1439,15 @@ def test_insert_unary_rest_flattened():
             ),
         )
         mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
         client.insert_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
@@ -1278,7 +1455,7 @@ def test_insert_unary_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "https://%s/compute/v1/projects/{project}/regions/{region}/autoscalers"
+            "%s/compute/v1/projects/{project}/regions/{region}/autoscalers"
             % client.transport._host,
             args[1],
         )
@@ -1374,7 +1551,7 @@ def test_list_rest_required_fields(request_type=compute.ListRegionAutoscalersReq
     ).list._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
-        ("max_results", "filter", "order_by", "page_token", "return_partial_success",)
+        ("filter", "max_results", "order_by", "page_token", "return_partial_success",)
     )
     jsonified_request.update(unset_fields)
 
@@ -1426,9 +1603,58 @@ def test_list_rest_unset_required_fields():
 
     unset_fields = transport.list._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("maxResults", "filter", "orderBy", "pageToken", "returnPartialSuccess",))
+        set(("filter", "maxResults", "orderBy", "pageToken", "returnPartialSuccess",))
         & set(("project", "region",))
     )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_rest_interceptors(null_interceptor):
+    transport = transports.RegionAutoscalersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.RegionAutoscalersRestInterceptor(),
+    )
+    client = RegionAutoscalersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RegionAutoscalersRestInterceptor, "post_list"
+    ) as post, mock.patch.object(
+        transports.RegionAutoscalersRestInterceptor, "pre_list"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": None,
+            "query_params": {},
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.RegionAutoscalerList.to_json(
+            compute.RegionAutoscalerList()
+        )
+
+        request = compute.ListRegionAutoscalersRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.RegionAutoscalerList
+
+        client.list(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
 
 
 def test_list_rest_bad_request(
@@ -1464,6 +1690,13 @@ def test_list_rest_flattened():
         # Designate an appropriate value for the returned response.
         return_value = compute.RegionAutoscalerList()
 
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project": "sample1", "region": "sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(project="project_value", region="region_value",)
+        mock_args.update(sample_request)
+
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
@@ -1472,12 +1705,6 @@ def test_list_rest_flattened():
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        # get arguments that satisfy an http rule for this method
-        sample_request = {"project": "sample1", "region": "sample2"}
-
-        # get truthy value for each flattened field
-        mock_args = dict(project="project_value", region="region_value",)
-        mock_args.update(sample_request)
         client.list(**mock_args)
 
         # Establish that the underlying call was made with the expected
@@ -1485,7 +1712,7 @@ def test_list_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "https://%s/compute/v1/projects/{project}/regions/{region}/autoscalers"
+            "%s/compute/v1/projects/{project}/regions/{region}/autoscalers"
             % client.transport._host,
             args[1],
         )
@@ -1704,7 +1931,7 @@ def test_patch_unary_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials()
     ).patch._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("request_id", "autoscaler",))
+    assert not set(unset_fields) - set(("autoscaler", "request_id",))
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -1756,9 +1983,56 @@ def test_patch_unary_rest_unset_required_fields():
 
     unset_fields = transport.patch._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("requestId", "autoscaler",))
+        set(("autoscaler", "requestId",))
         & set(("autoscalerResource", "project", "region",))
     )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_patch_unary_rest_interceptors(null_interceptor):
+    transport = transports.RegionAutoscalersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.RegionAutoscalersRestInterceptor(),
+    )
+    client = RegionAutoscalersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RegionAutoscalersRestInterceptor, "post_patch"
+    ) as post, mock.patch.object(
+        transports.RegionAutoscalersRestInterceptor, "pre_patch"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": None,
+            "query_params": {},
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.Operation.to_json(compute.Operation())
+
+        request = compute.PatchRegionAutoscalerRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation
+
+        client.patch_unary(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
 
 
 def test_patch_unary_rest_bad_request(
@@ -1838,14 +2112,6 @@ def test_patch_unary_rest_flattened():
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation()
 
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
         # get arguments that satisfy an http rule for this method
         sample_request = {"project": "sample1", "region": "sample2"}
 
@@ -1858,6 +2124,15 @@ def test_patch_unary_rest_flattened():
             ),
         )
         mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
         client.patch_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
@@ -1865,7 +2140,7 @@ def test_patch_unary_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "https://%s/compute/v1/projects/{project}/regions/{region}/autoscalers"
+            "%s/compute/v1/projects/{project}/regions/{region}/autoscalers"
             % client.transport._host,
             args[1],
         )
@@ -2042,7 +2317,7 @@ def test_update_unary_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials()
     ).update._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("request_id", "autoscaler",))
+    assert not set(unset_fields) - set(("autoscaler", "request_id",))
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -2094,9 +2369,58 @@ def test_update_unary_rest_unset_required_fields():
 
     unset_fields = transport.update._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("requestId", "autoscaler",))
+        set(("autoscaler", "requestId",))
         & set(("autoscalerResource", "project", "region",))
     )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_unary_rest_interceptors(null_interceptor):
+    transport = transports.RegionAutoscalersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.RegionAutoscalersRestInterceptor(),
+    )
+    client = RegionAutoscalersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RegionAutoscalersRestInterceptor, "post_update"
+    ) as post, mock.patch.object(
+        transports.RegionAutoscalersRestInterceptor, "pre_update"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": None,
+            "query_params": {},
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.Operation.to_json(compute.Operation())
+
+        request = compute.UpdateRegionAutoscalerRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation
+
+        client.update_unary(
+            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
 
 
 def test_update_unary_rest_bad_request(
@@ -2176,14 +2500,6 @@ def test_update_unary_rest_flattened():
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation()
 
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
         # get arguments that satisfy an http rule for this method
         sample_request = {"project": "sample1", "region": "sample2"}
 
@@ -2196,6 +2512,15 @@ def test_update_unary_rest_flattened():
             ),
         )
         mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
         client.update_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
@@ -2203,7 +2528,7 @@ def test_update_unary_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "https://%s/compute/v1/projects/{project}/regions/{region}/autoscalers"
+            "%s/compute/v1/projects/{project}/regions/{region}/autoscalers"
             % client.transport._host,
             args[1],
         )
@@ -2397,24 +2722,36 @@ def test_region_autoscalers_http_transport_client_cert_source_for_mtls():
         mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
 
 
-def test_region_autoscalers_host_no_port():
+@pytest.mark.parametrize("transport_name", ["rest",])
+def test_region_autoscalers_host_no_port(transport_name):
     client = RegionAutoscalersClient(
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="compute.googleapis.com"
         ),
+        transport=transport_name,
     )
-    assert client.transport._host == "compute.googleapis.com:443"
+    assert client.transport._host == (
+        "compute.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://compute.googleapis.com"
+    )
 
 
-def test_region_autoscalers_host_with_port():
+@pytest.mark.parametrize("transport_name", ["rest",])
+def test_region_autoscalers_host_with_port(transport_name):
     client = RegionAutoscalersClient(
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="compute.googleapis.com:8000"
         ),
+        transport=transport_name,
     )
-    assert client.transport._host == "compute.googleapis.com:8000"
+    assert client.transport._host == (
+        "compute.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://compute.googleapis.com:8000"
+    )
 
 
 def test_common_billing_account_path():

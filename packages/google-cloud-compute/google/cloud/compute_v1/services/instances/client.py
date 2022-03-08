@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -455,7 +455,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, zone, instance, network_interface, access_config_resource]
@@ -564,7 +564,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, zone, instance, instances_add_resource_policies_request_resource]
@@ -643,7 +643,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project])
         if request is not None and has_flattened_params:
@@ -750,7 +750,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance, attached_disk_resource])
         if request is not None and has_flattened_params:
@@ -848,7 +848,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, zone, bulk_insert_instance_resource_resource]
@@ -950,7 +950,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance])
         if request is not None and has_flattened_params:
@@ -1060,7 +1060,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, zone, instance, access_config, network_interface]
@@ -1171,7 +1171,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance, device_name])
         if request is not None and has_flattened_params:
@@ -1260,7 +1260,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance])
         if request is not None and has_flattened_params:
@@ -1351,7 +1351,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance, network_interface])
         if request is not None and has_flattened_params:
@@ -1435,7 +1435,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 A guest attributes entry.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance])
         if request is not None and has_flattened_params:
@@ -1518,17 +1518,18 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 An Identity and Access Management (IAM) policy, which
                 specifies access controls for Google Cloud resources. A
                 Policy is a collection of bindings. A binding binds one
-                or more members to a single role. Members can be user
-                accounts, service accounts, Google groups, and domains
-                (such as G Suite). A role is a named list of
-                permissions; each role can be an IAM predefined role or
-                a user-created custom role. For some types of Google
-                Cloud resources, a binding can also specify a condition,
-                which is a logical expression that allows access to a
-                resource only if the expression evaluates to true. A
-                condition can add constraints based on attributes of the
-                request, the resource, or both. To learn which resources
-                support conditions in their IAM policies, see the [IAM
+                or more members, or principals, to a single role.
+                Principals can be user accounts, service accounts,
+                Google groups, and domains (such as G Suite). A role is
+                a named list of permissions; each role can be an IAM
+                predefined role or a user-created custom role. For some
+                types of Google Cloud resources, a binding can also
+                specify a condition, which is a logical expression that
+                allows access to a resource only if the expression
+                evaluates to true. A condition can add constraints based
+                on attributes of the request, the resource, or both. To
+                learn which resources support conditions in their IAM
+                policies, see the [IAM
                 documentation](\ https://cloud.google.com/iam/help/conditions/resource-policies).
                 **JSON example:** { "bindings": [ { "role":
                 "roles/resourcemanager.organizationAdmin", "members": [
@@ -1557,7 +1558,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, resource])
         if request is not None and has_flattened_params:
@@ -1639,7 +1640,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 An instance's screenshot.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance])
         if request is not None and has_flattened_params:
@@ -1722,7 +1723,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 An instance serial console output.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance])
         if request is not None and has_flattened_params:
@@ -1804,7 +1805,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 A Shielded Instance Identity.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance])
         if request is not None and has_flattened_params:
@@ -1902,7 +1903,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance_resource])
         if request is not None and has_flattened_params:
@@ -1980,7 +1981,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone])
         if request is not None and has_flattened_params:
@@ -2078,7 +2079,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance])
         if request is not None and has_flattened_params:
@@ -2185,7 +2186,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [
@@ -2294,7 +2295,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance])
         if request is not None and has_flattened_params:
@@ -2321,6 +2322,104 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.reset]
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    def resume_unary(
+        self,
+        request: Union[compute.ResumeInstanceRequest, dict] = None,
+        *,
+        project: str = None,
+        zone: str = None,
+        instance: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> compute.Operation:
+        r"""Resumes an instance that was suspended using the
+        instances().suspend method.
+
+        Args:
+            request (Union[google.cloud.compute_v1.types.ResumeInstanceRequest, dict]):
+                The request object. A request message for
+                Instances.Resume. See the method description for
+                details.
+            project (str):
+                Project ID for this request.
+                This corresponds to the ``project`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            zone (str):
+                The name of the zone for this
+                request.
+
+                This corresponds to the ``zone`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            instance (str):
+                Name of the instance resource to
+                resume.
+
+                This corresponds to the ``instance`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.compute_v1.types.Operation:
+                Represents an Operation resource. Google Compute Engine
+                has three Operation resources: \*
+                [Global](/compute/docs/reference/rest/v1/globalOperations)
+                \*
+                [Regional](/compute/docs/reference/rest/v1/regionOperations)
+                \*
+                [Zonal](/compute/docs/reference/rest/v1/zoneOperations)
+                You can use an operation resource to manage asynchronous
+                API requests. For more information, read Handling API
+                responses. Operations can be global, regional or zonal.
+                - For global operations, use the globalOperations
+                resource. - For regional operations, use the
+                regionOperations resource. - For zonal operations, use
+                the zonalOperations resource. For more information, read
+                Global, Regional, and Zonal Resources.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([project, zone, instance])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a compute.ResumeInstanceRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, compute.ResumeInstanceRequest):
+            request = compute.ResumeInstanceRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if project is not None:
+                request.project = project
+            if zone is not None:
+                request.zone = zone
+            if instance is not None:
+                request.instance = instance
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.resume]
 
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
@@ -2379,7 +2478,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance])
         if request is not None and has_flattened_params:
@@ -2478,7 +2577,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, resource])
         if request is not None and has_flattened_params:
@@ -2592,7 +2691,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance, auto_delete, device_name])
         if request is not None and has_flattened_params:
@@ -2685,17 +2784,18 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 An Identity and Access Management (IAM) policy, which
                 specifies access controls for Google Cloud resources. A
                 Policy is a collection of bindings. A binding binds one
-                or more members to a single role. Members can be user
-                accounts, service accounts, Google groups, and domains
-                (such as G Suite). A role is a named list of
-                permissions; each role can be an IAM predefined role or
-                a user-created custom role. For some types of Google
-                Cloud resources, a binding can also specify a condition,
-                which is a logical expression that allows access to a
-                resource only if the expression evaluates to true. A
-                condition can add constraints based on attributes of the
-                request, the resource, or both. To learn which resources
-                support conditions in their IAM policies, see the [IAM
+                or more members, or principals, to a single role.
+                Principals can be user accounts, service accounts,
+                Google groups, and domains (such as G Suite). A role is
+                a named list of permissions; each role can be an IAM
+                predefined role or a user-created custom role. For some
+                types of Google Cloud resources, a binding can also
+                specify a condition, which is a logical expression that
+                allows access to a resource only if the expression
+                evaluates to true. A condition can add constraints based
+                on attributes of the request, the resource, or both. To
+                learn which resources support conditions in their IAM
+                policies, see the [IAM
                 documentation](\ https://cloud.google.com/iam/help/conditions/resource-policies).
                 **JSON example:** { "bindings": [ { "role":
                 "roles/resourcemanager.organizationAdmin", "members": [
@@ -2724,7 +2824,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, zone, resource, zone_set_policy_request_resource]
@@ -2834,7 +2934,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, zone, instance, instances_set_labels_request_resource]
@@ -2944,7 +3044,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, zone, instance, instances_set_machine_resources_request_resource]
@@ -3054,7 +3154,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, zone, instance, instances_set_machine_type_request_resource]
@@ -3164,7 +3264,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance, metadata_resource])
         if request is not None and has_flattened_params:
@@ -3272,7 +3372,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, zone, instance, instances_set_min_cpu_platform_request_resource]
@@ -3327,7 +3427,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         r"""Sets an instance's scheduling options. You can only call this
         method on a stopped instance, that is, a VM instance that is in
         a ``TERMINATED`` state. See Instance Life Cycle for more
-        information on the possible instance states.
+        information on the possible instance states. For more
+        information about setting scheduling options for a VM, see Set
+        VM availability policies.
 
         Args:
             request (Union[google.cloud.compute_v1.types.SetSchedulingInstanceRequest, dict]):
@@ -3382,7 +3484,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance, scheduling_resource])
         if request is not None and has_flattened_params:
@@ -3489,7 +3591,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, zone, instance, instances_set_service_account_request_resource]
@@ -3603,7 +3705,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, zone, instance, shielded_instance_integrity_policy_resource]
@@ -3717,7 +3819,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance, tags_resource])
         if request is not None and has_flattened_params:
@@ -3764,7 +3866,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
-        r"""Simulates a maintenance event on the instance.
+        r"""Simulates a host maintenance event on a VM. For more
+        information, see Simulate a host maintenance event.
 
         Args:
             request (Union[google.cloud.compute_v1.types.SimulateMaintenanceEventInstanceRequest, dict]):
@@ -3816,7 +3919,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance])
         if request is not None and has_flattened_params:
@@ -3916,7 +4019,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance])
         if request is not None and has_flattened_params:
@@ -4021,7 +4124,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [
@@ -4136,7 +4239,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance])
         if request is not None and has_flattened_params:
@@ -4163,6 +4266,111 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.stop]
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    def suspend_unary(
+        self,
+        request: Union[compute.SuspendInstanceRequest, dict] = None,
+        *,
+        project: str = None,
+        zone: str = None,
+        instance: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> compute.Operation:
+        r"""This method suspends a running instance, saving its
+        state to persistent storage, and allows you to resume
+        the instance at a later time. Suspended instances have
+        no compute costs (cores or RAM), and incur only storage
+        charges for the saved VM memory and localSSD data. Any
+        charged resources the virtual machine was using, such as
+        persistent disks and static IP addresses, will continue
+        to be charged while the instance is suspended. For more
+        information, see Suspending and resuming an instance.
+
+        Args:
+            request (Union[google.cloud.compute_v1.types.SuspendInstanceRequest, dict]):
+                The request object. A request message for
+                Instances.Suspend. See the method description for
+                details.
+            project (str):
+                Project ID for this request.
+                This corresponds to the ``project`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            zone (str):
+                The name of the zone for this
+                request.
+
+                This corresponds to the ``zone`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            instance (str):
+                Name of the instance resource to
+                suspend.
+
+                This corresponds to the ``instance`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.compute_v1.types.Operation:
+                Represents an Operation resource. Google Compute Engine
+                has three Operation resources: \*
+                [Global](/compute/docs/reference/rest/v1/globalOperations)
+                \*
+                [Regional](/compute/docs/reference/rest/v1/regionOperations)
+                \*
+                [Zonal](/compute/docs/reference/rest/v1/zoneOperations)
+                You can use an operation resource to manage asynchronous
+                API requests. For more information, read Handling API
+                responses. Operations can be global, regional or zonal.
+                - For global operations, use the globalOperations
+                resource. - For regional operations, use the
+                regionOperations resource. - For zonal operations, use
+                the zonalOperations resource. For more information, read
+                Global, Regional, and Zonal Resources.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([project, zone, instance])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a compute.SuspendInstanceRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, compute.SuspendInstanceRequest):
+            request = compute.SuspendInstanceRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if project is not None:
+                request.project = project
+            if zone is not None:
+                request.zone = zone
+            if instance is not None:
+                request.instance = instance
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.suspend]
 
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
@@ -4225,7 +4433,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, zone, resource, test_permissions_request_resource]
@@ -4337,7 +4545,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance, instance_resource])
         if request is not None and has_flattened_params:
@@ -4451,7 +4659,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, zone, instance, network_interface, access_config_resource]
@@ -4563,7 +4771,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, instance, display_device_resource])
         if request is not None and has_flattened_params:
@@ -4680,7 +4888,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, zone, instance, network_interface, network_interface_resource]
@@ -4794,7 +5002,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, zone, instance, shielded_instance_config_resource]

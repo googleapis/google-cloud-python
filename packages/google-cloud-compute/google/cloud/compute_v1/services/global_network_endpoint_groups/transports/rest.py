@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,11 +22,14 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 from google.api_core import rest_helpers
+from google.api_core import rest_streaming
 from google.api_core import path_template
 from google.api_core import gapic_v1
+
 from requests import __version__ as requests_version
 import dataclasses
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
+import re
+from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 try:
@@ -50,10 +53,254 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
 )
 
 
+class GlobalNetworkEndpointGroupsRestInterceptor:
+    """Interceptor for GlobalNetworkEndpointGroups.
+
+    Interceptors are used to manipulate requests, request metadata, and responses
+    in arbitrary ways.
+    Example use cases include:
+    * Logging
+    * Verifying requests according to service or custom semantics
+    * Stripping extraneous information from responses
+
+    These use cases and more can be enabled by injecting an
+    instance of a custom subclass when constructing the GlobalNetworkEndpointGroupsRestTransport.
+
+    .. code-block:: python
+        class MyCustomGlobalNetworkEndpointGroupsInterceptor(GlobalNetworkEndpointGroupsRestInterceptor):
+            def pre_attach_network_endpoints(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_attach_network_endpoints(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_delete(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_detach_network_endpoints(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_detach_network_endpoints(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_get(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_insert(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_insert(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_list(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_list_network_endpoints(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_network_endpoints(response):
+                logging.log(f"Received response: {response}")
+
+        transport = GlobalNetworkEndpointGroupsRestTransport(interceptor=MyCustomGlobalNetworkEndpointGroupsInterceptor())
+        client = GlobalNetworkEndpointGroupsClient(transport=transport)
+
+
+    """
+
+    def pre_attach_network_endpoints(
+        self,
+        request: compute.AttachNetworkEndpointsGlobalNetworkEndpointGroupRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        compute.AttachNetworkEndpointsGlobalNetworkEndpointGroupRequest,
+        Sequence[Tuple[str, str]],
+    ]:
+        """Pre-rpc interceptor for attach_network_endpoints
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the GlobalNetworkEndpointGroups server.
+        """
+        return request, metadata
+
+    def post_attach_network_endpoints(
+        self, response: compute.Operation
+    ) -> compute.Operation:
+        """Post-rpc interceptor for attach_network_endpoints
+
+        Override in a subclass to manipulate the response
+        after it is returned by the GlobalNetworkEndpointGroups server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_delete(
+        self,
+        request: compute.DeleteGlobalNetworkEndpointGroupRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        compute.DeleteGlobalNetworkEndpointGroupRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for delete
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the GlobalNetworkEndpointGroups server.
+        """
+        return request, metadata
+
+    def post_delete(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for delete
+
+        Override in a subclass to manipulate the response
+        after it is returned by the GlobalNetworkEndpointGroups server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_detach_network_endpoints(
+        self,
+        request: compute.DetachNetworkEndpointsGlobalNetworkEndpointGroupRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        compute.DetachNetworkEndpointsGlobalNetworkEndpointGroupRequest,
+        Sequence[Tuple[str, str]],
+    ]:
+        """Pre-rpc interceptor for detach_network_endpoints
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the GlobalNetworkEndpointGroups server.
+        """
+        return request, metadata
+
+    def post_detach_network_endpoints(
+        self, response: compute.Operation
+    ) -> compute.Operation:
+        """Post-rpc interceptor for detach_network_endpoints
+
+        Override in a subclass to manipulate the response
+        after it is returned by the GlobalNetworkEndpointGroups server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get(
+        self,
+        request: compute.GetGlobalNetworkEndpointGroupRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.GetGlobalNetworkEndpointGroupRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the GlobalNetworkEndpointGroups server.
+        """
+        return request, metadata
+
+    def post_get(
+        self, response: compute.NetworkEndpointGroup
+    ) -> compute.NetworkEndpointGroup:
+        """Post-rpc interceptor for get
+
+        Override in a subclass to manipulate the response
+        after it is returned by the GlobalNetworkEndpointGroups server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_insert(
+        self,
+        request: compute.InsertGlobalNetworkEndpointGroupRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        compute.InsertGlobalNetworkEndpointGroupRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for insert
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the GlobalNetworkEndpointGroups server.
+        """
+        return request, metadata
+
+    def post_insert(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for insert
+
+        Override in a subclass to manipulate the response
+        after it is returned by the GlobalNetworkEndpointGroups server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list(
+        self,
+        request: compute.ListGlobalNetworkEndpointGroupsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        compute.ListGlobalNetworkEndpointGroupsRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for list
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the GlobalNetworkEndpointGroups server.
+        """
+        return request, metadata
+
+    def post_list(
+        self, response: compute.NetworkEndpointGroupList
+    ) -> compute.NetworkEndpointGroupList:
+        """Post-rpc interceptor for list
+
+        Override in a subclass to manipulate the response
+        after it is returned by the GlobalNetworkEndpointGroups server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_network_endpoints(
+        self,
+        request: compute.ListNetworkEndpointsGlobalNetworkEndpointGroupsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        compute.ListNetworkEndpointsGlobalNetworkEndpointGroupsRequest,
+        Sequence[Tuple[str, str]],
+    ]:
+        """Pre-rpc interceptor for list_network_endpoints
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the GlobalNetworkEndpointGroups server.
+        """
+        return request, metadata
+
+    def post_list_network_endpoints(
+        self, response: compute.NetworkEndpointGroupsListNetworkEndpoints
+    ) -> compute.NetworkEndpointGroupsListNetworkEndpoints:
+        """Post-rpc interceptor for list_network_endpoints
+
+        Override in a subclass to manipulate the response
+        after it is returned by the GlobalNetworkEndpointGroups server but before
+        it is returned to user code.
+        """
+        return response
+
+
 @dataclasses.dataclass
 class GlobalNetworkEndpointGroupsRestStub:
     _session: AuthorizedSession
     _host: str
+    _interceptor: GlobalNetworkEndpointGroupsRestInterceptor
 
 
 class GlobalNetworkEndpointGroupsRestTransport(GlobalNetworkEndpointGroupsTransport):
@@ -82,6 +329,7 @@ class GlobalNetworkEndpointGroupsRestTransport(GlobalNetworkEndpointGroupsTransp
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
         url_scheme: str = "https",
+        interceptor: Optional[GlobalNetworkEndpointGroupsRestInterceptor] = None,
     ) -> None:
         """Instantiate the transport.
 
@@ -119,6 +367,16 @@ class GlobalNetworkEndpointGroupsRestTransport(GlobalNetworkEndpointGroupsTransp
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
+        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
+        if maybe_url_match is None:
+            raise ValueError(
+                f"Unexpected hostname structure: {host}"
+            )  # pragma: NO COVER
+
+        url_match_items = maybe_url_match.groupdict()
+
+        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
+
         super().__init__(
             host=host,
             credentials=credentials,
@@ -130,13 +388,14 @@ class GlobalNetworkEndpointGroupsRestTransport(GlobalNetworkEndpointGroupsTransp
         )
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
+        self._interceptor = interceptor or GlobalNetworkEndpointGroupsRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
     class _AttachNetworkEndpoints(GlobalNetworkEndpointGroupsRestStub):
         def __hash__(self):
             return hash("AttachNetworkEndpoints")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -188,14 +447,16 @@ class GlobalNetworkEndpointGroupsRestTransport(GlobalNetworkEndpointGroupsTransp
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/projects/{project}/global/networkEndpointGroups/{network_endpoint_group}/attachNetworkEndpoints",
                     "body": "global_network_endpoint_groups_attach_endpoints_request_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_attach_network_endpoints(
+                request, metadata
+            )
             request_kwargs = compute.AttachNetworkEndpointsGlobalNetworkEndpointGroupRequest.to_dict(
                 request
             )
@@ -229,8 +490,7 @@ class GlobalNetworkEndpointGroupsRestTransport(GlobalNetworkEndpointGroupsTransp
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -241,16 +501,19 @@ class GlobalNetworkEndpointGroupsRestTransport(GlobalNetworkEndpointGroupsTransp
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_attach_network_endpoints(resp)
+            return resp
 
     class _Delete(GlobalNetworkEndpointGroupsRestStub):
         def __hash__(self):
             return hash("Delete")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -302,13 +565,13 @@ class GlobalNetworkEndpointGroupsRestTransport(GlobalNetworkEndpointGroupsTransp
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "delete",
                     "uri": "/compute/v1/projects/{project}/global/networkEndpointGroups/{network_endpoint_group}",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_delete(request, metadata)
             request_kwargs = compute.DeleteGlobalNetworkEndpointGroupRequest.to_dict(
                 request
             )
@@ -334,8 +597,7 @@ class GlobalNetworkEndpointGroupsRestTransport(GlobalNetworkEndpointGroupsTransp
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -345,16 +607,19 @@ class GlobalNetworkEndpointGroupsRestTransport(GlobalNetworkEndpointGroupsTransp
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_delete(resp)
+            return resp
 
     class _DetachNetworkEndpoints(GlobalNetworkEndpointGroupsRestStub):
         def __hash__(self):
             return hash("DetachNetworkEndpoints")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -406,14 +671,16 @@ class GlobalNetworkEndpointGroupsRestTransport(GlobalNetworkEndpointGroupsTransp
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/projects/{project}/global/networkEndpointGroups/{network_endpoint_group}/detachNetworkEndpoints",
                     "body": "global_network_endpoint_groups_detach_endpoints_request_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_detach_network_endpoints(
+                request, metadata
+            )
             request_kwargs = compute.DetachNetworkEndpointsGlobalNetworkEndpointGroupRequest.to_dict(
                 request
             )
@@ -447,8 +714,7 @@ class GlobalNetworkEndpointGroupsRestTransport(GlobalNetworkEndpointGroupsTransp
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -459,16 +725,19 @@ class GlobalNetworkEndpointGroupsRestTransport(GlobalNetworkEndpointGroupsTransp
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_detach_network_endpoints(resp)
+            return resp
 
     class _Get(GlobalNetworkEndpointGroupsRestStub):
         def __hash__(self):
             return hash("Get")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -516,13 +785,13 @@ class GlobalNetworkEndpointGroupsRestTransport(GlobalNetworkEndpointGroupsTransp
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
                     "uri": "/compute/v1/projects/{project}/global/networkEndpointGroups/{network_endpoint_group}",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_get(request, metadata)
             request_kwargs = compute.GetGlobalNetworkEndpointGroupRequest.to_dict(
                 request
             )
@@ -548,8 +817,7 @@ class GlobalNetworkEndpointGroupsRestTransport(GlobalNetworkEndpointGroupsTransp
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -559,16 +827,19 @@ class GlobalNetworkEndpointGroupsRestTransport(GlobalNetworkEndpointGroupsTransp
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.NetworkEndpointGroup.from_json(
+            resp = compute.NetworkEndpointGroup.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_get(resp)
+            return resp
 
     class _Insert(GlobalNetworkEndpointGroupsRestStub):
         def __hash__(self):
             return hash("Insert")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -620,14 +891,14 @@ class GlobalNetworkEndpointGroupsRestTransport(GlobalNetworkEndpointGroupsTransp
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/projects/{project}/global/networkEndpointGroups",
                     "body": "network_endpoint_group_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_insert(request, metadata)
             request_kwargs = compute.InsertGlobalNetworkEndpointGroupRequest.to_dict(
                 request
             )
@@ -659,8 +930,7 @@ class GlobalNetworkEndpointGroupsRestTransport(GlobalNetworkEndpointGroupsTransp
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -671,16 +941,19 @@ class GlobalNetworkEndpointGroupsRestTransport(GlobalNetworkEndpointGroupsTransp
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_insert(resp)
+            return resp
 
     class _List(GlobalNetworkEndpointGroupsRestStub):
         def __hash__(self):
             return hash("List")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -717,13 +990,13 @@ class GlobalNetworkEndpointGroupsRestTransport(GlobalNetworkEndpointGroupsTransp
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
                     "uri": "/compute/v1/projects/{project}/global/networkEndpointGroups",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_list(request, metadata)
             request_kwargs = compute.ListGlobalNetworkEndpointGroupsRequest.to_dict(
                 request
             )
@@ -749,8 +1022,7 @@ class GlobalNetworkEndpointGroupsRestTransport(GlobalNetworkEndpointGroupsTransp
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -760,16 +1032,19 @@ class GlobalNetworkEndpointGroupsRestTransport(GlobalNetworkEndpointGroupsTransp
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.NetworkEndpointGroupList.from_json(
+            resp = compute.NetworkEndpointGroupList.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_list(resp)
+            return resp
 
     class _ListNetworkEndpoints(GlobalNetworkEndpointGroupsRestStub):
         def __hash__(self):
             return hash("ListNetworkEndpoints")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -806,13 +1081,15 @@ class GlobalNetworkEndpointGroupsRestTransport(GlobalNetworkEndpointGroupsTransp
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/projects/{project}/global/networkEndpointGroups/{network_endpoint_group}/listNetworkEndpoints",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_list_network_endpoints(
+                request, metadata
+            )
             request_kwargs = compute.ListNetworkEndpointsGlobalNetworkEndpointGroupsRequest.to_dict(
                 request
             )
@@ -838,8 +1115,7 @@ class GlobalNetworkEndpointGroupsRestTransport(GlobalNetworkEndpointGroupsTransp
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -849,10 +1125,13 @@ class GlobalNetworkEndpointGroupsRestTransport(GlobalNetworkEndpointGroupsTransp
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.NetworkEndpointGroupsListNetworkEndpoints.from_json(
+            resp = compute.NetworkEndpointGroupsListNetworkEndpoints.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_list_network_endpoints(resp)
+            return resp
 
     @property
     def attach_network_endpoints(
@@ -865,9 +1144,13 @@ class GlobalNetworkEndpointGroupsRestTransport(GlobalNetworkEndpointGroupsTransp
         if not stub:
             stub = self._STUBS[
                 "attach_network_endpoints"
-            ] = self._AttachNetworkEndpoints(self._session, self._host)
+            ] = self._AttachNetworkEndpoints(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def delete(
@@ -875,9 +1158,13 @@ class GlobalNetworkEndpointGroupsRestTransport(GlobalNetworkEndpointGroupsTransp
     ) -> Callable[[compute.DeleteGlobalNetworkEndpointGroupRequest], compute.Operation]:
         stub = self._STUBS.get("delete")
         if not stub:
-            stub = self._STUBS["delete"] = self._Delete(self._session, self._host)
+            stub = self._STUBS["delete"] = self._Delete(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def detach_network_endpoints(
@@ -890,9 +1177,13 @@ class GlobalNetworkEndpointGroupsRestTransport(GlobalNetworkEndpointGroupsTransp
         if not stub:
             stub = self._STUBS[
                 "detach_network_endpoints"
-            ] = self._DetachNetworkEndpoints(self._session, self._host)
+            ] = self._DetachNetworkEndpoints(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def get(
@@ -902,9 +1193,13 @@ class GlobalNetworkEndpointGroupsRestTransport(GlobalNetworkEndpointGroupsTransp
     ]:
         stub = self._STUBS.get("get")
         if not stub:
-            stub = self._STUBS["get"] = self._Get(self._session, self._host)
+            stub = self._STUBS["get"] = self._Get(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def insert(
@@ -912,9 +1207,13 @@ class GlobalNetworkEndpointGroupsRestTransport(GlobalNetworkEndpointGroupsTransp
     ) -> Callable[[compute.InsertGlobalNetworkEndpointGroupRequest], compute.Operation]:
         stub = self._STUBS.get("insert")
         if not stub:
-            stub = self._STUBS["insert"] = self._Insert(self._session, self._host)
+            stub = self._STUBS["insert"] = self._Insert(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def list(
@@ -925,9 +1224,13 @@ class GlobalNetworkEndpointGroupsRestTransport(GlobalNetworkEndpointGroupsTransp
     ]:
         stub = self._STUBS.get("list")
         if not stub:
-            stub = self._STUBS["list"] = self._List(self._session, self._host)
+            stub = self._STUBS["list"] = self._List(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def list_network_endpoints(
@@ -939,10 +1242,12 @@ class GlobalNetworkEndpointGroupsRestTransport(GlobalNetworkEndpointGroupsTransp
         stub = self._STUBS.get("list_network_endpoints")
         if not stub:
             stub = self._STUBS["list_network_endpoints"] = self._ListNetworkEndpoints(
-                self._session, self._host
+                self._session, self._host, self._interceptor
             )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     def close(self):
         self._session.close()

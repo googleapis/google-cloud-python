@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,11 +22,14 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 from google.api_core import rest_helpers
+from google.api_core import rest_streaming
 from google.api_core import path_template
 from google.api_core import gapic_v1
+
 from requests import __version__ as requests_version
 import dataclasses
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
+import re
+from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 try:
@@ -50,10 +53,123 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
 )
 
 
+class AcceleratorTypesRestInterceptor:
+    """Interceptor for AcceleratorTypes.
+
+    Interceptors are used to manipulate requests, request metadata, and responses
+    in arbitrary ways.
+    Example use cases include:
+    * Logging
+    * Verifying requests according to service or custom semantics
+    * Stripping extraneous information from responses
+
+    These use cases and more can be enabled by injecting an
+    instance of a custom subclass when constructing the AcceleratorTypesRestTransport.
+
+    .. code-block:: python
+        class MyCustomAcceleratorTypesInterceptor(AcceleratorTypesRestInterceptor):
+            def pre_aggregated_list(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_aggregated_list(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_get(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_list(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list(response):
+                logging.log(f"Received response: {response}")
+
+        transport = AcceleratorTypesRestTransport(interceptor=MyCustomAcceleratorTypesInterceptor())
+        client = AcceleratorTypesClient(transport=transport)
+
+
+    """
+
+    def pre_aggregated_list(
+        self,
+        request: compute.AggregatedListAcceleratorTypesRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        compute.AggregatedListAcceleratorTypesRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for aggregated_list
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AcceleratorTypes server.
+        """
+        return request, metadata
+
+    def post_aggregated_list(
+        self, response: compute.AcceleratorTypeAggregatedList
+    ) -> compute.AcceleratorTypeAggregatedList:
+        """Post-rpc interceptor for aggregated_list
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AcceleratorTypes server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get(
+        self,
+        request: compute.GetAcceleratorTypeRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.GetAcceleratorTypeRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AcceleratorTypes server.
+        """
+        return request, metadata
+
+    def post_get(self, response: compute.AcceleratorType) -> compute.AcceleratorType:
+        """Post-rpc interceptor for get
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AcceleratorTypes server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list(
+        self,
+        request: compute.ListAcceleratorTypesRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.ListAcceleratorTypesRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AcceleratorTypes server.
+        """
+        return request, metadata
+
+    def post_list(
+        self, response: compute.AcceleratorTypeList
+    ) -> compute.AcceleratorTypeList:
+        """Post-rpc interceptor for list
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AcceleratorTypes server but before
+        it is returned to user code.
+        """
+        return response
+
+
 @dataclasses.dataclass
 class AcceleratorTypesRestStub:
     _session: AuthorizedSession
     _host: str
+    _interceptor: AcceleratorTypesRestInterceptor
 
 
 class AcceleratorTypesRestTransport(AcceleratorTypesTransport):
@@ -83,6 +199,7 @@ class AcceleratorTypesRestTransport(AcceleratorTypesTransport):
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
         url_scheme: str = "https",
+        interceptor: Optional[AcceleratorTypesRestInterceptor] = None,
     ) -> None:
         """Instantiate the transport.
 
@@ -120,6 +237,16 @@ class AcceleratorTypesRestTransport(AcceleratorTypesTransport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
+        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
+        if maybe_url_match is None:
+            raise ValueError(
+                f"Unexpected hostname structure: {host}"
+            )  # pragma: NO COVER
+
+        url_match_items = maybe_url_match.groupdict()
+
+        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
+
         super().__init__(
             host=host,
             credentials=credentials,
@@ -131,13 +258,14 @@ class AcceleratorTypesRestTransport(AcceleratorTypesTransport):
         )
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
+        self._interceptor = interceptor or AcceleratorTypesRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
     class _AggregatedList(AcceleratorTypesRestStub):
         def __hash__(self):
             return hash("AggregatedList")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -174,13 +302,13 @@ class AcceleratorTypesRestTransport(AcceleratorTypesTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
                     "uri": "/compute/v1/projects/{project}/aggregated/acceleratorTypes",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_aggregated_list(request, metadata)
             request_kwargs = compute.AggregatedListAcceleratorTypesRequest.to_dict(
                 request
             )
@@ -206,8 +334,7 @@ class AcceleratorTypesRestTransport(AcceleratorTypesTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -217,16 +344,19 @@ class AcceleratorTypesRestTransport(AcceleratorTypesTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.AcceleratorTypeAggregatedList.from_json(
+            resp = compute.AcceleratorTypeAggregatedList.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_aggregated_list(resp)
+            return resp
 
     class _Get(AcceleratorTypesRestStub):
         def __hash__(self):
             return hash("Get")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -271,13 +401,13 @@ class AcceleratorTypesRestTransport(AcceleratorTypesTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
                     "uri": "/compute/v1/projects/{project}/zones/{zone}/acceleratorTypes/{accelerator_type}",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_get(request, metadata)
             request_kwargs = compute.GetAcceleratorTypeRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -301,8 +431,7 @@ class AcceleratorTypesRestTransport(AcceleratorTypesTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -312,16 +441,19 @@ class AcceleratorTypesRestTransport(AcceleratorTypesTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.AcceleratorType.from_json(
+            resp = compute.AcceleratorType.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_get(resp)
+            return resp
 
     class _List(AcceleratorTypesRestStub):
         def __hash__(self):
             return hash("List")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -358,13 +490,13 @@ class AcceleratorTypesRestTransport(AcceleratorTypesTransport):
                     Contains a list of accelerator types.
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
                     "uri": "/compute/v1/projects/{project}/zones/{zone}/acceleratorTypes",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_list(request, metadata)
             request_kwargs = compute.ListAcceleratorTypesRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -388,8 +520,7 @@ class AcceleratorTypesRestTransport(AcceleratorTypesTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -399,10 +530,13 @@ class AcceleratorTypesRestTransport(AcceleratorTypesTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.AcceleratorTypeList.from_json(
+            resp = compute.AcceleratorTypeList.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_list(resp)
+            return resp
 
     @property
     def aggregated_list(
@@ -414,10 +548,12 @@ class AcceleratorTypesRestTransport(AcceleratorTypesTransport):
         stub = self._STUBS.get("aggregated_list")
         if not stub:
             stub = self._STUBS["aggregated_list"] = self._AggregatedList(
-                self._session, self._host
+                self._session, self._host, self._interceptor
             )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def get(
@@ -425,9 +561,13 @@ class AcceleratorTypesRestTransport(AcceleratorTypesTransport):
     ) -> Callable[[compute.GetAcceleratorTypeRequest], compute.AcceleratorType]:
         stub = self._STUBS.get("get")
         if not stub:
-            stub = self._STUBS["get"] = self._Get(self._session, self._host)
+            stub = self._STUBS["get"] = self._Get(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def list(
@@ -435,9 +575,13 @@ class AcceleratorTypesRestTransport(AcceleratorTypesTransport):
     ) -> Callable[[compute.ListAcceleratorTypesRequest], compute.AcceleratorTypeList]:
         stub = self._STUBS.get("list")
         if not stub:
-            stub = self._STUBS["list"] = self._List(self._session, self._host)
+            stub = self._STUBS["list"] = self._List(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     def close(self):
         self._session.close()

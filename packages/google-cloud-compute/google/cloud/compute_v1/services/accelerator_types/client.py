@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -418,7 +418,7 @@ class AcceleratorTypesClient(metaclass=AcceleratorTypesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project])
         if request is not None and has_flattened_params:
@@ -510,7 +510,7 @@ class AcceleratorTypesClient(metaclass=AcceleratorTypesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone, accelerator_type])
         if request is not None and has_flattened_params:
@@ -589,7 +589,7 @@ class AcceleratorTypesClient(metaclass=AcceleratorTypesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, zone])
         if request is not None and has_flattened_params:

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -130,6 +130,9 @@ class SnapshotsTransport(abc.ABC):
             self.get_iam_policy: gapic_v1.method.wrap_method(
                 self.get_iam_policy, default_timeout=None, client_info=client_info,
             ),
+            self.insert: gapic_v1.method.wrap_method(
+                self.insert, default_timeout=None, client_info=client_info,
+            ),
             self.list: gapic_v1.method.wrap_method(
                 self.list, default_timeout=None, client_info=client_info,
             ),
@@ -179,6 +182,15 @@ class SnapshotsTransport(abc.ABC):
     ) -> Callable[
         [compute.GetIamPolicySnapshotRequest],
         Union[compute.Policy, Awaitable[compute.Policy]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def insert(
+        self,
+    ) -> Callable[
+        [compute.InsertSnapshotRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
     ]:
         raise NotImplementedError()
 

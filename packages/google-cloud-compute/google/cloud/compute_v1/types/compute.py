@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -112,6 +112,7 @@ __protobuf__ = proto.module(
         "BackendBucket",
         "BackendBucketCdnPolicy",
         "BackendBucketCdnPolicyBypassCacheOnRequestHeader",
+        "BackendBucketCdnPolicyCacheKeyPolicy",
         "BackendBucketCdnPolicyNegativeCachingPolicy",
         "BackendBucketList",
         "BackendService",
@@ -119,6 +120,7 @@ __protobuf__ = proto.module(
         "BackendServiceCdnPolicy",
         "BackendServiceCdnPolicyBypassCacheOnRequestHeader",
         "BackendServiceCdnPolicyNegativeCachingPolicy",
+        "BackendServiceConnectionTrackingPolicy",
         "BackendServiceFailoverPolicy",
         "BackendServiceGroupHealth",
         "BackendServiceIAP",
@@ -126,6 +128,9 @@ __protobuf__ = proto.module(
         "BackendServiceLogConfig",
         "BackendServiceReference",
         "BackendServicesScopedList",
+        "BfdPacket",
+        "BfdStatus",
+        "BfdStatusPacketCounts",
         "Binding",
         "BulkInsertInstanceRequest",
         "BulkInsertInstanceResource",
@@ -181,6 +186,7 @@ __protobuf__ = proto.module(
         "DeleteInterconnectAttachmentRequest",
         "DeleteInterconnectRequest",
         "DeleteLicenseRequest",
+        "DeleteMachineImageRequest",
         "DeleteNetworkEndpointGroupRequest",
         "DeleteNetworkRequest",
         "DeleteNodeGroupRequest",
@@ -318,6 +324,7 @@ __protobuf__ = proto.module(
         "GetIamPolicyInstanceRequest",
         "GetIamPolicyInstanceTemplateRequest",
         "GetIamPolicyLicenseRequest",
+        "GetIamPolicyMachineImageRequest",
         "GetIamPolicyNodeGroupRequest",
         "GetIamPolicyNodeTemplateRequest",
         "GetIamPolicyRegionDiskRequest",
@@ -337,6 +344,7 @@ __protobuf__ = proto.module(
         "GetInterconnectRequest",
         "GetLicenseCodeRequest",
         "GetLicenseRequest",
+        "GetMachineImageRequest",
         "GetMachineTypeRequest",
         "GetNatMappingInfoRoutersRequest",
         "GetNetworkEndpointGroupRequest",
@@ -459,6 +467,7 @@ __protobuf__ = proto.module(
         "InsertInterconnectAttachmentRequest",
         "InsertInterconnectRequest",
         "InsertLicenseRequest",
+        "InsertMachineImageRequest",
         "InsertNetworkEndpointGroupRequest",
         "InsertNetworkRequest",
         "InsertNodeGroupRequest",
@@ -485,6 +494,7 @@ __protobuf__ = proto.module(
         "InsertRouterRequest",
         "InsertSecurityPolicyRequest",
         "InsertServiceAttachmentRequest",
+        "InsertSnapshotRequest",
         "InsertSslCertificateRequest",
         "InsertSslPolicyRequest",
         "InsertSubnetworkRequest",
@@ -618,6 +628,7 @@ __protobuf__ = proto.module(
         "ListInterconnectLocationsRequest",
         "ListInterconnectsRequest",
         "ListLicensesRequest",
+        "ListMachineImagesRequest",
         "ListMachineTypesRequest",
         "ListManagedInstancesInstanceGroupManagersRequest",
         "ListManagedInstancesRegionInstanceGroupManagersRequest",
@@ -687,6 +698,8 @@ __protobuf__ = proto.module(
         "LogConfigCounterOptions",
         "LogConfigCounterOptionsCustomField",
         "LogConfigDataAccessOptions",
+        "MachineImage",
+        "MachineImageList",
         "MachineType",
         "MachineTypeAggregatedList",
         "MachineTypeList",
@@ -719,6 +732,7 @@ __protobuf__ = proto.module(
         "NetworkInterface",
         "NetworkList",
         "NetworkPeering",
+        "NetworkPerformanceConfig",
         "NetworkRoutingConfig",
         "NetworksAddPeeringRequest",
         "NetworksGetEffectiveFirewallsResponse",
@@ -753,6 +767,7 @@ __protobuf__ = proto.module(
         "OperationList",
         "OperationsScopedList",
         "OutlierDetection",
+        "PacketIntervals",
         "PacketMirroring",
         "PacketMirroringAggregatedList",
         "PacketMirroringFilter",
@@ -898,6 +913,7 @@ __protobuf__ = proto.module(
         "ResourcePolicySnapshotSchedulePolicySnapshotProperties",
         "ResourcePolicyWeeklyCycle",
         "ResourcePolicyWeeklyCycleDayOfWeek",
+        "ResumeInstanceRequest",
         "Route",
         "RouteAsPath",
         "RouteList",
@@ -923,6 +939,8 @@ __protobuf__ = proto.module(
         "RoutersScopedList",
         "Rule",
         "SSLHealthCheck",
+        "SavedAttachedDisk",
+        "SavedDisk",
         "ScalingScheduleStatus",
         "Scheduling",
         "SchedulingNodeAffinity",
@@ -935,10 +953,16 @@ __protobuf__ = proto.module(
         "SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfig",
         "SecurityPolicyAdvancedOptionsConfig",
         "SecurityPolicyList",
+        "SecurityPolicyRecaptchaOptionsConfig",
         "SecurityPolicyReference",
         "SecurityPolicyRule",
+        "SecurityPolicyRuleHttpHeaderAction",
+        "SecurityPolicyRuleHttpHeaderActionHttpHeaderOption",
         "SecurityPolicyRuleMatcher",
         "SecurityPolicyRuleMatcherConfig",
+        "SecurityPolicyRuleRateLimitOptions",
+        "SecurityPolicyRuleRateLimitOptionsThreshold",
+        "SecurityPolicyRuleRedirectOptions",
         "SecuritySettings",
         "SendDiagnosticInterruptInstanceRequest",
         "SendDiagnosticInterruptInstanceResponse",
@@ -958,12 +982,15 @@ __protobuf__ = proto.module(
         "SetDefaultNetworkTierProjectRequest",
         "SetDeletionProtectionInstanceRequest",
         "SetDiskAutoDeleteInstanceRequest",
+        "SetEdgeSecurityPolicyBackendBucketRequest",
+        "SetEdgeSecurityPolicyBackendServiceRequest",
         "SetIamPolicyDiskRequest",
         "SetIamPolicyFirewallPolicyRequest",
         "SetIamPolicyImageRequest",
         "SetIamPolicyInstanceRequest",
         "SetIamPolicyInstanceTemplateRequest",
         "SetIamPolicyLicenseRequest",
+        "SetIamPolicyMachineImageRequest",
         "SetIamPolicyNodeGroupRequest",
         "SetIamPolicyNodeTemplateRequest",
         "SetIamPolicyRegionDiskRequest",
@@ -1013,6 +1040,8 @@ __protobuf__ = proto.module(
         "SetUrlMapTargetHttpProxyRequest",
         "SetUrlMapTargetHttpsProxyRequest",
         "SetUsageExportBucketProjectRequest",
+        "ShareSettings",
+        "ShareSettingsProjectConfig",
         "ShieldedInstanceConfig",
         "ShieldedInstanceIdentity",
         "ShieldedInstanceIdentityEntry",
@@ -1021,7 +1050,9 @@ __protobuf__ = proto.module(
         "SimulateMaintenanceEventInstanceRequest",
         "Snapshot",
         "SnapshotList",
+        "SourceDiskEncryptionKey",
         "SourceInstanceParams",
+        "SourceInstanceProperties",
         "SslCertificate",
         "SslCertificateAggregatedList",
         "SslCertificateList",
@@ -1047,6 +1078,7 @@ __protobuf__ = proto.module(
         "SubnetworksScopedList",
         "SubnetworksSetPrivateIpGoogleAccessRequest",
         "Subsetting",
+        "SuspendInstanceRequest",
         "SwitchToCustomModeNetworkRequest",
         "TCPHealthCheck",
         "Tags",
@@ -1098,6 +1130,7 @@ __protobuf__ = proto.module(
         "TestIamPermissionsInstanceTemplateRequest",
         "TestIamPermissionsLicenseCodeRequest",
         "TestIamPermissionsLicenseRequest",
+        "TestIamPermissionsMachineImageRequest",
         "TestIamPermissionsNetworkEndpointGroupRequest",
         "TestIamPermissionsNodeGroupRequest",
         "TestIamPermissionsNodeTemplateRequest",
@@ -1126,8 +1159,10 @@ __protobuf__ = proto.module(
         "UpdatePerInstanceConfigsRegionInstanceGroupManagerRequest",
         "UpdateRegionAutoscalerRequest",
         "UpdateRegionBackendServiceRequest",
+        "UpdateRegionCommitmentRequest",
         "UpdateRegionHealthCheckRequest",
         "UpdateRegionUrlMapRequest",
+        "UpdateReservationRequest",
         "UpdateRouterRequest",
         "UpdateShieldedInstanceConfigInstanceRequest",
         "UpdateUrlMapRequest",
@@ -1289,11 +1324,12 @@ class AcceleratorConfig(proto.Message):
         accelerator_type (str):
             Full or partial URL of the accelerator type
             resource to attach to this instance. For
-            example: projects/my-project/zones/us-
-            central1-c/acceleratorTypes/nvidia-tesla-p100 If
-            you are creating an instance template, specify
-            only the accelerator name. See GPUs on Compute
-            Engine for a full list of accelerator types.
+            example:
+            projects/my-project/zones/us-central1-c/acceleratorTypes/nvidia-tesla-p100
+            If you are creating an instance template,
+            specify only the accelerator name. See GPUs on
+            Compute Engine for a full list of accelerator
+            types.
 
             This field is a member of `oneof`_ ``_accelerator_type``.
     """
@@ -1530,15 +1566,16 @@ class AccessConfig(proto.Message):
 
     Attributes:
         external_ipv6 (str):
-            [Output Only] The first IPv6 address of the external IPv6
-            range associated with this instance, prefix length is stored
-            in externalIpv6PrefixLength in ipv6AccessConfig. The field
-            is output only, an IPv6 address from a subnetwork associated
-            with the instance will be allocated dynamically.
+            The first IPv6 address of the external IPv6
+            range associated with this instance, prefix
+            length is stored in externalIpv6PrefixLength in
+            ipv6AccessConfig. The field is output only, an
+            IPv6 address from a subnetwork associated with
+            the instance will be allocated dynamically.
 
             This field is a member of `oneof`_ ``_external_ipv6``.
         external_ipv6_prefix_length (int):
-            [Output Only] The prefix length of the external IPv6 range.
+            The prefix length of the external IPv6 range.
 
             This field is a member of `oneof`_ ``_external_ipv6_prefix_length``.
         kind (str):
@@ -1580,13 +1617,19 @@ class AccessConfig(proto.Message):
             This field is a member of `oneof`_ ``_network_tier``.
         public_ptr_domain_name (str):
             The DNS domain name for the public PTR record. You can set
-            this field only if the ``setPublicPtr`` field is enabled.
+            this field only if the ``setPublicPtr`` field is enabled in
+            accessConfig. If this field is unspecified in
+            ipv6AccessConfig, a default PTR record will be createc for
+            first IP in associated external IPv6 range.
 
             This field is a member of `oneof`_ ``_public_ptr_domain_name``.
         set_public_ptr (bool):
             Specifies whether a public DNS 'PTR' record
             should be created to map the external IP address
-            of the instance to a DNS domain name.
+            of the instance to a DNS domain name. This field
+            is not used in ipv6AccessConfig. A default PTR
+            record will be created if the VM has external
+            IPv6 range associated.
 
             This field is a member of `oneof`_ ``_set_public_ptr``.
         type_ (str):
@@ -1607,8 +1650,10 @@ class AccessConfig(proto.Message):
         associated with the Address resource owning that IP.
         """
         UNDEFINED_NETWORK_TIER = 0
+        FIXED_STANDARD = 310464328
         PREMIUM = 399530551
         STANDARD = 484642493
+        STANDARD_OVERRIDES_FIXED_STANDARD = 465847234
 
     class Type(proto.Enum):
         r"""The type of configuration. The default and only option is
@@ -2296,17 +2341,18 @@ class Address(proto.Message):
             network) - VPC_PEERING for global internal IP addresses used
             for private services access allocated ranges. - NAT_AUTO for
             the regional external IP addresses used by Cloud NAT when
-            allocating addresses using . - IPSEC_INTERCONNECT for
-            addresses created from a private IP range that are reserved
-            for a VLAN attachment in an *IPsec-encrypted Cloud
-            Interconnect* configuration. These addresses are regional
-            resources. Not currently available publicly. -
-            ``SHARED_LOADBALANCER_VIP`` for an internal IP address that
-            is assigned to multiple internal forwarding rules. -
-            ``PRIVATE_SERVICE_CONNECT`` for a private network address
-            that is used to configure Private Service Connect. Only
-            global internal addresses can use this purpose. Check the
-            Purpose enum for the list of possible values.
+            allocating addresses using automatic NAT IP address
+            allocation. - IPSEC_INTERCONNECT for addresses created from
+            a private IP range that are reserved for a VLAN attachment
+            in an *IPsec-encrypted Cloud Interconnect* configuration.
+            These addresses are regional resources. Not currently
+            available publicly. - ``SHARED_LOADBALANCER_VIP`` for an
+            internal IP address that is assigned to multiple internal
+            forwarding rules. - ``PRIVATE_SERVICE_CONNECT`` for a
+            private network address that is used to configure Private
+            Service Connect. Only global internal addresses can use this
+            purpose. Check the Purpose enum for the list of possible
+            values.
 
             This field is a member of `oneof`_ ``_purpose``.
         region (str):
@@ -2370,8 +2416,10 @@ class Address(proto.Message):
         field is not specified, it is assumed to be PREMIUM.
         """
         UNDEFINED_NETWORK_TIER = 0
+        FIXED_STANDARD = 310464328
         PREMIUM = 399530551
         STANDARD = 484642493
+        STANDARD_OVERRIDES_FIXED_STANDARD = 465847234
 
     class Purpose(proto.Enum):
         r"""The purpose of this resource, which can be one of the following
@@ -2382,15 +2430,15 @@ class Address(proto.Message):
         a subnet of a VPC network) - VPC_PEERING for global internal IP
         addresses used for private services access allocated ranges. -
         NAT_AUTO for the regional external IP addresses used by Cloud NAT
-        when allocating addresses using . - IPSEC_INTERCONNECT for addresses
-        created from a private IP range that are reserved for a VLAN
-        attachment in an *IPsec-encrypted Cloud Interconnect* configuration.
-        These addresses are regional resources. Not currently available
-        publicly. - ``SHARED_LOADBALANCER_VIP`` for an internal IP address
-        that is assigned to multiple internal forwarding rules. -
-        ``PRIVATE_SERVICE_CONNECT`` for a private network address that is
-        used to configure Private Service Connect. Only global internal
-        addresses can use this purpose.
+        when allocating addresses using automatic NAT IP address allocation.
+        - IPSEC_INTERCONNECT for addresses created from a private IP range
+        that are reserved for a VLAN attachment in an *IPsec-encrypted Cloud
+        Interconnect* configuration. These addresses are regional resources.
+        Not currently available publicly. - ``SHARED_LOADBALANCER_VIP`` for
+        an internal IP address that is assigned to multiple internal
+        forwarding rules. - ``PRIVATE_SERVICE_CONNECT`` for a private
+        network address that is used to configure Private Service Connect.
+        Only global internal addresses can use this purpose.
         """
         UNDEFINED_PURPOSE = 0
         DNS_RESOLVER = 476114556
@@ -2569,6 +2617,11 @@ class AdvancedMachineFeatures(proto.Message):
             not (default is false).
 
             This field is a member of `oneof`_ ``_enable_nested_virtualization``.
+        enable_uefi_networking (bool):
+            Whether to enable UEFI networking for
+            instance creation.
+
+            This field is a member of `oneof`_ ``_enable_uefi_networking``.
         threads_per_core (int):
             The number of threads per physical core. To
             disable simultaneous multithreading (SMT) set
@@ -2582,6 +2635,7 @@ class AdvancedMachineFeatures(proto.Message):
     enable_nested_virtualization = proto.Field(
         proto.BOOL, number=16639365, optional=True,
     )
+    enable_uefi_networking = proto.Field(proto.BOOL, number=334485668, optional=True,)
     threads_per_core = proto.Field(proto.INT32, number=352611671, optional=True,)
 
 
@@ -2592,14 +2646,19 @@ class AggregatedListAcceleratorTypesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -2680,14 +2739,19 @@ class AggregatedListAddressesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -2768,14 +2832,19 @@ class AggregatedListAutoscalersRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -2856,14 +2925,19 @@ class AggregatedListBackendServicesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -2944,14 +3018,19 @@ class AggregatedListDiskTypesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -3032,14 +3111,19 @@ class AggregatedListDisksRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -3120,14 +3204,19 @@ class AggregatedListForwardingRulesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -3208,14 +3297,19 @@ class AggregatedListGlobalOperationsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -3296,14 +3390,19 @@ class AggregatedListHealthChecksRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -3384,14 +3483,19 @@ class AggregatedListInstanceGroupManagersRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -3472,14 +3576,19 @@ class AggregatedListInstanceGroupsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -3560,14 +3669,19 @@ class AggregatedListInstancesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -3648,14 +3762,19 @@ class AggregatedListInterconnectAttachmentsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -3736,14 +3855,19 @@ class AggregatedListMachineTypesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -3824,14 +3948,19 @@ class AggregatedListNetworkEndpointGroupsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -3912,14 +4041,19 @@ class AggregatedListNodeGroupsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -4000,14 +4134,19 @@ class AggregatedListNodeTemplatesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -4088,14 +4227,19 @@ class AggregatedListNodeTypesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -4176,14 +4320,19 @@ class AggregatedListPacketMirroringsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -4264,14 +4413,19 @@ class AggregatedListPublicDelegatedPrefixesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -4352,14 +4506,19 @@ class AggregatedListRegionCommitmentsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -4440,14 +4599,19 @@ class AggregatedListReservationsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -4528,14 +4692,19 @@ class AggregatedListResourcePoliciesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -4616,14 +4785,19 @@ class AggregatedListRoutersRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -4704,14 +4878,19 @@ class AggregatedListServiceAttachmentsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -4792,14 +4971,19 @@ class AggregatedListSslCertificatesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -4880,14 +5064,19 @@ class AggregatedListSubnetworksRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -4968,14 +5157,19 @@ class AggregatedListTargetHttpProxiesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -5056,14 +5250,19 @@ class AggregatedListTargetHttpsProxiesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -5144,14 +5343,19 @@ class AggregatedListTargetInstancesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -5232,14 +5436,19 @@ class AggregatedListTargetPoolsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -5320,14 +5529,19 @@ class AggregatedListTargetVpnGatewaysRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -5408,14 +5622,19 @@ class AggregatedListUrlMapsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -5496,14 +5715,19 @@ class AggregatedListVpnGatewaysRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -5584,14 +5808,19 @@ class AggregatedListVpnTunnelsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -6032,9 +6261,10 @@ class AttachedDisk(proto.Message):
 
     Attributes:
         auto_delete (bool):
-            Specifies whether the disk will be auto-
-            eleted when the instance is deleted (but not
-            when the disk is detached from the instance).
+            Specifies whether the disk will be
+            auto-deleted when the instance is deleted (but
+            not when the disk is detached from the
+            instance).
 
             This field is a member of `oneof`_ ``_auto_delete``.
         boot (bool):
@@ -6056,19 +6286,19 @@ class AttachedDisk(proto.Message):
 
             This field is a member of `oneof`_ ``_device_name``.
         disk_encryption_key (google.cloud.compute_v1.types.CustomerEncryptionKey):
-            Encrypts or decrypts a disk using a customer-
-            upplied encryption key. If you are creating a
-            new disk, this field encrypts the new disk using
-            an encryption key that you provide. If you are
-            attaching an existing disk that is already
-            encrypted, this field decrypts the disk using
-            the customer-supplied encryption key. If you
-            encrypt a disk using a customer-supplied key,
-            you must provide the same key again when you
-            attempt to use this resource at a later time.
-            For example, you must provide the key when you
-            create a snapshot or an image from the disk or
-            when you attach the disk to a virtual machine
+            Encrypts or decrypts a disk using a
+            customer-supplied encryption key. If you are
+            creating a new disk, this field encrypts the new
+            disk using an encryption key that you provide.
+            If you are attaching an existing disk that is
+            already encrypted, this field decrypts the disk
+            using the customer-supplied encryption key. If
+            you encrypt a disk using a customer-supplied
+            key, you must provide the same key again when
+            you attempt to use this resource at a later
+            time. For example, you must provide the key when
+            you create a snapshot or an image from the disk
+            or when you attach the disk to a virtual machine
             instance. If you do not provide an encryption
             key, then the disk will be encrypted using an
             automatically generated key and you do not need
@@ -6142,8 +6372,8 @@ class AttachedDisk(proto.Message):
             you can also attach existing non-root persistent
             disks using this property. This field is only
             applicable for persistent disks. Note that for
-            InstanceTemplate, specify the disk name, not the
-            URL for the disk.
+            InstanceTemplate, specify the disk name for
+            zonal disk, and the URL for regional disk.
 
             This field is a member of `oneof`_ ``_source``.
         type_ (str):
@@ -6245,8 +6475,8 @@ class AttachedDiskInitializeParams(proto.Message):
             This field is a member of `oneof`_ ``_disk_size_gb``.
         disk_type (str):
             Specifies the disk type to use to create the
-            instance. If not specified, the default is pd-
-            standard, specified using the full URL. For
+            instance. If not specified, the default is
+            pd-standard, specified using the full URL. For
             example:
             https://www.googleapis.com/compute/v1/projects/project/zones/zone
             /diskTypes/pd-standard For a full list of
@@ -6267,6 +6497,9 @@ class AttachedDiskInitializeParams(proto.Message):
             later modified by the disks.setLabels method.
             This field is only applicable for persistent
             disks.
+        licenses (Sequence[str]):
+            A list of publicly visible licenses. Reserved
+            for Google's use.
         on_update_action (str):
             Specifies which action to take on instance
             update with this disk. Default is to use the
@@ -6296,31 +6529,32 @@ class AttachedDiskInitializeParams(proto.Message):
             disk with one of the public operating system
             images, specify the image by its family name.
             For example, specify family/debian-9 to use the
-            latest Debian 9 image: projects/debian-
-            cloud/global/images/family/debian-9
+            latest Debian 9 image:
+            projects/debian-cloud/global/images/family/debian-9
             Alternatively, use a specific version of a
-            public operating system image: projects/debian-
-            cloud/global/images/debian-9-stretch-vYYYYMMDD
+            public operating system image:
+            projects/debian-cloud/global/images/debian-9-stretch-vYYYYMMDD
             To create a disk with a custom image that you
             created, specify the image name in the following
             format: global/images/my-custom-image You can
             also specify a custom image by its image family,
             which returns the latest version of the image in
             that family. Replace the image name with
-            family/family-name: global/images/family/my-
-            image-family If the source image is deleted
-            later, this field will not be set.
+            family/family-name:
+            global/images/family/my-image-family If the
+            source image is deleted later, this field will
+            not be set.
 
             This field is a member of `oneof`_ ``_source_image``.
         source_image_encryption_key (google.cloud.compute_v1.types.CustomerEncryptionKey):
             The customer-supplied encryption key of the
             source image. Required if the source image is
             protected by a customer-supplied encryption key.
-            Instance templates do not store customer-
-            supplied encryption keys, so you cannot create
-            disks for instances in a managed instance group
-            if the source images are encrypted with your own
-            keys.
+            Instance templates do not store
+            customer-supplied encryption keys, so you cannot
+            create disks for instances in a managed instance
+            group if the source images are encrypted with
+            your own keys.
 
             This field is a member of `oneof`_ ``_source_image_encryption_key``.
         source_snapshot (str):
@@ -6357,6 +6591,7 @@ class AttachedDiskInitializeParams(proto.Message):
     disk_size_gb = proto.Field(proto.INT64, number=316263735, optional=True,)
     disk_type = proto.Field(proto.STRING, number=93009052, optional=True,)
     labels = proto.MapField(proto.STRING, proto.STRING, number=500195327,)
+    licenses = proto.RepeatedField(proto.STRING, number=337642578,)
     on_update_action = proto.Field(proto.STRING, number=202451980, optional=True,)
     provisioned_iops = proto.Field(proto.INT64, number=186769108, optional=True,)
     resource_policies = proto.RepeatedField(proto.STRING, number=22220385,)
@@ -7217,7 +7452,8 @@ class AutoscalingPolicyScalingSchedule(proto.Message):
             The time zone to use when interpreting the schedule. The
             value of this field must be a time zone name from the tz
             database: http://en.wikipedia.org/wiki/Tz_database. This
-            field is assigned a default value of “UTC” if left empty.
+            field is assigned a default value of ���UTC��� if left
+            empty.
 
             This field is a member of `oneof`_ ``_time_zone``.
     """
@@ -7408,6 +7644,11 @@ class BackendBucket(proto.Message):
             resource is created.
 
             This field is a member of `oneof`_ ``_description``.
+        edge_security_policy (str):
+            [Output Only] The resource URL for the edge security policy
+            associated with this backend bucket.
+
+            This field is a member of `oneof`_ ``_edge_security_policy``.
         enable_cdn (bool):
             If true, enable Cloud CDN for this
             BackendBucket.
@@ -7449,6 +7690,7 @@ class BackendBucket(proto.Message):
     creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
     custom_response_headers = proto.RepeatedField(proto.STRING, number=387539094,)
     description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    edge_security_policy = proto.Field(proto.STRING, number=41036943, optional=True,)
     enable_cdn = proto.Field(proto.BOOL, number=282942321, optional=True,)
     id = proto.Field(proto.UINT64, number=3355, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
@@ -7467,6 +7709,10 @@ class BackendBucketCdnPolicy(proto.Message):
             Authorization headers. Up to 5 headers can be
             specified. The cache is bypassed for all
             cdnPolicy.cacheMode settings.
+        cache_key_policy (google.cloud.compute_v1.types.BackendBucketCdnPolicyCacheKeyPolicy):
+            The CacheKeyPolicy for this CdnPolicy.
+
+            This field is a member of `oneof`_ ``_cache_key_policy``.
         cache_mode (str):
             Specifies the cache setting for all responses from this
             backend. The possible values are: USE_ORIGIN_HEADERS
@@ -7499,7 +7745,7 @@ class BackendBucketCdnPolicy(proto.Message):
             and default_ttl, and also ensures a "public" cache-control
             directive is present. If a client TTL is not specified, a
             default value (1 hour) will be used. The maximum allowed
-            value is 86400s (1 day).
+            value is 31,622,400s (1 year).
 
             This field is a member of `oneof`_ ``_client_ttl``.
         default_ttl (int):
@@ -7626,6 +7872,12 @@ class BackendBucketCdnPolicy(proto.Message):
         number=486203082,
         message="BackendBucketCdnPolicyBypassCacheOnRequestHeader",
     )
+    cache_key_policy = proto.Field(
+        proto.MESSAGE,
+        number=159263727,
+        optional=True,
+        message="BackendBucketCdnPolicyCacheKeyPolicy",
+    )
     cache_mode = proto.Field(proto.STRING, number=28877888, optional=True,)
     client_ttl = proto.Field(proto.INT32, number=29034360, optional=True,)
     default_ttl = proto.Field(proto.INT32, number=100253422, optional=True,)
@@ -7658,6 +7910,25 @@ class BackendBucketCdnPolicyBypassCacheOnRequestHeader(proto.Message):
     """
 
     header_name = proto.Field(proto.STRING, number=110223613, optional=True,)
+
+
+class BackendBucketCdnPolicyCacheKeyPolicy(proto.Message):
+    r"""Message containing what to include in the cache key for a
+    request for Cloud CDN.
+
+    Attributes:
+        include_http_headers (Sequence[str]):
+            Allows HTTP request headers (by name) to be
+            used in the cache key.
+        query_string_whitelist (Sequence[str]):
+            Names of query string parameters to include
+            in cache keys. All other parameters will be
+            excluded. '&' and '=' will be percent encoded
+            and not treated as delimiters.
+    """
+
+    include_http_headers = proto.RepeatedField(proto.STRING, number=2489606,)
+    query_string_whitelist = proto.RepeatedField(proto.STRING, number=52456496,)
 
 
 class BackendBucketCdnPolicyNegativeCachingPolicy(proto.Message):
@@ -7779,6 +8050,13 @@ class BackendService(proto.Message):
         connection_draining (google.cloud.compute_v1.types.ConnectionDraining):
 
             This field is a member of `oneof`_ ``_connection_draining``.
+        connection_tracking_policy (google.cloud.compute_v1.types.BackendServiceConnectionTrackingPolicy):
+            Connection Tracking configuration for this
+            BackendService. Connection tracking policy
+            settings are only available for Network Load
+            Balancing and Internal TCP/UDP Load Balancing.
+
+            This field is a member of `oneof`_ ``_connection_tracking_policy``.
         consistent_hash (google.cloud.compute_v1.types.ConsistentHashLoadBalancerSettings):
             Consistent Hash-based load balancing can be used to provide
             soft session affinity based on HTTP headers, cookies or
@@ -7792,10 +8070,7 @@ class BackendService(proto.Message):
             regional backend service with the service_protocol set to
             HTTP, HTTPS, or HTTP2, and load_balancing_scheme set to
             INTERNAL_MANAGED. - A global backend service with the
-            load_balancing_scheme set to INTERNAL_SELF_MANAGED. Not
-            supported when the backend service is referenced by a URL
-            map that is bound to target gRPC proxy that has
-            validateForProxyless field set to true.
+            load_balancing_scheme set to INTERNAL_SELF_MANAGED.
 
             This field is a member of `oneof`_ ``_consistent_hash``.
         creation_timestamp (str):
@@ -7816,6 +8091,11 @@ class BackendService(proto.Message):
             resource.
 
             This field is a member of `oneof`_ ``_description``.
+        edge_security_policy (str):
+            [Output Only] The resource URL for the edge security policy
+            associated with this backend service.
+
+            This field is a member of `oneof`_ ``_edge_security_policy``.
         enable_c_d_n (bool):
             If true, enables Cloud CDN for the backend
             service of an external HTTP(S) load balancer.
@@ -7827,19 +8107,20 @@ class BackendService(proto.Message):
             configurable failover: `Internal TCP/UDP Load
             Balancing <https://cloud.google.com/load-balancing/docs/internal/failover-overview>`__
             and `external TCP/UDP Load
-            Balancing </network/networklb-failover-overview>`__.
+            Balancing <https://cloud.google.com/load-balancing/docs/network/networklb-failover-overview>`__.
 
             This field is a member of `oneof`_ ``_failover_policy``.
         fingerprint (str):
             Fingerprint of this resource. A hash of the
             contents stored in this object. This field is
             used in optimistic locking. This field will be
-            ignored when inserting a BackendService. An up-
-            to-date fingerprint must be provided in order to
-            update the BackendService, otherwise the request
-            will fail with error 412 conditionNotMet. To see
-            the latest fingerprint, make a get() request to
-            retrieve a BackendService.
+            ignored when inserting a BackendService. An
+            up-to-date fingerprint must be provided in order
+            to update the BackendService, otherwise the
+            request will fail with error 412
+            conditionNotMet. To see the latest fingerprint,
+            make a get() request to retrieve a
+            BackendService.
 
             This field is a member of `oneof`_ ``_fingerprint``.
         health_checks (Sequence[str]):
@@ -7907,8 +8188,8 @@ class BackendService(proto.Message):
             backend service with the load_balancing_scheme set to
             INTERNAL_SELF_MANAGED. If sessionAffinity is not NONE, and
             this field is not set to MAGLEV or RING_HASH, session
-            affinity settings will not take effect. Only the default
-            ROUND_ROBIN policy is supported when the backend service is
+            affinity settings will not take effect. Only ROUND_ROBIN and
+            RING_HASH are supported when the backend service is
             referenced by a URL map that is bound to target gRPC proxy
             that has validateForProxyless field set to true. Check the
             LocalityLbPolicy enum for the list of possible values.
@@ -8010,12 +8291,10 @@ class BackendService(proto.Message):
 
             This field is a member of `oneof`_ ``_security_policy``.
         security_settings (google.cloud.compute_v1.types.SecuritySettings):
-            This field specifies the security policy that applies to
-            this backend service. This field is applicable to either: -
-            A regional backend service with the service_protocol set to
-            HTTP, HTTPS, or HTTP2, and load_balancing_scheme set to
-            INTERNAL_MANAGED. - A global backend service with the
-            load_balancing_scheme set to INTERNAL_SELF_MANAGED.
+            This field specifies the security settings that apply to
+            this backend service. This field is applicable to a global
+            backend service with the load_balancing_scheme set to
+            INTERNAL_SELF_MANAGED.
 
             This field is a member of `oneof`_ ``_security_settings``.
         self_link (str):
@@ -8023,14 +8302,14 @@ class BackendService(proto.Message):
 
             This field is a member of `oneof`_ ``_self_link``.
         session_affinity (str):
-            Type of session affinity to use. The default is NONE. For a
-            detailed description of session affinity options, see:
-            `Session
-            affinity <https://cloud.google.com/load-balancing/docs/backend-service#session_affinity>`__.
-            Not supported when the backend service is referenced by a
-            URL map that is bound to target gRPC proxy that has
-            validateForProxyless field set to true. Check the
-            SessionAffinity enum for the list of possible values.
+            Type of session affinity to use. The default is NONE. Only
+            NONE and HEADER_FIELD are supported when the backend service
+            is referenced by a URL map that is bound to target gRPC
+            proxy that has validateForProxyless field set to true. For
+            more details, see: `Session
+            Affinity <https://cloud.google.com/load-balancing/docs/backend-service#session_affinity>`__.
+            Check the SessionAffinity enum for the list of possible
+            values.
 
             This field is a member of `oneof`_ ``_session_affinity``.
         subsetting (google.cloud.compute_v1.types.Subsetting):
@@ -8052,6 +8331,7 @@ class BackendService(proto.Message):
         """
         UNDEFINED_LOAD_BALANCING_SCHEME = 0
         EXTERNAL = 35607499
+        EXTERNAL_MANAGED = 512006923
         INTERNAL = 279295677
         INTERNAL_MANAGED = 37350397
         INTERNAL_SELF_MANAGED = 236211150
@@ -8081,8 +8361,8 @@ class BackendService(proto.Message):
         INTERNAL_MANAGED. - A global backend service with the
         load_balancing_scheme set to INTERNAL_SELF_MANAGED. If
         sessionAffinity is not NONE, and this field is not set to MAGLEV or
-        RING_HASH, session affinity settings will not take effect. Only the
-        default ROUND_ROBIN policy is supported when the backend service is
+        RING_HASH, session affinity settings will not take effect. Only
+        ROUND_ROBIN and RING_HASH are supported when the backend service is
         referenced by a URL map that is bound to target gRPC proxy that has
         validateForProxyless field set to true.
         """
@@ -8112,14 +8392,15 @@ class BackendService(proto.Message):
         SSL = 82412
         TCP = 82881
         UDP = 83873
+        UNSPECIFIED = 526786327
 
     class SessionAffinity(proto.Enum):
-        r"""Type of session affinity to use. The default is NONE. For a detailed
-        description of session affinity options, see: `Session
-        affinity <https://cloud.google.com/load-balancing/docs/backend-service#session_affinity>`__.
-        Not supported when the backend service is referenced by a URL map
-        that is bound to target gRPC proxy that has validateForProxyless
-        field set to true.
+        r"""Type of session affinity to use. The default is NONE. Only NONE and
+        HEADER_FIELD are supported when the backend service is referenced by
+        a URL map that is bound to target gRPC proxy that has
+        validateForProxyless field set to true. For more details, see:
+        `Session
+        Affinity <https://cloud.google.com/load-balancing/docs/backend-service#session_affinity>`__.
         """
         UNDEFINED_SESSION_AFFINITY = 0
         CLIENT_IP = 345665051
@@ -8145,6 +8426,12 @@ class BackendService(proto.Message):
     connection_draining = proto.Field(
         proto.MESSAGE, number=461096747, optional=True, message="ConnectionDraining",
     )
+    connection_tracking_policy = proto.Field(
+        proto.MESSAGE,
+        number=143994969,
+        optional=True,
+        message="BackendServiceConnectionTrackingPolicy",
+    )
     consistent_hash = proto.Field(
         proto.MESSAGE,
         number=905883,
@@ -8155,6 +8442,7 @@ class BackendService(proto.Message):
     custom_request_headers = proto.RepeatedField(proto.STRING, number=27977992,)
     custom_response_headers = proto.RepeatedField(proto.STRING, number=387539094,)
     description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    edge_security_policy = proto.Field(proto.STRING, number=41036943, optional=True,)
     enable_c_d_n = proto.Field(proto.BOOL, number=250733499, optional=True,)
     failover_policy = proto.Field(
         proto.MESSAGE,
@@ -8305,7 +8593,7 @@ class BackendServiceCdnPolicy(proto.Message):
             and default_ttl, and also ensures a "public" cache-control
             directive is present. If a client TTL is not specified, a
             default value (1 hour) will be used. The maximum allowed
-            value is 86400s (1 day).
+            value is 31,622,400s (1 year).
 
             This field is a member of `oneof`_ ``_client_ttl``.
         default_ttl (int):
@@ -8495,19 +8783,126 @@ class BackendServiceCdnPolicyNegativeCachingPolicy(proto.Message):
     ttl = proto.Field(proto.INT32, number=115180, optional=True,)
 
 
+class BackendServiceConnectionTrackingPolicy(proto.Message):
+    r"""Connection Tracking configuration for this BackendService.
+
+    Attributes:
+        connection_persistence_on_unhealthy_backends (str):
+            Specifies connection persistence when backends are
+            unhealthy. The default value is DEFAULT_FOR_PROTOCOL. If set
+            to DEFAULT_FOR_PROTOCOL, the existing connections persist on
+            unhealthy backends only for connection-oriented protocols
+            (TCP and SCTP) and only if the Tracking Mode is
+            PER_CONNECTION (default tracking mode) or the Session
+            Affinity is configured for 5-tuple. They do not persist for
+            UDP. If set to NEVER_PERSIST, after a backend becomes
+            unhealthy, the existing connections on the unhealthy backend
+            are never persisted on the unhealthy backend. They are
+            always diverted to newly selected healthy backends (unless
+            all backends are unhealthy). If set to ALWAYS_PERSIST,
+            existing connections always persist on unhealthy backends
+            regardless of protocol and session affinity. It is generally
+            not recommended to use this mode overriding the default. For
+            more details, see `Connection Persistence for Network Load
+            Balancing <https://cloud.google.com/load-balancing/docs/network/networklb-backend-service#connection-persistence>`__
+            and `Connection Persistence for Internal TCP/UDP Load
+            Balancing <https://cloud.google.com/load-balancing/docs/internal#connection-persistence>`__.
+            Check the ConnectionPersistenceOnUnhealthyBackends enum for
+            the list of possible values.
+
+            This field is a member of `oneof`_ ``_connection_persistence_on_unhealthy_backends``.
+        idle_timeout_sec (int):
+            Specifies how long to keep a Connection Tracking entry while
+            there is no matching traffic (in seconds). For Internal
+            TCP/UDP Load Balancing: - The minimum (default) is 10
+            minutes and the maximum is 16 hours. - It can be set only if
+            Connection Tracking is less than 5-tuple (i.e. Session
+            Affinity is CLIENT_IP_NO_DESTINATION, CLIENT_IP or
+            CLIENT_IP_PROTO, and Tracking Mode is PER_SESSION). For
+            Network Load Balancer the default is 60 seconds. This option
+            is not available publicly.
+
+            This field is a member of `oneof`_ ``_idle_timeout_sec``.
+        tracking_mode (str):
+            Specifies the key used for connection tracking. There are
+            two options: - PER_CONNECTION: This is the default mode. The
+            Connection Tracking is performed as per the Connection Key
+            (default Hash Method) for the specific protocol. -
+            PER_SESSION: The Connection Tracking is performed as per the
+            configured Session Affinity. It matches the configured
+            Session Affinity. For more details, see `Tracking Mode for
+            Network Load
+            Balancing <https://cloud.google.com/load-balancing/docs/network/networklb-backend-service#tracking-mode>`__
+            and `Tracking Mode for Internal TCP/UDP Load
+            Balancing <https://cloud.google.com/load-balancing/docs/internal#tracking-mode>`__.
+            Check the TrackingMode enum for the list of possible values.
+
+            This field is a member of `oneof`_ ``_tracking_mode``.
+    """
+
+    class ConnectionPersistenceOnUnhealthyBackends(proto.Enum):
+        r"""Specifies connection persistence when backends are unhealthy. The
+        default value is DEFAULT_FOR_PROTOCOL. If set to
+        DEFAULT_FOR_PROTOCOL, the existing connections persist on unhealthy
+        backends only for connection-oriented protocols (TCP and SCTP) and
+        only if the Tracking Mode is PER_CONNECTION (default tracking mode)
+        or the Session Affinity is configured for 5-tuple. They do not
+        persist for UDP. If set to NEVER_PERSIST, after a backend becomes
+        unhealthy, the existing connections on the unhealthy backend are
+        never persisted on the unhealthy backend. They are always diverted
+        to newly selected healthy backends (unless all backends are
+        unhealthy). If set to ALWAYS_PERSIST, existing connections always
+        persist on unhealthy backends regardless of protocol and session
+        affinity. It is generally not recommended to use this mode
+        overriding the default. For more details, see `Connection
+        Persistence for Network Load
+        Balancing <https://cloud.google.com/load-balancing/docs/network/networklb-backend-service#connection-persistence>`__
+        and `Connection Persistence for Internal TCP/UDP Load
+        Balancing <https://cloud.google.com/load-balancing/docs/internal#connection-persistence>`__.
+        """
+        UNDEFINED_CONNECTION_PERSISTENCE_ON_UNHEALTHY_BACKENDS = 0
+        ALWAYS_PERSIST = 38400900
+        DEFAULT_FOR_PROTOCOL = 145265356
+        NEVER_PERSIST = 138646241
+
+    class TrackingMode(proto.Enum):
+        r"""Specifies the key used for connection tracking. There are two
+        options: - PER_CONNECTION: This is the default mode. The Connection
+        Tracking is performed as per the Connection Key (default Hash
+        Method) for the specific protocol. - PER_SESSION: The Connection
+        Tracking is performed as per the configured Session Affinity. It
+        matches the configured Session Affinity. For more details, see
+        `Tracking Mode for Network Load
+        Balancing <https://cloud.google.com/load-balancing/docs/network/networklb-backend-service#tracking-mode>`__
+        and `Tracking Mode for Internal TCP/UDP Load
+        Balancing <https://cloud.google.com/load-balancing/docs/internal#tracking-mode>`__.
+        """
+        UNDEFINED_TRACKING_MODE = 0
+        INVALID_TRACKING_MODE = 49234371
+        PER_CONNECTION = 85162848
+        PER_SESSION = 182099252
+
+    connection_persistence_on_unhealthy_backends = proto.Field(
+        proto.STRING, number=152439033, optional=True,
+    )
+    idle_timeout_sec = proto.Field(proto.INT32, number=24977544, optional=True,)
+    tracking_mode = proto.Field(proto.STRING, number=127757867, optional=True,)
+
+
 class BackendServiceFailoverPolicy(proto.Message):
     r"""For load balancers that have configurable failover: `Internal
     TCP/UDP Load
     Balancing <https://cloud.google.com/load-balancing/docs/internal/failover-overview>`__
     and `external TCP/UDP Load
-    Balancing </network/networklb-failover-overview>`__. On failover or
-    failback, this field indicates whether connection draining will be
-    honored. Google Cloud has a fixed connection draining timeout of 10
-    minutes. A setting of true terminates existing TCP connections to
-    the active pool during failover and failback, immediately draining
-    traffic. A setting of false allows existing TCP connections to
-    persist, even on VMs no longer in the active pool, for up to the
-    duration of the connection draining timeout (10 minutes).
+    Balancing <https://cloud.google.com/load-balancing/docs/network/networklb-failover-overview>`__.
+    On failover or failback, this field indicates whether connection
+    draining will be honored. Google Cloud has a fixed connection
+    draining timeout of 10 minutes. A setting of true terminates
+    existing TCP connections to the active pool during failover and
+    failback, immediately draining traffic. A setting of false allows
+    existing TCP connections to persist, even on VMs no longer in the
+    active pool, for up to the duration of the connection draining
+    timeout (10 minutes).
 
     Attributes:
         disable_connection_drain_on_failover (bool):
@@ -8524,8 +8919,8 @@ class BackendServiceFailoverPolicy(proto.Message):
             failover: `Internal TCP/UDP Load
             Balancing <https://cloud.google.com/load-balancing/docs/internal/failover-overview>`__
             and `external TCP/UDP Load
-            Balancing </network/networklb-failover-overview>`__. The
-            default is false.
+            Balancing <https://cloud.google.com/load-balancing/docs/network/networklb-failover-overview>`__.
+            The default is false.
 
             This field is a member of `oneof`_ ``_drop_traffic_if_unhealthy``.
         failover_ratio (float):
@@ -8538,7 +8933,7 @@ class BackendServiceFailoverPolicy(proto.Message):
             TCP/UDP Load
             Balancing <https://cloud.google.com/load-balancing/docs/internal/failover-overview>`__
             and `external TCP/UDP Load
-            Balancing </network/networklb-failover-overview>`__.
+            Balancing <https://cloud.google.com/load-balancing/docs/network/networklb-failover-overview>`__.
 
             This field is a member of `oneof`_ ``_failover_ratio``.
     """
@@ -8729,8 +9124,327 @@ class BackendServicesScopedList(proto.Message):
     )
 
 
+class BfdPacket(proto.Message):
+    r"""
+
+    Attributes:
+        authentication_present (bool):
+            The Authentication Present bit of the BFD
+            packet. This is specified in section 4.1 of
+            RFC5880
+
+            This field is a member of `oneof`_ ``_authentication_present``.
+        control_plane_independent (bool):
+            The Control Plane Independent bit of the BFD
+            packet. This is specified in section 4.1 of
+            RFC5880
+
+            This field is a member of `oneof`_ ``_control_plane_independent``.
+        demand (bool):
+            The demand bit of the BFD packet. This is
+            specified in section 4.1 of RFC5880
+
+            This field is a member of `oneof`_ ``_demand``.
+        diagnostic (str):
+            The diagnostic code specifies the local
+            system's reason for the last change in session
+            state. This allows remote systems to determine
+            the reason that the previous session failed, for
+            example. These diagnostic codes are specified in
+            section 4.1 of RFC5880 Check the Diagnostic enum
+            for the list of possible values.
+
+            This field is a member of `oneof`_ ``_diagnostic``.
+        final (bool):
+            The Final bit of the BFD packet. This is
+            specified in section 4.1 of RFC5880
+
+            This field is a member of `oneof`_ ``_final``.
+        length (int):
+            The length of the BFD Control packet in
+            bytes. This is specified in section 4.1 of
+            RFC5880
+
+            This field is a member of `oneof`_ ``_length``.
+        min_echo_rx_interval_ms (int):
+            The Required Min Echo RX Interval value in
+            the BFD packet. This is specified in section 4.1
+            of RFC5880
+
+            This field is a member of `oneof`_ ``_min_echo_rx_interval_ms``.
+        min_rx_interval_ms (int):
+            The Required Min RX Interval value in the BFD
+            packet. This is specified in section 4.1 of
+            RFC5880
+
+            This field is a member of `oneof`_ ``_min_rx_interval_ms``.
+        min_tx_interval_ms (int):
+            The Desired Min TX Interval value in the BFD
+            packet. This is specified in section 4.1 of
+            RFC5880
+
+            This field is a member of `oneof`_ ``_min_tx_interval_ms``.
+        multiplier (int):
+            The detection time multiplier of the BFD
+            packet. This is specified in section 4.1 of
+            RFC5880
+
+            This field is a member of `oneof`_ ``_multiplier``.
+        multipoint (bool):
+            The multipoint bit of the BFD packet. This is
+            specified in section 4.1 of RFC5880
+
+            This field is a member of `oneof`_ ``_multipoint``.
+        my_discriminator (int):
+            The My Discriminator value in the BFD packet.
+            This is specified in section 4.1 of RFC5880
+
+            This field is a member of `oneof`_ ``_my_discriminator``.
+        poll (bool):
+            The Poll bit of the BFD packet. This is
+            specified in section 4.1 of RFC5880
+
+            This field is a member of `oneof`_ ``_poll``.
+        state (str):
+            The current BFD session state as seen by the
+            transmitting system. These states are specified
+            in section 4.1 of RFC5880 Check the State enum
+            for the list of possible values.
+
+            This field is a member of `oneof`_ ``_state``.
+        version (int):
+            The version number of the BFD protocol, as
+            specified in section 4.1 of RFC5880.
+
+            This field is a member of `oneof`_ ``_version``.
+        your_discriminator (int):
+            The Your Discriminator value in the BFD
+            packet. This is specified in section 4.1 of
+            RFC5880
+
+            This field is a member of `oneof`_ ``_your_discriminator``.
+    """
+
+    class Diagnostic(proto.Enum):
+        r"""The diagnostic code specifies the local system's reason for
+        the last change in session state. This allows remote systems to
+        determine the reason that the previous session failed, for
+        example. These diagnostic codes are specified in section 4.1 of
+        RFC5880
+        """
+        UNDEFINED_DIAGNOSTIC = 0
+        ADMINISTRATIVELY_DOWN = 121685798
+        CONCATENATED_PATH_DOWN = 26186892
+        CONTROL_DETECTION_TIME_EXPIRED = 135478383
+        DIAGNOSTIC_UNSPECIFIED = 58720895
+        ECHO_FUNCTION_FAILED = 220687466
+        FORWARDING_PLANE_RESET = 19715882
+        NEIGHBOR_SIGNALED_SESSION_DOWN = 374226742
+        NO_DIAGNOSTIC = 222503141
+        PATH_DOWN = 290605180
+        REVERSE_CONCATENATED_PATH_DOWN = 479337129
+
+    class State(proto.Enum):
+        r"""The current BFD session state as seen by the transmitting
+        system. These states are specified in section 4.1 of RFC5880
+        """
+        UNDEFINED_STATE = 0
+        ADMIN_DOWN = 128544690
+        DOWN = 2104482
+        INIT = 2252048
+        STATE_UNSPECIFIED = 470755401
+        UP = 2715
+
+    authentication_present = proto.Field(proto.BOOL, number=105974260, optional=True,)
+    control_plane_independent = proto.Field(proto.BOOL, number=62363573, optional=True,)
+    demand = proto.Field(proto.BOOL, number=275180107, optional=True,)
+    diagnostic = proto.Field(proto.STRING, number=62708647, optional=True,)
+    final = proto.Field(proto.BOOL, number=97436022, optional=True,)
+    length = proto.Field(proto.UINT32, number=504249062, optional=True,)
+    min_echo_rx_interval_ms = proto.Field(proto.UINT32, number=97286868, optional=True,)
+    min_rx_interval_ms = proto.Field(proto.UINT32, number=463399028, optional=True,)
+    min_tx_interval_ms = proto.Field(proto.UINT32, number=526023602, optional=True,)
+    multiplier = proto.Field(proto.UINT32, number=191331777, optional=True,)
+    multipoint = proto.Field(proto.BOOL, number=191421431, optional=True,)
+    my_discriminator = proto.Field(proto.UINT32, number=76663113, optional=True,)
+    poll = proto.Field(proto.BOOL, number=3446719, optional=True,)
+    state = proto.Field(proto.STRING, number=109757585, optional=True,)
+    version = proto.Field(proto.UINT32, number=351608024, optional=True,)
+    your_discriminator = proto.Field(proto.UINT32, number=515634064, optional=True,)
+
+
+class BfdStatus(proto.Message):
+    r"""Next free: 15
+
+    Attributes:
+        bfd_session_initialization_mode (str):
+            The BFD session initialization mode for this
+            BGP peer. If set to ACTIVE, the Cloud Router
+            will initiate the BFD session for this BGP peer.
+            If set to PASSIVE, the Cloud Router will wait
+            for the peer router to initiate the BFD session
+            for this BGP peer. If set to DISABLED, BFD is
+            disabled for this BGP peer. Check the
+            BfdSessionInitializationMode enum for the list
+            of possible values.
+
+            This field is a member of `oneof`_ ``_bfd_session_initialization_mode``.
+        config_update_timestamp_micros (int):
+            Unix timestamp of the most recent config
+            update.
+
+            This field is a member of `oneof`_ ``_config_update_timestamp_micros``.
+        control_packet_counts (google.cloud.compute_v1.types.BfdStatusPacketCounts):
+            Control packet counts for the current BFD
+            session.
+
+            This field is a member of `oneof`_ ``_control_packet_counts``.
+        control_packet_intervals (Sequence[google.cloud.compute_v1.types.PacketIntervals]):
+            Inter-packet time interval statistics for
+            control packets.
+        local_diagnostic (str):
+            The diagnostic code specifies the local
+            system's reason for the last change in session
+            state. This allows remote systems to determine
+            the reason that the previous session failed, for
+            example. These diagnostic codes are specified in
+            section 4.1 of RFC5880 Check the LocalDiagnostic
+            enum for the list of possible values.
+
+            This field is a member of `oneof`_ ``_local_diagnostic``.
+        local_state (str):
+            The current BFD session state as seen by the
+            transmitting system. These states are specified
+            in section 4.1 of RFC5880 Check the LocalState
+            enum for the list of possible values.
+
+            This field is a member of `oneof`_ ``_local_state``.
+        negotiated_local_control_tx_interval_ms (int):
+            Negotiated transmit interval for control
+            packets.
+
+            This field is a member of `oneof`_ ``_negotiated_local_control_tx_interval_ms``.
+        rx_packet (google.cloud.compute_v1.types.BfdPacket):
+            The most recent Rx control packet for this
+            BFD session.
+
+            This field is a member of `oneof`_ ``_rx_packet``.
+        tx_packet (google.cloud.compute_v1.types.BfdPacket):
+            The most recent Tx control packet for this
+            BFD session.
+
+            This field is a member of `oneof`_ ``_tx_packet``.
+        uptime_ms (int):
+            Session uptime in milliseconds. Value will be
+            0 if session is not up.
+
+            This field is a member of `oneof`_ ``_uptime_ms``.
+    """
+
+    class BfdSessionInitializationMode(proto.Enum):
+        r"""The BFD session initialization mode for this BGP peer. If set
+        to ACTIVE, the Cloud Router will initiate the BFD session for
+        this BGP peer. If set to PASSIVE, the Cloud Router will wait for
+        the peer router to initiate the BFD session for this BGP peer.
+        If set to DISABLED, BFD is disabled for this BGP peer.
+        """
+        UNDEFINED_BFD_SESSION_INITIALIZATION_MODE = 0
+        ACTIVE = 314733318
+        DISABLED = 516696700
+        PASSIVE = 462813959
+
+    class LocalDiagnostic(proto.Enum):
+        r"""The diagnostic code specifies the local system's reason for
+        the last change in session state. This allows remote systems to
+        determine the reason that the previous session failed, for
+        example. These diagnostic codes are specified in section 4.1 of
+        RFC5880
+        """
+        UNDEFINED_LOCAL_DIAGNOSTIC = 0
+        ADMINISTRATIVELY_DOWN = 121685798
+        CONCATENATED_PATH_DOWN = 26186892
+        CONTROL_DETECTION_TIME_EXPIRED = 135478383
+        DIAGNOSTIC_UNSPECIFIED = 58720895
+        ECHO_FUNCTION_FAILED = 220687466
+        FORWARDING_PLANE_RESET = 19715882
+        NEIGHBOR_SIGNALED_SESSION_DOWN = 374226742
+        NO_DIAGNOSTIC = 222503141
+        PATH_DOWN = 290605180
+        REVERSE_CONCATENATED_PATH_DOWN = 479337129
+
+    class LocalState(proto.Enum):
+        r"""The current BFD session state as seen by the transmitting
+        system. These states are specified in section 4.1 of RFC5880
+        """
+        UNDEFINED_LOCAL_STATE = 0
+        ADMIN_DOWN = 128544690
+        DOWN = 2104482
+        INIT = 2252048
+        STATE_UNSPECIFIED = 470755401
+        UP = 2715
+
+    bfd_session_initialization_mode = proto.Field(
+        proto.STRING, number=218156954, optional=True,
+    )
+    config_update_timestamp_micros = proto.Field(
+        proto.INT64, number=457195569, optional=True,
+    )
+    control_packet_counts = proto.Field(
+        proto.MESSAGE, number=132573561, optional=True, message="BfdStatusPacketCounts",
+    )
+    control_packet_intervals = proto.RepeatedField(
+        proto.MESSAGE, number=500806649, message="PacketIntervals",
+    )
+    local_diagnostic = proto.Field(proto.STRING, number=463737083, optional=True,)
+    local_state = proto.Field(proto.STRING, number=149195453, optional=True,)
+    negotiated_local_control_tx_interval_ms = proto.Field(
+        proto.UINT32, number=21768340, optional=True,
+    )
+    rx_packet = proto.Field(
+        proto.MESSAGE, number=505069729, optional=True, message="BfdPacket",
+    )
+    tx_packet = proto.Field(
+        proto.MESSAGE, number=111386275, optional=True, message="BfdPacket",
+    )
+    uptime_ms = proto.Field(proto.INT64, number=125398365, optional=True,)
+
+
+class BfdStatusPacketCounts(proto.Message):
+    r"""
+
+    Attributes:
+        num_rx (int):
+            Number of packets received since the
+            beginning of the current BFD session.
+
+            This field is a member of `oneof`_ ``_num_rx``.
+        num_rx_rejected (int):
+            Number of packets received that were rejected
+            because of errors since the beginning of the
+            current BFD session.
+
+            This field is a member of `oneof`_ ``_num_rx_rejected``.
+        num_rx_successful (int):
+            Number of packets received that were
+            successfully processed since the beginning of
+            the current BFD session.
+
+            This field is a member of `oneof`_ ``_num_rx_successful``.
+        num_tx (int):
+            Number of packets transmitted since the
+            beginning of the current BFD session.
+
+            This field is a member of `oneof`_ ``_num_tx``.
+    """
+
+    num_rx = proto.Field(proto.UINT32, number=39375263, optional=True,)
+    num_rx_rejected = proto.Field(proto.UINT32, number=281007902, optional=True,)
+    num_rx_successful = proto.Field(proto.UINT32, number=455361850, optional=True,)
+    num_tx = proto.Field(proto.UINT32, number=39375325, optional=True,)
+
+
 class Binding(proto.Message):
-    r"""Associates ``members`` with a ``role``.
+    r"""Associates ``members``, or principals, with a ``role``.
 
     Attributes:
         binding_id (str):
@@ -8744,14 +9458,14 @@ class Binding(proto.Message):
             to the current request. If the condition evaluates to
             ``false``, then this binding does not apply to the current
             request. However, a different role binding might grant the
-            same role to one or more of the members in this binding. To
-            learn which resources support conditions in their IAM
+            same role to one or more of the principals in this binding.
+            To learn which resources support conditions in their IAM
             policies, see the `IAM
             documentation <https://cloud.google.com/iam/help/conditions/resource-policies>`__.
 
             This field is a member of `oneof`_ ``_condition``.
         members (Sequence[str]):
-            Specifies the identities requesting access for a Cloud
+            Specifies the principals requesting access for a Cloud
             Platform resource. ``members`` can have the following
             values: \* ``allUsers``: A special identifier that
             represents anyone who is on the internet; with or without a
@@ -8788,8 +9502,9 @@ class Binding(proto.Message):
             (primary) that represents all the users of that domain. For
             example, ``google.com`` or ``example.com``.
         role (str):
-            Role that is assigned to ``members``. For example,
-            ``roles/viewer``, ``roles/editor``, or ``roles/owner``.
+            Role that is assigned to the list of ``members``, or
+            principals. For example, ``roles/viewer``, ``roles/editor``,
+            or ``roles/owner``.
 
             This field is a member of `oneof`_ ``_role``.
     """
@@ -9011,6 +9726,13 @@ class CacheKeyPolicy(proto.Message):
             cached separately.
 
             This field is a member of `oneof`_ ``_include_host``.
+        include_http_headers (Sequence[str]):
+            Allows HTTP request headers (by name) to be
+            used in the cache key.
+        include_named_cookies (Sequence[str]):
+            Allows HTTP cookies (by name) to be used in
+            the cache key. The name=value pair will be used
+            in the cache key Cloud CDN generates.
         include_protocol (bool):
             If true, http and https requests will be
             cached separately.
@@ -9039,6 +9761,8 @@ class CacheKeyPolicy(proto.Message):
     """
 
     include_host = proto.Field(proto.BOOL, number=486867679, optional=True,)
+    include_http_headers = proto.RepeatedField(proto.STRING, number=2489606,)
+    include_named_cookies = proto.RepeatedField(proto.STRING, number=87316530,)
     include_protocol = proto.Field(proto.BOOL, number=303507535, optional=True,)
     include_query_string = proto.Field(proto.BOOL, number=474036639, optional=True,)
     query_string_blacklist = proto.RepeatedField(proto.STRING, number=354964742,)
@@ -9140,6 +9864,17 @@ class Commitment(proto.Message):
     Committed Use Discounts.
 
     Attributes:
+        auto_renew (bool):
+            Specifies whether to enable automatic renewal
+            for the commitment. The default value is false
+            if not specified. The field can be updated until
+            the day of the commitment expiration at 12:00am
+            PST. If the field is set to true, the commitment
+            will be automatically renewed for either one or
+            three years according to the terms of the
+            existing commitment.
+
+            This field is a member of `oneof`_ ``_auto_renew``.
         category (str):
             The category of the commitment. Category
             MACHINE specifies commitments composed of
@@ -9286,13 +10021,16 @@ class Commitment(proto.Message):
         UNDEFINED_TYPE = 0
         ACCELERATOR_OPTIMIZED = 280848403
         COMPUTE_OPTIMIZED = 158349023
+        COMPUTE_OPTIMIZED_C2D = 383246453
         GENERAL_PURPOSE = 299793543
         GENERAL_PURPOSE_E2 = 301911877
         GENERAL_PURPOSE_N2 = 301912156
         GENERAL_PURPOSE_N2D = 232471400
+        GENERAL_PURPOSE_T2D = 232477166
         MEMORY_OPTIMIZED = 281753417
         TYPE_UNSPECIFIED = 437714322
 
+    auto_renew = proto.Field(proto.BOOL, number=495520765, optional=True,)
     category = proto.Field(proto.STRING, number=50511102, optional=True,)
     creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
     description = proto.Field(proto.STRING, number=422937596, optional=True,)
@@ -9524,7 +10262,9 @@ class ConsistentHashLoadBalancerSettings(proto.Message):
             cookie that will be used as the hash key for the consistent
             hash load balancer. If the cookie is not present, it will be
             generated. This field is applicable if the sessionAffinity
-            is set to HTTP_COOKIE.
+            is set to HTTP_COOKIE. Not supported when the backend
+            service is referenced by a URL map that is bound to target
+            gRPC proxy that has validateForProxyless field set to true.
 
             This field is a member of `oneof`_ ``_http_cookie``.
         http_header_name (str):
@@ -9581,49 +10321,51 @@ class ConsistentHashLoadBalancerSettingsHttpCookie(proto.Message):
 
 
 class CorsPolicy(proto.Message):
-    r"""The specification for allowing client side cross-origin
-    requests. Please see W3C Recommendation for Cross Origin
-    Resource Sharing
+    r"""The specification for allowing client-side cross-origin
+    requests. For more information about the W3C recommendation for
+    cross-origin resource sharing (CORS), see Fetch API Living
+    Standard.
 
     Attributes:
         allow_credentials (bool):
             In response to a preflight request, setting
             this to true indicates that the actual request
-            can include user credentials. This translates to
-            the Access-Control-Allow-Credentials header.
-            Default is false.
+            can include user credentials. This field
+            translates to the
+            Access-Control-Allow-Credentials header. Default
+            is false.
 
             This field is a member of `oneof`_ ``_allow_credentials``.
         allow_headers (Sequence[str]):
-            Specifies the content for the Access-Control-
-            llow-Headers header.
+            Specifies the content for the
+            Access-Control-Allow-Headers header.
         allow_methods (Sequence[str]):
-            Specifies the content for the Access-Control-
-            llow-Methods header.
+            Specifies the content for the
+            Access-Control-Allow-Methods header.
         allow_origin_regexes (Sequence[str]):
-            Specifies the regualar expression patterns
-            that match allowed origins. For regular
-            expression grammar please see
-            github.com/google/re2/wiki/Syntax An origin is
-            allowed if it matches either an item in
+            Specifies a regular expression that matches
+            allowed origins. For more information about the
+            regular expression syntax, see Syntax. An origin
+            is allowed if it matches either an item in
             allowOrigins or an item in allowOriginRegexes.
         allow_origins (Sequence[str]):
-            Specifies the list of origins that will be
-            allowed to do CORS requests. An origin is
-            allowed if it matches either an item in
-            allowOrigins or an item in allowOriginRegexes.
+            Specifies the list of origins that is allowed
+            to do CORS requests. An origin is allowed if it
+            matches either an item in allowOrigins or an
+            item in allowOriginRegexes.
         disabled (bool):
-            If true, specifies the CORS policy is
-            disabled. The default value of false, which
-            indicates that the CORS policy is in effect.
+            If true, the setting specifies the CORS
+            policy is disabled. The default value of false,
+            which indicates that the CORS policy is in
+            effect.
 
             This field is a member of `oneof`_ ``_disabled``.
         expose_headers (Sequence[str]):
-            Specifies the content for the Access-Control-
-            xpose-Headers header.
+            Specifies the content for the
+            Access-Control-Expose-Headers header.
         max_age (int):
             Specifies how long results of a preflight
-            request can be cached in seconds. This
+            request can be cached in seconds. This field
             translates to the Access-Control-Max-Age header.
 
             This field is a member of `oneof`_ ``_max_age``.
@@ -9854,11 +10596,12 @@ class CustomerEncryptionKey(proto.Message):
 
             This field is a member of `oneof`_ ``_raw_key``.
         rsa_encrypted_key (str):
-            Specifies an RFC 4648 base64 encoded, RSA-
-            rapped 2048-bit customer-supplied encryption key
-            to either encrypt or decrypt this resource. You
-            can provide either the rawKey or the
-            rsaEncryptedKey. For example: "rsaEncryptedKey":
+            Specifies an RFC 4648 base64 encoded,
+            RSA-wrapped 2048-bit customer-supplied
+            encryption key to either encrypt or decrypt this
+            resource. You can provide either the rawKey or
+            the rsaEncryptedKey. For example:
+            "rsaEncryptedKey":
             "ieCx/NcW06PcT7Ep1X6LUTc/hLvUDYyzSZPPVCVPTVEohpeHASqC8uw5TzyO9U+Fka9JFH
             z0mBibXUInrC/jEk014kCK/NPjYgEMOyssZ4ZINPKxlUh2zn1bV+MCaTICrdmuSBTWlUUiFoD
             D6PYznLwh8ZNdaheCeZ8ewEXgFQ8V+sDroLaN3Xs3MDTXQEMMoNUXMCZEIpg9Vtp9x2oe=="
@@ -9869,9 +10612,7 @@ class CustomerEncryptionKey(proto.Message):
             wrapped, the key must be encoded in RFC 4648
             base64 encoding. Gets the RSA public key
             certificate provided by Google at:
-            https://cloud-
-            certs.storage.googleapis.com/google-cloud-csek-
-            ingress.pem
+            https://cloud-certs.storage.googleapis.com/google-cloud-csek-ingress.pem
 
             This field is a member of `oneof`_ ``_rsa_encrypted_key``.
         sha256 (str):
@@ -10462,19 +11203,21 @@ class DeleteGlobalPublicDelegatedPrefixeRequest(proto.Message):
             Name of the PublicDelegatedPrefix resource to
             delete.
         request_id (str):
-            An optional request ID to identify requests. Specify a
-            unique request ID so that if you must retry your request,
-            the server will know to ignore the request if it has already
-            been completed. For example, consider a situation where you
-            make an initial request and the request times out. If you
-            make the request again with the same request ID, the server
-            can check if original operation with the same request ID was
-            received, and if so, will ignore the second request. This
-            prevents clients from accidentally creating duplicate
-            commitments. The request ID must be a valid UUID with the
-            exception that zero UUID is not supported (
-            00000000-0000-0000-0000-000000000000). end_interface:
-            MixerMutationRequestBuilder
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments. The request ID
+            must be a valid UUID with the exception that
+            zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000).
 
             This field is a member of `oneof`_ ``_request_id``.
     """
@@ -10896,6 +11639,40 @@ class DeleteLicenseRequest(proto.Message):
     request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
+class DeleteMachineImageRequest(proto.Message):
+    r"""A request message for MachineImages.Delete. See the method
+    description for details.
+
+    Attributes:
+        machine_image (str):
+            The name of the machine image to delete.
+        project (str):
+            Project ID for this request.
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments. The request ID
+            must be a valid UUID with the exception that
+            zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000).
+
+            This field is a member of `oneof`_ ``_request_id``.
+    """
+
+    machine_image = proto.Field(proto.STRING, number=69189475,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+
+
 class DeleteNetworkEndpointGroupRequest(proto.Message):
     r"""A request message for NetworkEndpointGroups.Delete. See the
     method description for details.
@@ -11193,19 +11970,21 @@ class DeletePublicAdvertisedPrefixeRequest(proto.Message):
             Name of the PublicAdvertisedPrefix resource
             to delete.
         request_id (str):
-            An optional request ID to identify requests. Specify a
-            unique request ID so that if you must retry your request,
-            the server will know to ignore the request if it has already
-            been completed. For example, consider a situation where you
-            make an initial request and the request times out. If you
-            make the request again with the same request ID, the server
-            can check if original operation with the same request ID was
-            received, and if so, will ignore the second request. This
-            prevents clients from accidentally creating duplicate
-            commitments. The request ID must be a valid UUID with the
-            exception that zero UUID is not supported (
-            00000000-0000-0000-0000-000000000000). end_interface:
-            MixerMutationRequestBuilder
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments. The request ID
+            must be a valid UUID with the exception that
+            zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000).
 
             This field is a member of `oneof`_ ``_request_id``.
     """
@@ -11228,19 +12007,21 @@ class DeletePublicDelegatedPrefixeRequest(proto.Message):
         region (str):
             Name of the region of this request.
         request_id (str):
-            An optional request ID to identify requests. Specify a
-            unique request ID so that if you must retry your request,
-            the server will know to ignore the request if it has already
-            been completed. For example, consider a situation where you
-            make an initial request and the request times out. If you
-            make the request again with the same request ID, the server
-            can check if original operation with the same request ID was
-            received, and if so, will ignore the second request. This
-            prevents clients from accidentally creating duplicate
-            commitments. The request ID must be a valid UUID with the
-            exception that zero UUID is not supported (
-            00000000-0000-0000-0000-000000000000). end_interface:
-            MixerMutationRequestBuilder
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments. The request ID
+            must be a valid UUID with the exception that
+            zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000).
 
             This field is a member of `oneof`_ ``_request_id``.
     """
@@ -11530,19 +12311,21 @@ class DeleteRegionNotificationEndpointRequest(proto.Message):
         region (str):
             Name of the region scoping this request.
         request_id (str):
-            An optional request ID to identify requests. Specify a
-            unique request ID so that if you must retry your request,
-            the server will know to ignore the request if it has already
-            been completed. For example, consider a situation where you
-            make an initial request and the request times out. If you
-            make the request again with the same request ID, the server
-            can check if original operation with the same request ID was
-            received, and if so, will ignore the second request. This
-            prevents clients from accidentally creating duplicate
-            commitments. The request ID must be a valid UUID with the
-            exception that zero UUID is not supported (
-            00000000-0000-0000-0000-000000000000). end_interface:
-            MixerMutationRequestBuilder
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments. The request ID
+            must be a valid UUID with the exception that
+            zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000).
 
             This field is a member of `oneof`_ ``_request_id``.
     """
@@ -11588,19 +12371,21 @@ class DeleteRegionSslCertificateRequest(proto.Message):
         region (str):
             Name of the region scoping this request.
         request_id (str):
-            An optional request ID to identify requests. Specify a
-            unique request ID so that if you must retry your request,
-            the server will know to ignore the request if it has already
-            been completed. For example, consider a situation where you
-            make an initial request and the request times out. If you
-            make the request again with the same request ID, the server
-            can check if original operation with the same request ID was
-            received, and if so, will ignore the second request. This
-            prevents clients from accidentally creating duplicate
-            commitments. The request ID must be a valid UUID with the
-            exception that zero UUID is not supported (
-            00000000-0000-0000-0000-000000000000). end_interface:
-            MixerMutationRequestBuilder
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments. The request ID
+            must be a valid UUID with the exception that
+            zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000).
 
             This field is a member of `oneof`_ ``_request_id``.
         ssl_certificate (str):
@@ -11662,19 +12447,21 @@ class DeleteRegionTargetHttpsProxyRequest(proto.Message):
         region (str):
             Name of the region scoping this request.
         request_id (str):
-            An optional request ID to identify requests. Specify a
-            unique request ID so that if you must retry your request,
-            the server will know to ignore the request if it has already
-            been completed. For example, consider a situation where you
-            make an initial request and the request times out. If you
-            make the request again with the same request ID, the server
-            can check if original operation with the same request ID was
-            received, and if so, will ignore the second request. This
-            prevents clients from accidentally creating duplicate
-            commitments. The request ID must be a valid UUID with the
-            exception that zero UUID is not supported (
-            00000000-0000-0000-0000-000000000000). end_interface:
-            MixerMutationRequestBuilder
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments. The request ID
+            must be a valid UUID with the exception that
+            zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000).
 
             This field is a member of `oneof`_ ``_request_id``.
         target_https_proxy (str):
@@ -11901,19 +12688,21 @@ class DeleteServiceAttachmentRequest(proto.Message):
         region (str):
             Name of the region of this request.
         request_id (str):
-            An optional request ID to identify requests. Specify a
-            unique request ID so that if you must retry your request,
-            the server will know to ignore the request if it has already
-            been completed. For example, consider a situation where you
-            make an initial request and the request times out. If you
-            make the request again with the same request ID, the server
-            can check if original operation with the same request ID was
-            received, and if so, will ignore the second request. This
-            prevents clients from accidentally creating duplicate
-            commitments. The request ID must be a valid UUID with the
-            exception that zero UUID is not supported (
-            00000000-0000-0000-0000-000000000000). end_interface:
-            MixerMutationRequestBuilder
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments. The request ID
+            must be a valid UUID with the exception that
+            zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000).
 
             This field is a member of `oneof`_ ``_request_id``.
         service_attachment (str):
@@ -12047,19 +12836,21 @@ class DeleteSslCertificateRequest(proto.Message):
         project (str):
             Project ID for this request.
         request_id (str):
-            An optional request ID to identify requests. Specify a
-            unique request ID so that if you must retry your request,
-            the server will know to ignore the request if it has already
-            been completed. For example, consider a situation where you
-            make an initial request and the request times out. If you
-            make the request again with the same request ID, the server
-            can check if original operation with the same request ID was
-            received, and if so, will ignore the second request. This
-            prevents clients from accidentally creating duplicate
-            commitments. The request ID must be a valid UUID with the
-            exception that zero UUID is not supported (
-            00000000-0000-0000-0000-000000000000). end_interface:
-            MixerMutationRequestBuilder
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments. The request ID
+            must be a valid UUID with the exception that
+            zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000).
 
             This field is a member of `oneof`_ ``_request_id``.
         ssl_certificate (str):
@@ -12153,19 +12944,21 @@ class DeleteTargetGrpcProxyRequest(proto.Message):
         project (str):
             Project ID for this request.
         request_id (str):
-            An optional request ID to identify requests. Specify a
-            unique request ID so that if you must retry your request,
-            the server will know to ignore the request if it has already
-            been completed. For example, consider a situation where you
-            make an initial request and the request times out. If you
-            make the request again with the same request ID, the server
-            can check if original operation with the same request ID was
-            received, and if so, will ignore the second request. This
-            prevents clients from accidentally creating duplicate
-            commitments. The request ID must be a valid UUID with the
-            exception that zero UUID is not supported (
-            00000000-0000-0000-0000-000000000000). end_interface:
-            MixerMutationRequestBuilder
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments. The request ID
+            must be a valid UUID with the exception that
+            zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000).
 
             This field is a member of `oneof`_ ``_request_id``.
         target_grpc_proxy (str):
@@ -12970,10 +13763,10 @@ class Disk(proto.Message):
             labels set used for optimistic locking. The
             fingerprint is initially generated by Compute
             Engine and changes after every request to modify
-            or update labels. You must always provide an up-
-            to-date fingerprint hash in order to update or
-            change labels, otherwise the request will fail
-            with error 412 conditionNotMet. To see the
+            or update labels. You must always provide an
+            up-to-date fingerprint hash in order to update
+            or change labels, otherwise the request will
+            fail with error 412 conditionNotMet. To see the
             latest fingerprint, make a get() request to
             retrieve a disk.
 
@@ -13100,19 +13893,19 @@ class Disk(proto.Message):
             operating system images, specify the image by
             its family name. For example, specify
             family/debian-9 to use the latest Debian 9
-            image: projects/debian-
-            cloud/global/images/family/debian-9
+            image:
+            projects/debian-cloud/global/images/family/debian-9
             Alternatively, use a specific version of a
-            public operating system image: projects/debian-
-            cloud/global/images/debian-9-stretch-vYYYYMMDD
+            public operating system image:
+            projects/debian-cloud/global/images/debian-9-stretch-vYYYYMMDD
             To create a disk with a custom image that you
             created, specify the image name in the following
             format: global/images/my-custom-image You can
             also specify a custom image by its image family,
             which returns the latest version of the image in
             that family. Replace the image name with
-            family/family-name: global/images/family/my-
-            image-family
+            family/family-name:
+            global/images/family/my-image-family
 
             This field is a member of `oneof`_ ``_source_image``.
         source_image_encryption_key (google.cloud.compute_v1.types.CustomerEncryptionKey):
@@ -13160,10 +13953,10 @@ class Disk(proto.Message):
             This field is a member of `oneof`_ ``_source_snapshot_id``.
         source_storage_object (str):
             The full Google Cloud Storage URI where the
-            disk image is stored. This file must be a gzip-
-            compressed tarball whose name ends in .tar.gz or
-            virtual machine disk whose name ends in vmdk.
-            Valid URIs may start with gs:// or
+            disk image is stored. This file must be a
+            gzip-compressed tarball whose name ends in
+            .tar.gz or virtual machine disk whose name ends
+            in vmdk. Valid URIs may start with gs:// or
             https://storage.googleapis.com/. This flag is
             not optimized for creating multiple disks from a
             source storage object. To create many disks from
@@ -13322,9 +14115,10 @@ class DiskInstantiationConfig(proto.Message):
 
     Attributes:
         auto_delete (bool):
-            Specifies whether the disk will be auto-
-            eleted when the instance is deleted (but not
-            when the disk is detached from the instance).
+            Specifies whether the disk will be
+            auto-deleted when the instance is deleted (but
+            not when the disk is detached from the
+            instance).
 
             This field is a member of `oneof`_ ``_auto_delete``.
         custom_image (str):
@@ -13344,20 +14138,20 @@ class DiskInstantiationConfig(proto.Message):
             source-image: to use the same image that was
             used to create the source instance's
             corresponding disk. Applicable to the boot disk
-            and additional read-write disks. - source-image-
-            family: to use the same image family that was
-            used to create the source instance's
-            corresponding disk. Applicable to the boot disk
-            and additional read-write disks. - custom-image:
-            to use a user-provided image url for disk
-            creation. Applicable to the boot disk and
-            additional read-write disks. - attach-read-only:
-            to attach a read-only disk. Applicable to read-
-            only disks. - do-not-include: to exclude a disk
-            from the template. Applicable to additional
-            read-write disks, local SSDs, and read-only
-            disks. Check the InstantiateFrom enum for the
-            list of possible values.
+            and additional read-write disks. -
+            source-image-family: to use the same image
+            family that was used to create the source
+            instance's corresponding disk. Applicable to the
+            boot disk and additional read-write disks. -
+            custom-image: to use a user-provided image url
+            for disk creation. Applicable to the boot disk
+            and additional read-write disks. -
+            attach-read-only: to attach a read-only disk.
+            Applicable to read-only disks. - do-not-include:
+            to exclude a disk from the template. Applicable
+            to additional read-write disks, local SSDs, and
+            read-only disks. Check the InstantiateFrom enum
+            for the list of possible values.
 
             This field is a member of `oneof`_ ``_instantiate_from``.
     """
@@ -13369,13 +14163,13 @@ class DiskInstantiationConfig(proto.Message):
         Applicable to the boot disk and additional read-write disks. -
         source-image-family: to use the same image family that was used
         to create the source instance's corresponding disk. Applicable
-        to the boot disk and additional read-write disks. - custom-
-        image: to use a user-provided image url for disk creation.
-        Applicable to the boot disk and additional read-write disks. -
-        attach-read-only: to attach a read-only disk. Applicable to
-        read-only disks. - do-not-include: to exclude a disk from the
-        template. Applicable to additional read-write disks, local SSDs,
-        and read-only disks.
+        to the boot disk and additional read-write disks. -
+        custom-image: to use a user-provided image url for disk
+        creation. Applicable to the boot disk and additional read-write
+        disks. - attach-read-only: to attach a read-only disk.
+        Applicable to read-only disks. - do-not-include: to exclude a
+        disk from the template. Applicable to additional read-write
+        disks, local SSDs, and read-only disks.
         """
         UNDEFINED_INSTANTIATE_FROM = 0
         ATTACH_READ_ONLY = 513775419
@@ -14154,8 +14948,8 @@ class ExternalVpnGateway(proto.Message):
             This field is a member of `oneof`_ ``_id``.
         interfaces (Sequence[google.cloud.compute_v1.types.ExternalVpnGatewayInterface]):
             A list of interfaces for this external VPN
-            gateway. If your peer-side gateway is an on-
-            premises gateway and non-AWS cloud providers'
+            gateway. If your peer-side gateway is an
+            on-premises gateway and non-AWS cloud providers'
             gateway, at most two interfaces can be provided
             for an external VPN gateway. If your peer side
             is an AWS virtual private gateway, four
@@ -14412,8 +15206,8 @@ class Firewall(proto.Message):
             resource is created. The name must be 1-63 characters long,
             and comply with RFC1035. Specifically, the name must be 1-63
             characters long and match the regular expression
-            `a-z <[-a-z0-9]*[a-z0-9]>`__?. The first character must be a
-            lowercase letter, and all following characters (except for
+            ``[a-z]([-a-z0-9]*[a-z0-9])?``. The first character must be
+            a lowercase letter, and all following characters (except for
             the last character) must be a dash, lowercase letter, or
             digit. The last character must be a lowercase letter or
             digit.
@@ -14427,9 +15221,9 @@ class Firewall(proto.Message):
             this field, you can specify the network as a
             full or partial URL. For example, the following
             are all valid URLs: -
-            https://www.googleapis.com/compute/v1/projects/myproject/global/networks/my-
-            network - projects/myproject/global/networks/my-
-            network - global/networks/default
+            https://www.googleapis.com/compute/v1/projects/myproject/global/networks/my-network
+            - projects/myproject/global/networks/my-network
+            - global/networks/default
 
             This field is a member of `oneof`_ ``_network``.
         priority (int):
@@ -15169,10 +15963,10 @@ class ForwardingRule(proto.Message):
             the labels set used for optimistic locking. The
             fingerprint is initially generated by Compute
             Engine and changes after every request to modify
-            or update labels. You must always provide an up-
-            to-date fingerprint hash in order to update or
-            change labels, otherwise the request will fail
-            with error 412 conditionNotMet. To see the
+            or update labels. You must always provide an
+            up-to-date fingerprint hash in order to update
+            or change labels, otherwise the request will
+            fail with error 412 conditionNotMet. To see the
             latest fingerprint, make a get() request to
             retrieve a ForwardingRule.
 
@@ -15302,8 +16096,7 @@ class ForwardingRule(proto.Message):
         service_directory_registrations (Sequence[google.cloud.compute_v1.types.ForwardingRuleServiceDirectoryRegistration]):
             Service Directory resources to register this
             forwarding rule with. Currently, only supports a
-            single Service Directory resource. It is only
-            supported for internal load balancing.
+            single Service Directory resource.
         service_label (str):
             An optional prefix to the service name for this Forwarding
             Rule. If specified, the prefix is the first label of the
@@ -15351,6 +16144,7 @@ class ForwardingRule(proto.Message):
         AH = 2087
         ESP = 68962
         ICMP = 2241597
+        L3_DEFAULT = 48151369
         SCTP = 2539724
         TCP = 82881
         UDP = 83873
@@ -15371,6 +16165,7 @@ class ForwardingRule(proto.Message):
         """
         UNDEFINED_LOAD_BALANCING_SCHEME = 0
         EXTERNAL = 35607499
+        EXTERNAL_MANAGED = 512006923
         INTERNAL = 279295677
         INTERNAL_MANAGED = 37350397
         INTERNAL_SELF_MANAGED = 236211150
@@ -15386,8 +16181,10 @@ class ForwardingRule(proto.Message):
         the networkTier of the Address.
         """
         UNDEFINED_NETWORK_TIER = 0
+        FIXED_STANDARD = 310464328
         PREMIUM = 399530551
         STANDARD = 484642493
+        STANDARD_OVERRIDES_FIXED_STANDARD = 465847234
 
     class PscConnectionStatus(proto.Enum):
         r""""""
@@ -16289,6 +17086,28 @@ class GetIamPolicyLicenseRequest(proto.Message):
     resource = proto.Field(proto.STRING, number=195806222,)
 
 
+class GetIamPolicyMachineImageRequest(proto.Message):
+    r"""A request message for MachineImages.GetIamPolicy. See the
+    method description for details.
+
+    Attributes:
+        options_requested_policy_version (int):
+            Requested IAM Policy version.
+
+            This field is a member of `oneof`_ ``_options_requested_policy_version``.
+        project (str):
+            Project ID for this request.
+        resource (str):
+            Name or id of the resource for this request.
+    """
+
+    options_requested_policy_version = proto.Field(
+        proto.INT32, number=499220029, optional=True,
+    )
+    project = proto.Field(proto.STRING, number=227560217,)
+    resource = proto.Field(proto.STRING, number=195806222,)
+
+
 class GetIamPolicyNodeGroupRequest(proto.Message):
     r"""A request message for NodeGroups.GetIamPolicy. See the method
     description for details.
@@ -16670,6 +17489,21 @@ class GetLicenseRequest(proto.Message):
     project = proto.Field(proto.STRING, number=227560217,)
 
 
+class GetMachineImageRequest(proto.Message):
+    r"""A request message for MachineImages.Get. See the method
+    description for details.
+
+    Attributes:
+        machine_image (str):
+            The name of the machine image.
+        project (str):
+            Project ID for this request.
+    """
+
+    machine_image = proto.Field(proto.STRING, number=69189475,)
+    project = proto.Field(proto.STRING, number=227560217,)
+
+
 class GetMachineTypeRequest(proto.Message):
     r"""A request message for MachineTypes.Get. See the method
     description for details.
@@ -16695,14 +17529,19 @@ class GetNatMappingInfoRoutersRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -17771,14 +18610,19 @@ class GetXpnResourcesProjectsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -17937,8 +18781,8 @@ class GlobalSetLabelsRequest(proto.Message):
             for this resource, used to detect conflicts. The
             fingerprint is initially generated by Compute
             Engine and changes after every request to modify
-            or update labels. You must always provide an up-
-            to-date fingerprint hash when updating or
+            or update labels. You must always provide an
+            up-to-date fingerprint hash when updating or
             changing labels, otherwise the request will fail
             with error 412 conditionNotMet. Make a get()
             request to the resource to get the latest
@@ -18076,17 +18920,23 @@ class GuestOsFeature(proto.Message):
 
     Attributes:
         type_ (str):
-            The ID of a supported feature. Read Enabling
-            guest operating system features to see a list of
-            available options. Check the Type enum for the
-            list of possible values.
+            The ID of a supported feature. To add multiple values, use
+            commas to separate values. Set to one or more of the
+            following values: - VIRTIO_SCSI_MULTIQUEUE - WINDOWS -
+            MULTI_IP_SUBNET - UEFI_COMPATIBLE - SECURE_BOOT - GVNIC -
+            SEV_CAPABLE - SUSPEND_RESUME_COMPATIBLE For more
+            information, see Enabling guest operating system features.
+            Check the Type enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_type``.
     """
 
     class Type(proto.Enum):
-        r"""The ID of a supported feature. Read Enabling guest operating
-        system features to see a list of available options.
+        r"""The ID of a supported feature. To add multiple values, use commas to
+        separate values. Set to one or more of the following values: -
+        VIRTIO_SCSI_MULTIQUEUE - WINDOWS - MULTI_IP_SUBNET - UEFI_COMPATIBLE
+        - SECURE_BOOT - GVNIC - SEV_CAPABLE - SUSPEND_RESUME_COMPATIBLE For
+        more information, see Enabling guest operating system features.
         """
         UNDEFINED_TYPE = 0
         FEATURE_TYPE_UNSPECIFIED = 531767259
@@ -18470,8 +19320,7 @@ class HealthCheck(proto.Message):
             This field is a member of `oneof`_ ``_timeout_sec``.
         type_ (str):
             Specifies the type of the healthCheck, either
-            TCP, SSL, HTTP, HTTPS or HTTP2. If not
-            specified, the default is TCP. Exactly one of
+            TCP, SSL, HTTP, HTTPS or HTTP2. Exactly one of
             the protocol-specific health check field must be
             specified, which must match type field. Check
             the Type enum for the list of possible values.
@@ -18487,9 +19336,8 @@ class HealthCheck(proto.Message):
 
     class Type(proto.Enum):
         r"""Specifies the type of the healthCheck, either TCP, SSL, HTTP,
-        HTTPS or HTTP2. If not specified, the default is TCP. Exactly
-        one of the protocol-specific health check field must be
-        specified, which must match type field.
+        HTTPS or HTTP2. Exactly one of the protocol-specific health
+        check field must be specified, which must match type field.
         """
         UNDEFINED_TYPE = 0
         GRPC = 2196510
@@ -18602,9 +19450,8 @@ class HealthCheckLogConfig(proto.Message):
 class HealthCheckReference(proto.Message):
     r"""A full or valid partial URL to a health check. For example,
     the following are valid URLs: -
-    https://www.googleapis.com/compute/beta/projects/project-
-    id/global/httpHealthChecks/health-check - projects/project-
-    id/global/httpHealthChecks/health-check -
+    https://www.googleapis.com/compute/beta/projects/project-id/global/httpHealthChecks/health-check
+    - projects/project-id/global/httpHealthChecks/health-check -
     global/httpHealthChecks/health-check
 
     Attributes:
@@ -18747,11 +19594,10 @@ class HealthCheckService(proto.Message):
 class HealthCheckServiceReference(proto.Message):
     r"""A full or valid partial URL to a health check service. For
     example, the following are valid URLs: -
-    https://www.googleapis.com/compute/beta/projects/project-
-    id/regions/us-west1/healthCheckServices/health-check-service -
-    projects/project-id/regions/us-west1/healthCheckServices/health-
-    check-service - regions/us-west1/healthCheckServices/health-
-    check-service
+    https://www.googleapis.com/compute/beta/projects/project-id/regions/us-west1/healthCheckServices/health-check-service
+    -
+    projects/project-id/regions/us-west1/healthCheckServices/health-check-service
+    - regions/us-west1/healthCheckServices/health-check-service
 
     Attributes:
         health_check_service (str):
@@ -19048,8 +19894,8 @@ class HostRule(proto.Message):
             host:port. \* matches any string of ([a-z0-9-.]*). In that
             case, \* must be the first character and must be followed in
             the pattern by either - or .. \* based matching is not
-            supported when the URL map is bound to target gRPC proxy
-            that has validateForProxyless field set to true.
+            supported when the URL map is bound to a target gRPC proxy
+            that has the validateForProxyless field set to true.
         path_matcher (str):
             The name of the PathMatcher to use to match
             the path portion of the URL if the hostRule
@@ -19070,7 +19916,7 @@ class HttpFaultAbort(proto.Message):
     Attributes:
         http_status (int):
             The HTTP status code used to abort the
-            request. The value must be between 200 and 599
+            request. The value must be from 200 to 599
             inclusive. For gRPC protocol, the gRPC status
             code is mapped to HTTP status code according to
             this mapping table. HTTP status 200 is mapped to
@@ -19079,10 +19925,10 @@ class HttpFaultAbort(proto.Message):
 
             This field is a member of `oneof`_ ``_http_status``.
         percentage (float):
-            The percentage of traffic
-            (connections/operations/requests) which will be
-            aborted as part of fault injection. The value
-            must be between 0.0 and 100.0 inclusive.
+            The percentage of traffic for connections,
+            operations, or requests that is aborted as part
+            of fault injection. The value must be from 0.0
+            to 100.0 inclusive.
 
             This field is a member of `oneof`_ ``_percentage``.
     """
@@ -19092,7 +19938,7 @@ class HttpFaultAbort(proto.Message):
 
 
 class HttpFaultDelay(proto.Message):
-    r"""Specifies the delay introduced by Loadbalancer before
+    r"""Specifies the delay introduced by the load balancer before
     forwarding the request to the backend service as part of fault
     injection.
 
@@ -19103,11 +19949,10 @@ class HttpFaultDelay(proto.Message):
 
             This field is a member of `oneof`_ ``_fixed_delay``.
         percentage (float):
-            The percentage of traffic
-            (connections/operations/requests) on which delay
-            will be introduced as part of fault injection.
-            The value must be between 0.0 and 100.0
-            inclusive.
+            The percentage of traffic for connections,
+            operations, or requests for which a delay is
+            introduced as part of fault injection. The value
+            must be from 0.0 to 100.0 inclusive.
 
             This field is a member of `oneof`_ ``_percentage``.
     """
@@ -19122,10 +19967,10 @@ class HttpFaultInjection(proto.Message):
     r"""The specification for fault injection introduced into traffic
     to test the resiliency of clients to backend service failure. As
     part of fault injection, when clients send requests to a backend
-    service, delays can be introduced by Loadbalancer on a
+    service, delays can be introduced by the load balancer on a
     percentage of requests before sending those request to the
     backend service. Similarly requests from clients can be aborted
-    by the Loadbalancer for a percentage of requests.
+    by the load balancer for a percentage of requests.
 
     Attributes:
         abort (google.cloud.compute_v1.types.HttpFaultAbort):
@@ -19156,18 +20001,18 @@ class HttpHeaderAction(proto.Message):
 
     Attributes:
         request_headers_to_add (Sequence[google.cloud.compute_v1.types.HttpHeaderOption]):
-            Headers to add to a matching request prior to
+            Headers to add to a matching request before
             forwarding the request to the backendService.
         request_headers_to_remove (Sequence[str]):
             A list of header names for headers that need
-            to be removed from the request prior to
-            forwarding the request to the backendService.
+            to be removed from the request before forwarding
+            the request to the backendService.
         response_headers_to_add (Sequence[google.cloud.compute_v1.types.HttpHeaderOption]):
-            Headers to add the response prior to sending
+            Headers to add the response before sending
             the response back to the client.
         response_headers_to_remove (Sequence[str]):
             A list of header names for headers that need
-            to be removed from the response prior to sending
+            to be removed from the response before sending
             the response back to the client.
     """
 
@@ -19196,24 +20041,25 @@ class HttpHeaderMatch(proto.Message):
             The name of the HTTP header to match. For matching against
             the HTTP request's authority, use a headerMatch with the
             header name ":authority". For matching a request's method,
-            use the headerName ":method". When the URL map is bound to
-            target gRPC proxy that has validateForProxyless field set to
-            true, only non-binary user-specified custom metadata and the
-            ``content-type`` header are supported. The following
+            use the headerName ":method". When the URL map is bound to a
+            target gRPC proxy that has the validateForProxyless field
+            set to true, only non-binary user-specified custom metadata
+            and the ``content-type`` header are supported. The following
             transport-level headers cannot be used in header matching
             rules: ``:authority``, ``:method``, ``:path``, ``:scheme``,
             ``user-agent``, ``accept-encoding``, ``content-encoding``,
             ``grpc-accept-encoding``, ``grpc-encoding``,
             ``grpc-previous-rpc-attempts``, ``grpc-tags-bin``,
-            ``grpc-timeout`` and \`grpc-trace-bin.
+            ``grpc-timeout`` and ``grpc-trace-bin``.
 
             This field is a member of `oneof`_ ``_header_name``.
         invert_match (bool):
             If set to false, the headerMatch is
-            considered a match if the match criteria above
-            are met. If set to true, the headerMatch is
-            considered a match if the match criteria above
-            are NOT met. The default setting is false.
+            considered a match if the preceding match
+            criteria are met. If set to true, the
+            headerMatch is considered a match if the
+            preceding match criteria are NOT met. The
+            default setting is false.
 
             This field is a member of `oneof`_ ``_invert_match``.
         prefix_match (str):
@@ -19239,22 +20085,22 @@ class HttpHeaderMatch(proto.Message):
             example for a range [-5, 0] - -3 will match. - 0 will not
             match. - 0.25 will not match. - -3someString will not match.
             Only one of exactMatch, prefixMatch, suffixMatch,
-            regexMatch, presentMatch or rangeMatch must be set. Note
-            that rangeMatch is not supported for Loadbalancers that have
-            their loadBalancingScheme set to EXTERNAL.
+            regexMatch, presentMatch or rangeMatch must be set.
+            rangeMatch is not supported for load balancers that have
+            loadBalancingScheme set to EXTERNAL.
 
             This field is a member of `oneof`_ ``_range_match``.
         regex_match (str):
             The value of the header must match the regular expression
-            specified in regexMatch. For regular expression grammar,
-            please see: github.com/google/re2/wiki/Syntax For matching
-            against a port specified in the HTTP request, use a
-            headerMatch with headerName set to PORT and a regular
-            expression that satisfies the RFC2616 Host header's port
-            specifier. Only one of exactMatch, prefixMatch, suffixMatch,
-            regexMatch, presentMatch or rangeMatch must be set. Note
-            that regexMatch only applies to Loadbalancers that have
-            their loadBalancingScheme set to INTERNAL_SELF_MANAGED.
+            specified in regexMatch. For more information about regular
+            expression syntax, see Syntax. For matching against a port
+            specified in the HTTP request, use a headerMatch with
+            headerName set to PORT and a regular expression that
+            satisfies the RFC2616 Host header's port specifier. Only one
+            of exactMatch, prefixMatch, suffixMatch, regexMatch,
+            presentMatch or rangeMatch must be set. regexMatch only
+            applies to load balancers that have loadBalancingScheme set
+            to INTERNAL_SELF_MANAGED.
 
             This field is a member of `oneof`_ ``_regex_match``.
         suffix_match (str):
@@ -19313,8 +20159,8 @@ class HttpQueryParameterMatch(proto.Message):
         exact_match (str):
             The queryParameterMatch matches if the value
             of the parameter exactly matches the contents of
-            exactMatch. Only one of presentMatch, exactMatch
-            or regexMatch must be set.
+            exactMatch. Only one of presentMatch,
+            exactMatch, or regexMatch must be set.
 
             This field is a member of `oneof`_ ``_exact_match``.
         name (str):
@@ -19328,17 +20174,16 @@ class HttpQueryParameterMatch(proto.Message):
             matches if the request contains the query
             parameter, irrespective of whether the parameter
             has a value or not. Only one of presentMatch,
-            exactMatch or regexMatch must be set.
+            exactMatch, or regexMatch must be set.
 
             This field is a member of `oneof`_ ``_present_match``.
         regex_match (str):
             The queryParameterMatch matches if the value of the
             parameter matches the regular expression specified by
-            regexMatch. For the regular expression grammar, please see
-            github.com/google/re2/wiki/Syntax Only one of presentMatch,
-            exactMatch or regexMatch must be set. Note that regexMatch
-            only applies when the loadBalancingScheme is set to
-            INTERNAL_SELF_MANAGED.
+            regexMatch. For more information about regular expression
+            syntax, see Syntax. Only one of presentMatch, exactMatch, or
+            regexMatch must be set. regexMatch only applies when the
+            loadBalancingScheme is set to INTERNAL_SELF_MANAGED.
 
             This field is a member of `oneof`_ ``_regex_match``.
     """
@@ -19354,32 +20199,31 @@ class HttpRedirectAction(proto.Message):
 
     Attributes:
         host_redirect (str):
-            The host that will be used in the redirect
+            The host that is used in the redirect
             response instead of the one that was supplied in
-            the request. The value must be between 1 and 255
+            the request. The value must be from 1 to 255
             characters.
 
             This field is a member of `oneof`_ ``_host_redirect``.
         https_redirect (bool):
             If set to true, the URL scheme in the
-            redirected request is set to https. If set to
+            redirected request is set to HTTPS. If set to
             false, the URL scheme of the redirected request
-            will remain the same as that of the request.
-            This must only be set for UrlMaps used in
+            remains the same as that of the request. This
+            must only be set for URL maps used in
             TargetHttpProxys. Setting this true for
             TargetHttpsProxy is not permitted. The default
             is set to false.
 
             This field is a member of `oneof`_ ``_https_redirect``.
         path_redirect (str):
-            The path that will be used in the redirect
+            The path that is used in the redirect
             response instead of the one that was supplied in
             the request. pathRedirect cannot be supplied
             together with prefixRedirect. Supply one alone
             or neither. If neither is supplied, the path of
-            the original request will be used for the
-            redirect. The value must be between 1 and 1024
-            characters.
+            the original request is used for the redirect.
+            The value must be from 1 to 1024 characters.
 
             This field is a member of `oneof`_ ``_path_redirect``.
         prefix_redirect (str):
@@ -19389,9 +20233,9 @@ class HttpRedirectAction(proto.Message):
             redirecting the request. prefixRedirect cannot
             be supplied together with pathRedirect. Supply
             one alone or neither. If neither is supplied,
-            the path of the original request will be used
-            for the redirect. The value must be between 1
-            and 1024 characters.
+            the path of the original request is used for the
+            redirect. The value must be from 1 to 1024
+            characters.
 
             This field is a member of `oneof`_ ``_prefix_redirect``.
         redirect_response_code (str):
@@ -19400,15 +20244,15 @@ class HttpRedirectAction(proto.Message):
             the default value and corresponds to 301. - FOUND, which
             corresponds to 302. - SEE_OTHER which corresponds to 303. -
             TEMPORARY_REDIRECT, which corresponds to 307. In this case,
-            the request method will be retained. - PERMANENT_REDIRECT,
-            which corresponds to 308. In this case, the request method
-            will be retained. Check the RedirectResponseCode enum for
-            the list of possible values.
+            the request method is retained. - PERMANENT_REDIRECT, which
+            corresponds to 308. In this case, the request method is
+            retained. Check the RedirectResponseCode enum for the list
+            of possible values.
 
             This field is a member of `oneof`_ ``_redirect_response_code``.
         strip_query (bool):
             If set to true, any accompanying query
-            portion of the original URL is removed prior to
+            portion of the original URL is removed before
             redirecting the request. If set to false, the
             query portion of the original URL is retained.
             The default is set to false.
@@ -19421,9 +20265,9 @@ class HttpRedirectAction(proto.Message):
         values are: - MOVED_PERMANENTLY_DEFAULT, which is the default value
         and corresponds to 301. - FOUND, which corresponds to 302. -
         SEE_OTHER which corresponds to 303. - TEMPORARY_REDIRECT, which
-        corresponds to 307. In this case, the request method will be
-        retained. - PERMANENT_REDIRECT, which corresponds to 308. In this
-        case, the request method will be retained.
+        corresponds to 307. In this case, the request method is retained. -
+        PERMANENT_REDIRECT, which corresponds to 308. In this case, the
+        request method is retained.
         """
         UNDEFINED_REDIRECT_RESPONSE_CODE = 0
         FOUND = 67084130
@@ -19453,39 +20297,45 @@ class HttpRetryPolicy(proto.Message):
         per_try_timeout (google.cloud.compute_v1.types.Duration):
             Specifies a non-zero timeout per retry
             attempt. If not specified, will use the timeout
-            set in HttpRouteAction. If timeout in
-            HttpRouteAction is not set, will use the largest
-            timeout among all backend services associated
-            with the route.
+            set in the HttpRouteAction field. If timeout in
+            the HttpRouteAction field is not set, this field
+            uses the largest timeout among all backend
+            services associated with the route. Not
+            supported when the URL map is bound to a target
+            gRPC proxy that has the validateForProxyless
+            field set to true.
 
             This field is a member of `oneof`_ ``_per_try_timeout``.
         retry_conditions (Sequence[str]):
             Specifies one or more conditions when this retry policy
-            applies. Valid values are: - 5xx: Retry will be attempted if
-            the instance or endpoint responds with any 5xx response
-            code, or if the instance or endpoint does not respond at
-            all, example: disconnects, reset, read timeout, connection
+            applies. Valid values are: - 5xx: retry is attempted if the
+            instance or endpoint responds with any 5xx response code, or
+            if the instance or endpoint does not respond at all. For
+            example, disconnects, reset, read timeout, connection
             failure, and refused streams. - gateway-error: Similar to
-            5xx, but only applies to response codes 502, 503 or 504. - -
-            connect-failure: A retry will be attempted on failures
-            connecting to the instance or endpoint, for example due to
-            connection timeouts. - retriable-4xx: A retry will be
-            attempted if the instance or endpoint responds with a
-            retriable 4xx response code. Currently the only retriable
-            error supported is 409. - refused-stream: A retry will be
-            attempted if the instance or endpoint resets the stream with
-            a REFUSED_STREAM error code. This reset type indicates that
-            it is safe to retry. - cancelled: A retry will be attempted
-            if the gRPC status code in the response header is set to
-            cancelled. - deadline-exceeded: A retry will be attempted if
-            the gRPC status code in the response header is set to
-            deadline-exceeded. - internal: A retry will be attempted if
-            the gRPC status code in the response header is set to
-            internal. - resource-exhausted: A retry will be attempted if
-            the gRPC status code in the response header is set to
-            resource-exhausted. - unavailable: A retry will be attempted
-            if the gRPC status code in the response header is set to
-            unavailable.
+            5xx, but only applies to response codes 502, 503 or 504. -
+            connect-failure: a retry is attempted on failures connecting
+            to the instance or endpoint. For example, connection
+            timeouts. - retriable-4xx: a retry is attempted if the
+            instance or endpoint responds with a 4xx response code. The
+            only error that you can retry is error code 409. -
+            refused-stream: a retry is attempted if the instance or
+            endpoint resets the stream with a REFUSED_STREAM error code.
+            This reset type indicates that it is safe to retry. -
+            cancelled: a retry is attempted if the gRPC status code in
+            the response header is set to cancelled. -
+            deadline-exceeded: a retry is attempted if the gRPC status
+            code in the response header is set to deadline-exceeded. -
+            internal: a retry is attempted if the gRPC status code in
+            the response header is set to internal. -
+            resource-exhausted: a retry is attempted if the gRPC status
+            code in the response header is set to resource-exhausted. -
+            unavailable: a retry is attempted if the gRPC status code in
+            the response header is set to unavailable. Only the
+            following codes are supported when the URL map is bound to
+            target gRPC proxy that has validateForProxyless field set to
+            true. - cancelled - deadline-exceeded - internal -
+            resource-exhausted - unavailable
     """
 
     num_retries = proto.Field(proto.UINT32, number=251680141, optional=True,)
@@ -19500,81 +20350,78 @@ class HttpRouteAction(proto.Message):
 
     Attributes:
         cors_policy (google.cloud.compute_v1.types.CorsPolicy):
-            The specification for allowing client side
-            cross-origin requests. Please see W3C
-            Recommendation for Cross Origin Resource Sharing
-            Not supported when the URL map is bound to
-            target gRPC proxy.
+            The specification for allowing client-side
+            cross-origin requests. For more information
+            about the W3C recommendation for cross-origin
+            resource sharing (CORS), see Fetch API Living
+            Standard. Not supported when the URL map is
+            bound to a target gRPC proxy.
 
             This field is a member of `oneof`_ ``_cors_policy``.
         fault_injection_policy (google.cloud.compute_v1.types.HttpFaultInjection):
             The specification for fault injection introduced into
             traffic to test the resiliency of clients to backend service
             failure. As part of fault injection, when clients send
-            requests to a backend service, delays can be introduced by
-            Loadbalancer on a percentage of requests before sending
-            those request to the backend service. Similarly requests
-            from clients can be aborted by the Loadbalancer for a
+            requests to a backend service, delays can be introduced by a
+            load balancer on a percentage of requests before sending
+            those requests to the backend service. Similarly requests
+            from clients can be aborted by the load balancer for a
             percentage of requests. For the requests impacted by fault
-            injection, timeout and retry_policy will be ignored by
-            clients that are configured with a fault_injection_policy.
+            injection, timeout and retry_policy is ignored by clients
+            that are configured with a fault_injection_policy.
 
             This field is a member of `oneof`_ ``_fault_injection_policy``.
         max_stream_duration (google.cloud.compute_v1.types.Duration):
             Specifies the maximum duration (timeout) for streams on the
             selected route. Unlike the timeout field where the timeout
             duration starts from the time the request has been fully
-            processed (i.e. end-of-stream), the duration in this field
-            is computed from the beginning of the stream until the
-            response has been completely processed, including all
-            retries. A stream that does not complete in this duration is
-            closed. If not specified, will use the largest
-            maxStreamDuration among all backend services associated with
-            the route. This field is only allowed if the Url map is used
-            with backend services with loadBalancingScheme set to
+            processed (known as *end-of-stream*), the duration in this
+            field is computed from the beginning of the stream until the
+            response has been processed, including all retries. A stream
+            that does not complete in this duration is closed. If not
+            specified, this field uses the maximum maxStreamDuration
+            value among all backend services associated with the route.
+            This field is only allowed if the Url map is used with
+            backend services with loadBalancingScheme set to
             INTERNAL_SELF_MANAGED.
 
             This field is a member of `oneof`_ ``_max_stream_duration``.
         request_mirror_policy (google.cloud.compute_v1.types.RequestMirrorPolicy):
             Specifies the policy on how requests intended
             for the route's backends are shadowed to a
-            separate mirrored backend service. Loadbalancer
-            does not wait for responses from the shadow
-            service. Prior to sending traffic to the shadow
-            service, the host / authority header is suffixed
-            with -shadow. Not supported when the URL map is
-            bound to target gRPC proxy that has
-            validateForProxyless field set to true.
+            separate mirrored backend service. The load
+            balancer does not wait for responses from the
+            shadow service. Before sending traffic to the
+            shadow service, the host / authority header is
+            suffixed with -shadow. Not supported when the
+            URL map is bound to a target gRPC proxy that has
+            the validateForProxyless field set to true.
 
             This field is a member of `oneof`_ ``_request_mirror_policy``.
         retry_policy (google.cloud.compute_v1.types.HttpRetryPolicy):
             Specifies the retry policy associated with
-            this route. Not supported when the URL map is
-            bound to target gRPC proxy that has
-            validateForProxyless field set to true.
+            this route.
 
             This field is a member of `oneof`_ ``_retry_policy``.
         timeout (google.cloud.compute_v1.types.Duration):
-            Specifies the timeout for the selected route.
-            Timeout is computed from the time the request
-            has been fully processed (i.e. end-of-stream) up
-            until the response has been completely
-            processed. Timeout includes all retries. If not
-            specified, will use the largest timeout among
-            all backend services associated with the route.
-            Not supported when the URL map is bound to
-            target gRPC proxy that has validateForProxyless
-            field set to true.
+            Specifies the timeout for the selected route. Timeout is
+            computed from the time the request has been fully processed
+            (known as *end-of-stream*) up until the response has been
+            processed. Timeout includes all retries. If not specified,
+            this field uses the largest timeout among all backend
+            services associated with the route. Not supported when the
+            URL map is bound to a target gRPC proxy that has
+            validateForProxyless field set to true.
 
             This field is a member of `oneof`_ ``_timeout``.
         url_rewrite (google.cloud.compute_v1.types.UrlRewrite):
             The spec to modify the URL of the request,
-            prior to forwarding the request to the matched
+            before forwarding the request to the matched
             service. urlRewrite is the only action supported
             in UrlMaps for external HTTP(S) load balancers.
-            Not supported when the URL map is bound to
-            target gRPC proxy that has validateForProxyless
-            field set to true.
+            Not supported when the URL map is bound to a
+            target gRPC proxy that has the
+            validateForProxyless field set to true.
 
             This field is a member of `oneof`_ ``_url_rewrite``.
         weighted_backend_services (Sequence[google.cloud.compute_v1.types.WeightedBackendService]):
@@ -19584,13 +20431,13 @@ class HttpRouteAction(proto.Message):
             flows to their corresponding backend service. If
             all traffic needs to go to a single backend
             service, there must be one
-            weightedBackendService with weight set to a non-
-            zero number. Once a backendService is identified
-            and before forwarding the request to the backend
-            service, advanced routing actions such as URL
-            rewrites and header transformations are applied
-            depending on additional settings specified in
-            this HttpRouteAction.
+            weightedBackendService with weight set to a
+            non-zero number. After a backend service is
+            identified and before forwarding the request to
+            the backend service, advanced routing actions
+            such as URL rewrites and header transformations
+            are applied depending on additional settings
+            specified in this HttpRouteAction.
     """
 
     cors_policy = proto.Field(
@@ -19620,9 +20467,9 @@ class HttpRouteAction(proto.Message):
 
 
 class HttpRouteRule(proto.Message):
-    r"""An HttpRouteRule specifies how to match an HTTP request and
-    the corresponding routing action that load balancing proxies
-    will perform.
+    r"""The HttpRouteRule setting specifies how to match an HTTP
+    request and the corresponding routing action that load balancing
+    proxies perform.
 
     Attributes:
         description (str):
@@ -19634,13 +20481,13 @@ class HttpRouteRule(proto.Message):
         header_action (google.cloud.compute_v1.types.HttpHeaderAction):
             Specifies changes to request and response headers that need
             to take effect for the selected backendService. The
-            headerAction specified here are applied before the matching
-            pathMatchers[].headerAction and after
+            headerAction value specified here is applied before the
+            matching pathMatchers[].headerAction and after
             pathMatchers[].routeRules[].routeAction.weightedBackendService.backendServiceWeightAction[].headerAction
-            Note that headerAction is not supported for Loadbalancers
-            that have their loadBalancingScheme set to EXTERNAL. Not
-            supported when the URL map is bound to target gRPC proxy
-            that has validateForProxyless field set to true.
+            HeaderAction is not supported for load balancers that have
+            their loadBalancingScheme set to EXTERNAL. Not supported
+            when the URL map is bound to a target gRPC proxy that has
+            validateForProxyless field set to true.
 
             This field is a member of `oneof`_ ``_header_action``.
         match_rules (Sequence[google.cloud.compute_v1.types.HttpRouteRuleMatch]):
@@ -19653,15 +20500,15 @@ class HttpRouteRule(proto.Message):
             must match for the request to match the rule.
         priority (int):
             For routeRules within a given pathMatcher,
-            priority determines the order in which load
-            balancer will interpret routeRules. RouteRules
-            are evaluated in order of priority, from the
-            lowest to highest number. The priority of a rule
+            priority determines the order in which a load
+            balancer interprets routeRules. RouteRules are
+            evaluated in order of priority, from the lowest
+            to highest number. The priority of a rule
             decreases as its number increases (1, 2, 3,
             N+1). The first rule that matches the request is
             applied. You cannot configure two or more
             routeRules with the same priority. Priority for
-            each rule must be set to a number between 0 and
+            each rule must be set to a number from 0 to
             2147483647 inclusive. Priority numbers can have
             gaps, which enable you to add or remove rules in
             the future without affecting the rest of the
@@ -19674,9 +20521,9 @@ class HttpRouteRule(proto.Message):
             This field is a member of `oneof`_ ``_priority``.
         route_action (google.cloud.compute_v1.types.HttpRouteAction):
             In response to a matching matchRule, the load
-            balancer performs advanced routing actions like
-            URL rewrites, header transformations, etc. prior
-            to forwarding the request to the selected
+            balancer performs advanced routing actions, such
+            as URL rewrites and header transformations,
+            before forwarding the request to the selected
             backend. If routeAction specifies any
             weightedBackendServices, service must not be
             set. Conversely if service is set, routeAction
@@ -19685,18 +20532,18 @@ class HttpRouteRule(proto.Message):
             routeAction.weightedBackendService must be set.
             UrlMaps for external HTTP(S) load balancers
             support only the urlRewrite action within a
-            routeRule's routeAction.
+            route rule's routeAction.
 
             This field is a member of `oneof`_ ``_route_action``.
         service (str):
             The full or partial URL of the backend
             service resource to which traffic is directed if
-            this rule is matched. If routeAction is
-            additionally specified, advanced routing actions
-            like URL Rewrites, etc. take effect prior to
-            sending the request to the backend. However, if
-            service is specified, routeAction cannot contain
-            any weightedBackendService s. Conversely, if
+            this rule is matched. If routeAction is also
+            specified, advanced routing actions, such as URL
+            rewrites, take effect before sending the request
+            to the backend. However, if service is
+            specified, routeAction cannot contain any
+            weightedBackendServices. Conversely, if
             routeAction specifies any
             weightedBackendServices, service must not be
             specified. Only one of urlRedirect, service or
@@ -19708,7 +20555,7 @@ class HttpRouteRule(proto.Message):
             redirected to a URL specified by urlRedirect. If
             urlRedirect is specified, service or routeAction
             must not be set. Not supported when the URL map
-            is bound to target gRPC proxy.
+            is bound to a target gRPC proxy.
 
             This field is a member of `oneof`_ ``_url_redirect``.
     """
@@ -19741,8 +20588,8 @@ class HttpRouteRuleMatch(proto.Message):
             path of the request must exactly match the value
             specified in fullPathMatch after removing any
             query parameters and anchor that may be part of
-            the original URL. fullPathMatch must be between
-            1 and 1024 characters. Only one of prefixMatch,
+            the original URL. fullPathMatch must be from 1
+            to 1024 characters. Only one of prefixMatch,
             fullPathMatch or regexMatch must be specified.
 
             This field is a member of `oneof`_ ``_full_path_match``.
@@ -19755,35 +20602,35 @@ class HttpRouteRuleMatch(proto.Message):
             matches are case sensitive. The default value is
             false. ignoreCase must not be used with
             regexMatch. Not supported when the URL map is
-            bound to target gRPC proxy.
+            bound to a target gRPC proxy.
 
             This field is a member of `oneof`_ ``_ignore_case``.
         metadata_filters (Sequence[google.cloud.compute_v1.types.MetadataFilter]):
-            Opaque filter criteria used by Loadbalancer to restrict
+            Opaque filter criteria used by the load balancer to restrict
             routing configuration to a limited set of xDS compliant
-            clients. In their xDS requests to Loadbalancer, xDS clients
-            present node metadata. When there is a match, the relevant
-            routing configuration is made available to those proxies.
-            For each metadataFilter in this list, if its
+            clients. In their xDS requests to the load balancer, xDS
+            clients present node metadata. When there is a match, the
+            relevant routing configuration is made available to those
+            proxies. For each metadataFilter in this list, if its
             filterMatchCriteria is set to MATCH_ANY, at least one of the
             filterLabels must match the corresponding label provided in
             the metadata. If its filterMatchCriteria is set to
             MATCH_ALL, then all of its filterLabels must match with
             corresponding labels provided in the metadata. If multiple
-            metadataFilters are specified, all of them need to be
+            metadata filters are specified, all of them need to be
             satisfied in order to be considered a match. metadataFilters
-            specified here will be applied after those specified in
+            specified here is applied after those specified in
             ForwardingRule that refers to the UrlMap this
             HttpRouteRuleMatch belongs to. metadataFilters only applies
-            to Loadbalancers that have their loadBalancingScheme set to
+            to load balancers that have loadBalancingScheme set to
             INTERNAL_SELF_MANAGED. Not supported when the URL map is
-            bound to target gRPC proxy that has validateForProxyless
+            bound to a target gRPC proxy that has validateForProxyless
             field set to true.
         prefix_match (str):
             For satisfying the matchRule condition, the
             request's path must begin with the specified
             prefixMatch. prefixMatch must begin with a /.
-            The value must be between 1 and 1024 characters.
+            The value must be from 1 to 1024 characters.
             Only one of prefixMatch, fullPathMatch or
             regexMatch must be specified.
 
@@ -19792,17 +20639,17 @@ class HttpRouteRuleMatch(proto.Message):
             Specifies a list of query parameter match
             criteria, all of which must match corresponding
             query parameters in the request. Not supported
-            when the URL map is bound to target gRPC proxy.
+            when the URL map is bound to a target gRPC
+            proxy.
         regex_match (str):
             For satisfying the matchRule condition, the path of the
             request must satisfy the regular expression specified in
             regexMatch after removing any query parameters and anchor
-            supplied with the original URL. For regular expression
-            grammar please see github.com/google/re2/wiki/Syntax Only
-            one of prefixMatch, fullPathMatch or regexMatch must be
-            specified. Note that regexMatch only applies to
-            Loadbalancers that have their loadBalancingScheme set to
-            INTERNAL_SELF_MANAGED.
+            supplied with the original URL. For more information about
+            regular expression syntax, see Syntax. Only one of
+            prefixMatch, fullPathMatch or regexMatch must be specified.
+            regexMatch only applies to load balancers that have
+            loadBalancingScheme set to INTERNAL_SELF_MANAGED.
 
             This field is a member of `oneof`_ ``_regex_match``.
     """
@@ -19863,10 +20710,9 @@ class Image(proto.Message):
 
             This field is a member of `oneof`_ ``_family``.
         guest_os_features (Sequence[google.cloud.compute_v1.types.GuestOsFeature]):
-            A list of features to enable on the guest
-            operating system. Applicable only for bootable
-            images. Read Enabling guest operating system
-            features to see a list of available options.
+            A list of features to enable on the guest operating system.
+            Applicable only for bootable images. To see a list of
+            available options, see the guestOSfeatures[].type parameter.
         id (int):
             [Output Only] The unique identifier for the resource. This
             identifier is defined by the server.
@@ -19897,10 +20743,10 @@ class Image(proto.Message):
             labels used for optimistic locking. The
             fingerprint is initially generated by Compute
             Engine and changes after every request to modify
-            or update labels. You must always provide an up-
-            to-date fingerprint hash in order to update or
-            change labels, otherwise the request will fail
-            with error 412 conditionNotMet. To see the
+            or update labels. You must always provide an
+            up-to-date fingerprint hash in order to update
+            or change labels, otherwise the request will
+            fail with error 412 conditionNotMet. To see the
             latest fingerprint, make a get() request to
             retrieve an image.
 
@@ -20440,6 +21286,8 @@ class InsertFirewallPolicyRequest(proto.Message):
             "folders/[FOLDER_ID]" if the parent is a folder or
             "organizations/[ORGANIZATION_ID]" if the parent is an
             organization.
+
+            This field is a member of `oneof`_ ``_parent_id``.
         request_id (str):
             An optional request ID to identify requests.
             Specify a unique request ID so that if you must
@@ -20463,7 +21311,7 @@ class InsertFirewallPolicyRequest(proto.Message):
     firewall_policy_resource = proto.Field(
         proto.MESSAGE, number=495049532, message="FirewallPolicy",
     )
-    parent_id = proto.Field(proto.STRING, number=459714768,)
+    parent_id = proto.Field(proto.STRING, number=459714768, optional=True,)
     request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
@@ -20656,19 +21504,21 @@ class InsertGlobalPublicDelegatedPrefixeRequest(proto.Message):
         public_delegated_prefix_resource (google.cloud.compute_v1.types.PublicDelegatedPrefix):
             The body resource for this request
         request_id (str):
-            An optional request ID to identify requests. Specify a
-            unique request ID so that if you must retry your request,
-            the server will know to ignore the request if it has already
-            been completed. For example, consider a situation where you
-            make an initial request and the request times out. If you
-            make the request again with the same request ID, the server
-            can check if original operation with the same request ID was
-            received, and if so, will ignore the second request. This
-            prevents clients from accidentally creating duplicate
-            commitments. The request ID must be a valid UUID with the
-            exception that zero UUID is not supported (
-            00000000-0000-0000-0000-000000000000). end_interface:
-            MixerMutationRequestBuilder
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments. The request ID
+            must be a valid UUID with the exception that
+            zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000).
 
             This field is a member of `oneof`_ ``_request_id``.
     """
@@ -20873,6 +21723,18 @@ class InsertInstanceRequest(proto.Message):
             - global/instanceTemplates/instanceTemplate
 
             This field is a member of `oneof`_ ``_source_instance_template``.
+        source_machine_image (str):
+            Specifies the machine image to use to create
+            the instance. This field is optional. It can be
+            a full or partial URL. For example, the
+            following are all valid URLs to a machine image:
+            -
+            https://www.googleapis.com/compute/v1/projects/project/global/global
+            /machineImages/machineImage -
+            projects/project/global/global/machineImages/machineImage
+            - global/machineImages/machineImage
+
+            This field is a member of `oneof`_ ``_source_machine_image``.
         zone (str):
             The name of the zone for this request.
     """
@@ -20885,6 +21747,7 @@ class InsertInstanceRequest(proto.Message):
     source_instance_template = proto.Field(
         proto.STRING, number=332423616, optional=True,
     )
+    source_machine_image = proto.Field(proto.STRING, number=21769791, optional=True,)
     zone = proto.Field(proto.STRING, number=3744684,)
 
 
@@ -21036,6 +21899,48 @@ class InsertLicenseRequest(proto.Message):
     license_resource = proto.Field(proto.MESSAGE, number=437955148, message="License",)
     project = proto.Field(proto.STRING, number=227560217,)
     request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+
+
+class InsertMachineImageRequest(proto.Message):
+    r"""A request message for MachineImages.Insert. See the method
+    description for details.
+
+    Attributes:
+        machine_image_resource (google.cloud.compute_v1.types.MachineImage):
+            The body resource for this request
+        project (str):
+            Project ID for this request.
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments. The request ID
+            must be a valid UUID with the exception that
+            zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000).
+
+            This field is a member of `oneof`_ ``_request_id``.
+        source_instance (str):
+            Required. Source instance that is used to
+            create the machine image from.
+
+            This field is a member of `oneof`_ ``_source_instance``.
+    """
+
+    machine_image_resource = proto.Field(
+        proto.MESSAGE, number=60740970, message="MachineImage",
+    )
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    source_instance = proto.Field(proto.STRING, number=396315705, optional=True,)
 
 
 class InsertNetworkEndpointGroupRequest(proto.Message):
@@ -21243,19 +22148,21 @@ class InsertPublicAdvertisedPrefixeRequest(proto.Message):
         public_advertised_prefix_resource (google.cloud.compute_v1.types.PublicAdvertisedPrefix):
             The body resource for this request
         request_id (str):
-            An optional request ID to identify requests. Specify a
-            unique request ID so that if you must retry your request,
-            the server will know to ignore the request if it has already
-            been completed. For example, consider a situation where you
-            make an initial request and the request times out. If you
-            make the request again with the same request ID, the server
-            can check if original operation with the same request ID was
-            received, and if so, will ignore the second request. This
-            prevents clients from accidentally creating duplicate
-            commitments. The request ID must be a valid UUID with the
-            exception that zero UUID is not supported (
-            00000000-0000-0000-0000-000000000000). end_interface:
-            MixerMutationRequestBuilder
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments. The request ID
+            must be a valid UUID with the exception that
+            zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000).
 
             This field is a member of `oneof`_ ``_request_id``.
     """
@@ -21279,19 +22186,21 @@ class InsertPublicDelegatedPrefixeRequest(proto.Message):
         region (str):
             Name of the region of this request.
         request_id (str):
-            An optional request ID to identify requests. Specify a
-            unique request ID so that if you must retry your request,
-            the server will know to ignore the request if it has already
-            been completed. For example, consider a situation where you
-            make an initial request and the request times out. If you
-            make the request again with the same request ID, the server
-            can check if original operation with the same request ID was
-            received, and if so, will ignore the second request. This
-            prevents clients from accidentally creating duplicate
-            commitments. The request ID must be a valid UUID with the
-            exception that zero UUID is not supported (
-            00000000-0000-0000-0000-000000000000). end_interface:
-            MixerMutationRequestBuilder
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments. The request ID
+            must be a valid UUID with the exception that
+            zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000).
 
             This field is a member of `oneof`_ ``_request_id``.
     """
@@ -21634,19 +22543,21 @@ class InsertRegionNotificationEndpointRequest(proto.Message):
         region (str):
             Name of the region scoping this request.
         request_id (str):
-            An optional request ID to identify requests. Specify a
-            unique request ID so that if you must retry your request,
-            the server will know to ignore the request if it has already
-            been completed. For example, consider a situation where you
-            make an initial request and the request times out. If you
-            make the request again with the same request ID, the server
-            can check if original operation with the same request ID was
-            received, and if so, will ignore the second request. This
-            prevents clients from accidentally creating duplicate
-            commitments. The request ID must be a valid UUID with the
-            exception that zero UUID is not supported (
-            00000000-0000-0000-0000-000000000000). end_interface:
-            MixerMutationRequestBuilder
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments. The request ID
+            must be a valid UUID with the exception that
+            zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000).
 
             This field is a member of `oneof`_ ``_request_id``.
     """
@@ -21669,19 +22580,21 @@ class InsertRegionSslCertificateRequest(proto.Message):
         region (str):
             Name of the region scoping this request.
         request_id (str):
-            An optional request ID to identify requests. Specify a
-            unique request ID so that if you must retry your request,
-            the server will know to ignore the request if it has already
-            been completed. For example, consider a situation where you
-            make an initial request and the request times out. If you
-            make the request again with the same request ID, the server
-            can check if original operation with the same request ID was
-            received, and if so, will ignore the second request. This
-            prevents clients from accidentally creating duplicate
-            commitments. The request ID must be a valid UUID with the
-            exception that zero UUID is not supported (
-            00000000-0000-0000-0000-000000000000). end_interface:
-            MixerMutationRequestBuilder
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments. The request ID
+            must be a valid UUID with the exception that
+            zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000).
 
             This field is a member of `oneof`_ ``_request_id``.
         ssl_certificate_resource (google.cloud.compute_v1.types.SslCertificate):
@@ -21745,19 +22658,21 @@ class InsertRegionTargetHttpsProxyRequest(proto.Message):
         region (str):
             Name of the region scoping this request.
         request_id (str):
-            An optional request ID to identify requests. Specify a
-            unique request ID so that if you must retry your request,
-            the server will know to ignore the request if it has already
-            been completed. For example, consider a situation where you
-            make an initial request and the request times out. If you
-            make the request again with the same request ID, the server
-            can check if original operation with the same request ID was
-            received, and if so, will ignore the second request. This
-            prevents clients from accidentally creating duplicate
-            commitments. The request ID must be a valid UUID with the
-            exception that zero UUID is not supported (
-            00000000-0000-0000-0000-000000000000). end_interface:
-            MixerMutationRequestBuilder
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments. The request ID
+            must be a valid UUID with the exception that
+            zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000).
 
             This field is a member of `oneof`_ ``_request_id``.
         target_https_proxy_resource (google.cloud.compute_v1.types.TargetHttpsProxy):
@@ -21991,19 +22906,21 @@ class InsertServiceAttachmentRequest(proto.Message):
         region (str):
             Name of the region of this request.
         request_id (str):
-            An optional request ID to identify requests. Specify a
-            unique request ID so that if you must retry your request,
-            the server will know to ignore the request if it has already
-            been completed. For example, consider a situation where you
-            make an initial request and the request times out. If you
-            make the request again with the same request ID, the server
-            can check if original operation with the same request ID was
-            received, and if so, will ignore the second request. This
-            prevents clients from accidentally creating duplicate
-            commitments. The request ID must be a valid UUID with the
-            exception that zero UUID is not supported (
-            00000000-0000-0000-0000-000000000000). end_interface:
-            MixerMutationRequestBuilder
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments. The request ID
+            must be a valid UUID with the exception that
+            zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000).
 
             This field is a member of `oneof`_ ``_request_id``.
         service_attachment_resource (google.cloud.compute_v1.types.ServiceAttachment):
@@ -22018,6 +22935,42 @@ class InsertServiceAttachmentRequest(proto.Message):
     )
 
 
+class InsertSnapshotRequest(proto.Message):
+    r"""A request message for Snapshots.Insert. See the method
+    description for details.
+
+    Attributes:
+        project (str):
+            Project ID for this request.
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments. The request ID
+            must be a valid UUID with the exception that
+            zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000).
+
+            This field is a member of `oneof`_ ``_request_id``.
+        snapshot_resource (google.cloud.compute_v1.types.Snapshot):
+            The body resource for this request
+    """
+
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    snapshot_resource = proto.Field(
+        proto.MESSAGE, number=481319977, message="Snapshot",
+    )
+
+
 class InsertSslCertificateRequest(proto.Message):
     r"""A request message for SslCertificates.Insert. See the method
     description for details.
@@ -22026,19 +22979,21 @@ class InsertSslCertificateRequest(proto.Message):
         project (str):
             Project ID for this request.
         request_id (str):
-            An optional request ID to identify requests. Specify a
-            unique request ID so that if you must retry your request,
-            the server will know to ignore the request if it has already
-            been completed. For example, consider a situation where you
-            make an initial request and the request times out. If you
-            make the request again with the same request ID, the server
-            can check if original operation with the same request ID was
-            received, and if so, will ignore the second request. This
-            prevents clients from accidentally creating duplicate
-            commitments. The request ID must be a valid UUID with the
-            exception that zero UUID is not supported (
-            00000000-0000-0000-0000-000000000000). end_interface:
-            MixerMutationRequestBuilder
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments. The request ID
+            must be a valid UUID with the exception that
+            zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000).
 
             This field is a member of `oneof`_ ``_request_id``.
         ssl_certificate_resource (google.cloud.compute_v1.types.SslCertificate):
@@ -22135,19 +23090,21 @@ class InsertTargetGrpcProxyRequest(proto.Message):
         project (str):
             Project ID for this request.
         request_id (str):
-            An optional request ID to identify requests. Specify a
-            unique request ID so that if you must retry your request,
-            the server will know to ignore the request if it has already
-            been completed. For example, consider a situation where you
-            make an initial request and the request times out. If you
-            make the request again with the same request ID, the server
-            can check if original operation with the same request ID was
-            received, and if so, will ignore the second request. This
-            prevents clients from accidentally creating duplicate
-            commitments. The request ID must be a valid UUID with the
-            exception that zero UUID is not supported (
-            00000000-0000-0000-0000-000000000000). end_interface:
-            MixerMutationRequestBuilder
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments. The request ID
+            must be a valid UUID with the exception that
+            zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000).
 
             This field is a member of `oneof`_ ``_request_id``.
         target_grpc_proxy_resource (google.cloud.compute_v1.types.TargetGrpcProxy):
@@ -22662,10 +23619,10 @@ class Instance(proto.Message):
             MB and must be supplied in MB (e.g. 5 GB of
             memory is 5120 MB):
             zones/zone/machineTypes/custom-CPUS-MEMORY For
-            example: zones/us-
-            central1-f/machineTypes/custom-4-5120 For a full
-            list of restrictions, read the Specifications
-            for custom machine types.
+            example:
+            zones/us-central1-f/machineTypes/custom-4-5120
+            For a full list of restrictions, read the
+            Specifications for custom machine types.
 
             This field is a member of `oneof`_ ``_machine_type``.
         metadata (google.cloud.compute_v1.types.Metadata):
@@ -22699,6 +23656,9 @@ class Instance(proto.Message):
             configured to interact with other network
             services, such as connecting to the internet.
             Multiple interfaces are supported per instance.
+        network_performance_config (google.cloud.compute_v1.types.NetworkPerformanceConfig):
+
+            This field is a member of `oneof`_ ``_network_performance_config``.
         private_ipv6_google_access (str):
             The private IPv6 google access type for the VM. If not
             specified, use INHERIT_FROM_SUBNETWORK as default. Check the
@@ -22741,6 +23701,15 @@ class Instance(proto.Message):
         shielded_instance_integrity_policy (google.cloud.compute_v1.types.ShieldedInstanceIntegrityPolicy):
 
             This field is a member of `oneof`_ ``_shielded_instance_integrity_policy``.
+        source_machine_image (str):
+            Source machine image
+
+            This field is a member of `oneof`_ ``_source_machine_image``.
+        source_machine_image_encryption_key (google.cloud.compute_v1.types.CustomerEncryptionKey):
+            Source machine image encryption key when
+            creating an instance from a machine image.
+
+            This field is a member of `oneof`_ ``_source_machine_image_encryption_key``.
         start_restricted (bool):
             [Output Only] Whether a VM has been restricted for start
             because Compute Engine has detected suspicious activity.
@@ -22849,6 +23818,12 @@ class Instance(proto.Message):
     network_interfaces = proto.RepeatedField(
         proto.MESSAGE, number=52735243, message="NetworkInterface",
     )
+    network_performance_config = proto.Field(
+        proto.MESSAGE,
+        number=398330850,
+        optional=True,
+        message="NetworkPerformanceConfig",
+    )
     private_ipv6_google_access = proto.Field(
         proto.STRING, number=48277006, optional=True,
     )
@@ -22872,6 +23847,10 @@ class Instance(proto.Message):
         number=163696919,
         optional=True,
         message="ShieldedInstanceIntegrityPolicy",
+    )
+    source_machine_image = proto.Field(proto.STRING, number=21769791, optional=True,)
+    source_machine_image_encryption_key = proto.Field(
+        proto.MESSAGE, number=192839075, optional=True, message="CustomerEncryptionKey",
     )
     start_restricted = proto.Field(proto.BOOL, number=123693144, optional=True,)
     status = proto.Field(proto.STRING, number=181260274, optional=True,)
@@ -23284,11 +24263,11 @@ class InstanceGroupManager(proto.Message):
             managed instance group to create instances. Each
             version is defined by an instanceTemplate and a
             name. Every version can appear at most once per
-            instance group. This field overrides the top-
-            level instanceTemplate field. Read more about
-            the relationships between these fields. Exactly
-            one version must leave the targetSize field
-            unset. That version will be applied to all
+            instance group. This field overrides the
+            top-level instanceTemplate field. Read more
+            about the relationships between these fields.
+            Exactly one version must leave the targetSize
+            field unset. That version will be applied to all
             remaining instances. For more information, read
             about canary updates.
         zone (str):
@@ -23412,6 +24391,30 @@ class InstanceGroupManagerActionsSummary(proto.Message):
             currently being restarted.
 
             This field is a member of `oneof`_ ``_restarting``.
+        resuming (int):
+            [Output Only] The number of instances in the managed
+            instance group that are scheduled to be resumed or are
+            currently being resumed.
+
+            This field is a member of `oneof`_ ``_resuming``.
+        starting (int):
+            [Output Only] The number of instances in the managed
+            instance group that are scheduled to be started or are
+            currently being started.
+
+            This field is a member of `oneof`_ ``_starting``.
+        stopping (int):
+            [Output Only] The number of instances in the managed
+            instance group that are scheduled to be stopped or are
+            currently being stopped.
+
+            This field is a member of `oneof`_ ``_stopping``.
+        suspending (int):
+            [Output Only] The number of instances in the managed
+            instance group that are scheduled to be suspended or are
+            currently being suspended.
+
+            This field is a member of `oneof`_ ``_suspending``.
         verifying (int):
             [Output Only] The number of instances in the managed
             instance group that are being verified. See the
@@ -23431,6 +24434,10 @@ class InstanceGroupManagerActionsSummary(proto.Message):
     recreating = proto.Field(proto.INT32, number=339057132, optional=True,)
     refreshing = proto.Field(proto.INT32, number=215044903, optional=True,)
     restarting = proto.Field(proto.INT32, number=372312947, optional=True,)
+    resuming = proto.Field(proto.INT32, number=201100714, optional=True,)
+    starting = proto.Field(proto.INT32, number=243064896, optional=True,)
+    stopping = proto.Field(proto.INT32, number=105035892, optional=True,)
+    suspending = proto.Field(proto.INT32, number=29113894, optional=True,)
     verifying = proto.Field(proto.INT32, number=451612873, optional=True,)
 
 
@@ -23654,8 +24661,8 @@ class InstanceGroupManagerStatusStatefulPerInstanceConfigs(proto.Message):
 
     Attributes:
         all_effective (bool):
-            A bit indicating if all of the group's per-
-            nstance configs (listed in the output of a
+            A bit indicating if all of the group's
+            per-instance configs (listed in the output of a
             listPerInstanceConfigs API call) have status
             EFFECTIVE or there are no per-instance-configs.
 
@@ -23691,9 +24698,9 @@ class InstanceGroupManagerUpdatePolicy(proto.Message):
             regional managed instance groups. Valid values
             are: - PROACTIVE (default): The group attempts
             to maintain an even distribution of VM instances
-            across zones in the region. - NONE: For non-
-            autoscaled groups, proactive redistribution is
-            disabled.
+            across zones in the region. - NONE: For
+            non-autoscaled groups, proactive redistribution
+            is disabled.
 
             This field is a member of `oneof`_ ``_instance_redistribution_type``.
         max_surge (google.cloud.compute_v1.types.FixedOrPercent):
@@ -23745,6 +24752,20 @@ class InstanceGroupManagerUpdatePolicy(proto.Message):
             it might perform a more disruptive action.
 
             This field is a member of `oneof`_ ``_minimal_action``.
+        most_disruptive_allowed_action (str):
+            Most disruptive action that is allowed to be
+            taken on an instance. You can specify either
+            NONE to forbid any actions, REFRESH to allow
+            actions that do not need instance restart,
+            RESTART to allow actions that can be applied
+            without instance replacing or REPLACE to allow
+            all possible actions. If the Updater determines
+            that the minimal update action needed is more
+            disruptive than most disruptive allowed action
+            you specify it will not perform the update at
+            all.
+
+            This field is a member of `oneof`_ ``_most_disruptive_allowed_action``.
         replacement_method (str):
             What action should be used to replace instances. See
             minimal_action.REPLACE
@@ -23773,6 +24794,9 @@ class InstanceGroupManagerUpdatePolicy(proto.Message):
         proto.MESSAGE, number=404940277, optional=True, message="FixedOrPercent",
     )
     minimal_action = proto.Field(proto.STRING, number=270567060, optional=True,)
+    most_disruptive_allowed_action = proto.Field(
+        proto.STRING, number=66103053, optional=True,
+    )
     replacement_method = proto.Field(proto.STRING, number=505931694, optional=True,)
     type_ = proto.Field(proto.STRING, number=3575610, optional=True,)
 
@@ -23840,8 +24864,8 @@ class InstanceGroupManagersApplyUpdatesRequest(proto.Message):
     Attributes:
         all_instances (bool):
             Flag to update all instances instead of
-            specified list of “instances”. If the flag is
-            set to true then the instances may not be
+            specified list of ���instances���. If the flag
+            is set to true then the instances may not be
             specified in the request.
 
             This field is a member of `oneof`_ ``_all_instances``.
@@ -24474,6 +25498,10 @@ class InstanceManagedByIgmErrorInstanceActionDetails(proto.Message):
         RECREATING = 287278572
         REFRESHING = 163266343
         RESTARTING = 320534387
+        RESUMING = 446856618
+        STARTING = 488820800
+        STOPPING = 350791796
+        SUSPENDING = 514206246
         VERIFYING = 16982185
 
     action = proto.Field(proto.STRING, number=187661878, optional=True,)
@@ -24539,7 +25567,8 @@ class InstanceProperties(proto.Message):
     Attributes:
         advanced_machine_features (google.cloud.compute_v1.types.AdvancedMachineFeatures):
             Controls for advanced machine-related
-            behavior features.
+            behavior features. Note that for MachineImage,
+            this is not supported yet.
 
             This field is a member of `oneof`_ ``_advanced_machine_features``.
         can_ip_forward (bool):
@@ -24556,6 +25585,8 @@ class InstanceProperties(proto.Message):
             This field is a member of `oneof`_ ``_can_ip_forward``.
         confidential_instance_config (google.cloud.compute_v1.types.ConfidentialInstanceConfig):
             Specifies the Confidential Instance options.
+            Note that for MachineImage, this is not
+            supported yet.
 
             This field is a member of `oneof`_ ``_confidential_instance_config``.
         description (str):
@@ -24602,21 +25633,36 @@ class InstanceProperties(proto.Message):
         network_interfaces (Sequence[google.cloud.compute_v1.types.NetworkInterface]):
             An array of network access configurations for
             this interface.
+        network_performance_config (google.cloud.compute_v1.types.NetworkPerformanceConfig):
+            Note that for MachineImage, this is not
+            supported yet.
+
+            This field is a member of `oneof`_ ``_network_performance_config``.
         private_ipv6_google_access (str):
             The private IPv6 google access type for VMs. If not
-            specified, use INHERIT_FROM_SUBNETWORK as default. Check the
+            specified, use INHERIT_FROM_SUBNETWORK as default. Note that
+            for MachineImage, this is not supported yet. Check the
             PrivateIpv6GoogleAccess enum for the list of possible
             values.
 
             This field is a member of `oneof`_ ``_private_ipv6_google_access``.
         reservation_affinity (google.cloud.compute_v1.types.ReservationAffinity):
             Specifies the reservations that instances can
-            consume from.
+            consume from. Note that for MachineImage, this
+            is not supported yet.
 
             This field is a member of `oneof`_ ``_reservation_affinity``.
+        resource_manager_tags (Sequence[google.cloud.compute_v1.types.InstanceProperties.ResourceManagerTagsEntry]):
+            Resource manager tags to be bound to the instance. Tag keys
+            and values have the same definition as resource manager
+            tags. Keys must be in the format ``tagKeys/{tag_key_id}``,
+            and values are in the format ``tagValues/456``. The field is
+            ignored (both PUT & PATCH) when empty.
         resource_policies (Sequence[str]):
-            Resource policies (names, not ULRs) applied
-            to instances created from these properties.
+            Resource policies (names, not URLs) applied
+            to instances created from these properties. Note
+            that for MachineImage, this is not supported
+            yet.
         scheduling (google.cloud.compute_v1.types.Scheduling):
             Specifies the scheduling options for the
             instances that are created from these
@@ -24630,6 +25676,8 @@ class InstanceProperties(proto.Message):
             from these properties. Use metadata queries to
             obtain the access tokens for these instances.
         shielded_instance_config (google.cloud.compute_v1.types.ShieldedInstanceConfig):
+            Note that for MachineImage, this is not
+            supported yet.
 
             This field is a member of `oneof`_ ``_shielded_instance_config``.
         tags (google.cloud.compute_v1.types.Tags):
@@ -24645,7 +25693,8 @@ class InstanceProperties(proto.Message):
 
     class PrivateIpv6GoogleAccess(proto.Enum):
         r"""The private IPv6 google access type for VMs. If not specified, use
-        INHERIT_FROM_SUBNETWORK as default.
+        INHERIT_FROM_SUBNETWORK as default. Note that for MachineImage, this
+        is not supported yet.
         """
         UNDEFINED_PRIVATE_IPV6_GOOGLE_ACCESS = 0
         ENABLE_BIDIRECTIONAL_ACCESS_TO_GOOGLE = 427975994
@@ -24679,11 +25728,20 @@ class InstanceProperties(proto.Message):
     network_interfaces = proto.RepeatedField(
         proto.MESSAGE, number=52735243, message="NetworkInterface",
     )
+    network_performance_config = proto.Field(
+        proto.MESSAGE,
+        number=398330850,
+        optional=True,
+        message="NetworkPerformanceConfig",
+    )
     private_ipv6_google_access = proto.Field(
         proto.STRING, number=48277006, optional=True,
     )
     reservation_affinity = proto.Field(
         proto.MESSAGE, number=157850683, optional=True, message="ReservationAffinity",
+    )
+    resource_manager_tags = proto.MapField(
+        proto.STRING, proto.STRING, number=377671164,
     )
     resource_policies = proto.RepeatedField(proto.STRING, number=22220385,)
     scheduling = proto.Field(
@@ -25027,8 +26085,8 @@ class InstancesSetMachineTypeRequest(proto.Message):
         machine_type (str):
             Full or partial URL of the machine type
             resource. See Machine Types for a full list of
-            machine types. For example: zones/us-
-            central1-f/machineTypes/n1-standard-1
+            machine types. For example:
+            zones/us-central1-f/machineTypes/n1-standard-1
 
             This field is a member of `oneof`_ ``_machine_type``.
     """
@@ -25109,8 +26167,8 @@ class Int64RangeMatch(proto.Message):
 
 class Interconnect(proto.Message):
     r"""Represents an Interconnect resource. An Interconnect resource
-    is a dedicated connection between the GCP network and your on-
-    premises network. For more information, read the Dedicated
+    is a dedicated connection between the GCP network and your
+    on-premises network. For more information, read the Dedicated
     Interconnect Overview.
 
     Attributes:
@@ -25378,6 +26436,18 @@ class InterconnectAttachment(proto.Message):
             Bandwidth enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_bandwidth``.
+        candidate_ipv6_subnets (Sequence[str]):
+            Up to 16 candidate prefixes that control the
+            allocation of cloudRouterIpv6Address and
+            customerRouterIpv6Address for this attachment.
+            Each prefix must be in the Global Unique Address
+            (GUA) space. It is highly recommended that it be
+            in a range owned by the requestor. A GUA in a
+            range owned by Google will cause the request to
+            fail. Google will select an available prefix
+            from the supplied candidates or fail the
+            request. If not supplied, a /125 from a
+            Google-owned GUA block will be selected.
         candidate_subnets (Sequence[str]):
             Up to 16 candidate prefixes that can be used
             to restrict the allocation of
@@ -25396,6 +26466,20 @@ class InterconnectAttachment(proto.Message):
             on Cloud Router Interface for this interconnect attachment.
 
             This field is a member of `oneof`_ ``_cloud_router_ip_address``.
+        cloud_router_ipv6_address (str):
+            [Output Only] IPv6 address + prefix length to be configured
+            on Cloud Router Interface for this interconnect attachment.
+
+            This field is a member of `oneof`_ ``_cloud_router_ipv6_address``.
+        cloud_router_ipv6_interface_id (str):
+            If supplied, the interface id (index within
+            the subnet) to be used for the cloud router
+            address. The id must be in the range of 1 to 6.
+            If a subnet mask is supplied, it must be /125,
+            and the subnet should either be 0 or match the
+            selected subnet.
+
+            This field is a member of `oneof`_ ``_cloud_router_ipv6_interface_id``.
         creation_timestamp (str):
             [Output Only] Creation timestamp in RFC3339 text format.
 
@@ -25406,9 +26490,27 @@ class InterconnectAttachment(proto.Message):
             attachment.
 
             This field is a member of `oneof`_ ``_customer_router_ip_address``.
+        customer_router_ipv6_address (str):
+            [Output Only] IPv6 address + prefix length to be configured
+            on the customer router subinterface for this interconnect
+            attachment.
+
+            This field is a member of `oneof`_ ``_customer_router_ipv6_address``.
+        customer_router_ipv6_interface_id (str):
+            If supplied, the interface id (index within
+            the subnet) to be used for the customer router
+            address. The id must be in the range of 1 to 6.
+            If a subnet mask is supplied, it must be /125,
+            and the subnet should either be 0 or match the
+            selected subnet.
+
+            This field is a member of `oneof`_ ``_customer_router_ipv6_interface_id``.
         dataplane_version (int):
-            [Output Only] Dataplane version for this
-            InterconnectAttachment.
+            [Output only for types PARTNER and DEDICATED. Not present
+            for PARTNER_PROVIDER.] Dataplane version for this
+            InterconnectAttachment. This field is only present for
+            Dataplane version 2 and higher. Absence of this field in the
+            API output indicates that the Dataplane is version 1.
 
             This field is a member of `oneof`_ ``_dataplane_version``.
         description (str):
@@ -25571,6 +26673,15 @@ class InterconnectAttachment(proto.Message):
             [Output Only] Server-defined URL for the resource.
 
             This field is a member of `oneof`_ ``_self_link``.
+        stack_type (str):
+            The stack type for this interconnect attachment to identify
+            whether the IPv6 feature is enabled or not. If not
+            specified, IPV4_ONLY will be used. This field can be both
+            set at interconnect attachments creation and update
+            interconnect attachment operations. Check the StackType enum
+            for the list of possible values.
+
+            This field is a member of `oneof`_ ``_stack_type``.
         state (str):
             [Output Only] The current state of this attachment's
             functionality. Enum values ACTIVE and UNPROVISIONED are
@@ -25684,6 +26795,16 @@ class InterconnectAttachment(proto.Message):
         OS_ACTIVE = 55721409
         OS_UNPROVISIONED = 239771840
 
+    class StackType(proto.Enum):
+        r"""The stack type for this interconnect attachment to identify whether
+        the IPv6 feature is enabled or not. If not specified, IPV4_ONLY will
+        be used. This field can be both set at interconnect attachments
+        creation and update interconnect attachment operations.
+        """
+        UNDEFINED_STACK_TYPE = 0
+        IPV4_IPV6 = 22197249
+        IPV4_ONLY = 22373798
+
     class State(proto.Enum):
         r"""[Output Only] The current state of this attachment's functionality.
         Enum values ACTIVE and UNPROVISIONED are shared by
@@ -25727,13 +26848,26 @@ class InterconnectAttachment(proto.Message):
 
     admin_enabled = proto.Field(proto.BOOL, number=445675089, optional=True,)
     bandwidth = proto.Field(proto.STRING, number=181715121, optional=True,)
+    candidate_ipv6_subnets = proto.RepeatedField(proto.STRING, number=70682522,)
     candidate_subnets = proto.RepeatedField(proto.STRING, number=237842938,)
     cloud_router_ip_address = proto.Field(
         proto.STRING, number=287392776, optional=True,
     )
+    cloud_router_ipv6_address = proto.Field(
+        proto.STRING, number=451922376, optional=True,
+    )
+    cloud_router_ipv6_interface_id = proto.Field(
+        proto.STRING, number=521282701, optional=True,
+    )
     creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
     customer_router_ip_address = proto.Field(
         proto.STRING, number=332475761, optional=True,
+    )
+    customer_router_ipv6_address = proto.Field(
+        proto.STRING, number=290127089, optional=True,
+    )
+    customer_router_ipv6_interface_id = proto.Field(
+        proto.STRING, number=380994308, optional=True,
     )
     dataplane_version = proto.Field(proto.INT32, number=34920075, optional=True,)
     description = proto.Field(proto.STRING, number=422937596, optional=True,)
@@ -25767,6 +26901,7 @@ class InterconnectAttachment(proto.Message):
     router = proto.Field(proto.STRING, number=148608841, optional=True,)
     satisfies_pzs = proto.Field(proto.BOOL, number=480964267, optional=True,)
     self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    stack_type = proto.Field(proto.STRING, number=425908881, optional=True,)
     state = proto.Field(proto.STRING, number=109757585, optional=True,)
     type_ = proto.Field(proto.STRING, number=3575610, optional=True,)
     vlan_tag8021q = proto.Field(proto.INT32, number=119927836, optional=True,)
@@ -26659,8 +27794,8 @@ class Items(proto.Message):
 
             This field is a member of `oneof`_ ``_key``.
         value (str):
-            Value for the metadata entry. These are free-
-            orm strings, and only have meaning as
+            Value for the metadata entry. These are
+            free-form strings, and only have meaning as
             interpreted by the image running in the
             instance. The only restriction placed on values
             is that their size must be less than or equal to
@@ -26935,14 +28070,19 @@ class ListAcceleratorTypesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -27012,14 +28152,19 @@ class ListAddressesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -27104,14 +28249,19 @@ class ListAutoscalersRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -27181,14 +28331,19 @@ class ListAvailableFeaturesSslPoliciesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -27255,14 +28410,19 @@ class ListBackendBucketsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -27329,14 +28489,19 @@ class ListBackendServicesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -27403,14 +28568,19 @@ class ListDiskTypesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -27480,14 +28650,19 @@ class ListDisksRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -27557,14 +28732,19 @@ class ListErrorsInstanceGroupManagersRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -27642,14 +28822,19 @@ class ListErrorsRegionInstanceGroupManagersRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -27726,14 +28911,19 @@ class ListExternalVpnGatewaysRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -27800,14 +28990,19 @@ class ListFirewallPoliciesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -27876,14 +29071,19 @@ class ListFirewallsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -27950,14 +29150,19 @@ class ListForwardingRulesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -28027,14 +29232,19 @@ class ListGlobalAddressesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -28101,14 +29311,19 @@ class ListGlobalForwardingRulesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -28175,14 +29390,19 @@ class ListGlobalNetworkEndpointGroupsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -28249,14 +29469,19 @@ class ListGlobalOperationsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -28323,14 +29548,19 @@ class ListGlobalOrganizationOperationsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -28399,14 +29629,19 @@ class ListGlobalPublicDelegatedPrefixesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -28473,14 +29708,19 @@ class ListHealthChecksRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -28547,14 +29787,19 @@ class ListImagesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -28621,14 +29866,19 @@ class ListInstanceGroupManagersRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -28699,14 +29949,19 @@ class ListInstanceGroupsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -28777,14 +30032,19 @@ class ListInstanceTemplatesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -28851,14 +30111,19 @@ class ListInstancesInstanceGroupsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -28938,14 +30203,19 @@ class ListInstancesRegionInstanceGroupsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -29026,14 +30296,19 @@ class ListInstancesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -29103,14 +30378,19 @@ class ListInterconnectAttachmentsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -29180,14 +30460,19 @@ class ListInterconnectLocationsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -29254,14 +30539,19 @@ class ListInterconnectsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -29328,14 +30618,98 @@ class ListLicensesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
+            fields. For example, you could specify
+            ``scheduling.automaticRestart = false`` to include instances
+            only if they are not scheduled for automatic restarts. You
+            can use filtering on nested fields to filter based on
+            resource labels. To filter on multiple expressions, provide
+            each separate expression within parentheses. For example:
+            ``(scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake")``
+            By default, each expression is an ``AND`` expression.
+            However, you can include ``AND`` and ``OR`` expressions
+            explicitly. For example:
+            ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+
+            This field is a member of `oneof`_ ``_filter``.
+        max_results (int):
+            The maximum number of results per page that should be
+            returned. If the number of available results is larger than
+            ``maxResults``, Compute Engine returns a ``nextPageToken``
+            that can be used to get the next page of results in
+            subsequent list requests. Acceptable values are ``0`` to
+            ``500``, inclusive. (Default: ``500``)
+
+            This field is a member of `oneof`_ ``_max_results``.
+        order_by (str):
+            Sorts list results by a certain order. By default, results
+            are returned in alphanumerical order based on the resource
+            name. You can also sort results in descending order based on
+            the creation timestamp using
+            ``orderBy="creationTimestamp desc"``. This sorts results
+            based on the ``creationTimestamp`` field in reverse
+            chronological order (newest result first). Use this to sort
+            resources like operations so that the newest operation is
+            returned first. Currently, only sorting by ``name`` or
+            ``creationTimestamp desc`` is supported.
+
+            This field is a member of `oneof`_ ``_order_by``.
+        page_token (str):
+            Specifies a page token to use. Set ``pageToken`` to the
+            ``nextPageToken`` returned by a previous list request to get
+            the next page of results.
+
+            This field is a member of `oneof`_ ``_page_token``.
+        project (str):
+            Project ID for this request.
+        return_partial_success (bool):
+            Opt-in for partial success behavior which
+            provides partial results in case of failure. The
+            default value is false.
+
+            This field is a member of `oneof`_ ``_return_partial_success``.
+    """
+
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
+
+
+class ListMachineImagesRequest(proto.Message):
+    r"""A request message for MachineImages.List. See the method
+    description for details.
+
+    Attributes:
+        filter (str):
+            A filter expression that filters resources listed in the
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
+            ``example-instance`` by specifying
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -29402,14 +30776,19 @@ class ListMachineTypesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -29480,14 +30859,19 @@ class ListManagedInstancesInstanceGroupManagersRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -29562,14 +30946,19 @@ class ListManagedInstancesRegionInstanceGroupManagersRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -29642,14 +31031,19 @@ class ListNetworkEndpointGroupsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -29722,14 +31116,19 @@ class ListNetworkEndpointsGlobalNetworkEndpointGroupsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -29803,14 +31202,19 @@ class ListNetworkEndpointsNetworkEndpointGroupsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -29895,14 +31299,19 @@ class ListNetworksRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -29969,14 +31378,19 @@ class ListNodeGroupsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -30046,14 +31460,19 @@ class ListNodeTemplatesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -30123,14 +31542,19 @@ class ListNodeTypesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -30200,14 +31624,19 @@ class ListNodesNodeGroupsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -30281,14 +31710,19 @@ class ListPacketMirroringsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -30364,14 +31798,19 @@ class ListPeeringRoutesNetworksRequest(proto.Message):
             This field is a member of `oneof`_ ``_direction``.
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -30462,14 +31901,19 @@ class ListPerInstanceConfigsInstanceGroupManagersRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -30546,14 +31990,19 @@ class ListPerInstanceConfigsRegionInstanceGroupManagersRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -30629,14 +32078,19 @@ class ListPreconfiguredExpressionSetsSecurityPoliciesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -30703,14 +32157,19 @@ class ListPublicAdvertisedPrefixesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -30777,14 +32236,19 @@ class ListPublicDelegatedPrefixesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -30854,14 +32318,19 @@ class ListReferrersInstancesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -30936,14 +32405,19 @@ class ListRegionAutoscalersRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -31013,14 +32487,19 @@ class ListRegionBackendServicesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -31090,14 +32569,19 @@ class ListRegionCommitmentsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -31167,14 +32651,19 @@ class ListRegionDiskTypesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -31244,14 +32733,19 @@ class ListRegionDisksRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -31321,14 +32815,19 @@ class ListRegionHealthCheckServicesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -31398,14 +32897,19 @@ class ListRegionHealthChecksRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -31475,14 +32979,19 @@ class ListRegionInstanceGroupManagersRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -31552,14 +33061,19 @@ class ListRegionInstanceGroupsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -31629,14 +33143,19 @@ class ListRegionNetworkEndpointGroupsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -31708,14 +33227,19 @@ class ListRegionNotificationEndpointsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -31785,14 +33309,19 @@ class ListRegionOperationsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -31862,14 +33391,19 @@ class ListRegionSslCertificatesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -31939,14 +33473,19 @@ class ListRegionTargetHttpProxiesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -32016,14 +33555,19 @@ class ListRegionTargetHttpsProxiesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -32093,14 +33637,19 @@ class ListRegionUrlMapsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -32170,14 +33719,19 @@ class ListRegionsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -32244,14 +33798,19 @@ class ListReservationsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -32321,14 +33880,19 @@ class ListResourcePoliciesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -32398,14 +33962,19 @@ class ListRoutersRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -32475,14 +34044,19 @@ class ListRoutesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -32549,14 +34123,19 @@ class ListSecurityPoliciesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -32623,14 +34202,19 @@ class ListServiceAttachmentsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -32700,14 +34284,19 @@ class ListSnapshotsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -32774,14 +34363,19 @@ class ListSslCertificatesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -32848,14 +34442,19 @@ class ListSslPoliciesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -32922,14 +34521,19 @@ class ListSubnetworksRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -32999,14 +34603,19 @@ class ListTargetGrpcProxiesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -33073,14 +34682,19 @@ class ListTargetHttpProxiesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -33147,14 +34761,19 @@ class ListTargetHttpsProxiesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -33221,14 +34840,19 @@ class ListTargetInstancesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -33298,14 +34922,19 @@ class ListTargetPoolsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -33375,14 +35004,19 @@ class ListTargetSslProxiesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -33449,14 +35083,19 @@ class ListTargetTcpProxiesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -33523,14 +35162,19 @@ class ListTargetVpnGatewaysRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -33600,14 +35244,19 @@ class ListUrlMapsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -33674,14 +35323,19 @@ class ListUsableSubnetworksRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -33748,14 +35402,19 @@ class ListVpnGatewaysRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -33825,14 +35484,19 @@ class ListVpnTunnelsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -33902,14 +35566,19 @@ class ListXpnHostsProjectsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -33981,14 +35650,19 @@ class ListZoneOperationsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -34058,14 +35732,19 @@ class ListZonesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, a
-            comparison operator, and the value that you want to use for
-            filtering. The value must be a string, a number, or a
-            boolean. The comparison operator must be either ``=``,
-            ``!=``, ``>``, or ``<``. For example, if you are filtering
-            Compute Engine instances, you can exclude instances named
+            response. The expression must specify the field name, an
+            operator, and the value that you want to use for filtering.
+            The value must be a string, a number, or a boolean. The
+            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
+            ``>=`` or ``:``. For example, if you are filtering Compute
+            Engine instances, you can exclude instances named
             ``example-instance`` by specifying
-            ``name != example-instance``. You can also filter nested
+            ``name != example-instance``. The ``:`` operator can be used
+            with string fields to match substrings. For non-string
+            fields it is equivalent to the ``=`` operator. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
             fields. For example, you could specify
             ``scheduling.automaticRestart = false`` to include instances
             only if they are not scheduled for automatic restarts. You
@@ -34175,15 +35854,15 @@ class LocationPolicyLocation(proto.Message):
 
     Attributes:
         preference (str):
-            Preference for a given location: ALLOW or
-            DENY. Check the Preference enum for the list of
+            Preference for a given location.
+            Check the Preference enum for the list of
             possible values.
 
             This field is a member of `oneof`_ ``_preference``.
     """
 
     class Preference(proto.Enum):
-        r"""Preference for a given location: ALLOW or DENY."""
+        r"""Preference for a given location."""
         UNDEFINED_PREFERENCE = 0
         ALLOW = 62368553
         DENY = 2094604
@@ -34331,6 +36010,220 @@ class LogConfigDataAccessOptions(proto.Message):
         LOG_MODE_UNSPECIFIED = 88160822
 
     log_mode = proto.Field(proto.STRING, number=402897342, optional=True,)
+
+
+class MachineImage(proto.Message):
+    r"""Represents a machine image resource. A machine image is a
+    Compute Engine resource that stores all the configuration,
+    metadata, permissions, and data from one or more disks required
+    to create a Virtual machine (VM) instance. For more information,
+    see Machine images.
+
+    Attributes:
+        creation_timestamp (str):
+            [Output Only] The creation timestamp for this machine image
+            in RFC3339 text format.
+
+            This field is a member of `oneof`_ ``_creation_timestamp``.
+        description (str):
+            An optional description of this resource.
+            Provide this property when you create the
+            resource.
+
+            This field is a member of `oneof`_ ``_description``.
+        guest_flush (bool):
+            [Input Only] Whether to attempt an application consistent
+            machine image by informing the OS to prepare for the
+            snapshot process. Currently only supported on Windows
+            instances using the Volume Shadow Copy Service (VSS).
+
+            This field is a member of `oneof`_ ``_guest_flush``.
+        id (int):
+            [Output Only] A unique identifier for this machine image.
+            The server defines this identifier.
+
+            This field is a member of `oneof`_ ``_id``.
+        instance_properties (google.cloud.compute_v1.types.InstanceProperties):
+            [Output Only] Properties of source instance
+
+            This field is a member of `oneof`_ ``_instance_properties``.
+        kind (str):
+            [Output Only] The resource type, which is always
+            compute#machineImage for machine image.
+
+            This field is a member of `oneof`_ ``_kind``.
+        machine_image_encryption_key (google.cloud.compute_v1.types.CustomerEncryptionKey):
+            Encrypts the machine image using a
+            customer-supplied encryption key. After you
+            encrypt a machine image using a
+            customer-supplied key, you must provide the same
+            key if you use the machine image later. For
+            example, you must provide the encryption key
+            when you create an instance from the encrypted
+            machine image in a future request.
+            Customer-supplied encryption keys do not protect
+            access to metadata of the machine image. If you
+            do not provide an encryption key when creating
+            the machine image, then the machine image will
+            be encrypted using an automatically generated
+            key and you do not need to provide a key to use
+            the machine image later.
+
+            This field is a member of `oneof`_ ``_machine_image_encryption_key``.
+        name (str):
+            Name of the resource; provided by the client when the
+            resource is created. The name must be 1-63 characters long,
+            and comply with RFC1035. Specifically, the name must be 1-63
+            characters long and match the regular expression
+            ``[a-z]([-a-z0-9]*[a-z0-9])?`` which means the first
+            character must be a lowercase letter, and all following
+            characters must be a dash, lowercase letter, or digit,
+            except the last character, which cannot be a dash.
+
+            This field is a member of `oneof`_ ``_name``.
+        satisfies_pzs (bool):
+            [Output Only] Reserved for future use.
+
+            This field is a member of `oneof`_ ``_satisfies_pzs``.
+        saved_disks (Sequence[google.cloud.compute_v1.types.SavedDisk]):
+            An array of Machine Image specific properties
+            for disks attached to the source instance
+        self_link (str):
+            [Output Only] The URL for this machine image. The server
+            defines this URL.
+
+            This field is a member of `oneof`_ ``_self_link``.
+        source_disk_encryption_keys (Sequence[google.cloud.compute_v1.types.SourceDiskEncryptionKey]):
+            [Input Only] The customer-supplied encryption key of the
+            disks attached to the source instance. Required if the
+            source disk is protected by a customer-supplied encryption
+            key.
+        source_instance (str):
+            The source instance used to create the
+            machine image. You can provide this as a partial
+            or full URL to the resource. For example, the
+            following are valid values: -
+            https://www.googleapis.com/compute/v1/projects/project/zones/zone
+            /instances/instance -
+            projects/project/zones/zone/instances/instance
+
+            This field is a member of `oneof`_ ``_source_instance``.
+        source_instance_properties (google.cloud.compute_v1.types.SourceInstanceProperties):
+            [Output Only] DEPRECATED: Please use instance_properties
+            instead for source instance related properties. New
+            properties will not be added to this field.
+
+            This field is a member of `oneof`_ ``_source_instance_properties``.
+        status (str):
+            [Output Only] The status of the machine image. One of the
+            following values: INVALID, CREATING, READY, DELETING, and
+            UPLOADING. Check the Status enum for the list of possible
+            values.
+
+            This field is a member of `oneof`_ ``_status``.
+        storage_locations (Sequence[str]):
+            The regional or multi-regional Cloud Storage
+            bucket location where the machine image is
+            stored.
+        total_storage_bytes (int):
+            [Output Only] Total size of the storage used by the machine
+            image.
+
+            This field is a member of `oneof`_ ``_total_storage_bytes``.
+    """
+
+    class Status(proto.Enum):
+        r"""[Output Only] The status of the machine image. One of the following
+        values: INVALID, CREATING, READY, DELETING, and UPLOADING.
+        """
+        UNDEFINED_STATUS = 0
+        CREATING = 455564985
+        DELETING = 528602024
+        INVALID = 530283991
+        READY = 77848963
+        UPLOADING = 267603489
+
+    creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    guest_flush = proto.Field(proto.BOOL, number=385550813, optional=True,)
+    id = proto.Field(proto.UINT64, number=3355, optional=True,)
+    instance_properties = proto.Field(
+        proto.MESSAGE, number=215355165, optional=True, message="InstanceProperties",
+    )
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    machine_image_encryption_key = proto.Field(
+        proto.MESSAGE, number=528089087, optional=True, message="CustomerEncryptionKey",
+    )
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    satisfies_pzs = proto.Field(proto.BOOL, number=480964267, optional=True,)
+    saved_disks = proto.RepeatedField(
+        proto.MESSAGE, number=397424318, message="SavedDisk",
+    )
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    source_disk_encryption_keys = proto.RepeatedField(
+        proto.MESSAGE, number=370408498, message="SourceDiskEncryptionKey",
+    )
+    source_instance = proto.Field(proto.STRING, number=396315705, optional=True,)
+    source_instance_properties = proto.Field(
+        proto.MESSAGE,
+        number=475195641,
+        optional=True,
+        message="SourceInstanceProperties",
+    )
+    status = proto.Field(proto.STRING, number=181260274, optional=True,)
+    storage_locations = proto.RepeatedField(proto.STRING, number=328005274,)
+    total_storage_bytes = proto.Field(proto.INT64, number=81855468, optional=True,)
+
+
+class MachineImageList(proto.Message):
+    r"""A list of machine images.
+
+    Attributes:
+        id (str):
+            [Output Only] Unique identifier for the resource; defined by
+            the server.
+
+            This field is a member of `oneof`_ ``_id``.
+        items (Sequence[google.cloud.compute_v1.types.MachineImage]):
+            A list of MachineImage resources.
+        kind (str):
+            [Output Only] The resource type, which is always
+            compute#machineImagesListResponse for machine image lists.
+
+            This field is a member of `oneof`_ ``_kind``.
+        next_page_token (str):
+            [Output Only] This token allows you to get the next page of
+            results for list requests. If the number of results is
+            larger than maxResults, use the nextPageToken as a value for
+            the query parameter pageToken in the next list request.
+            Subsequent list requests will have their own nextPageToken
+            to continue paging through the results.
+
+            This field is a member of `oneof`_ ``_next_page_token``.
+        self_link (str):
+            [Output Only] Server-defined URL for this resource.
+
+            This field is a member of `oneof`_ ``_self_link``.
+        warning (google.cloud.compute_v1.types.Warning):
+            [Output Only] Informational warning message.
+
+            This field is a member of `oneof`_ ``_warning``.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    items = proto.RepeatedField(
+        proto.MESSAGE, number=100526016, message="MachineImage",
+    )
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class MachineType(proto.Message):
@@ -34614,8 +36507,7 @@ class ManagedInstance(proto.Message):
             [Output Only] Health state of the instance per health-check.
         instance_status (str):
             [Output Only] The status of the instance. This field is
-            empty when the instance does not exist. Check the
-            InstanceStatus enum for the list of possible values.
+            empty when the instance does not exist.
 
             This field is a member of `oneof`_ ``_instance_status``.
         last_attempt (google.cloud.compute_v1.types.ManagedInstanceLastAttempt):
@@ -34815,20 +36707,20 @@ class Metadata(proto.Message):
 
 
 class MetadataFilter(proto.Message):
-    r"""Opaque filter criteria used by loadbalancers to restrict routing
-    configuration to a limited set of loadbalancing proxies. Proxies and
-    sidecars involved in loadbalancing would typically present metadata
-    to the loadbalancers which need to match criteria specified here. If
-    a match takes place, the relevant configuration is made available to
-    those proxies. For each metadataFilter in this list, if its
-    filterMatchCriteria is set to MATCH_ANY, at least one of the
+    r"""Opaque filter criteria used by load balancers to restrict routing
+    configuration to a limited set of load balancing proxies. Proxies
+    and sidecars involved in load balancing would typically present
+    metadata to the load balancers that need to match criteria specified
+    here. If a match takes place, the relevant configuration is made
+    available to those proxies. For each metadataFilter in this list, if
+    its filterMatchCriteria is set to MATCH_ANY, at least one of the
     filterLabels must match the corresponding label provided in the
     metadata. If its filterMatchCriteria is set to MATCH_ALL, then all
     of its filterLabels must match with corresponding labels provided in
-    the metadata. An example for using metadataFilters would be: if
-    loadbalancing involves Envoys, they will only receive routing
-    configuration when values in metadataFilters match values supplied
-    in of their XDS requests to loadbalancers.
+    the metadata. An example for using metadataFilters would be: if load
+    balancing involves Envoys, they receive routing configuration when
+    values in metadataFilters match values supplied in of their XDS
+    requests to loadbalancers.
 
     Attributes:
         filter_labels (Sequence[google.cloud.compute_v1.types.MetadataFilterLabelMatch]):
@@ -34837,11 +36729,11 @@ class MetadataFilter(proto.Message):
             filterMatchCriteria This list must not be empty
             and can have at the most 64 entries.
         filter_match_criteria (str):
-            Specifies how individual filterLabel matches within the list
-            of filterLabels contribute towards the overall
-            metadataFilter match. Supported values are: - MATCH_ANY: At
+            Specifies how individual filter label matches within the
+            list of filterLabels and contributes toward the overall
+            metadataFilter match. Supported values are: - MATCH_ANY: at
             least one of the filterLabels must have a matching label in
-            the provided metadata. - MATCH_ALL: All filterLabels must
+            the provided metadata. - MATCH_ALL: all filterLabels must
             have matching labels in the provided metadata. Check the
             FilterMatchCriteria enum for the list of possible values.
 
@@ -34849,11 +36741,12 @@ class MetadataFilter(proto.Message):
     """
 
     class FilterMatchCriteria(proto.Enum):
-        r"""Specifies how individual filterLabel matches within the list of
-        filterLabels contribute towards the overall metadataFilter match.
-        Supported values are: - MATCH_ANY: At least one of the filterLabels
-        must have a matching label in the provided metadata. - MATCH_ALL:
-        All filterLabels must have matching labels in the provided metadata.
+        r"""Specifies how individual filter label matches within the list of
+        filterLabels and contributes toward the overall metadataFilter
+        match. Supported values are: - MATCH_ANY: at least one of the
+        filterLabels must have a matching label in the provided metadata. -
+        MATCH_ALL: all filterLabels must have matching labels in the
+        provided metadata.
         """
         UNDEFINED_FILTER_MATCH_CRITERIA = 0
         MATCH_ALL = 180663271
@@ -34868,8 +36761,8 @@ class MetadataFilter(proto.Message):
 
 class MetadataFilterLabelMatch(proto.Message):
     r"""MetadataFilter label name value pairs that are expected to
-    match corresponding labels presented as metadata to the
-    loadbalancer.
+    match corresponding labels presented as metadata to the load
+    balancer.
 
     Attributes:
         name (str):
@@ -34935,6 +36828,8 @@ class MoveFirewallPolicyRequest(proto.Message):
             Name of the firewall policy to update.
         parent_id (str):
             The new parent of the firewall policy.
+
+            This field is a member of `oneof`_ ``_parent_id``.
         request_id (str):
             An optional request ID to identify requests.
             Specify a unique request ID so that if you must
@@ -34956,7 +36851,7 @@ class MoveFirewallPolicyRequest(proto.Message):
     """
 
     firewall_policy = proto.Field(proto.STRING, number=498173265,)
-    parent_id = proto.Field(proto.STRING, number=459714768,)
+    parent_id = proto.Field(proto.STRING, number=459714768, optional=True,)
     request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
@@ -35253,6 +37148,13 @@ class NetworkEndpointGroup(proto.Message):
             for the list of possible values.
 
             This field is a member of `oneof`_ ``_network_endpoint_type``.
+        psc_target_service (str):
+            The target service url used to set up private
+            service connection to a Google API. An example
+            value is:
+            "asia-northeast3-cloudkms.googleapis.com".
+
+            This field is a member of `oneof`_ ``_psc_target_service``.
         region (str):
             [Output Only] The URL of the region where the network
             endpoint group is located.
@@ -35290,6 +37192,7 @@ class NetworkEndpointGroup(proto.Message):
         INTERNET_FQDN_PORT = 404154477
         INTERNET_IP_PORT = 477719963
         NON_GCP_PRIVATE_IP_PORT = 336447968
+        PRIVATE_SERVICE_CONNECT = 48134724
         SERVERLESS = 270492508
 
     annotations = proto.MapField(proto.STRING, proto.STRING, number=112032548,)
@@ -35319,6 +37222,7 @@ class NetworkEndpointGroup(proto.Message):
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
     network = proto.Field(proto.STRING, number=232872494, optional=True,)
     network_endpoint_type = proto.Field(proto.STRING, number=118301523, optional=True,)
+    psc_target_service = proto.Field(proto.STRING, number=269132134, optional=True,)
     region = proto.Field(proto.STRING, number=138946292, optional=True,)
     self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
     size = proto.Field(proto.INT32, number=3530753, optional=True,)
@@ -35476,11 +37380,11 @@ class NetworkEndpointGroupCloudRun(proto.Message):
 
             This field is a member of `oneof`_ ``_service``.
         tag (str):
-            Optional Cloud Run tag represents the "named-
-            evision" to provide additional fine-grained
-            traffic routing information. The tag must be
-            1-63 characters long, and comply with RFC1035.
-            Example value: "revision-0010".
+            Optional Cloud Run tag represents the
+            "named-revision" to provide additional
+            fine-grained traffic routing information. The
+            tag must be 1-63 characters long, and comply
+            with RFC1035. Example value: "revision-0010".
 
             This field is a member of `oneof`_ ``_tag``.
         url_mask (str):
@@ -35741,7 +37645,7 @@ class NetworkInterface(proto.Message):
 
             This field is a member of `oneof`_ ``_ipv6_access_type``.
         ipv6_address (str):
-            [Output Only] An IPv6 internal network address for this
+            An IPv6 internal network address for this
             network interface.
 
             This field is a member of `oneof`_ ``_ipv6_address``.
@@ -35757,11 +37661,13 @@ class NetworkInterface(proto.Message):
 
             This field is a member of `oneof`_ ``_name``.
         network (str):
-            URL of the network resource for this
+            URL of the VPC network resource for this
             instance. When creating an instance, if neither
             the network nor the subnetwork is specified, the
-            default network global/networks/default is used;
-            if the network is not specified but the
+            default network global/networks/default is used.
+            If the selected project doesn't have the default
+            network, you must specify a network or subnet.
+            If the network is not specified but the
             subnetwork is specified, the network is
             inferred. If you specify this property, you can
             specify the network as a full or partial URL.
@@ -35948,7 +37854,7 @@ class NetworkPeering(proto.Message):
             This field is a member of `oneof`_ ``_exchange_subnet_routes``.
         export_custom_routes (bool):
             Whether to export the custom routes to peer
-            network.
+            network. The default value is false.
 
             This field is a member of `oneof`_ ``_export_custom_routes``.
         export_subnet_routes_with_public_ip (bool):
@@ -35961,7 +37867,7 @@ class NetworkPeering(proto.Message):
             This field is a member of `oneof`_ ``_export_subnet_routes_with_public_ip``.
         import_custom_routes (bool):
             Whether to import the custom routes from peer
-            network.
+            network. The default value is false.
 
             This field is a member of `oneof`_ ``_import_custom_routes``.
         import_subnet_routes_with_public_ip (bool):
@@ -36032,6 +37938,28 @@ class NetworkPeering(proto.Message):
     peer_mtu = proto.Field(proto.INT32, number=69584721, optional=True,)
     state = proto.Field(proto.STRING, number=109757585, optional=True,)
     state_details = proto.Field(proto.STRING, number=95566996, optional=True,)
+
+
+class NetworkPerformanceConfig(proto.Message):
+    r"""
+
+    Attributes:
+        total_egress_bandwidth_tier (str):
+            Check the TotalEgressBandwidthTier enum for
+            the list of possible values.
+
+            This field is a member of `oneof`_ ``_total_egress_bandwidth_tier``.
+    """
+
+    class TotalEgressBandwidthTier(proto.Enum):
+        r""""""
+        UNDEFINED_TOTAL_EGRESS_BANDWIDTH_TIER = 0
+        DEFAULT = 115302945
+        TIER_1 = 326919444
+
+    total_egress_bandwidth_tier = proto.Field(
+        proto.STRING, number=130109439, optional=True,
+    )
 
 
 class NetworkRoutingConfig(proto.Message):
@@ -37798,6 +39726,70 @@ class OutlierDetection(proto.Message):
     )
 
 
+class PacketIntervals(proto.Message):
+    r"""Next free: 7
+
+    Attributes:
+        avg_ms (int):
+            Average observed inter-packet interval in
+            milliseconds.
+
+            This field is a member of `oneof`_ ``_avg_ms``.
+        duration (str):
+            From how long ago in the past these intervals
+            were observed. Check the Duration enum for the
+            list of possible values.
+
+            This field is a member of `oneof`_ ``_duration``.
+        max_ms (int):
+            Maximum observed inter-packet interval in
+            milliseconds.
+
+            This field is a member of `oneof`_ ``_max_ms``.
+        min_ms (int):
+            Minimum observed inter-packet interval in
+            milliseconds.
+
+            This field is a member of `oneof`_ ``_min_ms``.
+        num_intervals (int):
+            Number of inter-packet intervals from which
+            these statistics were derived.
+
+            This field is a member of `oneof`_ ``_num_intervals``.
+        type_ (str):
+            The type of packets for which inter-packet
+            intervals were computed. Check the Type enum for
+            the list of possible values.
+
+            This field is a member of `oneof`_ ``_type``.
+    """
+
+    class Duration(proto.Enum):
+        r"""From how long ago in the past these intervals were observed."""
+        UNDEFINED_DURATION = 0
+        DURATION_UNSPECIFIED = 529071340
+        HOUR = 2223588
+        MAX = 76100
+        MINUTE = 126786068
+
+    class Type(proto.Enum):
+        r"""The type of packets for which inter-packet intervals were
+        computed.
+        """
+        UNDEFINED_TYPE = 0
+        LOOPBACK = 356174219
+        RECEIVE = 189660867
+        TRANSMIT = 452903600
+        TYPE_UNSPECIFIED = 437714322
+
+    avg_ms = proto.Field(proto.INT64, number=204811827, optional=True,)
+    duration = proto.Field(proto.STRING, number=155471252, optional=True,)
+    max_ms = proto.Field(proto.INT64, number=529474145, optional=True,)
+    min_ms = proto.Field(proto.INT64, number=536564403, optional=True,)
+    num_intervals = proto.Field(proto.INT64, number=186329813, optional=True,)
+    type_ = proto.Field(proto.STRING, number=3575610, optional=True,)
+
+
 class PacketMirroring(proto.Message):
     r"""Represents a Packet Mirroring resource. Packet Mirroring
     clones the traffic of specified instances in your Virtual
@@ -38516,19 +40508,21 @@ class PatchGlobalPublicDelegatedPrefixeRequest(proto.Message):
         public_delegated_prefix_resource (google.cloud.compute_v1.types.PublicDelegatedPrefix):
             The body resource for this request
         request_id (str):
-            An optional request ID to identify requests. Specify a
-            unique request ID so that if you must retry your request,
-            the server will know to ignore the request if it has already
-            been completed. For example, consider a situation where you
-            make an initial request and the request times out. If you
-            make the request again with the same request ID, the server
-            can check if original operation with the same request ID was
-            received, and if so, will ignore the second request. This
-            prevents clients from accidentally creating duplicate
-            commitments. The request ID must be a valid UUID with the
-            exception that zero UUID is not supported (
-            00000000-0000-0000-0000-000000000000). end_interface:
-            MixerMutationRequestBuilder
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments. The request ID
+            must be a valid UUID with the exception that
+            zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000).
 
             This field is a member of `oneof`_ ``_request_id``.
     """
@@ -38971,19 +40965,21 @@ class PatchPublicAdvertisedPrefixeRequest(proto.Message):
         public_advertised_prefix_resource (google.cloud.compute_v1.types.PublicAdvertisedPrefix):
             The body resource for this request
         request_id (str):
-            An optional request ID to identify requests. Specify a
-            unique request ID so that if you must retry your request,
-            the server will know to ignore the request if it has already
-            been completed. For example, consider a situation where you
-            make an initial request and the request times out. If you
-            make the request again with the same request ID, the server
-            can check if original operation with the same request ID was
-            received, and if so, will ignore the second request. This
-            prevents clients from accidentally creating duplicate
-            commitments. The request ID must be a valid UUID with the
-            exception that zero UUID is not supported (
-            00000000-0000-0000-0000-000000000000). end_interface:
-            MixerMutationRequestBuilder
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments. The request ID
+            must be a valid UUID with the exception that
+            zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000).
 
             This field is a member of `oneof`_ ``_request_id``.
     """
@@ -39011,19 +41007,21 @@ class PatchPublicDelegatedPrefixeRequest(proto.Message):
         region (str):
             Name of the region for this request.
         request_id (str):
-            An optional request ID to identify requests. Specify a
-            unique request ID so that if you must retry your request,
-            the server will know to ignore the request if it has already
-            been completed. For example, consider a situation where you
-            make an initial request and the request times out. If you
-            make the request again with the same request ID, the server
-            can check if original operation with the same request ID was
-            received, and if so, will ignore the second request. This
-            prevents clients from accidentally creating duplicate
-            commitments. The request ID must be a valid UUID with the
-            exception that zero UUID is not supported (
-            00000000-0000-0000-0000-000000000000). end_interface:
-            MixerMutationRequestBuilder
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments. The request ID
+            must be a valid UUID with the exception that
+            zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000).
 
             This field is a member of `oneof`_ ``_request_id``.
     """
@@ -39434,19 +41432,21 @@ class PatchServiceAttachmentRequest(proto.Message):
             The region scoping this request and should
             conform to RFC1035.
         request_id (str):
-            An optional request ID to identify requests. Specify a
-            unique request ID so that if you must retry your request,
-            the server will know to ignore the request if it has already
-            been completed. For example, consider a situation where you
-            make an initial request and the request times out. If you
-            make the request again with the same request ID, the server
-            can check if original operation with the same request ID was
-            received, and if so, will ignore the second request. This
-            prevents clients from accidentally creating duplicate
-            commitments. The request ID must be a valid UUID with the
-            exception that zero UUID is not supported (
-            00000000-0000-0000-0000-000000000000). end_interface:
-            MixerMutationRequestBuilder
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments. The request ID
+            must be a valid UUID with the exception that
+            zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000).
 
             This field is a member of `oneof`_ ``_request_id``.
         service_attachment (str):
@@ -39572,19 +41572,21 @@ class PatchTargetGrpcProxyRequest(proto.Message):
         project (str):
             Project ID for this request.
         request_id (str):
-            An optional request ID to identify requests. Specify a
-            unique request ID so that if you must retry your request,
-            the server will know to ignore the request if it has already
-            been completed. For example, consider a situation where you
-            make an initial request and the request times out. If you
-            make the request again with the same request ID, the server
-            can check if original operation with the same request ID was
-            received, and if so, will ignore the second request. This
-            prevents clients from accidentally creating duplicate
-            commitments. The request ID must be a valid UUID with the
-            exception that zero UUID is not supported (
-            00000000-0000-0000-0000-000000000000). end_interface:
-            MixerMutationRequestBuilder
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments. The request ID
+            must be a valid UUID with the exception that
+            zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000).
 
             This field is a member of `oneof`_ ``_request_id``.
         target_grpc_proxy (str):
@@ -39610,19 +41612,21 @@ class PatchTargetHttpProxyRequest(proto.Message):
         project (str):
             Project ID for this request.
         request_id (str):
-            An optional request ID to identify requests. Specify a
-            unique request ID so that if you must retry your request,
-            the server will know to ignore the request if it has already
-            been completed. For example, consider a situation where you
-            make an initial request and the request times out. If you
-            make the request again with the same request ID, the server
-            can check if original operation with the same request ID was
-            received, and if so, will ignore the second request. This
-            prevents clients from accidentally creating duplicate
-            commitments. The request ID must be a valid UUID with the
-            exception that zero UUID is not supported (
-            00000000-0000-0000-0000-000000000000). end_interface:
-            MixerMutationRequestBuilder
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments. The request ID
+            must be a valid UUID with the exception that
+            zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000).
 
             This field is a member of `oneof`_ ``_request_id``.
         target_http_proxy (str):
@@ -39648,19 +41652,21 @@ class PatchTargetHttpsProxyRequest(proto.Message):
         project (str):
             Project ID for this request.
         request_id (str):
-            An optional request ID to identify requests. Specify a
-            unique request ID so that if you must retry your request,
-            the server will know to ignore the request if it has already
-            been completed. For example, consider a situation where you
-            make an initial request and the request times out. If you
-            make the request again with the same request ID, the server
-            can check if original operation with the same request ID was
-            received, and if so, will ignore the second request. This
-            prevents clients from accidentally creating duplicate
-            commitments. The request ID must be a valid UUID with the
-            exception that zero UUID is not supported (
-            00000000-0000-0000-0000-000000000000). end_interface:
-            MixerMutationRequestBuilder
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments. The request ID
+            must be a valid UUID with the exception that
+            zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000).
 
             This field is a member of `oneof`_ ``_request_id``.
         target_https_proxy (str):
@@ -39718,15 +41724,15 @@ class PatchUrlMapRequest(proto.Message):
 class PathMatcher(proto.Message):
     r"""A matcher for the path portion of the URL. The BackendService
     from the longest-matched rule will serve the URL. If no rule was
-    matched, the default service will be used.
+    matched, the default service is used.
 
     Attributes:
         default_route_action (google.cloud.compute_v1.types.HttpRouteAction):
             defaultRouteAction takes effect when none of
             the pathRules or routeRules match. The load
-            balancer performs advanced routing actions like
-            URL rewrites, header transformations, etc. prior
-            to forwarding the request to the selected
+            balancer performs advanced routing actions, such
+            as URL rewrites and header transformations,
+            before forwarding the request to the selected
             backend. If defaultRouteAction specifies any
             weightedBackendServices, defaultService must not
             be set. Conversely if defaultService is set,
@@ -39734,27 +41740,27 @@ class PathMatcher(proto.Message):
             weightedBackendServices. Only one of
             defaultRouteAction or defaultUrlRedirect must be
             set. UrlMaps for external HTTP(S) load balancers
-            support only the urlRewrite action within a
-            pathMatcher's defaultRouteAction.
+            support only the urlRewrite action within a path
+            matcher's defaultRouteAction.
 
             This field is a member of `oneof`_ ``_default_route_action``.
         default_service (str):
             The full or partial URL to the BackendService resource. This
-            will be used if none of the pathRules or routeRules defined
+            URL is used if none of the pathRules or routeRules defined
             by this PathMatcher are matched. For example, the following
             are all valid URLs to a BackendService resource: -
             https://www.googleapis.com/compute/v1/projects/project
             /global/backendServices/backendService -
             compute/v1/projects/project/global/backendServices/backendService
             - global/backendServices/backendService If
-            defaultRouteAction is additionally specified, advanced
-            routing actions like URL Rewrites, etc. take effect prior to
-            sending the request to the backend. However, if
-            defaultService is specified, defaultRouteAction cannot
-            contain any weightedBackendServices. Conversely, if
-            defaultRouteAction specifies any weightedBackendServices,
-            defaultService must not be specified. Only one of
-            defaultService, defaultUrlRedirect or
+            defaultRouteAction is also specified, advanced routing
+            actions, such as URL rewrites, take effect before sending
+            the request to the backend. However, if defaultService is
+            specified, defaultRouteAction cannot contain any
+            weightedBackendServices. Conversely, if defaultRouteAction
+            specifies any weightedBackendServices, defaultService must
+            not be specified. Only one of defaultService,
+            defaultUrlRedirect , or
             defaultRouteAction.weightedBackendService must be set.
             Authorization requires one or more of the following Google
             IAM permissions on the specified resource default_service: -
@@ -39767,7 +41773,7 @@ class PathMatcher(proto.Message):
             URL specified by defaultUrlRedirect. If
             defaultUrlRedirect is specified, defaultService
             or defaultRouteAction must not be set. Not
-            supported when the URL map is bound to target
+            supported when the URL map is bound to a target
             gRPC proxy.
 
             This field is a member of `oneof`_ ``_default_url_redirect``.
@@ -39780,15 +41786,15 @@ class PathMatcher(proto.Message):
         header_action (google.cloud.compute_v1.types.HttpHeaderAction):
             Specifies changes to request and response
             headers that need to take effect for the
-            selected backendService. HeaderAction specified
+            selected backend service. HeaderAction specified
             here are applied after the matching
             HttpRouteRule HeaderAction and before the
-            HeaderAction in the UrlMap Note that
-            headerAction is not supported for Loadbalancers
-            that have their loadBalancingScheme set to
-            EXTERNAL. Not supported when the URL map is
-            bound to target gRPC proxy that has
-            validateForProxyless field set to true.
+            HeaderAction in the UrlMap HeaderAction is not
+            supported for load balancers that have their
+            loadBalancingScheme set to EXTERNAL. Not
+            supported when the URL map is bound to a target
+            gRPC proxy that has validateForProxyless field
+            set to true.
 
             This field is a member of `oneof`_ ``_header_action``.
         name (str):
@@ -39850,28 +41856,28 @@ class PathRule(proto.Message):
             here.
         route_action (google.cloud.compute_v1.types.HttpRouteAction):
             In response to a matching path, the load
-            balancer performs advanced routing actions like
-            URL rewrites, header transformations, etc. prior
-            to forwarding the request to the selected
+            balancer performs advanced routing actions, such
+            as URL rewrites and header transformations,
+            before forwarding the request to the selected
             backend. If routeAction specifies any
             weightedBackendServices, service must not be
             set. Conversely if service is set, routeAction
             cannot contain any weightedBackendServices. Only
             one of routeAction or urlRedirect must be set.
-            UrlMaps for external HTTP(S) load balancers
-            support only the urlRewrite action within a
-            pathRule's routeAction.
+            URL maps for external HTTP(S) load balancers
+            support only the urlRewrite action within a path
+            rule's routeAction.
 
             This field is a member of `oneof`_ ``_route_action``.
         service (str):
             The full or partial URL of the backend
             service resource to which traffic is directed if
-            this rule is matched. If routeAction is
-            additionally specified, advanced routing actions
-            like URL Rewrites, etc. take effect prior to
-            sending the request to the backend. However, if
-            service is specified, routeAction cannot contain
-            any weightedBackendService s. Conversely, if
+            this rule is matched. If routeAction is also
+            specified, advanced routing actions, such as URL
+            rewrites, take effect before sending the request
+            to the backend. However, if service is
+            specified, routeAction cannot contain any
+            weightedBackendServices. Conversely, if
             routeAction specifies any
             weightedBackendServices, service must not be
             specified. Only one of urlRedirect, service or
@@ -39883,7 +41889,7 @@ class PathRule(proto.Message):
             is redirected to a URL specified by urlRedirect.
             If urlRedirect is specified, service or
             routeAction must not be set. Not supported when
-            the URL map is bound to target gRPC proxy.
+            the URL map is bound to a target gRPC proxy.
 
             This field is a member of `oneof`_ ``_url_redirect``.
     """
@@ -39963,13 +41969,13 @@ class Policy(proto.Message):
     r"""An Identity and Access Management (IAM) policy, which specifies
     access controls for Google Cloud resources. A ``Policy`` is a
     collection of ``bindings``. A ``binding`` binds one or more
-    ``members`` to a single ``role``. Members can be user accounts,
-    service accounts, Google groups, and domains (such as G Suite). A
-    ``role`` is a named list of permissions; each ``role`` can be an IAM
-    predefined role or a user-created custom role. For some types of
-    Google Cloud resources, a ``binding`` can also specify a
-    ``condition``, which is a logical expression that allows access to a
-    resource only if the expression evaluates to ``true``. A condition
+    ``members``, or principals, to a single ``role``. Principals can be
+    user accounts, service accounts, Google groups, and domains (such as
+    G Suite). A ``role`` is a named list of permissions; each ``role``
+    can be an IAM predefined role or a user-created custom role. For
+    some types of Google Cloud resources, a ``binding`` can also specify
+    a ``condition``, which is a logical expression that allows access to
+    a resource only if the expression evaluates to ``true``. A condition
     can add constraints based on attributes of the request, the
     resource, or both. To learn which resources support conditions in
     their IAM policies, see the `IAM
@@ -40001,10 +42007,17 @@ class Policy(proto.Message):
             Specifies cloud audit logging configuration
             for this policy.
         bindings (Sequence[google.cloud.compute_v1.types.Binding]):
-            Associates a list of ``members`` to a ``role``. Optionally,
-            may specify a ``condition`` that determines how and when the
-            ``bindings`` are applied. Each of the ``bindings`` must
-            contain at least one member.
+            Associates a list of ``members``, or principals, with a
+            ``role``. Optionally, may specify a ``condition`` that
+            determines how and when the ``bindings`` are applied. Each
+            of the ``bindings`` must contain at least one principal. The
+            ``bindings`` in a ``Policy`` can refer to up to 1,500
+            principals; up to 250 of these principals can be Google
+            groups. Each occurrence of a principal counts towards these
+            limits. For example, if the ``bindings`` grant 50 different
+            roles to ``user:alice@example.com``, and not to any other
+            principal, then you can add another 1,450 principals to the
+            ``bindings`` in the ``Policy``.
         etag (str):
             ``etag`` is used for optimistic concurrency control as a way
             to help prevent simultaneous updates of a policy from
@@ -40225,9 +42238,9 @@ class Project(proto.Message):
 
             This field is a member of `oneof`_ ``_kind``.
         name (str):
-            The project ID. For example: my-example-
-            roject. Use the project ID to make requests to
-            Compute Engine.
+            The project ID. For example:
+            my-example-project. Use the project ID to make
+            requests to Compute Engine.
 
             This field is a member of `oneof`_ ``_name``.
         quotas (Sequence[google.cloud.compute_v1.types.Quota]):
@@ -40259,8 +42272,10 @@ class Project(proto.Message):
         PREMIUM.
         """
         UNDEFINED_DEFAULT_NETWORK_TIER = 0
+        FIXED_STANDARD = 310464328
         PREMIUM = 399530551
         STANDARD = 484642493
+        STANDARD_OVERRIDES_FIXED_STANDARD = 465847234
 
     class XpnProjectStatus(proto.Enum):
         r"""[Output Only] The role this project has in a shared VPC
@@ -40389,8 +42404,10 @@ class ProjectsSetDefaultNetworkTierRequest(proto.Message):
     class NetworkTier(proto.Enum):
         r"""Default network tier to be set."""
         UNDEFINED_NETWORK_TIER = 0
+        FIXED_STANDARD = 310464328
         PREMIUM = 399530551
         STANDARD = 484642493
+        STANDARD_OVERRIDES_FIXED_STANDARD = 465847234
 
     network_tier = proto.Field(proto.STRING, number=517397843, optional=True,)
 
@@ -40471,15 +42488,30 @@ class PublicAdvertisedPrefix(proto.Message):
 
             This field is a member of `oneof`_ ``_shared_secret``.
         status (str):
-            The status of the public advertised prefix.
-            Check the Status enum for the list of possible
-            values.
+            The status of the public advertised prefix. Possible values
+            include: - ``INITIAL``: RPKI validation is complete. -
+            ``PTR_CONFIGURED``: User has configured the PTR. -
+            ``VALIDATED``: Reverse DNS lookup is successful. -
+            ``REVERSE_DNS_LOOKUP_FAILED``: Reverse DNS lookup failed. -
+            ``PREFIX_CONFIGURATION_IN_PROGRESS``: The prefix is being
+            configured. - ``PREFIX_CONFIGURATION_COMPLETE``: The prefix
+            is fully configured. - ``PREFIX_REMOVAL_IN_PROGRESS``: The
+            prefix is being removed. Check the Status enum for the list
+            of possible values.
 
             This field is a member of `oneof`_ ``_status``.
     """
 
     class Status(proto.Enum):
-        r"""The status of the public advertised prefix."""
+        r"""The status of the public advertised prefix. Possible values include:
+        - ``INITIAL``: RPKI validation is complete. - ``PTR_CONFIGURED``:
+        User has configured the PTR. - ``VALIDATED``: Reverse DNS lookup is
+        successful. - ``REVERSE_DNS_LOOKUP_FAILED``: Reverse DNS lookup
+        failed. - ``PREFIX_CONFIGURATION_IN_PROGRESS``: The prefix is being
+        configured. - ``PREFIX_CONFIGURATION_COMPLETE``: The prefix is fully
+        configured. - ``PREFIX_REMOVAL_IN_PROGRESS``: The prefix is being
+        removed.
+        """
         UNDEFINED_STATUS = 0
         INITIAL = 518841124
         PREFIX_CONFIGURATION_COMPLETE = 480889551
@@ -40683,14 +42715,28 @@ class PublicDelegatedPrefix(proto.Message):
 
             This field is a member of `oneof`_ ``_self_link``.
         status (str):
-            [Output Only] The status of the public delegated prefix.
-            Check the Status enum for the list of possible values.
+            [Output Only] The status of the public delegated prefix,
+            which can be one of following values: - ``INITIALIZING`` The
+            public delegated prefix is being initialized and addresses
+            cannot be created yet. - ``READY_TO_ANNOUNCE`` The public
+            delegated prefix is a live migration prefix and is active. -
+            ``ANNOUNCED`` The public delegated prefix is active. -
+            ``DELETING`` The public delegated prefix is being
+            deprovsioned. Check the Status enum for the list of possible
+            values.
 
             This field is a member of `oneof`_ ``_status``.
     """
 
     class Status(proto.Enum):
-        r"""[Output Only] The status of the public delegated prefix."""
+        r"""[Output Only] The status of the public delegated prefix, which can
+        be one of following values: - ``INITIALIZING`` The public delegated
+        prefix is being initialized and addresses cannot be created yet. -
+        ``READY_TO_ANNOUNCE`` The public delegated prefix is a live
+        migration prefix and is active. - ``ANNOUNCED`` The public delegated
+        prefix is active. - ``DELETING`` The public delegated prefix is
+        being deprovsioned.
+        """
         UNDEFINED_STATUS = 0
         ANNOUNCED = 365103355
         DELETING = 528602024
@@ -40949,6 +42995,7 @@ class Quota(proto.Message):
         COMMITTED_E2_CPUS = 388120154
         COMMITTED_LICENSES = 357606869
         COMMITTED_LOCAL_SSD_TOTAL_GB = 308393480
+        COMMITTED_M3_CPUS = 585985
         COMMITTED_MEMORY_OPTIMIZED_CPUS = 489057886
         COMMITTED_N2A_CPUS = 40064304
         COMMITTED_N2D_CPUS = 125951757
@@ -40959,6 +43006,7 @@ class Quota(proto.Message):
         COMMITTED_NVIDIA_P4_GPUS = 347952897
         COMMITTED_NVIDIA_T4_GPUS = 139871237
         COMMITTED_NVIDIA_V100_GPUS = 219562
+        COMMITTED_T2A_CPUS = 296378986
         COMMITTED_T2D_CPUS = 382266439
         CPUS = 2075595
         CPUS_ALL_REGIONS = 470911149
@@ -40969,6 +43017,7 @@ class Quota(proto.Message):
         EXTERNAL_VPN_GATEWAYS = 272457134
         FIREWALLS = 374485843
         FORWARDING_RULES = 432668949
+        GLOBAL_EXTERNAL_MANAGED_FORWARDING_RULES = 327611949
         GLOBAL_INTERNAL_ADDRESSES = 42738332
         GPUS_ALL_REGIONS = 39387177
         HEALTH_CHECKS = 289347502
@@ -40990,6 +43039,7 @@ class Quota(proto.Message):
         LOCAL_SSD_TOTAL_GB = 330878021
         M1_CPUS = 37203366
         M2_CPUS = 65832517
+        M3_CPUS = 94461668
         MACHINE_IMAGES = 446986640
         N2A_CPUS = 265855917
         N2D_CPUS = 351743370
@@ -41043,6 +43093,7 @@ class Quota(proto.Message):
         STATIC_ADDRESSES = 93624049
         STATIC_BYOIP_ADDRESSES = 275809649
         SUBNETWORKS = 421330469
+        T2A_CPUS = 522170599
         T2D_CPUS = 71187140
         TARGET_HTTPS_PROXIES = 219522506
         TARGET_HTTP_PROXIES = 164117155
@@ -41602,8 +43653,8 @@ class RegionInstanceGroupManagersApplyUpdatesRequest(proto.Message):
     Attributes:
         all_instances (bool):
             Flag to update all instances instead of
-            specified list of “instances”. If the flag is
-            set to true then the instances may not be
+            specified list of ���instances���. If the flag
+            is set to true then the instances may not be
             specified in the request.
 
             This field is a member of `oneof`_ ``_all_instances``.
@@ -41994,9 +44045,9 @@ class RegionSetLabelsRequest(proto.Message):
             for this resource, used to detect conflicts. The
             fingerprint is initially generated by Compute
             Engine and changes after every request to modify
-            or update labels. You must always provide an up-
-            to-date fingerprint hash in order to update or
-            change labels. Make a get() request to the
+            or update labels. You must always provide an
+            up-to-date fingerprint hash in order to update
+            or change labels. Make a get() request to the
             resource to get the latest fingerprint.
 
             This field is a member of `oneof`_ ``_label_fingerprint``.
@@ -42465,9 +44516,9 @@ class RemoveRuleSecurityPolicyRequest(proto.Message):
 class RequestMirrorPolicy(proto.Message):
     r"""A policy that specifies how requests intended for the route's
     backends are shadowed to a separate mirrored backend service.
-    Loadbalancer does not wait for responses from the shadow
-    service. Prior to sending traffic to the shadow service, the
-    host / authority header is suffixed with -shadow.
+    The load balancer doesn't wait for responses from the shadow
+    service. Before sending traffic to the shadow service, the host
+    or authority header is suffixed with -shadow.
 
     Attributes:
         backend_service (str):
@@ -42533,6 +44584,10 @@ class Reservation(proto.Message):
             resource.
 
             This field is a member of `oneof`_ ``_self_link``.
+        share_settings (google.cloud.compute_v1.types.ShareSettings):
+            Share-settings for shared-reservation
+
+            This field is a member of `oneof`_ ``_share_settings``.
         specific_reservation (google.cloud.compute_v1.types.AllocationSpecificSKUReservation):
             Reservation for instances with specific
             machine shapes.
@@ -42576,6 +44631,9 @@ class Reservation(proto.Message):
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
     satisfies_pzs = proto.Field(proto.BOOL, number=480964267, optional=True,)
     self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    share_settings = proto.Field(
+        proto.MESSAGE, number=266668163, optional=True, message="ShareSettings",
+    )
     specific_reservation = proto.Field(
         proto.MESSAGE,
         number=404901951,
@@ -42613,9 +44671,9 @@ class ReservationAffinity(proto.Message):
             Corresponds to the label values of a
             reservation resource. This can be either a name
             to a reservation in the same project or
-            "projects/different-project/reservations/some-
-            reservation-name" to target a shared reservation
-            in the same zone but in a different project.
+            "projects/different-project/reservations/some-reservation-name"
+            to target a shared reservation in the same zone
+            but in a different project.
     """
 
     class ConsumeReservationType(proto.Enum):
@@ -43736,6 +45794,43 @@ class ResourcePolicyWeeklyCycleDayOfWeek(proto.Message):
     start_time = proto.Field(proto.STRING, number=37467274, optional=True,)
 
 
+class ResumeInstanceRequest(proto.Message):
+    r"""A request message for Instances.Resume. See the method
+    description for details.
+
+    Attributes:
+        instance (str):
+            Name of the instance resource to resume.
+        project (str):
+            Project ID for this request.
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments. The request ID
+            must be a valid UUID with the exception that
+            zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000).
+
+            This field is a member of `oneof`_ ``_request_id``.
+        zone (str):
+            The name of the zone for this request.
+    """
+
+    instance = proto.Field(proto.STRING, number=18257045,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
+
+
 class Route(proto.Message):
     r"""Represents a Route resource. A route defines a path from VM
     instances in the VPC network to a specific destination. This
@@ -43791,8 +45886,8 @@ class Route(proto.Message):
             The URL to a gateway that should handle
             matching packets. You can only specify the
             internet gateway using a full or partial valid
-            URL: projects/ project/global/gateways/default-
-            internet-gateway
+            URL: projects/
+            project/global/gateways/default-internet-gateway
 
             This field is a member of `oneof`_ ``_next_hop_gateway``.
         next_hop_ilb (str):
@@ -44287,6 +46382,11 @@ class RouterBgpPeer(proto.Message):
             Enable enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_enable``.
+        enable_ipv6 (bool):
+            Enable IPv6 traffic over BGP Peer. If not
+            specified, it is disabled by default.
+
+            This field is a member of `oneof`_ ``_enable_ipv6``.
         interface_name (str):
             Name of the interface the BGP peer is
             associated with.
@@ -44297,6 +46397,11 @@ class RouterBgpPeer(proto.Message):
             Cloud Platform. Only IPv4 is supported.
 
             This field is a member of `oneof`_ ``_ip_address``.
+        ipv6_nexthop_address (str):
+            IPv6 address of the interface inside Google
+            Cloud Platform.
+
+            This field is a member of `oneof`_ ``_ipv6_nexthop_address``.
         management_type (str):
             [Output Only] The resource that configures and manages this
             BGP peer. - MANAGED_BY_USER is the default value and can be
@@ -44330,9 +46435,14 @@ class RouterBgpPeer(proto.Message):
             Google Cloud Platform. Only IPv4 is supported.
 
             This field is a member of `oneof`_ ``_peer_ip_address``.
+        peer_ipv6_nexthop_address (str):
+            IPv6 address of the BGP interface outside
+            Google Cloud Platform.
+
+            This field is a member of `oneof`_ ``_peer_ipv6_nexthop_address``.
         router_appliance_instance (str):
-            URI of the VM instance that is used as third-
-            arty router appliances such as Next Gen
+            URI of the VM instance that is used as
+            third-party router appliances such as Next Gen
             Firewalls, Virtual Routers, or Router
             Appliances. The VM instance must be located in
             zones contained in the same region as this Cloud
@@ -44391,12 +46501,17 @@ class RouterBgpPeer(proto.Message):
         proto.MESSAGE, number=97440, optional=True, message="RouterBgpPeerBfd",
     )
     enable = proto.Field(proto.STRING, number=311764355, optional=True,)
+    enable_ipv6 = proto.Field(proto.BOOL, number=181467939, optional=True,)
     interface_name = proto.Field(proto.STRING, number=437854673, optional=True,)
     ip_address = proto.Field(proto.STRING, number=406272220, optional=True,)
+    ipv6_nexthop_address = proto.Field(proto.STRING, number=27968211, optional=True,)
     management_type = proto.Field(proto.STRING, number=173703606, optional=True,)
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
     peer_asn = proto.Field(proto.UINT32, number=69573151, optional=True,)
     peer_ip_address = proto.Field(proto.STRING, number=207735769, optional=True,)
+    peer_ipv6_nexthop_address = proto.Field(
+        proto.STRING, number=491486608, optional=True,
+    )
     router_appliance_instance = proto.Field(
         proto.STRING, number=468312989, optional=True,
     )
@@ -44476,10 +46591,11 @@ class RouterInterface(proto.Message):
         ip_range (str):
             IP address and range of the interface. The IP
             range must be in the RFC3927 link-local IP
-            address space. The value must be a CIDR-
-            formatted string, for example: 169.254.0.1/30.
-            NOTE: Do not truncate the address as it
-            represents the IP address of the interface.
+            address space. The value must be a
+            CIDR-formatted string, for example:
+            169.254.0.1/30. NOTE: Do not truncate the
+            address as it represents the IP address of the
+            interface.
 
             This field is a member of `oneof`_ ``_ip_range``.
         linked_interconnect_attachment (str):
@@ -44646,6 +46762,19 @@ class RouterNat(proto.Message):
             IPs that have been assigned to the NAT. These
             IPs should be used for updating/patching a NAT
             only.
+        enable_dynamic_port_allocation (bool):
+            Enable Dynamic Port Allocation. If not
+            specified, it is disabled by default. If set to
+            true, - Dynamic Port Allocation will be enabled
+            on this NAT config. -
+            enableEndpointIndependentMapping cannot be set
+            to true. - If minPorts is set, minPortsPerVm
+            must be set to a power of two greater than or
+            equal to 32. If minPortsPerVm is not set, a
+            minimum of 32 ports will be allocated to a VM
+            from this NAT config.
+
+            This field is a member of `oneof`_ ``_enable_dynamic_port_allocation``.
         enable_endpoint_independent_mapping (bool):
 
             This field is a member of `oneof`_ ``_enable_endpoint_independent_mapping``.
@@ -44658,6 +46787,20 @@ class RouterNat(proto.Message):
             Configure logging on this NAT.
 
             This field is a member of `oneof`_ ``_log_config``.
+        max_ports_per_vm (int):
+            Maximum number of ports allocated to a VM
+            from this NAT config when Dynamic Port
+            Allocation is enabled. If Dynamic Port
+            Allocation is not enabled, this field has no
+            effect. If Dynamic Port Allocation is enabled,
+            and this field is set, it must be set to a power
+            of two greater than minPortsPerVm, or 64 if
+            minPortsPerVm is not set. If Dynamic Port
+            Allocation is enabled and this field is not set,
+            a maximum of 65536 ports will be allocated to a
+            VM from this NAT config.
+
+            This field is a member of `oneof`_ ``_max_ports_per_vm``.
         min_ports_per_vm (int):
             Minimum number of ports allocated to a VM
             from this NAT config. If not set, a default
@@ -44767,6 +46910,9 @@ class RouterNat(proto.Message):
         LIST_OF_SUBNETWORKS = 517542270
 
     drain_nat_ips = proto.RepeatedField(proto.STRING, number=504078535,)
+    enable_dynamic_port_allocation = proto.Field(
+        proto.BOOL, number=532106402, optional=True,
+    )
     enable_endpoint_independent_mapping = proto.Field(
         proto.BOOL, number=259441819, optional=True,
     )
@@ -44774,6 +46920,7 @@ class RouterNat(proto.Message):
     log_config = proto.Field(
         proto.MESSAGE, number=351299741, optional=True, message="RouterNatLogConfig",
     )
+    max_ports_per_vm = proto.Field(proto.INT32, number=250062049, optional=True,)
     min_ports_per_vm = proto.Field(proto.INT32, number=186193587, optional=True,)
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
     nat_ip_allocate_option = proto.Field(proto.STRING, number=429726845, optional=True,)
@@ -44860,7 +47007,8 @@ class RouterNatRule(proto.Message):
             inIpRange(destination.ip, '2.2.0.0/16')" "destination.ip ==
             '1.1.0.1' \|\| destination.ip == '8.8.8.8'" The following
             example is a valid match expression for private NAT:
-            "nexthop.hub == '/projects/my-project/global/hub/hub-1'".
+            "nexthop.hub ==
+            'https://networkconnectivity.googleapis.com/v1alpha1/projects/my-project/global/hub/hub-1'".
 
             This field is a member of `oneof`_ ``_match``.
         rule_number (int):
@@ -44976,6 +47124,9 @@ class RouterStatusBgpPeerStatus(proto.Message):
         advertised_routes (Sequence[google.cloud.compute_v1.types.Route]):
             Routes that were advertised to the remote BGP
             peer
+        bfd_status (google.cloud.compute_v1.types.BfdStatus):
+
+            This field is a member of `oneof`_ ``_bfd_status``.
         ip_address (str):
             IP address of the local BGP interface.
 
@@ -45038,6 +47189,9 @@ class RouterStatusBgpPeerStatus(proto.Message):
 
     advertised_routes = proto.RepeatedField(
         proto.MESSAGE, number=333393068, message="Route",
+    )
+    bfd_status = proto.Field(
+        proto.MESSAGE, number=395631729, optional=True, message="BfdStatus",
     )
     ip_address = proto.Field(proto.STRING, number=406272220, optional=True,)
     linked_vpn_tunnel = proto.Field(proto.STRING, number=352296953, optional=True,)
@@ -45341,6 +47495,205 @@ class SSLHealthCheck(proto.Message):
     response = proto.Field(proto.STRING, number=196547649, optional=True,)
 
 
+class SavedAttachedDisk(proto.Message):
+    r"""DEPRECATED: Please use compute#savedDisk instead. An
+    instance-attached disk resource.
+
+    Attributes:
+        auto_delete (bool):
+            Specifies whether the disk will be
+            auto-deleted when the instance is deleted (but
+            not when the disk is detached from the
+            instance).
+
+            This field is a member of `oneof`_ ``_auto_delete``.
+        boot (bool):
+            Indicates that this is a boot disk. The
+            virtual machine will use the first partition of
+            the disk for its root filesystem.
+
+            This field is a member of `oneof`_ ``_boot``.
+        device_name (str):
+            Specifies the name of the disk attached to
+            the source instance.
+
+            This field is a member of `oneof`_ ``_device_name``.
+        disk_encryption_key (google.cloud.compute_v1.types.CustomerEncryptionKey):
+            The encryption key for the disk.
+
+            This field is a member of `oneof`_ ``_disk_encryption_key``.
+        disk_size_gb (int):
+            The size of the disk in base-2 GB.
+
+            This field is a member of `oneof`_ ``_disk_size_gb``.
+        disk_type (str):
+            [Output Only] URL of the disk type resource. For example:
+            projects/project /zones/zone/diskTypes/pd-standard or pd-ssd
+
+            This field is a member of `oneof`_ ``_disk_type``.
+        guest_os_features (Sequence[google.cloud.compute_v1.types.GuestOsFeature]):
+            A list of features to enable on the guest
+            operating system. Applicable only for bootable
+            images. Read Enabling guest operating system
+            features to see a list of available options.
+        index (int):
+            Specifies zero-based index of the disk that
+            is attached to the source instance.
+
+            This field is a member of `oneof`_ ``_index``.
+        interface (str):
+            Specifies the disk interface to use for
+            attaching this disk, which is either SCSI or
+            NVME. Check the Interface enum for the list of
+            possible values.
+
+            This field is a member of `oneof`_ ``_interface``.
+        kind (str):
+            [Output Only] Type of the resource. Always
+            compute#attachedDisk for attached disks.
+
+            This field is a member of `oneof`_ ``_kind``.
+        licenses (Sequence[str]):
+            [Output Only] Any valid publicly visible licenses.
+        mode (str):
+            The mode in which this disk is attached to the source
+            instance, either READ_WRITE or READ_ONLY. Check the Mode
+            enum for the list of possible values.
+
+            This field is a member of `oneof`_ ``_mode``.
+        source (str):
+            Specifies a URL of the disk attached to the
+            source instance.
+
+            This field is a member of `oneof`_ ``_source``.
+        storage_bytes (int):
+            [Output Only] A size of the storage used by the disk's
+            snapshot by this machine image.
+
+            This field is a member of `oneof`_ ``_storage_bytes``.
+        storage_bytes_status (str):
+            [Output Only] An indicator whether storageBytes is in a
+            stable state or it is being adjusted as a result of shared
+            storage reallocation. This status can either be UPDATING,
+            meaning the size of the snapshot is being updated, or
+            UP_TO_DATE, meaning the size of the snapshot is up-to-date.
+            Check the StorageBytesStatus enum for the list of possible
+            values.
+
+            This field is a member of `oneof`_ ``_storage_bytes_status``.
+        type_ (str):
+            Specifies the type of the attached disk,
+            either SCRATCH or PERSISTENT. Check the Type
+            enum for the list of possible values.
+
+            This field is a member of `oneof`_ ``_type``.
+    """
+
+    class Interface(proto.Enum):
+        r"""Specifies the disk interface to use for attaching this disk,
+        which is either SCSI or NVME.
+        """
+        UNDEFINED_INTERFACE = 0
+        NVME = 2408800
+        SCSI = 2539686
+
+    class Mode(proto.Enum):
+        r"""The mode in which this disk is attached to the source instance,
+        either READ_WRITE or READ_ONLY.
+        """
+        UNDEFINED_MODE = 0
+        READ_ONLY = 91950261
+        READ_WRITE = 173607894
+
+    class StorageBytesStatus(proto.Enum):
+        r"""[Output Only] An indicator whether storageBytes is in a stable state
+        or it is being adjusted as a result of shared storage reallocation.
+        This status can either be UPDATING, meaning the size of the snapshot
+        is being updated, or UP_TO_DATE, meaning the size of the snapshot is
+        up-to-date.
+        """
+        UNDEFINED_STORAGE_BYTES_STATUS = 0
+        UPDATING = 494614342
+        UP_TO_DATE = 101306702
+
+    class Type(proto.Enum):
+        r"""Specifies the type of the attached disk, either SCRATCH or
+        PERSISTENT.
+        """
+        UNDEFINED_TYPE = 0
+        PERSISTENT = 460683927
+        SCRATCH = 496778970
+
+    auto_delete = proto.Field(proto.BOOL, number=464761403, optional=True,)
+    boot = proto.Field(proto.BOOL, number=3029746, optional=True,)
+    device_name = proto.Field(proto.STRING, number=67541716, optional=True,)
+    disk_encryption_key = proto.Field(
+        proto.MESSAGE, number=271660677, optional=True, message="CustomerEncryptionKey",
+    )
+    disk_size_gb = proto.Field(proto.INT64, number=316263735, optional=True,)
+    disk_type = proto.Field(proto.STRING, number=93009052, optional=True,)
+    guest_os_features = proto.RepeatedField(
+        proto.MESSAGE, number=79294545, message="GuestOsFeature",
+    )
+    index = proto.Field(proto.INT32, number=100346066, optional=True,)
+    interface = proto.Field(proto.STRING, number=502623545, optional=True,)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    licenses = proto.RepeatedField(proto.STRING, number=337642578,)
+    mode = proto.Field(proto.STRING, number=3357091, optional=True,)
+    source = proto.Field(proto.STRING, number=177235995, optional=True,)
+    storage_bytes = proto.Field(proto.INT64, number=424631719, optional=True,)
+    storage_bytes_status = proto.Field(proto.STRING, number=490739082, optional=True,)
+    type_ = proto.Field(proto.STRING, number=3575610, optional=True,)
+
+
+class SavedDisk(proto.Message):
+    r"""An instance-attached disk resource.
+
+    Attributes:
+        kind (str):
+            [Output Only] Type of the resource. Always compute#savedDisk
+            for attached disks.
+
+            This field is a member of `oneof`_ ``_kind``.
+        source_disk (str):
+            Specifies a URL of the disk attached to the
+            source instance.
+
+            This field is a member of `oneof`_ ``_source_disk``.
+        storage_bytes (int):
+            [Output Only] Size of the individual disk snapshot used by
+            this machine image.
+
+            This field is a member of `oneof`_ ``_storage_bytes``.
+        storage_bytes_status (str):
+            [Output Only] An indicator whether storageBytes is in a
+            stable state or it is being adjusted as a result of shared
+            storage reallocation. This status can either be UPDATING,
+            meaning the size of the snapshot is being updated, or
+            UP_TO_DATE, meaning the size of the snapshot is up-to-date.
+            Check the StorageBytesStatus enum for the list of possible
+            values.
+
+            This field is a member of `oneof`_ ``_storage_bytes_status``.
+    """
+
+    class StorageBytesStatus(proto.Enum):
+        r"""[Output Only] An indicator whether storageBytes is in a stable state
+        or it is being adjusted as a result of shared storage reallocation.
+        This status can either be UPDATING, meaning the size of the snapshot
+        is being updated, or UP_TO_DATE, meaning the size of the snapshot is
+        up-to-date.
+        """
+        UNDEFINED_STORAGE_BYTES_STATUS = 0
+        UPDATING = 494614342
+        UP_TO_DATE = 101306702
+
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    source_disk = proto.Field(proto.STRING, number=451753793, optional=True,)
+    storage_bytes = proto.Field(proto.INT64, number=424631719, optional=True,)
+    storage_bytes_status = proto.Field(proto.STRING, number=490739082, optional=True,)
+
+
 class ScalingScheduleStatus(proto.Message):
     r"""
 
@@ -45394,6 +47747,12 @@ class Scheduling(proto.Message):
             restarted if it is terminated by Compute Engine.
 
             This field is a member of `oneof`_ ``_automatic_restart``.
+        instance_termination_action (str):
+            Specifies the termination action for the
+            instance. Check the InstanceTerminationAction
+            enum for the list of possible values.
+
+            This field is a member of `oneof`_ ``_instance_termination_action``.
         location_hint (str):
             An opaque location hint used to place the
             instance close to other resources. This field is
@@ -45403,8 +47762,8 @@ class Scheduling(proto.Message):
             This field is a member of `oneof`_ ``_location_hint``.
         min_node_cpus (int):
             The minimum number of virtual CPUs this
-            instance will consume when running on a sole-
-            tenant node.
+            instance will consume when running on a
+            sole-tenant node.
 
             This field is a member of `oneof`_ ``_min_node_cpus``.
         node_affinities (Sequence[google.cloud.compute_v1.types.SchedulingNodeAffinity]):
@@ -45417,8 +47776,8 @@ class Scheduling(proto.Message):
             instance. For standard instances, the default
             behavior is MIGRATE. For preemptible instances,
             the default and only possible behavior is
-            TERMINATE. For more information, see Setting
-            Instance Scheduling Options. Check the
+            TERMINATE. For more information, see Set VM
+            availability policies. Check the
             OnHostMaintenance enum for the list of possible
             values.
 
@@ -45431,20 +47790,42 @@ class Scheduling(proto.Message):
             instance states.
 
             This field is a member of `oneof`_ ``_preemptible``.
+        provisioning_model (str):
+            Specifies the provisioning model of the
+            instance. Check the ProvisioningModel enum for
+            the list of possible values.
+
+            This field is a member of `oneof`_ ``_provisioning_model``.
     """
+
+    class InstanceTerminationAction(proto.Enum):
+        r"""Specifies the termination action for the instance."""
+        UNDEFINED_INSTANCE_TERMINATION_ACTION = 0
+        DELETE = 402225579
+        INSTANCE_TERMINATION_ACTION_UNSPECIFIED = 92954803
+        STOP = 2555906
 
     class OnHostMaintenance(proto.Enum):
         r"""Defines the maintenance behavior for this instance. For
         standard instances, the default behavior is MIGRATE. For
         preemptible instances, the default and only possible behavior is
-        TERMINATE. For more information, see Setting Instance Scheduling
-        Options.
+        TERMINATE. For more information, see Set VM availability
+        policies.
         """
         UNDEFINED_ON_HOST_MAINTENANCE = 0
         MIGRATE = 165699979
         TERMINATE = 527617601
 
+    class ProvisioningModel(proto.Enum):
+        r"""Specifies the provisioning model of the instance."""
+        UNDEFINED_PROVISIONING_MODEL = 0
+        SPOT = 2552066
+        STANDARD = 484642493
+
     automatic_restart = proto.Field(proto.BOOL, number=350821371, optional=True,)
+    instance_termination_action = proto.Field(
+        proto.STRING, number=107380667, optional=True,
+    )
     location_hint = proto.Field(proto.STRING, number=350519505, optional=True,)
     min_node_cpus = proto.Field(proto.INT32, number=317231675, optional=True,)
     node_affinities = proto.RepeatedField(
@@ -45452,6 +47833,7 @@ class Scheduling(proto.Message):
     )
     on_host_maintenance = proto.Field(proto.STRING, number=64616796, optional=True,)
     preemptible = proto.Field(proto.BOOL, number=324203169, optional=True,)
+    provisioning_model = proto.Field(proto.STRING, number=494423, optional=True,)
 
 
 class SchedulingNodeAffinity(proto.Message):
@@ -45610,6 +47992,9 @@ class SecurityPolicy(proto.Message):
             except the last character, which cannot be a dash.
 
             This field is a member of `oneof`_ ``_name``.
+        recaptcha_options_config (google.cloud.compute_v1.types.SecurityPolicyRecaptchaOptionsConfig):
+
+            This field is a member of `oneof`_ ``_recaptcha_options_config``.
         rules (Sequence[google.cloud.compute_v1.types.SecurityPolicyRule]):
             A list of rules that belong to this policy. There must
             always be a default rule (rule with priority 2147483647 and
@@ -45620,7 +48005,35 @@ class SecurityPolicy(proto.Message):
             [Output Only] Server-defined URL for the resource.
 
             This field is a member of `oneof`_ ``_self_link``.
+        type_ (str):
+            The type indicates the intended use of the security policy.
+            CLOUD_ARMOR - Cloud Armor backend security policies can be
+            configured to filter incoming HTTP requests targeting
+            backend services. They filter requests before they hit the
+            origin servers. CLOUD_ARMOR_EDGE - Cloud Armor edge security
+            policies can be configured to filter incoming HTTP requests
+            targeting backend services (including Cloud CDN-enabled) as
+            well as backend buckets (Cloud Storage). They filter
+            requests before the request is served from Google's cache.
+            Check the Type enum for the list of possible values.
+
+            This field is a member of `oneof`_ ``_type``.
     """
+
+    class Type(proto.Enum):
+        r"""The type indicates the intended use of the security policy.
+        CLOUD_ARMOR - Cloud Armor backend security policies can be
+        configured to filter incoming HTTP requests targeting backend
+        services. They filter requests before they hit the origin servers.
+        CLOUD_ARMOR_EDGE - Cloud Armor edge security policies can be
+        configured to filter incoming HTTP requests targeting backend
+        services (including Cloud CDN-enabled) as well as backend buckets
+        (Cloud Storage). They filter requests before the request is served
+        from Google's cache.
+        """
+        UNDEFINED_TYPE = 0
+        CLOUD_ARMOR = 260640373
+        CLOUD_ARMOR_EDGE = 250728775
 
     adaptive_protection_config = proto.Field(
         proto.MESSAGE,
@@ -45640,10 +48053,17 @@ class SecurityPolicy(proto.Message):
     id = proto.Field(proto.UINT64, number=3355, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    recaptcha_options_config = proto.Field(
+        proto.MESSAGE,
+        number=519006811,
+        optional=True,
+        message="SecurityPolicyRecaptchaOptionsConfig",
+    )
     rules = proto.RepeatedField(
         proto.MESSAGE, number=108873975, message="SecurityPolicyRule",
     )
     self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    type_ = proto.Field(proto.STRING, number=3575610, optional=True,)
 
 
 class SecurityPolicyAdaptiveProtectionConfig(proto.Message):
@@ -45774,6 +48194,24 @@ class SecurityPolicyList(proto.Message):
     )
 
 
+class SecurityPolicyRecaptchaOptionsConfig(proto.Message):
+    r"""
+
+    Attributes:
+        redirect_site_key (str):
+            An optional field to supply a reCAPTCHA site key to be used
+            for all the rules using the redirect action with the type of
+            GOOGLE_RECAPTCHA under the security policy. The specified
+            site key needs to be created from the reCAPTCHA API. The
+            user is responsible for the validity of the specified site
+            key. If not specified, a Google-managed site key is used.
+
+            This field is a member of `oneof`_ ``_redirect_site_key``.
+    """
+
+    redirect_site_key = proto.Field(proto.STRING, number=447677034, optional=True,)
+
+
 class SecurityPolicyReference(proto.Message):
     r"""
 
@@ -45793,10 +48231,21 @@ class SecurityPolicyRule(proto.Message):
 
     Attributes:
         action (str):
-            The Action to perform when the client
-            connection triggers the rule. Can currently be
-            either "allow" or "deny()" where valid values
-            for status are 403, 404, and 502.
+            The Action to perform when the rule is matched. The
+            following are the valid actions: - allow: allow access to
+            target. - deny(): deny access to target, returns the HTTP
+            response code specified (valid values are 403, 404, and
+            502). - rate_based_ban: limit client traffic to the
+            configured threshold and ban the client if the traffic
+            exceeds the threshold. Configure parameters for this action
+            in RateLimitOptions. Requires rate_limit_options to be set.
+            - redirect: redirect to a different target. This can either
+            be an internal reCAPTCHA redirect, or an external URL-based
+            redirect via a 302 response. Parameters for this action can
+            be configured via redirectOptions. - throttle: limit client
+            traffic to the configured threshold. Configure parameters
+            for this action in rateLimitOptions. Requires
+            rate_limit_options to be set for this.
 
             This field is a member of `oneof`_ ``_action``.
         description (str):
@@ -45805,6 +48254,11 @@ class SecurityPolicyRule(proto.Message):
             resource.
 
             This field is a member of `oneof`_ ``_description``.
+        header_action (google.cloud.compute_v1.types.SecurityPolicyRuleHttpHeaderAction):
+            Optional, additional actions that are
+            performed on headers.
+
+            This field is a member of `oneof`_ ``_header_action``.
         kind (str):
             [Output only] Type of the resource. Always
             compute#securityPolicyRule for security policy rules
@@ -45830,10 +48284,26 @@ class SecurityPolicyRule(proto.Message):
             lowest priority.
 
             This field is a member of `oneof`_ ``_priority``.
+        rate_limit_options (google.cloud.compute_v1.types.SecurityPolicyRuleRateLimitOptions):
+            Must be specified if the action is "rate_based_ban" or
+            "throttle". Cannot be specified for any other actions.
+
+            This field is a member of `oneof`_ ``_rate_limit_options``.
+        redirect_options (google.cloud.compute_v1.types.SecurityPolicyRuleRedirectOptions):
+            Parameters defining the redirect action.
+            Cannot be specified for any other actions.
+
+            This field is a member of `oneof`_ ``_redirect_options``.
     """
 
     action = proto.Field(proto.STRING, number=187661878, optional=True,)
     description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    header_action = proto.Field(
+        proto.MESSAGE,
+        number=328077352,
+        optional=True,
+        message="SecurityPolicyRuleHttpHeaderAction",
+    )
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     match = proto.Field(
         proto.MESSAGE,
@@ -45843,6 +48313,52 @@ class SecurityPolicyRule(proto.Message):
     )
     preview = proto.Field(proto.BOOL, number=218686408, optional=True,)
     priority = proto.Field(proto.INT32, number=445151652, optional=True,)
+    rate_limit_options = proto.Field(
+        proto.MESSAGE,
+        number=67544315,
+        optional=True,
+        message="SecurityPolicyRuleRateLimitOptions",
+    )
+    redirect_options = proto.Field(
+        proto.MESSAGE,
+        number=163285307,
+        optional=True,
+        message="SecurityPolicyRuleRedirectOptions",
+    )
+
+
+class SecurityPolicyRuleHttpHeaderAction(proto.Message):
+    r"""
+
+    Attributes:
+        request_headers_to_adds (Sequence[google.cloud.compute_v1.types.SecurityPolicyRuleHttpHeaderActionHttpHeaderOption]):
+            The list of request headers to add or
+            overwrite if they're already present.
+    """
+
+    request_headers_to_adds = proto.RepeatedField(
+        proto.MESSAGE,
+        number=87987661,
+        message="SecurityPolicyRuleHttpHeaderActionHttpHeaderOption",
+    )
+
+
+class SecurityPolicyRuleHttpHeaderActionHttpHeaderOption(proto.Message):
+    r"""
+
+    Attributes:
+        header_name (str):
+            The name of the header to set.
+
+            This field is a member of `oneof`_ ``_header_name``.
+        header_value (str):
+            The value to set the named header to.
+
+            This field is a member of `oneof`_ ``_header_value``.
+    """
+
+    header_name = proto.Field(proto.STRING, number=110223613, optional=True,)
+    header_value = proto.Field(proto.STRING, number=203094335, optional=True,)
 
 
 class SecurityPolicyRuleMatcher(proto.Message):
@@ -45903,6 +48419,180 @@ class SecurityPolicyRuleMatcherConfig(proto.Message):
     """
 
     src_ip_ranges = proto.RepeatedField(proto.STRING, number=432128083,)
+
+
+class SecurityPolicyRuleRateLimitOptions(proto.Message):
+    r"""
+
+    Attributes:
+        ban_duration_sec (int):
+            Can only be specified if the action for the rule is
+            "rate_based_ban". If specified, determines the time (in
+            seconds) the traffic will continue to be banned by the rate
+            limit after the rate falls below the threshold.
+
+            This field is a member of `oneof`_ ``_ban_duration_sec``.
+        ban_threshold (google.cloud.compute_v1.types.SecurityPolicyRuleRateLimitOptionsThreshold):
+            Can only be specified if the action for the rule is
+            "rate_based_ban". If specified, the key will be banned for
+            the configured 'ban_duration_sec' when the number of
+            requests that exceed the 'rate_limit_threshold' also exceed
+            this 'ban_threshold'.
+
+            This field is a member of `oneof`_ ``_ban_threshold``.
+        conform_action (str):
+            Action to take for requests that are under
+            the configured rate limit threshold. Valid
+            option is "allow" only.
+
+            This field is a member of `oneof`_ ``_conform_action``.
+        enforce_on_key (str):
+            Determines the key to enforce the rate_limit_threshold on.
+            Possible values are: - ALL: A single rate limit threshold is
+            applied to all the requests matching this rule. This is the
+            default value if this field 'enforce_on_key' is not
+            configured. - IP: The source IP address of the request is
+            the key. Each IP has this limit enforced separately. -
+            HTTP_HEADER: The value of the HTTP header whose name is
+            configured under "enforce_on_key_name". The key value is
+            truncated to the first 128 bytes of the header value. If no
+            such header is present in the request, the key type defaults
+            to ALL. - XFF_IP: The first IP address (i.e. the originating
+            client IP address) specified in the list of IPs under
+            X-Forwarded-For HTTP header. If no such header is present or
+            the value is not a valid IP, the key type defaults to ALL. -
+            HTTP_COOKIE: The value of the HTTP cookie whose name is
+            configured under "enforce_on_key_name". The key value is
+            truncated to the first 128 bytes of the cookie value. If no
+            such cookie is present in the request, the key type defaults
+            to ALL. Check the EnforceOnKey enum for the list of possible
+            values.
+
+            This field is a member of `oneof`_ ``_enforce_on_key``.
+        enforce_on_key_name (str):
+            Rate limit key name applicable only for the following key
+            types: HTTP_HEADER -- Name of the HTTP header whose value is
+            taken as the key value. HTTP_COOKIE -- Name of the HTTP
+            cookie whose value is taken as the key value.
+
+            This field is a member of `oneof`_ ``_enforce_on_key_name``.
+        exceed_action (str):
+            Action to take for requests that are above the configured
+            rate limit threshold, to either deny with a specified HTTP
+            response code, or redirect to a different endpoint. Valid
+            options are "deny()" where valid values for status are 403,
+            404, 429, and 502, and "redirect" where the redirect
+            parameters come from exceed_redirect_options below.
+
+            This field is a member of `oneof`_ ``_exceed_action``.
+        exceed_redirect_options (google.cloud.compute_v1.types.SecurityPolicyRuleRedirectOptions):
+            Parameters defining the redirect action that
+            is used as the exceed action. Cannot be
+            specified if the exceed action is not redirect.
+
+            This field is a member of `oneof`_ ``_exceed_redirect_options``.
+        rate_limit_threshold (google.cloud.compute_v1.types.SecurityPolicyRuleRateLimitOptionsThreshold):
+            Threshold at which to begin ratelimiting.
+
+            This field is a member of `oneof`_ ``_rate_limit_threshold``.
+    """
+
+    class EnforceOnKey(proto.Enum):
+        r"""Determines the key to enforce the rate_limit_threshold on. Possible
+        values are: - ALL: A single rate limit threshold is applied to all
+        the requests matching this rule. This is the default value if this
+        field 'enforce_on_key' is not configured. - IP: The source IP
+        address of the request is the key. Each IP has this limit enforced
+        separately. - HTTP_HEADER: The value of the HTTP header whose name
+        is configured under "enforce_on_key_name". The key value is
+        truncated to the first 128 bytes of the header value. If no such
+        header is present in the request, the key type defaults to ALL. -
+        XFF_IP: The first IP address (i.e. the originating client IP
+        address) specified in the list of IPs under X-Forwarded-For HTTP
+        header. If no such header is present or the value is not a valid IP,
+        the key type defaults to ALL. - HTTP_COOKIE: The value of the HTTP
+        cookie whose name is configured under "enforce_on_key_name". The key
+        value is truncated to the first 128 bytes of the cookie value. If no
+        such cookie is present in the request, the key type defaults to ALL.
+        """
+        UNDEFINED_ENFORCE_ON_KEY = 0
+        ALL = 64897
+        HTTP_COOKIE = 494981627
+        HTTP_HEADER = 91597348
+        IP = 2343
+        XFF_IP = 438707118
+
+    ban_duration_sec = proto.Field(proto.INT32, number=42896726, optional=True,)
+    ban_threshold = proto.Field(
+        proto.MESSAGE,
+        number=501208123,
+        optional=True,
+        message="SecurityPolicyRuleRateLimitOptionsThreshold",
+    )
+    conform_action = proto.Field(proto.STRING, number=517612367, optional=True,)
+    enforce_on_key = proto.Field(proto.STRING, number=416648956, optional=True,)
+    enforce_on_key_name = proto.Field(proto.STRING, number=132555246, optional=True,)
+    exceed_action = proto.Field(proto.STRING, number=167159073, optional=True,)
+    exceed_redirect_options = proto.Field(
+        proto.MESSAGE,
+        number=473646694,
+        optional=True,
+        message="SecurityPolicyRuleRedirectOptions",
+    )
+    rate_limit_threshold = proto.Field(
+        proto.MESSAGE,
+        number=315875208,
+        optional=True,
+        message="SecurityPolicyRuleRateLimitOptionsThreshold",
+    )
+
+
+class SecurityPolicyRuleRateLimitOptionsThreshold(proto.Message):
+    r"""
+
+    Attributes:
+        count (int):
+            Number of HTTP(S) requests for calculating
+            the threshold.
+
+            This field is a member of `oneof`_ ``_count``.
+        interval_sec (int):
+            Interval over which the threshold is
+            computed.
+
+            This field is a member of `oneof`_ ``_interval_sec``.
+    """
+
+    count = proto.Field(proto.INT32, number=94851343, optional=True,)
+    interval_sec = proto.Field(proto.INT32, number=41084375, optional=True,)
+
+
+class SecurityPolicyRuleRedirectOptions(proto.Message):
+    r"""
+
+    Attributes:
+        target (str):
+            Target for the redirect action. This is required if the type
+            is EXTERNAL_302 and cannot be specified for
+            GOOGLE_RECAPTCHA.
+
+            This field is a member of `oneof`_ ``_target``.
+        type_ (str):
+            Type of the redirect action.
+            Check the Type enum for the list of possible
+            values.
+
+            This field is a member of `oneof`_ ``_type``.
+    """
+
+    class Type(proto.Enum):
+        r"""Type of the redirect action."""
+        UNDEFINED_TYPE = 0
+        EXTERNAL_302 = 395733761
+        GOOGLE_RECAPTCHA = 518803009
+
+    target = proto.Field(proto.STRING, number=192835985, optional=True,)
+    type_ = proto.Field(proto.STRING, number=3575610, optional=True,)
 
 
 class SecuritySettings(proto.Message):
@@ -46085,6 +48775,13 @@ class ServiceAttachment(proto.Message):
             resource.
 
             This field is a member of `oneof`_ ``_description``.
+        domain_names (Sequence[str]):
+            If specified, the domain name will be used
+            during the integration between the PSC connected
+            endpoints and the Cloud DNS. For example, this
+            is a valid domain name: "p.mycompany.com.".
+            Current max number of domain names supported is
+            1.
         enable_proxy_protocol (bool):
             If true, enable the proxy protocol which is
             for supplying client TCP/IP address data in TCP
@@ -46182,6 +48879,7 @@ class ServiceAttachment(proto.Message):
     consumer_reject_lists = proto.RepeatedField(proto.STRING, number=204033182,)
     creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
     description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    domain_names = proto.RepeatedField(proto.STRING, number=6450189,)
     enable_proxy_protocol = proto.Field(proto.BOOL, number=363791237, optional=True,)
     fingerprint = proto.Field(proto.STRING, number=234678500, optional=True,)
     id = proto.Field(proto.UINT64, number=3355, optional=True,)
@@ -46678,6 +49376,88 @@ class SetDiskAutoDeleteInstanceRequest(proto.Message):
     zone = proto.Field(proto.STRING, number=3744684,)
 
 
+class SetEdgeSecurityPolicyBackendBucketRequest(proto.Message):
+    r"""A request message for BackendBuckets.SetEdgeSecurityPolicy.
+    See the method description for details.
+
+    Attributes:
+        backend_bucket (str):
+            Name of the BackendService resource to which
+            the security policy should be set. The name
+            should conform to RFC1035.
+        project (str):
+            Project ID for this request.
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments. The request ID
+            must be a valid UUID with the exception that
+            zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000).
+
+            This field is a member of `oneof`_ ``_request_id``.
+        security_policy_reference_resource (google.cloud.compute_v1.types.SecurityPolicyReference):
+            The body resource for this request
+    """
+
+    backend_bucket = proto.Field(proto.STRING, number=91714037,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    security_policy_reference_resource = proto.Field(
+        proto.MESSAGE, number=204135024, message="SecurityPolicyReference",
+    )
+
+
+class SetEdgeSecurityPolicyBackendServiceRequest(proto.Message):
+    r"""A request message for BackendServices.SetEdgeSecurityPolicy.
+    See the method description for details.
+
+    Attributes:
+        backend_service (str):
+            Name of the BackendService resource to which
+            the edge security policy should be set. The name
+            should conform to RFC1035.
+        project (str):
+            Project ID for this request.
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments. The request ID
+            must be a valid UUID with the exception that
+            zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000).
+
+            This field is a member of `oneof`_ ``_request_id``.
+        security_policy_reference_resource (google.cloud.compute_v1.types.SecurityPolicyReference):
+            The body resource for this request
+    """
+
+    backend_service = proto.Field(proto.STRING, number=306946058,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    security_policy_reference_resource = proto.Field(
+        proto.MESSAGE, number=204135024, message="SecurityPolicyReference",
+    )
+
+
 class SetIamPolicyDiskRequest(proto.Message):
     r"""A request message for Disks.SetIamPolicy. See the method
     description for details.
@@ -46784,6 +49564,26 @@ class SetIamPolicyInstanceTemplateRequest(proto.Message):
 class SetIamPolicyLicenseRequest(proto.Message):
     r"""A request message for Licenses.SetIamPolicy. See the method
     description for details.
+
+    Attributes:
+        global_set_policy_request_resource (google.cloud.compute_v1.types.GlobalSetPolicyRequest):
+            The body resource for this request
+        project (str):
+            Project ID for this request.
+        resource (str):
+            Name or id of the resource for this request.
+    """
+
+    global_set_policy_request_resource = proto.Field(
+        proto.MESSAGE, number=337048498, message="GlobalSetPolicyRequest",
+    )
+    project = proto.Field(proto.STRING, number=227560217,)
+    resource = proto.Field(proto.STRING, number=195806222,)
+
+
+class SetIamPolicyMachineImageRequest(proto.Message):
+    r"""A request message for MachineImages.SetIamPolicy. See the
+    method description for details.
 
     Attributes:
         global_set_policy_request_resource (google.cloud.compute_v1.types.GlobalSetPolicyRequest):
@@ -48015,19 +50815,21 @@ class SetSslCertificatesRegionTargetHttpsProxyRequest(proto.Message):
         region_target_https_proxies_set_ssl_certificates_request_resource (google.cloud.compute_v1.types.RegionTargetHttpsProxiesSetSslCertificatesRequest):
             The body resource for this request
         request_id (str):
-            An optional request ID to identify requests. Specify a
-            unique request ID so that if you must retry your request,
-            the server will know to ignore the request if it has already
-            been completed. For example, consider a situation where you
-            make an initial request and the request times out. If you
-            make the request again with the same request ID, the server
-            can check if original operation with the same request ID was
-            received, and if so, will ignore the second request. This
-            prevents clients from accidentally creating duplicate
-            commitments. The request ID must be a valid UUID with the
-            exception that zero UUID is not supported (
-            00000000-0000-0000-0000-000000000000). end_interface:
-            MixerMutationRequestBuilder
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments. The request ID
+            must be a valid UUID with the exception that
+            zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000).
 
             This field is a member of `oneof`_ ``_request_id``.
         target_https_proxy (str):
@@ -48478,19 +51280,21 @@ class SetUrlMapRegionTargetHttpsProxyRequest(proto.Message):
         region (str):
             Name of the region scoping this request.
         request_id (str):
-            An optional request ID to identify requests. Specify a
-            unique request ID so that if you must retry your request,
-            the server will know to ignore the request if it has already
-            been completed. For example, consider a situation where you
-            make an initial request and the request times out. If you
-            make the request again with the same request ID, the server
-            can check if original operation with the same request ID was
-            received, and if so, will ignore the second request. This
-            prevents clients from accidentally creating duplicate
-            commitments. The request ID must be a valid UUID with the
-            exception that zero UUID is not supported (
-            00000000-0000-0000-0000-000000000000). end_interface:
-            MixerMutationRequestBuilder
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments. The request ID
+            must be a valid UUID with the exception that
+            zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000).
 
             This field is a member of `oneof`_ ``_request_id``.
         target_https_proxy (str):
@@ -48623,6 +51427,52 @@ class SetUsageExportBucketProjectRequest(proto.Message):
     usage_export_location_resource = proto.Field(
         proto.MESSAGE, number=20260459, message="UsageExportLocation",
     )
+
+
+class ShareSettings(proto.Message):
+    r"""The share setting for reservations and sole tenancy node
+    groups.
+
+    Attributes:
+        project_map (Sequence[google.cloud.compute_v1.types.ShareSettings.ProjectMapEntry]):
+            A map of project id and project config. This is only valid
+            when share_type's value is SPECIFIC_PROJECTS.
+        share_type (str):
+            Type of sharing for this shared-reservation
+            Check the ShareType enum for the list of
+            possible values.
+
+            This field is a member of `oneof`_ ``_share_type``.
+    """
+
+    class ShareType(proto.Enum):
+        r"""Type of sharing for this shared-reservation"""
+        UNDEFINED_SHARE_TYPE = 0
+        LOCAL = 72607563
+        SHARE_TYPE_UNSPECIFIED = 494771730
+        SPECIFIC_PROJECTS = 347838695
+
+    project_map = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=134212406,
+        message="ShareSettingsProjectConfig",
+    )
+    share_type = proto.Field(proto.STRING, number=359533466, optional=True,)
+
+
+class ShareSettingsProjectConfig(proto.Message):
+    r"""Config for each project in the share settings.
+
+    Attributes:
+        project_id (str):
+            The project ID, should be same as the key of
+            this project config in the parent map.
+
+            This field is a member of `oneof`_ ``_project_id``.
+    """
+
+    project_id = proto.Field(proto.STRING, number=177513473, optional=True,)
 
 
 class ShieldedInstanceConfig(proto.Message):
@@ -48830,10 +51680,10 @@ class Snapshot(proto.Message):
             the labels set used for optimistic locking. The
             fingerprint is initially generated by Compute
             Engine and changes after every request to modify
-            or update labels. You must always provide an up-
-            to-date fingerprint hash in order to update or
-            change labels, otherwise the request will fail
-            with error 412 conditionNotMet. To see the
+            or update labels. You must always provide an
+            up-to-date fingerprint hash in order to update
+            or change labels, otherwise the request will
+            fail with error 412 conditionNotMet. To see the
             latest fingerprint, make a get() request to
             retrieve a snapshot.
 
@@ -48876,20 +51726,20 @@ class Snapshot(proto.Message):
 
             This field is a member of `oneof`_ ``_self_link``.
         snapshot_encryption_key (google.cloud.compute_v1.types.CustomerEncryptionKey):
-            Encrypts the snapshot using a customer-
-            upplied encryption key. After you encrypt a
-            snapshot using a customer-supplied key, you must
-            provide the same key if you use the snapshot
-            later. For example, you must provide the
-            encryption key when you create a disk from the
-            encrypted snapshot in a future request.
-            Customer-supplied encryption keys do not protect
-            access to metadata of the snapshot. If you do
-            not provide an encryption key when creating the
-            snapshot, then the snapshot will be encrypted
-            using an automatically generated key and you do
-            not need to provide a key to use the snapshot
-            later.
+            Encrypts the snapshot using a
+            customer-supplied encryption key. After you
+            encrypt a snapshot using a customer-supplied
+            key, you must provide the same key if you use
+            the snapshot later. For example, you must
+            provide the encryption key when you create a
+            disk from the encrypted snapshot in a future
+            request. Customer-supplied encryption keys do
+            not protect access to metadata of the snapshot.
+            If you do not provide an encryption key when
+            creating the snapshot, then the snapshot will be
+            encrypted using an automatically generated key
+            and you do not need to provide a key to use the
+            snapshot later.
 
             This field is a member of `oneof`_ ``_snapshot_encryption_key``.
         source_disk (str):
@@ -49036,6 +51886,35 @@ class SnapshotList(proto.Message):
     )
 
 
+class SourceDiskEncryptionKey(proto.Message):
+    r"""
+
+    Attributes:
+        disk_encryption_key (google.cloud.compute_v1.types.CustomerEncryptionKey):
+            The customer-supplied encryption key of the
+            source disk. Required if the source disk is
+            protected by a customer-supplied encryption key.
+
+            This field is a member of `oneof`_ ``_disk_encryption_key``.
+        source_disk (str):
+            URL of the disk attached to the source
+            instance. This can be a full or valid partial
+            URL. For example, the following are valid
+            values: -
+            https://www.googleapis.com/compute/v1/projects/project/zones/zone
+            /disks/disk -
+            projects/project/zones/zone/disks/disk -
+            zones/zone/disks/disk
+
+            This field is a member of `oneof`_ ``_source_disk``.
+    """
+
+    disk_encryption_key = proto.Field(
+        proto.MESSAGE, number=271660677, optional=True, message="CustomerEncryptionKey",
+    )
+    source_disk = proto.Field(proto.STRING, number=451753793, optional=True,)
+
+
 class SourceInstanceParams(proto.Message):
     r"""A specification of the parameters to use when creating the
     instance template from a source instance.
@@ -49053,6 +51932,123 @@ class SourceInstanceParams(proto.Message):
     disk_configs = proto.RepeatedField(
         proto.MESSAGE, number=235580623, message="DiskInstantiationConfig",
     )
+
+
+class SourceInstanceProperties(proto.Message):
+    r"""DEPRECATED: Please use compute#instanceProperties instead.
+    New properties will not be added to this field.
+
+    Attributes:
+        can_ip_forward (bool):
+            Enables instances created based on this
+            machine image to send packets with source IP
+            addresses other than their own and receive
+            packets with destination IP addresses other than
+            their own. If these instances will be used as an
+            IP gateway or it will be set as the next-hop in
+            a Route resource, specify true. If unsure, leave
+            this set to false. See the Enable IP forwarding
+            documentation for more information.
+
+            This field is a member of `oneof`_ ``_can_ip_forward``.
+        deletion_protection (bool):
+            Whether the instance created from this
+            machine image should be protected against
+            deletion.
+
+            This field is a member of `oneof`_ ``_deletion_protection``.
+        description (str):
+            An optional text description for the
+            instances that are created from this machine
+            image.
+
+            This field is a member of `oneof`_ ``_description``.
+        disks (Sequence[google.cloud.compute_v1.types.SavedAttachedDisk]):
+            An array of disks that are associated with
+            the instances that are created from this machine
+            image.
+        guest_accelerators (Sequence[google.cloud.compute_v1.types.AcceleratorConfig]):
+            A list of guest accelerator cards' type and
+            count to use for instances created from this
+            machine image.
+        labels (Sequence[google.cloud.compute_v1.types.SourceInstanceProperties.LabelsEntry]):
+            Labels to apply to instances that are created
+            from this machine image.
+        machine_type (str):
+            The machine type to use for instances that
+            are created from this machine image.
+
+            This field is a member of `oneof`_ ``_machine_type``.
+        metadata (google.cloud.compute_v1.types.Metadata):
+            The metadata key/value pairs to assign to
+            instances that are created from this machine
+            image. These pairs can consist of custom
+            metadata or predefined keys. See Project and
+            instance metadata for more information.
+
+            This field is a member of `oneof`_ ``_metadata``.
+        min_cpu_platform (str):
+            Minimum cpu/platform to be used by instances
+            created from this machine image. The instance
+            may be scheduled on the specified or newer
+            cpu/platform. Applicable values are the friendly
+            names of CPU platforms, such as minCpuPlatform:
+            "Intel Haswell" or minCpuPlatform: "Intel Sandy
+            Bridge". For more information, read Specifying a
+            Minimum CPU Platform.
+
+            This field is a member of `oneof`_ ``_min_cpu_platform``.
+        network_interfaces (Sequence[google.cloud.compute_v1.types.NetworkInterface]):
+            An array of network access configurations for
+            this interface.
+        scheduling (google.cloud.compute_v1.types.Scheduling):
+            Specifies the scheduling options for the
+            instances that are created from this machine
+            image.
+
+            This field is a member of `oneof`_ ``_scheduling``.
+        service_accounts (Sequence[google.cloud.compute_v1.types.ServiceAccount]):
+            A list of service accounts with specified
+            scopes. Access tokens for these service accounts
+            are available to the instances that are created
+            from this machine image. Use metadata queries to
+            obtain the access tokens for these instances.
+        tags (google.cloud.compute_v1.types.Tags):
+            A list of tags to apply to the instances that
+            are created from this machine image. The tags
+            identify valid sources or targets for network
+            firewalls. The setTags method can modify this
+            list of tags. Each tag within the list must
+            comply with RFC1035.
+
+            This field is a member of `oneof`_ ``_tags``.
+    """
+
+    can_ip_forward = proto.Field(proto.BOOL, number=467731324, optional=True,)
+    deletion_protection = proto.Field(proto.BOOL, number=458014698, optional=True,)
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    disks = proto.RepeatedField(
+        proto.MESSAGE, number=95594102, message="SavedAttachedDisk",
+    )
+    guest_accelerators = proto.RepeatedField(
+        proto.MESSAGE, number=463595119, message="AcceleratorConfig",
+    )
+    labels = proto.MapField(proto.STRING, proto.STRING, number=500195327,)
+    machine_type = proto.Field(proto.STRING, number=227711026, optional=True,)
+    metadata = proto.Field(
+        proto.MESSAGE, number=86866735, optional=True, message="Metadata",
+    )
+    min_cpu_platform = proto.Field(proto.STRING, number=242912759, optional=True,)
+    network_interfaces = proto.RepeatedField(
+        proto.MESSAGE, number=52735243, message="NetworkInterface",
+    )
+    scheduling = proto.Field(
+        proto.MESSAGE, number=386688404, optional=True, message="Scheduling",
+    )
+    service_accounts = proto.RepeatedField(
+        proto.MESSAGE, number=277537328, message="ServiceAccount",
+    )
+    tags = proto.Field(proto.MESSAGE, number=3552281, optional=True, message="Tags",)
 
 
 class SslCertificate(proto.Message):
@@ -49467,11 +52463,11 @@ class SslPolicy(proto.Message):
             Fingerprint of this resource. A hash of the
             contents stored in this object. This field is
             used in optimistic locking. This field will be
-            ignored when inserting a SslPolicy. An up-to-
-            date fingerprint must be provided in order to
-            update the SslPolicy, otherwise the request will
-            fail with error 412 conditionNotMet. To see the
-            latest fingerprint, make a get() request to
+            ignored when inserting a SslPolicy. An
+            up-to-date fingerprint must be provided in order
+            to update the SslPolicy, otherwise the request
+            will fail with error 412 conditionNotMet. To see
+            the latest fingerprint, make a get() request to
             retrieve an SslPolicy.
 
             This field is a member of `oneof`_ ``_fingerprint``.
@@ -49781,9 +52777,10 @@ class Subnetwork(proto.Message):
         enable_flow_logs (bool):
             Whether to enable flow logging for this subnetwork. If this
             field is not explicitly set, it will not appear in get
-            listings. If not set the default behavior is to disable flow
-            logging. This field isn't supported with the purpose field
-            set to INTERNAL_HTTPS_LOAD_BALANCER.
+            listings. If not set the default behavior is determined by
+            the org policy, if there is no org policy specified, then it
+            will default to disabled. This field isn't supported with
+            the purpose field set to INTERNAL_HTTPS_LOAD_BALANCER.
 
             This field is a member of `oneof`_ ``_enable_flow_logs``.
         external_ipv6_prefix (str):
@@ -49795,9 +52792,9 @@ class Subnetwork(proto.Message):
             Fingerprint of this resource. A hash of the
             contents stored in this object. This field is
             used in optimistic locking. This field will be
-            ignored when inserting a Subnetwork. An up-to-
-            date fingerprint must be provided in order to
-            update the Subnetwork, otherwise the request
+            ignored when inserting a Subnetwork. An
+            up-to-date fingerprint must be provided in order
+            to update the Subnetwork, otherwise the request
             will fail with error 412 conditionNotMet. To see
             the latest fingerprint, make a get() request to
             retrieve a Subnetwork.
@@ -49837,7 +52834,8 @@ class Subnetwork(proto.Message):
             This field is a member of `oneof`_ ``_ipv6_access_type``.
         ipv6_cidr_range (str):
             [Output Only] The range of internal IPv6 addresses that are
-            owned by this subnetwork.
+            owned by this subnetwork. Note this will be for private
+            google access only eventually.
 
             This field is a member of `oneof`_ ``_ipv6_cidr_range``.
         kind (str):
@@ -49986,6 +52984,7 @@ class Subnetwork(proto.Message):
         PRIVATE = 403485027
         PRIVATE_RFC_1918 = 254902107
         PRIVATE_SERVICE_CONNECT = 48134724
+        REGIONAL_MANAGED_PROXY = 153049966
 
     class Role(proto.Enum):
         r"""The role of subnetwork. Currently, this field is only used when
@@ -50176,7 +53175,9 @@ class SubnetworkLogConfig(proto.Message):
             Whether to enable flow logging for this
             subnetwork. If this field is not explicitly set,
             it will not appear in get listings. If not set
-            the default behavior is to disable flow logging.
+            the default behavior is determined by the org
+            policy, if there is no org policy specified,
+            then it will default to disabled.
 
             This field is a member of `oneof`_ ``_enable``.
         filter_expr (str):
@@ -50190,8 +53191,9 @@ class SubnetworkLogConfig(proto.Message):
             subnetwork is enabled. The value of the field must be in [0,
             1]. Set the sampling rate of VPC flow logs within the
             subnetwork where 1.0 means all collected logs are reported
-            and 0.0 means no logs are reported. Default is 0.5, which
-            means half of all collected logs are reported.
+            and 0.0 means no logs are reported. Default is 0.5 unless
+            otherwise specified by the org policy, which means half of
+            all collected logs are reported.
 
             This field is a member of `oneof`_ ``_flow_sampling``.
         metadata (str):
@@ -50344,6 +53346,43 @@ class Subsetting(proto.Message):
     policy = proto.Field(proto.STRING, number=91071794, optional=True,)
 
 
+class SuspendInstanceRequest(proto.Message):
+    r"""A request message for Instances.Suspend. See the method
+    description for details.
+
+    Attributes:
+        instance (str):
+            Name of the instance resource to suspend.
+        project (str):
+            Project ID for this request.
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments. The request ID
+            must be a valid UUID with the exception that
+            zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000).
+
+            This field is a member of `oneof`_ ``_request_id``.
+        zone (str):
+            The name of the zone for this request.
+    """
+
+    instance = proto.Field(proto.STRING, number=18257045,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
+
+
 class SwitchToCustomModeNetworkRequest(proto.Message):
     r"""A request message for Networks.SwitchToCustomMode. See the
     method description for details.
@@ -50473,10 +53512,10 @@ class Tags(proto.Message):
             contents and used for optimistic locking. The
             fingerprint is initially generated by Compute
             Engine and changes after every request to modify
-            or update tags. You must always provide an up-
-            to-date fingerprint hash in order to update or
-            change tags. To see the latest fingerprint, make
-            get() request to the instance.
+            or update tags. You must always provide an
+            up-to-date fingerprint hash in order to update
+            or change tags. To see the latest fingerprint,
+            make get() request to the instance.
 
             This field is a member of `oneof`_ ``_fingerprint``.
         items (Sequence[str]):
@@ -50511,10 +53550,10 @@ class TargetGrpcProxy(proto.Message):
             Fingerprint of this resource. A hash of the
             contents stored in this object. This field is
             used in optimistic locking. This field will be
-            ignored when inserting a TargetGrpcProxy. An up-
-            to-date fingerprint must be provided in order to
-            patch/update the TargetGrpcProxy; otherwise, the
-            request will fail with error 412
+            ignored when inserting a TargetGrpcProxy. An
+            up-to-date fingerprint must be provided in order
+            to patch/update the TargetGrpcProxy; otherwise,
+            the request will fail with error 412
             conditionNotMet. To see the latest fingerprint,
             make a get() request to retrieve the
             TargetGrpcProxy.
@@ -50686,10 +53725,10 @@ class TargetHttpProxy(proto.Message):
             Fingerprint of this resource. A hash of the
             contents stored in this object. This field is
             used in optimistic locking. This field will be
-            ignored when inserting a TargetHttpProxy. An up-
-            to-date fingerprint must be provided in order to
-            patch/update the TargetHttpProxy; otherwise, the
-            request will fail with error 412
+            ignored when inserting a TargetHttpProxy. An
+            up-to-date fingerprint must be provided in order
+            to patch/update the TargetHttpProxy; otherwise,
+            the request will fail with error 412
             conditionNotMet. To see the latest fingerprint,
             make a get() request to retrieve the
             TargetHttpProxy.
@@ -51013,10 +54052,10 @@ class TargetHttpsProxy(proto.Message):
             used. - When quic-override is set to ENABLE, the
             load balancer uses QUIC when possible. - When
             quic-override is set to DISABLE, the load
-            balancer doesn't use QUIC. - If the quic-
-            override flag is not specified, NONE is implied.
-            Check the QuicOverride enum for the list of
-            possible values.
+            balancer doesn't use QUIC. - If the
+            quic-override flag is not specified, NONE is
+            implied. Check the QuicOverride enum for the
+            list of possible values.
 
             This field is a member of `oneof`_ ``_quic_override``.
         region (str):
@@ -51061,8 +54100,9 @@ class TargetHttpsProxy(proto.Message):
             following are all valid URLs for specifying a
             URL map: -
             https://www.googleapis.compute/v1/projects/project/global/urlMaps/
-            url-map - projects/project/global/urlMaps/url-
-            map - global/urlMaps/url-map
+            url-map -
+            projects/project/global/urlMaps/url-map -
+            global/urlMaps/url-map
 
             This field is a member of `oneof`_ ``_url_map``.
     """
@@ -51073,9 +54113,10 @@ class TargetHttpsProxy(proto.Message):
         attempts to negotiate QUIC with clients. You can specify NONE,
         ENABLE, or DISABLE. - When quic-override is set to NONE, Google
         manages whether QUIC is used. - When quic-override is set to
-        ENABLE, the load balancer uses QUIC when possible. - When quic-
-        override is set to DISABLE, the load balancer doesn't use QUIC.
-        - If the quic-override flag is not specified, NONE is implied.
+        ENABLE, the load balancer uses QUIC when possible. - When
+        quic-override is set to DISABLE, the load balancer doesn't use
+        QUIC. - If the quic-override flag is not specified, NONE is
+        implied.
         """
         UNDEFINED_QUIC_OVERRIDE = 0
         DISABLE = 241807048
@@ -51722,11 +54763,10 @@ class TargetPoolsAddInstanceRequest(proto.Message):
             to this target pool. This can be a full or
             partial URL. For example, the following are
             valid URLs: -
-            https://www.googleapis.com/compute/v1/projects/project-
-            id/zones/zone /instances/instance-name -
-            projects/project-
-            id/zones/zone/instances/instance-name -
-            zones/zone/instances/instance-name
+            https://www.googleapis.com/compute/v1/projects/project-id/zones/zone
+            /instances/instance-name -
+            projects/project-id/zones/zone/instances/instance-name
+            - zones/zone/instances/instance-name
     """
 
     instances = proto.RepeatedField(
@@ -51744,8 +54784,8 @@ class TargetPoolsRemoveHealthCheckRequest(proto.Message):
             following are valid URLs: -
             https://www.googleapis.com/compute/beta/projects/project
             /global/httpHealthChecks/health-check -
-            projects/project/global/httpHealthChecks/health-
-            check - global/httpHealthChecks/health-check
+            projects/project/global/httpHealthChecks/health-check
+            - global/httpHealthChecks/health-check
     """
 
     health_checks = proto.RepeatedField(
@@ -52396,7 +55436,7 @@ class TestFailure(proto.Message):
 
     Attributes:
         actual_output_url (str):
-            The actual output URL evaluated by load
+            The actual output URL evaluated by a load
             balancer containing the scheme, host, path and
             query parameters.
 
@@ -52412,7 +55452,7 @@ class TestFailure(proto.Message):
 
             This field is a member of `oneof`_ ``_actual_service``.
         expected_output_url (str):
-            The expected output URL evaluated by load
+            The expected output URL evaluated by a load
             balancer containing the scheme, host, path and
             query parameters.
 
@@ -52603,6 +55643,26 @@ class TestIamPermissionsLicenseCodeRequest(proto.Message):
 class TestIamPermissionsLicenseRequest(proto.Message):
     r"""A request message for Licenses.TestIamPermissions. See the
     method description for details.
+
+    Attributes:
+        project (str):
+            Project ID for this request.
+        resource (str):
+            Name or id of the resource for this request.
+        test_permissions_request_resource (google.cloud.compute_v1.types.TestPermissionsRequest):
+            The body resource for this request
+    """
+
+    project = proto.Field(proto.STRING, number=227560217,)
+    resource = proto.Field(proto.STRING, number=195806222,)
+    test_permissions_request_resource = proto.Field(
+        proto.MESSAGE, number=439214758, message="TestPermissionsRequest",
+    )
+
+
+class TestIamPermissionsMachineImageRequest(proto.Message):
+    r"""A request message for MachineImages.TestIamPermissions. See
+    the method description for details.
 
     Attributes:
         project (str):
@@ -53529,6 +56589,59 @@ class UpdateRegionBackendServiceRequest(proto.Message):
     request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
+class UpdateRegionCommitmentRequest(proto.Message):
+    r"""A request message for RegionCommitments.Update. See the
+    method description for details.
+
+    Attributes:
+        commitment (str):
+            Name of the commitment for which auto renew
+            is being updated.
+        commitment_resource (google.cloud.compute_v1.types.Commitment):
+            The body resource for this request
+        paths (str):
+
+            This field is a member of `oneof`_ ``_paths``.
+        project (str):
+            Project ID for this request.
+        region (str):
+            Name of the region for this request.
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments. The request ID
+            must be a valid UUID with the exception that
+            zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000).
+
+            This field is a member of `oneof`_ ``_request_id``.
+        update_mask (str):
+            update_mask indicates fields to be updated as part of this
+            request.
+
+            This field is a member of `oneof`_ ``_update_mask``.
+    """
+
+    commitment = proto.Field(proto.STRING, number=482134805,)
+    commitment_resource = proto.Field(
+        proto.MESSAGE, number=244240888, message="Commitment",
+    )
+    paths = proto.Field(proto.STRING, number=106438894, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    update_mask = proto.Field(proto.STRING, number=500079778, optional=True,)
+
+
 class UpdateRegionHealthCheckRequest(proto.Message):
     r"""A request message for RegionHealthChecks.Update. See the
     method description for details.
@@ -53596,6 +56709,58 @@ class UpdateRegionUrlMapRequest(proto.Message):
     request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
     url_map = proto.Field(proto.STRING, number=367020684,)
     url_map_resource = proto.Field(proto.MESSAGE, number=168675425, message="UrlMap",)
+
+
+class UpdateReservationRequest(proto.Message):
+    r"""A request message for Reservations.Update. See the method
+    description for details.
+
+    Attributes:
+        paths (str):
+
+            This field is a member of `oneof`_ ``_paths``.
+        project (str):
+            Project ID for this request.
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments. The request ID
+            must be a valid UUID with the exception that
+            zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000).
+
+            This field is a member of `oneof`_ ``_request_id``.
+        reservation (str):
+            Name of the reservation to update.
+        reservation_resource (google.cloud.compute_v1.types.Reservation):
+            The body resource for this request
+        update_mask (str):
+            Update_mask indicates fields to be updated as part of this
+            request.
+
+            This field is a member of `oneof`_ ``_update_mask``.
+        zone (str):
+            Name of the zone for this request.
+    """
+
+    paths = proto.Field(proto.STRING, number=106438894, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    reservation = proto.Field(proto.STRING, number=47530956,)
+    reservation_resource = proto.Field(
+        proto.MESSAGE, number=285030177, message="Reservation",
+    )
+    update_mask = proto.Field(proto.STRING, number=500079778, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class UpdateRouterRequest(proto.Message):
@@ -53719,23 +56884,23 @@ class UpdateUrlMapRequest(proto.Message):
 
 
 class UrlMap(proto.Message):
-    r"""Represents a URL Map resource. Google Compute Engine has two URL Map
+    r"""Represents a URL Map resource. Compute Engine has two URL Map
     resources: \* `Global </compute/docs/reference/rest/v1/urlMaps>`__
     \* `Regional </compute/docs/reference/rest/v1/regionUrlMaps>`__ A
-    URL map resource is a component of certain types of GCP load
-    balancers and Traffic Director. \* urlMaps are used by external
+    URL map resource is a component of certain types of cloud load
+    balancers and Traffic Director: \* urlMaps are used by external
     HTTP(S) load balancers and Traffic Director. \* regionUrlMaps are
     used by internal HTTP(S) load balancers. For a list of supported URL
-    map features by load balancer type, see the Load balancing features:
-    Routing and traffic management table. For a list of supported URL
-    map features for Traffic Director, see the Traffic Director
-    features: Routing and traffic management table. This resource
-    defines mappings from host names and URL paths to either a backend
-    service or a backend bucket. To use the global urlMaps resource, the
-    backend service must have a loadBalancingScheme of either EXTERNAL
-    or INTERNAL_SELF_MANAGED. To use the regionUrlMaps resource, the
-    backend service must have a loadBalancingScheme of INTERNAL_MANAGED.
-    For more information, read URL Map Concepts.
+    map features by the load balancer type, see the Load balancing
+    features: Routing and traffic management table. For a list of
+    supported URL map features for Traffic Director, see the Traffic
+    Director features: Routing and traffic management table. This
+    resource defines mappings from hostnames and URL paths to either a
+    backend service or a backend bucket. To use the global urlMaps
+    resource, the backend service must have a loadBalancingScheme of
+    either EXTERNAL or INTERNAL_SELF_MANAGED. To use the regionUrlMaps
+    resource, the backend service must have a loadBalancingScheme of
+    INTERNAL_MANAGED. For more information, read URL Map Concepts.
 
     Attributes:
         creation_timestamp (str):
@@ -53745,8 +56910,8 @@ class UrlMap(proto.Message):
         default_route_action (google.cloud.compute_v1.types.HttpRouteAction):
             defaultRouteAction takes effect when none of
             the hostRules match. The load balancer performs
-            advanced routing actions like URL rewrites,
-            header transformations, etc. prior to forwarding
+            advanced routing actions, such as URL rewrites
+            and header transformations, before forwarding
             the request to the selected backend. If
             defaultRouteAction specifies any
             weightedBackendServices, defaultService must not
@@ -53757,28 +56922,28 @@ class UrlMap(proto.Message):
             set. UrlMaps for external HTTP(S) load balancers
             support only the urlRewrite action within
             defaultRouteAction. defaultRouteAction has no
-            effect when the URL map is bound to target gRPC
-            proxy that has validateForProxyless field set to
-            true.
+            effect when the URL map is bound to a target
+            gRPC proxy that has the validateForProxyless
+            field set to true.
 
             This field is a member of `oneof`_ ``_default_route_action``.
         default_service (str):
             The full or partial URL of the defaultService
             resource to which traffic is directed if none of
             the hostRules match. If defaultRouteAction is
-            additionally specified, advanced routing actions
-            like URL Rewrites, etc. take effect prior to
-            sending the request to the backend. However, if
+            also specified, advanced routing actions, such
+            as URL rewrites, take effect before sending the
+            request to the backend. However, if
             defaultService is specified, defaultRouteAction
             cannot contain any weightedBackendServices.
             Conversely, if routeAction specifies any
             weightedBackendServices, service must not be
             specified. Only one of defaultService,
-            defaultUrlRedirect or
+            defaultUrlRedirect , or
             defaultRouteAction.weightedBackendService must
             be set. defaultService has no effect when the
-            URL map is bound to target gRPC proxy that has
-            validateForProxyless field set to true.
+            URL map is bound to a target gRPC proxy that has
+            the validateForProxyless field set to true.
 
             This field is a member of `oneof`_ ``_default_service``.
         default_url_redirect (google.cloud.compute_v1.types.HttpRedirectAction):
@@ -53787,7 +56952,7 @@ class UrlMap(proto.Message):
             defaultUrlRedirect. If defaultUrlRedirect is
             specified, defaultService or defaultRouteAction
             must not be set. Not supported when the URL map
-            is bound to target gRPC proxy.
+            is bound to a target gRPC proxy.
 
             This field is a member of `oneof`_ ``_default_url_redirect``.
         description (str):
@@ -53799,7 +56964,7 @@ class UrlMap(proto.Message):
         fingerprint (str):
             Fingerprint of this resource. A hash of the
             contents stored in this object. This field is
-            used in optimistic locking. This field will be
+            used in optimistic locking. This field is
             ignored when inserting a UrlMap. An up-to-date
             fingerprint must be provided in order to update
             the UrlMap, otherwise the request will fail with
@@ -53813,16 +56978,17 @@ class UrlMap(proto.Message):
             headers that need to take effect for the
             selected backendService. The headerAction
             specified here take effect after headerAction
-            specified under pathMatcher. Note that
-            headerAction is not supported for Loadbalancers
-            that have their loadBalancingScheme set to
-            EXTERNAL. Not supported when the URL map is
-            bound to target gRPC proxy that has
-            validateForProxyless field set to true.
+            specified under pathMatcher. headerAction is not
+            supported for load balancers that have their
+            loadBalancingScheme set to EXTERNAL. Not
+            supported when the URL map is bound to a target
+            gRPC proxy that has validateForProxyless field
+            set to true.
 
             This field is a member of `oneof`_ ``_header_action``.
         host_rules (Sequence[google.cloud.compute_v1.types.HostRule]):
-            The list of HostRules to use against the URL.
+            The list of host rules to use against the
+            URL.
         id (int):
             [Output Only] The unique identifier for the resource. This
             identifier is defined by the server.
@@ -53860,11 +57026,11 @@ class UrlMap(proto.Message):
             This field is a member of `oneof`_ ``_self_link``.
         tests (Sequence[google.cloud.compute_v1.types.UrlMapTest]):
             The list of expected URL mapping tests.
-            Request to update this UrlMap will succeed only
-            if all of the test cases pass. You can specify a
-            maximum of 100 tests per UrlMap. Not supported
-            when the URL map is bound to target gRPC proxy
-            that has validateForProxyless field set to true.
+            Request to update the UrlMap succeeds only if
+            all test cases pass. You can specify a maximum
+            of 100 tests per UrlMap. Not supported when the
+            URL map is bound to a target gRPC proxy that has
+            validateForProxyless field set to true.
     """
 
     creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
@@ -53963,19 +57129,19 @@ class UrlMapTest(proto.Message):
 
             This field is a member of `oneof`_ ``_description``.
         expected_output_url (str):
-            The expected output URL evaluated by load balancer
+            The expected output URL evaluated by the load balancer
             containing the scheme, host, path and query parameters. For
             rules that forward requests to backends, the test passes
             only when expectedOutputUrl matches the request forwarded by
-            load balancer to backends. For rules with urlRewrite, the
-            test verifies that the forwarded request matches hostRewrite
-            and pathPrefixRewrite in the urlRewrite action. When service
-            is specified, expectedOutputUrl`s scheme is ignored. For
-            rules with urlRedirect, the test passes only if
+            the load balancer to backends. For rules with urlRewrite,
+            the test verifies that the forwarded request matches
+            hostRewrite and pathPrefixRewrite in the urlRewrite action.
+            When service is specified, expectedOutputUrl`s scheme is
+            ignored. For rules with urlRedirect, the test passes only if
             expectedOutputUrl matches the URL in the load balancer's
             redirect response. If urlRedirect specifies https_redirect,
             the test passes only if the scheme in expectedOutputUrl is
-            also set to https. If urlRedirect specifies strip_query, the
+            also set to HTTPS. If urlRedirect specifies strip_query, the
             test passes only if expectedOutputUrl does not contain any
             query parameters. expectedOutputUrl is optional when service
             is specified.
@@ -54005,8 +57171,8 @@ class UrlMapTest(proto.Message):
             This field is a member of `oneof`_ ``_path``.
         service (str):
             Expected BackendService or BackendBucket
-            resource the given URL should be mapped to.
-            service cannot be set if
+            resource the given URL should be mapped to. The
+            service field cannot be set if
             expectedRedirectResponseCode is set.
 
             This field is a member of `oneof`_ ``_service``.
@@ -54183,18 +57349,17 @@ class UrlRewrite(proto.Message):
 
     Attributes:
         host_rewrite (str):
-            Prior to forwarding the request to the
-            selected service, the request's host header is
-            replaced with contents of hostRewrite. The value
-            must be between 1 and 255 characters.
+            Before forwarding the request to the selected
+            service, the request's host header is replaced
+            with contents of hostRewrite. The value must be
+            from 1 to 255 characters.
 
             This field is a member of `oneof`_ ``_host_rewrite``.
         path_prefix_rewrite (str):
-            Prior to forwarding the request to the
-            selected backend service, the matching portion
-            of the request's path is replaced by
-            pathPrefixRewrite. The value must be between 1
-            and 1024 characters.
+            Before forwarding the request to the selected
+            backend service, the matching portion of the
+            request's path is replaced by pathPrefixRewrite.
+            The value must be from 1 to 1024 characters.
 
             This field is a member of `oneof`_ ``_path_prefix_rewrite``.
     """
@@ -54513,8 +57678,8 @@ class VmEndpointNatMappingsList(proto.Message):
 
 class VpnGateway(proto.Message):
     r"""Represents a HA VPN gateway. HA VPN is a high-availability
-    (HA) Cloud VPN solution that lets you securely connect your on-
-    premises network to your Google Cloud Virtual Private Cloud
+    (HA) Cloud VPN solution that lets you securely connect your
+    on-premises network to your Google Cloud Virtual Private Cloud
     network through an IPsec VPN connection in a single region. For
     more information about Cloud HA VPN solutions, see Cloud VPN
     topologies .
@@ -54546,10 +57711,10 @@ class VpnGateway(proto.Message):
             the labels set used for optimistic locking. The
             fingerprint is initially generated by Compute
             Engine and changes after every request to modify
-            or update labels. You must always provide an up-
-            to-date fingerprint hash in order to update or
-            change labels, otherwise the request will fail
-            with error 412 conditionNotMet. To see the
+            or update labels. You must always provide an
+            up-to-date fingerprint hash in order to update
+            or change labels, otherwise the request will
+            fail with error 412 conditionNotMet. To see the
             latest fingerprint, make a get() request to
             retrieve an VpnGateway.
 
@@ -54585,10 +57750,25 @@ class VpnGateway(proto.Message):
             [Output Only] Server-defined URL for the resource.
 
             This field is a member of `oneof`_ ``_self_link``.
+        stack_type (str):
+            The stack type for this VPN gateway to identify the IP
+            protocols that are enabled. If not specified, IPV4_ONLY will
+            be used. Check the StackType enum for the list of possible
+            values.
+
+            This field is a member of `oneof`_ ``_stack_type``.
         vpn_interfaces (Sequence[google.cloud.compute_v1.types.VpnGatewayVpnGatewayInterface]):
             The list of VPN interfaces associated with
             this VPN gateway.
     """
+
+    class StackType(proto.Enum):
+        r"""The stack type for this VPN gateway to identify the IP protocols
+        that are enabled. If not specified, IPV4_ONLY will be used.
+        """
+        UNDEFINED_STACK_TYPE = 0
+        IPV4_IPV6 = 22197249
+        IPV4_ONLY = 22373798
 
     creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
     description = proto.Field(proto.STRING, number=422937596, optional=True,)
@@ -54600,6 +57780,7 @@ class VpnGateway(proto.Message):
     network = proto.Field(proto.STRING, number=232872494, optional=True,)
     region = proto.Field(proto.STRING, number=138946292, optional=True,)
     self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    stack_type = proto.Field(proto.STRING, number=425908881, optional=True,)
     vpn_interfaces = proto.RepeatedField(
         proto.MESSAGE, number=91842181, message="VpnGatewayVpnGatewayInterface",
     )
@@ -54845,11 +58026,12 @@ class VpnGatewayVpnGatewayInterface(proto.Message):
             URL of the VLAN attachment
             (interconnectAttachment) resource for this VPN
             gateway interface. When the value of this field
-            is present, the VPN gateway is used for IPsec-
-            encrypted Cloud Interconnect; all egress or
-            ingress traffic for this VPN gateway interface
-            goes through the specified VLAN attachment
-            resource. Not currently available publicly.
+            is present, the VPN gateway is used for
+            IPsec-encrypted Cloud Interconnect; all egress
+            or ingress traffic for this VPN gateway
+            interface goes through the specified VLAN
+            attachment resource. Not currently available
+            publicly.
 
             This field is a member of `oneof`_ ``_interconnect_attachment``.
         ip_address (str):
@@ -55298,10 +58480,10 @@ class WafExpressionSetExpression(proto.Message):
     Attributes:
         id (str):
             Expression ID should uniquely identify the
-            origin of the expression. E.g. owasp-
-            crs-v020901-id973337 identifies Owasp core rule
-            set version 2.9.1 rule id 973337. The ID could
-            be used to determine the individual attack
+            origin of the expression. E.g.
+            owasp-crs-v020901-id973337 identifies Owasp core
+            rule set version 2.9.1 rule id 973337. The ID
+            could be used to determine the individual attack
             definition that has been detected. It could also
             be used to exclude it from the policy in case of
             false positive. required
@@ -55485,15 +58667,15 @@ class WeightedBackendService(proto.Message):
     r"""In contrast to a single BackendService in HttpRouteAction to
     which all matching traffic is directed to,
     WeightedBackendService allows traffic to be split across
-    multiple BackendServices. The volume of traffic for each
-    BackendService is proportional to the weight specified in each
+    multiple backend services. The volume of traffic for each
+    backend service is proportional to the weight specified in each
     WeightedBackendService
 
     Attributes:
         backend_service (str):
             The full or partial URL to the default
             BackendService resource. Before forwarding the
-            request to backendService, the loadbalancer
+            request to backendService, the load balancer
             applies any relevant headerActions specified as
             part of this backendServiceWeight.
 
@@ -55504,25 +58686,24 @@ class WeightedBackendService(proto.Message):
             selected backendService. headerAction specified
             here take effect before headerAction in the
             enclosing HttpRouteRule, PathMatcher and UrlMap.
-            Note that headerAction is not supported for
-            Loadbalancers that have their
-            loadBalancingScheme set to EXTERNAL. Not
-            supported when the URL map is bound to target
-            gRPC proxy that has validateForProxyless field
-            set to true.
+            headerAction is not supported for load balancers
+            that have their loadBalancingScheme set to
+            EXTERNAL. Not supported when the URL map is
+            bound to a target gRPC proxy that has
+            validateForProxyless field set to true.
 
             This field is a member of `oneof`_ ``_header_action``.
         weight (int):
-            Specifies the fraction of traffic sent to
-            backendService, computed as weight / (sum of all
-            weightedBackendService weights in routeAction) .
-            The selection of a backend service is determined
-            only for new traffic. Once a user's request has
-            been directed to a backendService, subsequent
-            requests will be sent to the same backendService
-            as determined by the BackendService's session
-            affinity policy. The value must be between 0 and
-            1000
+            Specifies the fraction of traffic sent to a
+            backend service, computed as weight / (sum of
+            all weightedBackendService weights in
+            routeAction) . The selection of a backend
+            service is determined only for new traffic. Once
+            a user's request has been directed to a backend
+            service, subsequent requests are sent to the
+            same backend service as determined by the
+            backend service's session affinity policy. The
+            value must be from 0 to 1000.
 
             This field is a member of `oneof`_ ``_weight``.
     """
@@ -55747,9 +58928,9 @@ class ZoneSetLabelsRequest(proto.Message):
             for this resource, used to detect conflicts. The
             fingerprint is initially generated by Compute
             Engine and changes after every request to modify
-            or update labels. You must always provide an up-
-            to-date fingerprint hash in order to update or
-            change labels. Make a get() request to the
+            or update labels. You must always provide an
+            up-to-date fingerprint hash in order to update
+            or change labels. Make a get() request to the
             resource to get the latest fingerprint.
 
             This field is a member of `oneof`_ ``_label_fingerprint``.

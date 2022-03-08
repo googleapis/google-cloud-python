@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -133,6 +133,9 @@ class RegionCommitmentsTransport(abc.ABC):
             self.list: gapic_v1.method.wrap_method(
                 self.list, default_timeout=None, client_info=client_info,
             ),
+            self.update: gapic_v1.method.wrap_method(
+                self.update, default_timeout=None, client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -180,6 +183,15 @@ class RegionCommitmentsTransport(abc.ABC):
     ) -> Callable[
         [compute.ListRegionCommitmentsRequest],
         Union[compute.CommitmentList, Awaitable[compute.CommitmentList]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update(
+        self,
+    ) -> Callable[
+        [compute.UpdateRegionCommitmentRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
     ]:
         raise NotImplementedError()
 

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ import mock
 
 import grpc
 from grpc.experimental import aio
+from collections.abc import Iterable
 import json
 import math
 import pytest
@@ -81,19 +82,23 @@ def test__get_default_mtls_endpoint():
     assert RoutersClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
 
 
-@pytest.mark.parametrize("client_class", [RoutersClient,])
-def test_routers_client_from_service_account_info(client_class):
+@pytest.mark.parametrize("client_class,transport_name", [(RoutersClient, "rest"),])
+def test_routers_client_from_service_account_info(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_info"
     ) as factory:
         factory.return_value = creds
         info = {"valid": True}
-        client = client_class.from_service_account_info(info)
+        client = client_class.from_service_account_info(info, transport=transport_name)
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == "compute.googleapis.com:443"
+        assert client.transport._host == (
+            "compute.googleapis.com{}".format(":443")
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://{}".format("compute.googleapis.com")
+        )
 
 
 @pytest.mark.parametrize(
@@ -115,22 +120,30 @@ def test_routers_client_service_account_always_use_jwt(transport_class, transpor
         use_jwt.assert_not_called()
 
 
-@pytest.mark.parametrize("client_class", [RoutersClient,])
-def test_routers_client_from_service_account_file(client_class):
+@pytest.mark.parametrize("client_class,transport_name", [(RoutersClient, "rest"),])
+def test_routers_client_from_service_account_file(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_file"
     ) as factory:
         factory.return_value = creds
-        client = client_class.from_service_account_file("dummy/file/path.json")
+        client = client_class.from_service_account_file(
+            "dummy/file/path.json", transport=transport_name
+        )
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        client = client_class.from_service_account_json("dummy/file/path.json")
+        client = client_class.from_service_account_json(
+            "dummy/file/path.json", transport=transport_name
+        )
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == "compute.googleapis.com:443"
+        assert client.transport._host == (
+            "compute.googleapis.com{}".format(":443")
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://{}".format("compute.googleapis.com")
+        )
 
 
 def test_routers_client_get_transport_class():
@@ -444,14 +457,15 @@ def test_routers_client_client_options_scopes(
 
 
 @pytest.mark.parametrize(
-    "client_class,transport_class,transport_name",
-    [(RoutersClient, transports.RoutersRestTransport, "rest"),],
+    "client_class,transport_class,transport_name,grpc_helpers",
+    [(RoutersClient, transports.RoutersRestTransport, "rest", None),],
 )
 def test_routers_client_client_options_credentials_file(
-    client_class, transport_class, transport_name
+    client_class, transport_class, transport_name, grpc_helpers
 ):
     # Check the case credentials file is provided.
     options = client_options.ClientOptions(credentials_file="credentials.json")
+
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -536,9 +550,9 @@ def test_aggregated_list_rest_required_fields(
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
-            "max_results",
-            "include_all_scopes",
             "filter",
+            "include_all_scopes",
+            "max_results",
             "order_by",
             "page_token",
             "return_partial_success",
@@ -594,9 +608,9 @@ def test_aggregated_list_rest_unset_required_fields():
     assert set(unset_fields) == (
         set(
             (
-                "maxResults",
-                "includeAllScopes",
                 "filter",
+                "includeAllScopes",
+                "maxResults",
                 "orderBy",
                 "pageToken",
                 "returnPartialSuccess",
@@ -604,6 +618,55 @@ def test_aggregated_list_rest_unset_required_fields():
         )
         & set(("project",))
     )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_aggregated_list_rest_interceptors(null_interceptor):
+    transport = transports.RoutersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.RoutersRestInterceptor(),
+    )
+    client = RoutersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RoutersRestInterceptor, "post_aggregated_list"
+    ) as post, mock.patch.object(
+        transports.RoutersRestInterceptor, "pre_aggregated_list"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": None,
+            "query_params": {},
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.RouterAggregatedList.to_json(
+            compute.RouterAggregatedList()
+        )
+
+        request = compute.AggregatedListRoutersRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.RouterAggregatedList
+
+        client.aggregated_list(
+            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
 
 
 def test_aggregated_list_rest_bad_request(
@@ -639,6 +702,13 @@ def test_aggregated_list_rest_flattened():
         # Designate an appropriate value for the returned response.
         return_value = compute.RouterAggregatedList()
 
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project": "sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(project="project_value",)
+        mock_args.update(sample_request)
+
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
@@ -647,12 +717,6 @@ def test_aggregated_list_rest_flattened():
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        # get arguments that satisfy an http rule for this method
-        sample_request = {"project": "sample1"}
-
-        # get truthy value for each flattened field
-        mock_args = dict(project="project_value",)
-        mock_args.update(sample_request)
         client.aggregated_list(**mock_args)
 
         # Establish that the underlying call was made with the expected
@@ -660,7 +724,7 @@ def test_aggregated_list_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "https://%s/compute/v1/projects/{project}/aggregated/routers"
+            "%s/compute/v1/projects/{project}/aggregated/routers"
             % client.transport._host,
             args[1],
         )
@@ -902,6 +966,53 @@ def test_delete_unary_rest_unset_required_fields():
     )
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_unary_rest_interceptors(null_interceptor):
+    transport = transports.RoutersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.RoutersRestInterceptor(),
+    )
+    client = RoutersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RoutersRestInterceptor, "post_delete"
+    ) as post, mock.patch.object(
+        transports.RoutersRestInterceptor, "pre_delete"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": None,
+            "query_params": {},
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.Operation.to_json(compute.Operation())
+
+        request = compute.DeleteRouterRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation
+
+        client.delete_unary(
+            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_delete_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.DeleteRouterRequest
 ):
@@ -935,14 +1046,6 @@ def test_delete_unary_rest_flattened():
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation()
 
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
         # get arguments that satisfy an http rule for this method
         sample_request = {
             "project": "sample1",
@@ -955,6 +1058,15 @@ def test_delete_unary_rest_flattened():
             project="project_value", region="region_value", router="router_value",
         )
         mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
         client.delete_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
@@ -962,7 +1074,7 @@ def test_delete_unary_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "https://%s/compute/v1/projects/{project}/regions/{region}/routers/{router}"
+            "%s/compute/v1/projects/{project}/regions/{region}/routers/{router}"
             % client.transport._host,
             args[1],
         )
@@ -1120,6 +1232,51 @@ def test_get_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("project", "region", "router",)))
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_rest_interceptors(null_interceptor):
+    transport = transports.RoutersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.RoutersRestInterceptor(),
+    )
+    client = RoutersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RoutersRestInterceptor, "post_get"
+    ) as post, mock.patch.object(
+        transports.RoutersRestInterceptor, "pre_get"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": None,
+            "query_params": {},
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.Router.to_json(compute.Router())
+
+        request = compute.GetRouterRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Router
+
+        client.get(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_get_rest_bad_request(
     transport: str = "rest", request_type=compute.GetRouterRequest
 ):
@@ -1153,14 +1310,6 @@ def test_get_rest_flattened():
         # Designate an appropriate value for the returned response.
         return_value = compute.Router()
 
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = compute.Router.to_json(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
         # get arguments that satisfy an http rule for this method
         sample_request = {
             "project": "sample1",
@@ -1173,6 +1322,15 @@ def test_get_rest_flattened():
             project="project_value", region="region_value", router="router_value",
         )
         mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = compute.Router.to_json(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
         client.get(**mock_args)
 
         # Establish that the underlying call was made with the expected
@@ -1180,7 +1338,7 @@ def test_get_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "https://%s/compute/v1/projects/{project}/regions/{region}/routers/{router}"
+            "%s/compute/v1/projects/{project}/regions/{region}/routers/{router}"
             % client.transport._host,
             args[1],
         )
@@ -1280,7 +1438,7 @@ def test_get_nat_mapping_info_rest_required_fields(
     ).get_nat_mapping_info._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
-        ("max_results", "filter", "order_by", "page_token", "return_partial_success",)
+        ("filter", "max_results", "order_by", "page_token", "return_partial_success",)
     )
     jsonified_request.update(unset_fields)
 
@@ -1334,9 +1492,58 @@ def test_get_nat_mapping_info_rest_unset_required_fields():
 
     unset_fields = transport.get_nat_mapping_info._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("maxResults", "filter", "orderBy", "pageToken", "returnPartialSuccess",))
+        set(("filter", "maxResults", "orderBy", "pageToken", "returnPartialSuccess",))
         & set(("project", "region", "router",))
     )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_nat_mapping_info_rest_interceptors(null_interceptor):
+    transport = transports.RoutersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.RoutersRestInterceptor(),
+    )
+    client = RoutersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RoutersRestInterceptor, "post_get_nat_mapping_info"
+    ) as post, mock.patch.object(
+        transports.RoutersRestInterceptor, "pre_get_nat_mapping_info"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": None,
+            "query_params": {},
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.VmEndpointNatMappingsList.to_json(
+            compute.VmEndpointNatMappingsList()
+        )
+
+        request = compute.GetNatMappingInfoRoutersRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.VmEndpointNatMappingsList
+
+        client.get_nat_mapping_info(
+            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
 
 
 def test_get_nat_mapping_info_rest_bad_request(
@@ -1372,14 +1579,6 @@ def test_get_nat_mapping_info_rest_flattened():
         # Designate an appropriate value for the returned response.
         return_value = compute.VmEndpointNatMappingsList()
 
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = compute.VmEndpointNatMappingsList.to_json(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
         # get arguments that satisfy an http rule for this method
         sample_request = {
             "project": "sample1",
@@ -1392,6 +1591,15 @@ def test_get_nat_mapping_info_rest_flattened():
             project="project_value", region="region_value", router="router_value",
         )
         mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = compute.VmEndpointNatMappingsList.to_json(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
         client.get_nat_mapping_info(**mock_args)
 
         # Establish that the underlying call was made with the expected
@@ -1399,7 +1607,7 @@ def test_get_nat_mapping_info_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "https://%s/compute/v1/projects/{project}/regions/{region}/routers/{router}/getNatMappingInfo"
+            "%s/compute/v1/projects/{project}/regions/{region}/routers/{router}/getNatMappingInfo"
             % client.transport._host,
             args[1],
         )
@@ -1593,6 +1801,55 @@ def test_get_router_status_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("project", "region", "router",)))
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_router_status_rest_interceptors(null_interceptor):
+    transport = transports.RoutersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.RoutersRestInterceptor(),
+    )
+    client = RoutersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RoutersRestInterceptor, "post_get_router_status"
+    ) as post, mock.patch.object(
+        transports.RoutersRestInterceptor, "pre_get_router_status"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": None,
+            "query_params": {},
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.RouterStatusResponse.to_json(
+            compute.RouterStatusResponse()
+        )
+
+        request = compute.GetRouterStatusRouterRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.RouterStatusResponse
+
+        client.get_router_status(
+            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_get_router_status_rest_bad_request(
     transport: str = "rest", request_type=compute.GetRouterStatusRouterRequest
 ):
@@ -1626,14 +1883,6 @@ def test_get_router_status_rest_flattened():
         # Designate an appropriate value for the returned response.
         return_value = compute.RouterStatusResponse()
 
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = compute.RouterStatusResponse.to_json(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
         # get arguments that satisfy an http rule for this method
         sample_request = {
             "project": "sample1",
@@ -1646,6 +1895,15 @@ def test_get_router_status_rest_flattened():
             project="project_value", region="region_value", router="router_value",
         )
         mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = compute.RouterStatusResponse.to_json(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
         client.get_router_status(**mock_args)
 
         # Establish that the underlying call was made with the expected
@@ -1653,7 +1911,7 @@ def test_get_router_status_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "https://%s/compute/v1/projects/{project}/regions/{region}/routers/{router}/getRouterStatus"
+            "%s/compute/v1/projects/{project}/regions/{region}/routers/{router}/getRouterStatus"
             % client.transport._host,
             args[1],
         )
@@ -1709,9 +1967,7 @@ def test_insert_unary_rest(request_type):
                     "advertised_groups_value_1",
                     "advertised_groups_value_2",
                 ],
-                "advertised_ip_ranges": [
-                    {"description": "description_value", "range_": "range__value"}
-                ],
+                "advertised_ip_ranges": {},
                 "advertised_route_priority": 2714,
                 "bfd": {
                     "min_receive_interval": 2122,
@@ -1720,12 +1976,15 @@ def test_insert_unary_rest(request_type):
                     "session_initialization_mode": "session_initialization_mode_value",
                 },
                 "enable": "enable_value",
+                "enable_ipv6": True,
                 "interface_name": "interface_name_value",
                 "ip_address": "ip_address_value",
+                "ipv6_nexthop_address": "ipv6_nexthop_address_value",
                 "management_type": "management_type_value",
                 "name": "name_value",
                 "peer_asn": 845,
                 "peer_ip_address": "peer_ip_address_value",
+                "peer_ipv6_nexthop_address": "peer_ipv6_nexthop_address_value",
                 "router_appliance_instance": "router_appliance_instance_value",
             }
         ],
@@ -1750,9 +2009,11 @@ def test_insert_unary_rest(request_type):
         "nats": [
             {
                 "drain_nat_ips": ["drain_nat_ips_value_1", "drain_nat_ips_value_2"],
+                "enable_dynamic_port_allocation": True,
                 "enable_endpoint_independent_mapping": True,
                 "icmp_idle_timeout_sec": 2214,
                 "log_config": {"enable": True, "filter": "filter_value"},
+                "max_ports_per_vm": 1733,
                 "min_ports_per_vm": 1731,
                 "name": "name_value",
                 "nat_ip_allocate_option": "nat_ip_allocate_option_value",
@@ -1947,6 +2208,53 @@ def test_insert_unary_rest_unset_required_fields():
     )
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_insert_unary_rest_interceptors(null_interceptor):
+    transport = transports.RoutersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.RoutersRestInterceptor(),
+    )
+    client = RoutersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RoutersRestInterceptor, "post_insert"
+    ) as post, mock.patch.object(
+        transports.RoutersRestInterceptor, "pre_insert"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": None,
+            "query_params": {},
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.Operation.to_json(compute.Operation())
+
+        request = compute.InsertRouterRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation
+
+        client.insert_unary(
+            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_insert_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.InsertRouterRequest
 ):
@@ -1976,9 +2284,7 @@ def test_insert_unary_rest_bad_request(
                     "advertised_groups_value_1",
                     "advertised_groups_value_2",
                 ],
-                "advertised_ip_ranges": [
-                    {"description": "description_value", "range_": "range__value"}
-                ],
+                "advertised_ip_ranges": {},
                 "advertised_route_priority": 2714,
                 "bfd": {
                     "min_receive_interval": 2122,
@@ -1987,12 +2293,15 @@ def test_insert_unary_rest_bad_request(
                     "session_initialization_mode": "session_initialization_mode_value",
                 },
                 "enable": "enable_value",
+                "enable_ipv6": True,
                 "interface_name": "interface_name_value",
                 "ip_address": "ip_address_value",
+                "ipv6_nexthop_address": "ipv6_nexthop_address_value",
                 "management_type": "management_type_value",
                 "name": "name_value",
                 "peer_asn": 845,
                 "peer_ip_address": "peer_ip_address_value",
+                "peer_ipv6_nexthop_address": "peer_ipv6_nexthop_address_value",
                 "router_appliance_instance": "router_appliance_instance_value",
             }
         ],
@@ -2017,9 +2326,11 @@ def test_insert_unary_rest_bad_request(
         "nats": [
             {
                 "drain_nat_ips": ["drain_nat_ips_value_1", "drain_nat_ips_value_2"],
+                "enable_dynamic_port_allocation": True,
                 "enable_endpoint_independent_mapping": True,
                 "icmp_idle_timeout_sec": 2214,
                 "log_config": {"enable": True, "filter": "filter_value"},
+                "max_ports_per_vm": 1733,
                 "min_ports_per_vm": 1731,
                 "name": "name_value",
                 "nat_ip_allocate_option": "nat_ip_allocate_option_value",
@@ -2089,14 +2400,6 @@ def test_insert_unary_rest_flattened():
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation()
 
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
         # get arguments that satisfy an http rule for this method
         sample_request = {"project": "sample1", "region": "sample2"}
 
@@ -2109,6 +2412,15 @@ def test_insert_unary_rest_flattened():
             ),
         )
         mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
         client.insert_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
@@ -2116,7 +2428,7 @@ def test_insert_unary_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "https://%s/compute/v1/projects/{project}/regions/{region}/routers"
+            "%s/compute/v1/projects/{project}/regions/{region}/routers"
             % client.transport._host,
             args[1],
         )
@@ -2212,7 +2524,7 @@ def test_list_rest_required_fields(request_type=compute.ListRoutersRequest):
     ).list._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
-        ("max_results", "filter", "order_by", "page_token", "return_partial_success",)
+        ("filter", "max_results", "order_by", "page_token", "return_partial_success",)
     )
     jsonified_request.update(unset_fields)
 
@@ -2264,9 +2576,54 @@ def test_list_rest_unset_required_fields():
 
     unset_fields = transport.list._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("maxResults", "filter", "orderBy", "pageToken", "returnPartialSuccess",))
+        set(("filter", "maxResults", "orderBy", "pageToken", "returnPartialSuccess",))
         & set(("project", "region",))
     )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_rest_interceptors(null_interceptor):
+    transport = transports.RoutersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.RoutersRestInterceptor(),
+    )
+    client = RoutersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RoutersRestInterceptor, "post_list"
+    ) as post, mock.patch.object(
+        transports.RoutersRestInterceptor, "pre_list"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": None,
+            "query_params": {},
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.RouterList.to_json(compute.RouterList())
+
+        request = compute.ListRoutersRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.RouterList
+
+        client.list(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
 
 
 def test_list_rest_bad_request(
@@ -2302,6 +2659,13 @@ def test_list_rest_flattened():
         # Designate an appropriate value for the returned response.
         return_value = compute.RouterList()
 
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project": "sample1", "region": "sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(project="project_value", region="region_value",)
+        mock_args.update(sample_request)
+
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
@@ -2310,12 +2674,6 @@ def test_list_rest_flattened():
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        # get arguments that satisfy an http rule for this method
-        sample_request = {"project": "sample1", "region": "sample2"}
-
-        # get truthy value for each flattened field
-        mock_args = dict(project="project_value", region="region_value",)
-        mock_args.update(sample_request)
         client.list(**mock_args)
 
         # Establish that the underlying call was made with the expected
@@ -2323,7 +2681,7 @@ def test_list_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "https://%s/compute/v1/projects/{project}/regions/{region}/routers"
+            "%s/compute/v1/projects/{project}/regions/{region}/routers"
             % client.transport._host,
             args[1],
         )
@@ -2415,9 +2773,7 @@ def test_patch_unary_rest(request_type):
                     "advertised_groups_value_1",
                     "advertised_groups_value_2",
                 ],
-                "advertised_ip_ranges": [
-                    {"description": "description_value", "range_": "range__value"}
-                ],
+                "advertised_ip_ranges": {},
                 "advertised_route_priority": 2714,
                 "bfd": {
                     "min_receive_interval": 2122,
@@ -2426,12 +2782,15 @@ def test_patch_unary_rest(request_type):
                     "session_initialization_mode": "session_initialization_mode_value",
                 },
                 "enable": "enable_value",
+                "enable_ipv6": True,
                 "interface_name": "interface_name_value",
                 "ip_address": "ip_address_value",
+                "ipv6_nexthop_address": "ipv6_nexthop_address_value",
                 "management_type": "management_type_value",
                 "name": "name_value",
                 "peer_asn": 845,
                 "peer_ip_address": "peer_ip_address_value",
+                "peer_ipv6_nexthop_address": "peer_ipv6_nexthop_address_value",
                 "router_appliance_instance": "router_appliance_instance_value",
             }
         ],
@@ -2456,9 +2815,11 @@ def test_patch_unary_rest(request_type):
         "nats": [
             {
                 "drain_nat_ips": ["drain_nat_ips_value_1", "drain_nat_ips_value_2"],
+                "enable_dynamic_port_allocation": True,
                 "enable_endpoint_independent_mapping": True,
                 "icmp_idle_timeout_sec": 2214,
                 "log_config": {"enable": True, "filter": "filter_value"},
+                "max_ports_per_vm": 1733,
                 "min_ports_per_vm": 1731,
                 "name": "name_value",
                 "nat_ip_allocate_option": "nat_ip_allocate_option_value",
@@ -2657,6 +3018,51 @@ def test_patch_unary_rest_unset_required_fields():
     )
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_patch_unary_rest_interceptors(null_interceptor):
+    transport = transports.RoutersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.RoutersRestInterceptor(),
+    )
+    client = RoutersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RoutersRestInterceptor, "post_patch"
+    ) as post, mock.patch.object(
+        transports.RoutersRestInterceptor, "pre_patch"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": None,
+            "query_params": {},
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.Operation.to_json(compute.Operation())
+
+        request = compute.PatchRouterRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation
+
+        client.patch_unary(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_patch_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.PatchRouterRequest
 ):
@@ -2686,9 +3092,7 @@ def test_patch_unary_rest_bad_request(
                     "advertised_groups_value_1",
                     "advertised_groups_value_2",
                 ],
-                "advertised_ip_ranges": [
-                    {"description": "description_value", "range_": "range__value"}
-                ],
+                "advertised_ip_ranges": {},
                 "advertised_route_priority": 2714,
                 "bfd": {
                     "min_receive_interval": 2122,
@@ -2697,12 +3101,15 @@ def test_patch_unary_rest_bad_request(
                     "session_initialization_mode": "session_initialization_mode_value",
                 },
                 "enable": "enable_value",
+                "enable_ipv6": True,
                 "interface_name": "interface_name_value",
                 "ip_address": "ip_address_value",
+                "ipv6_nexthop_address": "ipv6_nexthop_address_value",
                 "management_type": "management_type_value",
                 "name": "name_value",
                 "peer_asn": 845,
                 "peer_ip_address": "peer_ip_address_value",
+                "peer_ipv6_nexthop_address": "peer_ipv6_nexthop_address_value",
                 "router_appliance_instance": "router_appliance_instance_value",
             }
         ],
@@ -2727,9 +3134,11 @@ def test_patch_unary_rest_bad_request(
         "nats": [
             {
                 "drain_nat_ips": ["drain_nat_ips_value_1", "drain_nat_ips_value_2"],
+                "enable_dynamic_port_allocation": True,
                 "enable_endpoint_independent_mapping": True,
                 "icmp_idle_timeout_sec": 2214,
                 "log_config": {"enable": True, "filter": "filter_value"},
+                "max_ports_per_vm": 1733,
                 "min_ports_per_vm": 1731,
                 "name": "name_value",
                 "nat_ip_allocate_option": "nat_ip_allocate_option_value",
@@ -2799,14 +3208,6 @@ def test_patch_unary_rest_flattened():
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation()
 
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
         # get arguments that satisfy an http rule for this method
         sample_request = {
             "project": "sample1",
@@ -2824,6 +3225,15 @@ def test_patch_unary_rest_flattened():
             ),
         )
         mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
         client.patch_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
@@ -2831,7 +3241,7 @@ def test_patch_unary_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "https://%s/compute/v1/projects/{project}/regions/{region}/routers/{router}"
+            "%s/compute/v1/projects/{project}/regions/{region}/routers/{router}"
             % client.transport._host,
             args[1],
         )
@@ -2890,9 +3300,7 @@ def test_preview_rest(request_type):
                     "advertised_groups_value_1",
                     "advertised_groups_value_2",
                 ],
-                "advertised_ip_ranges": [
-                    {"description": "description_value", "range_": "range__value"}
-                ],
+                "advertised_ip_ranges": {},
                 "advertised_route_priority": 2714,
                 "bfd": {
                     "min_receive_interval": 2122,
@@ -2901,12 +3309,15 @@ def test_preview_rest(request_type):
                     "session_initialization_mode": "session_initialization_mode_value",
                 },
                 "enable": "enable_value",
+                "enable_ipv6": True,
                 "interface_name": "interface_name_value",
                 "ip_address": "ip_address_value",
+                "ipv6_nexthop_address": "ipv6_nexthop_address_value",
                 "management_type": "management_type_value",
                 "name": "name_value",
                 "peer_asn": 845,
                 "peer_ip_address": "peer_ip_address_value",
+                "peer_ipv6_nexthop_address": "peer_ipv6_nexthop_address_value",
                 "router_appliance_instance": "router_appliance_instance_value",
             }
         ],
@@ -2931,9 +3342,11 @@ def test_preview_rest(request_type):
         "nats": [
             {
                 "drain_nat_ips": ["drain_nat_ips_value_1", "drain_nat_ips_value_2"],
+                "enable_dynamic_port_allocation": True,
                 "enable_endpoint_independent_mapping": True,
                 "icmp_idle_timeout_sec": 2214,
                 "log_config": {"enable": True, "filter": "filter_value"},
+                "max_ports_per_vm": 1733,
                 "min_ports_per_vm": 1731,
                 "name": "name_value",
                 "nat_ip_allocate_option": "nat_ip_allocate_option_value",
@@ -3085,6 +3498,53 @@ def test_preview_rest_unset_required_fields():
     )
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_preview_rest_interceptors(null_interceptor):
+    transport = transports.RoutersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.RoutersRestInterceptor(),
+    )
+    client = RoutersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RoutersRestInterceptor, "post_preview"
+    ) as post, mock.patch.object(
+        transports.RoutersRestInterceptor, "pre_preview"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": None,
+            "query_params": {},
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.RoutersPreviewResponse.to_json(
+            compute.RoutersPreviewResponse()
+        )
+
+        request = compute.PreviewRouterRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.RoutersPreviewResponse
+
+        client.preview(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_preview_rest_bad_request(
     transport: str = "rest", request_type=compute.PreviewRouterRequest
 ):
@@ -3114,9 +3574,7 @@ def test_preview_rest_bad_request(
                     "advertised_groups_value_1",
                     "advertised_groups_value_2",
                 ],
-                "advertised_ip_ranges": [
-                    {"description": "description_value", "range_": "range__value"}
-                ],
+                "advertised_ip_ranges": {},
                 "advertised_route_priority": 2714,
                 "bfd": {
                     "min_receive_interval": 2122,
@@ -3125,12 +3583,15 @@ def test_preview_rest_bad_request(
                     "session_initialization_mode": "session_initialization_mode_value",
                 },
                 "enable": "enable_value",
+                "enable_ipv6": True,
                 "interface_name": "interface_name_value",
                 "ip_address": "ip_address_value",
+                "ipv6_nexthop_address": "ipv6_nexthop_address_value",
                 "management_type": "management_type_value",
                 "name": "name_value",
                 "peer_asn": 845,
                 "peer_ip_address": "peer_ip_address_value",
+                "peer_ipv6_nexthop_address": "peer_ipv6_nexthop_address_value",
                 "router_appliance_instance": "router_appliance_instance_value",
             }
         ],
@@ -3155,9 +3616,11 @@ def test_preview_rest_bad_request(
         "nats": [
             {
                 "drain_nat_ips": ["drain_nat_ips_value_1", "drain_nat_ips_value_2"],
+                "enable_dynamic_port_allocation": True,
                 "enable_endpoint_independent_mapping": True,
                 "icmp_idle_timeout_sec": 2214,
                 "log_config": {"enable": True, "filter": "filter_value"},
+                "max_ports_per_vm": 1733,
                 "min_ports_per_vm": 1731,
                 "name": "name_value",
                 "nat_ip_allocate_option": "nat_ip_allocate_option_value",
@@ -3227,14 +3690,6 @@ def test_preview_rest_flattened():
         # Designate an appropriate value for the returned response.
         return_value = compute.RoutersPreviewResponse()
 
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = compute.RoutersPreviewResponse.to_json(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
         # get arguments that satisfy an http rule for this method
         sample_request = {
             "project": "sample1",
@@ -3252,6 +3707,15 @@ def test_preview_rest_flattened():
             ),
         )
         mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = compute.RoutersPreviewResponse.to_json(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
         client.preview(**mock_args)
 
         # Establish that the underlying call was made with the expected
@@ -3259,7 +3723,7 @@ def test_preview_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "https://%s/compute/v1/projects/{project}/regions/{region}/routers/{router}/preview"
+            "%s/compute/v1/projects/{project}/regions/{region}/routers/{router}/preview"
             % client.transport._host,
             args[1],
         )
@@ -3318,9 +3782,7 @@ def test_update_unary_rest(request_type):
                     "advertised_groups_value_1",
                     "advertised_groups_value_2",
                 ],
-                "advertised_ip_ranges": [
-                    {"description": "description_value", "range_": "range__value"}
-                ],
+                "advertised_ip_ranges": {},
                 "advertised_route_priority": 2714,
                 "bfd": {
                     "min_receive_interval": 2122,
@@ -3329,12 +3791,15 @@ def test_update_unary_rest(request_type):
                     "session_initialization_mode": "session_initialization_mode_value",
                 },
                 "enable": "enable_value",
+                "enable_ipv6": True,
                 "interface_name": "interface_name_value",
                 "ip_address": "ip_address_value",
+                "ipv6_nexthop_address": "ipv6_nexthop_address_value",
                 "management_type": "management_type_value",
                 "name": "name_value",
                 "peer_asn": 845,
                 "peer_ip_address": "peer_ip_address_value",
+                "peer_ipv6_nexthop_address": "peer_ipv6_nexthop_address_value",
                 "router_appliance_instance": "router_appliance_instance_value",
             }
         ],
@@ -3359,9 +3824,11 @@ def test_update_unary_rest(request_type):
         "nats": [
             {
                 "drain_nat_ips": ["drain_nat_ips_value_1", "drain_nat_ips_value_2"],
+                "enable_dynamic_port_allocation": True,
                 "enable_endpoint_independent_mapping": True,
                 "icmp_idle_timeout_sec": 2214,
                 "log_config": {"enable": True, "filter": "filter_value"},
+                "max_ports_per_vm": 1733,
                 "min_ports_per_vm": 1731,
                 "name": "name_value",
                 "nat_ip_allocate_option": "nat_ip_allocate_option_value",
@@ -3560,6 +4027,53 @@ def test_update_unary_rest_unset_required_fields():
     )
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_unary_rest_interceptors(null_interceptor):
+    transport = transports.RoutersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.RoutersRestInterceptor(),
+    )
+    client = RoutersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RoutersRestInterceptor, "post_update"
+    ) as post, mock.patch.object(
+        transports.RoutersRestInterceptor, "pre_update"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": None,
+            "query_params": {},
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.Operation.to_json(compute.Operation())
+
+        request = compute.UpdateRouterRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation
+
+        client.update_unary(
+            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_update_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.UpdateRouterRequest
 ):
@@ -3589,9 +4103,7 @@ def test_update_unary_rest_bad_request(
                     "advertised_groups_value_1",
                     "advertised_groups_value_2",
                 ],
-                "advertised_ip_ranges": [
-                    {"description": "description_value", "range_": "range__value"}
-                ],
+                "advertised_ip_ranges": {},
                 "advertised_route_priority": 2714,
                 "bfd": {
                     "min_receive_interval": 2122,
@@ -3600,12 +4112,15 @@ def test_update_unary_rest_bad_request(
                     "session_initialization_mode": "session_initialization_mode_value",
                 },
                 "enable": "enable_value",
+                "enable_ipv6": True,
                 "interface_name": "interface_name_value",
                 "ip_address": "ip_address_value",
+                "ipv6_nexthop_address": "ipv6_nexthop_address_value",
                 "management_type": "management_type_value",
                 "name": "name_value",
                 "peer_asn": 845,
                 "peer_ip_address": "peer_ip_address_value",
+                "peer_ipv6_nexthop_address": "peer_ipv6_nexthop_address_value",
                 "router_appliance_instance": "router_appliance_instance_value",
             }
         ],
@@ -3630,9 +4145,11 @@ def test_update_unary_rest_bad_request(
         "nats": [
             {
                 "drain_nat_ips": ["drain_nat_ips_value_1", "drain_nat_ips_value_2"],
+                "enable_dynamic_port_allocation": True,
                 "enable_endpoint_independent_mapping": True,
                 "icmp_idle_timeout_sec": 2214,
                 "log_config": {"enable": True, "filter": "filter_value"},
+                "max_ports_per_vm": 1733,
                 "min_ports_per_vm": 1731,
                 "name": "name_value",
                 "nat_ip_allocate_option": "nat_ip_allocate_option_value",
@@ -3702,14 +4219,6 @@ def test_update_unary_rest_flattened():
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation()
 
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
         # get arguments that satisfy an http rule for this method
         sample_request = {
             "project": "sample1",
@@ -3727,6 +4236,15 @@ def test_update_unary_rest_flattened():
             ),
         )
         mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
         client.update_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
@@ -3734,7 +4252,7 @@ def test_update_unary_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "https://%s/compute/v1/projects/{project}/regions/{region}/routers/{router}"
+            "%s/compute/v1/projects/{project}/regions/{region}/routers/{router}"
             % client.transport._host,
             args[1],
         )
@@ -3931,24 +4449,36 @@ def test_routers_http_transport_client_cert_source_for_mtls():
         mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
 
 
-def test_routers_host_no_port():
+@pytest.mark.parametrize("transport_name", ["rest",])
+def test_routers_host_no_port(transport_name):
     client = RoutersClient(
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="compute.googleapis.com"
         ),
+        transport=transport_name,
     )
-    assert client.transport._host == "compute.googleapis.com:443"
+    assert client.transport._host == (
+        "compute.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://compute.googleapis.com"
+    )
 
 
-def test_routers_host_with_port():
+@pytest.mark.parametrize("transport_name", ["rest",])
+def test_routers_host_with_port(transport_name):
     client = RoutersClient(
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="compute.googleapis.com:8000"
         ),
+        transport=transport_name,
     )
-    assert client.transport._host == "compute.googleapis.com:8000"
+    assert client.transport._host == (
+        "compute.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://compute.googleapis.com:8000"
+    )
 
 
 def test_common_billing_account_path():

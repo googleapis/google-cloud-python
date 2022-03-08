@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -195,6 +195,9 @@ class InstancesTransport(abc.ABC):
             self.reset: gapic_v1.method.wrap_method(
                 self.reset, default_timeout=None, client_info=client_info,
             ),
+            self.resume: gapic_v1.method.wrap_method(
+                self.resume, default_timeout=None, client_info=client_info,
+            ),
             self.send_diagnostic_interrupt: gapic_v1.method.wrap_method(
                 self.send_diagnostic_interrupt,
                 default_timeout=None,
@@ -261,6 +264,9 @@ class InstancesTransport(abc.ABC):
             ),
             self.stop: gapic_v1.method.wrap_method(
                 self.stop, default_timeout=None, client_info=client_info,
+            ),
+            self.suspend: gapic_v1.method.wrap_method(
+                self.suspend, default_timeout=None, client_info=client_info,
             ),
             self.test_iam_permissions: gapic_v1.method.wrap_method(
                 self.test_iam_permissions,
@@ -490,6 +496,15 @@ class InstancesTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def resume(
+        self,
+    ) -> Callable[
+        [compute.ResumeInstanceRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def send_diagnostic_interrupt(
         self,
     ) -> Callable[
@@ -641,6 +656,15 @@ class InstancesTransport(abc.ABC):
         self,
     ) -> Callable[
         [compute.StopInstanceRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def suspend(
+        self,
+    ) -> Callable[
+        [compute.SuspendInstanceRequest],
         Union[compute.Operation, Awaitable[compute.Operation]],
     ]:
         raise NotImplementedError()

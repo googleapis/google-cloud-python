@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -440,7 +440,7 @@ class SnapshotsClient(metaclass=SnapshotsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, snapshot])
         if request is not None and has_flattened_params:
@@ -517,7 +517,7 @@ class SnapshotsClient(metaclass=SnapshotsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, snapshot])
         if request is not None and has_flattened_params:
@@ -590,17 +590,18 @@ class SnapshotsClient(metaclass=SnapshotsClientMeta):
                 An Identity and Access Management (IAM) policy, which
                 specifies access controls for Google Cloud resources. A
                 Policy is a collection of bindings. A binding binds one
-                or more members to a single role. Members can be user
-                accounts, service accounts, Google groups, and domains
-                (such as G Suite). A role is a named list of
-                permissions; each role can be an IAM predefined role or
-                a user-created custom role. For some types of Google
-                Cloud resources, a binding can also specify a condition,
-                which is a logical expression that allows access to a
-                resource only if the expression evaluates to true. A
-                condition can add constraints based on attributes of the
-                request, the resource, or both. To learn which resources
-                support conditions in their IAM policies, see the [IAM
+                or more members, or principals, to a single role.
+                Principals can be user accounts, service accounts,
+                Google groups, and domains (such as G Suite). A role is
+                a named list of permissions; each role can be an IAM
+                predefined role or a user-created custom role. For some
+                types of Google Cloud resources, a binding can also
+                specify a condition, which is a logical expression that
+                allows access to a resource only if the expression
+                evaluates to true. A condition can add constraints based
+                on attributes of the request, the resource, or both. To
+                learn which resources support conditions in their IAM
+                policies, see the [IAM
                 documentation](\ https://cloud.google.com/iam/help/conditions/resource-policies).
                 **JSON example:** { "bindings": [ { "role":
                 "roles/resourcemanager.organizationAdmin", "members": [
@@ -629,7 +630,7 @@ class SnapshotsClient(metaclass=SnapshotsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, resource])
         if request is not None and has_flattened_params:
@@ -654,6 +655,96 @@ class SnapshotsClient(metaclass=SnapshotsClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_iam_policy]
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    def insert_unary(
+        self,
+        request: Union[compute.InsertSnapshotRequest, dict] = None,
+        *,
+        project: str = None,
+        snapshot_resource: compute.Snapshot = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> compute.Operation:
+        r"""Creates a snapshot in the specified project using the
+        data included in the request. For regular snapshot
+        creation, consider using this method instead of
+        disks.createSnapshot, as this method supports more
+        features, such as creating snapshots in a project
+        different from the source disk project.
+
+        Args:
+            request (Union[google.cloud.compute_v1.types.InsertSnapshotRequest, dict]):
+                The request object. A request message for
+                Snapshots.Insert. See the method description for
+                details.
+            project (str):
+                Project ID for this request.
+                This corresponds to the ``project`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            snapshot_resource (google.cloud.compute_v1.types.Snapshot):
+                The body resource for this request
+                This corresponds to the ``snapshot_resource`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.compute_v1.types.Operation:
+                Represents an Operation resource. Google Compute Engine
+                has three Operation resources: \*
+                [Global](/compute/docs/reference/rest/v1/globalOperations)
+                \*
+                [Regional](/compute/docs/reference/rest/v1/regionOperations)
+                \*
+                [Zonal](/compute/docs/reference/rest/v1/zoneOperations)
+                You can use an operation resource to manage asynchronous
+                API requests. For more information, read Handling API
+                responses. Operations can be global, regional or zonal.
+                - For global operations, use the globalOperations
+                resource. - For regional operations, use the
+                regionOperations resource. - For zonal operations, use
+                the zonalOperations resource. For more information, read
+                Global, Regional, and Zonal Resources.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([project, snapshot_resource])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a compute.InsertSnapshotRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, compute.InsertSnapshotRequest):
+            request = compute.InsertSnapshotRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if project is not None:
+                request.project = project
+            if snapshot_resource is not None:
+                request.snapshot_resource = snapshot_resource
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.insert]
 
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
@@ -698,7 +789,7 @@ class SnapshotsClient(metaclass=SnapshotsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project])
         if request is not None and has_flattened_params:
@@ -781,17 +872,18 @@ class SnapshotsClient(metaclass=SnapshotsClientMeta):
                 An Identity and Access Management (IAM) policy, which
                 specifies access controls for Google Cloud resources. A
                 Policy is a collection of bindings. A binding binds one
-                or more members to a single role. Members can be user
-                accounts, service accounts, Google groups, and domains
-                (such as G Suite). A role is a named list of
-                permissions; each role can be an IAM predefined role or
-                a user-created custom role. For some types of Google
-                Cloud resources, a binding can also specify a condition,
-                which is a logical expression that allows access to a
-                resource only if the expression evaluates to true. A
-                condition can add constraints based on attributes of the
-                request, the resource, or both. To learn which resources
-                support conditions in their IAM policies, see the [IAM
+                or more members, or principals, to a single role.
+                Principals can be user accounts, service accounts,
+                Google groups, and domains (such as G Suite). A role is
+                a named list of permissions; each role can be an IAM
+                predefined role or a user-created custom role. For some
+                types of Google Cloud resources, a binding can also
+                specify a condition, which is a logical expression that
+                allows access to a resource only if the expression
+                evaluates to true. A condition can add constraints based
+                on attributes of the request, the resource, or both. To
+                learn which resources support conditions in their IAM
+                policies, see the [IAM
                 documentation](\ https://cloud.google.com/iam/help/conditions/resource-policies).
                 **JSON example:** { "bindings": [ { "role":
                 "roles/resourcemanager.organizationAdmin", "members": [
@@ -820,7 +912,7 @@ class SnapshotsClient(metaclass=SnapshotsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, resource, global_set_policy_request_resource]
@@ -920,7 +1012,7 @@ class SnapshotsClient(metaclass=SnapshotsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, resource, global_set_labels_request_resource]
@@ -1005,7 +1097,7 @@ class SnapshotsClient(metaclass=SnapshotsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, resource, test_permissions_request_resource]

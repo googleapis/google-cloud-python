@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ import mock
 
 import grpc
 from grpc.experimental import aio
+from collections.abc import Iterable
 import json
 import math
 import pytest
@@ -90,19 +91,27 @@ def test__get_default_mtls_endpoint():
     )
 
 
-@pytest.mark.parametrize("client_class", [InstanceGroupManagersClient,])
-def test_instance_group_managers_client_from_service_account_info(client_class):
+@pytest.mark.parametrize(
+    "client_class,transport_name", [(InstanceGroupManagersClient, "rest"),]
+)
+def test_instance_group_managers_client_from_service_account_info(
+    client_class, transport_name
+):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_info"
     ) as factory:
         factory.return_value = creds
         info = {"valid": True}
-        client = client_class.from_service_account_info(info)
+        client = client_class.from_service_account_info(info, transport=transport_name)
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == "compute.googleapis.com:443"
+        assert client.transport._host == (
+            "compute.googleapis.com{}".format(":443")
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://{}".format("compute.googleapis.com")
+        )
 
 
 @pytest.mark.parametrize(
@@ -127,22 +136,34 @@ def test_instance_group_managers_client_service_account_always_use_jwt(
         use_jwt.assert_not_called()
 
 
-@pytest.mark.parametrize("client_class", [InstanceGroupManagersClient,])
-def test_instance_group_managers_client_from_service_account_file(client_class):
+@pytest.mark.parametrize(
+    "client_class,transport_name", [(InstanceGroupManagersClient, "rest"),]
+)
+def test_instance_group_managers_client_from_service_account_file(
+    client_class, transport_name
+):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_file"
     ) as factory:
         factory.return_value = creds
-        client = client_class.from_service_account_file("dummy/file/path.json")
+        client = client_class.from_service_account_file(
+            "dummy/file/path.json", transport=transport_name
+        )
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        client = client_class.from_service_account_json("dummy/file/path.json")
+        client = client_class.from_service_account_json(
+            "dummy/file/path.json", transport=transport_name
+        )
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == "compute.googleapis.com:443"
+        assert client.transport._host == (
+            "compute.googleapis.com{}".format(":443")
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://{}".format("compute.googleapis.com")
+        )
 
 
 def test_instance_group_managers_client_get_transport_class():
@@ -486,20 +507,22 @@ def test_instance_group_managers_client_client_options_scopes(
 
 
 @pytest.mark.parametrize(
-    "client_class,transport_class,transport_name",
+    "client_class,transport_class,transport_name,grpc_helpers",
     [
         (
             InstanceGroupManagersClient,
             transports.InstanceGroupManagersRestTransport,
             "rest",
+            None,
         ),
     ],
 )
 def test_instance_group_managers_client_client_options_credentials_file(
-    client_class, transport_class, transport_name
+    client_class, transport_class, transport_name, grpc_helpers
 ):
     # Check the case credentials file is provided.
     options = client_options.ClientOptions(credentials_file="credentials.json")
+
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -695,6 +718,55 @@ def test_abandon_instances_unary_rest_unset_required_fields():
     )
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_abandon_instances_unary_rest_interceptors(null_interceptor):
+    transport = transports.InstanceGroupManagersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.InstanceGroupManagersRestInterceptor(),
+    )
+    client = InstanceGroupManagersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.InstanceGroupManagersRestInterceptor, "post_abandon_instances"
+    ) as post, mock.patch.object(
+        transports.InstanceGroupManagersRestInterceptor, "pre_abandon_instances"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": None,
+            "query_params": {},
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.Operation.to_json(compute.Operation())
+
+        request = compute.AbandonInstancesInstanceGroupManagerRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation
+
+        client.abandon_instances_unary(
+            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_abandon_instances_unary_rest_bad_request(
     transport: str = "rest",
     request_type=compute.AbandonInstancesInstanceGroupManagerRequest,
@@ -736,14 +808,6 @@ def test_abandon_instances_unary_rest_flattened():
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation()
 
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
         # get arguments that satisfy an http rule for this method
         sample_request = {
             "project": "sample1",
@@ -761,6 +825,15 @@ def test_abandon_instances_unary_rest_flattened():
             ),
         )
         mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
         client.abandon_instances_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
@@ -768,7 +841,7 @@ def test_abandon_instances_unary_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "https://%s/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/abandonInstances"
+            "%s/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/abandonInstances"
             % client.transport._host,
             args[1],
         )
@@ -872,9 +945,9 @@ def test_aggregated_list_rest_required_fields(
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
-            "max_results",
-            "include_all_scopes",
             "filter",
+            "include_all_scopes",
+            "max_results",
             "order_by",
             "page_token",
             "return_partial_success",
@@ -932,9 +1005,9 @@ def test_aggregated_list_rest_unset_required_fields():
     assert set(unset_fields) == (
         set(
             (
-                "maxResults",
-                "includeAllScopes",
                 "filter",
+                "includeAllScopes",
+                "maxResults",
                 "orderBy",
                 "pageToken",
                 "returnPartialSuccess",
@@ -942,6 +1015,57 @@ def test_aggregated_list_rest_unset_required_fields():
         )
         & set(("project",))
     )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_aggregated_list_rest_interceptors(null_interceptor):
+    transport = transports.InstanceGroupManagersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.InstanceGroupManagersRestInterceptor(),
+    )
+    client = InstanceGroupManagersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.InstanceGroupManagersRestInterceptor, "post_aggregated_list"
+    ) as post, mock.patch.object(
+        transports.InstanceGroupManagersRestInterceptor, "pre_aggregated_list"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": None,
+            "query_params": {},
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.InstanceGroupManagerAggregatedList.to_json(
+            compute.InstanceGroupManagerAggregatedList()
+        )
+
+        request = compute.AggregatedListInstanceGroupManagersRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.InstanceGroupManagerAggregatedList
+
+        client.aggregated_list(
+            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
 
 
 def test_aggregated_list_rest_bad_request(
@@ -978,6 +1102,13 @@ def test_aggregated_list_rest_flattened():
         # Designate an appropriate value for the returned response.
         return_value = compute.InstanceGroupManagerAggregatedList()
 
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project": "sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(project="project_value",)
+        mock_args.update(sample_request)
+
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
@@ -988,12 +1119,6 @@ def test_aggregated_list_rest_flattened():
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        # get arguments that satisfy an http rule for this method
-        sample_request = {"project": "sample1"}
-
-        # get truthy value for each flattened field
-        mock_args = dict(project="project_value",)
-        mock_args.update(sample_request)
         client.aggregated_list(**mock_args)
 
         # Establish that the underlying call was made with the expected
@@ -1001,7 +1126,7 @@ def test_aggregated_list_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "https://%s/compute/v1/projects/{project}/aggregated/instanceGroupManagers"
+            "%s/compute/v1/projects/{project}/aggregated/instanceGroupManagers"
             % client.transport._host,
             args[1],
         )
@@ -1273,6 +1398,57 @@ def test_apply_updates_to_instances_unary_rest_unset_required_fields():
     )
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_apply_updates_to_instances_unary_rest_interceptors(null_interceptor):
+    transport = transports.InstanceGroupManagersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.InstanceGroupManagersRestInterceptor(),
+    )
+    client = InstanceGroupManagersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.InstanceGroupManagersRestInterceptor,
+        "post_apply_updates_to_instances",
+    ) as post, mock.patch.object(
+        transports.InstanceGroupManagersRestInterceptor,
+        "pre_apply_updates_to_instances",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": None,
+            "query_params": {},
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.Operation.to_json(compute.Operation())
+
+        request = compute.ApplyUpdatesToInstancesInstanceGroupManagerRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation
+
+        client.apply_updates_to_instances_unary(
+            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_apply_updates_to_instances_unary_rest_bad_request(
     transport: str = "rest",
     request_type=compute.ApplyUpdatesToInstancesInstanceGroupManagerRequest,
@@ -1317,14 +1493,6 @@ def test_apply_updates_to_instances_unary_rest_flattened():
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation()
 
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
         # get arguments that satisfy an http rule for this method
         sample_request = {
             "project": "sample1",
@@ -1342,6 +1510,15 @@ def test_apply_updates_to_instances_unary_rest_flattened():
             ),
         )
         mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
         client.apply_updates_to_instances_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
@@ -1349,7 +1526,7 @@ def test_apply_updates_to_instances_unary_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "https://%s/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/applyUpdatesToInstances"
+            "%s/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/applyUpdatesToInstances"
             % client.transport._host,
             args[1],
         )
@@ -1567,6 +1744,55 @@ def test_create_instances_unary_rest_unset_required_fields():
     )
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_instances_unary_rest_interceptors(null_interceptor):
+    transport = transports.InstanceGroupManagersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.InstanceGroupManagersRestInterceptor(),
+    )
+    client = InstanceGroupManagersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.InstanceGroupManagersRestInterceptor, "post_create_instances"
+    ) as post, mock.patch.object(
+        transports.InstanceGroupManagersRestInterceptor, "pre_create_instances"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": None,
+            "query_params": {},
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.Operation.to_json(compute.Operation())
+
+        request = compute.CreateInstancesInstanceGroupManagerRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation
+
+        client.create_instances_unary(
+            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_create_instances_unary_rest_bad_request(
     transport: str = "rest",
     request_type=compute.CreateInstancesInstanceGroupManagerRequest,
@@ -1615,14 +1841,6 @@ def test_create_instances_unary_rest_flattened():
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation()
 
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
         # get arguments that satisfy an http rule for this method
         sample_request = {
             "project": "sample1",
@@ -1640,6 +1858,15 @@ def test_create_instances_unary_rest_flattened():
             ),
         )
         mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
         client.create_instances_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
@@ -1647,7 +1874,7 @@ def test_create_instances_unary_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "https://%s/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/createInstances"
+            "%s/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/createInstances"
             % client.transport._host,
             args[1],
         )
@@ -1846,6 +2073,55 @@ def test_delete_unary_rest_unset_required_fields():
     )
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_unary_rest_interceptors(null_interceptor):
+    transport = transports.InstanceGroupManagersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.InstanceGroupManagersRestInterceptor(),
+    )
+    client = InstanceGroupManagersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.InstanceGroupManagersRestInterceptor, "post_delete"
+    ) as post, mock.patch.object(
+        transports.InstanceGroupManagersRestInterceptor, "pre_delete"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": None,
+            "query_params": {},
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.Operation.to_json(compute.Operation())
+
+        request = compute.DeleteInstanceGroupManagerRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation
+
+        client.delete_unary(
+            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_delete_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.DeleteInstanceGroupManagerRequest
 ):
@@ -1883,14 +2159,6 @@ def test_delete_unary_rest_flattened():
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation()
 
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
         # get arguments that satisfy an http rule for this method
         sample_request = {
             "project": "sample1",
@@ -1905,6 +2173,15 @@ def test_delete_unary_rest_flattened():
             instance_group_manager="instance_group_manager_value",
         )
         mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
         client.delete_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
@@ -1912,7 +2189,7 @@ def test_delete_unary_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "https://%s/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}"
+            "%s/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}"
             % client.transport._host,
             args[1],
         )
@@ -2121,6 +2398,55 @@ def test_delete_instances_unary_rest_unset_required_fields():
     )
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_instances_unary_rest_interceptors(null_interceptor):
+    transport = transports.InstanceGroupManagersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.InstanceGroupManagersRestInterceptor(),
+    )
+    client = InstanceGroupManagersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.InstanceGroupManagersRestInterceptor, "post_delete_instances"
+    ) as post, mock.patch.object(
+        transports.InstanceGroupManagersRestInterceptor, "pre_delete_instances"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": None,
+            "query_params": {},
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.Operation.to_json(compute.Operation())
+
+        request = compute.DeleteInstancesInstanceGroupManagerRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation
+
+        client.delete_instances_unary(
+            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_delete_instances_unary_rest_bad_request(
     transport: str = "rest",
     request_type=compute.DeleteInstancesInstanceGroupManagerRequest,
@@ -2163,14 +2489,6 @@ def test_delete_instances_unary_rest_flattened():
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation()
 
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
         # get arguments that satisfy an http rule for this method
         sample_request = {
             "project": "sample1",
@@ -2188,6 +2506,15 @@ def test_delete_instances_unary_rest_flattened():
             ),
         )
         mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
         client.delete_instances_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
@@ -2195,7 +2522,7 @@ def test_delete_instances_unary_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "https://%s/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/deleteInstances"
+            "%s/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/deleteInstances"
             % client.transport._host,
             args[1],
         )
@@ -2404,6 +2731,57 @@ def test_delete_per_instance_configs_unary_rest_unset_required_fields():
     )
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_per_instance_configs_unary_rest_interceptors(null_interceptor):
+    transport = transports.InstanceGroupManagersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.InstanceGroupManagersRestInterceptor(),
+    )
+    client = InstanceGroupManagersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.InstanceGroupManagersRestInterceptor,
+        "post_delete_per_instance_configs",
+    ) as post, mock.patch.object(
+        transports.InstanceGroupManagersRestInterceptor,
+        "pre_delete_per_instance_configs",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": None,
+            "query_params": {},
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.Operation.to_json(compute.Operation())
+
+        request = compute.DeletePerInstanceConfigsInstanceGroupManagerRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation
+
+        client.delete_per_instance_configs_unary(
+            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_delete_per_instance_configs_unary_rest_bad_request(
     transport: str = "rest",
     request_type=compute.DeletePerInstanceConfigsInstanceGroupManagerRequest,
@@ -2445,14 +2823,6 @@ def test_delete_per_instance_configs_unary_rest_flattened():
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation()
 
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
         # get arguments that satisfy an http rule for this method
         sample_request = {
             "project": "sample1",
@@ -2470,6 +2840,15 @@ def test_delete_per_instance_configs_unary_rest_flattened():
             ),
         )
         mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
         client.delete_per_instance_configs_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
@@ -2477,7 +2856,7 @@ def test_delete_per_instance_configs_unary_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "https://%s/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/deletePerInstanceConfigs"
+            "%s/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/deletePerInstanceConfigs"
             % client.transport._host,
             args[1],
         )
@@ -2658,6 +3037,55 @@ def test_get_rest_unset_required_fields():
     )
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_rest_interceptors(null_interceptor):
+    transport = transports.InstanceGroupManagersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.InstanceGroupManagersRestInterceptor(),
+    )
+    client = InstanceGroupManagersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.InstanceGroupManagersRestInterceptor, "post_get"
+    ) as post, mock.patch.object(
+        transports.InstanceGroupManagersRestInterceptor, "pre_get"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": None,
+            "query_params": {},
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.InstanceGroupManager.to_json(
+            compute.InstanceGroupManager()
+        )
+
+        request = compute.GetInstanceGroupManagerRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.InstanceGroupManager
+
+        client.get(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_get_rest_bad_request(
     transport: str = "rest", request_type=compute.GetInstanceGroupManagerRequest
 ):
@@ -2695,14 +3123,6 @@ def test_get_rest_flattened():
         # Designate an appropriate value for the returned response.
         return_value = compute.InstanceGroupManager()
 
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = compute.InstanceGroupManager.to_json(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
         # get arguments that satisfy an http rule for this method
         sample_request = {
             "project": "sample1",
@@ -2717,6 +3137,15 @@ def test_get_rest_flattened():
             instance_group_manager="instance_group_manager_value",
         )
         mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = compute.InstanceGroupManager.to_json(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
         client.get(**mock_args)
 
         # Establish that the underlying call was made with the expected
@@ -2724,7 +3153,7 @@ def test_get_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "https://%s/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}"
+            "%s/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}"
             % client.transport._host,
             args[1],
         )
@@ -2777,6 +3206,10 @@ def test_insert_unary_rest(request_type):
             "recreating": 1060,
             "refreshing": 1069,
             "restarting": 1091,
+            "resuming": 874,
+            "starting": 876,
+            "stopping": 884,
+            "suspending": 1088,
             "verifying": 979,
         },
         "description": "description_value",
@@ -2808,8 +3241,9 @@ def test_insert_unary_rest(request_type):
         "update_policy": {
             "instance_redistribution_type": "instance_redistribution_type_value",
             "max_surge": {"calculated": 1042, "fixed": 528, "percent": 753},
-            "max_unavailable": {"calculated": 1042, "fixed": 528, "percent": 753},
+            "max_unavailable": {},
             "minimal_action": "minimal_action_value",
+            "most_disruptive_allowed_action": "most_disruptive_allowed_action_value",
             "replacement_method": "replacement_method_value",
             "type_": "type__value",
         },
@@ -2817,7 +3251,7 @@ def test_insert_unary_rest(request_type):
             {
                 "instance_template": "instance_template_value",
                 "name": "name_value",
-                "target_size": {"calculated": 1042, "fixed": 528, "percent": 753},
+                "target_size": {},
             }
         ],
         "zone": "zone_value",
@@ -2973,6 +3407,55 @@ def test_insert_unary_rest_unset_required_fields():
     )
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_insert_unary_rest_interceptors(null_interceptor):
+    transport = transports.InstanceGroupManagersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.InstanceGroupManagersRestInterceptor(),
+    )
+    client = InstanceGroupManagersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.InstanceGroupManagersRestInterceptor, "post_insert"
+    ) as post, mock.patch.object(
+        transports.InstanceGroupManagersRestInterceptor, "pre_insert"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": None,
+            "query_params": {},
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.Operation.to_json(compute.Operation())
+
+        request = compute.InsertInstanceGroupManagerRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation
+
+        client.insert_unary(
+            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_insert_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.InsertInstanceGroupManagerRequest
 ):
@@ -2997,6 +3480,10 @@ def test_insert_unary_rest_bad_request(
             "recreating": 1060,
             "refreshing": 1069,
             "restarting": 1091,
+            "resuming": 874,
+            "starting": 876,
+            "stopping": 884,
+            "suspending": 1088,
             "verifying": 979,
         },
         "description": "description_value",
@@ -3028,8 +3515,9 @@ def test_insert_unary_rest_bad_request(
         "update_policy": {
             "instance_redistribution_type": "instance_redistribution_type_value",
             "max_surge": {"calculated": 1042, "fixed": 528, "percent": 753},
-            "max_unavailable": {"calculated": 1042, "fixed": 528, "percent": 753},
+            "max_unavailable": {},
             "minimal_action": "minimal_action_value",
+            "most_disruptive_allowed_action": "most_disruptive_allowed_action_value",
             "replacement_method": "replacement_method_value",
             "type_": "type__value",
         },
@@ -3037,7 +3525,7 @@ def test_insert_unary_rest_bad_request(
             {
                 "instance_template": "instance_template_value",
                 "name": "name_value",
-                "target_size": {"calculated": 1042, "fixed": 528, "percent": 753},
+                "target_size": {},
             }
         ],
         "zone": "zone_value",
@@ -3066,14 +3554,6 @@ def test_insert_unary_rest_flattened():
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation()
 
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
         # get arguments that satisfy an http rule for this method
         sample_request = {"project": "sample1", "zone": "sample2"}
 
@@ -3090,6 +3570,15 @@ def test_insert_unary_rest_flattened():
             ),
         )
         mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
         client.insert_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
@@ -3097,7 +3586,7 @@ def test_insert_unary_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "https://%s/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers"
+            "%s/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers"
             % client.transport._host,
             args[1],
         )
@@ -3201,7 +3690,7 @@ def test_list_rest_required_fields(
     ).list._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
-        ("max_results", "filter", "order_by", "page_token", "return_partial_success",)
+        ("filter", "max_results", "order_by", "page_token", "return_partial_success",)
     )
     jsonified_request.update(unset_fields)
 
@@ -3253,9 +3742,58 @@ def test_list_rest_unset_required_fields():
 
     unset_fields = transport.list._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("maxResults", "filter", "orderBy", "pageToken", "returnPartialSuccess",))
+        set(("filter", "maxResults", "orderBy", "pageToken", "returnPartialSuccess",))
         & set(("project", "zone",))
     )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_rest_interceptors(null_interceptor):
+    transport = transports.InstanceGroupManagersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.InstanceGroupManagersRestInterceptor(),
+    )
+    client = InstanceGroupManagersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.InstanceGroupManagersRestInterceptor, "post_list"
+    ) as post, mock.patch.object(
+        transports.InstanceGroupManagersRestInterceptor, "pre_list"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": None,
+            "query_params": {},
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.InstanceGroupManagerList.to_json(
+            compute.InstanceGroupManagerList()
+        )
+
+        request = compute.ListInstanceGroupManagersRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.InstanceGroupManagerList
+
+        client.list(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
 
 
 def test_list_rest_bad_request(
@@ -3291,6 +3829,13 @@ def test_list_rest_flattened():
         # Designate an appropriate value for the returned response.
         return_value = compute.InstanceGroupManagerList()
 
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project": "sample1", "zone": "sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(project="project_value", zone="zone_value",)
+        mock_args.update(sample_request)
+
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
@@ -3299,12 +3844,6 @@ def test_list_rest_flattened():
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        # get arguments that satisfy an http rule for this method
-        sample_request = {"project": "sample1", "zone": "sample2"}
-
-        # get truthy value for each flattened field
-        mock_args = dict(project="project_value", zone="zone_value",)
-        mock_args.update(sample_request)
         client.list(**mock_args)
 
         # Establish that the underlying call was made with the expected
@@ -3312,7 +3851,7 @@ def test_list_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "https://%s/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers"
+            "%s/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers"
             % client.transport._host,
             args[1],
         )
@@ -3456,7 +3995,7 @@ def test_list_errors_rest_required_fields(
     ).list_errors._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
-        ("max_results", "filter", "order_by", "page_token", "return_partial_success",)
+        ("filter", "max_results", "order_by", "page_token", "return_partial_success",)
     )
     jsonified_request.update(unset_fields)
 
@@ -3512,9 +4051,58 @@ def test_list_errors_rest_unset_required_fields():
 
     unset_fields = transport.list_errors._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("maxResults", "filter", "orderBy", "pageToken", "returnPartialSuccess",))
+        set(("filter", "maxResults", "orderBy", "pageToken", "returnPartialSuccess",))
         & set(("instanceGroupManager", "project", "zone",))
     )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_errors_rest_interceptors(null_interceptor):
+    transport = transports.InstanceGroupManagersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.InstanceGroupManagersRestInterceptor(),
+    )
+    client = InstanceGroupManagersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.InstanceGroupManagersRestInterceptor, "post_list_errors"
+    ) as post, mock.patch.object(
+        transports.InstanceGroupManagersRestInterceptor, "pre_list_errors"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": None,
+            "query_params": {},
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.InstanceGroupManagersListErrorsResponse.to_json(
+            compute.InstanceGroupManagersListErrorsResponse()
+        )
+
+        request = compute.ListErrorsInstanceGroupManagersRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.InstanceGroupManagersListErrorsResponse
+
+        client.list_errors(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
 
 
 def test_list_errors_rest_bad_request(
@@ -3554,16 +4142,6 @@ def test_list_errors_rest_flattened():
         # Designate an appropriate value for the returned response.
         return_value = compute.InstanceGroupManagersListErrorsResponse()
 
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = compute.InstanceGroupManagersListErrorsResponse.to_json(
-            return_value
-        )
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
         # get arguments that satisfy an http rule for this method
         sample_request = {
             "project": "sample1",
@@ -3578,6 +4156,17 @@ def test_list_errors_rest_flattened():
             instance_group_manager="instance_group_manager_value",
         )
         mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = compute.InstanceGroupManagersListErrorsResponse.to_json(
+            return_value
+        )
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
         client.list_errors(**mock_args)
 
         # Establish that the underlying call was made with the expected
@@ -3585,7 +4174,7 @@ def test_list_errors_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "https://%s/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/listErrors"
+            "%s/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/listErrors"
             % client.transport._host,
             args[1],
         )
@@ -3741,7 +4330,7 @@ def test_list_managed_instances_rest_required_fields(
     ).list_managed_instances._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
-        ("max_results", "filter", "order_by", "page_token", "return_partial_success",)
+        ("filter", "max_results", "order_by", "page_token", "return_partial_success",)
     )
     jsonified_request.update(unset_fields)
 
@@ -3797,9 +4386,60 @@ def test_list_managed_instances_rest_unset_required_fields():
 
     unset_fields = transport.list_managed_instances._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("maxResults", "filter", "orderBy", "pageToken", "returnPartialSuccess",))
+        set(("filter", "maxResults", "orderBy", "pageToken", "returnPartialSuccess",))
         & set(("instanceGroupManager", "project", "zone",))
     )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_managed_instances_rest_interceptors(null_interceptor):
+    transport = transports.InstanceGroupManagersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.InstanceGroupManagersRestInterceptor(),
+    )
+    client = InstanceGroupManagersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.InstanceGroupManagersRestInterceptor, "post_list_managed_instances"
+    ) as post, mock.patch.object(
+        transports.InstanceGroupManagersRestInterceptor, "pre_list_managed_instances"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": None,
+            "query_params": {},
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.InstanceGroupManagersListManagedInstancesResponse.to_json(
+            compute.InstanceGroupManagersListManagedInstancesResponse()
+        )
+
+        request = compute.ListManagedInstancesInstanceGroupManagersRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.InstanceGroupManagersListManagedInstancesResponse
+
+        client.list_managed_instances(
+            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
 
 
 def test_list_managed_instances_rest_bad_request(
@@ -3840,16 +4480,6 @@ def test_list_managed_instances_rest_flattened():
         # Designate an appropriate value for the returned response.
         return_value = compute.InstanceGroupManagersListManagedInstancesResponse()
 
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = compute.InstanceGroupManagersListManagedInstancesResponse.to_json(
-            return_value
-        )
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
         # get arguments that satisfy an http rule for this method
         sample_request = {
             "project": "sample1",
@@ -3864,6 +4494,17 @@ def test_list_managed_instances_rest_flattened():
             instance_group_manager="instance_group_manager_value",
         )
         mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = compute.InstanceGroupManagersListManagedInstancesResponse.to_json(
+            return_value
+        )
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
         client.list_managed_instances(**mock_args)
 
         # Establish that the underlying call was made with the expected
@@ -3871,7 +4512,7 @@ def test_list_managed_instances_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "https://%s/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/listManagedInstances"
+            "%s/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/listManagedInstances"
             % client.transport._host,
             args[1],
         )
@@ -4028,7 +4669,7 @@ def test_list_per_instance_configs_rest_required_fields(
     ).list_per_instance_configs._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
-        ("max_results", "filter", "order_by", "page_token", "return_partial_success",)
+        ("filter", "max_results", "order_by", "page_token", "return_partial_success",)
     )
     jsonified_request.update(unset_fields)
 
@@ -4084,9 +4725,61 @@ def test_list_per_instance_configs_rest_unset_required_fields():
 
     unset_fields = transport.list_per_instance_configs._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("maxResults", "filter", "orderBy", "pageToken", "returnPartialSuccess",))
+        set(("filter", "maxResults", "orderBy", "pageToken", "returnPartialSuccess",))
         & set(("instanceGroupManager", "project", "zone",))
     )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_per_instance_configs_rest_interceptors(null_interceptor):
+    transport = transports.InstanceGroupManagersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.InstanceGroupManagersRestInterceptor(),
+    )
+    client = InstanceGroupManagersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.InstanceGroupManagersRestInterceptor,
+        "post_list_per_instance_configs",
+    ) as post, mock.patch.object(
+        transports.InstanceGroupManagersRestInterceptor, "pre_list_per_instance_configs"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": None,
+            "query_params": {},
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.InstanceGroupManagersListPerInstanceConfigsResp.to_json(
+            compute.InstanceGroupManagersListPerInstanceConfigsResp()
+        )
+
+        request = compute.ListPerInstanceConfigsInstanceGroupManagersRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.InstanceGroupManagersListPerInstanceConfigsResp
+
+        client.list_per_instance_configs(
+            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
 
 
 def test_list_per_instance_configs_rest_bad_request(
@@ -4127,16 +4820,6 @@ def test_list_per_instance_configs_rest_flattened():
         # Designate an appropriate value for the returned response.
         return_value = compute.InstanceGroupManagersListPerInstanceConfigsResp()
 
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = compute.InstanceGroupManagersListPerInstanceConfigsResp.to_json(
-            return_value
-        )
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
         # get arguments that satisfy an http rule for this method
         sample_request = {
             "project": "sample1",
@@ -4151,6 +4834,17 @@ def test_list_per_instance_configs_rest_flattened():
             instance_group_manager="instance_group_manager_value",
         )
         mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = compute.InstanceGroupManagersListPerInstanceConfigsResp.to_json(
+            return_value
+        )
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
         client.list_per_instance_configs(**mock_args)
 
         # Establish that the underlying call was made with the expected
@@ -4158,7 +4852,7 @@ def test_list_per_instance_configs_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "https://%s/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/listPerInstanceConfigs"
+            "%s/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/listPerInstanceConfigs"
             % client.transport._host,
             args[1],
         )
@@ -4269,6 +4963,10 @@ def test_patch_unary_rest(request_type):
             "recreating": 1060,
             "refreshing": 1069,
             "restarting": 1091,
+            "resuming": 874,
+            "starting": 876,
+            "stopping": 884,
+            "suspending": 1088,
             "verifying": 979,
         },
         "description": "description_value",
@@ -4300,8 +4998,9 @@ def test_patch_unary_rest(request_type):
         "update_policy": {
             "instance_redistribution_type": "instance_redistribution_type_value",
             "max_surge": {"calculated": 1042, "fixed": 528, "percent": 753},
-            "max_unavailable": {"calculated": 1042, "fixed": 528, "percent": 753},
+            "max_unavailable": {},
             "minimal_action": "minimal_action_value",
+            "most_disruptive_allowed_action": "most_disruptive_allowed_action_value",
             "replacement_method": "replacement_method_value",
             "type_": "type__value",
         },
@@ -4309,7 +5008,7 @@ def test_patch_unary_rest(request_type):
             {
                 "instance_template": "instance_template_value",
                 "name": "name_value",
-                "target_size": {"calculated": 1042, "fixed": 528, "percent": 753},
+                "target_size": {},
             }
         ],
         "zone": "zone_value",
@@ -4472,6 +5171,53 @@ def test_patch_unary_rest_unset_required_fields():
     )
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_patch_unary_rest_interceptors(null_interceptor):
+    transport = transports.InstanceGroupManagersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.InstanceGroupManagersRestInterceptor(),
+    )
+    client = InstanceGroupManagersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.InstanceGroupManagersRestInterceptor, "post_patch"
+    ) as post, mock.patch.object(
+        transports.InstanceGroupManagersRestInterceptor, "pre_patch"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": None,
+            "query_params": {},
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.Operation.to_json(compute.Operation())
+
+        request = compute.PatchInstanceGroupManagerRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation
+
+        client.patch_unary(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_patch_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.PatchInstanceGroupManagerRequest
 ):
@@ -4500,6 +5246,10 @@ def test_patch_unary_rest_bad_request(
             "recreating": 1060,
             "refreshing": 1069,
             "restarting": 1091,
+            "resuming": 874,
+            "starting": 876,
+            "stopping": 884,
+            "suspending": 1088,
             "verifying": 979,
         },
         "description": "description_value",
@@ -4531,8 +5281,9 @@ def test_patch_unary_rest_bad_request(
         "update_policy": {
             "instance_redistribution_type": "instance_redistribution_type_value",
             "max_surge": {"calculated": 1042, "fixed": 528, "percent": 753},
-            "max_unavailable": {"calculated": 1042, "fixed": 528, "percent": 753},
+            "max_unavailable": {},
             "minimal_action": "minimal_action_value",
+            "most_disruptive_allowed_action": "most_disruptive_allowed_action_value",
             "replacement_method": "replacement_method_value",
             "type_": "type__value",
         },
@@ -4540,7 +5291,7 @@ def test_patch_unary_rest_bad_request(
             {
                 "instance_template": "instance_template_value",
                 "name": "name_value",
-                "target_size": {"calculated": 1042, "fixed": 528, "percent": 753},
+                "target_size": {},
             }
         ],
         "zone": "zone_value",
@@ -4569,14 +5320,6 @@ def test_patch_unary_rest_flattened():
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation()
 
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
         # get arguments that satisfy an http rule for this method
         sample_request = {
             "project": "sample1",
@@ -4598,6 +5341,15 @@ def test_patch_unary_rest_flattened():
             ),
         )
         mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
         client.patch_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
@@ -4605,7 +5357,7 @@ def test_patch_unary_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "https://%s/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}"
+            "%s/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}"
             % client.transport._host,
             args[1],
         )
@@ -4827,6 +5579,57 @@ def test_patch_per_instance_configs_unary_rest_unset_required_fields():
     )
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_patch_per_instance_configs_unary_rest_interceptors(null_interceptor):
+    transport = transports.InstanceGroupManagersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.InstanceGroupManagersRestInterceptor(),
+    )
+    client = InstanceGroupManagersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.InstanceGroupManagersRestInterceptor,
+        "post_patch_per_instance_configs",
+    ) as post, mock.patch.object(
+        transports.InstanceGroupManagersRestInterceptor,
+        "pre_patch_per_instance_configs",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": None,
+            "query_params": {},
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.Operation.to_json(compute.Operation())
+
+        request = compute.PatchPerInstanceConfigsInstanceGroupManagerRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation
+
+        client.patch_per_instance_configs_unary(
+            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_patch_per_instance_configs_unary_rest_bad_request(
     transport: str = "rest",
     request_type=compute.PatchPerInstanceConfigsInstanceGroupManagerRequest,
@@ -4875,14 +5678,6 @@ def test_patch_per_instance_configs_unary_rest_flattened():
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation()
 
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
         # get arguments that satisfy an http rule for this method
         sample_request = {
             "project": "sample1",
@@ -4902,6 +5697,15 @@ def test_patch_per_instance_configs_unary_rest_flattened():
             ),
         )
         mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
         client.patch_per_instance_configs_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
@@ -4909,7 +5713,7 @@ def test_patch_per_instance_configs_unary_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "https://%s/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/patchPerInstanceConfigs"
+            "%s/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/patchPerInstanceConfigs"
             % client.transport._host,
             args[1],
         )
@@ -5122,6 +5926,55 @@ def test_recreate_instances_unary_rest_unset_required_fields():
     )
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_recreate_instances_unary_rest_interceptors(null_interceptor):
+    transport = transports.InstanceGroupManagersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.InstanceGroupManagersRestInterceptor(),
+    )
+    client = InstanceGroupManagersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.InstanceGroupManagersRestInterceptor, "post_recreate_instances"
+    ) as post, mock.patch.object(
+        transports.InstanceGroupManagersRestInterceptor, "pre_recreate_instances"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": None,
+            "query_params": {},
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.Operation.to_json(compute.Operation())
+
+        request = compute.RecreateInstancesInstanceGroupManagerRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation
+
+        client.recreate_instances_unary(
+            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_recreate_instances_unary_rest_bad_request(
     transport: str = "rest",
     request_type=compute.RecreateInstancesInstanceGroupManagerRequest,
@@ -5163,14 +6016,6 @@ def test_recreate_instances_unary_rest_flattened():
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation()
 
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
         # get arguments that satisfy an http rule for this method
         sample_request = {
             "project": "sample1",
@@ -5188,6 +6033,15 @@ def test_recreate_instances_unary_rest_flattened():
             ),
         )
         mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
         client.recreate_instances_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
@@ -5195,7 +6049,7 @@ def test_recreate_instances_unary_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "https://%s/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/recreateInstances"
+            "%s/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/recreateInstances"
             % client.transport._host,
             args[1],
         )
@@ -5404,6 +6258,55 @@ def test_resize_unary_rest_unset_required_fields():
     )
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_resize_unary_rest_interceptors(null_interceptor):
+    transport = transports.InstanceGroupManagersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.InstanceGroupManagersRestInterceptor(),
+    )
+    client = InstanceGroupManagersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.InstanceGroupManagersRestInterceptor, "post_resize"
+    ) as post, mock.patch.object(
+        transports.InstanceGroupManagersRestInterceptor, "pre_resize"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": None,
+            "query_params": {},
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.Operation.to_json(compute.Operation())
+
+        request = compute.ResizeInstanceGroupManagerRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation
+
+        client.resize_unary(
+            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_resize_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.ResizeInstanceGroupManagerRequest
 ):
@@ -5441,14 +6344,6 @@ def test_resize_unary_rest_flattened():
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation()
 
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
         # get arguments that satisfy an http rule for this method
         sample_request = {
             "project": "sample1",
@@ -5464,6 +6359,15 @@ def test_resize_unary_rest_flattened():
             size=443,
         )
         mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
         client.resize_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
@@ -5471,7 +6375,7 @@ def test_resize_unary_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "https://%s/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/resize"
+            "%s/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/resize"
             % client.transport._host,
             args[1],
         )
@@ -5680,6 +6584,55 @@ def test_set_instance_template_unary_rest_unset_required_fields():
     )
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_set_instance_template_unary_rest_interceptors(null_interceptor):
+    transport = transports.InstanceGroupManagersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.InstanceGroupManagersRestInterceptor(),
+    )
+    client = InstanceGroupManagersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.InstanceGroupManagersRestInterceptor, "post_set_instance_template"
+    ) as post, mock.patch.object(
+        transports.InstanceGroupManagersRestInterceptor, "pre_set_instance_template"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": None,
+            "query_params": {},
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.Operation.to_json(compute.Operation())
+
+        request = compute.SetInstanceTemplateInstanceGroupManagerRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation
+
+        client.set_instance_template_unary(
+            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_set_instance_template_unary_rest_bad_request(
     transport: str = "rest",
     request_type=compute.SetInstanceTemplateInstanceGroupManagerRequest,
@@ -5721,14 +6674,6 @@ def test_set_instance_template_unary_rest_flattened():
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation()
 
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
         # get arguments that satisfy an http rule for this method
         sample_request = {
             "project": "sample1",
@@ -5746,6 +6691,15 @@ def test_set_instance_template_unary_rest_flattened():
             ),
         )
         mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
         client.set_instance_template_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
@@ -5753,7 +6707,7 @@ def test_set_instance_template_unary_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "https://%s/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/setInstanceTemplate"
+            "%s/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/setInstanceTemplate"
             % client.transport._host,
             args[1],
         )
@@ -5965,6 +6919,55 @@ def test_set_target_pools_unary_rest_unset_required_fields():
     )
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_set_target_pools_unary_rest_interceptors(null_interceptor):
+    transport = transports.InstanceGroupManagersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.InstanceGroupManagersRestInterceptor(),
+    )
+    client = InstanceGroupManagersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.InstanceGroupManagersRestInterceptor, "post_set_target_pools"
+    ) as post, mock.patch.object(
+        transports.InstanceGroupManagersRestInterceptor, "pre_set_target_pools"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": None,
+            "query_params": {},
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.Operation.to_json(compute.Operation())
+
+        request = compute.SetTargetPoolsInstanceGroupManagerRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation
+
+        client.set_target_pools_unary(
+            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_set_target_pools_unary_rest_bad_request(
     transport: str = "rest",
     request_type=compute.SetTargetPoolsInstanceGroupManagerRequest,
@@ -6007,14 +7010,6 @@ def test_set_target_pools_unary_rest_flattened():
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation()
 
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
         # get arguments that satisfy an http rule for this method
         sample_request = {
             "project": "sample1",
@@ -6032,6 +7027,15 @@ def test_set_target_pools_unary_rest_flattened():
             ),
         )
         mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
         client.set_target_pools_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
@@ -6039,7 +7043,7 @@ def test_set_target_pools_unary_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "https://%s/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/setTargetPools"
+            "%s/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/setTargetPools"
             % client.transport._host,
             args[1],
         )
@@ -6257,6 +7261,57 @@ def test_update_per_instance_configs_unary_rest_unset_required_fields():
     )
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_per_instance_configs_unary_rest_interceptors(null_interceptor):
+    transport = transports.InstanceGroupManagersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.InstanceGroupManagersRestInterceptor(),
+    )
+    client = InstanceGroupManagersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.InstanceGroupManagersRestInterceptor,
+        "post_update_per_instance_configs",
+    ) as post, mock.patch.object(
+        transports.InstanceGroupManagersRestInterceptor,
+        "pre_update_per_instance_configs",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": None,
+            "query_params": {},
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.Operation.to_json(compute.Operation())
+
+        request = compute.UpdatePerInstanceConfigsInstanceGroupManagerRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation
+
+        client.update_per_instance_configs_unary(
+            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_update_per_instance_configs_unary_rest_bad_request(
     transport: str = "rest",
     request_type=compute.UpdatePerInstanceConfigsInstanceGroupManagerRequest,
@@ -6305,14 +7360,6 @@ def test_update_per_instance_configs_unary_rest_flattened():
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation()
 
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
         # get arguments that satisfy an http rule for this method
         sample_request = {
             "project": "sample1",
@@ -6332,6 +7379,15 @@ def test_update_per_instance_configs_unary_rest_flattened():
             ),
         )
         mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
         client.update_per_instance_configs_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
@@ -6339,7 +7395,7 @@ def test_update_per_instance_configs_unary_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "https://%s/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/updatePerInstanceConfigs"
+            "%s/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/updatePerInstanceConfigs"
             % client.transport._host,
             args[1],
         )
@@ -6554,24 +7610,36 @@ def test_instance_group_managers_http_transport_client_cert_source_for_mtls():
         mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
 
 
-def test_instance_group_managers_host_no_port():
+@pytest.mark.parametrize("transport_name", ["rest",])
+def test_instance_group_managers_host_no_port(transport_name):
     client = InstanceGroupManagersClient(
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="compute.googleapis.com"
         ),
+        transport=transport_name,
     )
-    assert client.transport._host == "compute.googleapis.com:443"
+    assert client.transport._host == (
+        "compute.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://compute.googleapis.com"
+    )
 
 
-def test_instance_group_managers_host_with_port():
+@pytest.mark.parametrize("transport_name", ["rest",])
+def test_instance_group_managers_host_with_port(transport_name):
     client = InstanceGroupManagersClient(
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="compute.googleapis.com:8000"
         ),
+        transport=transport_name,
     )
-    assert client.transport._host == "compute.googleapis.com:8000"
+    assert client.transport._host == (
+        "compute.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://compute.googleapis.com:8000"
+    )
 
 
 def test_common_billing_account_path():

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,11 +22,14 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 from google.api_core import rest_helpers
+from google.api_core import rest_streaming
 from google.api_core import path_template
 from google.api_core import gapic_v1
+
 from requests import __version__ as requests_version
 import dataclasses
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
+import re
+from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 try:
@@ -50,10 +53,650 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
 )
 
 
+class InstanceGroupManagersRestInterceptor:
+    """Interceptor for InstanceGroupManagers.
+
+    Interceptors are used to manipulate requests, request metadata, and responses
+    in arbitrary ways.
+    Example use cases include:
+    * Logging
+    * Verifying requests according to service or custom semantics
+    * Stripping extraneous information from responses
+
+    These use cases and more can be enabled by injecting an
+    instance of a custom subclass when constructing the InstanceGroupManagersRestTransport.
+
+    .. code-block:: python
+        class MyCustomInstanceGroupManagersInterceptor(InstanceGroupManagersRestInterceptor):
+            def pre_abandon_instances(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_abandon_instances(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_aggregated_list(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_aggregated_list(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_apply_updates_to_instances(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_apply_updates_to_instances(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_create_instances(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_instances(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_delete(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_delete_instances(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete_instances(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_delete_per_instance_configs(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete_per_instance_configs(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_get(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_insert(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_insert(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_list(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_list_errors(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_errors(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_list_managed_instances(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_managed_instances(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_list_per_instance_configs(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_per_instance_configs(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_patch(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_patch(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_patch_per_instance_configs(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_patch_per_instance_configs(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_recreate_instances(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_recreate_instances(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_resize(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_resize(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_set_instance_template(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_set_instance_template(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_set_target_pools(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_set_target_pools(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_update_per_instance_configs(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_per_instance_configs(response):
+                logging.log(f"Received response: {response}")
+
+        transport = InstanceGroupManagersRestTransport(interceptor=MyCustomInstanceGroupManagersInterceptor())
+        client = InstanceGroupManagersClient(transport=transport)
+
+
+    """
+
+    def pre_abandon_instances(
+        self,
+        request: compute.AbandonInstancesInstanceGroupManagerRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        compute.AbandonInstancesInstanceGroupManagerRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for abandon_instances
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the InstanceGroupManagers server.
+        """
+        return request, metadata
+
+    def post_abandon_instances(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for abandon_instances
+
+        Override in a subclass to manipulate the response
+        after it is returned by the InstanceGroupManagers server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_aggregated_list(
+        self,
+        request: compute.AggregatedListInstanceGroupManagersRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        compute.AggregatedListInstanceGroupManagersRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for aggregated_list
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the InstanceGroupManagers server.
+        """
+        return request, metadata
+
+    def post_aggregated_list(
+        self, response: compute.InstanceGroupManagerAggregatedList
+    ) -> compute.InstanceGroupManagerAggregatedList:
+        """Post-rpc interceptor for aggregated_list
+
+        Override in a subclass to manipulate the response
+        after it is returned by the InstanceGroupManagers server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_apply_updates_to_instances(
+        self,
+        request: compute.ApplyUpdatesToInstancesInstanceGroupManagerRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        compute.ApplyUpdatesToInstancesInstanceGroupManagerRequest,
+        Sequence[Tuple[str, str]],
+    ]:
+        """Pre-rpc interceptor for apply_updates_to_instances
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the InstanceGroupManagers server.
+        """
+        return request, metadata
+
+    def post_apply_updates_to_instances(
+        self, response: compute.Operation
+    ) -> compute.Operation:
+        """Post-rpc interceptor for apply_updates_to_instances
+
+        Override in a subclass to manipulate the response
+        after it is returned by the InstanceGroupManagers server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_create_instances(
+        self,
+        request: compute.CreateInstancesInstanceGroupManagerRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        compute.CreateInstancesInstanceGroupManagerRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for create_instances
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the InstanceGroupManagers server.
+        """
+        return request, metadata
+
+    def post_create_instances(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for create_instances
+
+        Override in a subclass to manipulate the response
+        after it is returned by the InstanceGroupManagers server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_delete(
+        self,
+        request: compute.DeleteInstanceGroupManagerRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.DeleteInstanceGroupManagerRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for delete
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the InstanceGroupManagers server.
+        """
+        return request, metadata
+
+    def post_delete(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for delete
+
+        Override in a subclass to manipulate the response
+        after it is returned by the InstanceGroupManagers server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_delete_instances(
+        self,
+        request: compute.DeleteInstancesInstanceGroupManagerRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        compute.DeleteInstancesInstanceGroupManagerRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for delete_instances
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the InstanceGroupManagers server.
+        """
+        return request, metadata
+
+    def post_delete_instances(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for delete_instances
+
+        Override in a subclass to manipulate the response
+        after it is returned by the InstanceGroupManagers server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_delete_per_instance_configs(
+        self,
+        request: compute.DeletePerInstanceConfigsInstanceGroupManagerRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        compute.DeletePerInstanceConfigsInstanceGroupManagerRequest,
+        Sequence[Tuple[str, str]],
+    ]:
+        """Pre-rpc interceptor for delete_per_instance_configs
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the InstanceGroupManagers server.
+        """
+        return request, metadata
+
+    def post_delete_per_instance_configs(
+        self, response: compute.Operation
+    ) -> compute.Operation:
+        """Post-rpc interceptor for delete_per_instance_configs
+
+        Override in a subclass to manipulate the response
+        after it is returned by the InstanceGroupManagers server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get(
+        self,
+        request: compute.GetInstanceGroupManagerRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.GetInstanceGroupManagerRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the InstanceGroupManagers server.
+        """
+        return request, metadata
+
+    def post_get(
+        self, response: compute.InstanceGroupManager
+    ) -> compute.InstanceGroupManager:
+        """Post-rpc interceptor for get
+
+        Override in a subclass to manipulate the response
+        after it is returned by the InstanceGroupManagers server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_insert(
+        self,
+        request: compute.InsertInstanceGroupManagerRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.InsertInstanceGroupManagerRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for insert
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the InstanceGroupManagers server.
+        """
+        return request, metadata
+
+    def post_insert(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for insert
+
+        Override in a subclass to manipulate the response
+        after it is returned by the InstanceGroupManagers server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list(
+        self,
+        request: compute.ListInstanceGroupManagersRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.ListInstanceGroupManagersRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the InstanceGroupManagers server.
+        """
+        return request, metadata
+
+    def post_list(
+        self, response: compute.InstanceGroupManagerList
+    ) -> compute.InstanceGroupManagerList:
+        """Post-rpc interceptor for list
+
+        Override in a subclass to manipulate the response
+        after it is returned by the InstanceGroupManagers server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_errors(
+        self,
+        request: compute.ListErrorsInstanceGroupManagersRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        compute.ListErrorsInstanceGroupManagersRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for list_errors
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the InstanceGroupManagers server.
+        """
+        return request, metadata
+
+    def post_list_errors(
+        self, response: compute.InstanceGroupManagersListErrorsResponse
+    ) -> compute.InstanceGroupManagersListErrorsResponse:
+        """Post-rpc interceptor for list_errors
+
+        Override in a subclass to manipulate the response
+        after it is returned by the InstanceGroupManagers server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_managed_instances(
+        self,
+        request: compute.ListManagedInstancesInstanceGroupManagersRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        compute.ListManagedInstancesInstanceGroupManagersRequest,
+        Sequence[Tuple[str, str]],
+    ]:
+        """Pre-rpc interceptor for list_managed_instances
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the InstanceGroupManagers server.
+        """
+        return request, metadata
+
+    def post_list_managed_instances(
+        self, response: compute.InstanceGroupManagersListManagedInstancesResponse
+    ) -> compute.InstanceGroupManagersListManagedInstancesResponse:
+        """Post-rpc interceptor for list_managed_instances
+
+        Override in a subclass to manipulate the response
+        after it is returned by the InstanceGroupManagers server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_per_instance_configs(
+        self,
+        request: compute.ListPerInstanceConfigsInstanceGroupManagersRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        compute.ListPerInstanceConfigsInstanceGroupManagersRequest,
+        Sequence[Tuple[str, str]],
+    ]:
+        """Pre-rpc interceptor for list_per_instance_configs
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the InstanceGroupManagers server.
+        """
+        return request, metadata
+
+    def post_list_per_instance_configs(
+        self, response: compute.InstanceGroupManagersListPerInstanceConfigsResp
+    ) -> compute.InstanceGroupManagersListPerInstanceConfigsResp:
+        """Post-rpc interceptor for list_per_instance_configs
+
+        Override in a subclass to manipulate the response
+        after it is returned by the InstanceGroupManagers server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_patch(
+        self,
+        request: compute.PatchInstanceGroupManagerRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.PatchInstanceGroupManagerRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for patch
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the InstanceGroupManagers server.
+        """
+        return request, metadata
+
+    def post_patch(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for patch
+
+        Override in a subclass to manipulate the response
+        after it is returned by the InstanceGroupManagers server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_patch_per_instance_configs(
+        self,
+        request: compute.PatchPerInstanceConfigsInstanceGroupManagerRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        compute.PatchPerInstanceConfigsInstanceGroupManagerRequest,
+        Sequence[Tuple[str, str]],
+    ]:
+        """Pre-rpc interceptor for patch_per_instance_configs
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the InstanceGroupManagers server.
+        """
+        return request, metadata
+
+    def post_patch_per_instance_configs(
+        self, response: compute.Operation
+    ) -> compute.Operation:
+        """Post-rpc interceptor for patch_per_instance_configs
+
+        Override in a subclass to manipulate the response
+        after it is returned by the InstanceGroupManagers server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_recreate_instances(
+        self,
+        request: compute.RecreateInstancesInstanceGroupManagerRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        compute.RecreateInstancesInstanceGroupManagerRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for recreate_instances
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the InstanceGroupManagers server.
+        """
+        return request, metadata
+
+    def post_recreate_instances(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for recreate_instances
+
+        Override in a subclass to manipulate the response
+        after it is returned by the InstanceGroupManagers server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_resize(
+        self,
+        request: compute.ResizeInstanceGroupManagerRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.ResizeInstanceGroupManagerRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for resize
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the InstanceGroupManagers server.
+        """
+        return request, metadata
+
+    def post_resize(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for resize
+
+        Override in a subclass to manipulate the response
+        after it is returned by the InstanceGroupManagers server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_set_instance_template(
+        self,
+        request: compute.SetInstanceTemplateInstanceGroupManagerRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        compute.SetInstanceTemplateInstanceGroupManagerRequest,
+        Sequence[Tuple[str, str]],
+    ]:
+        """Pre-rpc interceptor for set_instance_template
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the InstanceGroupManagers server.
+        """
+        return request, metadata
+
+    def post_set_instance_template(
+        self, response: compute.Operation
+    ) -> compute.Operation:
+        """Post-rpc interceptor for set_instance_template
+
+        Override in a subclass to manipulate the response
+        after it is returned by the InstanceGroupManagers server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_set_target_pools(
+        self,
+        request: compute.SetTargetPoolsInstanceGroupManagerRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        compute.SetTargetPoolsInstanceGroupManagerRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for set_target_pools
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the InstanceGroupManagers server.
+        """
+        return request, metadata
+
+    def post_set_target_pools(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for set_target_pools
+
+        Override in a subclass to manipulate the response
+        after it is returned by the InstanceGroupManagers server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_update_per_instance_configs(
+        self,
+        request: compute.UpdatePerInstanceConfigsInstanceGroupManagerRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        compute.UpdatePerInstanceConfigsInstanceGroupManagerRequest,
+        Sequence[Tuple[str, str]],
+    ]:
+        """Pre-rpc interceptor for update_per_instance_configs
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the InstanceGroupManagers server.
+        """
+        return request, metadata
+
+    def post_update_per_instance_configs(
+        self, response: compute.Operation
+    ) -> compute.Operation:
+        """Post-rpc interceptor for update_per_instance_configs
+
+        Override in a subclass to manipulate the response
+        after it is returned by the InstanceGroupManagers server but before
+        it is returned to user code.
+        """
+        return response
+
+
 @dataclasses.dataclass
 class InstanceGroupManagersRestStub:
     _session: AuthorizedSession
     _host: str
+    _interceptor: InstanceGroupManagersRestInterceptor
 
 
 class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
@@ -82,6 +725,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
         url_scheme: str = "https",
+        interceptor: Optional[InstanceGroupManagersRestInterceptor] = None,
     ) -> None:
         """Instantiate the transport.
 
@@ -119,6 +763,16 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
+        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
+        if maybe_url_match is None:
+            raise ValueError(
+                f"Unexpected hostname structure: {host}"
+            )  # pragma: NO COVER
+
+        url_match_items = maybe_url_match.groupdict()
+
+        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
+
         super().__init__(
             host=host,
             credentials=credentials,
@@ -130,13 +784,14 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         )
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
+        self._interceptor = interceptor or InstanceGroupManagersRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
     class _AbandonInstances(InstanceGroupManagersRestStub):
         def __hash__(self):
             return hash("AbandonInstances")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -189,14 +844,16 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/abandonInstances",
                     "body": "instance_group_managers_abandon_instances_request_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_abandon_instances(
+                request, metadata
+            )
             request_kwargs = compute.AbandonInstancesInstanceGroupManagerRequest.to_dict(
                 request
             )
@@ -230,8 +887,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -242,16 +898,19 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_abandon_instances(resp)
+            return resp
 
     class _AggregatedList(InstanceGroupManagersRestStub):
         def __hash__(self):
             return hash("AggregatedList")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -288,13 +947,13 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
                     "uri": "/compute/v1/projects/{project}/aggregated/instanceGroupManagers",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_aggregated_list(request, metadata)
             request_kwargs = compute.AggregatedListInstanceGroupManagersRequest.to_dict(
                 request
             )
@@ -320,8 +979,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -331,16 +989,19 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.InstanceGroupManagerAggregatedList.from_json(
+            resp = compute.InstanceGroupManagerAggregatedList.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_aggregated_list(resp)
+            return resp
 
     class _ApplyUpdatesToInstances(InstanceGroupManagersRestStub):
         def __hash__(self):
             return hash("ApplyUpdatesToInstances")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -393,14 +1054,16 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/applyUpdatesToInstances",
                     "body": "instance_group_managers_apply_updates_request_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_apply_updates_to_instances(
+                request, metadata
+            )
             request_kwargs = compute.ApplyUpdatesToInstancesInstanceGroupManagerRequest.to_dict(
                 request
             )
@@ -434,8 +1097,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -446,16 +1108,19 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_apply_updates_to_instances(resp)
+            return resp
 
     class _CreateInstances(InstanceGroupManagersRestStub):
         def __hash__(self):
             return hash("CreateInstances")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -507,14 +1172,16 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/createInstances",
                     "body": "instance_group_managers_create_instances_request_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_create_instances(
+                request, metadata
+            )
             request_kwargs = compute.CreateInstancesInstanceGroupManagerRequest.to_dict(
                 request
             )
@@ -548,8 +1215,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -560,16 +1226,19 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_create_instances(resp)
+            return resp
 
     class _Delete(InstanceGroupManagersRestStub):
         def __hash__(self):
             return hash("Delete")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -621,13 +1290,13 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "delete",
                     "uri": "/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_delete(request, metadata)
             request_kwargs = compute.DeleteInstanceGroupManagerRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -651,8 +1320,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -662,16 +1330,19 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_delete(resp)
+            return resp
 
     class _DeleteInstances(InstanceGroupManagersRestStub):
         def __hash__(self):
             return hash("DeleteInstances")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -723,14 +1394,16 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/deleteInstances",
                     "body": "instance_group_managers_delete_instances_request_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_delete_instances(
+                request, metadata
+            )
             request_kwargs = compute.DeleteInstancesInstanceGroupManagerRequest.to_dict(
                 request
             )
@@ -764,8 +1437,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -776,16 +1448,19 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_delete_instances(resp)
+            return resp
 
     class _DeletePerInstanceConfigs(InstanceGroupManagersRestStub):
         def __hash__(self):
             return hash("DeletePerInstanceConfigs")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -838,14 +1513,16 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/deletePerInstanceConfigs",
                     "body": "instance_group_managers_delete_per_instance_configs_req_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_delete_per_instance_configs(
+                request, metadata
+            )
             request_kwargs = compute.DeletePerInstanceConfigsInstanceGroupManagerRequest.to_dict(
                 request
             )
@@ -879,8 +1556,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -891,16 +1567,19 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_delete_per_instance_configs(resp)
+            return resp
 
     class _Get(InstanceGroupManagersRestStub):
         def __hash__(self):
             return hash("Get")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -946,13 +1625,13 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
                     "uri": "/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_get(request, metadata)
             request_kwargs = compute.GetInstanceGroupManagerRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -976,8 +1655,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -987,16 +1665,19 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.InstanceGroupManager.from_json(
+            resp = compute.InstanceGroupManager.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_get(resp)
+            return resp
 
     class _Insert(InstanceGroupManagersRestStub):
         def __hash__(self):
             return hash("Insert")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1048,14 +1729,14 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers",
                     "body": "instance_group_manager_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_insert(request, metadata)
             request_kwargs = compute.InsertInstanceGroupManagerRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -1085,8 +1766,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -1097,16 +1777,19 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_insert(resp)
+            return resp
 
     class _List(InstanceGroupManagersRestStub):
         def __hash__(self):
             return hash("List")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1143,13 +1826,13 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                     [Output Only] A list of managed instance groups.
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
                     "uri": "/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_list(request, metadata)
             request_kwargs = compute.ListInstanceGroupManagersRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -1173,8 +1856,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -1184,16 +1866,19 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.InstanceGroupManagerList.from_json(
+            resp = compute.InstanceGroupManagerList.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_list(resp)
+            return resp
 
     class _ListErrors(InstanceGroupManagersRestStub):
         def __hash__(self):
             return hash("ListErrors")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1230,13 +1915,13 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
                     "uri": "/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/listErrors",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_list_errors(request, metadata)
             request_kwargs = compute.ListErrorsInstanceGroupManagersRequest.to_dict(
                 request
             )
@@ -1262,8 +1947,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -1273,16 +1957,19 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.InstanceGroupManagersListErrorsResponse.from_json(
+            resp = compute.InstanceGroupManagersListErrorsResponse.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_list_errors(resp)
+            return resp
 
     class _ListManagedInstances(InstanceGroupManagersRestStub):
         def __hash__(self):
             return hash("ListManagedInstances")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1319,13 +2006,15 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/listManagedInstances",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_list_managed_instances(
+                request, metadata
+            )
             request_kwargs = compute.ListManagedInstancesInstanceGroupManagersRequest.to_dict(
                 request
             )
@@ -1351,8 +2040,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -1362,16 +2050,19 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.InstanceGroupManagersListManagedInstancesResponse.from_json(
+            resp = compute.InstanceGroupManagersListManagedInstancesResponse.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_list_managed_instances(resp)
+            return resp
 
     class _ListPerInstanceConfigs(InstanceGroupManagersRestStub):
         def __hash__(self):
             return hash("ListPerInstanceConfigs")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1408,13 +2099,15 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/listPerInstanceConfigs",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_list_per_instance_configs(
+                request, metadata
+            )
             request_kwargs = compute.ListPerInstanceConfigsInstanceGroupManagersRequest.to_dict(
                 request
             )
@@ -1440,8 +2133,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -1451,16 +2143,19 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.InstanceGroupManagersListPerInstanceConfigsResp.from_json(
+            resp = compute.InstanceGroupManagersListPerInstanceConfigsResp.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_list_per_instance_configs(resp)
+            return resp
 
     class _Patch(InstanceGroupManagersRestStub):
         def __hash__(self):
             return hash("Patch")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1512,14 +2207,14 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "patch",
                     "uri": "/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}",
                     "body": "instance_group_manager_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_patch(request, metadata)
             request_kwargs = compute.PatchInstanceGroupManagerRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -1549,8 +2244,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -1561,16 +2255,19 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_patch(resp)
+            return resp
 
     class _PatchPerInstanceConfigs(InstanceGroupManagersRestStub):
         def __hash__(self):
             return hash("PatchPerInstanceConfigs")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1623,14 +2320,16 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/patchPerInstanceConfigs",
                     "body": "instance_group_managers_patch_per_instance_configs_req_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_patch_per_instance_configs(
+                request, metadata
+            )
             request_kwargs = compute.PatchPerInstanceConfigsInstanceGroupManagerRequest.to_dict(
                 request
             )
@@ -1664,8 +2363,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -1676,16 +2374,19 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_patch_per_instance_configs(resp)
+            return resp
 
     class _RecreateInstances(InstanceGroupManagersRestStub):
         def __hash__(self):
             return hash("RecreateInstances")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1737,14 +2438,16 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/recreateInstances",
                     "body": "instance_group_managers_recreate_instances_request_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_recreate_instances(
+                request, metadata
+            )
             request_kwargs = compute.RecreateInstancesInstanceGroupManagerRequest.to_dict(
                 request
             )
@@ -1778,8 +2481,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -1790,16 +2492,19 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_recreate_instances(resp)
+            return resp
 
     class _Resize(InstanceGroupManagersRestStub):
         def __hash__(self):
             return hash("Resize")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
             "size": 0,
         }
 
@@ -1853,13 +2558,13 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/resize",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_resize(request, metadata)
             request_kwargs = compute.ResizeInstanceGroupManagerRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -1883,8 +2588,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -1894,16 +2598,19 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_resize(resp)
+            return resp
 
     class _SetInstanceTemplate(InstanceGroupManagersRestStub):
         def __hash__(self):
             return hash("SetInstanceTemplate")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1955,14 +2662,16 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/setInstanceTemplate",
                     "body": "instance_group_managers_set_instance_template_request_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_set_instance_template(
+                request, metadata
+            )
             request_kwargs = compute.SetInstanceTemplateInstanceGroupManagerRequest.to_dict(
                 request
             )
@@ -1996,8 +2705,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -2008,16 +2716,19 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_set_instance_template(resp)
+            return resp
 
     class _SetTargetPools(InstanceGroupManagersRestStub):
         def __hash__(self):
             return hash("SetTargetPools")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2069,14 +2780,16 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/setTargetPools",
                     "body": "instance_group_managers_set_target_pools_request_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_set_target_pools(
+                request, metadata
+            )
             request_kwargs = compute.SetTargetPoolsInstanceGroupManagerRequest.to_dict(
                 request
             )
@@ -2110,8 +2823,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -2122,16 +2834,19 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_set_target_pools(resp)
+            return resp
 
     class _UpdatePerInstanceConfigs(InstanceGroupManagersRestStub):
         def __hash__(self):
             return hash("UpdatePerInstanceConfigs")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2184,14 +2899,16 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/updatePerInstanceConfigs",
                     "body": "instance_group_managers_update_per_instance_configs_req_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_update_per_instance_configs(
+                request, metadata
+            )
             request_kwargs = compute.UpdatePerInstanceConfigsInstanceGroupManagerRequest.to_dict(
                 request
             )
@@ -2225,8 +2942,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -2237,10 +2953,13 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_update_per_instance_configs(resp)
+            return resp
 
     @property
     def abandon_instances(
@@ -2251,10 +2970,12 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         stub = self._STUBS.get("abandon_instances")
         if not stub:
             stub = self._STUBS["abandon_instances"] = self._AbandonInstances(
-                self._session, self._host
+                self._session, self._host, self._interceptor
             )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def aggregated_list(
@@ -2266,10 +2987,12 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         stub = self._STUBS.get("aggregated_list")
         if not stub:
             stub = self._STUBS["aggregated_list"] = self._AggregatedList(
-                self._session, self._host
+                self._session, self._host, self._interceptor
             )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def apply_updates_to_instances(
@@ -2281,9 +3004,13 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         if not stub:
             stub = self._STUBS[
                 "apply_updates_to_instances"
-            ] = self._ApplyUpdatesToInstances(self._session, self._host)
+            ] = self._ApplyUpdatesToInstances(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def create_instances(
@@ -2294,10 +3021,12 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         stub = self._STUBS.get("create_instances")
         if not stub:
             stub = self._STUBS["create_instances"] = self._CreateInstances(
-                self._session, self._host
+                self._session, self._host, self._interceptor
             )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def delete(
@@ -2305,9 +3034,13 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
     ) -> Callable[[compute.DeleteInstanceGroupManagerRequest], compute.Operation]:
         stub = self._STUBS.get("delete")
         if not stub:
-            stub = self._STUBS["delete"] = self._Delete(self._session, self._host)
+            stub = self._STUBS["delete"] = self._Delete(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def delete_instances(
@@ -2318,10 +3051,12 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         stub = self._STUBS.get("delete_instances")
         if not stub:
             stub = self._STUBS["delete_instances"] = self._DeleteInstances(
-                self._session, self._host
+                self._session, self._host, self._interceptor
             )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def delete_per_instance_configs(
@@ -2333,9 +3068,13 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         if not stub:
             stub = self._STUBS[
                 "delete_per_instance_configs"
-            ] = self._DeletePerInstanceConfigs(self._session, self._host)
+            ] = self._DeletePerInstanceConfigs(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def get(
@@ -2345,9 +3084,13 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
     ]:
         stub = self._STUBS.get("get")
         if not stub:
-            stub = self._STUBS["get"] = self._Get(self._session, self._host)
+            stub = self._STUBS["get"] = self._Get(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def insert(
@@ -2355,9 +3098,13 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
     ) -> Callable[[compute.InsertInstanceGroupManagerRequest], compute.Operation]:
         stub = self._STUBS.get("insert")
         if not stub:
-            stub = self._STUBS["insert"] = self._Insert(self._session, self._host)
+            stub = self._STUBS["insert"] = self._Insert(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def list(
@@ -2367,9 +3114,13 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
     ]:
         stub = self._STUBS.get("list")
         if not stub:
-            stub = self._STUBS["list"] = self._List(self._session, self._host)
+            stub = self._STUBS["list"] = self._List(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def list_errors(
@@ -2381,10 +3132,12 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         stub = self._STUBS.get("list_errors")
         if not stub:
             stub = self._STUBS["list_errors"] = self._ListErrors(
-                self._session, self._host
+                self._session, self._host, self._interceptor
             )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def list_managed_instances(
@@ -2396,10 +3149,12 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         stub = self._STUBS.get("list_managed_instances")
         if not stub:
             stub = self._STUBS["list_managed_instances"] = self._ListManagedInstances(
-                self._session, self._host
+                self._session, self._host, self._interceptor
             )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def list_per_instance_configs(
@@ -2412,9 +3167,13 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         if not stub:
             stub = self._STUBS[
                 "list_per_instance_configs"
-            ] = self._ListPerInstanceConfigs(self._session, self._host)
+            ] = self._ListPerInstanceConfigs(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def patch(
@@ -2422,9 +3181,13 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
     ) -> Callable[[compute.PatchInstanceGroupManagerRequest], compute.Operation]:
         stub = self._STUBS.get("patch")
         if not stub:
-            stub = self._STUBS["patch"] = self._Patch(self._session, self._host)
+            stub = self._STUBS["patch"] = self._Patch(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def patch_per_instance_configs(
@@ -2436,9 +3199,13 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         if not stub:
             stub = self._STUBS[
                 "patch_per_instance_configs"
-            ] = self._PatchPerInstanceConfigs(self._session, self._host)
+            ] = self._PatchPerInstanceConfigs(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def recreate_instances(
@@ -2449,10 +3216,12 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         stub = self._STUBS.get("recreate_instances")
         if not stub:
             stub = self._STUBS["recreate_instances"] = self._RecreateInstances(
-                self._session, self._host
+                self._session, self._host, self._interceptor
             )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def resize(
@@ -2460,9 +3229,13 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
     ) -> Callable[[compute.ResizeInstanceGroupManagerRequest], compute.Operation]:
         stub = self._STUBS.get("resize")
         if not stub:
-            stub = self._STUBS["resize"] = self._Resize(self._session, self._host)
+            stub = self._STUBS["resize"] = self._Resize(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def set_instance_template(
@@ -2473,10 +3246,12 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         stub = self._STUBS.get("set_instance_template")
         if not stub:
             stub = self._STUBS["set_instance_template"] = self._SetInstanceTemplate(
-                self._session, self._host
+                self._session, self._host, self._interceptor
             )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def set_target_pools(
@@ -2487,10 +3262,12 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         stub = self._STUBS.get("set_target_pools")
         if not stub:
             stub = self._STUBS["set_target_pools"] = self._SetTargetPools(
-                self._session, self._host
+                self._session, self._host, self._interceptor
             )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def update_per_instance_configs(
@@ -2502,9 +3279,13 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         if not stub:
             stub = self._STUBS[
                 "update_per_instance_configs"
-            ] = self._UpdatePerInstanceConfigs(self._session, self._host)
+            ] = self._UpdatePerInstanceConfigs(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     def close(self):
         self._session.close()

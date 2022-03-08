@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,11 +22,14 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 from google.api_core import rest_helpers
+from google.api_core import rest_streaming
 from google.api_core import path_template
 from google.api_core import gapic_v1
+
 from requests import __version__ as requests_version
 import dataclasses
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
+import re
+from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 try:
@@ -50,10 +53,553 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
 )
 
 
+class FirewallPoliciesRestInterceptor:
+    """Interceptor for FirewallPolicies.
+
+    Interceptors are used to manipulate requests, request metadata, and responses
+    in arbitrary ways.
+    Example use cases include:
+    * Logging
+    * Verifying requests according to service or custom semantics
+    * Stripping extraneous information from responses
+
+    These use cases and more can be enabled by injecting an
+    instance of a custom subclass when constructing the FirewallPoliciesRestTransport.
+
+    .. code-block:: python
+        class MyCustomFirewallPoliciesInterceptor(FirewallPoliciesRestInterceptor):
+            def pre_add_association(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_add_association(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_add_rule(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_add_rule(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_clone_rules(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_clone_rules(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_delete(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_get(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_get_association(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_association(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_get_iam_policy(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_iam_policy(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_get_rule(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_rule(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_insert(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_insert(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_list(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_list_associations(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_associations(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_move(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_move(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_patch(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_patch(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_patch_rule(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_patch_rule(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_remove_association(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_remove_association(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_remove_rule(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_remove_rule(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_set_iam_policy(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_set_iam_policy(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_test_iam_permissions(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_test_iam_permissions(response):
+                logging.log(f"Received response: {response}")
+
+        transport = FirewallPoliciesRestTransport(interceptor=MyCustomFirewallPoliciesInterceptor())
+        client = FirewallPoliciesClient(transport=transport)
+
+
+    """
+
+    def pre_add_association(
+        self,
+        request: compute.AddAssociationFirewallPolicyRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.AddAssociationFirewallPolicyRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for add_association
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the FirewallPolicies server.
+        """
+        return request, metadata
+
+    def post_add_association(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for add_association
+
+        Override in a subclass to manipulate the response
+        after it is returned by the FirewallPolicies server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_add_rule(
+        self,
+        request: compute.AddRuleFirewallPolicyRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.AddRuleFirewallPolicyRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for add_rule
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the FirewallPolicies server.
+        """
+        return request, metadata
+
+    def post_add_rule(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for add_rule
+
+        Override in a subclass to manipulate the response
+        after it is returned by the FirewallPolicies server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_clone_rules(
+        self,
+        request: compute.CloneRulesFirewallPolicyRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.CloneRulesFirewallPolicyRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for clone_rules
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the FirewallPolicies server.
+        """
+        return request, metadata
+
+    def post_clone_rules(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for clone_rules
+
+        Override in a subclass to manipulate the response
+        after it is returned by the FirewallPolicies server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_delete(
+        self,
+        request: compute.DeleteFirewallPolicyRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.DeleteFirewallPolicyRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for delete
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the FirewallPolicies server.
+        """
+        return request, metadata
+
+    def post_delete(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for delete
+
+        Override in a subclass to manipulate the response
+        after it is returned by the FirewallPolicies server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get(
+        self,
+        request: compute.GetFirewallPolicyRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.GetFirewallPolicyRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the FirewallPolicies server.
+        """
+        return request, metadata
+
+    def post_get(self, response: compute.FirewallPolicy) -> compute.FirewallPolicy:
+        """Post-rpc interceptor for get
+
+        Override in a subclass to manipulate the response
+        after it is returned by the FirewallPolicies server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_association(
+        self,
+        request: compute.GetAssociationFirewallPolicyRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.GetAssociationFirewallPolicyRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_association
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the FirewallPolicies server.
+        """
+        return request, metadata
+
+    def post_get_association(
+        self, response: compute.FirewallPolicyAssociation
+    ) -> compute.FirewallPolicyAssociation:
+        """Post-rpc interceptor for get_association
+
+        Override in a subclass to manipulate the response
+        after it is returned by the FirewallPolicies server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_iam_policy(
+        self,
+        request: compute.GetIamPolicyFirewallPolicyRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.GetIamPolicyFirewallPolicyRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_iam_policy
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the FirewallPolicies server.
+        """
+        return request, metadata
+
+    def post_get_iam_policy(self, response: compute.Policy) -> compute.Policy:
+        """Post-rpc interceptor for get_iam_policy
+
+        Override in a subclass to manipulate the response
+        after it is returned by the FirewallPolicies server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_rule(
+        self,
+        request: compute.GetRuleFirewallPolicyRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.GetRuleFirewallPolicyRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_rule
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the FirewallPolicies server.
+        """
+        return request, metadata
+
+    def post_get_rule(
+        self, response: compute.FirewallPolicyRule
+    ) -> compute.FirewallPolicyRule:
+        """Post-rpc interceptor for get_rule
+
+        Override in a subclass to manipulate the response
+        after it is returned by the FirewallPolicies server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_insert(
+        self,
+        request: compute.InsertFirewallPolicyRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.InsertFirewallPolicyRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for insert
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the FirewallPolicies server.
+        """
+        return request, metadata
+
+    def post_insert(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for insert
+
+        Override in a subclass to manipulate the response
+        after it is returned by the FirewallPolicies server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list(
+        self,
+        request: compute.ListFirewallPoliciesRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.ListFirewallPoliciesRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the FirewallPolicies server.
+        """
+        return request, metadata
+
+    def post_list(
+        self, response: compute.FirewallPolicyList
+    ) -> compute.FirewallPolicyList:
+        """Post-rpc interceptor for list
+
+        Override in a subclass to manipulate the response
+        after it is returned by the FirewallPolicies server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_associations(
+        self,
+        request: compute.ListAssociationsFirewallPolicyRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        compute.ListAssociationsFirewallPolicyRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for list_associations
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the FirewallPolicies server.
+        """
+        return request, metadata
+
+    def post_list_associations(
+        self, response: compute.FirewallPoliciesListAssociationsResponse
+    ) -> compute.FirewallPoliciesListAssociationsResponse:
+        """Post-rpc interceptor for list_associations
+
+        Override in a subclass to manipulate the response
+        after it is returned by the FirewallPolicies server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_move(
+        self,
+        request: compute.MoveFirewallPolicyRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.MoveFirewallPolicyRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for move
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the FirewallPolicies server.
+        """
+        return request, metadata
+
+    def post_move(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for move
+
+        Override in a subclass to manipulate the response
+        after it is returned by the FirewallPolicies server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_patch(
+        self,
+        request: compute.PatchFirewallPolicyRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.PatchFirewallPolicyRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for patch
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the FirewallPolicies server.
+        """
+        return request, metadata
+
+    def post_patch(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for patch
+
+        Override in a subclass to manipulate the response
+        after it is returned by the FirewallPolicies server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_patch_rule(
+        self,
+        request: compute.PatchRuleFirewallPolicyRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.PatchRuleFirewallPolicyRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for patch_rule
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the FirewallPolicies server.
+        """
+        return request, metadata
+
+    def post_patch_rule(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for patch_rule
+
+        Override in a subclass to manipulate the response
+        after it is returned by the FirewallPolicies server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_remove_association(
+        self,
+        request: compute.RemoveAssociationFirewallPolicyRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        compute.RemoveAssociationFirewallPolicyRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for remove_association
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the FirewallPolicies server.
+        """
+        return request, metadata
+
+    def post_remove_association(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for remove_association
+
+        Override in a subclass to manipulate the response
+        after it is returned by the FirewallPolicies server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_remove_rule(
+        self,
+        request: compute.RemoveRuleFirewallPolicyRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.RemoveRuleFirewallPolicyRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for remove_rule
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the FirewallPolicies server.
+        """
+        return request, metadata
+
+    def post_remove_rule(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for remove_rule
+
+        Override in a subclass to manipulate the response
+        after it is returned by the FirewallPolicies server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_set_iam_policy(
+        self,
+        request: compute.SetIamPolicyFirewallPolicyRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.SetIamPolicyFirewallPolicyRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for set_iam_policy
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the FirewallPolicies server.
+        """
+        return request, metadata
+
+    def post_set_iam_policy(self, response: compute.Policy) -> compute.Policy:
+        """Post-rpc interceptor for set_iam_policy
+
+        Override in a subclass to manipulate the response
+        after it is returned by the FirewallPolicies server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_test_iam_permissions(
+        self,
+        request: compute.TestIamPermissionsFirewallPolicyRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        compute.TestIamPermissionsFirewallPolicyRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for test_iam_permissions
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the FirewallPolicies server.
+        """
+        return request, metadata
+
+    def post_test_iam_permissions(
+        self, response: compute.TestPermissionsResponse
+    ) -> compute.TestPermissionsResponse:
+        """Post-rpc interceptor for test_iam_permissions
+
+        Override in a subclass to manipulate the response
+        after it is returned by the FirewallPolicies server but before
+        it is returned to user code.
+        """
+        return response
+
+
 @dataclasses.dataclass
 class FirewallPoliciesRestStub:
     _session: AuthorizedSession
     _host: str
+    _interceptor: FirewallPoliciesRestInterceptor
 
 
 class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
@@ -82,6 +628,7 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
         url_scheme: str = "https",
+        interceptor: Optional[FirewallPoliciesRestInterceptor] = None,
     ) -> None:
         """Instantiate the transport.
 
@@ -119,6 +666,16 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
+        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
+        if maybe_url_match is None:
+            raise ValueError(
+                f"Unexpected hostname structure: {host}"
+            )  # pragma: NO COVER
+
+        url_match_items = maybe_url_match.groupdict()
+
+        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
+
         super().__init__(
             host=host,
             credentials=credentials,
@@ -130,13 +687,14 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
         )
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
+        self._interceptor = interceptor or FirewallPoliciesRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
     class _AddAssociation(FirewallPoliciesRestStub):
         def __hash__(self):
             return hash("AddAssociation")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -188,14 +746,14 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/locations/global/firewallPolicies/{firewall_policy}/addAssociation",
                     "body": "firewall_policy_association_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_add_association(request, metadata)
             request_kwargs = compute.AddAssociationFirewallPolicyRequest.to_dict(
                 request
             )
@@ -227,8 +785,7 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -239,16 +796,19 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_add_association(resp)
+            return resp
 
     class _AddRule(FirewallPoliciesRestStub):
         def __hash__(self):
             return hash("AddRule")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -300,14 +860,14 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/locations/global/firewallPolicies/{firewall_policy}/addRule",
                     "body": "firewall_policy_rule_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_add_rule(request, metadata)
             request_kwargs = compute.AddRuleFirewallPolicyRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -337,8 +897,7 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -349,16 +908,19 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_add_rule(resp)
+            return resp
 
     class _CloneRules(FirewallPoliciesRestStub):
         def __hash__(self):
             return hash("CloneRules")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -410,13 +972,13 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/locations/global/firewallPolicies/{firewall_policy}/cloneRules",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_clone_rules(request, metadata)
             request_kwargs = compute.CloneRulesFirewallPolicyRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -440,8 +1002,7 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -451,16 +1012,19 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_clone_rules(resp)
+            return resp
 
     class _Delete(FirewallPoliciesRestStub):
         def __hash__(self):
             return hash("Delete")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -512,13 +1076,13 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "delete",
                     "uri": "/compute/v1/locations/global/firewallPolicies/{firewall_policy}",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_delete(request, metadata)
             request_kwargs = compute.DeleteFirewallPolicyRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -542,8 +1106,7 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -553,16 +1116,19 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_delete(resp)
+            return resp
 
     class _Get(FirewallPoliciesRestStub):
         def __hash__(self):
             return hash("Get")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -601,13 +1167,13 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
                     "uri": "/compute/v1/locations/global/firewallPolicies/{firewall_policy}",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_get(request, metadata)
             request_kwargs = compute.GetFirewallPolicyRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -631,8 +1197,7 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -642,16 +1207,19 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.FirewallPolicy.from_json(
+            resp = compute.FirewallPolicy.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_get(resp)
+            return resp
 
     class _GetAssociation(FirewallPoliciesRestStub):
         def __hash__(self):
             return hash("GetAssociation")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -688,13 +1256,13 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
                     "uri": "/compute/v1/locations/global/firewallPolicies/{firewall_policy}/getAssociation",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_get_association(request, metadata)
             request_kwargs = compute.GetAssociationFirewallPolicyRequest.to_dict(
                 request
             )
@@ -720,8 +1288,7 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -731,16 +1298,19 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.FirewallPolicyAssociation.from_json(
+            resp = compute.FirewallPolicyAssociation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_get_association(resp)
+            return resp
 
     class _GetIamPolicy(FirewallPoliciesRestStub):
         def __hash__(self):
             return hash("GetIamPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -777,18 +1347,19 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
                     An Identity and Access Management (IAM) policy, which
                 specifies access controls for Google Cloud resources. A
                 ``Policy`` is a collection of ``bindings``. A
-                ``binding`` binds one or more ``members`` to a single
-                ``role``. Members can be user accounts, service
-                accounts, Google groups, and domains (such as G Suite).
-                A ``role`` is a named list of permissions; each ``role``
-                can be an IAM predefined role or a user-created custom
-                role. For some types of Google Cloud resources, a
-                ``binding`` can also specify a ``condition``, which is a
-                logical expression that allows access to a resource only
-                if the expression evaluates to ``true``. A condition can
-                add constraints based on attributes of the request, the
-                resource, or both. To learn which resources support
-                conditions in their IAM policies, see the `IAM
+                ``binding`` binds one or more ``members``, or
+                principals, to a single ``role``. Principals can be user
+                accounts, service accounts, Google groups, and domains
+                (such as G Suite). A ``role`` is a named list of
+                permissions; each ``role`` can be an IAM predefined role
+                or a user-created custom role. For some types of Google
+                Cloud resources, a ``binding`` can also specify a
+                ``condition``, which is a logical expression that allows
+                access to a resource only if the expression evaluates to
+                ``true``. A condition can add constraints based on
+                attributes of the request, the resource, or both. To
+                learn which resources support conditions in their IAM
+                policies, see the `IAM
                 documentation <https://cloud.google.com/iam/help/conditions/resource-policies>`__.
                 **JSON example:** { "bindings": [ { "role":
                 "roles/resourcemanager.organizationAdmin", "members": [
@@ -817,13 +1388,13 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
                     "uri": "/compute/v1/locations/global/firewallPolicies/{resource}/getIamPolicy",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
             request_kwargs = compute.GetIamPolicyFirewallPolicyRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -847,8 +1418,7 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -858,16 +1428,19 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Policy.from_json(
+            resp = compute.Policy.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_get_iam_policy(resp)
+            return resp
 
     class _GetRule(FirewallPoliciesRestStub):
         def __hash__(self):
             return hash("GetRule")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -908,13 +1481,13 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
                     "uri": "/compute/v1/locations/global/firewallPolicies/{firewall_policy}/getRule",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_get_rule(request, metadata)
             request_kwargs = compute.GetRuleFirewallPolicyRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -938,8 +1511,7 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -949,18 +1521,19 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.FirewallPolicyRule.from_json(
+            resp = compute.FirewallPolicyRule.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_get_rule(resp)
+            return resp
 
     class _Insert(FirewallPoliciesRestStub):
         def __hash__(self):
             return hash("Insert")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {
-            "parentId": "",
-        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1012,14 +1585,14 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/locations/global/firewallPolicies",
                     "body": "firewall_policy_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_insert(request, metadata)
             request_kwargs = compute.InsertFirewallPolicyRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -1049,8 +1622,7 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -1061,10 +1633,13 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_insert(resp)
+            return resp
 
     class _List(FirewallPoliciesRestStub):
         def __hash__(self):
@@ -1097,13 +1672,13 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
                     "uri": "/compute/v1/locations/global/firewallPolicies",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_list(request, metadata)
             request_kwargs = compute.ListFirewallPoliciesRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -1125,8 +1700,7 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -1136,10 +1710,13 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.FirewallPolicyList.from_json(
+            resp = compute.FirewallPolicyList.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_list(resp)
+            return resp
 
     class _ListAssociations(FirewallPoliciesRestStub):
         def __hash__(self):
@@ -1172,13 +1749,15 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
                     "uri": "/compute/v1/locations/global/firewallPolicies/listAssociations",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_list_associations(
+                request, metadata
+            )
             request_kwargs = compute.ListAssociationsFirewallPolicyRequest.to_dict(
                 request
             )
@@ -1202,8 +1781,7 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -1213,18 +1791,19 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.FirewallPoliciesListAssociationsResponse.from_json(
+            resp = compute.FirewallPoliciesListAssociationsResponse.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_list_associations(resp)
+            return resp
 
     class _Move(FirewallPoliciesRestStub):
         def __hash__(self):
             return hash("Move")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {
-            "parentId": "",
-        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1276,13 +1855,13 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/locations/global/firewallPolicies/{firewall_policy}/move",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_move(request, metadata)
             request_kwargs = compute.MoveFirewallPolicyRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -1306,8 +1885,7 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -1317,16 +1895,19 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_move(resp)
+            return resp
 
     class _Patch(FirewallPoliciesRestStub):
         def __hash__(self):
             return hash("Patch")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1378,14 +1959,14 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "patch",
                     "uri": "/compute/v1/locations/global/firewallPolicies/{firewall_policy}",
                     "body": "firewall_policy_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_patch(request, metadata)
             request_kwargs = compute.PatchFirewallPolicyRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -1415,8 +1996,7 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -1427,16 +2007,19 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_patch(resp)
+            return resp
 
     class _PatchRule(FirewallPoliciesRestStub):
         def __hash__(self):
             return hash("PatchRule")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1488,14 +2071,14 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/locations/global/firewallPolicies/{firewall_policy}/patchRule",
                     "body": "firewall_policy_rule_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_patch_rule(request, metadata)
             request_kwargs = compute.PatchRuleFirewallPolicyRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -1525,8 +2108,7 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -1537,16 +2119,19 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_patch_rule(resp)
+            return resp
 
     class _RemoveAssociation(FirewallPoliciesRestStub):
         def __hash__(self):
             return hash("RemoveAssociation")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1598,13 +2183,15 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/locations/global/firewallPolicies/{firewall_policy}/removeAssociation",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_remove_association(
+                request, metadata
+            )
             request_kwargs = compute.RemoveAssociationFirewallPolicyRequest.to_dict(
                 request
             )
@@ -1630,8 +2217,7 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -1641,16 +2227,19 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_remove_association(resp)
+            return resp
 
     class _RemoveRule(FirewallPoliciesRestStub):
         def __hash__(self):
             return hash("RemoveRule")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1702,13 +2291,13 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/locations/global/firewallPolicies/{firewall_policy}/removeRule",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_remove_rule(request, metadata)
             request_kwargs = compute.RemoveRuleFirewallPolicyRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -1732,8 +2321,7 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -1743,16 +2331,19 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_remove_rule(resp)
+            return resp
 
     class _SetIamPolicy(FirewallPoliciesRestStub):
         def __hash__(self):
             return hash("SetIamPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1789,18 +2380,19 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
                     An Identity and Access Management (IAM) policy, which
                 specifies access controls for Google Cloud resources. A
                 ``Policy`` is a collection of ``bindings``. A
-                ``binding`` binds one or more ``members`` to a single
-                ``role``. Members can be user accounts, service
-                accounts, Google groups, and domains (such as G Suite).
-                A ``role`` is a named list of permissions; each ``role``
-                can be an IAM predefined role or a user-created custom
-                role. For some types of Google Cloud resources, a
-                ``binding`` can also specify a ``condition``, which is a
-                logical expression that allows access to a resource only
-                if the expression evaluates to ``true``. A condition can
-                add constraints based on attributes of the request, the
-                resource, or both. To learn which resources support
-                conditions in their IAM policies, see the `IAM
+                ``binding`` binds one or more ``members``, or
+                principals, to a single ``role``. Principals can be user
+                accounts, service accounts, Google groups, and domains
+                (such as G Suite). A ``role`` is a named list of
+                permissions; each ``role`` can be an IAM predefined role
+                or a user-created custom role. For some types of Google
+                Cloud resources, a ``binding`` can also specify a
+                ``condition``, which is a logical expression that allows
+                access to a resource only if the expression evaluates to
+                ``true``. A condition can add constraints based on
+                attributes of the request, the resource, or both. To
+                learn which resources support conditions in their IAM
+                policies, see the `IAM
                 documentation <https://cloud.google.com/iam/help/conditions/resource-policies>`__.
                 **JSON example:** { "bindings": [ { "role":
                 "roles/resourcemanager.organizationAdmin", "members": [
@@ -1829,14 +2421,14 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/locations/global/firewallPolicies/{resource}/setIamPolicy",
                     "body": "global_organization_set_policy_request_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
             request_kwargs = compute.SetIamPolicyFirewallPolicyRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -1866,8 +2458,7 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -1878,16 +2469,19 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Policy.from_json(
+            resp = compute.Policy.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_set_iam_policy(resp)
+            return resp
 
     class _TestIamPermissions(FirewallPoliciesRestStub):
         def __hash__(self):
             return hash("TestIamPermissions")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1924,14 +2518,16 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/locations/global/firewallPolicies/{resource}/testIamPermissions",
                     "body": "test_permissions_request_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_test_iam_permissions(
+                request, metadata
+            )
             request_kwargs = compute.TestIamPermissionsFirewallPolicyRequest.to_dict(
                 request
             )
@@ -1963,8 +2559,7 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -1975,10 +2570,13 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.TestPermissionsResponse.from_json(
+            resp = compute.TestPermissionsResponse.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_test_iam_permissions(resp)
+            return resp
 
     @property
     def add_association(
@@ -1987,10 +2585,12 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
         stub = self._STUBS.get("add_association")
         if not stub:
             stub = self._STUBS["add_association"] = self._AddAssociation(
-                self._session, self._host
+                self._session, self._host, self._interceptor
             )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def add_rule(
@@ -1998,9 +2598,13 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
     ) -> Callable[[compute.AddRuleFirewallPolicyRequest], compute.Operation]:
         stub = self._STUBS.get("add_rule")
         if not stub:
-            stub = self._STUBS["add_rule"] = self._AddRule(self._session, self._host)
+            stub = self._STUBS["add_rule"] = self._AddRule(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def clone_rules(
@@ -2009,10 +2613,12 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
         stub = self._STUBS.get("clone_rules")
         if not stub:
             stub = self._STUBS["clone_rules"] = self._CloneRules(
-                self._session, self._host
+                self._session, self._host, self._interceptor
             )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def delete(
@@ -2020,9 +2626,13 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
     ) -> Callable[[compute.DeleteFirewallPolicyRequest], compute.Operation]:
         stub = self._STUBS.get("delete")
         if not stub:
-            stub = self._STUBS["delete"] = self._Delete(self._session, self._host)
+            stub = self._STUBS["delete"] = self._Delete(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def get(
@@ -2030,9 +2640,13 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
     ) -> Callable[[compute.GetFirewallPolicyRequest], compute.FirewallPolicy]:
         stub = self._STUBS.get("get")
         if not stub:
-            stub = self._STUBS["get"] = self._Get(self._session, self._host)
+            stub = self._STUBS["get"] = self._Get(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def get_association(
@@ -2043,10 +2657,12 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
         stub = self._STUBS.get("get_association")
         if not stub:
             stub = self._STUBS["get_association"] = self._GetAssociation(
-                self._session, self._host
+                self._session, self._host, self._interceptor
             )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def get_iam_policy(
@@ -2055,10 +2671,12 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
         stub = self._STUBS.get("get_iam_policy")
         if not stub:
             stub = self._STUBS["get_iam_policy"] = self._GetIamPolicy(
-                self._session, self._host
+                self._session, self._host, self._interceptor
             )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def get_rule(
@@ -2066,9 +2684,13 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
     ) -> Callable[[compute.GetRuleFirewallPolicyRequest], compute.FirewallPolicyRule]:
         stub = self._STUBS.get("get_rule")
         if not stub:
-            stub = self._STUBS["get_rule"] = self._GetRule(self._session, self._host)
+            stub = self._STUBS["get_rule"] = self._GetRule(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def insert(
@@ -2076,9 +2698,13 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
     ) -> Callable[[compute.InsertFirewallPolicyRequest], compute.Operation]:
         stub = self._STUBS.get("insert")
         if not stub:
-            stub = self._STUBS["insert"] = self._Insert(self._session, self._host)
+            stub = self._STUBS["insert"] = self._Insert(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def list(
@@ -2086,9 +2712,13 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
     ) -> Callable[[compute.ListFirewallPoliciesRequest], compute.FirewallPolicyList]:
         stub = self._STUBS.get("list")
         if not stub:
-            stub = self._STUBS["list"] = self._List(self._session, self._host)
+            stub = self._STUBS["list"] = self._List(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def list_associations(
@@ -2100,18 +2730,24 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
         stub = self._STUBS.get("list_associations")
         if not stub:
             stub = self._STUBS["list_associations"] = self._ListAssociations(
-                self._session, self._host
+                self._session, self._host, self._interceptor
             )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def move(self) -> Callable[[compute.MoveFirewallPolicyRequest], compute.Operation]:
         stub = self._STUBS.get("move")
         if not stub:
-            stub = self._STUBS["move"] = self._Move(self._session, self._host)
+            stub = self._STUBS["move"] = self._Move(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def patch(
@@ -2119,9 +2755,13 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
     ) -> Callable[[compute.PatchFirewallPolicyRequest], compute.Operation]:
         stub = self._STUBS.get("patch")
         if not stub:
-            stub = self._STUBS["patch"] = self._Patch(self._session, self._host)
+            stub = self._STUBS["patch"] = self._Patch(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def patch_rule(
@@ -2130,10 +2770,12 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
         stub = self._STUBS.get("patch_rule")
         if not stub:
             stub = self._STUBS["patch_rule"] = self._PatchRule(
-                self._session, self._host
+                self._session, self._host, self._interceptor
             )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def remove_association(
@@ -2142,10 +2784,12 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
         stub = self._STUBS.get("remove_association")
         if not stub:
             stub = self._STUBS["remove_association"] = self._RemoveAssociation(
-                self._session, self._host
+                self._session, self._host, self._interceptor
             )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def remove_rule(
@@ -2154,10 +2798,12 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
         stub = self._STUBS.get("remove_rule")
         if not stub:
             stub = self._STUBS["remove_rule"] = self._RemoveRule(
-                self._session, self._host
+                self._session, self._host, self._interceptor
             )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def set_iam_policy(
@@ -2166,10 +2812,12 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
         stub = self._STUBS.get("set_iam_policy")
         if not stub:
             stub = self._STUBS["set_iam_policy"] = self._SetIamPolicy(
-                self._session, self._host
+                self._session, self._host, self._interceptor
             )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def test_iam_permissions(
@@ -2181,10 +2829,12 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
         stub = self._STUBS.get("test_iam_permissions")
         if not stub:
             stub = self._STUBS["test_iam_permissions"] = self._TestIamPermissions(
-                self._session, self._host
+                self._session, self._host, self._interceptor
             )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     def close(self):
         self._session.close()

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ import mock
 
 import grpc
 from grpc.experimental import aio
+from collections.abc import Iterable
 import json
 import math
 import pytest
@@ -88,19 +89,27 @@ def test__get_default_mtls_endpoint():
     )
 
 
-@pytest.mark.parametrize("client_class", [InstanceTemplatesClient,])
-def test_instance_templates_client_from_service_account_info(client_class):
+@pytest.mark.parametrize(
+    "client_class,transport_name", [(InstanceTemplatesClient, "rest"),]
+)
+def test_instance_templates_client_from_service_account_info(
+    client_class, transport_name
+):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_info"
     ) as factory:
         factory.return_value = creds
         info = {"valid": True}
-        client = client_class.from_service_account_info(info)
+        client = client_class.from_service_account_info(info, transport=transport_name)
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == "compute.googleapis.com:443"
+        assert client.transport._host == (
+            "compute.googleapis.com{}".format(":443")
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://{}".format("compute.googleapis.com")
+        )
 
 
 @pytest.mark.parametrize(
@@ -125,22 +134,34 @@ def test_instance_templates_client_service_account_always_use_jwt(
         use_jwt.assert_not_called()
 
 
-@pytest.mark.parametrize("client_class", [InstanceTemplatesClient,])
-def test_instance_templates_client_from_service_account_file(client_class):
+@pytest.mark.parametrize(
+    "client_class,transport_name", [(InstanceTemplatesClient, "rest"),]
+)
+def test_instance_templates_client_from_service_account_file(
+    client_class, transport_name
+):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_file"
     ) as factory:
         factory.return_value = creds
-        client = client_class.from_service_account_file("dummy/file/path.json")
+        client = client_class.from_service_account_file(
+            "dummy/file/path.json", transport=transport_name
+        )
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        client = client_class.from_service_account_json("dummy/file/path.json")
+        client = client_class.from_service_account_json(
+            "dummy/file/path.json", transport=transport_name
+        )
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == "compute.googleapis.com:443"
+        assert client.transport._host == (
+            "compute.googleapis.com{}".format(":443")
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://{}".format("compute.googleapis.com")
+        )
 
 
 def test_instance_templates_client_get_transport_class():
@@ -472,14 +493,22 @@ def test_instance_templates_client_client_options_scopes(
 
 
 @pytest.mark.parametrize(
-    "client_class,transport_class,transport_name",
-    [(InstanceTemplatesClient, transports.InstanceTemplatesRestTransport, "rest"),],
+    "client_class,transport_class,transport_name,grpc_helpers",
+    [
+        (
+            InstanceTemplatesClient,
+            transports.InstanceTemplatesRestTransport,
+            "rest",
+            None,
+        ),
+    ],
 )
 def test_instance_templates_client_client_options_credentials_file(
-    client_class, transport_class, transport_name
+    client_class, transport_class, transport_name, grpc_helpers
 ):
     # Check the case credentials file is provided.
     options = client_options.ClientOptions(credentials_file="credentials.json")
+
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -653,6 +682,55 @@ def test_delete_unary_rest_unset_required_fields():
     )
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_unary_rest_interceptors(null_interceptor):
+    transport = transports.InstanceTemplatesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.InstanceTemplatesRestInterceptor(),
+    )
+    client = InstanceTemplatesClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.InstanceTemplatesRestInterceptor, "post_delete"
+    ) as post, mock.patch.object(
+        transports.InstanceTemplatesRestInterceptor, "pre_delete"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": None,
+            "query_params": {},
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.Operation.to_json(compute.Operation())
+
+        request = compute.DeleteInstanceTemplateRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation
+
+        client.delete_unary(
+            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_delete_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.DeleteInstanceTemplateRequest
 ):
@@ -686,14 +764,6 @@ def test_delete_unary_rest_flattened():
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation()
 
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
         # get arguments that satisfy an http rule for this method
         sample_request = {"project": "sample1", "instance_template": "sample2"}
 
@@ -702,6 +772,15 @@ def test_delete_unary_rest_flattened():
             project="project_value", instance_template="instance_template_value",
         )
         mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
         client.delete_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
@@ -709,7 +788,7 @@ def test_delete_unary_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "https://%s/compute/v1/projects/{project}/global/instanceTemplates/{instance_template}"
+            "%s/compute/v1/projects/{project}/global/instanceTemplates/{instance_template}"
             % client.transport._host,
             args[1],
         )
@@ -858,6 +937,55 @@ def test_get_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("instanceTemplate", "project",)))
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_rest_interceptors(null_interceptor):
+    transport = transports.InstanceTemplatesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.InstanceTemplatesRestInterceptor(),
+    )
+    client = InstanceTemplatesClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.InstanceTemplatesRestInterceptor, "post_get"
+    ) as post, mock.patch.object(
+        transports.InstanceTemplatesRestInterceptor, "pre_get"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": None,
+            "query_params": {},
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.InstanceTemplate.to_json(
+            compute.InstanceTemplate()
+        )
+
+        request = compute.GetInstanceTemplateRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.InstanceTemplate
+
+        client.get(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_get_rest_bad_request(
     transport: str = "rest", request_type=compute.GetInstanceTemplateRequest
 ):
@@ -891,14 +1019,6 @@ def test_get_rest_flattened():
         # Designate an appropriate value for the returned response.
         return_value = compute.InstanceTemplate()
 
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = compute.InstanceTemplate.to_json(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
         # get arguments that satisfy an http rule for this method
         sample_request = {"project": "sample1", "instance_template": "sample2"}
 
@@ -907,6 +1027,15 @@ def test_get_rest_flattened():
             project="project_value", instance_template="instance_template_value",
         )
         mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = compute.InstanceTemplate.to_json(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
         client.get(**mock_args)
 
         # Establish that the underlying call was made with the expected
@@ -914,7 +1043,7 @@ def test_get_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "https://%s/compute/v1/projects/{project}/global/instanceTemplates/{instance_template}"
+            "%s/compute/v1/projects/{project}/global/instanceTemplates/{instance_template}"
             % client.transport._host,
             args[1],
         )
@@ -1059,6 +1188,55 @@ def test_get_iam_policy_rest_unset_required_fields():
     )
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_iam_policy_rest_interceptors(null_interceptor):
+    transport = transports.InstanceTemplatesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.InstanceTemplatesRestInterceptor(),
+    )
+    client = InstanceTemplatesClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.InstanceTemplatesRestInterceptor, "post_get_iam_policy"
+    ) as post, mock.patch.object(
+        transports.InstanceTemplatesRestInterceptor, "pre_get_iam_policy"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": None,
+            "query_params": {},
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.Policy.to_json(compute.Policy())
+
+        request = compute.GetIamPolicyInstanceTemplateRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Policy
+
+        client.get_iam_policy(
+            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_get_iam_policy_rest_bad_request(
     transport: str = "rest", request_type=compute.GetIamPolicyInstanceTemplateRequest
 ):
@@ -1092,6 +1270,13 @@ def test_get_iam_policy_rest_flattened():
         # Designate an appropriate value for the returned response.
         return_value = compute.Policy()
 
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project": "sample1", "resource": "sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(project="project_value", resource="resource_value",)
+        mock_args.update(sample_request)
+
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
@@ -1100,12 +1285,6 @@ def test_get_iam_policy_rest_flattened():
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        # get arguments that satisfy an http rule for this method
-        sample_request = {"project": "sample1", "resource": "sample2"}
-
-        # get truthy value for each flattened field
-        mock_args = dict(project="project_value", resource="resource_value",)
-        mock_args.update(sample_request)
         client.get_iam_policy(**mock_args)
 
         # Establish that the underlying call was made with the expected
@@ -1113,7 +1292,7 @@ def test_get_iam_policy_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "https://%s/compute/v1/projects/{project}/global/instanceTemplates/{resource}/getIamPolicy"
+            "%s/compute/v1/projects/{project}/global/instanceTemplates/{resource}/getIamPolicy"
             % client.transport._host,
             args[1],
         )
@@ -1157,6 +1336,7 @@ def test_insert_unary_rest(request_type):
         "properties": {
             "advanced_machine_features": {
                 "enable_nested_virtualization": True,
+                "enable_uefi_networking": True,
                 "threads_per_core": 1689,
             },
             "can_ip_forward": True,
@@ -1183,6 +1363,7 @@ def test_insert_unary_rest(request_type):
                         "disk_size_gb": 1261,
                         "disk_type": "disk_type_value",
                         "labels": {},
+                        "licenses": ["licenses_value_1", "licenses_value_2"],
                         "on_update_action": "on_update_action_value",
                         "provisioned_iops": 1740,
                         "resource_policies": [
@@ -1190,21 +1371,9 @@ def test_insert_unary_rest(request_type):
                             "resource_policies_value_2",
                         ],
                         "source_image": "source_image_value",
-                        "source_image_encryption_key": {
-                            "kms_key_name": "kms_key_name_value",
-                            "kms_key_service_account": "kms_key_service_account_value",
-                            "raw_key": "raw_key_value",
-                            "rsa_encrypted_key": "rsa_encrypted_key_value",
-                            "sha256": "sha256_value",
-                        },
+                        "source_image_encryption_key": {},
                         "source_snapshot": "source_snapshot_value",
-                        "source_snapshot_encryption_key": {
-                            "kms_key_name": "kms_key_name_value",
-                            "kms_key_service_account": "kms_key_service_account_value",
-                            "raw_key": "raw_key_value",
-                            "rsa_encrypted_key": "rsa_encrypted_key_value",
-                            "sha256": "sha256_value",
-                        },
+                        "source_snapshot_encryption_key": {},
                     },
                     "interface": "interface_value",
                     "kind": "kind_value",
@@ -1214,16 +1383,9 @@ def test_insert_unary_rest(request_type):
                         "dbs": [
                             {"content": "content_value", "file_type": "file_type_value"}
                         ],
-                        "dbxs": [
-                            {"content": "content_value", "file_type": "file_type_value"}
-                        ],
-                        "keks": [
-                            {"content": "content_value", "file_type": "file_type_value"}
-                        ],
-                        "pk": {
-                            "content": "content_value",
-                            "file_type": "file_type_value",
-                        },
+                        "dbxs": {},
+                        "keks": {},
+                        "pk": {},
                     },
                     "source": "source_value",
                     "type_": "type__value",
@@ -1265,19 +1427,7 @@ def test_insert_unary_rest(request_type):
                         }
                     ],
                     "fingerprint": "fingerprint_value",
-                    "ipv6_access_configs": [
-                        {
-                            "external_ipv6": "external_ipv6_value",
-                            "external_ipv6_prefix_length": 2837,
-                            "kind": "kind_value",
-                            "name": "name_value",
-                            "nat_i_p": "nat_i_p_value",
-                            "network_tier": "network_tier_value",
-                            "public_ptr_domain_name": "public_ptr_domain_name_value",
-                            "set_public_ptr": True,
-                            "type_": "type__value",
-                        }
-                    ],
+                    "ipv6_access_configs": {},
                     "ipv6_access_type": "ipv6_access_type_value",
                     "ipv6_address": "ipv6_address_value",
                     "kind": "kind_value",
@@ -1290,18 +1440,23 @@ def test_insert_unary_rest(request_type):
                     "subnetwork": "subnetwork_value",
                 }
             ],
+            "network_performance_config": {
+                "total_egress_bandwidth_tier": "total_egress_bandwidth_tier_value"
+            },
             "private_ipv6_google_access": "private_ipv6_google_access_value",
             "reservation_affinity": {
                 "consume_reservation_type": "consume_reservation_type_value",
                 "key": "key_value",
                 "values": ["values_value_1", "values_value_2"],
             },
+            "resource_manager_tags": {},
             "resource_policies": [
                 "resource_policies_value_1",
                 "resource_policies_value_2",
             ],
             "scheduling": {
                 "automatic_restart": True,
+                "instance_termination_action": "instance_termination_action_value",
                 "location_hint": "location_hint_value",
                 "min_node_cpus": 1379,
                 "node_affinities": [
@@ -1313,6 +1468,7 @@ def test_insert_unary_rest(request_type):
                 ],
                 "on_host_maintenance": "on_host_maintenance_value",
                 "preemptible": True,
+                "provisioning_model": "provisioning_model_value",
             },
             "service_accounts": [
                 {"email": "email_value", "scopes": ["scopes_value_1", "scopes_value_2"]}
@@ -1487,6 +1643,55 @@ def test_insert_unary_rest_unset_required_fields():
     )
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_insert_unary_rest_interceptors(null_interceptor):
+    transport = transports.InstanceTemplatesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.InstanceTemplatesRestInterceptor(),
+    )
+    client = InstanceTemplatesClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.InstanceTemplatesRestInterceptor, "post_insert"
+    ) as post, mock.patch.object(
+        transports.InstanceTemplatesRestInterceptor, "pre_insert"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": None,
+            "query_params": {},
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.Operation.to_json(compute.Operation())
+
+        request = compute.InsertInstanceTemplateRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation
+
+        client.insert_unary(
+            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_insert_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.InsertInstanceTemplateRequest
 ):
@@ -1505,6 +1710,7 @@ def test_insert_unary_rest_bad_request(
         "properties": {
             "advanced_machine_features": {
                 "enable_nested_virtualization": True,
+                "enable_uefi_networking": True,
                 "threads_per_core": 1689,
             },
             "can_ip_forward": True,
@@ -1531,6 +1737,7 @@ def test_insert_unary_rest_bad_request(
                         "disk_size_gb": 1261,
                         "disk_type": "disk_type_value",
                         "labels": {},
+                        "licenses": ["licenses_value_1", "licenses_value_2"],
                         "on_update_action": "on_update_action_value",
                         "provisioned_iops": 1740,
                         "resource_policies": [
@@ -1538,21 +1745,9 @@ def test_insert_unary_rest_bad_request(
                             "resource_policies_value_2",
                         ],
                         "source_image": "source_image_value",
-                        "source_image_encryption_key": {
-                            "kms_key_name": "kms_key_name_value",
-                            "kms_key_service_account": "kms_key_service_account_value",
-                            "raw_key": "raw_key_value",
-                            "rsa_encrypted_key": "rsa_encrypted_key_value",
-                            "sha256": "sha256_value",
-                        },
+                        "source_image_encryption_key": {},
                         "source_snapshot": "source_snapshot_value",
-                        "source_snapshot_encryption_key": {
-                            "kms_key_name": "kms_key_name_value",
-                            "kms_key_service_account": "kms_key_service_account_value",
-                            "raw_key": "raw_key_value",
-                            "rsa_encrypted_key": "rsa_encrypted_key_value",
-                            "sha256": "sha256_value",
-                        },
+                        "source_snapshot_encryption_key": {},
                     },
                     "interface": "interface_value",
                     "kind": "kind_value",
@@ -1562,16 +1757,9 @@ def test_insert_unary_rest_bad_request(
                         "dbs": [
                             {"content": "content_value", "file_type": "file_type_value"}
                         ],
-                        "dbxs": [
-                            {"content": "content_value", "file_type": "file_type_value"}
-                        ],
-                        "keks": [
-                            {"content": "content_value", "file_type": "file_type_value"}
-                        ],
-                        "pk": {
-                            "content": "content_value",
-                            "file_type": "file_type_value",
-                        },
+                        "dbxs": {},
+                        "keks": {},
+                        "pk": {},
                     },
                     "source": "source_value",
                     "type_": "type__value",
@@ -1613,19 +1801,7 @@ def test_insert_unary_rest_bad_request(
                         }
                     ],
                     "fingerprint": "fingerprint_value",
-                    "ipv6_access_configs": [
-                        {
-                            "external_ipv6": "external_ipv6_value",
-                            "external_ipv6_prefix_length": 2837,
-                            "kind": "kind_value",
-                            "name": "name_value",
-                            "nat_i_p": "nat_i_p_value",
-                            "network_tier": "network_tier_value",
-                            "public_ptr_domain_name": "public_ptr_domain_name_value",
-                            "set_public_ptr": True,
-                            "type_": "type__value",
-                        }
-                    ],
+                    "ipv6_access_configs": {},
                     "ipv6_access_type": "ipv6_access_type_value",
                     "ipv6_address": "ipv6_address_value",
                     "kind": "kind_value",
@@ -1638,18 +1814,23 @@ def test_insert_unary_rest_bad_request(
                     "subnetwork": "subnetwork_value",
                 }
             ],
+            "network_performance_config": {
+                "total_egress_bandwidth_tier": "total_egress_bandwidth_tier_value"
+            },
             "private_ipv6_google_access": "private_ipv6_google_access_value",
             "reservation_affinity": {
                 "consume_reservation_type": "consume_reservation_type_value",
                 "key": "key_value",
                 "values": ["values_value_1", "values_value_2"],
             },
+            "resource_manager_tags": {},
             "resource_policies": [
                 "resource_policies_value_1",
                 "resource_policies_value_2",
             ],
             "scheduling": {
                 "automatic_restart": True,
+                "instance_termination_action": "instance_termination_action_value",
                 "location_hint": "location_hint_value",
                 "min_node_cpus": 1379,
                 "node_affinities": [
@@ -1661,6 +1842,7 @@ def test_insert_unary_rest_bad_request(
                 ],
                 "on_host_maintenance": "on_host_maintenance_value",
                 "preemptible": True,
+                "provisioning_model": "provisioning_model_value",
             },
             "service_accounts": [
                 {"email": "email_value", "scopes": ["scopes_value_1", "scopes_value_2"]}
@@ -1712,14 +1894,6 @@ def test_insert_unary_rest_flattened():
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation()
 
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
         # get arguments that satisfy an http rule for this method
         sample_request = {"project": "sample1"}
 
@@ -1731,6 +1905,15 @@ def test_insert_unary_rest_flattened():
             ),
         )
         mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
         client.insert_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
@@ -1738,7 +1921,7 @@ def test_insert_unary_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "https://%s/compute/v1/projects/{project}/global/instanceTemplates"
+            "%s/compute/v1/projects/{project}/global/instanceTemplates"
             % client.transport._host,
             args[1],
         )
@@ -1831,7 +2014,7 @@ def test_list_rest_required_fields(request_type=compute.ListInstanceTemplatesReq
     ).list._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
-        ("max_results", "filter", "order_by", "page_token", "return_partial_success",)
+        ("filter", "max_results", "order_by", "page_token", "return_partial_success",)
     )
     jsonified_request.update(unset_fields)
 
@@ -1881,9 +2064,58 @@ def test_list_rest_unset_required_fields():
 
     unset_fields = transport.list._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("maxResults", "filter", "orderBy", "pageToken", "returnPartialSuccess",))
+        set(("filter", "maxResults", "orderBy", "pageToken", "returnPartialSuccess",))
         & set(("project",))
     )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_rest_interceptors(null_interceptor):
+    transport = transports.InstanceTemplatesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.InstanceTemplatesRestInterceptor(),
+    )
+    client = InstanceTemplatesClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.InstanceTemplatesRestInterceptor, "post_list"
+    ) as post, mock.patch.object(
+        transports.InstanceTemplatesRestInterceptor, "pre_list"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": None,
+            "query_params": {},
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.InstanceTemplateList.to_json(
+            compute.InstanceTemplateList()
+        )
+
+        request = compute.ListInstanceTemplatesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.InstanceTemplateList
+
+        client.list(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
 
 
 def test_list_rest_bad_request(
@@ -1919,6 +2151,13 @@ def test_list_rest_flattened():
         # Designate an appropriate value for the returned response.
         return_value = compute.InstanceTemplateList()
 
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project": "sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(project="project_value",)
+        mock_args.update(sample_request)
+
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
@@ -1927,12 +2166,6 @@ def test_list_rest_flattened():
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        # get arguments that satisfy an http rule for this method
-        sample_request = {"project": "sample1"}
-
-        # get truthy value for each flattened field
-        mock_args = dict(project="project_value",)
-        mock_args.update(sample_request)
         client.list(**mock_args)
 
         # Establish that the underlying call was made with the expected
@@ -1940,7 +2173,7 @@ def test_list_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "https://%s/compute/v1/projects/{project}/global/instanceTemplates"
+            "%s/compute/v1/projects/{project}/global/instanceTemplates"
             % client.transport._host,
             args[1],
         )
@@ -2055,19 +2288,7 @@ def test_set_iam_policy_rest(request_type):
                     "service": "service_value",
                 }
             ],
-            "bindings": [
-                {
-                    "binding_id": "binding_id_value",
-                    "condition": {
-                        "description": "description_value",
-                        "expression": "expression_value",
-                        "location": "location_value",
-                        "title": "title_value",
-                    },
-                    "members": ["members_value_1", "members_value_2"],
-                    "role": "role_value",
-                }
-            ],
+            "bindings": {},
             "etag": "etag_value",
             "iam_owned": True,
             "rules": [
@@ -2216,6 +2437,55 @@ def test_set_iam_policy_rest_unset_required_fields():
     )
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_set_iam_policy_rest_interceptors(null_interceptor):
+    transport = transports.InstanceTemplatesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.InstanceTemplatesRestInterceptor(),
+    )
+    client = InstanceTemplatesClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.InstanceTemplatesRestInterceptor, "post_set_iam_policy"
+    ) as post, mock.patch.object(
+        transports.InstanceTemplatesRestInterceptor, "pre_set_iam_policy"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": None,
+            "query_params": {},
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.Policy.to_json(compute.Policy())
+
+        request = compute.SetIamPolicyInstanceTemplateRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Policy
+
+        client.set_iam_policy(
+            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_set_iam_policy_rest_bad_request(
     transport: str = "rest", request_type=compute.SetIamPolicyInstanceTemplateRequest
 ):
@@ -2260,19 +2530,7 @@ def test_set_iam_policy_rest_bad_request(
                     "service": "service_value",
                 }
             ],
-            "bindings": [
-                {
-                    "binding_id": "binding_id_value",
-                    "condition": {
-                        "description": "description_value",
-                        "expression": "expression_value",
-                        "location": "location_value",
-                        "title": "title_value",
-                    },
-                    "members": ["members_value_1", "members_value_2"],
-                    "role": "role_value",
-                }
-            ],
+            "bindings": {},
             "etag": "etag_value",
             "iam_owned": True,
             "rules": [
@@ -2338,14 +2596,6 @@ def test_set_iam_policy_rest_flattened():
         # Designate an appropriate value for the returned response.
         return_value = compute.Policy()
 
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = compute.Policy.to_json(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
         # get arguments that satisfy an http rule for this method
         sample_request = {"project": "sample1", "resource": "sample2"}
 
@@ -2358,6 +2608,15 @@ def test_set_iam_policy_rest_flattened():
             ),
         )
         mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = compute.Policy.to_json(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
         client.set_iam_policy(**mock_args)
 
         # Establish that the underlying call was made with the expected
@@ -2365,7 +2624,7 @@ def test_set_iam_policy_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "https://%s/compute/v1/projects/{project}/global/instanceTemplates/{resource}/setIamPolicy"
+            "%s/compute/v1/projects/{project}/global/instanceTemplates/{resource}/setIamPolicy"
             % client.transport._host,
             args[1],
         )
@@ -2515,6 +2774,57 @@ def test_test_iam_permissions_rest_unset_required_fields():
     )
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_test_iam_permissions_rest_interceptors(null_interceptor):
+    transport = transports.InstanceTemplatesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.InstanceTemplatesRestInterceptor(),
+    )
+    client = InstanceTemplatesClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.InstanceTemplatesRestInterceptor, "post_test_iam_permissions"
+    ) as post, mock.patch.object(
+        transports.InstanceTemplatesRestInterceptor, "pre_test_iam_permissions"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": None,
+            "query_params": {},
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.TestPermissionsResponse.to_json(
+            compute.TestPermissionsResponse()
+        )
+
+        request = compute.TestIamPermissionsInstanceTemplateRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.TestPermissionsResponse
+
+        client.test_iam_permissions(
+            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_test_iam_permissions_rest_bad_request(
     transport: str = "rest",
     request_type=compute.TestIamPermissionsInstanceTemplateRequest,
@@ -2552,14 +2862,6 @@ def test_test_iam_permissions_rest_flattened():
         # Designate an appropriate value for the returned response.
         return_value = compute.TestPermissionsResponse()
 
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = compute.TestPermissionsResponse.to_json(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
         # get arguments that satisfy an http rule for this method
         sample_request = {"project": "sample1", "resource": "sample2"}
 
@@ -2572,6 +2874,15 @@ def test_test_iam_permissions_rest_flattened():
             ),
         )
         mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = compute.TestPermissionsResponse.to_json(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
         client.test_iam_permissions(**mock_args)
 
         # Establish that the underlying call was made with the expected
@@ -2579,7 +2890,7 @@ def test_test_iam_permissions_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "https://%s/compute/v1/projects/{project}/global/instanceTemplates/{resource}/testIamPermissions"
+            "%s/compute/v1/projects/{project}/global/instanceTemplates/{resource}/testIamPermissions"
             % client.transport._host,
             args[1],
         )
@@ -2774,24 +3085,36 @@ def test_instance_templates_http_transport_client_cert_source_for_mtls():
         mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
 
 
-def test_instance_templates_host_no_port():
+@pytest.mark.parametrize("transport_name", ["rest",])
+def test_instance_templates_host_no_port(transport_name):
     client = InstanceTemplatesClient(
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="compute.googleapis.com"
         ),
+        transport=transport_name,
     )
-    assert client.transport._host == "compute.googleapis.com:443"
+    assert client.transport._host == (
+        "compute.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://compute.googleapis.com"
+    )
 
 
-def test_instance_templates_host_with_port():
+@pytest.mark.parametrize("transport_name", ["rest",])
+def test_instance_templates_host_with_port(transport_name):
     client = InstanceTemplatesClient(
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="compute.googleapis.com:8000"
         ),
+        transport=transport_name,
     )
-    assert client.transport._host == "compute.googleapis.com:8000"
+    assert client.transport._host == (
+        "compute.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://compute.googleapis.com:8000"
+    )
 
 
 def test_common_billing_account_path():

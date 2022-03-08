@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ import mock
 
 import grpc
 from grpc.experimental import aio
+from collections.abc import Iterable
 import json
 import math
 import pytest
@@ -90,19 +91,27 @@ def test__get_default_mtls_endpoint():
     )
 
 
-@pytest.mark.parametrize("client_class", [InterconnectAttachmentsClient,])
-def test_interconnect_attachments_client_from_service_account_info(client_class):
+@pytest.mark.parametrize(
+    "client_class,transport_name", [(InterconnectAttachmentsClient, "rest"),]
+)
+def test_interconnect_attachments_client_from_service_account_info(
+    client_class, transport_name
+):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_info"
     ) as factory:
         factory.return_value = creds
         info = {"valid": True}
-        client = client_class.from_service_account_info(info)
+        client = client_class.from_service_account_info(info, transport=transport_name)
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == "compute.googleapis.com:443"
+        assert client.transport._host == (
+            "compute.googleapis.com{}".format(":443")
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://{}".format("compute.googleapis.com")
+        )
 
 
 @pytest.mark.parametrize(
@@ -127,22 +136,34 @@ def test_interconnect_attachments_client_service_account_always_use_jwt(
         use_jwt.assert_not_called()
 
 
-@pytest.mark.parametrize("client_class", [InterconnectAttachmentsClient,])
-def test_interconnect_attachments_client_from_service_account_file(client_class):
+@pytest.mark.parametrize(
+    "client_class,transport_name", [(InterconnectAttachmentsClient, "rest"),]
+)
+def test_interconnect_attachments_client_from_service_account_file(
+    client_class, transport_name
+):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_file"
     ) as factory:
         factory.return_value = creds
-        client = client_class.from_service_account_file("dummy/file/path.json")
+        client = client_class.from_service_account_file(
+            "dummy/file/path.json", transport=transport_name
+        )
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        client = client_class.from_service_account_json("dummy/file/path.json")
+        client = client_class.from_service_account_json(
+            "dummy/file/path.json", transport=transport_name
+        )
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == "compute.googleapis.com:443"
+        assert client.transport._host == (
+            "compute.googleapis.com{}".format(":443")
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://{}".format("compute.googleapis.com")
+        )
 
 
 def test_interconnect_attachments_client_get_transport_class():
@@ -488,20 +509,22 @@ def test_interconnect_attachments_client_client_options_scopes(
 
 
 @pytest.mark.parametrize(
-    "client_class,transport_class,transport_name",
+    "client_class,transport_class,transport_name,grpc_helpers",
     [
         (
             InterconnectAttachmentsClient,
             transports.InterconnectAttachmentsRestTransport,
             "rest",
+            None,
         ),
     ],
 )
 def test_interconnect_attachments_client_client_options_credentials_file(
-    client_class, transport_class, transport_name
+    client_class, transport_class, transport_name, grpc_helpers
 ):
     # Check the case credentials file is provided.
     options = client_options.ClientOptions(credentials_file="credentials.json")
+
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -590,9 +613,9 @@ def test_aggregated_list_rest_required_fields(
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
-            "max_results",
-            "include_all_scopes",
             "filter",
+            "include_all_scopes",
+            "max_results",
             "order_by",
             "page_token",
             "return_partial_success",
@@ -650,9 +673,9 @@ def test_aggregated_list_rest_unset_required_fields():
     assert set(unset_fields) == (
         set(
             (
-                "maxResults",
-                "includeAllScopes",
                 "filter",
+                "includeAllScopes",
+                "maxResults",
                 "orderBy",
                 "pageToken",
                 "returnPartialSuccess",
@@ -660,6 +683,57 @@ def test_aggregated_list_rest_unset_required_fields():
         )
         & set(("project",))
     )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_aggregated_list_rest_interceptors(null_interceptor):
+    transport = transports.InterconnectAttachmentsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.InterconnectAttachmentsRestInterceptor(),
+    )
+    client = InterconnectAttachmentsClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.InterconnectAttachmentsRestInterceptor, "post_aggregated_list"
+    ) as post, mock.patch.object(
+        transports.InterconnectAttachmentsRestInterceptor, "pre_aggregated_list"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": None,
+            "query_params": {},
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.InterconnectAttachmentAggregatedList.to_json(
+            compute.InterconnectAttachmentAggregatedList()
+        )
+
+        request = compute.AggregatedListInterconnectAttachmentsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.InterconnectAttachmentAggregatedList
+
+        client.aggregated_list(
+            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
 
 
 def test_aggregated_list_rest_bad_request(
@@ -696,6 +770,13 @@ def test_aggregated_list_rest_flattened():
         # Designate an appropriate value for the returned response.
         return_value = compute.InterconnectAttachmentAggregatedList()
 
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project": "sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(project="project_value",)
+        mock_args.update(sample_request)
+
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
@@ -706,12 +787,6 @@ def test_aggregated_list_rest_flattened():
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        # get arguments that satisfy an http rule for this method
-        sample_request = {"project": "sample1"}
-
-        # get truthy value for each flattened field
-        mock_args = dict(project="project_value",)
-        mock_args.update(sample_request)
         client.aggregated_list(**mock_args)
 
         # Establish that the underlying call was made with the expected
@@ -719,7 +794,7 @@ def test_aggregated_list_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "https://%s/compute/v1/projects/{project}/aggregated/interconnectAttachments"
+            "%s/compute/v1/projects/{project}/aggregated/interconnectAttachments"
             % client.transport._host,
             args[1],
         )
@@ -980,6 +1055,55 @@ def test_delete_unary_rest_unset_required_fields():
     )
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_unary_rest_interceptors(null_interceptor):
+    transport = transports.InterconnectAttachmentsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.InterconnectAttachmentsRestInterceptor(),
+    )
+    client = InterconnectAttachmentsClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.InterconnectAttachmentsRestInterceptor, "post_delete"
+    ) as post, mock.patch.object(
+        transports.InterconnectAttachmentsRestInterceptor, "pre_delete"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": None,
+            "query_params": {},
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.Operation.to_json(compute.Operation())
+
+        request = compute.DeleteInterconnectAttachmentRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation
+
+        client.delete_unary(
+            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_delete_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.DeleteInterconnectAttachmentRequest
 ):
@@ -1017,14 +1141,6 @@ def test_delete_unary_rest_flattened():
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation()
 
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
         # get arguments that satisfy an http rule for this method
         sample_request = {
             "project": "sample1",
@@ -1039,6 +1155,15 @@ def test_delete_unary_rest_flattened():
             interconnect_attachment="interconnect_attachment_value",
         )
         mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
         client.delete_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
@@ -1046,7 +1171,7 @@ def test_delete_unary_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "https://%s/compute/v1/projects/{project}/regions/{region}/interconnectAttachments/{interconnect_attachment}"
+            "%s/compute/v1/projects/{project}/regions/{region}/interconnectAttachments/{interconnect_attachment}"
             % client.transport._host,
             args[1],
         )
@@ -1096,10 +1221,15 @@ def test_get_rest(request_type):
         return_value = compute.InterconnectAttachment(
             admin_enabled=True,
             bandwidth="bandwidth_value",
+            candidate_ipv6_subnets=["candidate_ipv6_subnets_value"],
             candidate_subnets=["candidate_subnets_value"],
             cloud_router_ip_address="cloud_router_ip_address_value",
+            cloud_router_ipv6_address="cloud_router_ipv6_address_value",
+            cloud_router_ipv6_interface_id="cloud_router_ipv6_interface_id_value",
             creation_timestamp="creation_timestamp_value",
             customer_router_ip_address="customer_router_ip_address_value",
+            customer_router_ipv6_address="customer_router_ipv6_address_value",
+            customer_router_ipv6_interface_id="customer_router_ipv6_interface_id_value",
             dataplane_version=1807,
             description="description_value",
             edge_availability_domain="edge_availability_domain_value",
@@ -1118,6 +1248,7 @@ def test_get_rest(request_type):
             router="router_value",
             satisfies_pzs=True,
             self_link="self_link_value",
+            stack_type="stack_type_value",
             state="state_value",
             type_="type__value",
             vlan_tag8021q=1160,
@@ -1135,10 +1266,21 @@ def test_get_rest(request_type):
     assert isinstance(response, compute.InterconnectAttachment)
     assert response.admin_enabled is True
     assert response.bandwidth == "bandwidth_value"
+    assert response.candidate_ipv6_subnets == ["candidate_ipv6_subnets_value"]
     assert response.candidate_subnets == ["candidate_subnets_value"]
     assert response.cloud_router_ip_address == "cloud_router_ip_address_value"
+    assert response.cloud_router_ipv6_address == "cloud_router_ipv6_address_value"
+    assert (
+        response.cloud_router_ipv6_interface_id
+        == "cloud_router_ipv6_interface_id_value"
+    )
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.customer_router_ip_address == "customer_router_ip_address_value"
+    assert response.customer_router_ipv6_address == "customer_router_ipv6_address_value"
+    assert (
+        response.customer_router_ipv6_interface_id
+        == "customer_router_ipv6_interface_id_value"
+    )
     assert response.dataplane_version == 1807
     assert response.description == "description_value"
     assert response.edge_availability_domain == "edge_availability_domain_value"
@@ -1157,6 +1299,7 @@ def test_get_rest(request_type):
     assert response.router == "router_value"
     assert response.satisfies_pzs is True
     assert response.self_link == "self_link_value"
+    assert response.stack_type == "stack_type_value"
     assert response.state == "state_value"
     assert response.type_ == "type__value"
     assert response.vlan_tag8021q == 1160
@@ -1252,6 +1395,55 @@ def test_get_rest_unset_required_fields():
     )
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_rest_interceptors(null_interceptor):
+    transport = transports.InterconnectAttachmentsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.InterconnectAttachmentsRestInterceptor(),
+    )
+    client = InterconnectAttachmentsClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.InterconnectAttachmentsRestInterceptor, "post_get"
+    ) as post, mock.patch.object(
+        transports.InterconnectAttachmentsRestInterceptor, "pre_get"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": None,
+            "query_params": {},
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.InterconnectAttachment.to_json(
+            compute.InterconnectAttachment()
+        )
+
+        request = compute.GetInterconnectAttachmentRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.InterconnectAttachment
+
+        client.get(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_get_rest_bad_request(
     transport: str = "rest", request_type=compute.GetInterconnectAttachmentRequest
 ):
@@ -1289,14 +1481,6 @@ def test_get_rest_flattened():
         # Designate an appropriate value for the returned response.
         return_value = compute.InterconnectAttachment()
 
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = compute.InterconnectAttachment.to_json(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
         # get arguments that satisfy an http rule for this method
         sample_request = {
             "project": "sample1",
@@ -1311,6 +1495,15 @@ def test_get_rest_flattened():
             interconnect_attachment="interconnect_attachment_value",
         )
         mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = compute.InterconnectAttachment.to_json(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
         client.get(**mock_args)
 
         # Establish that the underlying call was made with the expected
@@ -1318,7 +1511,7 @@ def test_get_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "https://%s/compute/v1/projects/{project}/regions/{region}/interconnectAttachments/{interconnect_attachment}"
+            "%s/compute/v1/projects/{project}/regions/{region}/interconnectAttachments/{interconnect_attachment}"
             % client.transport._host,
             args[1],
         )
@@ -1359,10 +1552,18 @@ def test_insert_unary_rest(request_type):
     request_init["interconnect_attachment_resource"] = {
         "admin_enabled": True,
         "bandwidth": "bandwidth_value",
+        "candidate_ipv6_subnets": [
+            "candidate_ipv6_subnets_value_1",
+            "candidate_ipv6_subnets_value_2",
+        ],
         "candidate_subnets": ["candidate_subnets_value_1", "candidate_subnets_value_2"],
         "cloud_router_ip_address": "cloud_router_ip_address_value",
+        "cloud_router_ipv6_address": "cloud_router_ipv6_address_value",
+        "cloud_router_ipv6_interface_id": "cloud_router_ipv6_interface_id_value",
         "creation_timestamp": "creation_timestamp_value",
         "customer_router_ip_address": "customer_router_ip_address_value",
+        "customer_router_ipv6_address": "customer_router_ipv6_address_value",
+        "customer_router_ipv6_interface_id": "customer_router_ipv6_interface_id_value",
         "dataplane_version": 1807,
         "description": "description_value",
         "edge_availability_domain": "edge_availability_domain_value",
@@ -1390,6 +1591,7 @@ def test_insert_unary_rest(request_type):
         "router": "router_value",
         "satisfies_pzs": True,
         "self_link": "self_link_value",
+        "stack_type": "stack_type_value",
         "state": "state_value",
         "type_": "type__value",
         "vlan_tag8021q": 1160,
@@ -1489,7 +1691,7 @@ def test_insert_unary_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials()
     ).insert._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("validate_only", "request_id",))
+    assert not set(unset_fields) - set(("request_id", "validate_only",))
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -1541,9 +1743,58 @@ def test_insert_unary_rest_unset_required_fields():
 
     unset_fields = transport.insert._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("validateOnly", "requestId",))
+        set(("requestId", "validateOnly",))
         & set(("interconnectAttachmentResource", "project", "region",))
     )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_insert_unary_rest_interceptors(null_interceptor):
+    transport = transports.InterconnectAttachmentsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.InterconnectAttachmentsRestInterceptor(),
+    )
+    client = InterconnectAttachmentsClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.InterconnectAttachmentsRestInterceptor, "post_insert"
+    ) as post, mock.patch.object(
+        transports.InterconnectAttachmentsRestInterceptor, "pre_insert"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": None,
+            "query_params": {},
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.Operation.to_json(compute.Operation())
+
+        request = compute.InsertInterconnectAttachmentRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation
+
+        client.insert_unary(
+            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
 
 
 def test_insert_unary_rest_bad_request(
@@ -1558,10 +1809,18 @@ def test_insert_unary_rest_bad_request(
     request_init["interconnect_attachment_resource"] = {
         "admin_enabled": True,
         "bandwidth": "bandwidth_value",
+        "candidate_ipv6_subnets": [
+            "candidate_ipv6_subnets_value_1",
+            "candidate_ipv6_subnets_value_2",
+        ],
         "candidate_subnets": ["candidate_subnets_value_1", "candidate_subnets_value_2"],
         "cloud_router_ip_address": "cloud_router_ip_address_value",
+        "cloud_router_ipv6_address": "cloud_router_ipv6_address_value",
+        "cloud_router_ipv6_interface_id": "cloud_router_ipv6_interface_id_value",
         "creation_timestamp": "creation_timestamp_value",
         "customer_router_ip_address": "customer_router_ip_address_value",
+        "customer_router_ipv6_address": "customer_router_ipv6_address_value",
+        "customer_router_ipv6_interface_id": "customer_router_ipv6_interface_id_value",
         "dataplane_version": 1807,
         "description": "description_value",
         "edge_availability_domain": "edge_availability_domain_value",
@@ -1589,6 +1848,7 @@ def test_insert_unary_rest_bad_request(
         "router": "router_value",
         "satisfies_pzs": True,
         "self_link": "self_link_value",
+        "stack_type": "stack_type_value",
         "state": "state_value",
         "type_": "type__value",
         "vlan_tag8021q": 1160,
@@ -1617,14 +1877,6 @@ def test_insert_unary_rest_flattened():
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation()
 
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
         # get arguments that satisfy an http rule for this method
         sample_request = {"project": "sample1", "region": "sample2"}
 
@@ -1637,6 +1889,15 @@ def test_insert_unary_rest_flattened():
             ),
         )
         mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
         client.insert_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
@@ -1644,7 +1905,7 @@ def test_insert_unary_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "https://%s/compute/v1/projects/{project}/regions/{region}/interconnectAttachments"
+            "%s/compute/v1/projects/{project}/regions/{region}/interconnectAttachments"
             % client.transport._host,
             args[1],
         )
@@ -1744,7 +2005,7 @@ def test_list_rest_required_fields(
     ).list._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
-        ("max_results", "filter", "order_by", "page_token", "return_partial_success",)
+        ("filter", "max_results", "order_by", "page_token", "return_partial_success",)
     )
     jsonified_request.update(unset_fields)
 
@@ -1796,9 +2057,58 @@ def test_list_rest_unset_required_fields():
 
     unset_fields = transport.list._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("maxResults", "filter", "orderBy", "pageToken", "returnPartialSuccess",))
+        set(("filter", "maxResults", "orderBy", "pageToken", "returnPartialSuccess",))
         & set(("project", "region",))
     )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_rest_interceptors(null_interceptor):
+    transport = transports.InterconnectAttachmentsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.InterconnectAttachmentsRestInterceptor(),
+    )
+    client = InterconnectAttachmentsClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.InterconnectAttachmentsRestInterceptor, "post_list"
+    ) as post, mock.patch.object(
+        transports.InterconnectAttachmentsRestInterceptor, "pre_list"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": None,
+            "query_params": {},
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.InterconnectAttachmentList.to_json(
+            compute.InterconnectAttachmentList()
+        )
+
+        request = compute.ListInterconnectAttachmentsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.InterconnectAttachmentList
+
+        client.list(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
 
 
 def test_list_rest_bad_request(
@@ -1834,6 +2144,13 @@ def test_list_rest_flattened():
         # Designate an appropriate value for the returned response.
         return_value = compute.InterconnectAttachmentList()
 
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project": "sample1", "region": "sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(project="project_value", region="region_value",)
+        mock_args.update(sample_request)
+
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
@@ -1842,12 +2159,6 @@ def test_list_rest_flattened():
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        # get arguments that satisfy an http rule for this method
-        sample_request = {"project": "sample1", "region": "sample2"}
-
-        # get truthy value for each flattened field
-        mock_args = dict(project="project_value", region="region_value",)
-        mock_args.update(sample_request)
         client.list(**mock_args)
 
         # Establish that the underlying call was made with the expected
@@ -1855,7 +2166,7 @@ def test_list_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "https://%s/compute/v1/projects/{project}/regions/{region}/interconnectAttachments"
+            "%s/compute/v1/projects/{project}/regions/{region}/interconnectAttachments"
             % client.transport._host,
             args[1],
         )
@@ -1949,10 +2260,18 @@ def test_patch_unary_rest(request_type):
     request_init["interconnect_attachment_resource"] = {
         "admin_enabled": True,
         "bandwidth": "bandwidth_value",
+        "candidate_ipv6_subnets": [
+            "candidate_ipv6_subnets_value_1",
+            "candidate_ipv6_subnets_value_2",
+        ],
         "candidate_subnets": ["candidate_subnets_value_1", "candidate_subnets_value_2"],
         "cloud_router_ip_address": "cloud_router_ip_address_value",
+        "cloud_router_ipv6_address": "cloud_router_ipv6_address_value",
+        "cloud_router_ipv6_interface_id": "cloud_router_ipv6_interface_id_value",
         "creation_timestamp": "creation_timestamp_value",
         "customer_router_ip_address": "customer_router_ip_address_value",
+        "customer_router_ipv6_address": "customer_router_ipv6_address_value",
+        "customer_router_ipv6_interface_id": "customer_router_ipv6_interface_id_value",
         "dataplane_version": 1807,
         "description": "description_value",
         "edge_availability_domain": "edge_availability_domain_value",
@@ -1980,6 +2299,7 @@ def test_patch_unary_rest(request_type):
         "router": "router_value",
         "satisfies_pzs": True,
         "self_link": "self_link_value",
+        "stack_type": "stack_type_value",
         "state": "state_value",
         "type_": "type__value",
         "vlan_tag8021q": 1160,
@@ -2149,6 +2469,53 @@ def test_patch_unary_rest_unset_required_fields():
     )
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_patch_unary_rest_interceptors(null_interceptor):
+    transport = transports.InterconnectAttachmentsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.InterconnectAttachmentsRestInterceptor(),
+    )
+    client = InterconnectAttachmentsClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.InterconnectAttachmentsRestInterceptor, "post_patch"
+    ) as post, mock.patch.object(
+        transports.InterconnectAttachmentsRestInterceptor, "pre_patch"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": None,
+            "query_params": {},
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.Operation.to_json(compute.Operation())
+
+        request = compute.PatchInterconnectAttachmentRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation
+
+        client.patch_unary(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_patch_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.PatchInterconnectAttachmentRequest
 ):
@@ -2165,10 +2532,18 @@ def test_patch_unary_rest_bad_request(
     request_init["interconnect_attachment_resource"] = {
         "admin_enabled": True,
         "bandwidth": "bandwidth_value",
+        "candidate_ipv6_subnets": [
+            "candidate_ipv6_subnets_value_1",
+            "candidate_ipv6_subnets_value_2",
+        ],
         "candidate_subnets": ["candidate_subnets_value_1", "candidate_subnets_value_2"],
         "cloud_router_ip_address": "cloud_router_ip_address_value",
+        "cloud_router_ipv6_address": "cloud_router_ipv6_address_value",
+        "cloud_router_ipv6_interface_id": "cloud_router_ipv6_interface_id_value",
         "creation_timestamp": "creation_timestamp_value",
         "customer_router_ip_address": "customer_router_ip_address_value",
+        "customer_router_ipv6_address": "customer_router_ipv6_address_value",
+        "customer_router_ipv6_interface_id": "customer_router_ipv6_interface_id_value",
         "dataplane_version": 1807,
         "description": "description_value",
         "edge_availability_domain": "edge_availability_domain_value",
@@ -2196,6 +2571,7 @@ def test_patch_unary_rest_bad_request(
         "router": "router_value",
         "satisfies_pzs": True,
         "self_link": "self_link_value",
+        "stack_type": "stack_type_value",
         "state": "state_value",
         "type_": "type__value",
         "vlan_tag8021q": 1160,
@@ -2224,14 +2600,6 @@ def test_patch_unary_rest_flattened():
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation()
 
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
         # get arguments that satisfy an http rule for this method
         sample_request = {
             "project": "sample1",
@@ -2249,6 +2617,15 @@ def test_patch_unary_rest_flattened():
             ),
         )
         mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
         client.patch_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
@@ -2256,7 +2633,7 @@ def test_patch_unary_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "https://%s/compute/v1/projects/{project}/regions/{region}/interconnectAttachments/{interconnect_attachment}"
+            "%s/compute/v1/projects/{project}/regions/{region}/interconnectAttachments/{interconnect_attachment}"
             % client.transport._host,
             args[1],
         )
@@ -2453,24 +2830,36 @@ def test_interconnect_attachments_http_transport_client_cert_source_for_mtls():
         mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
 
 
-def test_interconnect_attachments_host_no_port():
+@pytest.mark.parametrize("transport_name", ["rest",])
+def test_interconnect_attachments_host_no_port(transport_name):
     client = InterconnectAttachmentsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="compute.googleapis.com"
         ),
+        transport=transport_name,
     )
-    assert client.transport._host == "compute.googleapis.com:443"
+    assert client.transport._host == (
+        "compute.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://compute.googleapis.com"
+    )
 
 
-def test_interconnect_attachments_host_with_port():
+@pytest.mark.parametrize("transport_name", ["rest",])
+def test_interconnect_attachments_host_with_port(transport_name):
     client = InterconnectAttachmentsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="compute.googleapis.com:8000"
         ),
+        transport=transport_name,
     )
-    assert client.transport._host == "compute.googleapis.com:8000"
+    assert client.transport._host == (
+        "compute.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://compute.googleapis.com:8000"
+    )
 
 
 def test_common_billing_account_path():

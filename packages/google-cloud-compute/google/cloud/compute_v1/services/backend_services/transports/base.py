@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -150,6 +150,11 @@ class BackendServicesTransport(abc.ABC):
             self.patch: gapic_v1.method.wrap_method(
                 self.patch, default_timeout=None, client_info=client_info,
             ),
+            self.set_edge_security_policy: gapic_v1.method.wrap_method(
+                self.set_edge_security_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.set_security_policy: gapic_v1.method.wrap_method(
                 self.set_security_policy, default_timeout=None, client_info=client_info,
             ),
@@ -250,6 +255,15 @@ class BackendServicesTransport(abc.ABC):
         self,
     ) -> Callable[
         [compute.PatchBackendServiceRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def set_edge_security_policy(
+        self,
+    ) -> Callable[
+        [compute.SetEdgeSecurityPolicyBackendServiceRequest],
         Union[compute.Operation, Awaitable[compute.Operation]],
     ]:
         raise NotImplementedError()

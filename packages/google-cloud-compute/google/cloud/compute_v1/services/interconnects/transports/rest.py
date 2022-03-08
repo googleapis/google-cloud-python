@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,11 +22,14 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 from google.api_core import rest_helpers
+from google.api_core import rest_streaming
 from google.api_core import path_template
 from google.api_core import gapic_v1
+
 from requests import __version__ as requests_version
 import dataclasses
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
+import re
+from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 try:
@@ -50,10 +53,203 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
 )
 
 
+class InterconnectsRestInterceptor:
+    """Interceptor for Interconnects.
+
+    Interceptors are used to manipulate requests, request metadata, and responses
+    in arbitrary ways.
+    Example use cases include:
+    * Logging
+    * Verifying requests according to service or custom semantics
+    * Stripping extraneous information from responses
+
+    These use cases and more can be enabled by injecting an
+    instance of a custom subclass when constructing the InterconnectsRestTransport.
+
+    .. code-block:: python
+        class MyCustomInterconnectsInterceptor(InterconnectsRestInterceptor):
+            def pre_delete(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_get(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_get_diagnostics(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_diagnostics(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_insert(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_insert(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_list(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_patch(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_patch(response):
+                logging.log(f"Received response: {response}")
+
+        transport = InterconnectsRestTransport(interceptor=MyCustomInterconnectsInterceptor())
+        client = InterconnectsClient(transport=transport)
+
+
+    """
+
+    def pre_delete(
+        self,
+        request: compute.DeleteInterconnectRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.DeleteInterconnectRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for delete
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Interconnects server.
+        """
+        return request, metadata
+
+    def post_delete(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for delete
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Interconnects server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get(
+        self,
+        request: compute.GetInterconnectRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.GetInterconnectRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Interconnects server.
+        """
+        return request, metadata
+
+    def post_get(self, response: compute.Interconnect) -> compute.Interconnect:
+        """Post-rpc interceptor for get
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Interconnects server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_diagnostics(
+        self,
+        request: compute.GetDiagnosticsInterconnectRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.GetDiagnosticsInterconnectRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_diagnostics
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Interconnects server.
+        """
+        return request, metadata
+
+    def post_get_diagnostics(
+        self, response: compute.InterconnectsGetDiagnosticsResponse
+    ) -> compute.InterconnectsGetDiagnosticsResponse:
+        """Post-rpc interceptor for get_diagnostics
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Interconnects server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_insert(
+        self,
+        request: compute.InsertInterconnectRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.InsertInterconnectRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for insert
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Interconnects server.
+        """
+        return request, metadata
+
+    def post_insert(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for insert
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Interconnects server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list(
+        self,
+        request: compute.ListInterconnectsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.ListInterconnectsRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Interconnects server.
+        """
+        return request, metadata
+
+    def post_list(self, response: compute.InterconnectList) -> compute.InterconnectList:
+        """Post-rpc interceptor for list
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Interconnects server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_patch(
+        self,
+        request: compute.PatchInterconnectRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.PatchInterconnectRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for patch
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Interconnects server.
+        """
+        return request, metadata
+
+    def post_patch(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for patch
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Interconnects server but before
+        it is returned to user code.
+        """
+        return response
+
+
 @dataclasses.dataclass
 class InterconnectsRestStub:
     _session: AuthorizedSession
     _host: str
+    _interceptor: InterconnectsRestInterceptor
 
 
 class InterconnectsRestTransport(InterconnectsTransport):
@@ -82,6 +278,7 @@ class InterconnectsRestTransport(InterconnectsTransport):
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
         url_scheme: str = "https",
+        interceptor: Optional[InterconnectsRestInterceptor] = None,
     ) -> None:
         """Instantiate the transport.
 
@@ -119,6 +316,16 @@ class InterconnectsRestTransport(InterconnectsTransport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
+        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
+        if maybe_url_match is None:
+            raise ValueError(
+                f"Unexpected hostname structure: {host}"
+            )  # pragma: NO COVER
+
+        url_match_items = maybe_url_match.groupdict()
+
+        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
+
         super().__init__(
             host=host,
             credentials=credentials,
@@ -130,13 +337,14 @@ class InterconnectsRestTransport(InterconnectsTransport):
         )
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
+        self._interceptor = interceptor or InterconnectsRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
     class _Delete(InterconnectsRestStub):
         def __hash__(self):
             return hash("Delete")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -188,13 +396,13 @@ class InterconnectsRestTransport(InterconnectsTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "delete",
                     "uri": "/compute/v1/projects/{project}/global/interconnects/{interconnect}",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_delete(request, metadata)
             request_kwargs = compute.DeleteInterconnectRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -218,8 +426,7 @@ class InterconnectsRestTransport(InterconnectsTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -229,16 +436,19 @@ class InterconnectsRestTransport(InterconnectsTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_delete(resp)
+            return resp
 
     class _Get(InterconnectsRestStub):
         def __hash__(self):
             return hash("Get")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -281,13 +491,13 @@ class InterconnectsRestTransport(InterconnectsTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
                     "uri": "/compute/v1/projects/{project}/global/interconnects/{interconnect}",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_get(request, metadata)
             request_kwargs = compute.GetInterconnectRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -309,8 +519,7 @@ class InterconnectsRestTransport(InterconnectsTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -320,16 +529,19 @@ class InterconnectsRestTransport(InterconnectsTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Interconnect.from_json(
+            resp = compute.Interconnect.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_get(resp)
+            return resp
 
     class _GetDiagnostics(InterconnectsRestStub):
         def __hash__(self):
             return hash("GetDiagnostics")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -368,13 +580,13 @@ class InterconnectsRestTransport(InterconnectsTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
                     "uri": "/compute/v1/projects/{project}/global/interconnects/{interconnect}/getDiagnostics",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_get_diagnostics(request, metadata)
             request_kwargs = compute.GetDiagnosticsInterconnectRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -398,8 +610,7 @@ class InterconnectsRestTransport(InterconnectsTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -409,16 +620,19 @@ class InterconnectsRestTransport(InterconnectsTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.InterconnectsGetDiagnosticsResponse.from_json(
+            resp = compute.InterconnectsGetDiagnosticsResponse.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_get_diagnostics(resp)
+            return resp
 
     class _Insert(InterconnectsRestStub):
         def __hash__(self):
             return hash("Insert")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -470,14 +684,14 @@ class InterconnectsRestTransport(InterconnectsTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/projects/{project}/global/interconnects",
                     "body": "interconnect_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_insert(request, metadata)
             request_kwargs = compute.InsertInterconnectRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -507,8 +721,7 @@ class InterconnectsRestTransport(InterconnectsTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -519,16 +732,19 @@ class InterconnectsRestTransport(InterconnectsTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_insert(resp)
+            return resp
 
     class _List(InterconnectsRestStub):
         def __hash__(self):
             return hash("List")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -567,13 +783,13 @@ class InterconnectsRestTransport(InterconnectsTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
                     "uri": "/compute/v1/projects/{project}/global/interconnects",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_list(request, metadata)
             request_kwargs = compute.ListInterconnectsRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -597,8 +813,7 @@ class InterconnectsRestTransport(InterconnectsTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -608,16 +823,19 @@ class InterconnectsRestTransport(InterconnectsTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.InterconnectList.from_json(
+            resp = compute.InterconnectList.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_list(resp)
+            return resp
 
     class _Patch(InterconnectsRestStub):
         def __hash__(self):
             return hash("Patch")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -669,14 +887,14 @@ class InterconnectsRestTransport(InterconnectsTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "patch",
                     "uri": "/compute/v1/projects/{project}/global/interconnects/{interconnect}",
                     "body": "interconnect_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_patch(request, metadata)
             request_kwargs = compute.PatchInterconnectRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -706,8 +924,7 @@ class InterconnectsRestTransport(InterconnectsTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -718,10 +935,13 @@ class InterconnectsRestTransport(InterconnectsTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_patch(resp)
+            return resp
 
     @property
     def delete(
@@ -729,17 +949,25 @@ class InterconnectsRestTransport(InterconnectsTransport):
     ) -> Callable[[compute.DeleteInterconnectRequest], compute.Operation]:
         stub = self._STUBS.get("delete")
         if not stub:
-            stub = self._STUBS["delete"] = self._Delete(self._session, self._host)
+            stub = self._STUBS["delete"] = self._Delete(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def get(self) -> Callable[[compute.GetInterconnectRequest], compute.Interconnect]:
         stub = self._STUBS.get("get")
         if not stub:
-            stub = self._STUBS["get"] = self._Get(self._session, self._host)
+            stub = self._STUBS["get"] = self._Get(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def get_diagnostics(
@@ -751,10 +979,12 @@ class InterconnectsRestTransport(InterconnectsTransport):
         stub = self._STUBS.get("get_diagnostics")
         if not stub:
             stub = self._STUBS["get_diagnostics"] = self._GetDiagnostics(
-                self._session, self._host
+                self._session, self._host, self._interceptor
             )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def insert(
@@ -762,9 +992,13 @@ class InterconnectsRestTransport(InterconnectsTransport):
     ) -> Callable[[compute.InsertInterconnectRequest], compute.Operation]:
         stub = self._STUBS.get("insert")
         if not stub:
-            stub = self._STUBS["insert"] = self._Insert(self._session, self._host)
+            stub = self._STUBS["insert"] = self._Insert(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def list(
@@ -772,17 +1006,25 @@ class InterconnectsRestTransport(InterconnectsTransport):
     ) -> Callable[[compute.ListInterconnectsRequest], compute.InterconnectList]:
         stub = self._STUBS.get("list")
         if not stub:
-            stub = self._STUBS["list"] = self._List(self._session, self._host)
+            stub = self._STUBS["list"] = self._List(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def patch(self) -> Callable[[compute.PatchInterconnectRequest], compute.Operation]:
         stub = self._STUBS.get("patch")
         if not stub:
-            stub = self._STUBS["patch"] = self._Patch(self._session, self._host)
+            stub = self._STUBS["patch"] = self._Patch(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     def close(self):
         self._session.close()

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,11 +22,14 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 from google.api_core import rest_helpers
+from google.api_core import rest_streaming
 from google.api_core import path_template
 from google.api_core import gapic_v1
+
 from requests import __version__ as requests_version
 import dataclasses
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
+import re
+from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 try:
@@ -47,10 +50,393 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
 )
 
 
+class DisksRestInterceptor:
+    """Interceptor for Disks.
+
+    Interceptors are used to manipulate requests, request metadata, and responses
+    in arbitrary ways.
+    Example use cases include:
+    * Logging
+    * Verifying requests according to service or custom semantics
+    * Stripping extraneous information from responses
+
+    These use cases and more can be enabled by injecting an
+    instance of a custom subclass when constructing the DisksRestTransport.
+
+    .. code-block:: python
+        class MyCustomDisksInterceptor(DisksRestInterceptor):
+            def pre_add_resource_policies(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_add_resource_policies(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_aggregated_list(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_aggregated_list(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_create_snapshot(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_snapshot(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_delete(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_get(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_get_iam_policy(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_iam_policy(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_insert(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_insert(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_list(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_remove_resource_policies(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_remove_resource_policies(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_resize(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_resize(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_set_iam_policy(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_set_iam_policy(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_set_labels(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_set_labels(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_test_iam_permissions(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_test_iam_permissions(response):
+                logging.log(f"Received response: {response}")
+
+        transport = DisksRestTransport(interceptor=MyCustomDisksInterceptor())
+        client = DisksClient(transport=transport)
+
+
+    """
+
+    def pre_add_resource_policies(
+        self,
+        request: compute.AddResourcePoliciesDiskRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.AddResourcePoliciesDiskRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for add_resource_policies
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Disks server.
+        """
+        return request, metadata
+
+    def post_add_resource_policies(
+        self, response: compute.Operation
+    ) -> compute.Operation:
+        """Post-rpc interceptor for add_resource_policies
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Disks server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_aggregated_list(
+        self,
+        request: compute.AggregatedListDisksRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.AggregatedListDisksRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for aggregated_list
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Disks server.
+        """
+        return request, metadata
+
+    def post_aggregated_list(
+        self, response: compute.DiskAggregatedList
+    ) -> compute.DiskAggregatedList:
+        """Post-rpc interceptor for aggregated_list
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Disks server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_create_snapshot(
+        self,
+        request: compute.CreateSnapshotDiskRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.CreateSnapshotDiskRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for create_snapshot
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Disks server.
+        """
+        return request, metadata
+
+    def post_create_snapshot(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for create_snapshot
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Disks server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_delete(
+        self, request: compute.DeleteDiskRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[compute.DeleteDiskRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for delete
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Disks server.
+        """
+        return request, metadata
+
+    def post_delete(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for delete
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Disks server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get(
+        self, request: compute.GetDiskRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[compute.GetDiskRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Disks server.
+        """
+        return request, metadata
+
+    def post_get(self, response: compute.Disk) -> compute.Disk:
+        """Post-rpc interceptor for get
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Disks server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_iam_policy(
+        self,
+        request: compute.GetIamPolicyDiskRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.GetIamPolicyDiskRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_iam_policy
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Disks server.
+        """
+        return request, metadata
+
+    def post_get_iam_policy(self, response: compute.Policy) -> compute.Policy:
+        """Post-rpc interceptor for get_iam_policy
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Disks server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_insert(
+        self, request: compute.InsertDiskRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[compute.InsertDiskRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for insert
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Disks server.
+        """
+        return request, metadata
+
+    def post_insert(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for insert
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Disks server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list(
+        self, request: compute.ListDisksRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[compute.ListDisksRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Disks server.
+        """
+        return request, metadata
+
+    def post_list(self, response: compute.DiskList) -> compute.DiskList:
+        """Post-rpc interceptor for list
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Disks server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_remove_resource_policies(
+        self,
+        request: compute.RemoveResourcePoliciesDiskRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.RemoveResourcePoliciesDiskRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for remove_resource_policies
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Disks server.
+        """
+        return request, metadata
+
+    def post_remove_resource_policies(
+        self, response: compute.Operation
+    ) -> compute.Operation:
+        """Post-rpc interceptor for remove_resource_policies
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Disks server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_resize(
+        self, request: compute.ResizeDiskRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[compute.ResizeDiskRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for resize
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Disks server.
+        """
+        return request, metadata
+
+    def post_resize(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for resize
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Disks server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_set_iam_policy(
+        self,
+        request: compute.SetIamPolicyDiskRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.SetIamPolicyDiskRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for set_iam_policy
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Disks server.
+        """
+        return request, metadata
+
+    def post_set_iam_policy(self, response: compute.Policy) -> compute.Policy:
+        """Post-rpc interceptor for set_iam_policy
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Disks server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_set_labels(
+        self, request: compute.SetLabelsDiskRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[compute.SetLabelsDiskRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for set_labels
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Disks server.
+        """
+        return request, metadata
+
+    def post_set_labels(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for set_labels
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Disks server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_test_iam_permissions(
+        self,
+        request: compute.TestIamPermissionsDiskRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.TestIamPermissionsDiskRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for test_iam_permissions
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Disks server.
+        """
+        return request, metadata
+
+    def post_test_iam_permissions(
+        self, response: compute.TestPermissionsResponse
+    ) -> compute.TestPermissionsResponse:
+        """Post-rpc interceptor for test_iam_permissions
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Disks server but before
+        it is returned to user code.
+        """
+        return response
+
+
 @dataclasses.dataclass
 class DisksRestStub:
     _session: AuthorizedSession
     _host: str
+    _interceptor: DisksRestInterceptor
 
 
 class DisksRestTransport(DisksTransport):
@@ -79,6 +465,7 @@ class DisksRestTransport(DisksTransport):
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
         url_scheme: str = "https",
+        interceptor: Optional[DisksRestInterceptor] = None,
     ) -> None:
         """Instantiate the transport.
 
@@ -116,6 +503,16 @@ class DisksRestTransport(DisksTransport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
+        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
+        if maybe_url_match is None:
+            raise ValueError(
+                f"Unexpected hostname structure: {host}"
+            )  # pragma: NO COVER
+
+        url_match_items = maybe_url_match.groupdict()
+
+        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
+
         super().__init__(
             host=host,
             credentials=credentials,
@@ -127,13 +524,14 @@ class DisksRestTransport(DisksTransport):
         )
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
+        self._interceptor = interceptor or DisksRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
     class _AddResourcePolicies(DisksRestStub):
         def __hash__(self):
             return hash("AddResourcePolicies")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -185,14 +583,16 @@ class DisksRestTransport(DisksTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/projects/{project}/zones/{zone}/disks/{disk}/addResourcePolicies",
                     "body": "disks_add_resource_policies_request_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_add_resource_policies(
+                request, metadata
+            )
             request_kwargs = compute.AddResourcePoliciesDiskRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -222,8 +622,7 @@ class DisksRestTransport(DisksTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -234,16 +633,19 @@ class DisksRestTransport(DisksTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_add_resource_policies(resp)
+            return resp
 
     class _AggregatedList(DisksRestStub):
         def __hash__(self):
             return hash("AggregatedList")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -280,13 +682,13 @@ class DisksRestTransport(DisksTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
                     "uri": "/compute/v1/projects/{project}/aggregated/disks",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_aggregated_list(request, metadata)
             request_kwargs = compute.AggregatedListDisksRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -310,8 +712,7 @@ class DisksRestTransport(DisksTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -321,16 +722,19 @@ class DisksRestTransport(DisksTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.DiskAggregatedList.from_json(
+            resp = compute.DiskAggregatedList.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_aggregated_list(resp)
+            return resp
 
     class _CreateSnapshot(DisksRestStub):
         def __hash__(self):
             return hash("CreateSnapshot")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -382,14 +786,14 @@ class DisksRestTransport(DisksTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/projects/{project}/zones/{zone}/disks/{disk}/createSnapshot",
                     "body": "snapshot_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_create_snapshot(request, metadata)
             request_kwargs = compute.CreateSnapshotDiskRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -419,8 +823,7 @@ class DisksRestTransport(DisksTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -431,16 +834,19 @@ class DisksRestTransport(DisksTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_create_snapshot(resp)
+            return resp
 
     class _Delete(DisksRestStub):
         def __hash__(self):
             return hash("Delete")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -491,13 +897,13 @@ class DisksRestTransport(DisksTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "delete",
                     "uri": "/compute/v1/projects/{project}/zones/{zone}/disks/{disk}",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_delete(request, metadata)
             request_kwargs = compute.DeleteDiskRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -519,8 +925,7 @@ class DisksRestTransport(DisksTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -530,16 +935,19 @@ class DisksRestTransport(DisksTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_delete(resp)
+            return resp
 
     class _Get(DisksRestStub):
         def __hash__(self):
             return hash("Get")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -587,13 +995,13 @@ class DisksRestTransport(DisksTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
                     "uri": "/compute/v1/projects/{project}/zones/{zone}/disks/{disk}",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_get(request, metadata)
             request_kwargs = compute.GetDiskRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -615,8 +1023,7 @@ class DisksRestTransport(DisksTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -626,14 +1033,17 @@ class DisksRestTransport(DisksTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Disk.from_json(response.content, ignore_unknown_fields=True)
+            resp = compute.Disk.from_json(response.content, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get(resp)
+            return resp
 
     class _GetIamPolicy(DisksRestStub):
         def __hash__(self):
             return hash("GetIamPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -670,18 +1080,19 @@ class DisksRestTransport(DisksTransport):
                     An Identity and Access Management (IAM) policy, which
                 specifies access controls for Google Cloud resources. A
                 ``Policy`` is a collection of ``bindings``. A
-                ``binding`` binds one or more ``members`` to a single
-                ``role``. Members can be user accounts, service
-                accounts, Google groups, and domains (such as G Suite).
-                A ``role`` is a named list of permissions; each ``role``
-                can be an IAM predefined role or a user-created custom
-                role. For some types of Google Cloud resources, a
-                ``binding`` can also specify a ``condition``, which is a
-                logical expression that allows access to a resource only
-                if the expression evaluates to ``true``. A condition can
-                add constraints based on attributes of the request, the
-                resource, or both. To learn which resources support
-                conditions in their IAM policies, see the `IAM
+                ``binding`` binds one or more ``members``, or
+                principals, to a single ``role``. Principals can be user
+                accounts, service accounts, Google groups, and domains
+                (such as G Suite). A ``role`` is a named list of
+                permissions; each ``role`` can be an IAM predefined role
+                or a user-created custom role. For some types of Google
+                Cloud resources, a ``binding`` can also specify a
+                ``condition``, which is a logical expression that allows
+                access to a resource only if the expression evaluates to
+                ``true``. A condition can add constraints based on
+                attributes of the request, the resource, or both. To
+                learn which resources support conditions in their IAM
+                policies, see the `IAM
                 documentation <https://cloud.google.com/iam/help/conditions/resource-policies>`__.
                 **JSON example:** { "bindings": [ { "role":
                 "roles/resourcemanager.organizationAdmin", "members": [
@@ -710,13 +1121,13 @@ class DisksRestTransport(DisksTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
                     "uri": "/compute/v1/projects/{project}/zones/{zone}/disks/{resource}/getIamPolicy",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
             request_kwargs = compute.GetIamPolicyDiskRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -738,8 +1149,7 @@ class DisksRestTransport(DisksTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -749,16 +1159,19 @@ class DisksRestTransport(DisksTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Policy.from_json(
+            resp = compute.Policy.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_get_iam_policy(resp)
+            return resp
 
     class _Insert(DisksRestStub):
         def __hash__(self):
             return hash("Insert")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -809,14 +1222,14 @@ class DisksRestTransport(DisksTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/projects/{project}/zones/{zone}/disks",
                     "body": "disk_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_insert(request, metadata)
             request_kwargs = compute.InsertDiskRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -844,8 +1257,7 @@ class DisksRestTransport(DisksTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -856,16 +1268,19 @@ class DisksRestTransport(DisksTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_insert(resp)
+            return resp
 
     class _List(DisksRestStub):
         def __hash__(self):
             return hash("List")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -901,13 +1316,13 @@ class DisksRestTransport(DisksTransport):
                     A list of Disk resources.
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
                     "uri": "/compute/v1/projects/{project}/zones/{zone}/disks",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_list(request, metadata)
             request_kwargs = compute.ListDisksRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -929,8 +1344,7 @@ class DisksRestTransport(DisksTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -940,16 +1354,19 @@ class DisksRestTransport(DisksTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.DiskList.from_json(
+            resp = compute.DiskList.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_list(resp)
+            return resp
 
     class _RemoveResourcePolicies(DisksRestStub):
         def __hash__(self):
             return hash("RemoveResourcePolicies")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1001,14 +1418,16 @@ class DisksRestTransport(DisksTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/projects/{project}/zones/{zone}/disks/{disk}/removeResourcePolicies",
                     "body": "disks_remove_resource_policies_request_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_remove_resource_policies(
+                request, metadata
+            )
             request_kwargs = compute.RemoveResourcePoliciesDiskRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -1038,8 +1457,7 @@ class DisksRestTransport(DisksTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -1050,16 +1468,19 @@ class DisksRestTransport(DisksTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_remove_resource_policies(resp)
+            return resp
 
     class _Resize(DisksRestStub):
         def __hash__(self):
             return hash("Resize")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1110,14 +1531,14 @@ class DisksRestTransport(DisksTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/projects/{project}/zones/{zone}/disks/{disk}/resize",
                     "body": "disks_resize_request_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_resize(request, metadata)
             request_kwargs = compute.ResizeDiskRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -1145,8 +1566,7 @@ class DisksRestTransport(DisksTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -1157,16 +1577,19 @@ class DisksRestTransport(DisksTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_resize(resp)
+            return resp
 
     class _SetIamPolicy(DisksRestStub):
         def __hash__(self):
             return hash("SetIamPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1203,18 +1626,19 @@ class DisksRestTransport(DisksTransport):
                     An Identity and Access Management (IAM) policy, which
                 specifies access controls for Google Cloud resources. A
                 ``Policy`` is a collection of ``bindings``. A
-                ``binding`` binds one or more ``members`` to a single
-                ``role``. Members can be user accounts, service
-                accounts, Google groups, and domains (such as G Suite).
-                A ``role`` is a named list of permissions; each ``role``
-                can be an IAM predefined role or a user-created custom
-                role. For some types of Google Cloud resources, a
-                ``binding`` can also specify a ``condition``, which is a
-                logical expression that allows access to a resource only
-                if the expression evaluates to ``true``. A condition can
-                add constraints based on attributes of the request, the
-                resource, or both. To learn which resources support
-                conditions in their IAM policies, see the `IAM
+                ``binding`` binds one or more ``members``, or
+                principals, to a single ``role``. Principals can be user
+                accounts, service accounts, Google groups, and domains
+                (such as G Suite). A ``role`` is a named list of
+                permissions; each ``role`` can be an IAM predefined role
+                or a user-created custom role. For some types of Google
+                Cloud resources, a ``binding`` can also specify a
+                ``condition``, which is a logical expression that allows
+                access to a resource only if the expression evaluates to
+                ``true``. A condition can add constraints based on
+                attributes of the request, the resource, or both. To
+                learn which resources support conditions in their IAM
+                policies, see the `IAM
                 documentation <https://cloud.google.com/iam/help/conditions/resource-policies>`__.
                 **JSON example:** { "bindings": [ { "role":
                 "roles/resourcemanager.organizationAdmin", "members": [
@@ -1243,14 +1667,14 @@ class DisksRestTransport(DisksTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/projects/{project}/zones/{zone}/disks/{resource}/setIamPolicy",
                     "body": "zone_set_policy_request_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
             request_kwargs = compute.SetIamPolicyDiskRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -1278,8 +1702,7 @@ class DisksRestTransport(DisksTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -1290,16 +1713,19 @@ class DisksRestTransport(DisksTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Policy.from_json(
+            resp = compute.Policy.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_set_iam_policy(resp)
+            return resp
 
     class _SetLabels(DisksRestStub):
         def __hash__(self):
             return hash("SetLabels")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1351,14 +1777,14 @@ class DisksRestTransport(DisksTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/projects/{project}/zones/{zone}/disks/{resource}/setLabels",
                     "body": "zone_set_labels_request_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_set_labels(request, metadata)
             request_kwargs = compute.SetLabelsDiskRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -1386,8 +1812,7 @@ class DisksRestTransport(DisksTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -1398,16 +1823,19 @@ class DisksRestTransport(DisksTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_set_labels(resp)
+            return resp
 
     class _TestIamPermissions(DisksRestStub):
         def __hash__(self):
             return hash("TestIamPermissions")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1444,14 +1872,16 @@ class DisksRestTransport(DisksTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/projects/{project}/zones/{zone}/disks/{resource}/testIamPermissions",
                     "body": "test_permissions_request_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_test_iam_permissions(
+                request, metadata
+            )
             request_kwargs = compute.TestIamPermissionsDiskRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -1481,8 +1911,7 @@ class DisksRestTransport(DisksTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -1493,10 +1922,13 @@ class DisksRestTransport(DisksTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.TestPermissionsResponse.from_json(
+            resp = compute.TestPermissionsResponse.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_test_iam_permissions(resp)
+            return resp
 
     @property
     def add_resource_policies(
@@ -1505,10 +1937,12 @@ class DisksRestTransport(DisksTransport):
         stub = self._STUBS.get("add_resource_policies")
         if not stub:
             stub = self._STUBS["add_resource_policies"] = self._AddResourcePolicies(
-                self._session, self._host
+                self._session, self._host, self._interceptor
             )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def aggregated_list(
@@ -1517,10 +1951,12 @@ class DisksRestTransport(DisksTransport):
         stub = self._STUBS.get("aggregated_list")
         if not stub:
             stub = self._STUBS["aggregated_list"] = self._AggregatedList(
-                self._session, self._host
+                self._session, self._host, self._interceptor
             )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def create_snapshot(
@@ -1529,26 +1965,36 @@ class DisksRestTransport(DisksTransport):
         stub = self._STUBS.get("create_snapshot")
         if not stub:
             stub = self._STUBS["create_snapshot"] = self._CreateSnapshot(
-                self._session, self._host
+                self._session, self._host, self._interceptor
             )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def delete(self) -> Callable[[compute.DeleteDiskRequest], compute.Operation]:
         stub = self._STUBS.get("delete")
         if not stub:
-            stub = self._STUBS["delete"] = self._Delete(self._session, self._host)
+            stub = self._STUBS["delete"] = self._Delete(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def get(self) -> Callable[[compute.GetDiskRequest], compute.Disk]:
         stub = self._STUBS.get("get")
         if not stub:
-            stub = self._STUBS["get"] = self._Get(self._session, self._host)
+            stub = self._STUBS["get"] = self._Get(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def get_iam_policy(
@@ -1557,26 +2003,36 @@ class DisksRestTransport(DisksTransport):
         stub = self._STUBS.get("get_iam_policy")
         if not stub:
             stub = self._STUBS["get_iam_policy"] = self._GetIamPolicy(
-                self._session, self._host
+                self._session, self._host, self._interceptor
             )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def insert(self) -> Callable[[compute.InsertDiskRequest], compute.Operation]:
         stub = self._STUBS.get("insert")
         if not stub:
-            stub = self._STUBS["insert"] = self._Insert(self._session, self._host)
+            stub = self._STUBS["insert"] = self._Insert(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def list(self) -> Callable[[compute.ListDisksRequest], compute.DiskList]:
         stub = self._STUBS.get("list")
         if not stub:
-            stub = self._STUBS["list"] = self._List(self._session, self._host)
+            stub = self._STUBS["list"] = self._List(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def remove_resource_policies(
@@ -1586,17 +2042,25 @@ class DisksRestTransport(DisksTransport):
         if not stub:
             stub = self._STUBS[
                 "remove_resource_policies"
-            ] = self._RemoveResourcePolicies(self._session, self._host)
+            ] = self._RemoveResourcePolicies(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def resize(self) -> Callable[[compute.ResizeDiskRequest], compute.Operation]:
         stub = self._STUBS.get("resize")
         if not stub:
-            stub = self._STUBS["resize"] = self._Resize(self._session, self._host)
+            stub = self._STUBS["resize"] = self._Resize(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def set_iam_policy(
@@ -1605,20 +2069,24 @@ class DisksRestTransport(DisksTransport):
         stub = self._STUBS.get("set_iam_policy")
         if not stub:
             stub = self._STUBS["set_iam_policy"] = self._SetIamPolicy(
-                self._session, self._host
+                self._session, self._host, self._interceptor
             )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def set_labels(self) -> Callable[[compute.SetLabelsDiskRequest], compute.Operation]:
         stub = self._STUBS.get("set_labels")
         if not stub:
             stub = self._STUBS["set_labels"] = self._SetLabels(
-                self._session, self._host
+                self._session, self._host, self._interceptor
             )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def test_iam_permissions(
@@ -1629,10 +2097,12 @@ class DisksRestTransport(DisksTransport):
         stub = self._STUBS.get("test_iam_permissions")
         if not stub:
             stub = self._STUBS["test_iam_permissions"] = self._TestIamPermissions(
-                self._session, self._host
+                self._session, self._host, self._interceptor
             )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     def close(self):
         self._session.close()

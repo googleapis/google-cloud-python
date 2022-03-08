@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -448,7 +448,7 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [
@@ -562,7 +562,7 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, region, target_pool, target_pools_add_instance_request_resource]
@@ -637,7 +637,7 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project])
         if request is not None and has_flattened_params:
@@ -736,7 +736,7 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, target_pool])
         if request is not None and has_flattened_params:
@@ -826,7 +826,7 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, target_pool])
         if request is not None and has_flattened_params:
@@ -916,7 +916,7 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, region, target_pool, instance_reference_resource]
@@ -1016,7 +1016,7 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, target_pool_resource])
         if request is not None and has_flattened_params:
@@ -1096,7 +1096,7 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region])
         if request is not None and has_flattened_params:
@@ -1201,7 +1201,7 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [
@@ -1315,7 +1315,7 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [
@@ -1429,7 +1429,7 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, region, target_pool, target_reference_resource]

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,11 +22,14 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 from google.api_core import rest_helpers
+from google.api_core import rest_streaming
 from google.api_core import path_template
 from google.api_core import gapic_v1
+
 from requests import __version__ as requests_version
 import dataclasses
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
+import re
+from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 try:
@@ -47,10 +50,409 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
 )
 
 
+class ProjectsRestInterceptor:
+    """Interceptor for Projects.
+
+    Interceptors are used to manipulate requests, request metadata, and responses
+    in arbitrary ways.
+    Example use cases include:
+    * Logging
+    * Verifying requests according to service or custom semantics
+    * Stripping extraneous information from responses
+
+    These use cases and more can be enabled by injecting an
+    instance of a custom subclass when constructing the ProjectsRestTransport.
+
+    .. code-block:: python
+        class MyCustomProjectsInterceptor(ProjectsRestInterceptor):
+            def pre_disable_xpn_host(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_disable_xpn_host(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_disable_xpn_resource(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_disable_xpn_resource(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_enable_xpn_host(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_enable_xpn_host(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_enable_xpn_resource(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_enable_xpn_resource(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_get(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_get_xpn_host(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_xpn_host(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_get_xpn_resources(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_xpn_resources(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_list_xpn_hosts(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_xpn_hosts(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_move_disk(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_move_disk(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_move_instance(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_move_instance(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_set_common_instance_metadata(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_set_common_instance_metadata(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_set_default_network_tier(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_set_default_network_tier(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_set_usage_export_bucket(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_set_usage_export_bucket(response):
+                logging.log(f"Received response: {response}")
+
+        transport = ProjectsRestTransport(interceptor=MyCustomProjectsInterceptor())
+        client = ProjectsClient(transport=transport)
+
+
+    """
+
+    def pre_disable_xpn_host(
+        self,
+        request: compute.DisableXpnHostProjectRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.DisableXpnHostProjectRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for disable_xpn_host
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Projects server.
+        """
+        return request, metadata
+
+    def post_disable_xpn_host(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for disable_xpn_host
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Projects server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_disable_xpn_resource(
+        self,
+        request: compute.DisableXpnResourceProjectRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.DisableXpnResourceProjectRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for disable_xpn_resource
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Projects server.
+        """
+        return request, metadata
+
+    def post_disable_xpn_resource(
+        self, response: compute.Operation
+    ) -> compute.Operation:
+        """Post-rpc interceptor for disable_xpn_resource
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Projects server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_enable_xpn_host(
+        self,
+        request: compute.EnableXpnHostProjectRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.EnableXpnHostProjectRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for enable_xpn_host
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Projects server.
+        """
+        return request, metadata
+
+    def post_enable_xpn_host(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for enable_xpn_host
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Projects server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_enable_xpn_resource(
+        self,
+        request: compute.EnableXpnResourceProjectRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.EnableXpnResourceProjectRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for enable_xpn_resource
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Projects server.
+        """
+        return request, metadata
+
+    def post_enable_xpn_resource(
+        self, response: compute.Operation
+    ) -> compute.Operation:
+        """Post-rpc interceptor for enable_xpn_resource
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Projects server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get(
+        self, request: compute.GetProjectRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[compute.GetProjectRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Projects server.
+        """
+        return request, metadata
+
+    def post_get(self, response: compute.Project) -> compute.Project:
+        """Post-rpc interceptor for get
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Projects server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_xpn_host(
+        self,
+        request: compute.GetXpnHostProjectRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.GetXpnHostProjectRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_xpn_host
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Projects server.
+        """
+        return request, metadata
+
+    def post_get_xpn_host(self, response: compute.Project) -> compute.Project:
+        """Post-rpc interceptor for get_xpn_host
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Projects server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_xpn_resources(
+        self,
+        request: compute.GetXpnResourcesProjectsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.GetXpnResourcesProjectsRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_xpn_resources
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Projects server.
+        """
+        return request, metadata
+
+    def post_get_xpn_resources(
+        self, response: compute.ProjectsGetXpnResources
+    ) -> compute.ProjectsGetXpnResources:
+        """Post-rpc interceptor for get_xpn_resources
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Projects server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_xpn_hosts(
+        self,
+        request: compute.ListXpnHostsProjectsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.ListXpnHostsProjectsRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_xpn_hosts
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Projects server.
+        """
+        return request, metadata
+
+    def post_list_xpn_hosts(self, response: compute.XpnHostList) -> compute.XpnHostList:
+        """Post-rpc interceptor for list_xpn_hosts
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Projects server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_move_disk(
+        self,
+        request: compute.MoveDiskProjectRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.MoveDiskProjectRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for move_disk
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Projects server.
+        """
+        return request, metadata
+
+    def post_move_disk(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for move_disk
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Projects server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_move_instance(
+        self,
+        request: compute.MoveInstanceProjectRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.MoveInstanceProjectRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for move_instance
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Projects server.
+        """
+        return request, metadata
+
+    def post_move_instance(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for move_instance
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Projects server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_set_common_instance_metadata(
+        self,
+        request: compute.SetCommonInstanceMetadataProjectRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        compute.SetCommonInstanceMetadataProjectRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for set_common_instance_metadata
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Projects server.
+        """
+        return request, metadata
+
+    def post_set_common_instance_metadata(
+        self, response: compute.Operation
+    ) -> compute.Operation:
+        """Post-rpc interceptor for set_common_instance_metadata
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Projects server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_set_default_network_tier(
+        self,
+        request: compute.SetDefaultNetworkTierProjectRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.SetDefaultNetworkTierProjectRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for set_default_network_tier
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Projects server.
+        """
+        return request, metadata
+
+    def post_set_default_network_tier(
+        self, response: compute.Operation
+    ) -> compute.Operation:
+        """Post-rpc interceptor for set_default_network_tier
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Projects server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_set_usage_export_bucket(
+        self,
+        request: compute.SetUsageExportBucketProjectRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.SetUsageExportBucketProjectRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for set_usage_export_bucket
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Projects server.
+        """
+        return request, metadata
+
+    def post_set_usage_export_bucket(
+        self, response: compute.Operation
+    ) -> compute.Operation:
+        """Post-rpc interceptor for set_usage_export_bucket
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Projects server but before
+        it is returned to user code.
+        """
+        return response
+
+
 @dataclasses.dataclass
 class ProjectsRestStub:
     _session: AuthorizedSession
     _host: str
+    _interceptor: ProjectsRestInterceptor
 
 
 class ProjectsRestTransport(ProjectsTransport):
@@ -79,6 +481,7 @@ class ProjectsRestTransport(ProjectsTransport):
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
         url_scheme: str = "https",
+        interceptor: Optional[ProjectsRestInterceptor] = None,
     ) -> None:
         """Instantiate the transport.
 
@@ -116,6 +519,16 @@ class ProjectsRestTransport(ProjectsTransport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
+        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
+        if maybe_url_match is None:
+            raise ValueError(
+                f"Unexpected hostname structure: {host}"
+            )  # pragma: NO COVER
+
+        url_match_items = maybe_url_match.groupdict()
+
+        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
+
         super().__init__(
             host=host,
             credentials=credentials,
@@ -127,13 +540,14 @@ class ProjectsRestTransport(ProjectsTransport):
         )
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
+        self._interceptor = interceptor or ProjectsRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
     class _DisableXpnHost(ProjectsRestStub):
         def __hash__(self):
             return hash("DisableXpnHost")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -185,13 +599,15 @@ class ProjectsRestTransport(ProjectsTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/projects/{project}/disableXpnHost",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_disable_xpn_host(
+                request, metadata
+            )
             request_kwargs = compute.DisableXpnHostProjectRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -215,8 +631,7 @@ class ProjectsRestTransport(ProjectsTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -226,16 +641,19 @@ class ProjectsRestTransport(ProjectsTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_disable_xpn_host(resp)
+            return resp
 
     class _DisableXpnResource(ProjectsRestStub):
         def __hash__(self):
             return hash("DisableXpnResource")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -287,14 +705,16 @@ class ProjectsRestTransport(ProjectsTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/projects/{project}/disableXpnResource",
                     "body": "projects_disable_xpn_resource_request_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_disable_xpn_resource(
+                request, metadata
+            )
             request_kwargs = compute.DisableXpnResourceProjectRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -324,8 +744,7 @@ class ProjectsRestTransport(ProjectsTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -336,16 +755,19 @@ class ProjectsRestTransport(ProjectsTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_disable_xpn_resource(resp)
+            return resp
 
     class _EnableXpnHost(ProjectsRestStub):
         def __hash__(self):
             return hash("EnableXpnHost")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -397,13 +819,13 @@ class ProjectsRestTransport(ProjectsTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/projects/{project}/enableXpnHost",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_enable_xpn_host(request, metadata)
             request_kwargs = compute.EnableXpnHostProjectRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -427,8 +849,7 @@ class ProjectsRestTransport(ProjectsTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -438,16 +859,19 @@ class ProjectsRestTransport(ProjectsTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_enable_xpn_host(resp)
+            return resp
 
     class _EnableXpnResource(ProjectsRestStub):
         def __hash__(self):
             return hash("EnableXpnResource")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -499,14 +923,16 @@ class ProjectsRestTransport(ProjectsTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/projects/{project}/enableXpnResource",
                     "body": "projects_enable_xpn_resource_request_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_enable_xpn_resource(
+                request, metadata
+            )
             request_kwargs = compute.EnableXpnResourceProjectRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -536,8 +962,7 @@ class ProjectsRestTransport(ProjectsTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -548,16 +973,19 @@ class ProjectsRestTransport(ProjectsTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_enable_xpn_resource(resp)
+            return resp
 
     class _Get(ProjectsRestStub):
         def __hash__(self):
             return hash("Get")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -598,10 +1026,10 @@ class ProjectsRestTransport(ProjectsTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {"method": "get", "uri": "/compute/v1/projects/{project}",},
             ]
-
+            request, metadata = self._interceptor.pre_get(request, metadata)
             request_kwargs = compute.GetProjectRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -623,8 +1051,7 @@ class ProjectsRestTransport(ProjectsTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -634,16 +1061,19 @@ class ProjectsRestTransport(ProjectsTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Project.from_json(
+            resp = compute.Project.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_get(resp)
+            return resp
 
     class _GetXpnHost(ProjectsRestStub):
         def __hash__(self):
             return hash("GetXpnHost")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -685,10 +1115,10 @@ class ProjectsRestTransport(ProjectsTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {"method": "get", "uri": "/compute/v1/projects/{project}/getXpnHost",},
             ]
-
+            request, metadata = self._interceptor.pre_get_xpn_host(request, metadata)
             request_kwargs = compute.GetXpnHostProjectRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -712,8 +1142,7 @@ class ProjectsRestTransport(ProjectsTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -723,16 +1152,19 @@ class ProjectsRestTransport(ProjectsTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Project.from_json(
+            resp = compute.Project.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_get_xpn_host(resp)
+            return resp
 
     class _GetXpnResources(ProjectsRestStub):
         def __hash__(self):
             return hash("GetXpnResources")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -769,13 +1201,15 @@ class ProjectsRestTransport(ProjectsTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
                     "uri": "/compute/v1/projects/{project}/getXpnResources",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_get_xpn_resources(
+                request, metadata
+            )
             request_kwargs = compute.GetXpnResourcesProjectsRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -799,8 +1233,7 @@ class ProjectsRestTransport(ProjectsTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -810,16 +1243,19 @@ class ProjectsRestTransport(ProjectsTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.ProjectsGetXpnResources.from_json(
+            resp = compute.ProjectsGetXpnResources.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_get_xpn_resources(resp)
+            return resp
 
     class _ListXpnHosts(ProjectsRestStub):
         def __hash__(self):
             return hash("ListXpnHosts")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -856,14 +1292,14 @@ class ProjectsRestTransport(ProjectsTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/projects/{project}/listXpnHosts",
                     "body": "projects_list_xpn_hosts_request_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_list_xpn_hosts(request, metadata)
             request_kwargs = compute.ListXpnHostsProjectsRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -893,8 +1329,7 @@ class ProjectsRestTransport(ProjectsTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -905,16 +1340,19 @@ class ProjectsRestTransport(ProjectsTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.XpnHostList.from_json(
+            resp = compute.XpnHostList.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_list_xpn_hosts(resp)
+            return resp
 
     class _MoveDisk(ProjectsRestStub):
         def __hash__(self):
             return hash("MoveDisk")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -966,14 +1404,14 @@ class ProjectsRestTransport(ProjectsTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/projects/{project}/moveDisk",
                     "body": "disk_move_request_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_move_disk(request, metadata)
             request_kwargs = compute.MoveDiskProjectRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -1001,8 +1439,7 @@ class ProjectsRestTransport(ProjectsTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -1013,16 +1450,19 @@ class ProjectsRestTransport(ProjectsTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_move_disk(resp)
+            return resp
 
     class _MoveInstance(ProjectsRestStub):
         def __hash__(self):
             return hash("MoveInstance")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1074,14 +1514,14 @@ class ProjectsRestTransport(ProjectsTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/projects/{project}/moveInstance",
                     "body": "instance_move_request_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_move_instance(request, metadata)
             request_kwargs = compute.MoveInstanceProjectRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -1111,8 +1551,7 @@ class ProjectsRestTransport(ProjectsTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -1123,16 +1562,19 @@ class ProjectsRestTransport(ProjectsTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_move_instance(resp)
+            return resp
 
     class _SetCommonInstanceMetadata(ProjectsRestStub):
         def __hash__(self):
             return hash("SetCommonInstanceMetadata")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1185,14 +1627,16 @@ class ProjectsRestTransport(ProjectsTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/projects/{project}/setCommonInstanceMetadata",
                     "body": "metadata_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_set_common_instance_metadata(
+                request, metadata
+            )
             request_kwargs = compute.SetCommonInstanceMetadataProjectRequest.to_dict(
                 request
             )
@@ -1224,8 +1668,7 @@ class ProjectsRestTransport(ProjectsTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -1236,16 +1679,19 @@ class ProjectsRestTransport(ProjectsTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_set_common_instance_metadata(resp)
+            return resp
 
     class _SetDefaultNetworkTier(ProjectsRestStub):
         def __hash__(self):
             return hash("SetDefaultNetworkTier")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1297,14 +1743,16 @@ class ProjectsRestTransport(ProjectsTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/projects/{project}/setDefaultNetworkTier",
                     "body": "projects_set_default_network_tier_request_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_set_default_network_tier(
+                request, metadata
+            )
             request_kwargs = compute.SetDefaultNetworkTierProjectRequest.to_dict(
                 request
             )
@@ -1338,8 +1786,7 @@ class ProjectsRestTransport(ProjectsTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -1350,16 +1797,19 @@ class ProjectsRestTransport(ProjectsTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_set_default_network_tier(resp)
+            return resp
 
     class _SetUsageExportBucket(ProjectsRestStub):
         def __hash__(self):
             return hash("SetUsageExportBucket")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1411,14 +1861,16 @@ class ProjectsRestTransport(ProjectsTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/projects/{project}/setUsageExportBucket",
                     "body": "usage_export_location_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_set_usage_export_bucket(
+                request, metadata
+            )
             request_kwargs = compute.SetUsageExportBucketProjectRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -1448,8 +1900,7 @@ class ProjectsRestTransport(ProjectsTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -1460,10 +1911,13 @@ class ProjectsRestTransport(ProjectsTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_set_usage_export_bucket(resp)
+            return resp
 
     @property
     def disable_xpn_host(
@@ -1472,10 +1926,12 @@ class ProjectsRestTransport(ProjectsTransport):
         stub = self._STUBS.get("disable_xpn_host")
         if not stub:
             stub = self._STUBS["disable_xpn_host"] = self._DisableXpnHost(
-                self._session, self._host
+                self._session, self._host, self._interceptor
             )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def disable_xpn_resource(
@@ -1484,10 +1940,12 @@ class ProjectsRestTransport(ProjectsTransport):
         stub = self._STUBS.get("disable_xpn_resource")
         if not stub:
             stub = self._STUBS["disable_xpn_resource"] = self._DisableXpnResource(
-                self._session, self._host
+                self._session, self._host, self._interceptor
             )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def enable_xpn_host(
@@ -1496,10 +1954,12 @@ class ProjectsRestTransport(ProjectsTransport):
         stub = self._STUBS.get("enable_xpn_host")
         if not stub:
             stub = self._STUBS["enable_xpn_host"] = self._EnableXpnHost(
-                self._session, self._host
+                self._session, self._host, self._interceptor
             )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def enable_xpn_resource(
@@ -1508,18 +1968,24 @@ class ProjectsRestTransport(ProjectsTransport):
         stub = self._STUBS.get("enable_xpn_resource")
         if not stub:
             stub = self._STUBS["enable_xpn_resource"] = self._EnableXpnResource(
-                self._session, self._host
+                self._session, self._host, self._interceptor
             )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def get(self) -> Callable[[compute.GetProjectRequest], compute.Project]:
         stub = self._STUBS.get("get")
         if not stub:
-            stub = self._STUBS["get"] = self._Get(self._session, self._host)
+            stub = self._STUBS["get"] = self._Get(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def get_xpn_host(
@@ -1528,10 +1994,12 @@ class ProjectsRestTransport(ProjectsTransport):
         stub = self._STUBS.get("get_xpn_host")
         if not stub:
             stub = self._STUBS["get_xpn_host"] = self._GetXpnHost(
-                self._session, self._host
+                self._session, self._host, self._interceptor
             )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def get_xpn_resources(
@@ -1542,10 +2010,12 @@ class ProjectsRestTransport(ProjectsTransport):
         stub = self._STUBS.get("get_xpn_resources")
         if not stub:
             stub = self._STUBS["get_xpn_resources"] = self._GetXpnResources(
-                self._session, self._host
+                self._session, self._host, self._interceptor
             )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def list_xpn_hosts(
@@ -1554,10 +2024,12 @@ class ProjectsRestTransport(ProjectsTransport):
         stub = self._STUBS.get("list_xpn_hosts")
         if not stub:
             stub = self._STUBS["list_xpn_hosts"] = self._ListXpnHosts(
-                self._session, self._host
+                self._session, self._host, self._interceptor
             )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def move_disk(
@@ -1565,9 +2037,13 @@ class ProjectsRestTransport(ProjectsTransport):
     ) -> Callable[[compute.MoveDiskProjectRequest], compute.Operation]:
         stub = self._STUBS.get("move_disk")
         if not stub:
-            stub = self._STUBS["move_disk"] = self._MoveDisk(self._session, self._host)
+            stub = self._STUBS["move_disk"] = self._MoveDisk(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def move_instance(
@@ -1576,10 +2052,12 @@ class ProjectsRestTransport(ProjectsTransport):
         stub = self._STUBS.get("move_instance")
         if not stub:
             stub = self._STUBS["move_instance"] = self._MoveInstance(
-                self._session, self._host
+                self._session, self._host, self._interceptor
             )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def set_common_instance_metadata(
@@ -1589,9 +2067,13 @@ class ProjectsRestTransport(ProjectsTransport):
         if not stub:
             stub = self._STUBS[
                 "set_common_instance_metadata"
-            ] = self._SetCommonInstanceMetadata(self._session, self._host)
+            ] = self._SetCommonInstanceMetadata(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def set_default_network_tier(
@@ -1601,9 +2083,13 @@ class ProjectsRestTransport(ProjectsTransport):
         if not stub:
             stub = self._STUBS[
                 "set_default_network_tier"
-            ] = self._SetDefaultNetworkTier(self._session, self._host)
+            ] = self._SetDefaultNetworkTier(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def set_usage_export_bucket(
@@ -1612,10 +2098,12 @@ class ProjectsRestTransport(ProjectsTransport):
         stub = self._STUBS.get("set_usage_export_bucket")
         if not stub:
             stub = self._STUBS["set_usage_export_bucket"] = self._SetUsageExportBucket(
-                self._session, self._host
+                self._session, self._host, self._interceptor
             )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     def close(self):
         self._session.close()

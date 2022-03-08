@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,11 +22,14 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 from google.api_core import rest_helpers
+from google.api_core import rest_streaming
 from google.api_core import path_template
 from google.api_core import gapic_v1
+
 from requests import __version__ as requests_version
 import dataclasses
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
+import re
+from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 try:
@@ -50,10 +53,291 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
 )
 
 
+class InstanceGroupsRestInterceptor:
+    """Interceptor for InstanceGroups.
+
+    Interceptors are used to manipulate requests, request metadata, and responses
+    in arbitrary ways.
+    Example use cases include:
+    * Logging
+    * Verifying requests according to service or custom semantics
+    * Stripping extraneous information from responses
+
+    These use cases and more can be enabled by injecting an
+    instance of a custom subclass when constructing the InstanceGroupsRestTransport.
+
+    .. code-block:: python
+        class MyCustomInstanceGroupsInterceptor(InstanceGroupsRestInterceptor):
+            def pre_add_instances(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_add_instances(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_aggregated_list(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_aggregated_list(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_delete(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_get(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_insert(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_insert(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_list(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_list_instances(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_instances(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_remove_instances(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_remove_instances(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_set_named_ports(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_set_named_ports(response):
+                logging.log(f"Received response: {response}")
+
+        transport = InstanceGroupsRestTransport(interceptor=MyCustomInstanceGroupsInterceptor())
+        client = InstanceGroupsClient(transport=transport)
+
+
+    """
+
+    def pre_add_instances(
+        self,
+        request: compute.AddInstancesInstanceGroupRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.AddInstancesInstanceGroupRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for add_instances
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the InstanceGroups server.
+        """
+        return request, metadata
+
+    def post_add_instances(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for add_instances
+
+        Override in a subclass to manipulate the response
+        after it is returned by the InstanceGroups server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_aggregated_list(
+        self,
+        request: compute.AggregatedListInstanceGroupsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.AggregatedListInstanceGroupsRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for aggregated_list
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the InstanceGroups server.
+        """
+        return request, metadata
+
+    def post_aggregated_list(
+        self, response: compute.InstanceGroupAggregatedList
+    ) -> compute.InstanceGroupAggregatedList:
+        """Post-rpc interceptor for aggregated_list
+
+        Override in a subclass to manipulate the response
+        after it is returned by the InstanceGroups server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_delete(
+        self,
+        request: compute.DeleteInstanceGroupRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.DeleteInstanceGroupRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for delete
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the InstanceGroups server.
+        """
+        return request, metadata
+
+    def post_delete(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for delete
+
+        Override in a subclass to manipulate the response
+        after it is returned by the InstanceGroups server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get(
+        self,
+        request: compute.GetInstanceGroupRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.GetInstanceGroupRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the InstanceGroups server.
+        """
+        return request, metadata
+
+    def post_get(self, response: compute.InstanceGroup) -> compute.InstanceGroup:
+        """Post-rpc interceptor for get
+
+        Override in a subclass to manipulate the response
+        after it is returned by the InstanceGroups server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_insert(
+        self,
+        request: compute.InsertInstanceGroupRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.InsertInstanceGroupRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for insert
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the InstanceGroups server.
+        """
+        return request, metadata
+
+    def post_insert(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for insert
+
+        Override in a subclass to manipulate the response
+        after it is returned by the InstanceGroups server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list(
+        self,
+        request: compute.ListInstanceGroupsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.ListInstanceGroupsRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the InstanceGroups server.
+        """
+        return request, metadata
+
+    def post_list(
+        self, response: compute.InstanceGroupList
+    ) -> compute.InstanceGroupList:
+        """Post-rpc interceptor for list
+
+        Override in a subclass to manipulate the response
+        after it is returned by the InstanceGroups server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_instances(
+        self,
+        request: compute.ListInstancesInstanceGroupsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.ListInstancesInstanceGroupsRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_instances
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the InstanceGroups server.
+        """
+        return request, metadata
+
+    def post_list_instances(
+        self, response: compute.InstanceGroupsListInstances
+    ) -> compute.InstanceGroupsListInstances:
+        """Post-rpc interceptor for list_instances
+
+        Override in a subclass to manipulate the response
+        after it is returned by the InstanceGroups server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_remove_instances(
+        self,
+        request: compute.RemoveInstancesInstanceGroupRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.RemoveInstancesInstanceGroupRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for remove_instances
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the InstanceGroups server.
+        """
+        return request, metadata
+
+    def post_remove_instances(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for remove_instances
+
+        Override in a subclass to manipulate the response
+        after it is returned by the InstanceGroups server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_set_named_ports(
+        self,
+        request: compute.SetNamedPortsInstanceGroupRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.SetNamedPortsInstanceGroupRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for set_named_ports
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the InstanceGroups server.
+        """
+        return request, metadata
+
+    def post_set_named_ports(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for set_named_ports
+
+        Override in a subclass to manipulate the response
+        after it is returned by the InstanceGroups server but before
+        it is returned to user code.
+        """
+        return response
+
+
 @dataclasses.dataclass
 class InstanceGroupsRestStub:
     _session: AuthorizedSession
     _host: str
+    _interceptor: InstanceGroupsRestInterceptor
 
 
 class InstanceGroupsRestTransport(InstanceGroupsTransport):
@@ -82,6 +366,7 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
         url_scheme: str = "https",
+        interceptor: Optional[InstanceGroupsRestInterceptor] = None,
     ) -> None:
         """Instantiate the transport.
 
@@ -119,6 +404,16 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
+        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
+        if maybe_url_match is None:
+            raise ValueError(
+                f"Unexpected hostname structure: {host}"
+            )  # pragma: NO COVER
+
+        url_match_items = maybe_url_match.groupdict()
+
+        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
+
         super().__init__(
             host=host,
             credentials=credentials,
@@ -130,13 +425,14 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
         )
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
+        self._interceptor = interceptor or InstanceGroupsRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
     class _AddInstances(InstanceGroupsRestStub):
         def __hash__(self):
             return hash("AddInstances")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -188,14 +484,14 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/projects/{project}/zones/{zone}/instanceGroups/{instance_group}/addInstances",
                     "body": "instance_groups_add_instances_request_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_add_instances(request, metadata)
             request_kwargs = compute.AddInstancesInstanceGroupRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -225,8 +521,7 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -237,16 +532,19 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_add_instances(resp)
+            return resp
 
     class _AggregatedList(InstanceGroupsRestStub):
         def __hash__(self):
             return hash("AggregatedList")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -283,13 +581,13 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
                     "uri": "/compute/v1/projects/{project}/aggregated/instanceGroups",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_aggregated_list(request, metadata)
             request_kwargs = compute.AggregatedListInstanceGroupsRequest.to_dict(
                 request
             )
@@ -315,8 +613,7 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -326,16 +623,19 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.InstanceGroupAggregatedList.from_json(
+            resp = compute.InstanceGroupAggregatedList.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_aggregated_list(resp)
+            return resp
 
     class _Delete(InstanceGroupsRestStub):
         def __hash__(self):
             return hash("Delete")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -387,13 +687,13 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "delete",
                     "uri": "/compute/v1/projects/{project}/zones/{zone}/instanceGroups/{instance_group}",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_delete(request, metadata)
             request_kwargs = compute.DeleteInstanceGroupRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -417,8 +717,7 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -428,16 +727,19 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_delete(resp)
+            return resp
 
     class _Get(InstanceGroupsRestStub):
         def __hash__(self):
             return hash("Get")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -488,13 +790,13 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
                     "uri": "/compute/v1/projects/{project}/zones/{zone}/instanceGroups/{instance_group}",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_get(request, metadata)
             request_kwargs = compute.GetInstanceGroupRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -516,8 +818,7 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -527,16 +828,19 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.InstanceGroup.from_json(
+            resp = compute.InstanceGroup.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_get(resp)
+            return resp
 
     class _Insert(InstanceGroupsRestStub):
         def __hash__(self):
             return hash("Insert")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -588,14 +892,14 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/projects/{project}/zones/{zone}/instanceGroups",
                     "body": "instance_group_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_insert(request, metadata)
             request_kwargs = compute.InsertInstanceGroupRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -625,8 +929,7 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -637,16 +940,19 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_insert(resp)
+            return resp
 
     class _List(InstanceGroupsRestStub):
         def __hash__(self):
             return hash("List")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -683,13 +989,13 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
                     A list of InstanceGroup resources.
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
                     "uri": "/compute/v1/projects/{project}/zones/{zone}/instanceGroups",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_list(request, metadata)
             request_kwargs = compute.ListInstanceGroupsRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -713,8 +1019,7 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -724,16 +1029,19 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.InstanceGroupList.from_json(
+            resp = compute.InstanceGroupList.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_list(resp)
+            return resp
 
     class _ListInstances(InstanceGroupsRestStub):
         def __hash__(self):
             return hash("ListInstances")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -770,14 +1078,14 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/projects/{project}/zones/{zone}/instanceGroups/{instance_group}/listInstances",
                     "body": "instance_groups_list_instances_request_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_list_instances(request, metadata)
             request_kwargs = compute.ListInstancesInstanceGroupsRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -807,8 +1115,7 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -819,16 +1126,19 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.InstanceGroupsListInstances.from_json(
+            resp = compute.InstanceGroupsListInstances.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_list_instances(resp)
+            return resp
 
     class _RemoveInstances(InstanceGroupsRestStub):
         def __hash__(self):
             return hash("RemoveInstances")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -880,14 +1190,16 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/projects/{project}/zones/{zone}/instanceGroups/{instance_group}/removeInstances",
                     "body": "instance_groups_remove_instances_request_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_remove_instances(
+                request, metadata
+            )
             request_kwargs = compute.RemoveInstancesInstanceGroupRequest.to_dict(
                 request
             )
@@ -921,8 +1233,7 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -933,16 +1244,19 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_remove_instances(resp)
+            return resp
 
     class _SetNamedPorts(InstanceGroupsRestStub):
         def __hash__(self):
             return hash("SetNamedPorts")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -994,14 +1308,14 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/projects/{project}/zones/{zone}/instanceGroups/{instance_group}/setNamedPorts",
                     "body": "instance_groups_set_named_ports_request_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_set_named_ports(request, metadata)
             request_kwargs = compute.SetNamedPortsInstanceGroupRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -1031,8 +1345,7 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -1043,10 +1356,13 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_set_named_ports(resp)
+            return resp
 
     @property
     def add_instances(
@@ -1055,10 +1371,12 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
         stub = self._STUBS.get("add_instances")
         if not stub:
             stub = self._STUBS["add_instances"] = self._AddInstances(
-                self._session, self._host
+                self._session, self._host, self._interceptor
             )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def aggregated_list(
@@ -1070,10 +1388,12 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
         stub = self._STUBS.get("aggregated_list")
         if not stub:
             stub = self._STUBS["aggregated_list"] = self._AggregatedList(
-                self._session, self._host
+                self._session, self._host, self._interceptor
             )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def delete(
@@ -1081,17 +1401,25 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
     ) -> Callable[[compute.DeleteInstanceGroupRequest], compute.Operation]:
         stub = self._STUBS.get("delete")
         if not stub:
-            stub = self._STUBS["delete"] = self._Delete(self._session, self._host)
+            stub = self._STUBS["delete"] = self._Delete(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def get(self) -> Callable[[compute.GetInstanceGroupRequest], compute.InstanceGroup]:
         stub = self._STUBS.get("get")
         if not stub:
-            stub = self._STUBS["get"] = self._Get(self._session, self._host)
+            stub = self._STUBS["get"] = self._Get(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def insert(
@@ -1099,9 +1427,13 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
     ) -> Callable[[compute.InsertInstanceGroupRequest], compute.Operation]:
         stub = self._STUBS.get("insert")
         if not stub:
-            stub = self._STUBS["insert"] = self._Insert(self._session, self._host)
+            stub = self._STUBS["insert"] = self._Insert(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def list(
@@ -1109,9 +1441,13 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
     ) -> Callable[[compute.ListInstanceGroupsRequest], compute.InstanceGroupList]:
         stub = self._STUBS.get("list")
         if not stub:
-            stub = self._STUBS["list"] = self._List(self._session, self._host)
+            stub = self._STUBS["list"] = self._List(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def list_instances(
@@ -1123,10 +1459,12 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
         stub = self._STUBS.get("list_instances")
         if not stub:
             stub = self._STUBS["list_instances"] = self._ListInstances(
-                self._session, self._host
+                self._session, self._host, self._interceptor
             )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def remove_instances(
@@ -1135,10 +1473,12 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
         stub = self._STUBS.get("remove_instances")
         if not stub:
             stub = self._STUBS["remove_instances"] = self._RemoveInstances(
-                self._session, self._host
+                self._session, self._host, self._interceptor
             )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def set_named_ports(
@@ -1147,10 +1487,12 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
         stub = self._STUBS.get("set_named_ports")
         if not stub:
             stub = self._STUBS["set_named_ports"] = self._SetNamedPorts(
-                self._session, self._host
+                self._session, self._host, self._interceptor
             )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     def close(self):
         self._session.close()

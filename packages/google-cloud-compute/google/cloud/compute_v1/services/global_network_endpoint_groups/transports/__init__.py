@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ from typing import Dict, Type
 
 from .base import GlobalNetworkEndpointGroupsTransport
 from .rest import GlobalNetworkEndpointGroupsRestTransport
+from .rest import GlobalNetworkEndpointGroupsRestInterceptor
 
 
 # Compile a registry of transports.
@@ -29,4 +30,5 @@ _transport_registry["rest"] = GlobalNetworkEndpointGroupsRestTransport
 __all__ = (
     "GlobalNetworkEndpointGroupsTransport",
     "GlobalNetworkEndpointGroupsRestTransport",
+    "GlobalNetworkEndpointGroupsRestInterceptor",
 )

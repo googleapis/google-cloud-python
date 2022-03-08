@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,11 +22,14 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 from google.api_core import rest_helpers
+from google.api_core import rest_streaming
 from google.api_core import path_template
 from google.api_core import gapic_v1
+
 from requests import __version__ as requests_version
 import dataclasses
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
+import re
+from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 try:
@@ -50,10 +53,235 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
 )
 
 
+class InstanceTemplatesRestInterceptor:
+    """Interceptor for InstanceTemplates.
+
+    Interceptors are used to manipulate requests, request metadata, and responses
+    in arbitrary ways.
+    Example use cases include:
+    * Logging
+    * Verifying requests according to service or custom semantics
+    * Stripping extraneous information from responses
+
+    These use cases and more can be enabled by injecting an
+    instance of a custom subclass when constructing the InstanceTemplatesRestTransport.
+
+    .. code-block:: python
+        class MyCustomInstanceTemplatesInterceptor(InstanceTemplatesRestInterceptor):
+            def pre_delete(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_get(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_get_iam_policy(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_iam_policy(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_insert(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_insert(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_list(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_set_iam_policy(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_set_iam_policy(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_test_iam_permissions(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_test_iam_permissions(response):
+                logging.log(f"Received response: {response}")
+
+        transport = InstanceTemplatesRestTransport(interceptor=MyCustomInstanceTemplatesInterceptor())
+        client = InstanceTemplatesClient(transport=transport)
+
+
+    """
+
+    def pre_delete(
+        self,
+        request: compute.DeleteInstanceTemplateRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.DeleteInstanceTemplateRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for delete
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the InstanceTemplates server.
+        """
+        return request, metadata
+
+    def post_delete(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for delete
+
+        Override in a subclass to manipulate the response
+        after it is returned by the InstanceTemplates server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get(
+        self,
+        request: compute.GetInstanceTemplateRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.GetInstanceTemplateRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the InstanceTemplates server.
+        """
+        return request, metadata
+
+    def post_get(self, response: compute.InstanceTemplate) -> compute.InstanceTemplate:
+        """Post-rpc interceptor for get
+
+        Override in a subclass to manipulate the response
+        after it is returned by the InstanceTemplates server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_iam_policy(
+        self,
+        request: compute.GetIamPolicyInstanceTemplateRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.GetIamPolicyInstanceTemplateRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_iam_policy
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the InstanceTemplates server.
+        """
+        return request, metadata
+
+    def post_get_iam_policy(self, response: compute.Policy) -> compute.Policy:
+        """Post-rpc interceptor for get_iam_policy
+
+        Override in a subclass to manipulate the response
+        after it is returned by the InstanceTemplates server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_insert(
+        self,
+        request: compute.InsertInstanceTemplateRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.InsertInstanceTemplateRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for insert
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the InstanceTemplates server.
+        """
+        return request, metadata
+
+    def post_insert(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for insert
+
+        Override in a subclass to manipulate the response
+        after it is returned by the InstanceTemplates server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list(
+        self,
+        request: compute.ListInstanceTemplatesRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.ListInstanceTemplatesRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the InstanceTemplates server.
+        """
+        return request, metadata
+
+    def post_list(
+        self, response: compute.InstanceTemplateList
+    ) -> compute.InstanceTemplateList:
+        """Post-rpc interceptor for list
+
+        Override in a subclass to manipulate the response
+        after it is returned by the InstanceTemplates server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_set_iam_policy(
+        self,
+        request: compute.SetIamPolicyInstanceTemplateRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.SetIamPolicyInstanceTemplateRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for set_iam_policy
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the InstanceTemplates server.
+        """
+        return request, metadata
+
+    def post_set_iam_policy(self, response: compute.Policy) -> compute.Policy:
+        """Post-rpc interceptor for set_iam_policy
+
+        Override in a subclass to manipulate the response
+        after it is returned by the InstanceTemplates server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_test_iam_permissions(
+        self,
+        request: compute.TestIamPermissionsInstanceTemplateRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        compute.TestIamPermissionsInstanceTemplateRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for test_iam_permissions
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the InstanceTemplates server.
+        """
+        return request, metadata
+
+    def post_test_iam_permissions(
+        self, response: compute.TestPermissionsResponse
+    ) -> compute.TestPermissionsResponse:
+        """Post-rpc interceptor for test_iam_permissions
+
+        Override in a subclass to manipulate the response
+        after it is returned by the InstanceTemplates server but before
+        it is returned to user code.
+        """
+        return response
+
+
 @dataclasses.dataclass
 class InstanceTemplatesRestStub:
     _session: AuthorizedSession
     _host: str
+    _interceptor: InstanceTemplatesRestInterceptor
 
 
 class InstanceTemplatesRestTransport(InstanceTemplatesTransport):
@@ -82,6 +310,7 @@ class InstanceTemplatesRestTransport(InstanceTemplatesTransport):
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
         url_scheme: str = "https",
+        interceptor: Optional[InstanceTemplatesRestInterceptor] = None,
     ) -> None:
         """Instantiate the transport.
 
@@ -119,6 +348,16 @@ class InstanceTemplatesRestTransport(InstanceTemplatesTransport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
+        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
+        if maybe_url_match is None:
+            raise ValueError(
+                f"Unexpected hostname structure: {host}"
+            )  # pragma: NO COVER
+
+        url_match_items = maybe_url_match.groupdict()
+
+        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
+
         super().__init__(
             host=host,
             credentials=credentials,
@@ -130,13 +369,14 @@ class InstanceTemplatesRestTransport(InstanceTemplatesTransport):
         )
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
+        self._interceptor = interceptor or InstanceTemplatesRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
     class _Delete(InstanceTemplatesRestStub):
         def __hash__(self):
             return hash("Delete")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -188,13 +428,13 @@ class InstanceTemplatesRestTransport(InstanceTemplatesTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "delete",
                     "uri": "/compute/v1/projects/{project}/global/instanceTemplates/{instance_template}",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_delete(request, metadata)
             request_kwargs = compute.DeleteInstanceTemplateRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -218,8 +458,7 @@ class InstanceTemplatesRestTransport(InstanceTemplatesTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -229,16 +468,19 @@ class InstanceTemplatesRestTransport(InstanceTemplatesTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_delete(resp)
+            return resp
 
     class _Get(InstanceTemplatesRestStub):
         def __hash__(self):
             return hash("Get")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -280,13 +522,13 @@ class InstanceTemplatesRestTransport(InstanceTemplatesTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
                     "uri": "/compute/v1/projects/{project}/global/instanceTemplates/{instance_template}",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_get(request, metadata)
             request_kwargs = compute.GetInstanceTemplateRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -310,8 +552,7 @@ class InstanceTemplatesRestTransport(InstanceTemplatesTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -321,16 +562,19 @@ class InstanceTemplatesRestTransport(InstanceTemplatesTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.InstanceTemplate.from_json(
+            resp = compute.InstanceTemplate.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_get(resp)
+            return resp
 
     class _GetIamPolicy(InstanceTemplatesRestStub):
         def __hash__(self):
             return hash("GetIamPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -367,18 +611,19 @@ class InstanceTemplatesRestTransport(InstanceTemplatesTransport):
                     An Identity and Access Management (IAM) policy, which
                 specifies access controls for Google Cloud resources. A
                 ``Policy`` is a collection of ``bindings``. A
-                ``binding`` binds one or more ``members`` to a single
-                ``role``. Members can be user accounts, service
-                accounts, Google groups, and domains (such as G Suite).
-                A ``role`` is a named list of permissions; each ``role``
-                can be an IAM predefined role or a user-created custom
-                role. For some types of Google Cloud resources, a
-                ``binding`` can also specify a ``condition``, which is a
-                logical expression that allows access to a resource only
-                if the expression evaluates to ``true``. A condition can
-                add constraints based on attributes of the request, the
-                resource, or both. To learn which resources support
-                conditions in their IAM policies, see the `IAM
+                ``binding`` binds one or more ``members``, or
+                principals, to a single ``role``. Principals can be user
+                accounts, service accounts, Google groups, and domains
+                (such as G Suite). A ``role`` is a named list of
+                permissions; each ``role`` can be an IAM predefined role
+                or a user-created custom role. For some types of Google
+                Cloud resources, a ``binding`` can also specify a
+                ``condition``, which is a logical expression that allows
+                access to a resource only if the expression evaluates to
+                ``true``. A condition can add constraints based on
+                attributes of the request, the resource, or both. To
+                learn which resources support conditions in their IAM
+                policies, see the `IAM
                 documentation <https://cloud.google.com/iam/help/conditions/resource-policies>`__.
                 **JSON example:** { "bindings": [ { "role":
                 "roles/resourcemanager.organizationAdmin", "members": [
@@ -407,13 +652,13 @@ class InstanceTemplatesRestTransport(InstanceTemplatesTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
                     "uri": "/compute/v1/projects/{project}/global/instanceTemplates/{resource}/getIamPolicy",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
             request_kwargs = compute.GetIamPolicyInstanceTemplateRequest.to_dict(
                 request
             )
@@ -439,8 +684,7 @@ class InstanceTemplatesRestTransport(InstanceTemplatesTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -450,16 +694,19 @@ class InstanceTemplatesRestTransport(InstanceTemplatesTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Policy.from_json(
+            resp = compute.Policy.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_get_iam_policy(resp)
+            return resp
 
     class _Insert(InstanceTemplatesRestStub):
         def __hash__(self):
             return hash("Insert")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -511,14 +758,14 @@ class InstanceTemplatesRestTransport(InstanceTemplatesTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/projects/{project}/global/instanceTemplates",
                     "body": "instance_template_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_insert(request, metadata)
             request_kwargs = compute.InsertInstanceTemplateRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -548,8 +795,7 @@ class InstanceTemplatesRestTransport(InstanceTemplatesTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -560,16 +806,19 @@ class InstanceTemplatesRestTransport(InstanceTemplatesTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_insert(resp)
+            return resp
 
     class _List(InstanceTemplatesRestStub):
         def __hash__(self):
             return hash("List")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -606,13 +855,13 @@ class InstanceTemplatesRestTransport(InstanceTemplatesTransport):
                     A list of instance templates.
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
                     "uri": "/compute/v1/projects/{project}/global/instanceTemplates",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_list(request, metadata)
             request_kwargs = compute.ListInstanceTemplatesRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -636,8 +885,7 @@ class InstanceTemplatesRestTransport(InstanceTemplatesTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -647,16 +895,19 @@ class InstanceTemplatesRestTransport(InstanceTemplatesTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.InstanceTemplateList.from_json(
+            resp = compute.InstanceTemplateList.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_list(resp)
+            return resp
 
     class _SetIamPolicy(InstanceTemplatesRestStub):
         def __hash__(self):
             return hash("SetIamPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -693,18 +944,19 @@ class InstanceTemplatesRestTransport(InstanceTemplatesTransport):
                     An Identity and Access Management (IAM) policy, which
                 specifies access controls for Google Cloud resources. A
                 ``Policy`` is a collection of ``bindings``. A
-                ``binding`` binds one or more ``members`` to a single
-                ``role``. Members can be user accounts, service
-                accounts, Google groups, and domains (such as G Suite).
-                A ``role`` is a named list of permissions; each ``role``
-                can be an IAM predefined role or a user-created custom
-                role. For some types of Google Cloud resources, a
-                ``binding`` can also specify a ``condition``, which is a
-                logical expression that allows access to a resource only
-                if the expression evaluates to ``true``. A condition can
-                add constraints based on attributes of the request, the
-                resource, or both. To learn which resources support
-                conditions in their IAM policies, see the `IAM
+                ``binding`` binds one or more ``members``, or
+                principals, to a single ``role``. Principals can be user
+                accounts, service accounts, Google groups, and domains
+                (such as G Suite). A ``role`` is a named list of
+                permissions; each ``role`` can be an IAM predefined role
+                or a user-created custom role. For some types of Google
+                Cloud resources, a ``binding`` can also specify a
+                ``condition``, which is a logical expression that allows
+                access to a resource only if the expression evaluates to
+                ``true``. A condition can add constraints based on
+                attributes of the request, the resource, or both. To
+                learn which resources support conditions in their IAM
+                policies, see the `IAM
                 documentation <https://cloud.google.com/iam/help/conditions/resource-policies>`__.
                 **JSON example:** { "bindings": [ { "role":
                 "roles/resourcemanager.organizationAdmin", "members": [
@@ -733,14 +985,14 @@ class InstanceTemplatesRestTransport(InstanceTemplatesTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/projects/{project}/global/instanceTemplates/{resource}/setIamPolicy",
                     "body": "global_set_policy_request_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
             request_kwargs = compute.SetIamPolicyInstanceTemplateRequest.to_dict(
                 request
             )
@@ -772,8 +1024,7 @@ class InstanceTemplatesRestTransport(InstanceTemplatesTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -784,16 +1035,19 @@ class InstanceTemplatesRestTransport(InstanceTemplatesTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Policy.from_json(
+            resp = compute.Policy.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_set_iam_policy(resp)
+            return resp
 
     class _TestIamPermissions(InstanceTemplatesRestStub):
         def __hash__(self):
             return hash("TestIamPermissions")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -830,14 +1084,16 @@ class InstanceTemplatesRestTransport(InstanceTemplatesTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/projects/{project}/global/instanceTemplates/{resource}/testIamPermissions",
                     "body": "test_permissions_request_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_test_iam_permissions(
+                request, metadata
+            )
             request_kwargs = compute.TestIamPermissionsInstanceTemplateRequest.to_dict(
                 request
             )
@@ -869,8 +1125,7 @@ class InstanceTemplatesRestTransport(InstanceTemplatesTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -881,10 +1136,13 @@ class InstanceTemplatesRestTransport(InstanceTemplatesTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.TestPermissionsResponse.from_json(
+            resp = compute.TestPermissionsResponse.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_test_iam_permissions(resp)
+            return resp
 
     @property
     def delete(
@@ -892,9 +1150,13 @@ class InstanceTemplatesRestTransport(InstanceTemplatesTransport):
     ) -> Callable[[compute.DeleteInstanceTemplateRequest], compute.Operation]:
         stub = self._STUBS.get("delete")
         if not stub:
-            stub = self._STUBS["delete"] = self._Delete(self._session, self._host)
+            stub = self._STUBS["delete"] = self._Delete(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def get(
@@ -902,9 +1164,13 @@ class InstanceTemplatesRestTransport(InstanceTemplatesTransport):
     ) -> Callable[[compute.GetInstanceTemplateRequest], compute.InstanceTemplate]:
         stub = self._STUBS.get("get")
         if not stub:
-            stub = self._STUBS["get"] = self._Get(self._session, self._host)
+            stub = self._STUBS["get"] = self._Get(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def get_iam_policy(
@@ -913,10 +1179,12 @@ class InstanceTemplatesRestTransport(InstanceTemplatesTransport):
         stub = self._STUBS.get("get_iam_policy")
         if not stub:
             stub = self._STUBS["get_iam_policy"] = self._GetIamPolicy(
-                self._session, self._host
+                self._session, self._host, self._interceptor
             )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def insert(
@@ -924,9 +1192,13 @@ class InstanceTemplatesRestTransport(InstanceTemplatesTransport):
     ) -> Callable[[compute.InsertInstanceTemplateRequest], compute.Operation]:
         stub = self._STUBS.get("insert")
         if not stub:
-            stub = self._STUBS["insert"] = self._Insert(self._session, self._host)
+            stub = self._STUBS["insert"] = self._Insert(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def list(
@@ -934,9 +1206,13 @@ class InstanceTemplatesRestTransport(InstanceTemplatesTransport):
     ) -> Callable[[compute.ListInstanceTemplatesRequest], compute.InstanceTemplateList]:
         stub = self._STUBS.get("list")
         if not stub:
-            stub = self._STUBS["list"] = self._List(self._session, self._host)
+            stub = self._STUBS["list"] = self._List(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def set_iam_policy(
@@ -945,10 +1221,12 @@ class InstanceTemplatesRestTransport(InstanceTemplatesTransport):
         stub = self._STUBS.get("set_iam_policy")
         if not stub:
             stub = self._STUBS["set_iam_policy"] = self._SetIamPolicy(
-                self._session, self._host
+                self._session, self._host, self._interceptor
             )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def test_iam_permissions(
@@ -960,10 +1238,12 @@ class InstanceTemplatesRestTransport(InstanceTemplatesTransport):
         stub = self._STUBS.get("test_iam_permissions")
         if not stub:
             stub = self._STUBS["test_iam_permissions"] = self._TestIamPermissions(
-                self._session, self._host
+                self._session, self._host, self._interceptor
             )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     def close(self):
         self._session.close()

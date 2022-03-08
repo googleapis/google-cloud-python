@@ -1,6 +1,6 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -122,6 +122,7 @@ class computeCallTransformer(cst.CSTTransformer):
         'remove_rule': ('firewall_policy', 'priority', 'request_id', ),
         'reset': ('instance', 'project', 'zone', 'request_id', ),
         'resize': ('disk', 'disks_resize_request_resource', 'project', 'zone', 'request_id', ),
+        'resume': ('instance', 'project', 'zone', 'request_id', ),
         'send_diagnostic_interrupt': ('instance', 'project', 'zone', ),
         'set_backend_service': ('project', 'target_ssl_proxies_set_backend_service_request_resource', 'target_ssl_proxy', 'request_id', ),
         'set_backup': ('project', 'region', 'target_pool', 'target_reference_resource', 'failover_ratio', 'request_id', ),
@@ -129,6 +130,7 @@ class computeCallTransformer(cst.CSTTransformer):
         'set_default_network_tier': ('project', 'projects_set_default_network_tier_request_resource', 'request_id', ),
         'set_deletion_protection': ('project', 'resource', 'zone', 'deletion_protection', 'request_id', ),
         'set_disk_auto_delete': ('auto_delete', 'device_name', 'instance', 'project', 'zone', 'request_id', ),
+        'set_edge_security_policy': ('backend_bucket', 'project', 'security_policy_reference_resource', 'request_id', ),
         'set_iam_policy': ('project', 'resource', 'zone', 'zone_set_policy_request_resource', ),
         'set_instance_template': ('instance_group_manager', 'instance_group_managers_set_instance_template_request_resource', 'project', 'zone', 'request_id', ),
         'set_labels': ('project', 'resource', 'zone', 'zone_set_labels_request_resource', 'request_id', ),
@@ -156,6 +158,7 @@ class computeCallTransformer(cst.CSTTransformer):
         'start': ('instance', 'project', 'zone', 'request_id', ),
         'start_with_encryption_key': ('instance', 'instances_start_with_encryption_key_request_resource', 'project', 'zone', 'request_id', ),
         'stop': ('instance', 'project', 'zone', 'request_id', ),
+        'suspend': ('instance', 'project', 'zone', 'request_id', ),
         'switch_to_custom_mode': ('network', 'project', 'request_id', ),
         'test_iam_permissions': ('project', 'resource', 'test_permissions_request_resource', 'zone', ),
         'update': ('autoscaler_resource', 'project', 'zone', 'autoscaler', 'request_id', ),

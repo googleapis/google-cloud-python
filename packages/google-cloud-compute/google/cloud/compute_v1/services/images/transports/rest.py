@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,11 +22,14 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 from google.api_core import rest_helpers
+from google.api_core import rest_streaming
 from google.api_core import path_template
 from google.api_core import gapic_v1
+
 from requests import __version__ as requests_version
 import dataclasses
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
+import re
+from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 try:
@@ -47,10 +50,333 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
 )
 
 
+class ImagesRestInterceptor:
+    """Interceptor for Images.
+
+    Interceptors are used to manipulate requests, request metadata, and responses
+    in arbitrary ways.
+    Example use cases include:
+    * Logging
+    * Verifying requests according to service or custom semantics
+    * Stripping extraneous information from responses
+
+    These use cases and more can be enabled by injecting an
+    instance of a custom subclass when constructing the ImagesRestTransport.
+
+    .. code-block:: python
+        class MyCustomImagesInterceptor(ImagesRestInterceptor):
+            def pre_delete(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_deprecate(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_deprecate(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_get(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_get_from_family(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_from_family(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_get_iam_policy(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_iam_policy(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_insert(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_insert(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_list(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_patch(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_patch(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_set_iam_policy(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_set_iam_policy(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_set_labels(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_set_labels(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_test_iam_permissions(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_test_iam_permissions(response):
+                logging.log(f"Received response: {response}")
+
+        transport = ImagesRestTransport(interceptor=MyCustomImagesInterceptor())
+        client = ImagesClient(transport=transport)
+
+
+    """
+
+    def pre_delete(
+        self, request: compute.DeleteImageRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[compute.DeleteImageRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for delete
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Images server.
+        """
+        return request, metadata
+
+    def post_delete(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for delete
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Images server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_deprecate(
+        self,
+        request: compute.DeprecateImageRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.DeprecateImageRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for deprecate
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Images server.
+        """
+        return request, metadata
+
+    def post_deprecate(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for deprecate
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Images server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get(
+        self, request: compute.GetImageRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[compute.GetImageRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Images server.
+        """
+        return request, metadata
+
+    def post_get(self, response: compute.Image) -> compute.Image:
+        """Post-rpc interceptor for get
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Images server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_from_family(
+        self,
+        request: compute.GetFromFamilyImageRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.GetFromFamilyImageRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_from_family
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Images server.
+        """
+        return request, metadata
+
+    def post_get_from_family(self, response: compute.Image) -> compute.Image:
+        """Post-rpc interceptor for get_from_family
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Images server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_iam_policy(
+        self,
+        request: compute.GetIamPolicyImageRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.GetIamPolicyImageRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_iam_policy
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Images server.
+        """
+        return request, metadata
+
+    def post_get_iam_policy(self, response: compute.Policy) -> compute.Policy:
+        """Post-rpc interceptor for get_iam_policy
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Images server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_insert(
+        self, request: compute.InsertImageRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[compute.InsertImageRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for insert
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Images server.
+        """
+        return request, metadata
+
+    def post_insert(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for insert
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Images server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list(
+        self, request: compute.ListImagesRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[compute.ListImagesRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Images server.
+        """
+        return request, metadata
+
+    def post_list(self, response: compute.ImageList) -> compute.ImageList:
+        """Post-rpc interceptor for list
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Images server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_patch(
+        self, request: compute.PatchImageRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[compute.PatchImageRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for patch
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Images server.
+        """
+        return request, metadata
+
+    def post_patch(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for patch
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Images server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_set_iam_policy(
+        self,
+        request: compute.SetIamPolicyImageRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.SetIamPolicyImageRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for set_iam_policy
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Images server.
+        """
+        return request, metadata
+
+    def post_set_iam_policy(self, response: compute.Policy) -> compute.Policy:
+        """Post-rpc interceptor for set_iam_policy
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Images server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_set_labels(
+        self,
+        request: compute.SetLabelsImageRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.SetLabelsImageRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for set_labels
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Images server.
+        """
+        return request, metadata
+
+    def post_set_labels(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for set_labels
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Images server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_test_iam_permissions(
+        self,
+        request: compute.TestIamPermissionsImageRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.TestIamPermissionsImageRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for test_iam_permissions
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Images server.
+        """
+        return request, metadata
+
+    def post_test_iam_permissions(
+        self, response: compute.TestPermissionsResponse
+    ) -> compute.TestPermissionsResponse:
+        """Post-rpc interceptor for test_iam_permissions
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Images server but before
+        it is returned to user code.
+        """
+        return response
+
+
 @dataclasses.dataclass
 class ImagesRestStub:
     _session: AuthorizedSession
     _host: str
+    _interceptor: ImagesRestInterceptor
 
 
 class ImagesRestTransport(ImagesTransport):
@@ -79,6 +405,7 @@ class ImagesRestTransport(ImagesTransport):
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
         url_scheme: str = "https",
+        interceptor: Optional[ImagesRestInterceptor] = None,
     ) -> None:
         """Instantiate the transport.
 
@@ -116,6 +443,16 @@ class ImagesRestTransport(ImagesTransport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
+        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
+        if maybe_url_match is None:
+            raise ValueError(
+                f"Unexpected hostname structure: {host}"
+            )  # pragma: NO COVER
+
+        url_match_items = maybe_url_match.groupdict()
+
+        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
+
         super().__init__(
             host=host,
             credentials=credentials,
@@ -127,13 +464,14 @@ class ImagesRestTransport(ImagesTransport):
         )
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
+        self._interceptor = interceptor or ImagesRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
     class _Delete(ImagesRestStub):
         def __hash__(self):
             return hash("Delete")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -184,13 +522,13 @@ class ImagesRestTransport(ImagesTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "delete",
                     "uri": "/compute/v1/projects/{project}/global/images/{image}",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_delete(request, metadata)
             request_kwargs = compute.DeleteImageRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -212,8 +550,7 @@ class ImagesRestTransport(ImagesTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -223,16 +560,19 @@ class ImagesRestTransport(ImagesTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_delete(resp)
+            return resp
 
     class _Deprecate(ImagesRestStub):
         def __hash__(self):
             return hash("Deprecate")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -284,14 +624,14 @@ class ImagesRestTransport(ImagesTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/projects/{project}/global/images/{image}/deprecate",
                     "body": "deprecation_status_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_deprecate(request, metadata)
             request_kwargs = compute.DeprecateImageRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -319,8 +659,7 @@ class ImagesRestTransport(ImagesTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -331,16 +670,19 @@ class ImagesRestTransport(ImagesTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_deprecate(resp)
+            return resp
 
     class _Get(ImagesRestStub):
         def __hash__(self):
             return hash("Get")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -380,13 +722,13 @@ class ImagesRestTransport(ImagesTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
                     "uri": "/compute/v1/projects/{project}/global/images/{image}",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_get(request, metadata)
             request_kwargs = compute.GetImageRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -408,8 +750,7 @@ class ImagesRestTransport(ImagesTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -419,14 +760,17 @@ class ImagesRestTransport(ImagesTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Image.from_json(response.content, ignore_unknown_fields=True)
+            resp = compute.Image.from_json(response.content, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get(resp)
+            return resp
 
     class _GetFromFamily(ImagesRestStub):
         def __hash__(self):
             return hash("GetFromFamily")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -467,13 +811,13 @@ class ImagesRestTransport(ImagesTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
                     "uri": "/compute/v1/projects/{project}/global/images/family/{family}",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_get_from_family(request, metadata)
             request_kwargs = compute.GetFromFamilyImageRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -497,8 +841,7 @@ class ImagesRestTransport(ImagesTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -508,14 +851,17 @@ class ImagesRestTransport(ImagesTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Image.from_json(response.content, ignore_unknown_fields=True)
+            resp = compute.Image.from_json(response.content, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_from_family(resp)
+            return resp
 
     class _GetIamPolicy(ImagesRestStub):
         def __hash__(self):
             return hash("GetIamPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -552,18 +898,19 @@ class ImagesRestTransport(ImagesTransport):
                     An Identity and Access Management (IAM) policy, which
                 specifies access controls for Google Cloud resources. A
                 ``Policy`` is a collection of ``bindings``. A
-                ``binding`` binds one or more ``members`` to a single
-                ``role``. Members can be user accounts, service
-                accounts, Google groups, and domains (such as G Suite).
-                A ``role`` is a named list of permissions; each ``role``
-                can be an IAM predefined role or a user-created custom
-                role. For some types of Google Cloud resources, a
-                ``binding`` can also specify a ``condition``, which is a
-                logical expression that allows access to a resource only
-                if the expression evaluates to ``true``. A condition can
-                add constraints based on attributes of the request, the
-                resource, or both. To learn which resources support
-                conditions in their IAM policies, see the `IAM
+                ``binding`` binds one or more ``members``, or
+                principals, to a single ``role``. Principals can be user
+                accounts, service accounts, Google groups, and domains
+                (such as G Suite). A ``role`` is a named list of
+                permissions; each ``role`` can be an IAM predefined role
+                or a user-created custom role. For some types of Google
+                Cloud resources, a ``binding`` can also specify a
+                ``condition``, which is a logical expression that allows
+                access to a resource only if the expression evaluates to
+                ``true``. A condition can add constraints based on
+                attributes of the request, the resource, or both. To
+                learn which resources support conditions in their IAM
+                policies, see the `IAM
                 documentation <https://cloud.google.com/iam/help/conditions/resource-policies>`__.
                 **JSON example:** { "bindings": [ { "role":
                 "roles/resourcemanager.organizationAdmin", "members": [
@@ -592,13 +939,13 @@ class ImagesRestTransport(ImagesTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
                     "uri": "/compute/v1/projects/{project}/global/images/{resource}/getIamPolicy",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
             request_kwargs = compute.GetIamPolicyImageRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -622,8 +969,7 @@ class ImagesRestTransport(ImagesTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -633,16 +979,19 @@ class ImagesRestTransport(ImagesTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Policy.from_json(
+            resp = compute.Policy.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_get_iam_policy(resp)
+            return resp
 
     class _Insert(ImagesRestStub):
         def __hash__(self):
             return hash("Insert")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -693,14 +1042,14 @@ class ImagesRestTransport(ImagesTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/projects/{project}/global/images",
                     "body": "image_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_insert(request, metadata)
             request_kwargs = compute.InsertImageRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -728,8 +1077,7 @@ class ImagesRestTransport(ImagesTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -740,16 +1088,19 @@ class ImagesRestTransport(ImagesTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_insert(resp)
+            return resp
 
     class _List(ImagesRestStub):
         def __hash__(self):
             return hash("List")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -785,13 +1136,13 @@ class ImagesRestTransport(ImagesTransport):
                     Contains a list of images.
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
                     "uri": "/compute/v1/projects/{project}/global/images",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_list(request, metadata)
             request_kwargs = compute.ListImagesRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -813,8 +1164,7 @@ class ImagesRestTransport(ImagesTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -824,16 +1174,19 @@ class ImagesRestTransport(ImagesTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.ImageList.from_json(
+            resp = compute.ImageList.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_list(resp)
+            return resp
 
     class _Patch(ImagesRestStub):
         def __hash__(self):
             return hash("Patch")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -884,14 +1237,14 @@ class ImagesRestTransport(ImagesTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "patch",
                     "uri": "/compute/v1/projects/{project}/global/images/{image}",
                     "body": "image_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_patch(request, metadata)
             request_kwargs = compute.PatchImageRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -919,8 +1272,7 @@ class ImagesRestTransport(ImagesTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -931,16 +1283,19 @@ class ImagesRestTransport(ImagesTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_patch(resp)
+            return resp
 
     class _SetIamPolicy(ImagesRestStub):
         def __hash__(self):
             return hash("SetIamPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -977,18 +1332,19 @@ class ImagesRestTransport(ImagesTransport):
                     An Identity and Access Management (IAM) policy, which
                 specifies access controls for Google Cloud resources. A
                 ``Policy`` is a collection of ``bindings``. A
-                ``binding`` binds one or more ``members`` to a single
-                ``role``. Members can be user accounts, service
-                accounts, Google groups, and domains (such as G Suite).
-                A ``role`` is a named list of permissions; each ``role``
-                can be an IAM predefined role or a user-created custom
-                role. For some types of Google Cloud resources, a
-                ``binding`` can also specify a ``condition``, which is a
-                logical expression that allows access to a resource only
-                if the expression evaluates to ``true``. A condition can
-                add constraints based on attributes of the request, the
-                resource, or both. To learn which resources support
-                conditions in their IAM policies, see the `IAM
+                ``binding`` binds one or more ``members``, or
+                principals, to a single ``role``. Principals can be user
+                accounts, service accounts, Google groups, and domains
+                (such as G Suite). A ``role`` is a named list of
+                permissions; each ``role`` can be an IAM predefined role
+                or a user-created custom role. For some types of Google
+                Cloud resources, a ``binding`` can also specify a
+                ``condition``, which is a logical expression that allows
+                access to a resource only if the expression evaluates to
+                ``true``. A condition can add constraints based on
+                attributes of the request, the resource, or both. To
+                learn which resources support conditions in their IAM
+                policies, see the `IAM
                 documentation <https://cloud.google.com/iam/help/conditions/resource-policies>`__.
                 **JSON example:** { "bindings": [ { "role":
                 "roles/resourcemanager.organizationAdmin", "members": [
@@ -1017,14 +1373,14 @@ class ImagesRestTransport(ImagesTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/projects/{project}/global/images/{resource}/setIamPolicy",
                     "body": "global_set_policy_request_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
             request_kwargs = compute.SetIamPolicyImageRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -1054,8 +1410,7 @@ class ImagesRestTransport(ImagesTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -1066,16 +1421,19 @@ class ImagesRestTransport(ImagesTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Policy.from_json(
+            resp = compute.Policy.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_set_iam_policy(resp)
+            return resp
 
     class _SetLabels(ImagesRestStub):
         def __hash__(self):
             return hash("SetLabels")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1127,14 +1485,14 @@ class ImagesRestTransport(ImagesTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/projects/{project}/global/images/{resource}/setLabels",
                     "body": "global_set_labels_request_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_set_labels(request, metadata)
             request_kwargs = compute.SetLabelsImageRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -1162,8 +1520,7 @@ class ImagesRestTransport(ImagesTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -1174,16 +1531,19 @@ class ImagesRestTransport(ImagesTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_set_labels(resp)
+            return resp
 
     class _TestIamPermissions(ImagesRestStub):
         def __hash__(self):
             return hash("TestIamPermissions")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1220,14 +1580,16 @@ class ImagesRestTransport(ImagesTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/projects/{project}/global/images/{resource}/testIamPermissions",
                     "body": "test_permissions_request_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_test_iam_permissions(
+                request, metadata
+            )
             request_kwargs = compute.TestIamPermissionsImageRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -1257,8 +1619,7 @@ class ImagesRestTransport(ImagesTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -1269,34 +1630,49 @@ class ImagesRestTransport(ImagesTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.TestPermissionsResponse.from_json(
+            resp = compute.TestPermissionsResponse.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_test_iam_permissions(resp)
+            return resp
 
     @property
     def delete(self) -> Callable[[compute.DeleteImageRequest], compute.Operation]:
         stub = self._STUBS.get("delete")
         if not stub:
-            stub = self._STUBS["delete"] = self._Delete(self._session, self._host)
+            stub = self._STUBS["delete"] = self._Delete(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def deprecate(self) -> Callable[[compute.DeprecateImageRequest], compute.Operation]:
         stub = self._STUBS.get("deprecate")
         if not stub:
-            stub = self._STUBS["deprecate"] = self._Deprecate(self._session, self._host)
+            stub = self._STUBS["deprecate"] = self._Deprecate(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def get(self) -> Callable[[compute.GetImageRequest], compute.Image]:
         stub = self._STUBS.get("get")
         if not stub:
-            stub = self._STUBS["get"] = self._Get(self._session, self._host)
+            stub = self._STUBS["get"] = self._Get(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def get_from_family(
@@ -1305,10 +1681,12 @@ class ImagesRestTransport(ImagesTransport):
         stub = self._STUBS.get("get_from_family")
         if not stub:
             stub = self._STUBS["get_from_family"] = self._GetFromFamily(
-                self._session, self._host
+                self._session, self._host, self._interceptor
             )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def get_iam_policy(
@@ -1317,34 +1695,48 @@ class ImagesRestTransport(ImagesTransport):
         stub = self._STUBS.get("get_iam_policy")
         if not stub:
             stub = self._STUBS["get_iam_policy"] = self._GetIamPolicy(
-                self._session, self._host
+                self._session, self._host, self._interceptor
             )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def insert(self) -> Callable[[compute.InsertImageRequest], compute.Operation]:
         stub = self._STUBS.get("insert")
         if not stub:
-            stub = self._STUBS["insert"] = self._Insert(self._session, self._host)
+            stub = self._STUBS["insert"] = self._Insert(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def list(self) -> Callable[[compute.ListImagesRequest], compute.ImageList]:
         stub = self._STUBS.get("list")
         if not stub:
-            stub = self._STUBS["list"] = self._List(self._session, self._host)
+            stub = self._STUBS["list"] = self._List(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def patch(self) -> Callable[[compute.PatchImageRequest], compute.Operation]:
         stub = self._STUBS.get("patch")
         if not stub:
-            stub = self._STUBS["patch"] = self._Patch(self._session, self._host)
+            stub = self._STUBS["patch"] = self._Patch(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def set_iam_policy(
@@ -1353,10 +1745,12 @@ class ImagesRestTransport(ImagesTransport):
         stub = self._STUBS.get("set_iam_policy")
         if not stub:
             stub = self._STUBS["set_iam_policy"] = self._SetIamPolicy(
-                self._session, self._host
+                self._session, self._host, self._interceptor
             )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def set_labels(
@@ -1365,10 +1759,12 @@ class ImagesRestTransport(ImagesTransport):
         stub = self._STUBS.get("set_labels")
         if not stub:
             stub = self._STUBS["set_labels"] = self._SetLabels(
-                self._session, self._host
+                self._session, self._host, self._interceptor
             )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def test_iam_permissions(
@@ -1379,10 +1775,12 @@ class ImagesRestTransport(ImagesTransport):
         stub = self._STUBS.get("test_iam_permissions")
         if not stub:
             stub = self._STUBS["test_iam_permissions"] = self._TestIamPermissions(
-                self._session, self._host
+                self._session, self._host, self._interceptor
             )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     def close(self):
         self._session.close()

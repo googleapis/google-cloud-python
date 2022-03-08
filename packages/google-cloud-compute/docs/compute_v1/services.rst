@@ -32,6 +32,7 @@ Services for Google Cloud Compute v1 API
     interconnects
     license_codes
     licenses
+    machine_images
     machine_types
     network_endpoint_groups
     networks

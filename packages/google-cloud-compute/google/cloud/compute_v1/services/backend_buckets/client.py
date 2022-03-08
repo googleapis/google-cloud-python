@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -445,7 +445,7 @@ class BackendBucketsClient(metaclass=BackendBucketsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, backend_bucket, signed_url_key_resource])
         if request is not None and has_flattened_params:
@@ -534,7 +534,7 @@ class BackendBucketsClient(metaclass=BackendBucketsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, backend_bucket])
         if request is not None and has_flattened_params:
@@ -632,7 +632,7 @@ class BackendBucketsClient(metaclass=BackendBucketsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, backend_bucket, key_name])
         if request is not None and has_flattened_params:
@@ -713,7 +713,7 @@ class BackendBucketsClient(metaclass=BackendBucketsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, backend_bucket])
         if request is not None and has_flattened_params:
@@ -799,7 +799,7 @@ class BackendBucketsClient(metaclass=BackendBucketsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, backend_bucket_resource])
         if request is not None and has_flattened_params:
@@ -869,7 +869,7 @@ class BackendBucketsClient(metaclass=BackendBucketsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project])
         if request is not None and has_flattened_params:
@@ -969,7 +969,7 @@ class BackendBucketsClient(metaclass=BackendBucketsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, backend_bucket, backend_bucket_resource])
         if request is not None and has_flattened_params:
@@ -996,6 +996,107 @@ class BackendBucketsClient(metaclass=BackendBucketsClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.patch]
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    def set_edge_security_policy_unary(
+        self,
+        request: Union[compute.SetEdgeSecurityPolicyBackendBucketRequest, dict] = None,
+        *,
+        project: str = None,
+        backend_bucket: str = None,
+        security_policy_reference_resource: compute.SecurityPolicyReference = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> compute.Operation:
+        r"""Sets the edge security policy for the specified
+        backend bucket.
+
+        Args:
+            request (Union[google.cloud.compute_v1.types.SetEdgeSecurityPolicyBackendBucketRequest, dict]):
+                The request object. A request message for
+                BackendBuckets.SetEdgeSecurityPolicy. See the method
+                description for details.
+            project (str):
+                Project ID for this request.
+                This corresponds to the ``project`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            backend_bucket (str):
+                Name of the BackendService resource
+                to which the security policy should be
+                set. The name should conform to RFC1035.
+
+                This corresponds to the ``backend_bucket`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            security_policy_reference_resource (google.cloud.compute_v1.types.SecurityPolicyReference):
+                The body resource for this request
+                This corresponds to the ``security_policy_reference_resource`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.compute_v1.types.Operation:
+                Represents an Operation resource. Google Compute Engine
+                has three Operation resources: \*
+                [Global](/compute/docs/reference/rest/v1/globalOperations)
+                \*
+                [Regional](/compute/docs/reference/rest/v1/regionOperations)
+                \*
+                [Zonal](/compute/docs/reference/rest/v1/zoneOperations)
+                You can use an operation resource to manage asynchronous
+                API requests. For more information, read Handling API
+                responses. Operations can be global, regional or zonal.
+                - For global operations, use the globalOperations
+                resource. - For regional operations, use the
+                regionOperations resource. - For zonal operations, use
+                the zonalOperations resource. For more information, read
+                Global, Regional, and Zonal Resources.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any(
+            [project, backend_bucket, security_policy_reference_resource]
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a compute.SetEdgeSecurityPolicyBackendBucketRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, compute.SetEdgeSecurityPolicyBackendBucketRequest):
+            request = compute.SetEdgeSecurityPolicyBackendBucketRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if project is not None:
+                request.project = project
+            if backend_bucket is not None:
+                request.backend_bucket = backend_bucket
+            if security_policy_reference_resource is not None:
+                request.security_policy_reference_resource = (
+                    security_policy_reference_resource
+                )
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.set_edge_security_policy]
 
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
@@ -1065,7 +1166,7 @@ class BackendBucketsClient(metaclass=BackendBucketsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, backend_bucket, backend_bucket_resource])
         if request is not None and has_flattened_params:

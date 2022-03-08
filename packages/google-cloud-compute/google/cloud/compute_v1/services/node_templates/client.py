@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -414,7 +414,7 @@ class NodeTemplatesClient(metaclass=NodeTemplatesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project])
         if request is not None and has_flattened_params:
@@ -513,7 +513,7 @@ class NodeTemplatesClient(metaclass=NodeTemplatesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, node_template])
         if request is not None and has_flattened_params:
@@ -599,7 +599,7 @@ class NodeTemplatesClient(metaclass=NodeTemplatesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, node_template])
         if request is not None and has_flattened_params:
@@ -682,17 +682,18 @@ class NodeTemplatesClient(metaclass=NodeTemplatesClientMeta):
                 An Identity and Access Management (IAM) policy, which
                 specifies access controls for Google Cloud resources. A
                 Policy is a collection of bindings. A binding binds one
-                or more members to a single role. Members can be user
-                accounts, service accounts, Google groups, and domains
-                (such as G Suite). A role is a named list of
-                permissions; each role can be an IAM predefined role or
-                a user-created custom role. For some types of Google
-                Cloud resources, a binding can also specify a condition,
-                which is a logical expression that allows access to a
-                resource only if the expression evaluates to true. A
-                condition can add constraints based on attributes of the
-                request, the resource, or both. To learn which resources
-                support conditions in their IAM policies, see the [IAM
+                or more members, or principals, to a single role.
+                Principals can be user accounts, service accounts,
+                Google groups, and domains (such as G Suite). A role is
+                a named list of permissions; each role can be an IAM
+                predefined role or a user-created custom role. For some
+                types of Google Cloud resources, a binding can also
+                specify a condition, which is a logical expression that
+                allows access to a resource only if the expression
+                evaluates to true. A condition can add constraints based
+                on attributes of the request, the resource, or both. To
+                learn which resources support conditions in their IAM
+                policies, see the [IAM
                 documentation](\ https://cloud.google.com/iam/help/conditions/resource-policies).
                 **JSON example:** { "bindings": [ { "role":
                 "roles/resourcemanager.organizationAdmin", "members": [
@@ -721,7 +722,7 @@ class NodeTemplatesClient(metaclass=NodeTemplatesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, resource])
         if request is not None and has_flattened_params:
@@ -817,7 +818,7 @@ class NodeTemplatesClient(metaclass=NodeTemplatesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region, node_template_resource])
         if request is not None and has_flattened_params:
@@ -896,7 +897,7 @@ class NodeTemplatesClient(metaclass=NodeTemplatesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, region])
         if request is not None and has_flattened_params:
@@ -989,17 +990,18 @@ class NodeTemplatesClient(metaclass=NodeTemplatesClientMeta):
                 An Identity and Access Management (IAM) policy, which
                 specifies access controls for Google Cloud resources. A
                 Policy is a collection of bindings. A binding binds one
-                or more members to a single role. Members can be user
-                accounts, service accounts, Google groups, and domains
-                (such as G Suite). A role is a named list of
-                permissions; each role can be an IAM predefined role or
-                a user-created custom role. For some types of Google
-                Cloud resources, a binding can also specify a condition,
-                which is a logical expression that allows access to a
-                resource only if the expression evaluates to true. A
-                condition can add constraints based on attributes of the
-                request, the resource, or both. To learn which resources
-                support conditions in their IAM policies, see the [IAM
+                or more members, or principals, to a single role.
+                Principals can be user accounts, service accounts,
+                Google groups, and domains (such as G Suite). A role is
+                a named list of permissions; each role can be an IAM
+                predefined role or a user-created custom role. For some
+                types of Google Cloud resources, a binding can also
+                specify a condition, which is a logical expression that
+                allows access to a resource only if the expression
+                evaluates to true. A condition can add constraints based
+                on attributes of the request, the resource, or both. To
+                learn which resources support conditions in their IAM
+                policies, see the [IAM
                 documentation](\ https://cloud.google.com/iam/help/conditions/resource-policies).
                 **JSON example:** { "bindings": [ { "role":
                 "roles/resourcemanager.organizationAdmin", "members": [
@@ -1028,7 +1030,7 @@ class NodeTemplatesClient(metaclass=NodeTemplatesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, region, resource, region_set_policy_request_resource]
@@ -1123,7 +1125,7 @@ class NodeTemplatesClient(metaclass=NodeTemplatesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, region, resource, test_permissions_request_resource]

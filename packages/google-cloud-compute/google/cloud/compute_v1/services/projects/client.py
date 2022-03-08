@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -426,7 +426,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project])
         if request is not None and has_flattened_params:
@@ -510,7 +510,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, projects_disable_xpn_resource_request_resource]
@@ -593,7 +593,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project])
         if request is not None and has_flattened_params:
@@ -678,7 +678,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, projects_enable_xpn_resource_request_resource]
@@ -723,7 +723,15 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Project:
-        r"""Returns the specified Project resource.
+        r"""Returns the specified Project resource. To decrease latency for
+        this method, you can optionally omit any unneeded information
+        from the response by using a field mask. This practice is
+        especially recommended for unused quota information (the
+        ``quotas`` field). To exclude one or more fields, set your
+        request's ``fields`` query parameter to only include the fields
+        you need. For example, to only include the ``id`` and
+        ``selfLink`` fields, add the query parameter
+        ``?fields=id,selfLink`` to your request.
 
         Args:
             request (Union[google.cloud.compute_v1.types.GetProjectRequest, dict]):
@@ -750,7 +758,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project])
         if request is not None and has_flattened_params:
@@ -818,7 +826,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project])
         if request is not None and has_flattened_params:
@@ -884,7 +892,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project])
         if request is not None and has_flattened_params:
@@ -962,7 +970,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, projects_list_xpn_hosts_request_resource])
         if request is not None and has_flattened_params:
@@ -1055,7 +1063,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, disk_move_request_resource])
         if request is not None and has_flattened_params:
@@ -1097,8 +1105,11 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
-        r"""Moves an instance and its attached persistent disks
-        from one zone to another.
+        r"""Moves an instance and its attached persistent disks from one
+        zone to another. *Note*: Moving VMs or disks by using this
+        method might cause unexpected behavior. For more information,
+        see the `known
+        issue </compute/docs/troubleshooting/known-issues#moving_vms_or_disks_using_the_moveinstance_api_or_the_causes_unexpected_behavior>`__.
 
         Args:
             request (Union[google.cloud.compute_v1.types.MoveInstanceProjectRequest, dict]):
@@ -1141,7 +1152,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, instance_move_request_resource])
         if request is not None and has_flattened_params:
@@ -1228,7 +1239,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, metadata_resource])
         if request is not None and has_flattened_params:
@@ -1318,7 +1329,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project, projects_set_default_network_tier_request_resource]
@@ -1410,7 +1421,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project, usage_export_location_resource])
         if request is not None and has_flattened_params:

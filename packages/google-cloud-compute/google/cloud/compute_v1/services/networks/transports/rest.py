@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,11 +22,14 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 from google.api_core import rest_helpers
+from google.api_core import rest_streaming
 from google.api_core import path_template
 from google.api_core import gapic_v1
+
 from requests import __version__ as requests_version
 import dataclasses
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
+import re
+from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 try:
@@ -47,10 +50,337 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
 )
 
 
+class NetworksRestInterceptor:
+    """Interceptor for Networks.
+
+    Interceptors are used to manipulate requests, request metadata, and responses
+    in arbitrary ways.
+    Example use cases include:
+    * Logging
+    * Verifying requests according to service or custom semantics
+    * Stripping extraneous information from responses
+
+    These use cases and more can be enabled by injecting an
+    instance of a custom subclass when constructing the NetworksRestTransport.
+
+    .. code-block:: python
+        class MyCustomNetworksInterceptor(NetworksRestInterceptor):
+            def pre_add_peering(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_add_peering(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_delete(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_get(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_get_effective_firewalls(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_effective_firewalls(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_insert(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_insert(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_list(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_list_peering_routes(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_peering_routes(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_patch(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_patch(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_remove_peering(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_remove_peering(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_switch_to_custom_mode(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_switch_to_custom_mode(response):
+                logging.log(f"Received response: {response}")
+
+            def pre_update_peering(request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_peering(response):
+                logging.log(f"Received response: {response}")
+
+        transport = NetworksRestTransport(interceptor=MyCustomNetworksInterceptor())
+        client = NetworksClient(transport=transport)
+
+
+    """
+
+    def pre_add_peering(
+        self,
+        request: compute.AddPeeringNetworkRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.AddPeeringNetworkRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for add_peering
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Networks server.
+        """
+        return request, metadata
+
+    def post_add_peering(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for add_peering
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Networks server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_delete(
+        self, request: compute.DeleteNetworkRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[compute.DeleteNetworkRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for delete
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Networks server.
+        """
+        return request, metadata
+
+    def post_delete(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for delete
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Networks server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get(
+        self, request: compute.GetNetworkRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[compute.GetNetworkRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Networks server.
+        """
+        return request, metadata
+
+    def post_get(self, response: compute.Network) -> compute.Network:
+        """Post-rpc interceptor for get
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Networks server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_effective_firewalls(
+        self,
+        request: compute.GetEffectiveFirewallsNetworkRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.GetEffectiveFirewallsNetworkRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_effective_firewalls
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Networks server.
+        """
+        return request, metadata
+
+    def post_get_effective_firewalls(
+        self, response: compute.NetworksGetEffectiveFirewallsResponse
+    ) -> compute.NetworksGetEffectiveFirewallsResponse:
+        """Post-rpc interceptor for get_effective_firewalls
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Networks server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_insert(
+        self, request: compute.InsertNetworkRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[compute.InsertNetworkRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for insert
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Networks server.
+        """
+        return request, metadata
+
+    def post_insert(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for insert
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Networks server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list(
+        self, request: compute.ListNetworksRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[compute.ListNetworksRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Networks server.
+        """
+        return request, metadata
+
+    def post_list(self, response: compute.NetworkList) -> compute.NetworkList:
+        """Post-rpc interceptor for list
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Networks server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_peering_routes(
+        self,
+        request: compute.ListPeeringRoutesNetworksRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.ListPeeringRoutesNetworksRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_peering_routes
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Networks server.
+        """
+        return request, metadata
+
+    def post_list_peering_routes(
+        self, response: compute.ExchangedPeeringRoutesList
+    ) -> compute.ExchangedPeeringRoutesList:
+        """Post-rpc interceptor for list_peering_routes
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Networks server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_patch(
+        self, request: compute.PatchNetworkRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[compute.PatchNetworkRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for patch
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Networks server.
+        """
+        return request, metadata
+
+    def post_patch(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for patch
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Networks server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_remove_peering(
+        self,
+        request: compute.RemovePeeringNetworkRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.RemovePeeringNetworkRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for remove_peering
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Networks server.
+        """
+        return request, metadata
+
+    def post_remove_peering(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for remove_peering
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Networks server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_switch_to_custom_mode(
+        self,
+        request: compute.SwitchToCustomModeNetworkRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.SwitchToCustomModeNetworkRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for switch_to_custom_mode
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Networks server.
+        """
+        return request, metadata
+
+    def post_switch_to_custom_mode(
+        self, response: compute.Operation
+    ) -> compute.Operation:
+        """Post-rpc interceptor for switch_to_custom_mode
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Networks server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_update_peering(
+        self,
+        request: compute.UpdatePeeringNetworkRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.UpdatePeeringNetworkRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for update_peering
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Networks server.
+        """
+        return request, metadata
+
+    def post_update_peering(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for update_peering
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Networks server but before
+        it is returned to user code.
+        """
+        return response
+
+
 @dataclasses.dataclass
 class NetworksRestStub:
     _session: AuthorizedSession
     _host: str
+    _interceptor: NetworksRestInterceptor
 
 
 class NetworksRestTransport(NetworksTransport):
@@ -79,6 +409,7 @@ class NetworksRestTransport(NetworksTransport):
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
         url_scheme: str = "https",
+        interceptor: Optional[NetworksRestInterceptor] = None,
     ) -> None:
         """Instantiate the transport.
 
@@ -116,6 +447,16 @@ class NetworksRestTransport(NetworksTransport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
+        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
+        if maybe_url_match is None:
+            raise ValueError(
+                f"Unexpected hostname structure: {host}"
+            )  # pragma: NO COVER
+
+        url_match_items = maybe_url_match.groupdict()
+
+        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
+
         super().__init__(
             host=host,
             credentials=credentials,
@@ -127,13 +468,14 @@ class NetworksRestTransport(NetworksTransport):
         )
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
+        self._interceptor = interceptor or NetworksRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
     class _AddPeering(NetworksRestStub):
         def __hash__(self):
             return hash("AddPeering")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -185,14 +527,14 @@ class NetworksRestTransport(NetworksTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/projects/{project}/global/networks/{network}/addPeering",
                     "body": "networks_add_peering_request_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_add_peering(request, metadata)
             request_kwargs = compute.AddPeeringNetworkRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -222,8 +564,7 @@ class NetworksRestTransport(NetworksTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -234,16 +575,19 @@ class NetworksRestTransport(NetworksTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_add_peering(resp)
+            return resp
 
     class _Delete(NetworksRestStub):
         def __hash__(self):
             return hash("Delete")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -295,13 +639,13 @@ class NetworksRestTransport(NetworksTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "delete",
                     "uri": "/compute/v1/projects/{project}/global/networks/{network}",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_delete(request, metadata)
             request_kwargs = compute.DeleteNetworkRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -323,8 +667,7 @@ class NetworksRestTransport(NetworksTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -334,16 +677,19 @@ class NetworksRestTransport(NetworksTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_delete(resp)
+            return resp
 
     class _Get(NetworksRestStub):
         def __hash__(self):
             return hash("Get")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -384,13 +730,13 @@ class NetworksRestTransport(NetworksTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
                     "uri": "/compute/v1/projects/{project}/global/networks/{network}",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_get(request, metadata)
             request_kwargs = compute.GetNetworkRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -412,8 +758,7 @@ class NetworksRestTransport(NetworksTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -423,16 +768,19 @@ class NetworksRestTransport(NetworksTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Network.from_json(
+            resp = compute.Network.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_get(resp)
+            return resp
 
     class _GetEffectiveFirewalls(NetworksRestStub):
         def __hash__(self):
             return hash("GetEffectiveFirewalls")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -469,13 +817,15 @@ class NetworksRestTransport(NetworksTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
                     "uri": "/compute/v1/projects/{project}/global/networks/{network}/getEffectiveFirewalls",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_get_effective_firewalls(
+                request, metadata
+            )
             request_kwargs = compute.GetEffectiveFirewallsNetworkRequest.to_dict(
                 request
             )
@@ -501,8 +851,7 @@ class NetworksRestTransport(NetworksTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -512,16 +861,19 @@ class NetworksRestTransport(NetworksTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.NetworksGetEffectiveFirewallsResponse.from_json(
+            resp = compute.NetworksGetEffectiveFirewallsResponse.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_get_effective_firewalls(resp)
+            return resp
 
     class _Insert(NetworksRestStub):
         def __hash__(self):
             return hash("Insert")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -573,14 +925,14 @@ class NetworksRestTransport(NetworksTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/projects/{project}/global/networks",
                     "body": "network_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_insert(request, metadata)
             request_kwargs = compute.InsertNetworkRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -608,8 +960,7 @@ class NetworksRestTransport(NetworksTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -620,16 +971,19 @@ class NetworksRestTransport(NetworksTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_insert(resp)
+            return resp
 
     class _List(NetworksRestStub):
         def __hash__(self):
             return hash("List")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -665,13 +1019,13 @@ class NetworksRestTransport(NetworksTransport):
                     Contains a list of networks.
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
                     "uri": "/compute/v1/projects/{project}/global/networks",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_list(request, metadata)
             request_kwargs = compute.ListNetworksRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -693,8 +1047,7 @@ class NetworksRestTransport(NetworksTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -704,16 +1057,19 @@ class NetworksRestTransport(NetworksTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.NetworkList.from_json(
+            resp = compute.NetworkList.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_list(resp)
+            return resp
 
     class _ListPeeringRoutes(NetworksRestStub):
         def __hash__(self):
             return hash("ListPeeringRoutes")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -750,13 +1106,15 @@ class NetworksRestTransport(NetworksTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
                     "uri": "/compute/v1/projects/{project}/global/networks/{network}/listPeeringRoutes",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_list_peering_routes(
+                request, metadata
+            )
             request_kwargs = compute.ListPeeringRoutesNetworksRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -780,8 +1138,7 @@ class NetworksRestTransport(NetworksTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -791,16 +1148,19 @@ class NetworksRestTransport(NetworksTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.ExchangedPeeringRoutesList.from_json(
+            resp = compute.ExchangedPeeringRoutesList.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_list_peering_routes(resp)
+            return resp
 
     class _Patch(NetworksRestStub):
         def __hash__(self):
             return hash("Patch")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -851,14 +1211,14 @@ class NetworksRestTransport(NetworksTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "patch",
                     "uri": "/compute/v1/projects/{project}/global/networks/{network}",
                     "body": "network_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_patch(request, metadata)
             request_kwargs = compute.PatchNetworkRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -886,8 +1246,7 @@ class NetworksRestTransport(NetworksTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -898,16 +1257,19 @@ class NetworksRestTransport(NetworksTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_patch(resp)
+            return resp
 
     class _RemovePeering(NetworksRestStub):
         def __hash__(self):
             return hash("RemovePeering")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -959,14 +1321,14 @@ class NetworksRestTransport(NetworksTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/projects/{project}/global/networks/{network}/removePeering",
                     "body": "networks_remove_peering_request_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_remove_peering(request, metadata)
             request_kwargs = compute.RemovePeeringNetworkRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -996,8 +1358,7 @@ class NetworksRestTransport(NetworksTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -1008,16 +1369,19 @@ class NetworksRestTransport(NetworksTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_remove_peering(resp)
+            return resp
 
     class _SwitchToCustomMode(NetworksRestStub):
         def __hash__(self):
             return hash("SwitchToCustomMode")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1069,13 +1433,15 @@ class NetworksRestTransport(NetworksTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
                     "uri": "/compute/v1/projects/{project}/global/networks/{network}/switchToCustomMode",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_switch_to_custom_mode(
+                request, metadata
+            )
             request_kwargs = compute.SwitchToCustomModeNetworkRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -1099,8 +1465,7 @@ class NetworksRestTransport(NetworksTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -1110,16 +1475,19 @@ class NetworksRestTransport(NetworksTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_switch_to_custom_mode(resp)
+            return resp
 
     class _UpdatePeering(NetworksRestStub):
         def __hash__(self):
             return hash("UpdatePeering")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1171,14 +1539,14 @@ class NetworksRestTransport(NetworksTransport):
 
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
                 {
                     "method": "patch",
                     "uri": "/compute/v1/projects/{project}/global/networks/{network}/updatePeering",
                     "body": "networks_update_peering_request_resource",
                 },
             ]
-
+            request, metadata = self._interceptor.pre_update_peering(request, metadata)
             request_kwargs = compute.UpdatePeeringNetworkRequest.to_dict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -1208,8 +1576,7 @@ class NetworksRestTransport(NetworksTransport):
             headers = dict(metadata)
             headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -1220,10 +1587,13 @@ class NetworksRestTransport(NetworksTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             # Return the response
-            return compute.Operation.from_json(
+            resp = compute.Operation.from_json(
                 response.content, ignore_unknown_fields=True
             )
+            resp = self._interceptor.post_update_peering(resp)
+            return resp
 
     @property
     def add_peering(
@@ -1232,26 +1602,36 @@ class NetworksRestTransport(NetworksTransport):
         stub = self._STUBS.get("add_peering")
         if not stub:
             stub = self._STUBS["add_peering"] = self._AddPeering(
-                self._session, self._host
+                self._session, self._host, self._interceptor
             )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def delete(self) -> Callable[[compute.DeleteNetworkRequest], compute.Operation]:
         stub = self._STUBS.get("delete")
         if not stub:
-            stub = self._STUBS["delete"] = self._Delete(self._session, self._host)
+            stub = self._STUBS["delete"] = self._Delete(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def get(self) -> Callable[[compute.GetNetworkRequest], compute.Network]:
         stub = self._STUBS.get("get")
         if not stub:
-            stub = self._STUBS["get"] = self._Get(self._session, self._host)
+            stub = self._STUBS["get"] = self._Get(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def get_effective_firewalls(
@@ -1263,26 +1643,36 @@ class NetworksRestTransport(NetworksTransport):
         stub = self._STUBS.get("get_effective_firewalls")
         if not stub:
             stub = self._STUBS["get_effective_firewalls"] = self._GetEffectiveFirewalls(
-                self._session, self._host
+                self._session, self._host, self._interceptor
             )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def insert(self) -> Callable[[compute.InsertNetworkRequest], compute.Operation]:
         stub = self._STUBS.get("insert")
         if not stub:
-            stub = self._STUBS["insert"] = self._Insert(self._session, self._host)
+            stub = self._STUBS["insert"] = self._Insert(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def list(self) -> Callable[[compute.ListNetworksRequest], compute.NetworkList]:
         stub = self._STUBS.get("list")
         if not stub:
-            stub = self._STUBS["list"] = self._List(self._session, self._host)
+            stub = self._STUBS["list"] = self._List(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def list_peering_routes(
@@ -1293,18 +1683,24 @@ class NetworksRestTransport(NetworksTransport):
         stub = self._STUBS.get("list_peering_routes")
         if not stub:
             stub = self._STUBS["list_peering_routes"] = self._ListPeeringRoutes(
-                self._session, self._host
+                self._session, self._host, self._interceptor
             )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def patch(self) -> Callable[[compute.PatchNetworkRequest], compute.Operation]:
         stub = self._STUBS.get("patch")
         if not stub:
-            stub = self._STUBS["patch"] = self._Patch(self._session, self._host)
+            stub = self._STUBS["patch"] = self._Patch(
+                self._session, self._host, self._interceptor
+            )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def remove_peering(
@@ -1313,10 +1709,12 @@ class NetworksRestTransport(NetworksTransport):
         stub = self._STUBS.get("remove_peering")
         if not stub:
             stub = self._STUBS["remove_peering"] = self._RemovePeering(
-                self._session, self._host
+                self._session, self._host, self._interceptor
             )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def switch_to_custom_mode(
@@ -1325,10 +1723,12 @@ class NetworksRestTransport(NetworksTransport):
         stub = self._STUBS.get("switch_to_custom_mode")
         if not stub:
             stub = self._STUBS["switch_to_custom_mode"] = self._SwitchToCustomMode(
-                self._session, self._host
+                self._session, self._host, self._interceptor
             )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     @property
     def update_peering(
@@ -1337,10 +1737,12 @@ class NetworksRestTransport(NetworksTransport):
         stub = self._STUBS.get("update_peering")
         if not stub:
             stub = self._STUBS["update_peering"] = self._UpdatePeering(
-                self._session, self._host
+                self._session, self._host, self._interceptor
             )
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub  # type: ignore
 
     def close(self):
         self._session.close()

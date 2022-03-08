@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ import mock
 
 import grpc
 from grpc.experimental import aio
+from collections.abc import Iterable
 import json
 import math
 import pytest
@@ -82,19 +83,23 @@ def test__get_default_mtls_endpoint():
     assert SnapshotsClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
 
 
-@pytest.mark.parametrize("client_class", [SnapshotsClient,])
-def test_snapshots_client_from_service_account_info(client_class):
+@pytest.mark.parametrize("client_class,transport_name", [(SnapshotsClient, "rest"),])
+def test_snapshots_client_from_service_account_info(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_info"
     ) as factory:
         factory.return_value = creds
         info = {"valid": True}
-        client = client_class.from_service_account_info(info)
+        client = client_class.from_service_account_info(info, transport=transport_name)
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == "compute.googleapis.com:443"
+        assert client.transport._host == (
+            "compute.googleapis.com{}".format(":443")
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://{}".format("compute.googleapis.com")
+        )
 
 
 @pytest.mark.parametrize(
@@ -118,22 +123,30 @@ def test_snapshots_client_service_account_always_use_jwt(
         use_jwt.assert_not_called()
 
 
-@pytest.mark.parametrize("client_class", [SnapshotsClient,])
-def test_snapshots_client_from_service_account_file(client_class):
+@pytest.mark.parametrize("client_class,transport_name", [(SnapshotsClient, "rest"),])
+def test_snapshots_client_from_service_account_file(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_file"
     ) as factory:
         factory.return_value = creds
-        client = client_class.from_service_account_file("dummy/file/path.json")
+        client = client_class.from_service_account_file(
+            "dummy/file/path.json", transport=transport_name
+        )
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        client = client_class.from_service_account_json("dummy/file/path.json")
+        client = client_class.from_service_account_json(
+            "dummy/file/path.json", transport=transport_name
+        )
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == "compute.googleapis.com:443"
+        assert client.transport._host == (
+            "compute.googleapis.com{}".format(":443")
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://{}".format("compute.googleapis.com")
+        )
 
 
 def test_snapshots_client_get_transport_class():
@@ -447,14 +460,15 @@ def test_snapshots_client_client_options_scopes(
 
 
 @pytest.mark.parametrize(
-    "client_class,transport_class,transport_name",
-    [(SnapshotsClient, transports.SnapshotsRestTransport, "rest"),],
+    "client_class,transport_class,transport_name,grpc_helpers",
+    [(SnapshotsClient, transports.SnapshotsRestTransport, "rest", None),],
 )
 def test_snapshots_client_client_options_credentials_file(
-    client_class, transport_class, transport_name
+    client_class, transport_class, transport_name, grpc_helpers
 ):
     # Check the case credentials file is provided.
     options = client_options.ClientOptions(credentials_file="credentials.json")
+
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -624,6 +638,53 @@ def test_delete_unary_rest_unset_required_fields():
     assert set(unset_fields) == (set(("requestId",)) & set(("project", "snapshot",)))
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_unary_rest_interceptors(null_interceptor):
+    transport = transports.SnapshotsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.SnapshotsRestInterceptor(),
+    )
+    client = SnapshotsClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SnapshotsRestInterceptor, "post_delete"
+    ) as post, mock.patch.object(
+        transports.SnapshotsRestInterceptor, "pre_delete"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": None,
+            "query_params": {},
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.Operation.to_json(compute.Operation())
+
+        request = compute.DeleteSnapshotRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation
+
+        client.delete_unary(
+            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_delete_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.DeleteSnapshotRequest
 ):
@@ -657,6 +718,13 @@ def test_delete_unary_rest_flattened():
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation()
 
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project": "sample1", "snapshot": "sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(project="project_value", snapshot="snapshot_value",)
+        mock_args.update(sample_request)
+
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
@@ -665,12 +733,6 @@ def test_delete_unary_rest_flattened():
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        # get arguments that satisfy an http rule for this method
-        sample_request = {"project": "sample1", "snapshot": "sample2"}
-
-        # get truthy value for each flattened field
-        mock_args = dict(project="project_value", snapshot="snapshot_value",)
-        mock_args.update(sample_request)
         client.delete_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
@@ -678,7 +740,7 @@ def test_delete_unary_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "https://%s/compute/v1/projects/{project}/global/snapshots/{snapshot}"
+            "%s/compute/v1/projects/{project}/global/snapshots/{snapshot}"
             % client.transport._host,
             args[1],
         )
@@ -855,6 +917,51 @@ def test_get_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("project", "snapshot",)))
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_rest_interceptors(null_interceptor):
+    transport = transports.SnapshotsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.SnapshotsRestInterceptor(),
+    )
+    client = SnapshotsClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SnapshotsRestInterceptor, "post_get"
+    ) as post, mock.patch.object(
+        transports.SnapshotsRestInterceptor, "pre_get"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": None,
+            "query_params": {},
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.Snapshot.to_json(compute.Snapshot())
+
+        request = compute.GetSnapshotRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Snapshot
+
+        client.get(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_get_rest_bad_request(
     transport: str = "rest", request_type=compute.GetSnapshotRequest
 ):
@@ -888,6 +995,13 @@ def test_get_rest_flattened():
         # Designate an appropriate value for the returned response.
         return_value = compute.Snapshot()
 
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project": "sample1", "snapshot": "sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(project="project_value", snapshot="snapshot_value",)
+        mock_args.update(sample_request)
+
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
@@ -896,12 +1010,6 @@ def test_get_rest_flattened():
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        # get arguments that satisfy an http rule for this method
-        sample_request = {"project": "sample1", "snapshot": "sample2"}
-
-        # get truthy value for each flattened field
-        mock_args = dict(project="project_value", snapshot="snapshot_value",)
-        mock_args.update(sample_request)
         client.get(**mock_args)
 
         # Establish that the underlying call was made with the expected
@@ -909,7 +1017,7 @@ def test_get_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "https://%s/compute/v1/projects/{project}/global/snapshots/{snapshot}"
+            "%s/compute/v1/projects/{project}/global/snapshots/{snapshot}"
             % client.transport._host,
             args[1],
         )
@@ -1052,6 +1160,53 @@ def test_get_iam_policy_rest_unset_required_fields():
     )
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_iam_policy_rest_interceptors(null_interceptor):
+    transport = transports.SnapshotsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.SnapshotsRestInterceptor(),
+    )
+    client = SnapshotsClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SnapshotsRestInterceptor, "post_get_iam_policy"
+    ) as post, mock.patch.object(
+        transports.SnapshotsRestInterceptor, "pre_get_iam_policy"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": None,
+            "query_params": {},
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.Policy.to_json(compute.Policy())
+
+        request = compute.GetIamPolicySnapshotRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Policy
+
+        client.get_iam_policy(
+            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_get_iam_policy_rest_bad_request(
     transport: str = "rest", request_type=compute.GetIamPolicySnapshotRequest
 ):
@@ -1085,6 +1240,13 @@ def test_get_iam_policy_rest_flattened():
         # Designate an appropriate value for the returned response.
         return_value = compute.Policy()
 
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project": "sample1", "resource": "sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(project="project_value", resource="resource_value",)
+        mock_args.update(sample_request)
+
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
@@ -1093,12 +1255,6 @@ def test_get_iam_policy_rest_flattened():
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        # get arguments that satisfy an http rule for this method
-        sample_request = {"project": "sample1", "resource": "sample2"}
-
-        # get truthy value for each flattened field
-        mock_args = dict(project="project_value", resource="resource_value",)
-        mock_args.update(sample_request)
         client.get_iam_policy(**mock_args)
 
         # Establish that the underlying call was made with the expected
@@ -1106,7 +1262,7 @@ def test_get_iam_policy_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "https://%s/compute/v1/projects/{project}/global/snapshots/{resource}/getIamPolicy"
+            "%s/compute/v1/projects/{project}/global/snapshots/{resource}/getIamPolicy"
             % client.transport._host,
             args[1],
         )
@@ -1128,6 +1284,355 @@ def test_get_iam_policy_rest_flattened_error(transport: str = "rest"):
 
 
 def test_get_iam_policy_rest_error():
+    client = SnapshotsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize("request_type", [compute.InsertSnapshotRequest, dict,])
+def test_insert_unary_rest(request_type):
+    client = SnapshotsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1"}
+    request_init["snapshot_resource"] = {
+        "auto_created": True,
+        "chain_name": "chain_name_value",
+        "creation_timestamp": "creation_timestamp_value",
+        "description": "description_value",
+        "disk_size_gb": 1261,
+        "download_bytes": 1502,
+        "id": 205,
+        "kind": "kind_value",
+        "label_fingerprint": "label_fingerprint_value",
+        "labels": {},
+        "license_codes": [1361, 1362],
+        "licenses": ["licenses_value_1", "licenses_value_2"],
+        "location_hint": "location_hint_value",
+        "name": "name_value",
+        "satisfies_pzs": True,
+        "self_link": "self_link_value",
+        "snapshot_encryption_key": {
+            "kms_key_name": "kms_key_name_value",
+            "kms_key_service_account": "kms_key_service_account_value",
+            "raw_key": "raw_key_value",
+            "rsa_encrypted_key": "rsa_encrypted_key_value",
+            "sha256": "sha256_value",
+        },
+        "source_disk": "source_disk_value",
+        "source_disk_encryption_key": {},
+        "source_disk_id": "source_disk_id_value",
+        "status": "status_value",
+        "storage_bytes": 1403,
+        "storage_bytes_status": "storage_bytes_status_value",
+        "storage_locations": ["storage_locations_value_1", "storage_locations_value_2"],
+    }
+    request = request_type(request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation(
+            client_operation_id="client_operation_id_value",
+            creation_timestamp="creation_timestamp_value",
+            description="description_value",
+            end_time="end_time_value",
+            http_error_message="http_error_message_value",
+            http_error_status_code=2374,
+            id=205,
+            insert_time="insert_time_value",
+            kind="kind_value",
+            name="name_value",
+            operation_group_id="operation_group_id_value",
+            operation_type="operation_type_value",
+            progress=885,
+            region="region_value",
+            self_link="self_link_value",
+            start_time="start_time_value",
+            status=compute.Operation.Status.DONE,
+            status_message="status_message_value",
+            target_id=947,
+            target_link="target_link_value",
+            user="user_value",
+            zone="zone_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.insert_unary(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, compute.Operation)
+    assert response.client_operation_id == "client_operation_id_value"
+    assert response.creation_timestamp == "creation_timestamp_value"
+    assert response.description == "description_value"
+    assert response.end_time == "end_time_value"
+    assert response.http_error_message == "http_error_message_value"
+    assert response.http_error_status_code == 2374
+    assert response.id == 205
+    assert response.insert_time == "insert_time_value"
+    assert response.kind == "kind_value"
+    assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
+    assert response.operation_type == "operation_type_value"
+    assert response.progress == 885
+    assert response.region == "region_value"
+    assert response.self_link == "self_link_value"
+    assert response.start_time == "start_time_value"
+    assert response.status == compute.Operation.Status.DONE
+    assert response.status_message == "status_message_value"
+    assert response.target_id == 947
+    assert response.target_link == "target_link_value"
+    assert response.user == "user_value"
+    assert response.zone == "zone_value"
+
+
+def test_insert_unary_rest_required_fields(request_type=compute.InsertSnapshotRequest):
+    transport_class = transports.SnapshotsRestTransport
+
+    request_init = {}
+    request_init["project"] = ""
+    request = request_type(request_init)
+    jsonified_request = json.loads(
+        request_type.to_json(
+            request, including_default_value_fields=False, use_integers_for_enums=False
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).insert._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["project"] = "project_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).insert._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+
+    client = SnapshotsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+    )
+    request = request_type(request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": request_init,
+            }
+            transcode_result["body"] = {}
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = compute.Operation.to_json(return_value)
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.insert_unary(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_insert_unary_rest_unset_required_fields():
+    transport = transports.SnapshotsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.insert._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("requestId",)) & set(("project", "snapshotResource",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_insert_unary_rest_interceptors(null_interceptor):
+    transport = transports.SnapshotsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.SnapshotsRestInterceptor(),
+    )
+    client = SnapshotsClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SnapshotsRestInterceptor, "post_insert"
+    ) as post, mock.patch.object(
+        transports.SnapshotsRestInterceptor, "pre_insert"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": None,
+            "query_params": {},
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.Operation.to_json(compute.Operation())
+
+        request = compute.InsertSnapshotRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation
+
+        client.insert_unary(
+            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_insert_unary_rest_bad_request(
+    transport: str = "rest", request_type=compute.InsertSnapshotRequest
+):
+    client = SnapshotsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1"}
+    request_init["snapshot_resource"] = {
+        "auto_created": True,
+        "chain_name": "chain_name_value",
+        "creation_timestamp": "creation_timestamp_value",
+        "description": "description_value",
+        "disk_size_gb": 1261,
+        "download_bytes": 1502,
+        "id": 205,
+        "kind": "kind_value",
+        "label_fingerprint": "label_fingerprint_value",
+        "labels": {},
+        "license_codes": [1361, 1362],
+        "licenses": ["licenses_value_1", "licenses_value_2"],
+        "location_hint": "location_hint_value",
+        "name": "name_value",
+        "satisfies_pzs": True,
+        "self_link": "self_link_value",
+        "snapshot_encryption_key": {
+            "kms_key_name": "kms_key_name_value",
+            "kms_key_service_account": "kms_key_service_account_value",
+            "raw_key": "raw_key_value",
+            "rsa_encrypted_key": "rsa_encrypted_key_value",
+            "sha256": "sha256_value",
+        },
+        "source_disk": "source_disk_value",
+        "source_disk_encryption_key": {},
+        "source_disk_id": "source_disk_id_value",
+        "status": "status_value",
+        "storage_bytes": 1403,
+        "storage_bytes_status": "storage_bytes_status_value",
+        "storage_locations": ["storage_locations_value_1", "storage_locations_value_2"],
+    }
+    request = request_type(request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.insert_unary(request)
+
+
+def test_insert_unary_rest_flattened():
+    client = SnapshotsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project": "sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project="project_value",
+            snapshot_resource=compute.Snapshot(auto_created=True),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.insert_unary(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/compute/v1/projects/{project}/global/snapshots"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_insert_unary_rest_flattened_error(transport: str = "rest"):
+    client = SnapshotsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.insert_unary(
+            compute.InsertSnapshotRequest(),
+            project="project_value",
+            snapshot_resource=compute.Snapshot(auto_created=True),
+        )
+
+
+def test_insert_unary_rest_error():
     client = SnapshotsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
@@ -1197,7 +1702,7 @@ def test_list_rest_required_fields(request_type=compute.ListSnapshotsRequest):
     ).list._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
-        ("max_results", "filter", "order_by", "page_token", "return_partial_success",)
+        ("filter", "max_results", "order_by", "page_token", "return_partial_success",)
     )
     jsonified_request.update(unset_fields)
 
@@ -1247,9 +1752,54 @@ def test_list_rest_unset_required_fields():
 
     unset_fields = transport.list._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("maxResults", "filter", "orderBy", "pageToken", "returnPartialSuccess",))
+        set(("filter", "maxResults", "orderBy", "pageToken", "returnPartialSuccess",))
         & set(("project",))
     )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_rest_interceptors(null_interceptor):
+    transport = transports.SnapshotsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.SnapshotsRestInterceptor(),
+    )
+    client = SnapshotsClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SnapshotsRestInterceptor, "post_list"
+    ) as post, mock.patch.object(
+        transports.SnapshotsRestInterceptor, "pre_list"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": None,
+            "query_params": {},
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.SnapshotList.to_json(compute.SnapshotList())
+
+        request = compute.ListSnapshotsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.SnapshotList
+
+        client.list(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
 
 
 def test_list_rest_bad_request(
@@ -1285,6 +1835,13 @@ def test_list_rest_flattened():
         # Designate an appropriate value for the returned response.
         return_value = compute.SnapshotList()
 
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project": "sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(project="project_value",)
+        mock_args.update(sample_request)
+
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
@@ -1293,12 +1850,6 @@ def test_list_rest_flattened():
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        # get arguments that satisfy an http rule for this method
-        sample_request = {"project": "sample1"}
-
-        # get truthy value for each flattened field
-        mock_args = dict(project="project_value",)
-        mock_args.update(sample_request)
         client.list(**mock_args)
 
         # Establish that the underlying call was made with the expected
@@ -1306,7 +1857,7 @@ def test_list_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "https://%s/compute/v1/projects/{project}/global/snapshots"
+            "%s/compute/v1/projects/{project}/global/snapshots"
             % client.transport._host,
             args[1],
         )
@@ -1411,19 +1962,7 @@ def test_set_iam_policy_rest(request_type):
                     "service": "service_value",
                 }
             ],
-            "bindings": [
-                {
-                    "binding_id": "binding_id_value",
-                    "condition": {
-                        "description": "description_value",
-                        "expression": "expression_value",
-                        "location": "location_value",
-                        "title": "title_value",
-                    },
-                    "members": ["members_value_1", "members_value_2"],
-                    "role": "role_value",
-                }
-            ],
+            "bindings": {},
             "etag": "etag_value",
             "iam_owned": True,
             "rules": [
@@ -1572,6 +2111,53 @@ def test_set_iam_policy_rest_unset_required_fields():
     )
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_set_iam_policy_rest_interceptors(null_interceptor):
+    transport = transports.SnapshotsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.SnapshotsRestInterceptor(),
+    )
+    client = SnapshotsClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SnapshotsRestInterceptor, "post_set_iam_policy"
+    ) as post, mock.patch.object(
+        transports.SnapshotsRestInterceptor, "pre_set_iam_policy"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": None,
+            "query_params": {},
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.Policy.to_json(compute.Policy())
+
+        request = compute.SetIamPolicySnapshotRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Policy
+
+        client.set_iam_policy(
+            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_set_iam_policy_rest_bad_request(
     transport: str = "rest", request_type=compute.SetIamPolicySnapshotRequest
 ):
@@ -1616,19 +2202,7 @@ def test_set_iam_policy_rest_bad_request(
                     "service": "service_value",
                 }
             ],
-            "bindings": [
-                {
-                    "binding_id": "binding_id_value",
-                    "condition": {
-                        "description": "description_value",
-                        "expression": "expression_value",
-                        "location": "location_value",
-                        "title": "title_value",
-                    },
-                    "members": ["members_value_1", "members_value_2"],
-                    "role": "role_value",
-                }
-            ],
+            "bindings": {},
             "etag": "etag_value",
             "iam_owned": True,
             "rules": [
@@ -1694,14 +2268,6 @@ def test_set_iam_policy_rest_flattened():
         # Designate an appropriate value for the returned response.
         return_value = compute.Policy()
 
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = compute.Policy.to_json(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
         # get arguments that satisfy an http rule for this method
         sample_request = {"project": "sample1", "resource": "sample2"}
 
@@ -1714,6 +2280,15 @@ def test_set_iam_policy_rest_flattened():
             ),
         )
         mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = compute.Policy.to_json(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
         client.set_iam_policy(**mock_args)
 
         # Establish that the underlying call was made with the expected
@@ -1721,7 +2296,7 @@ def test_set_iam_policy_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "https://%s/compute/v1/projects/{project}/global/snapshots/{resource}/setIamPolicy"
+            "%s/compute/v1/projects/{project}/global/snapshots/{resource}/setIamPolicy"
             % client.transport._host,
             args[1],
         )
@@ -1912,6 +2487,53 @@ def test_set_labels_unary_rest_unset_required_fields():
     )
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_set_labels_unary_rest_interceptors(null_interceptor):
+    transport = transports.SnapshotsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.SnapshotsRestInterceptor(),
+    )
+    client = SnapshotsClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SnapshotsRestInterceptor, "post_set_labels"
+    ) as post, mock.patch.object(
+        transports.SnapshotsRestInterceptor, "pre_set_labels"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": None,
+            "query_params": {},
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.Operation.to_json(compute.Operation())
+
+        request = compute.SetLabelsSnapshotRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation
+
+        client.set_labels_unary(
+            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_set_labels_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.SetLabelsSnapshotRequest
 ):
@@ -1949,14 +2571,6 @@ def test_set_labels_unary_rest_flattened():
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation()
 
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
         # get arguments that satisfy an http rule for this method
         sample_request = {"project": "sample1", "resource": "sample2"}
 
@@ -1969,6 +2583,15 @@ def test_set_labels_unary_rest_flattened():
             ),
         )
         mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
         client.set_labels_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
@@ -1976,7 +2599,7 @@ def test_set_labels_unary_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "https://%s/compute/v1/projects/{project}/global/snapshots/{resource}/setLabels"
+            "%s/compute/v1/projects/{project}/global/snapshots/{resource}/setLabels"
             % client.transport._host,
             args[1],
         )
@@ -2126,6 +2749,55 @@ def test_test_iam_permissions_rest_unset_required_fields():
     )
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_test_iam_permissions_rest_interceptors(null_interceptor):
+    transport = transports.SnapshotsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.SnapshotsRestInterceptor(),
+    )
+    client = SnapshotsClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SnapshotsRestInterceptor, "post_test_iam_permissions"
+    ) as post, mock.patch.object(
+        transports.SnapshotsRestInterceptor, "pre_test_iam_permissions"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": None,
+            "query_params": {},
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.TestPermissionsResponse.to_json(
+            compute.TestPermissionsResponse()
+        )
+
+        request = compute.TestIamPermissionsSnapshotRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.TestPermissionsResponse
+
+        client.test_iam_permissions(
+            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_test_iam_permissions_rest_bad_request(
     transport: str = "rest", request_type=compute.TestIamPermissionsSnapshotRequest
 ):
@@ -2162,14 +2834,6 @@ def test_test_iam_permissions_rest_flattened():
         # Designate an appropriate value for the returned response.
         return_value = compute.TestPermissionsResponse()
 
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = compute.TestPermissionsResponse.to_json(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
         # get arguments that satisfy an http rule for this method
         sample_request = {"project": "sample1", "resource": "sample2"}
 
@@ -2182,6 +2846,15 @@ def test_test_iam_permissions_rest_flattened():
             ),
         )
         mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = compute.TestPermissionsResponse.to_json(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
         client.test_iam_permissions(**mock_args)
 
         # Establish that the underlying call was made with the expected
@@ -2189,7 +2862,7 @@ def test_test_iam_permissions_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "https://%s/compute/v1/projects/{project}/global/snapshots/{resource}/testIamPermissions"
+            "%s/compute/v1/projects/{project}/global/snapshots/{resource}/testIamPermissions"
             % client.transport._host,
             args[1],
         )
@@ -2309,6 +2982,7 @@ def test_snapshots_base_transport():
         "delete",
         "get",
         "get_iam_policy",
+        "insert",
         "list",
         "set_iam_policy",
         "set_labels",
@@ -2382,24 +3056,36 @@ def test_snapshots_http_transport_client_cert_source_for_mtls():
         mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
 
 
-def test_snapshots_host_no_port():
+@pytest.mark.parametrize("transport_name", ["rest",])
+def test_snapshots_host_no_port(transport_name):
     client = SnapshotsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="compute.googleapis.com"
         ),
+        transport=transport_name,
     )
-    assert client.transport._host == "compute.googleapis.com:443"
+    assert client.transport._host == (
+        "compute.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://compute.googleapis.com"
+    )
 
 
-def test_snapshots_host_with_port():
+@pytest.mark.parametrize("transport_name", ["rest",])
+def test_snapshots_host_with_port(transport_name):
     client = SnapshotsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="compute.googleapis.com:8000"
         ),
+        transport=transport_name,
     )
-    assert client.transport._host == "compute.googleapis.com:8000"
+    assert client.transport._host == (
+        "compute.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://compute.googleapis.com:8000"
+    )
 
 
 def test_common_billing_account_path():
