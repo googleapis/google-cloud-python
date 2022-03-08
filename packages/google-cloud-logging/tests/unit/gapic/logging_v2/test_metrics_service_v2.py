@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -1024,6 +1024,7 @@ def test_get_log_metric(request_type, transport: str = "grpc"):
             name="name_value",
             description="description_value",
             filter="filter_value",
+            disabled=True,
             value_extractor="value_extractor_value",
             version=logging_metrics.LogMetric.ApiVersion.V1,
         )
@@ -1039,6 +1040,7 @@ def test_get_log_metric(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.description == "description_value"
     assert response.filter == "filter_value"
+    assert response.disabled is True
     assert response.value_extractor == "value_extractor_value"
     assert response.version == logging_metrics.LogMetric.ApiVersion.V1
 
@@ -1078,6 +1080,7 @@ async def test_get_log_metric_async(
                 name="name_value",
                 description="description_value",
                 filter="filter_value",
+                disabled=True,
                 value_extractor="value_extractor_value",
                 version=logging_metrics.LogMetric.ApiVersion.V1,
             )
@@ -1094,6 +1097,7 @@ async def test_get_log_metric_async(
     assert response.name == "name_value"
     assert response.description == "description_value"
     assert response.filter == "filter_value"
+    assert response.disabled is True
     assert response.value_extractor == "value_extractor_value"
     assert response.version == logging_metrics.LogMetric.ApiVersion.V1
 
@@ -1249,6 +1253,7 @@ def test_create_log_metric(request_type, transport: str = "grpc"):
             name="name_value",
             description="description_value",
             filter="filter_value",
+            disabled=True,
             value_extractor="value_extractor_value",
             version=logging_metrics.LogMetric.ApiVersion.V1,
         )
@@ -1264,6 +1269,7 @@ def test_create_log_metric(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.description == "description_value"
     assert response.filter == "filter_value"
+    assert response.disabled is True
     assert response.value_extractor == "value_extractor_value"
     assert response.version == logging_metrics.LogMetric.ApiVersion.V1
 
@@ -1307,6 +1313,7 @@ async def test_create_log_metric_async(
                 name="name_value",
                 description="description_value",
                 filter="filter_value",
+                disabled=True,
                 value_extractor="value_extractor_value",
                 version=logging_metrics.LogMetric.ApiVersion.V1,
             )
@@ -1323,6 +1330,7 @@ async def test_create_log_metric_async(
     assert response.name == "name_value"
     assert response.description == "description_value"
     assert response.filter == "filter_value"
+    assert response.disabled is True
     assert response.value_extractor == "value_extractor_value"
     assert response.version == logging_metrics.LogMetric.ApiVersion.V1
 
@@ -1500,6 +1508,7 @@ def test_update_log_metric(request_type, transport: str = "grpc"):
             name="name_value",
             description="description_value",
             filter="filter_value",
+            disabled=True,
             value_extractor="value_extractor_value",
             version=logging_metrics.LogMetric.ApiVersion.V1,
         )
@@ -1515,6 +1524,7 @@ def test_update_log_metric(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.description == "description_value"
     assert response.filter == "filter_value"
+    assert response.disabled is True
     assert response.value_extractor == "value_extractor_value"
     assert response.version == logging_metrics.LogMetric.ApiVersion.V1
 
@@ -1558,6 +1568,7 @@ async def test_update_log_metric_async(
                 name="name_value",
                 description="description_value",
                 filter="filter_value",
+                disabled=True,
                 value_extractor="value_extractor_value",
                 version=logging_metrics.LogMetric.ApiVersion.V1,
             )
@@ -1574,6 +1585,7 @@ async def test_update_log_metric_async(
     assert response.name == "name_value"
     assert response.description == "description_value"
     assert response.filter == "filter_value"
+    assert response.disabled is True
     assert response.value_extractor == "value_extractor_value"
     assert response.version == logging_metrics.LogMetric.ApiVersion.V1
 

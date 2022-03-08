@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ from google.protobuf import timestamp_pb2  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.logging.v2",
-    manifest={"LogEntry", "LogEntryOperation", "LogEntrySourceLocation",},
+    manifest={"LogEntry", "LogEntryOperation", "LogEntrySourceLocation", "LogSplit",},
 )
 
 
@@ -59,6 +59,7 @@ class LogEntry(proto.Message):
             ``[LOG_ID]`` must be URL-encoded within ``log_name``.
             Example:
             ``"organizations/1234567890/logs/cloudresourcemanager.googleapis.com%2Factivity"``.
+
             ``[LOG_ID]`` must be less than 512 characters long and can
             only include the following characters: upper and lower case
             alphanumeric characters, forward-slash, underscore, hyphen,
@@ -66,7 +67,7 @@ class LogEntry(proto.Message):
 
             For backward compatibility, if ``log_name`` begins with a
             forward-slash, such as ``/projects/...``, then the log entry
-            is ingested as usual but the forward-slash is removed.
+            is ingested as usual, but the forward-slash is removed.
             Listing the log entry will not show the leading slash and
             filtering for a log name with a leading slash will never
             return any results.
@@ -139,9 +140,22 @@ class LogEntry(proto.Message):
             Optional. Information about the HTTP request
             associated with this log entry, if applicable.
         labels (Sequence[google.cloud.logging_v2.types.LogEntry.LabelsEntry]):
-            Optional. A set of user-defined (key, value)
-            data that provides additional information about
-            the log entry.
+            Optional. A map of key, value pairs that provides additional
+            information about the log entry. The labels can be
+            user-defined or system-defined.
+
+            User-defined labels are arbitrary key, value pairs that you
+            can use to classify logs.
+
+            System-defined labels are defined by GCP services for
+            platform logs. They have two components - a service
+            namespace component and the attribute name. For example:
+            ``compute.googleapis.com/resource_name``.
+
+            Cloud Logging truncates label keys that exceed 512 B and
+            label values that exceed 64 KB upon their associated log
+            entry being written. The truncation is indicated by an
+            ellipsis at the end of the character string.
         operation (google.cloud.logging_v2.types.LogEntryOperation):
             Optional. Information about an operation
             associated with the log entry, if applicable.
@@ -171,6 +185,10 @@ class LogEntry(proto.Message):
         source_location (google.cloud.logging_v2.types.LogEntrySourceLocation):
             Optional. Source code location information
             associated with the log entry, if any.
+        split (google.cloud.logging_v2.types.LogSplit):
+            Optional. Information indicating this
+            LogEntry is part of a sequence of multiple log
+            entries split from a single LogEntry.
     """
 
     log_name = proto.Field(proto.STRING, number=12,)
@@ -201,6 +219,7 @@ class LogEntry(proto.Message):
     source_location = proto.Field(
         proto.MESSAGE, number=23, message="LogEntrySourceLocation",
     )
+    split = proto.Field(proto.MESSAGE, number=35, message="LogSplit",)
 
 
 class LogEntryOperation(proto.Message):
@@ -256,6 +275,32 @@ class LogEntrySourceLocation(proto.Message):
     file = proto.Field(proto.STRING, number=1,)
     line = proto.Field(proto.INT64, number=2,)
     function = proto.Field(proto.STRING, number=3,)
+
+
+class LogSplit(proto.Message):
+    r"""Additional information used to correlate multiple log
+    entries. Used when a single LogEntry would exceed the Google
+    Cloud Logging size limit and is split across multiple log
+    entries.
+
+    Attributes:
+        uid (str):
+            A globally unique identifier for all log entries in a
+            sequence of split log entries. All log entries with the same
+            \|LogSplit.uid\| are assumed to be part of the same sequence
+            of split log entries.
+        index (int):
+            The index of this LogEntry in the sequence of split log
+            entries. Log entries are given \|index\| values 0, 1, ...,
+            n-1 for a sequence of n log entries.
+        total_splits (int):
+            The total number of log entries that the
+            original LogEntry was split into.
+    """
+
+    uid = proto.Field(proto.STRING, number=1,)
+    index = proto.Field(proto.INT32, number=2,)
+    total_splits = proto.Field(proto.INT32, number=3,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -25,9 +25,13 @@ from proto.marshal.rules.dates import DurationRule, TimestampRule
 
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
+from google.api_core import future
 from google.api_core import gapic_v1
 from google.api_core import grpc_helpers
 from google.api_core import grpc_helpers_async
+from google.api_core import operation
+from google.api_core import operation_async  # type: ignore
+from google.api_core import operations_v1
 from google.api_core import path_template
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
@@ -38,6 +42,7 @@ from google.cloud.logging_v2.services.config_service_v2 import ConfigServiceV2Cl
 from google.cloud.logging_v2.services.config_service_v2 import pagers
 from google.cloud.logging_v2.services.config_service_v2 import transports
 from google.cloud.logging_v2.types import logging_config
+from google.longrunning import operations_pb2
 from google.oauth2 import service_account
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -1018,6 +1023,7 @@ def test_get_bucket(request_type, transport: str = "grpc"):
             retention_days=1512,
             locked=True,
             lifecycle_state=logging_config.LifecycleState.ACTIVE,
+            restricted_fields=["restricted_fields_value"],
         )
         response = client.get_bucket(request)
 
@@ -1033,6 +1039,7 @@ def test_get_bucket(request_type, transport: str = "grpc"):
     assert response.retention_days == 1512
     assert response.locked is True
     assert response.lifecycle_state == logging_config.LifecycleState.ACTIVE
+    assert response.restricted_fields == ["restricted_fields_value"]
 
 
 def test_get_bucket_empty_call():
@@ -1072,6 +1079,7 @@ async def test_get_bucket_async(
                 retention_days=1512,
                 locked=True,
                 lifecycle_state=logging_config.LifecycleState.ACTIVE,
+                restricted_fields=["restricted_fields_value"],
             )
         )
         response = await client.get_bucket(request)
@@ -1088,6 +1096,7 @@ async def test_get_bucket_async(
     assert response.retention_days == 1512
     assert response.locked is True
     assert response.lifecycle_state == logging_config.LifecycleState.ACTIVE
+    assert response.restricted_fields == ["restricted_fields_value"]
 
 
 @pytest.mark.asyncio
@@ -1167,6 +1176,7 @@ def test_create_bucket(request_type, transport: str = "grpc"):
             retention_days=1512,
             locked=True,
             lifecycle_state=logging_config.LifecycleState.ACTIVE,
+            restricted_fields=["restricted_fields_value"],
         )
         response = client.create_bucket(request)
 
@@ -1182,6 +1192,7 @@ def test_create_bucket(request_type, transport: str = "grpc"):
     assert response.retention_days == 1512
     assert response.locked is True
     assert response.lifecycle_state == logging_config.LifecycleState.ACTIVE
+    assert response.restricted_fields == ["restricted_fields_value"]
 
 
 def test_create_bucket_empty_call():
@@ -1221,6 +1232,7 @@ async def test_create_bucket_async(
                 retention_days=1512,
                 locked=True,
                 lifecycle_state=logging_config.LifecycleState.ACTIVE,
+                restricted_fields=["restricted_fields_value"],
             )
         )
         response = await client.create_bucket(request)
@@ -1237,6 +1249,7 @@ async def test_create_bucket_async(
     assert response.retention_days == 1512
     assert response.locked is True
     assert response.lifecycle_state == logging_config.LifecycleState.ACTIVE
+    assert response.restricted_fields == ["restricted_fields_value"]
 
 
 @pytest.mark.asyncio
@@ -1316,6 +1329,7 @@ def test_update_bucket(request_type, transport: str = "grpc"):
             retention_days=1512,
             locked=True,
             lifecycle_state=logging_config.LifecycleState.ACTIVE,
+            restricted_fields=["restricted_fields_value"],
         )
         response = client.update_bucket(request)
 
@@ -1331,6 +1345,7 @@ def test_update_bucket(request_type, transport: str = "grpc"):
     assert response.retention_days == 1512
     assert response.locked is True
     assert response.lifecycle_state == logging_config.LifecycleState.ACTIVE
+    assert response.restricted_fields == ["restricted_fields_value"]
 
 
 def test_update_bucket_empty_call():
@@ -1370,6 +1385,7 @@ async def test_update_bucket_async(
                 retention_days=1512,
                 locked=True,
                 lifecycle_state=logging_config.LifecycleState.ACTIVE,
+                restricted_fields=["restricted_fields_value"],
             )
         )
         response = await client.update_bucket(request)
@@ -1386,6 +1402,7 @@ async def test_update_bucket_async(
     assert response.retention_days == 1512
     assert response.locked is True
     assert response.lifecycle_state == logging_config.LifecycleState.ACTIVE
+    assert response.restricted_fields == ["restricted_fields_value"]
 
 
 @pytest.mark.asyncio
@@ -5433,6 +5450,538 @@ async def test_update_cmek_settings_field_headers_async():
     assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
 
 
+@pytest.mark.parametrize("request_type", [logging_config.GetSettingsRequest, dict,])
+def test_get_settings(request_type, transport: str = "grpc"):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_settings), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = logging_config.Settings(
+            name="name_value",
+            kms_key_name="kms_key_name_value",
+            kms_service_account_id="kms_service_account_id_value",
+            storage_location="storage_location_value",
+            disable_default_sink=True,
+        )
+        response = client.get_settings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == logging_config.GetSettingsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, logging_config.Settings)
+    assert response.name == "name_value"
+    assert response.kms_key_name == "kms_key_name_value"
+    assert response.kms_service_account_id == "kms_service_account_id_value"
+    assert response.storage_location == "storage_location_value"
+    assert response.disable_default_sink is True
+
+
+def test_get_settings_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_settings), "__call__") as call:
+        client.get_settings()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == logging_config.GetSettingsRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_settings_async(
+    transport: str = "grpc_asyncio", request_type=logging_config.GetSettingsRequest
+):
+    client = ConfigServiceV2AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_settings), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            logging_config.Settings(
+                name="name_value",
+                kms_key_name="kms_key_name_value",
+                kms_service_account_id="kms_service_account_id_value",
+                storage_location="storage_location_value",
+                disable_default_sink=True,
+            )
+        )
+        response = await client.get_settings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == logging_config.GetSettingsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, logging_config.Settings)
+    assert response.name == "name_value"
+    assert response.kms_key_name == "kms_key_name_value"
+    assert response.kms_service_account_id == "kms_service_account_id_value"
+    assert response.storage_location == "storage_location_value"
+    assert response.disable_default_sink is True
+
+
+@pytest.mark.asyncio
+async def test_get_settings_async_from_dict():
+    await test_get_settings_async(request_type=dict)
+
+
+def test_get_settings_field_headers():
+    client = ConfigServiceV2Client(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.GetSettingsRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_settings), "__call__") as call:
+        call.return_value = logging_config.Settings()
+        client.get_settings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_settings_field_headers_async():
+    client = ConfigServiceV2AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.GetSettingsRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_settings), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            logging_config.Settings()
+        )
+        await client.get_settings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+def test_get_settings_flattened():
+    client = ConfigServiceV2Client(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_settings), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = logging_config.Settings()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_settings(name="name_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_settings_flattened_error():
+    client = ConfigServiceV2Client(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_settings(
+            logging_config.GetSettingsRequest(), name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_settings_flattened_async():
+    client = ConfigServiceV2AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_settings), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = logging_config.Settings()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            logging_config.Settings()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_settings(name="name_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_settings_flattened_error_async():
+    client = ConfigServiceV2AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_settings(
+            logging_config.GetSettingsRequest(), name="name_value",
+        )
+
+
+@pytest.mark.parametrize("request_type", [logging_config.UpdateSettingsRequest, dict,])
+def test_update_settings(request_type, transport: str = "grpc"):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_settings), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = logging_config.Settings(
+            name="name_value",
+            kms_key_name="kms_key_name_value",
+            kms_service_account_id="kms_service_account_id_value",
+            storage_location="storage_location_value",
+            disable_default_sink=True,
+        )
+        response = client.update_settings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == logging_config.UpdateSettingsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, logging_config.Settings)
+    assert response.name == "name_value"
+    assert response.kms_key_name == "kms_key_name_value"
+    assert response.kms_service_account_id == "kms_service_account_id_value"
+    assert response.storage_location == "storage_location_value"
+    assert response.disable_default_sink is True
+
+
+def test_update_settings_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_settings), "__call__") as call:
+        client.update_settings()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == logging_config.UpdateSettingsRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_settings_async(
+    transport: str = "grpc_asyncio", request_type=logging_config.UpdateSettingsRequest
+):
+    client = ConfigServiceV2AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_settings), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            logging_config.Settings(
+                name="name_value",
+                kms_key_name="kms_key_name_value",
+                kms_service_account_id="kms_service_account_id_value",
+                storage_location="storage_location_value",
+                disable_default_sink=True,
+            )
+        )
+        response = await client.update_settings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == logging_config.UpdateSettingsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, logging_config.Settings)
+    assert response.name == "name_value"
+    assert response.kms_key_name == "kms_key_name_value"
+    assert response.kms_service_account_id == "kms_service_account_id_value"
+    assert response.storage_location == "storage_location_value"
+    assert response.disable_default_sink is True
+
+
+@pytest.mark.asyncio
+async def test_update_settings_async_from_dict():
+    await test_update_settings_async(request_type=dict)
+
+
+def test_update_settings_field_headers():
+    client = ConfigServiceV2Client(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.UpdateSettingsRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_settings), "__call__") as call:
+        call.return_value = logging_config.Settings()
+        client.update_settings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_settings_field_headers_async():
+    client = ConfigServiceV2AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.UpdateSettingsRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_settings), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            logging_config.Settings()
+        )
+        await client.update_settings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+def test_update_settings_flattened():
+    client = ConfigServiceV2Client(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_settings), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = logging_config.Settings()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_settings(
+            settings=logging_config.Settings(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].settings
+        mock_val = logging_config.Settings(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+def test_update_settings_flattened_error():
+    client = ConfigServiceV2Client(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_settings(
+            logging_config.UpdateSettingsRequest(),
+            settings=logging_config.Settings(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_settings_flattened_async():
+    client = ConfigServiceV2AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_settings), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = logging_config.Settings()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            logging_config.Settings()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_settings(
+            settings=logging_config.Settings(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].settings
+        mock_val = logging_config.Settings(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_settings_flattened_error_async():
+    client = ConfigServiceV2AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_settings(
+            logging_config.UpdateSettingsRequest(),
+            settings=logging_config.Settings(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.parametrize("request_type", [logging_config.CopyLogEntriesRequest, dict,])
+def test_copy_log_entries(request_type, transport: str = "grpc"):
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.copy_log_entries), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.copy_log_entries(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == logging_config.CopyLogEntriesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_copy_log_entries_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.copy_log_entries), "__call__") as call:
+        client.copy_log_entries()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == logging_config.CopyLogEntriesRequest()
+
+
+@pytest.mark.asyncio
+async def test_copy_log_entries_async(
+    transport: str = "grpc_asyncio", request_type=logging_config.CopyLogEntriesRequest
+):
+    client = ConfigServiceV2AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.copy_log_entries), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.copy_log_entries(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == logging_config.CopyLogEntriesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_copy_log_entries_async_from_dict():
+    await test_copy_log_entries_async(request_type=dict)
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.ConfigServiceV2GrpcTransport(
@@ -5570,6 +6119,9 @@ def test_config_service_v2_base_transport():
         "delete_exclusion",
         "get_cmek_settings",
         "update_cmek_settings",
+        "get_settings",
+        "update_settings",
+        "copy_log_entries",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -5577,6 +6129,11 @@ def test_config_service_v2_base_transport():
 
     with pytest.raises(NotImplementedError):
         transport.close()
+
+    # Additionally, the LRO client (a property) should
+    # also raise NotImplementedError
+    with pytest.raises(NotImplementedError):
+        transport.operations_client
 
 
 def test_config_service_v2_base_transport_with_credentials_file():
@@ -5886,6 +6443,32 @@ def test_config_service_v2_transport_channel_mtls_with_adc(transport_class):
             assert transport.grpc_channel == mock_grpc_channel
 
 
+def test_config_service_v2_grpc_lro_client():
+    client = ConfigServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+    transport = client.transport
+
+    # Ensure that we have a api-core operations client.
+    assert isinstance(transport.operations_client, operations_v1.OperationsClient,)
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
+
+
+def test_config_service_v2_grpc_lro_async_client():
+    client = ConfigServiceV2AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+    )
+    transport = client.transport
+
+    # Ensure that we have a api-core operations client.
+    assert isinstance(transport.operations_client, operations_v1.OperationsAsyncClient,)
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
+
+
 def test_cmek_settings_path():
     project = "squid"
     expected = "projects/{project}/cmekSettings".format(project=project,)
@@ -5996,8 +6579,26 @@ def test_parse_log_view_path():
     assert expected == actual
 
 
+def test_settings_path():
+    project = "squid"
+    expected = "projects/{project}/settings".format(project=project,)
+    actual = ConfigServiceV2Client.settings_path(project)
+    assert expected == actual
+
+
+def test_parse_settings_path():
+    expected = {
+        "project": "clam",
+    }
+    path = ConfigServiceV2Client.settings_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ConfigServiceV2Client.parse_settings_path(path)
+    assert expected == actual
+
+
 def test_common_billing_account_path():
-    billing_account = "squid"
+    billing_account = "whelk"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -6007,7 +6608,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "clam",
+        "billing_account": "octopus",
     }
     path = ConfigServiceV2Client.common_billing_account_path(**expected)
 
@@ -6017,7 +6618,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "whelk"
+    folder = "oyster"
     expected = "folders/{folder}".format(folder=folder,)
     actual = ConfigServiceV2Client.common_folder_path(folder)
     assert expected == actual
@@ -6025,7 +6626,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "octopus",
+        "folder": "nudibranch",
     }
     path = ConfigServiceV2Client.common_folder_path(**expected)
 
@@ -6035,7 +6636,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "oyster"
+    organization = "cuttlefish"
     expected = "organizations/{organization}".format(organization=organization,)
     actual = ConfigServiceV2Client.common_organization_path(organization)
     assert expected == actual
@@ -6043,7 +6644,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nudibranch",
+        "organization": "mussel",
     }
     path = ConfigServiceV2Client.common_organization_path(**expected)
 
@@ -6053,7 +6654,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "cuttlefish"
+    project = "winkle"
     expected = "projects/{project}".format(project=project,)
     actual = ConfigServiceV2Client.common_project_path(project)
     assert expected == actual
@@ -6061,7 +6662,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "mussel",
+        "project": "nautilus",
     }
     path = ConfigServiceV2Client.common_project_path(**expected)
 
@@ -6071,8 +6672,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "winkle"
-    location = "nautilus"
+    project = "scallop"
+    location = "abalone"
     expected = "projects/{project}/locations/{location}".format(
         project=project, location=location,
     )
@@ -6082,8 +6683,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
+        "project": "squid",
+        "location": "clam",
     }
     path = ConfigServiceV2Client.common_location_path(**expected)
 

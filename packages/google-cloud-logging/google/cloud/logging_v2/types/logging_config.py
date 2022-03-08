@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ __protobuf__ = proto.module(
     package="google.logging.v2",
     manifest={
         "LifecycleState",
+        "OperationState",
         "LogBucket",
         "LogView",
         "LogSink",
@@ -56,6 +57,12 @@ __protobuf__ = proto.module(
         "GetCmekSettingsRequest",
         "UpdateCmekSettingsRequest",
         "CmekSettings",
+        "GetSettingsRequest",
+        "UpdateSettingsRequest",
+        "Settings",
+        "CopyLogEntriesRequest",
+        "CopyLogEntriesMetadata",
+        "CopyLogEntriesResponse",
     },
 )
 
@@ -67,18 +74,42 @@ class LifecycleState(proto.Enum):
     DELETE_REQUESTED = 2
 
 
+class OperationState(proto.Enum):
+    r"""List of different operation states.
+    High level state of the operation. This is used to report the
+    job's current state to the user. Once a long running operation
+    is created, the current state of the operation can be queried
+    even before the operation is finished and the final result is
+    available.
+    """
+    OPERATION_STATE_UNSPECIFIED = 0
+    OPERATION_STATE_SCHEDULED = 1
+    OPERATION_STATE_WAITING_FOR_PERMISSIONS = 2
+    OPERATION_STATE_RUNNING = 3
+    OPERATION_STATE_SUCCEEDED = 4
+    OPERATION_STATE_FAILED = 5
+    OPERATION_STATE_CANCELLED = 6
+
+
 class LogBucket(proto.Message):
-    r"""Describes a repository of logs.
+    r"""Describes a repository in which log entries are stored.
 
     Attributes:
         name (str):
-            The resource name of the bucket. For example:
-            "projects/my-project-id/locations/my-location/buckets/my-bucket-id
-            The supported locations are: "global"
+            Output only. The resource name of the bucket.
 
-            For the location of ``global`` it is unspecified where logs
-            are actually stored. Once a bucket has been created, the
-            location can not be changed.
+            For example:
+
+            ``projects/my-project/locations/global/buckets/my-bucket``
+
+            For a list of supported locations, see `Supported
+            Regions <https://cloud.google.com/logging/docs/region-support>`__
+
+            For the location of ``global`` it is unspecified where log
+            entries are actually stored.
+
+            After a bucket has been created, the location cannot be
+            changed.
         description (str):
             Describes this bucket.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -96,12 +127,30 @@ class LogBucket(proto.Message):
             bucket creation time, the default time of 30
             days will be used.
         locked (bool):
-            Whether the bucket has been locked.
-            The retention period on a locked bucket may not
+            Whether the bucket is locked.
+            The retention period on a locked bucket cannot
             be changed. Locked buckets may only be deleted
             if they are empty.
         lifecycle_state (google.cloud.logging_v2.types.LifecycleState):
             Output only. The bucket lifecycle state.
+        restricted_fields (Sequence[str]):
+            Log entry field paths that are denied access in this bucket.
+
+            The following fields and their children are eligible:
+            ``textPayload``, ``jsonPayload``, ``protoPayload``,
+            ``httpRequest``, ``labels``, ``sourceLocation``.
+
+            Restricting a repeated field will restrict all values.
+            Adding a parent will block all child fields. (e.g.
+            ``foo.bar`` will block ``foo.bar.baz``)
+        cmek_settings (google.cloud.logging_v2.types.CmekSettings):
+            The CMEK settings of the log bucket. If
+            present, new log entries written to this log
+            bucket are encrypted using the CMEK key provided
+            in this configuration. If a log bucket has CMEK
+            settings, the CMEK settings cannot be disabled
+            later by updating the log bucket. Changing the
+            KMS key is allowed.
     """
 
     name = proto.Field(proto.STRING, number=1,)
@@ -111,16 +160,20 @@ class LogBucket(proto.Message):
     retention_days = proto.Field(proto.INT32, number=11,)
     locked = proto.Field(proto.BOOL, number=9,)
     lifecycle_state = proto.Field(proto.ENUM, number=12, enum="LifecycleState",)
+    restricted_fields = proto.RepeatedField(proto.STRING, number=15,)
+    cmek_settings = proto.Field(proto.MESSAGE, number=19, message="CmekSettings",)
 
 
 class LogView(proto.Message):
-    r"""Describes a view over logs in a bucket.
+    r"""Describes a view over log entries in a bucket.
 
     Attributes:
         name (str):
             The resource name of the view.
-            For example
-            "projects/my-project-id/locations/my-location/buckets/my-bucket-id/views/my-view
+
+            For example:
+
+            ``projects/my-project/locations/global/buckets/my-bucket/views/my-view``
         description (str):
             Describes this view.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -131,11 +184,19 @@ class LogView(proto.Message):
             view.
         filter (str):
             Filter that restricts which log entries in a bucket are
-            visible in this view. Filters are restricted to be a logical
-            AND of ==/!= of any of the following: originating
-            project/folder/organization/billing account. resource type
-            log id Example: SOURCE("projects/myproject") AND
-            resource.type = "gce_instance" AND LOG_ID("stdout")
+            visible in this view.
+
+            Filters are restricted to be a logical AND of ==/!= of any
+            of the following:
+
+            -  originating project/folder/organization/billing account.
+            -  resource type
+            -  log id
+
+            For example:
+
+            SOURCE("projects/myproject") AND resource.type =
+            "gce_instance" AND LOG_ID("stdout")
     """
 
     name = proto.Field(proto.STRING, number=1,)
@@ -148,10 +209,10 @@ class LogView(proto.Message):
 class LogSink(proto.Message):
     r"""Describes a sink used to export log entries to one of the
     following destinations in any project: a Cloud Storage bucket, a
-    BigQuery dataset, or a Cloud Pub/Sub topic. A logs filter
-    controls which log entries are exported. The sink must be
-    created within a project, organization, billing account, or
-    folder.
+    BigQuery dataset, a Pub/Sub topic or a Cloud Logging log bucket.
+    A logs filter controls which log entries are exported. The sink
+    must be created within a project, organization, billing account,
+    or folder.
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -159,7 +220,9 @@ class LogSink(proto.Message):
     Attributes:
         name (str):
             Required. The client-assigned sink identifier, unique within
-            the project. Example: ``"my-syslog-errors-to-pubsub"``. Sink
+            the project.
+
+            For example: ``"my-syslog-errors-to-pubsub"``. Sink
             identifiers are limited to 100 characters and can include
             only the following characters: upper and lower-case
             alphanumeric characters, underscores, hyphens, and periods.
@@ -182,30 +245,30 @@ class LogSink(proto.Message):
             Optional. An `advanced logs
             filter <https://cloud.google.com/logging/docs/view/advanced-queries>`__.
             The only exported log entries are those that are in the
-            resource owning the sink and that match the filter. For
-            example:
+            resource owning the sink and that match the filter.
 
-            ::
+            For example:
 
-                logName="projects/[PROJECT_ID]/logs/[LOG_ID]" AND severity>=ERROR
+            ``logName="projects/[PROJECT_ID]/logs/[LOG_ID]" AND severity>=ERROR``
         description (str):
             Optional. A description of this sink.
             The maximum length of the description is 8000
             characters.
         disabled (bool):
-            Optional. If set to True, then this sink is
+            Optional. If set to true, then this sink is
             disabled and it does not export any log entries.
         exclusions (Sequence[google.cloud.logging_v2.types.LogExclusion]):
-            Optional. Log entries that match any of the exclusion
-            filters will not be exported. If a log entry is matched by
-            both ``filter`` and one of ``exclusion_filters`` it will not
-            be exported.
+            Optional. Log entries that match any of these exclusion
+            filters will not be exported.
+
+            If a log entry is matched by both ``filter`` and one of
+            ``exclusion_filters`` it will not be exported.
         output_version_format (google.cloud.logging_v2.types.LogSink.VersionFormat):
             Deprecated. This field is unused.
         writer_identity (str):
             Output only. An IAM identity—a service account or
-            group—under which Logging writes the exported log entries to
-            the sink's destination. This field is set by
+            group—under which Cloud Logging writes the exported log
+            entries to the sink's destination. This field is set by
             [sinks.create][google.logging.v2.ConfigServiceV2.CreateSink]
             and
             [sinks.update][google.logging.v2.ConfigServiceV2.UpdateSink]
@@ -218,25 +281,30 @@ class LogSink(proto.Message):
             Resource <https://cloud.google.com/iam/docs/granting-roles-to-service-accounts#granting_access_to_a_service_account_for_a_resource>`__.
             Consult the destination service's documentation to determine
             the appropriate IAM roles to assign to the identity.
+
+            Sinks that have a destination that is a log bucket in the
+            same project as the sink do not have a writer_identity and
+            no additional permissions are required.
         include_children (bool):
             Optional. This field applies only to sinks owned by
             organizations and folders. If the field is false, the
             default, only the logs owned by the sink's parent resource
-            are available for export. If the field is true, then logs
-            from all the projects, folders, and billing accounts
+            are available for export. If the field is true, then log
+            entries from all the projects, folders, and billing accounts
             contained in the sink's parent resource are also available
             for export. Whether a particular log entry from the children
-            is exported depends on the sink's filter expression. For
-            example, if this field is true, then the filter
+            is exported depends on the sink's filter expression.
+
+            For example, if this field is true, then the filter
             ``resource.type=gce_instance`` would export all Compute
             Engine VM instance log entries from all projects in the
-            sink's parent. To only export entries from certain child
-            projects, filter on the project part of the log name:
+            sink's parent.
 
-            ::
+            To only export entries from certain child projects, filter
+            on the project part of the log name:
 
-                logName:("projects/test-project1/" OR "projects/test-project2/") AND
-                resource.type=gce_instance
+            logName:("projects/test-project1/" OR
+            "projects/test-project2/") AND resource.type=gce_instance
         bigquery_options (google.cloud.logging_v2.types.BigQueryOptions):
             Optional. Options that affect sinks exporting
             data to BigQuery.
@@ -286,18 +354,20 @@ class BigQueryOptions(proto.Message):
         use_partitioned_tables (bool):
             Optional. Whether to use `BigQuery's partition
             tables <https://cloud.google.com/bigquery/docs/partitioned-tables>`__.
-            By default, Logging creates dated tables based on the log
-            entries' timestamps, e.g. syslog_20170523. With partitioned
-            tables the date suffix is no longer present and `special
-            query
+            By default, Cloud Logging creates dated tables based on the
+            log entries' timestamps, e.g. syslog_20170523. With
+            partitioned tables the date suffix is no longer present and
+            `special query
             syntax <https://cloud.google.com/bigquery/docs/querying-partitioned-tables>`__
             has to be used instead. In both cases, tables are sharded
             based on UTC timezone.
         uses_timestamp_column_partitioning (bool):
             Output only. True if new timestamp column based partitioning
             is in use, false if legacy ingestion-time partitioning is in
-            use. All new sinks will have this field set true and will
-            use timestamp column based partitioning. If
+            use.
+
+            All new sinks will have this field set true and will use
+            timestamp column based partitioning. If
             use_partitioned_tables is false, this value has no meaning
             and will be false. Legacy sinks using partitioned tables
             will have this field set to false.
@@ -369,13 +439,15 @@ class CreateBucketRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The resource in which to create the bucket:
+            Required. The resource in which to create the log bucket:
 
             ::
 
                 "projects/[PROJECT_ID]/locations/[LOCATION_ID]"
 
-            Example: ``"projects/my-logging-project/locations/global"``
+            For example:
+
+            ``"projects/my-project/locations/global"``
         bucket_id (str):
             Required. A client-assigned identifier such as
             ``"my-bucket"``. Identifiers are limited to 100 characters
@@ -407,11 +479,9 @@ class UpdateBucketRequest(proto.Message):
                 "billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
                 "folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
 
-            Example:
-            ``"projects/my-project-id/locations/my-location/buckets/my-bucket-id"``.
-            Also requires permission
-            "resourcemanager.projects.updateLiens" to set the locked
-            property
+            For example:
+
+            ``"projects/my-project/locations/global/buckets/my-bucket"``
         bucket (google.cloud.logging_v2.types.LogBucket):
             Required. The updated bucket.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
@@ -420,10 +490,10 @@ class UpdateBucketRequest(proto.Message):
             and only if, it is in the update mask. ``name`` and output
             only fields cannot be updated.
 
-            For a detailed ``FieldMask`` definition, see
+            For a detailed ``FieldMask`` definition, see:
             https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#google.protobuf.FieldMask
 
-            Example: ``updateMask=retention_days``.
+            For example: ``updateMask=retention_days``
     """
 
     name = proto.Field(proto.STRING, number=1,)
@@ -447,8 +517,9 @@ class GetBucketRequest(proto.Message):
                 "billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
                 "folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
 
-            Example:
-            ``"projects/my-project-id/locations/my-location/buckets/my-bucket-id"``.
+            For example:
+
+            ``"projects/my-project/locations/global/buckets/my-bucket"``
     """
 
     name = proto.Field(proto.STRING, number=1,)
@@ -468,8 +539,9 @@ class DeleteBucketRequest(proto.Message):
                 "billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
                 "folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
 
-            Example:
-            ``"projects/my-project-id/locations/my-location/buckets/my-bucket-id"``.
+            For example:
+
+            ``"projects/my-project/locations/global/buckets/my-bucket"``
     """
 
     name = proto.Field(proto.STRING, number=1,)
@@ -489,8 +561,9 @@ class UndeleteBucketRequest(proto.Message):
                 "billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
                 "folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
 
-            Example:
-            ``"projects/my-project-id/locations/my-location/buckets/my-bucket-id"``.
+            For example:
+
+            ``"projects/my-project/locations/global/buckets/my-bucket"``
     """
 
     name = proto.Field(proto.STRING, number=1,)
@@ -514,7 +587,9 @@ class ListViewsRequest(proto.Message):
             should be identical to those in the previous call.
         page_size (int):
             Optional. The maximum number of results to return from this
-            request. Non-positive values are ignored. The presence of
+            request.
+
+            Non-positive values are ignored. The presence of
             ``nextPageToken`` in the response indicates that more
             results might be available.
     """
@@ -554,10 +629,11 @@ class CreateViewRequest(proto.Message):
 
             ::
 
-                "projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
+                `"projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"`
 
-            Example:
-            ``"projects/my-logging-project/locations/my-location/buckets/my-bucket"``
+            For example:
+
+            ``"projects/my-project/locations/global/buckets/my-bucket"``
         view_id (str):
             Required. The id to use for this view.
         view (google.cloud.logging_v2.types.LogView):
@@ -580,8 +656,9 @@ class UpdateViewRequest(proto.Message):
 
                 "projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]"
 
-            Example:
-            ``"projects/my-project-id/locations/my-location/buckets/my-bucket-id/views/my-view-id"``.
+            For example:
+
+            ``"projects/my-project/locations/global/buckets/my-bucket/views/my-view"``
         view (google.cloud.logging_v2.types.LogView):
             Required. The updated view.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
@@ -593,7 +670,7 @@ class UpdateViewRequest(proto.Message):
             For a detailed ``FieldMask`` definition, see
             https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#google.protobuf.FieldMask
 
-            Example: ``updateMask=filter``.
+            For example: ``updateMask=filter``
     """
 
     name = proto.Field(proto.STRING, number=1,)
@@ -614,8 +691,9 @@ class GetViewRequest(proto.Message):
 
                 "projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]"
 
-            Example:
-            ``"projects/my-project-id/locations/my-location/buckets/my-bucket-id/views/my-view-id"``.
+            For example:
+
+            ``"projects/my-project/locations/global/buckets/my-bucket/views/my-view"``
     """
 
     name = proto.Field(proto.STRING, number=1,)
@@ -632,8 +710,11 @@ class DeleteViewRequest(proto.Message):
 
                 "projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]"
 
-            Example:
-            ``"projects/my-project-id/locations/my-location/buckets/my-bucket-id/views/my-view-id"``.
+            For example:
+
+            ::
+
+               `"projects/my-project/locations/global/buckets/my-bucket/views/my-view"`
     """
 
     name = proto.Field(proto.STRING, number=1,)
@@ -705,7 +786,9 @@ class GetSinkRequest(proto.Message):
                 "billingAccounts/[BILLING_ACCOUNT_ID]/sinks/[SINK_ID]"
                 "folders/[FOLDER_ID]/sinks/[SINK_ID]"
 
-            Example: ``"projects/my-project-id/sinks/my-sink-id"``.
+            For example:
+
+            ``"projects/my-project/sinks/my-sink"``
     """
 
     sink_name = proto.Field(proto.STRING, number=1,)
@@ -725,8 +808,9 @@ class CreateSinkRequest(proto.Message):
                 "billingAccounts/[BILLING_ACCOUNT_ID]"
                 "folders/[FOLDER_ID]"
 
-            Examples: ``"projects/my-logging-project"``,
-            ``"organizations/123456789"``.
+            For examples:
+
+            ``"projects/my-project"`` ``"organizations/123456789"``
         sink (google.cloud.logging_v2.types.LogSink):
             Required. The new sink, whose ``name`` parameter is a sink
             identifier that is not already in use.
@@ -735,9 +819,10 @@ class CreateSinkRequest(proto.Message):
             ``writer_identity`` in the new sink. If this value is
             omitted or set to false, and if the sink's parent is a
             project, then the value returned as ``writer_identity`` is
-            the same group or service account used by Logging before the
-            addition of writer identities to this API. The sink's
-            destination must be in the same project as the sink itself.
+            the same group or service account used by Cloud Logging
+            before the addition of writer identities to this API. The
+            sink's destination must be in the same project as the sink
+            itself.
 
             If this field is set to true, or if the sink is owned by a
             non-project resource such as an organization, then the value
@@ -767,7 +852,9 @@ class UpdateSinkRequest(proto.Message):
                 "billingAccounts/[BILLING_ACCOUNT_ID]/sinks/[SINK_ID]"
                 "folders/[FOLDER_ID]/sinks/[SINK_ID]"
 
-            Example: ``"projects/my-project-id/sinks/my-sink-id"``.
+            For example:
+
+            ``"projects/my-project/sinks/my-sink"``
         sink (google.cloud.logging_v2.types.LogSink):
             Required. The updated sink, whose name is the same
             identifier that appears as part of ``sink_name``.
@@ -793,16 +880,18 @@ class UpdateSinkRequest(proto.Message):
             and only if, it is in the update mask. ``name`` and output
             only fields cannot be updated.
 
-            An empty updateMask is temporarily treated as using the
+            An empty ``updateMask`` is temporarily treated as using the
             following mask for backwards compatibility purposes:
-            destination,filter,includeChildren At some point in the
-            future, behavior will be removed and specifying an empty
-            updateMask will be an error.
+
+            ``destination,filter,includeChildren``
+
+            At some point in the future, behavior will be removed and
+            specifying an empty ``updateMask`` will be an error.
 
             For a detailed ``FieldMask`` definition, see
             https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#google.protobuf.FieldMask
 
-            Example: ``updateMask=filter``.
+            For example: ``updateMask=filter``
     """
 
     sink_name = proto.Field(proto.STRING, number=1,)
@@ -828,20 +917,21 @@ class DeleteSinkRequest(proto.Message):
                 "billingAccounts/[BILLING_ACCOUNT_ID]/sinks/[SINK_ID]"
                 "folders/[FOLDER_ID]/sinks/[SINK_ID]"
 
-            Example: ``"projects/my-project-id/sinks/my-sink-id"``.
+            For example:
+
+            ``"projects/my-project/sinks/my-sink"``
     """
 
     sink_name = proto.Field(proto.STRING, number=1,)
 
 
 class LogExclusion(proto.Message):
-    r"""Specifies a set of log entries that are not to be stored in
-    Logging. If your GCP resource receives a large volume of logs,
-    you can use exclusions to reduce your chargeable logs.
-    Exclusions are processed after log sinks, so you can export log
-    entries before they are excluded. Note that organization-level
-    and folder-level exclusions don't apply to child resources, and
-    that you can't exclude audit log entries.
+    r"""Specifies a set of log entries that are filtered out by a sink. If
+    your Google Cloud resource receives a large volume of log entries,
+    you can use exclusions to reduce your chargeable logs. Note that
+    exclusions on organization-level and folder-level sinks don't apply
+    to child resources. Note also that you cannot modify the \_Required
+    sink or exclude logs from it.
 
     Attributes:
         name (str):
@@ -859,10 +949,11 @@ class LogExclusion(proto.Message):
             `sample
             function <https://cloud.google.com/logging/docs/view/advanced-queries#sample>`__,
             you can exclude less than 100% of the matching log entries.
+
             For example, the following query matches 99% of low-severity
             log entries from Google Cloud Storage buckets:
 
-            ``"resource.type=gcs_bucket severity<ERROR sample(insertId, 0.99)"``
+            ``resource.type=gcs_bucket severity<ERROR sample(insertId, 0.99)``
         disabled (bool):
             Optional. If set to True, then this exclusion is disabled
             and it does not exclude any log entries. You can [update an
@@ -955,8 +1046,9 @@ class GetExclusionRequest(proto.Message):
                 "billingAccounts/[BILLING_ACCOUNT_ID]/exclusions/[EXCLUSION_ID]"
                 "folders/[FOLDER_ID]/exclusions/[EXCLUSION_ID]"
 
-            Example:
-            ``"projects/my-project-id/exclusions/my-exclusion-id"``.
+            For example:
+
+            ``"projects/my-project/exclusions/my-exclusion"``
     """
 
     name = proto.Field(proto.STRING, number=1,)
@@ -977,8 +1069,10 @@ class CreateExclusionRequest(proto.Message):
                 "billingAccounts/[BILLING_ACCOUNT_ID]"
                 "folders/[FOLDER_ID]"
 
-            Examples: ``"projects/my-logging-project"``,
-            ``"organizations/123456789"``.
+            For examples:
+
+            ``"projects/my-logging-project"``
+            ``"organizations/123456789"``
         exclusion (google.cloud.logging_v2.types.LogExclusion):
             Required. The new exclusion, whose ``name`` parameter is an
             exclusion name that is not already used in the parent
@@ -1003,8 +1097,9 @@ class UpdateExclusionRequest(proto.Message):
                 "billingAccounts/[BILLING_ACCOUNT_ID]/exclusions/[EXCLUSION_ID]"
                 "folders/[FOLDER_ID]/exclusions/[EXCLUSION_ID]"
 
-            Example:
-            ``"projects/my-project-id/exclusions/my-exclusion-id"``.
+            For example:
+
+            ``"projects/my-project/exclusions/my-exclusion"``
         exclusion (google.cloud.logging_v2.types.LogExclusion):
             Required. New values for the existing exclusion. Only the
             fields specified in ``update_mask`` are relevant.
@@ -1043,8 +1138,9 @@ class DeleteExclusionRequest(proto.Message):
                 "billingAccounts/[BILLING_ACCOUNT_ID]/exclusions/[EXCLUSION_ID]"
                 "folders/[FOLDER_ID]/exclusions/[EXCLUSION_ID]"
 
-            Example:
-            ``"projects/my-project-id/exclusions/my-exclusion-id"``.
+            For example:
+
+            ``"projects/my-project/exclusions/my-exclusion"``
     """
 
     name = proto.Field(proto.STRING, number=1,)
@@ -1054,7 +1150,7 @@ class GetCmekSettingsRequest(proto.Message):
     r"""The parameters to
     [GetCmekSettings][google.logging.v2.ConfigServiceV2.GetCmekSettings].
 
-    See `Enabling CMEK for Logs
+    See `Enabling CMEK for Log
     Router <https://cloud.google.com/logging/docs/routing/managed-encryption>`__
     for more information.
 
@@ -1069,11 +1165,14 @@ class GetCmekSettingsRequest(proto.Message):
                 "billingAccounts/[BILLING_ACCOUNT_ID]/cmekSettings"
                 "folders/[FOLDER_ID]/cmekSettings"
 
-            Example: ``"organizations/12345/cmekSettings"``.
+            For example:
 
-            Note: CMEK for the Logs Router can currently only be
-            configured for GCP organizations. Once configured, it
-            applies to all projects and folders in the GCP organization.
+            ``"organizations/12345/cmekSettings"``
+
+            Note: CMEK for the Log Router can be configured for Google
+            Cloud projects, folders, organizations and billing accounts.
+            Once configured for an organization, it applies to all
+            projects and folders in the Google Cloud organization.
     """
 
     name = proto.Field(proto.STRING, number=1,)
@@ -1083,7 +1182,7 @@ class UpdateCmekSettingsRequest(proto.Message):
     r"""The parameters to
     [UpdateCmekSettings][google.logging.v2.ConfigServiceV2.UpdateCmekSettings].
 
-    See `Enabling CMEK for Logs
+    See `Enabling CMEK for Log
     Router <https://cloud.google.com/logging/docs/routing/managed-encryption>`__
     for more information.
 
@@ -1098,15 +1197,18 @@ class UpdateCmekSettingsRequest(proto.Message):
                 "billingAccounts/[BILLING_ACCOUNT_ID]/cmekSettings"
                 "folders/[FOLDER_ID]/cmekSettings"
 
-            Example: ``"organizations/12345/cmekSettings"``.
+            For example:
 
-            Note: CMEK for the Logs Router can currently only be
-            configured for GCP organizations. Once configured, it
-            applies to all projects and folders in the GCP organization.
+            ``"organizations/12345/cmekSettings"``
+
+            Note: CMEK for the Log Router can currently only be
+            configured for Google Cloud organizations. Once configured,
+            it applies to all projects and folders in the Google Cloud
+            organization.
         cmek_settings (google.cloud.logging_v2.types.CmekSettings):
             Required. The CMEK settings to update.
 
-            See `Enabling CMEK for Logs
+            See `Enabling CMEK for Log
             Router <https://cloud.google.com/logging/docs/routing/managed-encryption>`__
             for more information.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
@@ -1118,7 +1220,7 @@ class UpdateCmekSettingsRequest(proto.Message):
             See [FieldMask][google.protobuf.FieldMask] for more
             information.
 
-            Example: ``"updateMask=kmsKeyName"``
+            For example: ``"updateMask=kmsKeyName"``
     """
 
     name = proto.Field(proto.STRING, number=1,)
@@ -1133,11 +1235,11 @@ class CmekSettings(proto.Message):
     associated with a project, folder, organization, billing account, or
     flexible resource.
 
-    Note: CMEK for the Logs Router can currently only be configured for
-    GCP organizations. Once configured, it applies to all projects and
-    folders in the GCP organization.
+    Note: CMEK for the Log Router can currently only be configured for
+    Google Cloud organizations. Once configured, it applies to all
+    projects and folders in the Google Cloud organization.
 
-    See `Enabling CMEK for Logs
+    See `Enabling CMEK for Log
     Router <https://cloud.google.com/logging/docs/routing/managed-encryption>`__
     for more information.
 
@@ -1149,14 +1251,163 @@ class CmekSettings(proto.Message):
             The resource name for the configured Cloud KMS key.
 
             KMS key name format:
-            "projects/[PROJECT_ID]/locations/[LOCATION]/keyRings/[KEYRING]/cryptoKeys/[KEY]"
+
+            ::
+
+                "projects/[PROJECT_ID]/locations/[LOCATION]/keyRings/[KEYRING]/cryptoKeys/[KEY]"
 
             For example:
-            ``"projects/my-project-id/locations/my-region/keyRings/key-ring-name/cryptoKeys/key-name"``
 
-            To enable CMEK for the Logs Router, set this field to a
-            valid ``kms_key_name`` for which the associated service
-            account has the required
+            ``"projects/my-project/locations/us-central1/keyRings/my-ring/cryptoKeys/my-key"``
+
+            To enable CMEK for the Log Router, set this field to a valid
+            ``kms_key_name`` for which the associated service account
+            has the required cloudkms.cryptoKeyEncrypterDecrypter roles
+            assigned for the key.
+
+            The Cloud KMS key used by the Log Router can be updated by
+            changing the ``kms_key_name`` to a new valid key name or
+            disabled by setting the key name to an empty string.
+            Encryption operations that are in progress will be completed
+            with the key that was in use when they started. Decryption
+            operations will be completed using the key that was used at
+            the time of encryption unless access to that key has been
+            revoked.
+
+            To disable CMEK for the Log Router, set this field to an
+            empty string.
+
+            See `Enabling CMEK for Log
+            Router <https://cloud.google.com/logging/docs/routing/managed-encryption>`__
+            for more information.
+        service_account_id (str):
+            Output only. The service account that will be used by the
+            Log Router to access your Cloud KMS key.
+
+            Before enabling CMEK for Log Router, you must first assign
+            the cloudkms.cryptoKeyEncrypterDecrypter role to the service
+            account that the Log Router will use to access your Cloud
+            KMS key. Use
+            [GetCmekSettings][google.logging.v2.ConfigServiceV2.GetCmekSettings]
+            to obtain the service account ID.
+
+            See `Enabling CMEK for Log
+            Router <https://cloud.google.com/logging/docs/routing/managed-encryption>`__
+            for more information.
+    """
+
+    name = proto.Field(proto.STRING, number=1,)
+    kms_key_name = proto.Field(proto.STRING, number=2,)
+    service_account_id = proto.Field(proto.STRING, number=3,)
+
+
+class GetSettingsRequest(proto.Message):
+    r"""The parameters to
+    [GetSettings][google.logging.v2.ConfigServiceV2.GetSettings].
+
+    See `Enabling CMEK for Log
+    Router <https://cloud.google.com/logging/docs/routing/managed-encryption>`__
+    for more information.
+
+    Attributes:
+        name (str):
+            Required. The resource for which to retrieve settings.
+
+            ::
+
+                "projects/[PROJECT_ID]/settings"
+                "organizations/[ORGANIZATION_ID]/settings"
+                "billingAccounts/[BILLING_ACCOUNT_ID]/settings"
+                "folders/[FOLDER_ID]/settings"
+
+            For example:
+
+            ``"organizations/12345/settings"``
+
+            Note: Settings for the Log Router can be get for Google
+            Cloud projects, folders, organizations and billing accounts.
+            Currently it can only be configured for organizations. Once
+            configured for an organization, it applies to all projects
+            and folders in the Google Cloud organization.
+    """
+
+    name = proto.Field(proto.STRING, number=1,)
+
+
+class UpdateSettingsRequest(proto.Message):
+    r"""The parameters to
+    [UpdateSettings][google.logging.v2.ConfigServiceV2.UpdateSettings].
+
+    See `Enabling CMEK for Log
+    Router <https://cloud.google.com/logging/docs/routing/managed-encryption>`__
+    for more information.
+
+    Attributes:
+        name (str):
+            Required. The resource name for the settings to update.
+
+            ::
+
+                "organizations/[ORGANIZATION_ID]/settings"
+
+            For example:
+
+            ``"organizations/12345/settings"``
+
+            Note: Settings for the Log Router can currently only be
+            configured for Google Cloud organizations. Once configured,
+            it applies to all projects and folders in the Google Cloud
+            organization.
+        settings (google.cloud.logging_v2.types.Settings):
+            Required. The settings to update.
+
+            See `Enabling CMEK for Log
+            Router <https://cloud.google.com/logging/docs/routing/managed-encryption>`__
+            for more information.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Optional. Field mask identifying which fields from
+            ``settings`` should be updated. A field will be overwritten
+            if and only if it is in the update mask. Output only fields
+            cannot be updated.
+
+            See [FieldMask][google.protobuf.FieldMask] for more
+            information.
+
+            For example: ``"updateMask=kmsKeyName"``
+    """
+
+    name = proto.Field(proto.STRING, number=1,)
+    settings = proto.Field(proto.MESSAGE, number=2, message="Settings",)
+    update_mask = proto.Field(
+        proto.MESSAGE, number=3, message=field_mask_pb2.FieldMask,
+    )
+
+
+class Settings(proto.Message):
+    r"""Describes the settings associated with a project, folder,
+    organization, billing account, or flexible resource.
+
+    Attributes:
+        name (str):
+            Output only. The resource name of the
+            settings.
+        kms_key_name (str):
+            Optional. The resource name for the configured Cloud KMS
+            key.
+
+            KMS key name format:
+
+            ::
+
+                "projects/[PROJECT_ID]/locations/[LOCATION]/keyRings/[KEYRING]/cryptoKeys/[KEY]"
+
+            For example:
+
+            ``"projects/my-project/locations/us-central1/keyRings/my-ring/cryptoKeys/my-key"``
+
+            To enable CMEK for the Log Router, set this field to a valid
+            ``kms_key_name`` for which the associated service account
+            has the required
             ``roles/cloudkms.cryptoKeyEncrypterDecrypter`` role assigned
             for the key.
 
@@ -1168,31 +1419,118 @@ class CmekSettings(proto.Message):
             the time of encryption unless access to that key has been
             revoked.
 
-            To disable CMEK for the Logs Router, set this field to an
+            To disable CMEK for the Log Router, set this field to an
             empty string.
 
-            See `Enabling CMEK for Logs
+            See `Enabling CMEK for Log
             Router <https://cloud.google.com/logging/docs/routing/managed-encryption>`__
             for more information.
-        service_account_id (str):
+        kms_service_account_id (str):
             Output only. The service account that will be used by the
-            Logs Router to access your Cloud KMS key.
+            Log Router to access your Cloud KMS key.
 
-            Before enabling CMEK for Logs Router, you must first assign
+            Before enabling CMEK for Log Router, you must first assign
             the role ``roles/cloudkms.cryptoKeyEncrypterDecrypter`` to
-            the service account that the Logs Router will use to access
+            the service account that the Log Router will use to access
             your Cloud KMS key. Use
-            [GetCmekSettings][google.logging.v2.ConfigServiceV2.GetCmekSettings]
+            [GetSettings][google.logging.v2.ConfigServiceV2.GetSettings]
             to obtain the service account ID.
 
-            See `Enabling CMEK for Logs
+            See `Enabling CMEK for Log
             Router <https://cloud.google.com/logging/docs/routing/managed-encryption>`__
             for more information.
+        storage_location (str):
+            Optional. The Cloud region that will be used for \_Default
+            and \_Required log buckets for newly created projects and
+            folders. For example ``europe-west1``. This setting does not
+            affect the location of custom log buckets.
+        disable_default_sink (bool):
+            Optional. If set to true, the \_Default sink in newly
+            created projects and folders will created in a disabled
+            state. This can be used to automatically disable log
+            ingestion if there is already an aggregated sink configured
+            in the hierarchy. The \_Default sink can be re-enabled
+            manually if needed.
     """
 
     name = proto.Field(proto.STRING, number=1,)
     kms_key_name = proto.Field(proto.STRING, number=2,)
-    service_account_id = proto.Field(proto.STRING, number=3,)
+    kms_service_account_id = proto.Field(proto.STRING, number=3,)
+    storage_location = proto.Field(proto.STRING, number=4,)
+    disable_default_sink = proto.Field(proto.BOOL, number=5,)
+
+
+class CopyLogEntriesRequest(proto.Message):
+    r"""The parameters to CopyLogEntries.
+
+    Attributes:
+        name (str):
+            Required. Log bucket from which to copy log entries.
+
+            For example:
+
+            ``"projects/my-project/locations/global/buckets/my-source-bucket"``
+        filter (str):
+            Optional. A filter specifying which log
+            entries to copy. The filter must be no more than
+            20k characters. An empty filter matches all log
+            entries.
+        destination (str):
+            Required. Destination to which to copy log
+            entries.
+    """
+
+    name = proto.Field(proto.STRING, number=1,)
+    filter = proto.Field(proto.STRING, number=3,)
+    destination = proto.Field(proto.STRING, number=4,)
+
+
+class CopyLogEntriesMetadata(proto.Message):
+    r"""Metadata for CopyLogEntries long running operations.
+
+    Attributes:
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
+            The create time of an operation.
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
+            The end time of an operation.
+        state (google.cloud.logging_v2.types.OperationState):
+            State of an operation.
+        cancellation_requested (bool):
+            Identifies whether the user has requested
+            cancellation of the operation.
+        request (google.cloud.logging_v2.types.CopyLogEntriesRequest):
+            CopyLogEntries RPC request.
+        progress (int):
+            Estimated progress of the operation (0 -
+            100%).
+        writer_identity (str):
+            The IAM identity of a service account that must be granted
+            access to the destination.
+
+            If the service account is not granted permission to the
+            destination within an hour, the operation will be cancelled.
+
+            For example: ``"serviceAccount:foo@bar.com"``
+    """
+
+    start_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
+    end_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
+    state = proto.Field(proto.ENUM, number=3, enum="OperationState",)
+    cancellation_requested = proto.Field(proto.BOOL, number=4,)
+    request = proto.Field(proto.MESSAGE, number=5, message="CopyLogEntriesRequest",)
+    progress = proto.Field(proto.INT32, number=6,)
+    writer_identity = proto.Field(proto.STRING, number=7,)
+
+
+class CopyLogEntriesResponse(proto.Message):
+    r"""Response type for CopyLogEntries long running operations.
+
+    Attributes:
+        log_entries_copied_count (int):
+            Number of log entries copied.
+    """
+
+    log_entries_copied_count = proto.Field(proto.INT64, number=1,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

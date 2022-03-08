@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -405,11 +405,28 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
-        r"""Deletes all the log entries in a log. The log
-        reappears if it receives new entries. Log entries
-        written shortly before the delete operation might not be
-        deleted. Entries received after the delete operation
-        with a timestamp before the operation will be deleted.
+        r"""Deletes all the log entries in a log for the \_Default Log
+        Bucket. The log reappears if it receives new entries. Log
+        entries written shortly before the delete operation might not be
+        deleted. Entries received after the delete operation with a
+        timestamp before the operation will be deleted.
+
+
+        .. code-block:: python
+
+            from google.cloud import logging_v2
+
+            def sample_delete_log():
+                # Create a client
+                client = logging_v2.LoggingServiceV2Client()
+
+                # Initialize request argument(s)
+                request = logging_v2.DeleteLogRequest(
+                    log_name="log_name_value",
+                )
+
+                # Make the request
+                client.delete_log(request=request)
 
         Args:
             request (Union[google.cloud.logging_v2.types.DeleteLogRequest, dict]):
@@ -417,16 +434,15 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
             log_name (str):
                 Required. The resource name of the log to delete:
 
-                ::
-
-                    "projects/[PROJECT_ID]/logs/[LOG_ID]"
-                    "organizations/[ORGANIZATION_ID]/logs/[LOG_ID]"
-                    "billingAccounts/[BILLING_ACCOUNT_ID]/logs/[LOG_ID]"
-                    "folders/[FOLDER_ID]/logs/[LOG_ID]"
+                -  ``projects/[PROJECT_ID]/logs/[LOG_ID]``
+                -  ``organizations/[ORGANIZATION_ID]/logs/[LOG_ID]``
+                -  ``billingAccounts/[BILLING_ACCOUNT_ID]/logs/[LOG_ID]``
+                -  ``folders/[FOLDER_ID]/logs/[LOG_ID]``
 
                 ``[LOG_ID]`` must be URL-encoded. For example,
                 ``"projects/my-project-id/logs/syslog"``,
-                ``"organizations/1234567890/logs/cloudresourcemanager.googleapis.com%2Factivity"``.
+                ``"organizations/123/logs/cloudaudit.googleapis.com%2Factivity"``.
+
                 For more information about log names, see
                 [LogEntry][google.logging.v2.LogEntry].
 
@@ -495,6 +511,29 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         maximum of 1000 different resources (projects,
         organizations, billing accounts or folders)
 
+
+        .. code-block:: python
+
+            from google.cloud import logging_v2
+
+            def sample_write_log_entries():
+                # Create a client
+                client = logging_v2.LoggingServiceV2Client()
+
+                # Initialize request argument(s)
+                entries = logging_v2.LogEntry()
+                entries.log_name = "log_name_value"
+
+                request = logging_v2.WriteLogEntriesRequest(
+                    entries=entries,
+                )
+
+                # Make the request
+                response = client.write_log_entries(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.logging_v2.types.WriteLogEntriesRequest, dict]):
                 The request object. The parameters to WriteLogEntries.
@@ -503,19 +542,17 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
                 to all log entries in ``entries`` that do not specify a
                 value for ``log_name``:
 
-                ::
-
-                    "projects/[PROJECT_ID]/logs/[LOG_ID]"
-                    "organizations/[ORGANIZATION_ID]/logs/[LOG_ID]"
-                    "billingAccounts/[BILLING_ACCOUNT_ID]/logs/[LOG_ID]"
-                    "folders/[FOLDER_ID]/logs/[LOG_ID]"
+                -  ``projects/[PROJECT_ID]/logs/[LOG_ID]``
+                -  ``organizations/[ORGANIZATION_ID]/logs/[LOG_ID]``
+                -  ``billingAccounts/[BILLING_ACCOUNT_ID]/logs/[LOG_ID]``
+                -  ``folders/[FOLDER_ID]/logs/[LOG_ID]``
 
                 ``[LOG_ID]`` must be URL-encoded. For example:
 
                 ::
 
                     "projects/my-project-id/logs/syslog"
-                    "organizations/1234567890/logs/cloudresourcemanager.googleapis.com%2Factivity"
+                    "organizations/123/logs/cloudaudit.googleapis.com%2Factivity"
 
                 The permission ``logging.logEntries.create`` is needed
                 on each project, organization, billing account, or
@@ -571,17 +608,17 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
 
                 Log entries with timestamps that are more than the `logs
                 retention
-                period <https://cloud.google.com/logging/quota-policy>`__
-                in the past or more than 24 hours in the future will not
-                be available when calling ``entries.list``. However,
-                those log entries can still be `exported with
+                period <https://cloud.google.com/logging/quotas>`__ in
+                the past or more than 24 hours in the future will not be
+                available when calling ``entries.list``. However, those
+                log entries can still be `exported with
                 LogSinks <https://cloud.google.com/logging/docs/api/tasks/exporting-logs>`__.
 
                 To improve throughput and to avoid exceeding the `quota
-                limit <https://cloud.google.com/logging/quota-policy>`__
-                for calls to ``entries.write``, you should try to
-                include several log entries in this list, rather than
-                calling this method for each individual log entry.
+                limit <https://cloud.google.com/logging/quotas>`__ for
+                calls to ``entries.write``, you should try to include
+                several log entries in this list, rather than calling
+                this method for each individual log entry.
 
                 This corresponds to the ``entries`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -649,6 +686,27 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         For ways to export log entries, see `Exporting
         Logs <https://cloud.google.com/logging/docs/export>`__.
 
+
+        .. code-block:: python
+
+            from google.cloud import logging_v2
+
+            def sample_list_log_entries():
+                # Create a client
+                client = logging_v2.LoggingServiceV2Client()
+
+                # Initialize request argument(s)
+                request = logging_v2.ListLogEntriesRequest(
+                    resource_names=['resource_names_value_1', 'resource_names_value_2'],
+                )
+
+                # Make the request
+                page_result = client.list_log_entries(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.logging_v2.types.ListLogEntriesRequest, dict]):
                 The request object. The parameters to `ListLogEntries`.
@@ -656,18 +714,17 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
                 Required. Names of one or more parent resources from
                 which to retrieve log entries:
 
-                ::
+                -  ``projects/[PROJECT_ID]``
+                -  ``organizations/[ORGANIZATION_ID]``
+                -  ``billingAccounts/[BILLING_ACCOUNT_ID]``
+                -  ``folders/[FOLDER_ID]``
 
-                    "projects/[PROJECT_ID]"
-                    "organizations/[ORGANIZATION_ID]"
-                    "billingAccounts/[BILLING_ACCOUNT_ID]"
-                    "folders/[FOLDER_ID]"
+                May alternatively be one or more views:
 
-                May alternatively be one or more views
-                projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]
-                organization/[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]
-                billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]
-                folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]
+                -  ``projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]``
+                -  ``organizations/[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]``
+                -  ``billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]``
+                -  ``folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]``
 
                 Projects listed in the ``project_ids`` field are added
                 to this list.
@@ -768,6 +825,26 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         r"""Lists the descriptors for monitored resource types
         used by Logging.
 
+
+        .. code-block:: python
+
+            from google.cloud import logging_v2
+
+            def sample_list_monitored_resource_descriptors():
+                # Create a client
+                client = logging_v2.LoggingServiceV2Client()
+
+                # Initialize request argument(s)
+                request = logging_v2.ListMonitoredResourceDescriptorsRequest(
+                )
+
+                # Make the request
+                page_result = client.list_monitored_resource_descriptors(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.logging_v2.types.ListMonitoredResourceDescriptorsRequest, dict]):
                 The request object. The parameters to
@@ -826,18 +903,37 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         or billing accounts. Only logs that have entries are
         listed.
 
+
+        .. code-block:: python
+
+            from google.cloud import logging_v2
+
+            def sample_list_logs():
+                # Create a client
+                client = logging_v2.LoggingServiceV2Client()
+
+                # Initialize request argument(s)
+                request = logging_v2.ListLogsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_logs(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.logging_v2.types.ListLogsRequest, dict]):
                 The request object. The parameters to ListLogs.
             parent (str):
                 Required. The resource name that owns the logs:
 
-                ::
-
-                    "projects/[PROJECT_ID]"
-                    "organizations/[ORGANIZATION_ID]"
-                    "billingAccounts/[BILLING_ACCOUNT_ID]"
-                    "folders/[FOLDER_ID]"
+                -  ``projects/[PROJECT_ID]``
+                -  ``organizations/[ORGANIZATION_ID]``
+                -  ``billingAccounts/[BILLING_ACCOUNT_ID]``
+                -  ``folders/[FOLDER_ID]``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -910,6 +1006,37 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         r"""Streaming read of log entries as they are ingested.
         Until the stream is terminated, it will continue reading
         logs.
+
+
+        .. code-block:: python
+
+            from google.cloud import logging_v2
+
+            def sample_tail_log_entries():
+                # Create a client
+                client = logging_v2.LoggingServiceV2Client()
+
+                # Initialize request argument(s)
+                request = logging_v2.TailLogEntriesRequest(
+                    resource_names=['resource_names_value_1', 'resource_names_value_2'],
+                )
+
+                # This method expects an iterator which contains
+                # 'logging_v2.TailLogEntriesRequest' objects
+                # Here we create a generator that yields a single `request` for
+                # demonstrative purposes.
+                requests = [request]
+
+                def request_generator():
+                    for request in requests:
+                        yield request
+
+                # Make the request
+                stream = client.tail_log_entries(requests=request_generator())
+
+                # Handle the response
+                for response in stream:
+                    print(response)
 
         Args:
             requests (Iterator[google.cloud.logging_v2.types.TailLogEntriesRequest]):
