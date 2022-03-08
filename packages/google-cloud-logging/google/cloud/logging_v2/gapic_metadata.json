@@ -10,6 +10,11 @@
         "grpc": {
           "libraryClient": "ConfigServiceV2Client",
           "rpcs": {
+            "CopyLogEntries": {
+              "methods": [
+                "copy_log_entries"
+              ]
+            },
             "CreateBucket": {
               "methods": [
                 "create_bucket"
@@ -65,6 +70,11 @@
                 "get_exclusion"
               ]
             },
+            "GetSettings": {
+              "methods": [
+                "get_settings"
+              ]
+            },
             "GetSink": {
               "methods": [
                 "get_sink"
@@ -113,6 +123,11 @@
             "UpdateExclusion": {
               "methods": [
                 "update_exclusion"
+              ]
+            },
+            "UpdateSettings": {
+              "methods": [
+                "update_settings"
               ]
             },
             "UpdateSink": {
@@ -130,6 +145,11 @@
         "grpc-async": {
           "libraryClient": "ConfigServiceV2AsyncClient",
           "rpcs": {
+            "CopyLogEntries": {
+              "methods": [
+                "copy_log_entries"
+              ]
+            },
             "CreateBucket": {
               "methods": [
                 "create_bucket"
@@ -185,6 +205,11 @@
                 "get_exclusion"
               ]
             },
+            "GetSettings": {
+              "methods": [
+                "get_settings"
+              ]
+            },
             "GetSink": {
               "methods": [
                 "get_sink"
@@ -233,6 +258,11 @@
             "UpdateExclusion": {
               "methods": [
                 "update_exclusion"
+              ]
+            },
+            "UpdateSettings": {
+              "methods": [
+                "update_settings"
               ]
             },
             "UpdateSink": {

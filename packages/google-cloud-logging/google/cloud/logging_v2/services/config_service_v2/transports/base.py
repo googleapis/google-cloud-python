@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,10 +22,12 @@ import google.api_core
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
+from google.api_core import operations_v1
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.logging_v2.types import logging_config
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 
 try:
@@ -286,6 +288,15 @@ class ConfigServiceV2Transport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.get_settings: gapic_v1.method.wrap_method(
+                self.get_settings, default_timeout=None, client_info=client_info,
+            ),
+            self.update_settings: gapic_v1.method.wrap_method(
+                self.update_settings, default_timeout=None, client_info=client_info,
+            ),
+            self.copy_log_entries: gapic_v1.method.wrap_method(
+                self.copy_log_entries, default_timeout=None, client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -295,6 +306,11 @@ class ConfigServiceV2Transport(abc.ABC):
             Only call this method if the transport is NOT shared
             with other clients - this may cause errors in other clients!
         """
+        raise NotImplementedError()
+
+    @property
+    def operations_client(self):
+        """Return the client designed to process long-running operations."""
         raise NotImplementedError()
 
     @property
@@ -513,6 +529,33 @@ class ConfigServiceV2Transport(abc.ABC):
     ) -> Callable[
         [logging_config.UpdateCmekSettingsRequest],
         Union[logging_config.CmekSettings, Awaitable[logging_config.CmekSettings]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_settings(
+        self,
+    ) -> Callable[
+        [logging_config.GetSettingsRequest],
+        Union[logging_config.Settings, Awaitable[logging_config.Settings]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_settings(
+        self,
+    ) -> Callable[
+        [logging_config.UpdateSettingsRequest],
+        Union[logging_config.Settings, Awaitable[logging_config.Settings]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def copy_log_entries(
+        self,
+    ) -> Callable[
+        [logging_config.CopyLogEntriesRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 

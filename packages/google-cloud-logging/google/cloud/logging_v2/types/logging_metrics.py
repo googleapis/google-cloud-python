@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -55,12 +55,12 @@ class LogMetric(proto.Message):
             forward-slash character (``/``) denotes a hierarchy of name
             pieces, and it cannot be the first character of the name.
 
-            The metric identifier in this field must not be
-            `URL-encoded <https://en.wikipedia.org/wiki/Percent-encoding>`__.
-            However, when the metric identifier appears as the
-            ``[METRIC_ID]`` part of a ``metric_name`` API parameter,
-            then the metric identifier must be URL-encoded. Example:
-            ``"projects/my-project/metrics/nginx%2Frequests"``.
+            This field is the ``[METRIC_ID]`` part of a metric resource
+            name in the format
+            "projects/[PROJECT_ID]/metrics/[METRIC_ID]". Example: If the
+            resource name of a metric is
+            ``"projects/my-project/metrics/nginx%2Frequests"``, this
+            field's value is ``"nginx/requests"``.
         description (str):
             Optional. A description of this metric, which
             is used in documentation. The maximum length of
@@ -75,6 +75,9 @@ class LogMetric(proto.Message):
                 "resource.type=gae_app AND severity>=ERROR"
 
             The maximum length of the filter is 20000 characters.
+        disabled (bool):
+            Optional. If set to True, then this metric is
+            disabled and it does not generate any points.
         metric_descriptor (google.api.metric_pb2.MetricDescriptor):
             Optional. The metric descriptor associated with the
             logs-based metric. If unspecified, it uses a default metric
@@ -170,6 +173,7 @@ class LogMetric(proto.Message):
     name = proto.Field(proto.STRING, number=1,)
     description = proto.Field(proto.STRING, number=2,)
     filter = proto.Field(proto.STRING, number=3,)
+    disabled = proto.Field(proto.BOOL, number=12,)
     metric_descriptor = proto.Field(
         proto.MESSAGE, number=5, message=metric_pb2.MetricDescriptor,
     )

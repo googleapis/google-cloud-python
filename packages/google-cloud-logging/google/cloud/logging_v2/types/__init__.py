@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ from .log_entry import (
     LogEntry,
     LogEntryOperation,
     LogEntrySourceLocation,
+    LogSplit,
 )
 from .logging import (
     DeleteLogRequest,
@@ -35,6 +36,9 @@ from .logging import (
 from .logging_config import (
     BigQueryOptions,
     CmekSettings,
+    CopyLogEntriesMetadata,
+    CopyLogEntriesRequest,
+    CopyLogEntriesResponse,
     CreateBucketRequest,
     CreateExclusionRequest,
     CreateSinkRequest,
@@ -46,6 +50,7 @@ from .logging_config import (
     GetBucketRequest,
     GetCmekSettingsRequest,
     GetExclusionRequest,
+    GetSettingsRequest,
     GetSinkRequest,
     GetViewRequest,
     ListBucketsRequest,
@@ -60,13 +65,16 @@ from .logging_config import (
     LogExclusion,
     LogSink,
     LogView,
+    Settings,
     UndeleteBucketRequest,
     UpdateBucketRequest,
     UpdateCmekSettingsRequest,
     UpdateExclusionRequest,
+    UpdateSettingsRequest,
     UpdateSinkRequest,
     UpdateViewRequest,
     LifecycleState,
+    OperationState,
 )
 from .logging_metrics import (
     CreateLogMetricRequest,
@@ -82,6 +90,7 @@ __all__ = (
     "LogEntry",
     "LogEntryOperation",
     "LogEntrySourceLocation",
+    "LogSplit",
     "DeleteLogRequest",
     "ListLogEntriesRequest",
     "ListLogEntriesResponse",
@@ -96,6 +105,9 @@ __all__ = (
     "WriteLogEntriesResponse",
     "BigQueryOptions",
     "CmekSettings",
+    "CopyLogEntriesMetadata",
+    "CopyLogEntriesRequest",
+    "CopyLogEntriesResponse",
     "CreateBucketRequest",
     "CreateExclusionRequest",
     "CreateSinkRequest",
@@ -107,6 +119,7 @@ __all__ = (
     "GetBucketRequest",
     "GetCmekSettingsRequest",
     "GetExclusionRequest",
+    "GetSettingsRequest",
     "GetSinkRequest",
     "GetViewRequest",
     "ListBucketsRequest",
@@ -121,13 +134,16 @@ __all__ = (
     "LogExclusion",
     "LogSink",
     "LogView",
+    "Settings",
     "UndeleteBucketRequest",
     "UpdateBucketRequest",
     "UpdateCmekSettingsRequest",
     "UpdateExclusionRequest",
+    "UpdateSettingsRequest",
     "UpdateSinkRequest",
     "UpdateViewRequest",
     "LifecycleState",
+    "OperationState",
     "CreateLogMetricRequest",
     "DeleteLogMetricRequest",
     "GetLogMetricRequest",

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -410,6 +410,26 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
     ) -> pagers.ListLogMetricsPager:
         r"""Lists logs-based metrics.
 
+        .. code-block:: python
+
+            from google.cloud import logging_v2
+
+            def sample_list_log_metrics():
+                # Create a client
+                client = logging_v2.MetricsServiceV2Client()
+
+                # Initialize request argument(s)
+                request = logging_v2.ListLogMetricsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_log_metrics(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.logging_v2.types.ListLogMetricsRequest, dict]):
                 The request object. The parameters to ListLogMetrics.
@@ -491,6 +511,25 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> logging_metrics.LogMetric:
         r"""Gets a logs-based metric.
+
+        .. code-block:: python
+
+            from google.cloud import logging_v2
+
+            def sample_get_log_metric():
+                # Create a client
+                client = logging_v2.MetricsServiceV2Client()
+
+                # Initialize request argument(s)
+                request = logging_v2.GetLogMetricRequest(
+                    metric_name="metric_name_value",
+                )
+
+                # Make the request
+                response = client.get_log_metric(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.logging_v2.types.GetLogMetricRequest, dict]):
@@ -576,6 +615,30 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> logging_metrics.LogMetric:
         r"""Creates a logs-based metric.
+
+        .. code-block:: python
+
+            from google.cloud import logging_v2
+
+            def sample_create_log_metric():
+                # Create a client
+                client = logging_v2.MetricsServiceV2Client()
+
+                # Initialize request argument(s)
+                metric = logging_v2.LogMetric()
+                metric.name = "name_value"
+                metric.filter = "filter_value"
+
+                request = logging_v2.CreateLogMetricRequest(
+                    parent="parent_value",
+                    metric=metric,
+                )
+
+                # Make the request
+                response = client.create_log_metric(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.logging_v2.types.CreateLogMetricRequest, dict]):
@@ -673,6 +736,30 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
     ) -> logging_metrics.LogMetric:
         r"""Creates or updates a logs-based metric.
 
+        .. code-block:: python
+
+            from google.cloud import logging_v2
+
+            def sample_update_log_metric():
+                # Create a client
+                client = logging_v2.MetricsServiceV2Client()
+
+                # Initialize request argument(s)
+                metric = logging_v2.LogMetric()
+                metric.name = "name_value"
+                metric.filter = "filter_value"
+
+                request = logging_v2.UpdateLogMetricRequest(
+                    metric_name="metric_name_value",
+                    metric=metric,
+                )
+
+                # Make the request
+                response = client.update_log_metric(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.logging_v2.types.UpdateLogMetricRequest, dict]):
                 The request object. The parameters to UpdateLogMetric.
@@ -768,6 +855,22 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a logs-based metric.
+
+        .. code-block:: python
+
+            from google.cloud import logging_v2
+
+            def sample_delete_log_metric():
+                # Create a client
+                client = logging_v2.MetricsServiceV2Client()
+
+                # Initialize request argument(s)
+                request = logging_v2.DeleteLogMetricRequest(
+                    metric_name="metric_name_value",
+                )
+
+                # Make the request
+                client.delete_log_metric(request=request)
 
         Args:
             request (Union[google.cloud.logging_v2.types.DeleteLogMetricRequest, dict]):
