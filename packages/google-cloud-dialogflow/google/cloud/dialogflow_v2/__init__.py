@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,6 +20,10 @@ from .services.answer_records import AnswerRecordsClient
 from .services.answer_records import AnswerRecordsAsyncClient
 from .services.contexts import ContextsClient
 from .services.contexts import ContextsAsyncClient
+from .services.conversation_datasets import ConversationDatasetsClient
+from .services.conversation_datasets import ConversationDatasetsAsyncClient
+from .services.conversation_models import ConversationModelsClient
+from .services.conversation_models import ConversationModelsAsyncClient
 from .services.conversation_profiles import ConversationProfilesClient
 from .services.conversation_profiles import ConversationProfilesAsyncClient
 from .services.conversations import ConversationsClient
@@ -92,8 +96,46 @@ from .types.conversation import ListConversationsRequest
 from .types.conversation import ListConversationsResponse
 from .types.conversation import ListMessagesRequest
 from .types.conversation import ListMessagesResponse
+from .types.conversation_dataset import ConversationDataset
+from .types.conversation_dataset import ConversationInfo
+from .types.conversation_dataset import CreateConversationDatasetOperationMetadata
+from .types.conversation_dataset import CreateConversationDatasetRequest
+from .types.conversation_dataset import DeleteConversationDatasetOperationMetadata
+from .types.conversation_dataset import DeleteConversationDatasetRequest
+from .types.conversation_dataset import GetConversationDatasetRequest
+from .types.conversation_dataset import ImportConversationDataOperationMetadata
+from .types.conversation_dataset import ImportConversationDataOperationResponse
+from .types.conversation_dataset import ImportConversationDataRequest
+from .types.conversation_dataset import InputConfig
+from .types.conversation_dataset import ListConversationDatasetsRequest
+from .types.conversation_dataset import ListConversationDatasetsResponse
 from .types.conversation_event import ConversationEvent
+from .types.conversation_model import ArticleSuggestionModelMetadata
+from .types.conversation_model import ConversationModel
+from .types.conversation_model import ConversationModelEvaluation
+from .types.conversation_model import CreateConversationModelEvaluationOperationMetadata
+from .types.conversation_model import CreateConversationModelEvaluationRequest
+from .types.conversation_model import CreateConversationModelOperationMetadata
+from .types.conversation_model import CreateConversationModelRequest
+from .types.conversation_model import DeleteConversationModelOperationMetadata
+from .types.conversation_model import DeleteConversationModelRequest
+from .types.conversation_model import DeployConversationModelOperationMetadata
+from .types.conversation_model import DeployConversationModelRequest
+from .types.conversation_model import EvaluationConfig
+from .types.conversation_model import GetConversationModelEvaluationRequest
+from .types.conversation_model import GetConversationModelRequest
+from .types.conversation_model import InputDataset
+from .types.conversation_model import ListConversationModelEvaluationsRequest
+from .types.conversation_model import ListConversationModelEvaluationsResponse
+from .types.conversation_model import ListConversationModelsRequest
+from .types.conversation_model import ListConversationModelsResponse
+from .types.conversation_model import SmartReplyMetrics
+from .types.conversation_model import SmartReplyModelMetadata
+from .types.conversation_model import UndeployConversationModelOperationMetadata
+from .types.conversation_model import UndeployConversationModelRequest
 from .types.conversation_profile import AutomatedAgentConfig
+from .types.conversation_profile import ClearSuggestionFeatureConfigOperationMetadata
+from .types.conversation_profile import ClearSuggestionFeatureConfigRequest
 from .types.conversation_profile import ConversationProfile
 from .types.conversation_profile import CreateConversationProfileRequest
 from .types.conversation_profile import DeleteConversationProfileRequest
@@ -104,12 +146,15 @@ from .types.conversation_profile import ListConversationProfilesRequest
 from .types.conversation_profile import ListConversationProfilesResponse
 from .types.conversation_profile import LoggingConfig
 from .types.conversation_profile import NotificationConfig
+from .types.conversation_profile import SetSuggestionFeatureConfigOperationMetadata
+from .types.conversation_profile import SetSuggestionFeatureConfigRequest
 from .types.conversation_profile import SuggestionFeature
 from .types.conversation_profile import UpdateConversationProfileRequest
 from .types.document import CreateDocumentRequest
 from .types.document import DeleteDocumentRequest
 from .types.document import Document
 from .types.document import ExportDocumentRequest
+from .types.document import ExportOperationMetadata
 from .types.document import GetDocumentRequest
 from .types.document import ImportDocumentsRequest
 from .types.document import ImportDocumentsResponse
@@ -230,6 +275,8 @@ __all__ = (
     "AgentsAsyncClient",
     "AnswerRecordsAsyncClient",
     "ContextsAsyncClient",
+    "ConversationDatasetsAsyncClient",
+    "ConversationModelsAsyncClient",
     "ConversationProfilesAsyncClient",
     "ConversationsAsyncClient",
     "DocumentsAsyncClient",
@@ -253,6 +300,7 @@ __all__ = (
     "AnswerRecord",
     "AnswerRecordsClient",
     "ArticleAnswer",
+    "ArticleSuggestionModelMetadata",
     "AssistQueryParameters",
     "AudioEncoding",
     "AutomatedAgentConfig",
@@ -266,16 +314,30 @@ __all__ = (
     "BatchUpdateEntityTypesResponse",
     "BatchUpdateIntentsRequest",
     "BatchUpdateIntentsResponse",
+    "ClearSuggestionFeatureConfigOperationMetadata",
+    "ClearSuggestionFeatureConfigRequest",
     "CompleteConversationRequest",
     "Context",
     "ContextsClient",
     "Conversation",
+    "ConversationDataset",
+    "ConversationDatasetsClient",
     "ConversationEvent",
+    "ConversationInfo",
+    "ConversationModel",
+    "ConversationModelEvaluation",
+    "ConversationModelsClient",
     "ConversationPhoneNumber",
     "ConversationProfile",
     "ConversationProfilesClient",
     "ConversationsClient",
     "CreateContextRequest",
+    "CreateConversationDatasetOperationMetadata",
+    "CreateConversationDatasetRequest",
+    "CreateConversationModelEvaluationOperationMetadata",
+    "CreateConversationModelEvaluationRequest",
+    "CreateConversationModelOperationMetadata",
+    "CreateConversationModelRequest",
     "CreateConversationProfileRequest",
     "CreateConversationRequest",
     "CreateDocumentRequest",
@@ -289,6 +351,10 @@ __all__ = (
     "DeleteAgentRequest",
     "DeleteAllContextsRequest",
     "DeleteContextRequest",
+    "DeleteConversationDatasetOperationMetadata",
+    "DeleteConversationDatasetRequest",
+    "DeleteConversationModelOperationMetadata",
+    "DeleteConversationModelRequest",
     "DeleteConversationProfileRequest",
     "DeleteDocumentRequest",
     "DeleteEntityTypeRequest",
@@ -297,6 +363,8 @@ __all__ = (
     "DeleteKnowledgeBaseRequest",
     "DeleteSessionEntityTypeRequest",
     "DeleteVersionRequest",
+    "DeployConversationModelOperationMetadata",
+    "DeployConversationModelRequest",
     "DetectIntentRequest",
     "DetectIntentResponse",
     "Document",
@@ -308,10 +376,12 @@ __all__ = (
     "Environment",
     "EnvironmentHistory",
     "EnvironmentsClient",
+    "EvaluationConfig",
     "EventInput",
     "ExportAgentRequest",
     "ExportAgentResponse",
     "ExportDocumentRequest",
+    "ExportOperationMetadata",
     "FaqAnswer",
     "Fulfillment",
     "FulfillmentsClient",
@@ -319,6 +389,9 @@ __all__ = (
     "GcsSources",
     "GetAgentRequest",
     "GetContextRequest",
+    "GetConversationDatasetRequest",
+    "GetConversationModelEvaluationRequest",
+    "GetConversationModelRequest",
     "GetConversationProfileRequest",
     "GetConversationRequest",
     "GetDocumentRequest",
@@ -336,10 +409,15 @@ __all__ = (
     "HumanAgentAssistantEvent",
     "HumanAgentHandoffConfig",
     "ImportAgentRequest",
+    "ImportConversationDataOperationMetadata",
+    "ImportConversationDataOperationResponse",
+    "ImportConversationDataRequest",
     "ImportDocumentTemplate",
     "ImportDocumentsRequest",
     "ImportDocumentsResponse",
     "InputAudioConfig",
+    "InputConfig",
+    "InputDataset",
     "Intent",
     "IntentBatch",
     "IntentView",
@@ -351,6 +429,12 @@ __all__ = (
     "ListAnswerRecordsResponse",
     "ListContextsRequest",
     "ListContextsResponse",
+    "ListConversationDatasetsRequest",
+    "ListConversationDatasetsResponse",
+    "ListConversationModelEvaluationsRequest",
+    "ListConversationModelEvaluationsResponse",
+    "ListConversationModelsRequest",
+    "ListConversationModelsResponse",
     "ListConversationProfilesRequest",
     "ListConversationProfilesResponse",
     "ListConversationsRequest",
@@ -397,7 +481,11 @@ __all__ = (
     "SessionEntityTypesClient",
     "SessionsClient",
     "SetAgentRequest",
+    "SetSuggestionFeatureConfigOperationMetadata",
+    "SetSuggestionFeatureConfigRequest",
     "SmartReplyAnswer",
+    "SmartReplyMetrics",
+    "SmartReplyModelMetadata",
     "SpeechContext",
     "SpeechModelVariant",
     "SpeechToTextConfig",
@@ -418,6 +506,8 @@ __all__ = (
     "TextInput",
     "TextToSpeechSettings",
     "TrainAgentRequest",
+    "UndeployConversationModelOperationMetadata",
+    "UndeployConversationModelRequest",
     "UpdateAnswerRecordRequest",
     "UpdateContextRequest",
     "UpdateConversationProfileRequest",

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -209,7 +209,7 @@ class AgentsAsyncClient:
     ) -> agent.Agent:
         r"""Retrieves the specified agent.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflow_v2
 
@@ -313,7 +313,7 @@ class AgentsAsyncClient:
         documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflow_v2
 
@@ -418,7 +418,7 @@ class AgentsAsyncClient:
     ) -> None:
         r"""Deletes the specified agent.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflow_v2
 
@@ -505,7 +505,7 @@ class AgentsAsyncClient:
         Sub-Collections <https://cloud.google.com/apis/design/design_patterns#list_sub-collections>`__.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflow_v2
 
@@ -620,7 +620,7 @@ class AgentsAsyncClient:
         documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflow_v2
 
@@ -746,7 +746,7 @@ class AgentsAsyncClient:
            [ExportAgentResponse][google.cloud.dialogflow.v2.ExportAgentResponse]
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflow_v2
 
@@ -881,7 +881,7 @@ class AgentsAsyncClient:
         documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflow_v2
 
@@ -1002,7 +1002,7 @@ class AgentsAsyncClient:
         documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflow_v2
 
@@ -1099,7 +1099,7 @@ class AgentsAsyncClient:
         automatically when training is completed.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflow_v2
 

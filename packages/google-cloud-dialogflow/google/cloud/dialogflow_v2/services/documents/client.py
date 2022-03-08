@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -417,8 +417,7 @@ class DocumentsClient(metaclass=DocumentsClientMeta):
         base.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflow_v2
 
@@ -519,8 +518,7 @@ class DocumentsClient(metaclass=DocumentsClientMeta):
     ) -> document.Document:
         r"""Retrieves the specified document.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflow_v2
 
@@ -628,8 +626,7 @@ class DocumentsClient(metaclass=DocumentsClientMeta):
         -  ``response``: [Document][google.cloud.dialogflow.v2.Document]
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflow_v2
 
@@ -642,7 +639,7 @@ class DocumentsClient(metaclass=DocumentsClientMeta):
                 document.content_uri = "content_uri_value"
                 document.display_name = "display_name_value"
                 document.mime_type = "mime_type_value"
-                document.knowledge_types = "ARTICLE_SUGGESTION"
+                document.knowledge_types = "AGENT_FACING_SMART_REPLY"
 
                 request = dialogflow_v2.CreateDocumentRequest(
                     parent="parent_value",
@@ -769,8 +766,7 @@ class DocumentsClient(metaclass=DocumentsClientMeta):
            [ImportDocumentsResponse][google.cloud.dialogflow.v2.ImportDocumentsResponse]
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflow_v2
 
@@ -784,7 +780,7 @@ class DocumentsClient(metaclass=DocumentsClientMeta):
 
                 document_template = dialogflow_v2.ImportDocumentTemplate()
                 document_template.mime_type = "mime_type_value"
-                document_template.knowledge_types = "ARTICLE_SUGGESTION"
+                document_template.knowledge_types = "AGENT_FACING_SMART_REPLY"
 
                 request = dialogflow_v2.ImportDocumentsRequest(
                     gcs_source=gcs_source,
@@ -876,8 +872,7 @@ class DocumentsClient(metaclass=DocumentsClientMeta):
            message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflow_v2
 
@@ -1003,8 +998,7 @@ class DocumentsClient(metaclass=DocumentsClientMeta):
         -  ``response``: [Document][google.cloud.dialogflow.v2.Document]
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflow_v2
 
@@ -1017,7 +1011,7 @@ class DocumentsClient(metaclass=DocumentsClientMeta):
                 document.content_uri = "content_uri_value"
                 document.display_name = "display_name_value"
                 document.mime_type = "mime_type_value"
-                document.knowledge_types = "ARTICLE_SUGGESTION"
+                document.knowledge_types = "AGENT_FACING_SMART_REPLY"
 
                 request = dialogflow_v2.UpdateDocumentRequest(
                     document=document,
@@ -1151,8 +1145,7 @@ class DocumentsClient(metaclass=DocumentsClientMeta):
         is deprecated; only use ``projects.knowledgeBases.documents``.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflow_v2
 
@@ -1288,8 +1281,7 @@ class DocumentsClient(metaclass=DocumentsClientMeta):
         -  ``response``: [Document][google.cloud.dialogflow.v2.Document]
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflow_v2
 

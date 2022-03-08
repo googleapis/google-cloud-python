@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -413,8 +413,7 @@ class AnswerRecordsClient(metaclass=AnswerRecordsClientMeta):
         specified project in reverse chronological order.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflow_v2
 
@@ -517,8 +516,7 @@ class AnswerRecordsClient(metaclass=AnswerRecordsClientMeta):
     ) -> gcd_answer_record.AnswerRecord:
         r"""Updates the specified answer record.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflow_v2
 

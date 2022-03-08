@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -220,7 +220,7 @@ class EntityTypesAsyncClient:
         agent.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflow_v2beta1
 
@@ -336,7 +336,7 @@ class EntityTypesAsyncClient:
     ) -> entity_type.EntityType:
         r"""Retrieves the specified entity type.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflow_v2beta1
 
@@ -461,7 +461,7 @@ class EntityTypesAsyncClient:
         documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflow_v2beta1
 
@@ -598,7 +598,7 @@ class EntityTypesAsyncClient:
         documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflow_v2beta1
 
@@ -731,7 +731,7 @@ class EntityTypesAsyncClient:
         documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflow_v2beta1
 
@@ -828,7 +828,7 @@ class EntityTypesAsyncClient:
         documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflow_v2beta1
 
@@ -930,7 +930,7 @@ class EntityTypesAsyncClient:
         documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflow_v2beta1
 
@@ -1075,7 +1075,7 @@ class EntityTypesAsyncClient:
         documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflow_v2beta1
 
@@ -1235,7 +1235,7 @@ class EntityTypesAsyncClient:
            message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflow_v2beta1
 
@@ -1395,7 +1395,7 @@ class EntityTypesAsyncClient:
         documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflow_v2beta1
 

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -259,6 +259,12 @@ class ExportAgentRequest(proto.Message):
             export the agent to. The format of this URI must be
             ``gs://<bucket-name>/<object-name>``. If left unspecified,
             the serialized agent is returned inline.
+
+            Dialogflow performs a write operation for the Cloud Storage
+            object on the caller's behalf, so your request
+            authentication must have write permissions for the object.
+            For more information, see `Dialogflow access
+            control <https://cloud.google.com/dialogflow/cx/docs/concept/access-control#storage>`__.
     """
 
     parent = proto.Field(proto.STRING, number=1,)
@@ -309,9 +315,14 @@ class ImportAgentRequest(proto.Message):
             Required. The project that the agent to import is associated
             with. Format: ``projects/<Project ID>``.
         agent_uri (str):
-            The URI to a Google Cloud Storage file
-            containing the agent to import. Note: The URI
-            must start with "gs://".
+            The URI to a Google Cloud Storage file containing the agent
+            to import. Note: The URI must start with "gs://".
+
+            Dialogflow performs a read operation for the Cloud Storage
+            object on the caller's behalf, so your request
+            authentication must have read permissions for the object.
+            For more information, see `Dialogflow access
+            control <https://cloud.google.com/dialogflow/cx/docs/concept/access-control#storage>`__.
 
             This field is a member of `oneof`_ ``agent``.
         agent_content (bytes):
@@ -341,9 +352,14 @@ class RestoreAgentRequest(proto.Message):
             Required. The project that the agent to restore is
             associated with. Format: ``projects/<Project ID>``.
         agent_uri (str):
-            The URI to a Google Cloud Storage file
-            containing the agent to restore. Note: The URI
-            must start with "gs://".
+            The URI to a Google Cloud Storage file containing the agent
+            to restore. Note: The URI must start with "gs://".
+
+            Dialogflow performs a read operation for the Cloud Storage
+            object on the caller's behalf, so your request
+            authentication must have read permissions for the object.
+            For more information, see `Dialogflow access
+            control <https://cloud.google.com/dialogflow/cx/docs/concept/access-control#storage>`__.
 
             This field is a member of `oneof`_ ``agent``.
         agent_content (bytes):

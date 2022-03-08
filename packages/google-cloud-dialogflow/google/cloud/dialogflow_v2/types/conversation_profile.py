@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 import proto  # type: ignore
 
 from google.cloud.dialogflow_v2.types import audio_config
+from google.cloud.dialogflow_v2.types import participant
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
@@ -36,6 +37,10 @@ __protobuf__ = proto.module(
         "NotificationConfig",
         "LoggingConfig",
         "SuggestionFeature",
+        "SetSuggestionFeatureConfigRequest",
+        "ClearSuggestionFeatureConfigRequest",
+        "SetSuggestionFeatureConfigOperationMetadata",
+        "ClearSuggestionFeatureConfigOperationMetadata",
     },
 )
 
@@ -698,10 +703,15 @@ class NotificationConfig(proto.Message):
             [ConversationEvent][google.cloud.dialogflow.v2.ConversationEvent]
             protos.
 
-            Notification works for phone calls, if this topic either is
-            in the same project as the conversation or you grant
+            For telephony integration to receive notification, make sure
+            either this topic is in the same project as the conversation
+            or you grant
             ``service-<Conversation Project Number>@gcp-sa-dialogflow.iam.gserviceaccount.com``
             the ``Dialogflow Service Agent`` role in the topic project.
+
+            For chat integration to receive notification, make sure API
+            caller has been granted the ``Dialogflow Service Agent``
+            role for the topic.
 
             Format:
             ``projects/<Project ID>/locations/<Location ID>/topics/<Topic ID>``.
@@ -753,6 +763,119 @@ class SuggestionFeature(proto.Message):
         SMART_REPLY = 3
 
     type_ = proto.Field(proto.ENUM, number=1, enum=Type,)
+
+
+class SetSuggestionFeatureConfigRequest(proto.Message):
+    r"""The request message for
+    [ConversationProfiles.SetSuggestionFeature][].
+
+    Attributes:
+        conversation_profile (str):
+            Required. The Conversation Profile to add or update the
+            suggestion feature config. Format:
+            ``projects/<Project ID>/locations/<Location ID>/conversationProfiles/<Conversation Profile ID>``.
+        participant_role (google.cloud.dialogflow_v2.types.Participant.Role):
+            Required. The participant role to add or update the
+            suggestion feature config. Only HUMAN_AGENT or END_USER can
+            be used.
+        suggestion_feature_config (google.cloud.dialogflow_v2.types.HumanAgentAssistantConfig.SuggestionFeatureConfig):
+            Required. The suggestion feature config to
+            add or update.
+    """
+
+    conversation_profile = proto.Field(proto.STRING, number=1,)
+    participant_role = proto.Field(
+        proto.ENUM, number=2, enum=participant.Participant.Role,
+    )
+    suggestion_feature_config = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="HumanAgentAssistantConfig.SuggestionFeatureConfig",
+    )
+
+
+class ClearSuggestionFeatureConfigRequest(proto.Message):
+    r"""The request message for [ConversationProfiles.ClearFeature][].
+
+    Attributes:
+        conversation_profile (str):
+            Required. The Conversation Profile to add or update the
+            suggestion feature config. Format:
+            ``projects/<Project ID>/locations/<Location ID>/conversationProfiles/<Conversation Profile ID>``.
+        participant_role (google.cloud.dialogflow_v2.types.Participant.Role):
+            Required. The participant role to remove the suggestion
+            feature config. Only HUMAN_AGENT or END_USER can be used.
+        suggestion_feature_type (google.cloud.dialogflow_v2.types.SuggestionFeature.Type):
+            Required. The type of the suggestion feature
+            to remove.
+    """
+
+    conversation_profile = proto.Field(proto.STRING, number=1,)
+    participant_role = proto.Field(
+        proto.ENUM, number=2, enum=participant.Participant.Role,
+    )
+    suggestion_feature_type = proto.Field(
+        proto.ENUM, number=3, enum="SuggestionFeature.Type",
+    )
+
+
+class SetSuggestionFeatureConfigOperationMetadata(proto.Message):
+    r"""Metadata for a [ConversationProfile.SetSuggestionFeatureConfig][]
+    operation.
+
+    Attributes:
+        conversation_profile (str):
+            The resource name of the conversation profile. Format:
+            ``projects/<Project ID>/locations/<Location ID>/conversationProfiles/<Conversation Profile ID>``
+        participant_role (google.cloud.dialogflow_v2.types.Participant.Role):
+            Required. The participant role to add or update the
+            suggestion feature config. Only HUMAN_AGENT or END_USER can
+            be used.
+        suggestion_feature_type (google.cloud.dialogflow_v2.types.SuggestionFeature.Type):
+            Required. The type of the suggestion feature
+            to add or update.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Timestamp whe the request was created. The
+            time is measured on server side.
+    """
+
+    conversation_profile = proto.Field(proto.STRING, number=1,)
+    participant_role = proto.Field(
+        proto.ENUM, number=2, enum=participant.Participant.Role,
+    )
+    suggestion_feature_type = proto.Field(
+        proto.ENUM, number=3, enum="SuggestionFeature.Type",
+    )
+    create_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
+
+
+class ClearSuggestionFeatureConfigOperationMetadata(proto.Message):
+    r"""Metadata for a [ConversationProfile.ClearSuggestionFeatureConfig][]
+    operation.
+
+    Attributes:
+        conversation_profile (str):
+            The resource name of the conversation profile. Format:
+            ``projects/<Project ID>/locations/<Location ID>/conversationProfiles/<Conversation Profile ID>``
+        participant_role (google.cloud.dialogflow_v2.types.Participant.Role):
+            Required. The participant role to remove the suggestion
+            feature config. Only HUMAN_AGENT or END_USER can be used.
+        suggestion_feature_type (google.cloud.dialogflow_v2.types.SuggestionFeature.Type):
+            Required. The type of the suggestion feature
+            to remove.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Timestamp whe the request was created. The
+            time is measured on server side.
+    """
+
+    conversation_profile = proto.Field(proto.STRING, number=1,)
+    participant_role = proto.Field(
+        proto.ENUM, number=2, enum=participant.Participant.Role,
+    )
+    suggestion_feature_type = proto.Field(
+        proto.ENUM, number=3, enum="SuggestionFeature.Type",
+    )
+    create_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

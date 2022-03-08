@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -25,6 +25,18 @@ from google.cloud.dialogflow_v2.services.answer_records.async_client import (
 from google.cloud.dialogflow_v2.services.contexts.client import ContextsClient
 from google.cloud.dialogflow_v2.services.contexts.async_client import (
     ContextsAsyncClient,
+)
+from google.cloud.dialogflow_v2.services.conversation_datasets.client import (
+    ConversationDatasetsClient,
+)
+from google.cloud.dialogflow_v2.services.conversation_datasets.async_client import (
+    ConversationDatasetsAsyncClient,
+)
+from google.cloud.dialogflow_v2.services.conversation_models.client import (
+    ConversationModelsClient,
+)
+from google.cloud.dialogflow_v2.services.conversation_models.async_client import (
+    ConversationModelsAsyncClient,
 )
 from google.cloud.dialogflow_v2.services.conversation_profiles.client import (
     ConversationProfilesClient,
@@ -126,8 +138,106 @@ from google.cloud.dialogflow_v2.types.conversation import ListConversationsReque
 from google.cloud.dialogflow_v2.types.conversation import ListConversationsResponse
 from google.cloud.dialogflow_v2.types.conversation import ListMessagesRequest
 from google.cloud.dialogflow_v2.types.conversation import ListMessagesResponse
+from google.cloud.dialogflow_v2.types.conversation_dataset import ConversationDataset
+from google.cloud.dialogflow_v2.types.conversation_dataset import ConversationInfo
+from google.cloud.dialogflow_v2.types.conversation_dataset import (
+    CreateConversationDatasetOperationMetadata,
+)
+from google.cloud.dialogflow_v2.types.conversation_dataset import (
+    CreateConversationDatasetRequest,
+)
+from google.cloud.dialogflow_v2.types.conversation_dataset import (
+    DeleteConversationDatasetOperationMetadata,
+)
+from google.cloud.dialogflow_v2.types.conversation_dataset import (
+    DeleteConversationDatasetRequest,
+)
+from google.cloud.dialogflow_v2.types.conversation_dataset import (
+    GetConversationDatasetRequest,
+)
+from google.cloud.dialogflow_v2.types.conversation_dataset import (
+    ImportConversationDataOperationMetadata,
+)
+from google.cloud.dialogflow_v2.types.conversation_dataset import (
+    ImportConversationDataOperationResponse,
+)
+from google.cloud.dialogflow_v2.types.conversation_dataset import (
+    ImportConversationDataRequest,
+)
+from google.cloud.dialogflow_v2.types.conversation_dataset import InputConfig
+from google.cloud.dialogflow_v2.types.conversation_dataset import (
+    ListConversationDatasetsRequest,
+)
+from google.cloud.dialogflow_v2.types.conversation_dataset import (
+    ListConversationDatasetsResponse,
+)
 from google.cloud.dialogflow_v2.types.conversation_event import ConversationEvent
+from google.cloud.dialogflow_v2.types.conversation_model import (
+    ArticleSuggestionModelMetadata,
+)
+from google.cloud.dialogflow_v2.types.conversation_model import ConversationModel
+from google.cloud.dialogflow_v2.types.conversation_model import (
+    ConversationModelEvaluation,
+)
+from google.cloud.dialogflow_v2.types.conversation_model import (
+    CreateConversationModelEvaluationOperationMetadata,
+)
+from google.cloud.dialogflow_v2.types.conversation_model import (
+    CreateConversationModelEvaluationRequest,
+)
+from google.cloud.dialogflow_v2.types.conversation_model import (
+    CreateConversationModelOperationMetadata,
+)
+from google.cloud.dialogflow_v2.types.conversation_model import (
+    CreateConversationModelRequest,
+)
+from google.cloud.dialogflow_v2.types.conversation_model import (
+    DeleteConversationModelOperationMetadata,
+)
+from google.cloud.dialogflow_v2.types.conversation_model import (
+    DeleteConversationModelRequest,
+)
+from google.cloud.dialogflow_v2.types.conversation_model import (
+    DeployConversationModelOperationMetadata,
+)
+from google.cloud.dialogflow_v2.types.conversation_model import (
+    DeployConversationModelRequest,
+)
+from google.cloud.dialogflow_v2.types.conversation_model import EvaluationConfig
+from google.cloud.dialogflow_v2.types.conversation_model import (
+    GetConversationModelEvaluationRequest,
+)
+from google.cloud.dialogflow_v2.types.conversation_model import (
+    GetConversationModelRequest,
+)
+from google.cloud.dialogflow_v2.types.conversation_model import InputDataset
+from google.cloud.dialogflow_v2.types.conversation_model import (
+    ListConversationModelEvaluationsRequest,
+)
+from google.cloud.dialogflow_v2.types.conversation_model import (
+    ListConversationModelEvaluationsResponse,
+)
+from google.cloud.dialogflow_v2.types.conversation_model import (
+    ListConversationModelsRequest,
+)
+from google.cloud.dialogflow_v2.types.conversation_model import (
+    ListConversationModelsResponse,
+)
+from google.cloud.dialogflow_v2.types.conversation_model import SmartReplyMetrics
+from google.cloud.dialogflow_v2.types.conversation_model import SmartReplyModelMetadata
+from google.cloud.dialogflow_v2.types.conversation_model import (
+    UndeployConversationModelOperationMetadata,
+)
+from google.cloud.dialogflow_v2.types.conversation_model import (
+    UndeployConversationModelRequest,
+)
 from google.cloud.dialogflow_v2.types.conversation_profile import AutomatedAgentConfig
+from google.cloud.dialogflow_v2.types.conversation_profile import (
+    ClearSuggestionFeatureConfigOperationMetadata,
+)
+from google.cloud.dialogflow_v2.types.conversation_profile import (
+    ClearSuggestionFeatureConfigRequest,
+)
 from google.cloud.dialogflow_v2.types.conversation_profile import ConversationProfile
 from google.cloud.dialogflow_v2.types.conversation_profile import (
     CreateConversationProfileRequest,
@@ -152,6 +262,12 @@ from google.cloud.dialogflow_v2.types.conversation_profile import (
 )
 from google.cloud.dialogflow_v2.types.conversation_profile import LoggingConfig
 from google.cloud.dialogflow_v2.types.conversation_profile import NotificationConfig
+from google.cloud.dialogflow_v2.types.conversation_profile import (
+    SetSuggestionFeatureConfigOperationMetadata,
+)
+from google.cloud.dialogflow_v2.types.conversation_profile import (
+    SetSuggestionFeatureConfigRequest,
+)
 from google.cloud.dialogflow_v2.types.conversation_profile import SuggestionFeature
 from google.cloud.dialogflow_v2.types.conversation_profile import (
     UpdateConversationProfileRequest,
@@ -160,6 +276,7 @@ from google.cloud.dialogflow_v2.types.document import CreateDocumentRequest
 from google.cloud.dialogflow_v2.types.document import DeleteDocumentRequest
 from google.cloud.dialogflow_v2.types.document import Document
 from google.cloud.dialogflow_v2.types.document import ExportDocumentRequest
+from google.cloud.dialogflow_v2.types.document import ExportOperationMetadata
 from google.cloud.dialogflow_v2.types.document import GetDocumentRequest
 from google.cloud.dialogflow_v2.types.document import ImportDocumentsRequest
 from google.cloud.dialogflow_v2.types.document import ImportDocumentsResponse
@@ -297,6 +414,10 @@ __all__ = (
     "AnswerRecordsAsyncClient",
     "ContextsClient",
     "ContextsAsyncClient",
+    "ConversationDatasetsClient",
+    "ConversationDatasetsAsyncClient",
+    "ConversationModelsClient",
+    "ConversationModelsAsyncClient",
     "ConversationProfilesClient",
     "ConversationProfilesAsyncClient",
     "ConversationsClient",
@@ -368,8 +489,46 @@ __all__ = (
     "ListConversationsResponse",
     "ListMessagesRequest",
     "ListMessagesResponse",
+    "ConversationDataset",
+    "ConversationInfo",
+    "CreateConversationDatasetOperationMetadata",
+    "CreateConversationDatasetRequest",
+    "DeleteConversationDatasetOperationMetadata",
+    "DeleteConversationDatasetRequest",
+    "GetConversationDatasetRequest",
+    "ImportConversationDataOperationMetadata",
+    "ImportConversationDataOperationResponse",
+    "ImportConversationDataRequest",
+    "InputConfig",
+    "ListConversationDatasetsRequest",
+    "ListConversationDatasetsResponse",
     "ConversationEvent",
+    "ArticleSuggestionModelMetadata",
+    "ConversationModel",
+    "ConversationModelEvaluation",
+    "CreateConversationModelEvaluationOperationMetadata",
+    "CreateConversationModelEvaluationRequest",
+    "CreateConversationModelOperationMetadata",
+    "CreateConversationModelRequest",
+    "DeleteConversationModelOperationMetadata",
+    "DeleteConversationModelRequest",
+    "DeployConversationModelOperationMetadata",
+    "DeployConversationModelRequest",
+    "EvaluationConfig",
+    "GetConversationModelEvaluationRequest",
+    "GetConversationModelRequest",
+    "InputDataset",
+    "ListConversationModelEvaluationsRequest",
+    "ListConversationModelEvaluationsResponse",
+    "ListConversationModelsRequest",
+    "ListConversationModelsResponse",
+    "SmartReplyMetrics",
+    "SmartReplyModelMetadata",
+    "UndeployConversationModelOperationMetadata",
+    "UndeployConversationModelRequest",
     "AutomatedAgentConfig",
+    "ClearSuggestionFeatureConfigOperationMetadata",
+    "ClearSuggestionFeatureConfigRequest",
     "ConversationProfile",
     "CreateConversationProfileRequest",
     "DeleteConversationProfileRequest",
@@ -380,12 +539,15 @@ __all__ = (
     "ListConversationProfilesResponse",
     "LoggingConfig",
     "NotificationConfig",
+    "SetSuggestionFeatureConfigOperationMetadata",
+    "SetSuggestionFeatureConfigRequest",
     "SuggestionFeature",
     "UpdateConversationProfileRequest",
     "CreateDocumentRequest",
     "DeleteDocumentRequest",
     "Document",
     "ExportDocumentRequest",
+    "ExportOperationMetadata",
     "GetDocumentRequest",
     "ImportDocumentsRequest",
     "ImportDocumentsResponse",

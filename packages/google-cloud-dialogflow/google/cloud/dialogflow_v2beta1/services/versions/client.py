@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -414,8 +414,7 @@ class VersionsClient(metaclass=VersionsClientMeta):
         agent.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflow_v2beta1
 
@@ -518,8 +517,7 @@ class VersionsClient(metaclass=VersionsClientMeta):
     ) -> version.Version:
         r"""Retrieves the specified agent version.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflow_v2beta1
 
@@ -634,8 +632,7 @@ class VersionsClient(metaclass=VersionsClientMeta):
         "default" environment.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflow_v2beta1
 
@@ -760,8 +757,7 @@ class VersionsClient(metaclass=VersionsClientMeta):
         version resource.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflow_v2beta1
 
@@ -882,8 +878,7 @@ class VersionsClient(metaclass=VersionsClientMeta):
     ) -> None:
         r"""Delete the specified agent version.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflow_v2beta1
 

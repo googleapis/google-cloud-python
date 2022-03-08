@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -734,6 +734,11 @@ class EventInput(proto.Message):
             for a list of the currently supported language codes. Note
             that queries in the same session do not necessarily need to
             specify the same language.
+
+            This field is ignored when used in the context of a
+            [WebhookResponse.followup_event_input][google.cloud.dialogflow.v2.WebhookResponse.followup_event_input]
+            field, because the language was already defined in the
+            originating detect intent request.
     """
 
     name = proto.Field(proto.STRING, number=1,)

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -415,8 +415,7 @@ class ContextsClient(metaclass=ContextsClientMeta):
         session.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflow_v2beta1
 
@@ -526,8 +525,7 @@ class ContextsClient(metaclass=ContextsClientMeta):
     ) -> context.Context:
         r"""Retrieves the specified context.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflow_v2beta1
 
@@ -647,8 +645,7 @@ class ContextsClient(metaclass=ContextsClientMeta):
         context.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflow_v2beta1
 
@@ -773,8 +770,7 @@ class ContextsClient(metaclass=ContextsClientMeta):
     ) -> gcd_context.Context:
         r"""Updates the specified context.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflow_v2beta1
 
@@ -889,8 +885,7 @@ class ContextsClient(metaclass=ContextsClientMeta):
     ) -> None:
         r"""Deletes the specified context.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflow_v2beta1
 
@@ -980,8 +975,7 @@ class ContextsClient(metaclass=ContextsClientMeta):
     ) -> None:
         r"""Deletes all active contexts in the specified session.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflow_v2beta1
 

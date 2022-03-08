@@ -217,11 +217,184 @@
         }
       }
     },
+    "ConversationDatasets": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "ConversationDatasetsClient",
+          "rpcs": {
+            "CreateConversationDataset": {
+              "methods": [
+                "create_conversation_dataset"
+              ]
+            },
+            "DeleteConversationDataset": {
+              "methods": [
+                "delete_conversation_dataset"
+              ]
+            },
+            "GetConversationDataset": {
+              "methods": [
+                "get_conversation_dataset"
+              ]
+            },
+            "ImportConversationData": {
+              "methods": [
+                "import_conversation_data"
+              ]
+            },
+            "ListConversationDatasets": {
+              "methods": [
+                "list_conversation_datasets"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "ConversationDatasetsAsyncClient",
+          "rpcs": {
+            "CreateConversationDataset": {
+              "methods": [
+                "create_conversation_dataset"
+              ]
+            },
+            "DeleteConversationDataset": {
+              "methods": [
+                "delete_conversation_dataset"
+              ]
+            },
+            "GetConversationDataset": {
+              "methods": [
+                "get_conversation_dataset"
+              ]
+            },
+            "ImportConversationData": {
+              "methods": [
+                "import_conversation_data"
+              ]
+            },
+            "ListConversationDatasets": {
+              "methods": [
+                "list_conversation_datasets"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "ConversationModels": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "ConversationModelsClient",
+          "rpcs": {
+            "CreateConversationModel": {
+              "methods": [
+                "create_conversation_model"
+              ]
+            },
+            "CreateConversationModelEvaluation": {
+              "methods": [
+                "create_conversation_model_evaluation"
+              ]
+            },
+            "DeleteConversationModel": {
+              "methods": [
+                "delete_conversation_model"
+              ]
+            },
+            "DeployConversationModel": {
+              "methods": [
+                "deploy_conversation_model"
+              ]
+            },
+            "GetConversationModel": {
+              "methods": [
+                "get_conversation_model"
+              ]
+            },
+            "GetConversationModelEvaluation": {
+              "methods": [
+                "get_conversation_model_evaluation"
+              ]
+            },
+            "ListConversationModelEvaluations": {
+              "methods": [
+                "list_conversation_model_evaluations"
+              ]
+            },
+            "ListConversationModels": {
+              "methods": [
+                "list_conversation_models"
+              ]
+            },
+            "UndeployConversationModel": {
+              "methods": [
+                "undeploy_conversation_model"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "ConversationModelsAsyncClient",
+          "rpcs": {
+            "CreateConversationModel": {
+              "methods": [
+                "create_conversation_model"
+              ]
+            },
+            "CreateConversationModelEvaluation": {
+              "methods": [
+                "create_conversation_model_evaluation"
+              ]
+            },
+            "DeleteConversationModel": {
+              "methods": [
+                "delete_conversation_model"
+              ]
+            },
+            "DeployConversationModel": {
+              "methods": [
+                "deploy_conversation_model"
+              ]
+            },
+            "GetConversationModel": {
+              "methods": [
+                "get_conversation_model"
+              ]
+            },
+            "GetConversationModelEvaluation": {
+              "methods": [
+                "get_conversation_model_evaluation"
+              ]
+            },
+            "ListConversationModelEvaluations": {
+              "methods": [
+                "list_conversation_model_evaluations"
+              ]
+            },
+            "ListConversationModels": {
+              "methods": [
+                "list_conversation_models"
+              ]
+            },
+            "UndeployConversationModel": {
+              "methods": [
+                "undeploy_conversation_model"
+              ]
+            }
+          }
+        }
+      }
+    },
     "ConversationProfiles": {
       "clients": {
         "grpc": {
           "libraryClient": "ConversationProfilesClient",
           "rpcs": {
+            "ClearSuggestionFeatureConfig": {
+              "methods": [
+                "clear_suggestion_feature_config"
+              ]
+            },
             "CreateConversationProfile": {
               "methods": [
                 "create_conversation_profile"
@@ -240,6 +413,11 @@
             "ListConversationProfiles": {
               "methods": [
                 "list_conversation_profiles"
+              ]
+            },
+            "SetSuggestionFeatureConfig": {
+              "methods": [
+                "set_suggestion_feature_config"
               ]
             },
             "UpdateConversationProfile": {
@@ -252,6 +430,11 @@
         "grpc-async": {
           "libraryClient": "ConversationProfilesAsyncClient",
           "rpcs": {
+            "ClearSuggestionFeatureConfig": {
+              "methods": [
+                "clear_suggestion_feature_config"
+              ]
+            },
             "CreateConversationProfile": {
               "methods": [
                 "create_conversation_profile"
@@ -270,6 +453,11 @@
             "ListConversationProfiles": {
               "methods": [
                 "list_conversation_profiles"
+              ]
+            },
+            "SetSuggestionFeatureConfig": {
+              "methods": [
+                "set_suggestion_feature_config"
               ]
             },
             "UpdateConversationProfile": {

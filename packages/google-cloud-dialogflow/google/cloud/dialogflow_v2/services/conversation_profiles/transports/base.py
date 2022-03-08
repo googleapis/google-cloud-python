@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ import google.api_core
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
+from google.api_core import operations_v1
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
@@ -29,6 +30,7 @@ from google.cloud.dialogflow_v2.types import conversation_profile
 from google.cloud.dialogflow_v2.types import (
     conversation_profile as gcd_conversation_profile,
 )
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 
 try:
@@ -152,6 +154,16 @@ class ConversationProfilesTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.set_suggestion_feature_config: gapic_v1.method.wrap_method(
+                self.set_suggestion_feature_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.clear_suggestion_feature_config: gapic_v1.method.wrap_method(
+                self.clear_suggestion_feature_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -161,6 +173,11 @@ class ConversationProfilesTransport(abc.ABC):
             Only call this method if the transport is NOT shared
             with other clients - this may cause errors in other clients!
         """
+        raise NotImplementedError()
+
+    @property
+    def operations_client(self):
+        """Return the client designed to process long-running operations."""
         raise NotImplementedError()
 
     @property
@@ -217,6 +234,24 @@ class ConversationProfilesTransport(abc.ABC):
     ) -> Callable[
         [conversation_profile.DeleteConversationProfileRequest],
         Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def set_suggestion_feature_config(
+        self,
+    ) -> Callable[
+        [gcd_conversation_profile.SetSuggestionFeatureConfigRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def clear_suggestion_feature_config(
+        self,
+    ) -> Callable[
+        [gcd_conversation_profile.ClearSuggestionFeatureConfigRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 

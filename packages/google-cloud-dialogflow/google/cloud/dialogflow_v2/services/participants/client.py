@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -490,8 +490,7 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
     ) -> gcd_participant.Participant:
         r"""Creates a new participant in a conversation.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflow_v2
 
@@ -589,8 +588,7 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
     ) -> participant.Participant:
         r"""Retrieves a conversation participant.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflow_v2
 
@@ -682,8 +680,7 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
         conversation.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflow_v2
 
@@ -785,8 +782,7 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
     ) -> gcd_participant.Participant:
         r"""Updates the specified participant.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflow_v2
 
@@ -892,8 +888,7 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
         environments <https://cloud.google.com/dialogflow/es/docs/agents-versions>`__.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflow_v2
 
@@ -1009,8 +1004,7 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
         specific historical messages.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflow_v2
 
@@ -1103,8 +1097,7 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
         specific historical messages.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflow_v2
 
@@ -1197,8 +1190,7 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
         specific historical messages.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import dialogflow_v2
 
