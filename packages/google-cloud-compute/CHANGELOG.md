@@ -1,5 +1,25 @@
 # Changelog
 
+## [1.1.0](https://github.com/googleapis/python-compute/compare/v1.0.0...v1.1.0) (2022-03-08)
+
+
+### Features
+
+* add api key support ([#203](https://github.com/googleapis/python-compute/issues/203)) ([a36c637](https://github.com/googleapis/python-compute/commit/a36c637f153c7b4ef49bb6a78c8b09f3746e7af1))
+* update compute API to revision 20220112  ([#218](https://github.com/googleapis/python-compute/issues/218)) ([77210f5](https://github.com/googleapis/python-compute/commit/77210f539fc82fe9a555b815bed2f72c088358cd))
+
+
+### Bug Fixes
+
+* **deps:** require dataclasses for python 3.6 ([a36c637](https://github.com/googleapis/python-compute/commit/a36c637f153c7b4ef49bb6a78c8b09f3746e7af1))
+* **deps:** require google-api-core >= 2.4.0 ([77210f5](https://github.com/googleapis/python-compute/commit/77210f539fc82fe9a555b815bed2f72c088358cd))
+
+
+### Documentation
+
+* **samples:** Adding samples for delete protection ([#208](https://github.com/googleapis/python-compute/issues/208)) ([7ed70ec](https://github.com/googleapis/python-compute/commit/7ed70ec53d7c008481e8cf86d03229114347f036))
+* **samples:** additional samples for the Compute API ([72544d9](https://github.com/googleapis/python-compute/commit/72544d974161e1fd1831de5830b89d0ff99a3208))
+
 ## [1.0.0](https://github.com/googleapis/python-compute/compare/v0.9.0...v1.0.0) (2022-01-13)
 
 
