@@ -4,6 +4,32 @@
 
 [1]: https://pypi.org/project/dialogflow/#history
 
+## [2.13.0](https://github.com/googleapis/python-dialogflow/compare/v2.12.0...v2.13.0) (2022-03-08)
+
+
+### Features
+
+* added ConversationDataset resource and its APIs ([bd93557](https://github.com/googleapis/python-dialogflow/commit/bd935578a57d7738796bf8d3c02dfca126bfdfbb))
+* added ConversationModel resource and its APIs ([bd93557](https://github.com/googleapis/python-dialogflow/commit/bd935578a57d7738796bf8d3c02dfca126bfdfbb))
+* added metadata for the Knowledge operation ([bd93557](https://github.com/googleapis/python-dialogflow/commit/bd935578a57d7738796bf8d3c02dfca126bfdfbb))
+* added new knowledge type of Document content ([bd93557](https://github.com/googleapis/python-dialogflow/commit/bd935578a57d7738796bf8d3c02dfca126bfdfbb))
+* added SetSuggestionFeatureConfig and ClearSuggestionFeatureConfig APIs for ConversationProfile ([bd93557](https://github.com/googleapis/python-dialogflow/commit/bd935578a57d7738796bf8d3c02dfca126bfdfbb))
+* added states of Document ([bd93557](https://github.com/googleapis/python-dialogflow/commit/bd935578a57d7738796bf8d3c02dfca126bfdfbb))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#479](https://github.com/googleapis/python-dialogflow/issues/479)) ([4a62e80](https://github.com/googleapis/python-dialogflow/commit/4a62e80e045639061779bb097dacab744276973a))
+* **deps:** require proto-plus>=1.15.0 ([4a62e80](https://github.com/googleapis/python-dialogflow/commit/4a62e80e045639061779bb097dacab744276973a))
+
+
+### Documentation
+
+* added a new resource name pattern for ConversationModel ([bd93557](https://github.com/googleapis/python-dialogflow/commit/bd935578a57d7738796bf8d3c02dfca126bfdfbb))
+* clarified the behavior of language_code in EventInput ([#475](https://github.com/googleapis/python-dialogflow/issues/475)) ([bd93557](https://github.com/googleapis/python-dialogflow/commit/bd935578a57d7738796bf8d3c02dfca126bfdfbb))
+* clarified wording around Cloud Storage usage ([bd93557](https://github.com/googleapis/python-dialogflow/commit/bd935578a57d7738796bf8d3c02dfca126bfdfbb))
+* updated copyright ([bd93557](https://github.com/googleapis/python-dialogflow/commit/bd935578a57d7738796bf8d3c02dfca126bfdfbb))
+
 ## [2.12.0](https://github.com/googleapis/python-dialogflow/compare/v2.11.0...v2.12.0) (2022-02-11)
 
 
