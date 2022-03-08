@@ -437,6 +437,12 @@ class ImportFlowRequest(proto.Message):
             import flow from. The format of this URI must be
             ``gs://<bucket-name>/<object-name>``.
 
+            Dialogflow performs a read operation for the Cloud Storage
+            object on the caller's behalf, so your request
+            authentication must have read permissions for the object.
+            For more information, see `Dialogflow access
+            control <https://cloud.google.com/dialogflow/cx/docs/concept/access-control#storage>`__.
+
             This field is a member of `oneof`_ ``flow``.
         flow_content (bytes):
             Uncompressed raw byte content for flow.
@@ -485,6 +491,12 @@ class ExportFlowRequest(proto.Message):
             export the flow to. The format of this URI must be
             ``gs://<bucket-name>/<object-name>``. If left unspecified,
             the serialized flow is returned inline.
+
+            Dialogflow performs a write operation for the Cloud Storage
+            object on the caller's behalf, so your request
+            authentication must have write permissions for the object.
+            For more information, see `Dialogflow access
+            control <https://cloud.google.com/dialogflow/cx/docs/concept/access-control#storage>`__.
         include_referenced_flows (bool):
             Optional. Whether to export flows referenced
             by the specified flow.

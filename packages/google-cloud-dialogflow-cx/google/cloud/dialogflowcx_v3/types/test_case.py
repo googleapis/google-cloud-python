@@ -162,13 +162,29 @@ class TestConfig(proto.Message):
             Session parameters to be compared when
             calculating differences.
         flow (str):
-            Flow name. If not set, default start flow is assumed.
-            Format:
+            Flow name to start the test case with. Format:
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``.
+
+            Only one of ``flow`` and ``page`` should be set to indicate
+            the starting point of the test case. If both are set,
+            ``page`` takes precedence over ``flow``. If neither is set,
+            the test case will start with start page on the default
+            start flow.
+        page (str):
+            The [page][google.cloud.dialogflow.cx.v3.Page] to start the
+            test case with. Format:
+            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/pages/<Page ID>``.
+
+            Only one of ``flow`` and ``page`` should be set to indicate
+            the starting point of the test case. If both are set,
+            ``page`` takes precedence over ``flow``. If neither is set,
+            the test case will start with start page on the default
+            start flow.
     """
 
     tracking_parameters = proto.RepeatedField(proto.STRING, number=1,)
     flow = proto.Field(proto.STRING, number=2,)
+    page = proto.Field(proto.STRING, number=3,)
 
 
 class ConversationTurn(proto.Message):
@@ -800,6 +816,12 @@ class ImportTestCasesRequest(proto.Message):
             import test cases from. The format of this URI must be
             ``gs://<bucket-name>/<object-name>``.
 
+            Dialogflow performs a read operation for the Cloud Storage
+            object on the caller's behalf, so your request
+            authentication must have read permissions for the object.
+            For more information, see `Dialogflow access
+            control <https://cloud.google.com/dialogflow/cx/docs/concept/access-control#storage>`__.
+
             This field is a member of `oneof`_ ``source``.
         content (bytes):
             Uncompressed raw byte content for test cases.
@@ -869,6 +891,12 @@ class ExportTestCasesRequest(proto.Message):
             export the test cases to. The format of this URI must be
             ``gs://<bucket-name>/<object-name>``. If unspecified, the
             serialized test cases is returned inline.
+
+            Dialogflow performs a write operation for the Cloud Storage
+            object on the caller's behalf, so your request
+            authentication must have write permissions for the object.
+            For more information, see `Dialogflow access
+            control <https://cloud.google.com/dialogflow/cx/docs/concept/access-control#storage>`__.
 
             This field is a member of `oneof`_ ``destination``.
         data_format (google.cloud.dialogflowcx_v3.types.ExportTestCasesRequest.DataFormat):
