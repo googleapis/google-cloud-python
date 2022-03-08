@@ -269,12 +269,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download all the dists
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: python-package-distributions
           path: dist/
       - name: Download all the wheels
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: python-package-distributions
           path: wheelhouse/
