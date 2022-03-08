@@ -37,6 +37,7 @@ class CustomOperation:
     status: StatusCode
     error_code: typing.Optional[int] = None
     error_message: typing.Optional[str] = None
+    armor_class: typing.Optional[int] = None
 
     # Note: in generated clients, this property must be generated for each
     # extended operation message type.
@@ -180,3 +181,23 @@ def test_error():
 
     with pytest.raises(exceptions.GoogleAPICallError):
         ex_op.result()
+
+
+def test_pass_through():
+    responses = [
+        CustomOperation(
+            name=TEST_OPERATION_NAME,
+            status=CustomOperation.StatusCode.PENDING,
+            armor_class=10,
+        ),
+        CustomOperation(
+            name=TEST_OPERATION_NAME,
+            status=CustomOperation.StatusCode.DONE,
+            armor_class=20,
+        ),
+    ]
+    ex_op, _, _ = make_extended_operation(responses)
+
+    assert ex_op.armor_class == 10
+    ex_op.result()
+    assert ex_op.armor_class == 20

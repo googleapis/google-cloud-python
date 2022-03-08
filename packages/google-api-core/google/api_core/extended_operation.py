@@ -111,6 +111,9 @@ class ExtendedOperation(polling.PollingFuture):
     def error_message(self):
         return self._extended_operation.error_message
 
+    def __getattr__(self, name):
+        return getattr(self._extended_operation, name)
+
     def done(self, retry=polling.DEFAULT_RETRY):
         self._refresh_and_update(retry)
         return self._extended_operation.done
