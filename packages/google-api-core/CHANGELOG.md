@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## [2.7.0](https://github.com/googleapis/python-api-core/compare/v2.6.1...v2.7.0) (2022-03-08)
+
+
+### Features
+
+* expose extra fields in ExtendedOperation ([#351](https://github.com/googleapis/python-api-core/issues/351)) ([9abc6f4](https://github.com/googleapis/python-api-core/commit/9abc6f48f23c87b9771dca3c96b4f6af39620a50))
+
 ### [2.6.1](https://github.com/googleapis/python-api-core/compare/v2.6.0...v2.6.1) (2022-03-05)
 
 
