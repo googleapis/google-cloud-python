@@ -18,7 +18,7 @@ jobs:
       uses: actions/setup-python@v2
     - name: Build
       run: python setup.py sdist
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v3
       with:
         name: python-package-distributions
         path: dist/
@@ -62,7 +62,7 @@ jobs:
         CIBW_TEST_REQUIRES: pytest
         CIBW_TEST_COMMAND: py.test -v {project}/tests/
 
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v3
       with:
         name: python-package-distributions
         path: wheelhouse/
@@ -115,7 +115,7 @@ jobs:
         CIBW_TEST_REQUIRES: pytest
         CIBW_TEST_COMMAND: py.test -v {project}/tests/
 
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v3
       with:
         name: python-package-distributions
         path: wheelhouse/
@@ -177,7 +177,7 @@ jobs:
         CIBW_TEST_REQUIRES: pytest
         CIBW_TEST_COMMAND: py.test -v {project}/tests/
 
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v3
       with:
         name: python-package-distributions
         path: wheelhouse/
@@ -252,7 +252,7 @@ jobs:
         CIBW_TEST_REQUIRES: pytest
         CIBW_TEST_COMMAND: py.test -v {project}/tests
 
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v3
       with:
         name: python-package-distributions
         path: wheelhouse/
