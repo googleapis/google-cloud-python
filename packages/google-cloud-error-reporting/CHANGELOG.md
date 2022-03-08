@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-cloud-error-reporting/#history
 
+### [1.5.1](https://github.com/googleapis/python-error-reporting/compare/v1.5.0...v1.5.1) (2022-03-07)
+
+
+### Bug Fixes
+
+* **deps:** allow google-cloud-logging <4.0.0dev ([#244](https://github.com/googleapis/python-error-reporting/issues/244)) ([b2f83cf](https://github.com/googleapis/python-error-reporting/commit/b2f83cfb02792d4dfd1d881a07460d90e0ad4eb0))
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#241](https://github.com/googleapis/python-error-reporting/issues/241)) ([af66168](https://github.com/googleapis/python-error-reporting/commit/af66168f3926d63161070bbd3b6c6880155cf07d))
+* **deps:** require proto-plus>=1.15.0 ([af66168](https://github.com/googleapis/python-error-reporting/commit/af66168f3926d63161070bbd3b6c6880155cf07d))
+
 ## [1.5.0](https://github.com/googleapis/python-error-reporting/compare/v1.4.1...v1.5.0) (2022-02-16)
 
 
