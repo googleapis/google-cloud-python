@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import os
+import random
 import uuid
 
 import pytest
@@ -33,16 +34,21 @@ _CONF_TEST_SERVICE_ACCOUNT_EMAIL = (
 )
 _CONF_TEST_PUBSUB_TOPIC_NAME = "my-topic-name"
 
+
 """Create content payload in different sizes."""
 
 
 def _create_block(desired_kib):
-    line = "abc123XYZ" * 14 + "!" + "\n"
-    return 1024 * int(desired_kib / len(line)) * line
+    line = "abcdefXYZ123456789ADDINGrandom#"  # len(line) = 31
+    multiplier = int(desired_kib / (len(line) + 1))
+    lines = "".join(
+        line + str(random.randint(0, 9)) for _ in range(multiplier)
+    )  # add random single digit integers
+    return 1024 * lines
 
 
 _STRING_CONTENT = "hello world"
-_SIZE_16MB = 16384  # 16*1024 KiB
+_SIZE_9MB = 9216  # 9*1024 KiB
 
 
 ########################################################################################################################################
@@ -115,7 +121,7 @@ def hmac_key(client):
 @pytest.fixture
 def file_data(client, bucket):
     blob = client.bucket(bucket.name).blob(uuid.uuid4().hex)
-    payload = _create_block(_SIZE_16MB)
+    payload = _create_block(_SIZE_9MB)
     blob.upload_from_string(payload)
     yield blob, payload
     try:

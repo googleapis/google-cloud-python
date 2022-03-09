@@ -54,6 +54,7 @@ _CONF_TEST_PUBSUB_TOPIC_NAME = "my-topic-name"
 
 _STRING_CONTENT = "hello world"
 _BYTE_CONTENT = b"12345678"
+_RESUMABLE_UPLOAD_CHUNK_SIZE = 2 * 1024 * 1024
 
 
 ########################################################################################################################################
@@ -461,7 +462,7 @@ def blob_upload_from_string(client, _preconditions, **resources):
     bucket = resources.get("bucket")
     _, data = resources.get("file_data")
     blob = client.bucket(bucket.name).blob(uuid.uuid4().hex)
-    blob.chunk_size = 4 * 1024 * 1024
+    blob.chunk_size = _RESUMABLE_UPLOAD_CHUNK_SIZE
     if _preconditions:
         blob.upload_from_string(data, if_generation_match=0)
     else:
@@ -471,26 +472,67 @@ def blob_upload_from_string(client, _preconditions, **resources):
 
 def blob_upload_from_file(client, _preconditions, **resources):
     bucket = resources.get("bucket")
-    blob = client.bucket(bucket.name).blob(uuid.uuid4().hex)
+    file, data = resources.get("file_data")
+    file_blob = client.bucket(bucket.name).blob(file.name)
+    upload_blob = client.bucket(bucket.name).blob(uuid.uuid4().hex)
+    upload_blob.chunk_size = _RESUMABLE_UPLOAD_CHUNK_SIZE
+
     with tempfile.NamedTemporaryFile() as temp_f:
+        # Create a named temporary file with payload.
+        with open(temp_f.name, "wb") as file_obj:
+            client.download_blob_to_file(file_blob, file_obj)
+        # Upload the temporary file and assert data integrity.
         if _preconditions:
-            blob.upload_from_file(temp_f, if_generation_match=0)
+            upload_blob.upload_from_file(temp_f, if_generation_match=0)
         else:
-            blob.upload_from_file(temp_f)
+            upload_blob.upload_from_file(temp_f)
+
+    upload_blob.reload()
+    assert upload_blob.size == len(data)
 
 
 def blob_upload_from_filename(client, _preconditions, **resources):
     bucket = resources.get("bucket")
     blob = client.bucket(bucket.name).blob(uuid.uuid4().hex)
+    blob.chunk_size = _RESUMABLE_UPLOAD_CHUNK_SIZE
+
+    bucket = resources.get("bucket")
+    file, data = resources.get("file_data")
+    file_blob = client.bucket(bucket.name).blob(file.name)
+    upload_blob = client.bucket(bucket.name).blob(uuid.uuid4().hex)
+    upload_blob.chunk_size = _RESUMABLE_UPLOAD_CHUNK_SIZE
 
     with tempfile.NamedTemporaryFile() as temp_f:
+        # Create a named temporary file with payload.
+        with open(temp_f.name, "wb") as file_obj:
+            client.download_blob_to_file(file_blob, file_obj)
+        # Upload the temporary file and assert data integrity.
         if _preconditions:
-            blob.upload_from_filename(temp_f.name, if_generation_match=0)
+            upload_blob.upload_from_filename(temp_f.name, if_generation_match=0)
         else:
-            blob.upload_from_filename(temp_f.name)
+            upload_blob.upload_from_filename(temp_f.name)
+
+    upload_blob.reload()
+    assert upload_blob.size == len(data)
 
 
 def blobwriter_write(client, _preconditions, **resources):
+    bucket = resources.get("bucket")
+    _, data = resources.get("file_data")
+    blob = client.bucket(bucket.name).blob(uuid.uuid4().hex)
+    if _preconditions:
+        with blob.open(
+            "w", chunk_size=_RESUMABLE_UPLOAD_CHUNK_SIZE, if_generation_match=0
+        ) as writer:
+            writer.write(data)
+    else:
+        with blob.open("w", chunk_size=_RESUMABLE_UPLOAD_CHUNK_SIZE) as writer:
+            writer.write(data)
+    blob.reload()
+    assert blob.size == len(data)
+
+
+def blobwriter_write_multipart(client, _preconditions, **resources):
     chunk_size = 256 * 1024
     bucket = resources.get("bucket")
     blob = client.bucket(bucket.name).blob(uuid.uuid4().hex)
@@ -500,6 +542,15 @@ def blobwriter_write(client, _preconditions, **resources):
     else:
         with blob.open("wb", chunk_size=chunk_size) as writer:
             writer.write(_BYTE_CONTENT)
+
+
+def blob_upload_from_string_multipart(client, _preconditions, **resources):
+    bucket = resources.get("bucket")
+    blob = client.bucket(bucket.name).blob(uuid.uuid4().hex)
+    if _preconditions:
+        blob.upload_from_string(_STRING_CONTENT, if_generation_match=0)
+    else:
+        blob.upload_from_string(_STRING_CONTENT)
 
 
 def blob_create_resumable_upload_session(client, _preconditions, **resources):
@@ -745,11 +796,15 @@ method_mapping = {
         bucket_rename_blob,
     ],
     "storage.objects.insert": [
+        blob_upload_from_string_multipart,
+        blobwriter_write_multipart,
+        blob_create_resumable_upload_session,
+    ],
+    "storage.resumable.upload": [
         blob_upload_from_string,
         blob_upload_from_file,
         blob_upload_from_filename,
         blobwriter_write,
-        blob_create_resumable_upload_session,
     ],
     "storage.objects.patch": [
         blob_patch,
