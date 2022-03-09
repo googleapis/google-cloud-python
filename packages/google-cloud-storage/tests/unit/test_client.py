@@ -28,6 +28,7 @@ from google.auth.credentials import AnonymousCredentials
 from google.oauth2.service_account import Credentials
 
 from google.cloud.storage._helpers import STORAGE_EMULATOR_ENV_VAR
+from google.cloud.storage._helpers import _get_default_headers
 from google.cloud.storage.retry import DEFAULT_RETRY
 from google.cloud.storage.retry import DEFAULT_RETRY_IF_GENERATION_SPECIFIED
 
@@ -1567,7 +1568,10 @@ class TestClient(unittest.TestCase):
 
         self.assertEqual(file_obj.tell(), 0)
 
-        headers = {"accept-encoding": "gzip"}
+        headers = {
+            **_get_default_headers(client._connection.user_agent),
+            "accept-encoding": "gzip",
+        }
         blob._do_download.assert_called_once_with(
             client._http,
             file_obj,
@@ -1598,7 +1602,10 @@ class TestClient(unittest.TestCase):
         ):
             client.download_blob_to_file("gs://bucket_name/path/to/object", file_obj)
 
-        headers = {"accept-encoding": "gzip"}
+        headers = {
+            **_get_default_headers(client._connection.user_agent),
+            "accept-encoding": "gzip",
+        }
         blob._do_download.assert_called_once_with(
             client._http,
             file_obj,
@@ -1714,6 +1721,7 @@ class TestClient(unittest.TestCase):
                 if_etag_not_match = [if_etag_not_match]
             headers["If-None-Match"] = ", ".join(if_etag_not_match)
 
+        headers = {**_get_default_headers(client._connection.user_agent), **headers}
         blob._do_download.assert_called_once_with(
             client._http,
             file_obj,

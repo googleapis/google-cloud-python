@@ -64,6 +64,7 @@ from google.cloud.storage._helpers import _scalar_property
 from google.cloud.storage._helpers import _bucket_bound_hostname_url
 from google.cloud.storage._helpers import _raise_if_more_than_one_set
 from google.cloud.storage._helpers import _api_core_retry_to_resumable_media_retry
+from google.cloud.storage._helpers import _get_default_headers
 from google.cloud.storage._signing import generate_signed_url_v2
 from google.cloud.storage._signing import generate_signed_url_v4
 from google.cloud.storage._helpers import _NUM_RETRIES_MESSAGE
@@ -1720,7 +1721,7 @@ class Blob(_PropertyMixin):
 
         return object_metadata
 
-    def _get_upload_arguments(self, content_type):
+    def _get_upload_arguments(self, client, content_type):
         """Get required arguments for performing an upload.
 
         The content type returned will be determined in order of precedence:
@@ -1739,9 +1740,12 @@ class Blob(_PropertyMixin):
                   * An object metadata dictionary
                   * The ``content_type`` as a string (according to precedence)
         """
-        headers = _get_encryption_headers(self._encryption_key)
-        object_metadata = self._get_writable_metadata()
         content_type = self._get_content_type(content_type)
+        headers = {
+            **_get_default_headers(client._connection.user_agent, content_type),
+            **_get_encryption_headers(self._encryption_key),
+        }
+        object_metadata = self._get_writable_metadata()
         return headers, object_metadata, content_type
 
     def _do_multipart_upload(
@@ -1860,7 +1864,7 @@ class Blob(_PropertyMixin):
         transport = self._get_transport(client)
         if "metadata" in self._properties and "metadata" not in self._changes:
             self._changes.add("metadata")
-        info = self._get_upload_arguments(content_type)
+        info = self._get_upload_arguments(client, content_type)
         headers, object_metadata, content_type = info
 
         hostname = _get_host_name(client._connection)
@@ -2045,7 +2049,7 @@ class Blob(_PropertyMixin):
         transport = self._get_transport(client)
         if "metadata" in self._properties and "metadata" not in self._changes:
             self._changes.add("metadata")
-        info = self._get_upload_arguments(content_type)
+        info = self._get_upload_arguments(client, content_type)
         headers, object_metadata, content_type = info
         if extra_headers is not None:
             headers.update(extra_headers)
@@ -2230,7 +2234,6 @@ class Blob(_PropertyMixin):
             checksum=checksum,
             retry=retry,
         )
-
         while not upload.finished:
             try:
                 response = upload.transmit_next_chunk(transport, timeout=timeout)
@@ -2238,7 +2241,6 @@ class Blob(_PropertyMixin):
                 # Attempt to delete the corrupted object.
                 self.delete()
                 raise
-
         return response
 
     def _do_upload(

@@ -31,6 +31,7 @@ from google.api_core import page_iterator
 from google.cloud._helpers import _LocalStack, _NOW
 from google.cloud.client import ClientWithProject
 from google.cloud.exceptions import NotFound
+from google.cloud.storage._helpers import _get_default_headers
 from google.cloud.storage._helpers import _get_environ_project
 from google.cloud.storage._helpers import _get_storage_host
 from google.cloud.storage._helpers import _BASE_STORAGE_URI
@@ -1131,6 +1132,7 @@ class Client(ClientWithProject):
         _add_etag_match_headers(
             headers, if_etag_match=if_etag_match, if_etag_not_match=if_etag_not_match,
         )
+        headers = {**_get_default_headers(self._connection.user_agent), **headers}
 
         transport = self._http
         try:
