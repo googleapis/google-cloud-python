@@ -5,6 +5,36 @@
 [1]: https://pypi.org/project/google-cloud-firestore/#history
 
 
+## [2.4.0](https://github.com/googleapis/python-firestore/compare/v2.3.4...v2.4.0) (2022-03-08)
+
+
+### Features
+
+* add api key support ([#523](https://github.com/googleapis/python-firestore/issues/523)) ([31c943e](https://github.com/googleapis/python-firestore/commit/31c943ee3c12f3dc65d56f00c7e3bf859dde16dd))
+* add context manager support in client ([#470](https://github.com/googleapis/python-firestore/issues/470)) ([1e1de20](https://github.com/googleapis/python-firestore/commit/1e1de20000c4441c4c015709d5c3512a53c74d6b))
+* add support for Python 3.10 ([#469](https://github.com/googleapis/python-firestore/issues/469)) ([ddcb099](https://github.com/googleapis/python-firestore/commit/ddcb0990e092416eb9a334fac5d8d9251bc43496))
+* allow 'Collection.where(__name__, in, [hello, world])' ([#501](https://github.com/googleapis/python-firestore/issues/501)) ([7d71244](https://github.com/googleapis/python-firestore/commit/7d71244c3dab0052452d93f52e1f71bdae88459c))
+* update client libraries to support Database operations ([#513](https://github.com/googleapis/python-firestore/issues/513)) ([74d8171](https://github.com/googleapis/python-firestore/commit/74d81716c9168b0e3e2fdd203a47292ebb28eb6f))
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([6b5a779](https://github.com/googleapis/python-firestore/commit/6b5a7795bb2827b65f8015fcef6663880a29a65d))
+* **deps:** require google-api-core >= 1.28.0 ([6b5a779](https://github.com/googleapis/python-firestore/commit/6b5a7795bb2827b65f8015fcef6663880a29a65d))
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#543](https://github.com/googleapis/python-firestore/issues/543)) ([c214732](https://github.com/googleapis/python-firestore/commit/c2147325ed34ff72ab423265d0082db55daaf993))
+* fix license text in the unit test ([#535](https://github.com/googleapis/python-firestore/issues/535)) ([3f1fd36](https://github.com/googleapis/python-firestore/commit/3f1fd365688980c9f82a9fc69650129fa8c01dcf))
+* handle empty last chunk correctly in 'Query._chunkify' ([#489](https://github.com/googleapis/python-firestore/issues/489)) ([3ddc718](https://github.com/googleapis/python-firestore/commit/3ddc718d50143e33b8af4ff1ba29e7cadf76a57c))
+* hash snapshots using correct type for 'update_time' ([#467](https://github.com/googleapis/python-firestore/issues/467)) ([5e66a73](https://github.com/googleapis/python-firestore/commit/5e66a73f7e9d3131f483bf5961e8dc308f5e8dc3))
+* resolve DuplicateCredentialArgs error when using credentials_file ([77b9082](https://github.com/googleapis/python-firestore/commit/77b9082ba0876fd0043aa2220f5a3278accad00b))
+* stop / start stream after filter mismatch ([#502](https://github.com/googleapis/python-firestore/issues/502)) ([a256752](https://github.com/googleapis/python-firestore/commit/a256752d425a6d9ec1047c7e6f38226d34a0254e))
+
+
+### Documentation
+
+* add generated snippets ([#532](https://github.com/googleapis/python-firestore/issues/532)) ([aea2af9](https://github.com/googleapis/python-firestore/commit/aea2af959c8631c14f8a7ea880b344f6f015b214))
+* clarify docstring in RunQueryRequest/RunQueryResponse ([#544](https://github.com/googleapis/python-firestore/issues/544)) ([d17febb](https://github.com/googleapis/python-firestore/commit/d17febb44fabc6b56c14cfd61238d157925c4a4a))
+* list oneofs in docstring ([6b5a779](https://github.com/googleapis/python-firestore/commit/6b5a7795bb2827b65f8015fcef6663880a29a65d))
+
 ### [2.3.4](https://www.github.com/googleapis/python-firestore/compare/v2.3.3...v2.3.4) (2021-09-30)
 
 
