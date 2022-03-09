@@ -270,7 +270,6 @@ def transcode(http_options, **request_kwargs):
         ]
         path_args = {field: get_field(request_kwargs, field) for field in path_fields}
         request["uri"] = expand(uri_template, **path_args)
-
         # Remove fields used in uri path from request
         leftovers = copy.deepcopy(request_kwargs)
         for path_field in path_fields:
@@ -297,4 +296,8 @@ def transcode(http_options, **request_kwargs):
         request["method"] = http_option["method"]
         return request
 
-    raise ValueError("Request obj does not match any template")
+    raise ValueError(
+        "Request {} does not match any URL path template in available HttpRule's {}".format(
+            request_kwargs, [opt["uri"] for opt in http_options]
+        )
+    )

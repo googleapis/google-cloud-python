@@ -362,6 +362,7 @@ def test_transcode_with_additional_bindings(
         [[["get", "/v1/{name}", ""]], {"name": "first/last"}],
         [[["get", "/v1/{name=mr/*/*}", ""]], {"name": "first/last"}],
         [[["post", "/v1/{name}", "data"]], {"name": "first/last"}],
+        [[["post", "/v1/{first_name}", "data"]], {"last_name": "last"}],
     ],
 )
 def test_transcode_fails(http_options, request_kwargs):
@@ -385,5 +386,4 @@ def helper_test_transcode(http_options_list, expected_result_list):
     }
     if expected_result_list[2]:
         expected_result["body"] = expected_result_list[2]
-
     return (http_options, expected_result)
