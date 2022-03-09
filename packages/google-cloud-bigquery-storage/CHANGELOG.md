@@ -4,6 +4,25 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-storage/#history
 
+## [2.13.0](https://github.com/googleapis/python-bigquery-storage/compare/v2.12.0...v2.13.0) (2022-03-07)
+
+
+### Features
+
+* expose additional StorageError enum values ([4657e2f](https://github.com/googleapis/python-bigquery-storage/commit/4657e2f819febf9601dc671fda9f0b04bbcfdebe))
+* update default timeout/retry information ([4657e2f](https://github.com/googleapis/python-bigquery-storage/commit/4657e2f819febf9601dc671fda9f0b04bbcfdebe))
+* update parent annotation for BatchCommitWriteStreamsRequest ([4657e2f](https://github.com/googleapis/python-bigquery-storage/commit/4657e2f819febf9601dc671fda9f0b04bbcfdebe))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#404](https://github.com/googleapis/python-bigquery-storage/issues/404)) ([99f51e0](https://github.com/googleapis/python-bigquery-storage/commit/99f51e0bbc8615e7e3caad272a5bffd0d6c57d2f))
+
+
+### Documentation
+
+* improve documentation for write client ([#403](https://github.com/googleapis/python-bigquery-storage/issues/403)) ([4657e2f](https://github.com/googleapis/python-bigquery-storage/commit/4657e2f819febf9601dc671fda9f0b04bbcfdebe))
+
 ## [2.12.0](https://github.com/googleapis/python-bigquery-storage/compare/v2.11.0...v2.12.0) (2022-02-22)
 
 
