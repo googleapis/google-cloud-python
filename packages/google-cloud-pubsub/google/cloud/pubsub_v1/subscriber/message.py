@@ -40,6 +40,9 @@ Message {{
   attributes: {}
 }}"""
 
+_SUCCESS_FUTURE = futures.Future()
+_SUCCESS_FUTURE.set_result(AcknowledgeStatus.SUCCESS)
+
 
 def _indent(lines: str, prefix: str = "  ") -> str:
     """Indent some text.
@@ -291,12 +294,13 @@ class Message(object):
             pubsub_v1.subscriber.exceptions.AcknowledgeError exception
             will be thrown.
         """
-        future = futures.Future()
-        req_future = None
+        req_future: Optional[futures.Future]
         if self._exactly_once_delivery_enabled_func():
+            future = futures.Future()
             req_future = future
         else:
-            future.set_result(AcknowledgeStatus.SUCCESS)
+            future = _SUCCESS_FUTURE
+            req_future = None
         time_to_ack = math.ceil(time.time() - self._received_timestamp)
         self._request_queue.put(
             requests.AckRequest(
@@ -390,12 +394,13 @@ class Message(object):
             will be thrown.
 
         """
-        future = futures.Future()
-        req_future = None
+        req_future: Optional[futures.Future]
         if self._exactly_once_delivery_enabled_func():
+            future = futures.Future()
             req_future = future
         else:
-            future.set_result(AcknowledgeStatus.SUCCESS)
+            future = _SUCCESS_FUTURE
+            req_future = None
 
         self._request_queue.put(
             requests.ModAckRequest(
@@ -451,12 +456,13 @@ class Message(object):
             will be thrown.
 
         """
-        future = futures.Future()
-        req_future = None
+        req_future: Optional[futures.Future]
         if self._exactly_once_delivery_enabled_func():
+            future = futures.Future()
             req_future = future
         else:
-            future.set_result(AcknowledgeStatus.SUCCESS)
+            future = _SUCCESS_FUTURE
+            req_future = None
 
         self._request_queue.put(
             requests.NackRequest(

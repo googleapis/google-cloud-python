@@ -156,6 +156,7 @@ def test_ack_with_response_exactly_once_delivery_disabled():
             )
         )
         assert future.result() == AcknowledgeStatus.SUCCESS
+        assert future == message._SUCCESS_FUTURE
         check_call_types(put, requests.AckRequest)
 
 
@@ -205,6 +206,7 @@ def test_modify_ack_deadline_with_response_exactly_once_delivery_disabled():
             requests.ModAckRequest(ack_id="bogus_ack_id", seconds=60, future=None)
         )
         assert future.result() == AcknowledgeStatus.SUCCESS
+        assert future == message._SUCCESS_FUTURE
         check_call_types(put, requests.ModAckRequest)
 
 
@@ -242,6 +244,7 @@ def test_nack_with_response_exactly_once_delivery_disabled():
             )
         )
         assert future.result() == AcknowledgeStatus.SUCCESS
+        assert future == message._SUCCESS_FUTURE
         check_call_types(put, requests.NackRequest)
 
 
