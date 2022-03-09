@@ -5,6 +5,20 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## [2.11.0](https://github.com/googleapis/python-pubsub/compare/v2.10.0...v2.11.0) (2022-03-09)
+
+
+### Features
+
+* retry temporary GRPC statuses for ack/modack/nack when exactly-once delivery is enabled ([#607](https://github.com/googleapis/python-pubsub/issues/607)) ([a91bed8](https://github.com/googleapis/python-pubsub/commit/a91bed829c9040fcc6c1e70b99b66188ac4ded40))
+* return singleton success future for exactly-once methods in Message ([#608](https://github.com/googleapis/python-pubsub/issues/608)) ([253ced2](https://github.com/googleapis/python-pubsub/commit/253ced28f308450c7a1a93cc38f6d101ecd7d4c0))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#600](https://github.com/googleapis/python-pubsub/issues/600)) ([1608b7f](https://github.com/googleapis/python-pubsub/commit/1608b7ffdd5b5db87e1e55fde763440ca9a4086e))
+* **deps:** require proto-plus>=1.15.0 ([1608b7f](https://github.com/googleapis/python-pubsub/commit/1608b7ffdd5b5db87e1e55fde763440ca9a4086e))
+
 ## [2.10.0](https://github.com/googleapis/python-pubsub/compare/v2.9.0...v2.10.0) (2022-03-04)
 
 
