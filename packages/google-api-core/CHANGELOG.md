@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+### [2.7.1](https://github.com/googleapis/python-api-core/compare/v2.7.0...v2.7.1) (2022-03-09)
+
+
+### Bug Fixes
+
+* add more context to error message. ([#340](https://github.com/googleapis/python-api-core/issues/340)) ([0680fb4](https://github.com/googleapis/python-api-core/commit/0680fb4d3e013fe2de27e0a2ae2cd9896479e596))
+
 ## [2.7.0](https://github.com/googleapis/python-api-core/compare/v2.6.1...v2.7.0) (2022-03-08)
 
 
