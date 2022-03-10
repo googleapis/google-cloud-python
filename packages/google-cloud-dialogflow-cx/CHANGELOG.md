@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.10.0](https://github.com/googleapis/python-dialogflow-cx/compare/v1.9.1...v1.10.0) (2022-03-10)
+
+
+### Features
+
+* added page in TestConfig ([#268](https://github.com/googleapis/python-dialogflow-cx/issues/268)) ([61fd2dc](https://github.com/googleapis/python-dialogflow-cx/commit/61fd2dc3512e4bcfdfc51cf085cc12cbbf1e043b))
+* **v3beta1:** added page in TestConfig ([#270](https://github.com/googleapis/python-dialogflow-cx/issues/270)) ([a81f0c2](https://github.com/googleapis/python-dialogflow-cx/commit/a81f0c23d5dc835bd6abdccd546ef00f6c421a74))
+
+
+### Documentation
+
+* clarified wording around Cloud Storage usage ([61fd2dc](https://github.com/googleapis/python-dialogflow-cx/commit/61fd2dc3512e4bcfdfc51cf085cc12cbbf1e043b))
+
 ### [1.9.1](https://github.com/googleapis/python-dialogflow-cx/compare/v1.9.0...v1.9.1) (2022-03-05)
 
 
