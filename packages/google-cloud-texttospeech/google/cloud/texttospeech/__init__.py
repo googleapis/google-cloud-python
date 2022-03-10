@@ -22,6 +22,7 @@ from google.cloud.texttospeech_v1.services.text_to_speech.async_client import (
 )
 
 from google.cloud.texttospeech_v1.types.cloud_tts import AudioConfig
+from google.cloud.texttospeech_v1.types.cloud_tts import CustomVoiceParams
 from google.cloud.texttospeech_v1.types.cloud_tts import ListVoicesRequest
 from google.cloud.texttospeech_v1.types.cloud_tts import ListVoicesResponse
 from google.cloud.texttospeech_v1.types.cloud_tts import SynthesisInput
@@ -36,6 +37,7 @@ __all__ = (
     "TextToSpeechClient",
     "TextToSpeechAsyncClient",
     "AudioConfig",
+    "CustomVoiceParams",
     "ListVoicesRequest",
     "ListVoicesResponse",
     "SynthesisInput",

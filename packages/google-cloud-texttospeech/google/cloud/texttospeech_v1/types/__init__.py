@@ -15,6 +15,7 @@
 #
 from .cloud_tts import (
     AudioConfig,
+    CustomVoiceParams,
     ListVoicesRequest,
     ListVoicesResponse,
     SynthesisInput,
@@ -28,6 +29,7 @@ from .cloud_tts import (
 
 __all__ = (
     "AudioConfig",
+    "CustomVoiceParams",
     "ListVoicesRequest",
     "ListVoicesResponse",
     "SynthesisInput",

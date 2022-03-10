@@ -45,6 +45,8 @@ class TextToSpeechAsyncClient:
     DEFAULT_ENDPOINT = TextToSpeechClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = TextToSpeechClient.DEFAULT_MTLS_ENDPOINT
 
+    model_path = staticmethod(TextToSpeechClient.model_path)
+    parse_model_path = staticmethod(TextToSpeechClient.parse_model_path)
     common_billing_account_path = staticmethod(
         TextToSpeechClient.common_billing_account_path
     )

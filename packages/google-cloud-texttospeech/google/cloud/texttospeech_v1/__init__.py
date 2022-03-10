@@ -18,6 +18,7 @@ from .services.text_to_speech import TextToSpeechClient
 from .services.text_to_speech import TextToSpeechAsyncClient
 
 from .types.cloud_tts import AudioConfig
+from .types.cloud_tts import CustomVoiceParams
 from .types.cloud_tts import ListVoicesRequest
 from .types.cloud_tts import ListVoicesResponse
 from .types.cloud_tts import SynthesisInput
@@ -32,6 +33,7 @@ __all__ = (
     "TextToSpeechAsyncClient",
     "AudioConfig",
     "AudioEncoding",
+    "CustomVoiceParams",
     "ListVoicesRequest",
     "ListVoicesResponse",
     "SsmlVoiceGender",

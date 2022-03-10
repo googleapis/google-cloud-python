@@ -28,6 +28,7 @@ __protobuf__ = proto.module(
         "SynthesisInput",
         "VoiceSelectionParams",
         "AudioConfig",
+        "CustomVoiceParams",
         "SynthesizeSpeechResponse",
     },
 )
@@ -193,11 +194,16 @@ class VoiceSelectionParams(proto.Message):
             not requirement; if a voice of the appropriate gender is not
             available, the synthesizer should substitute a voice with a
             different gender rather than failing the request.
+        custom_voice (google.cloud.texttospeech_v1.types.CustomVoiceParams):
+            The configuration for a custom voice. If
+            [CustomVoiceParams.model] is set, the service will choose
+            the custom voice matching the specified configuration.
     """
 
     language_code = proto.Field(proto.STRING, number=1,)
     name = proto.Field(proto.STRING, number=2,)
     ssml_gender = proto.Field(proto.ENUM, number=3, enum="SsmlVoiceGender",)
+    custom_voice = proto.Field(proto.MESSAGE, number=4, message="CustomVoiceParams",)
 
 
 class AudioConfig(proto.Message):
@@ -253,6 +259,31 @@ class AudioConfig(proto.Message):
     volume_gain_db = proto.Field(proto.DOUBLE, number=4,)
     sample_rate_hertz = proto.Field(proto.INT32, number=5,)
     effects_profile_id = proto.RepeatedField(proto.STRING, number=6,)
+
+
+class CustomVoiceParams(proto.Message):
+    r"""Description of the custom voice to be synthesized.
+
+    Attributes:
+        model (str):
+            Required. The name of the AutoML model that
+            synthesizes the custom voice.
+        reported_usage (google.cloud.texttospeech_v1.types.CustomVoiceParams.ReportedUsage):
+            Optional. The usage of the synthesized audio
+            to be reported.
+    """
+
+    class ReportedUsage(proto.Enum):
+        r"""The usage of the synthesized audio. You must report your
+        honest and correct usage of the service as it's regulated by
+        contract and will cause significant difference in billing.
+        """
+        REPORTED_USAGE_UNSPECIFIED = 0
+        REALTIME = 1
+        OFFLINE = 2
+
+    model = proto.Field(proto.STRING, number=1,)
+    reported_usage = proto.Field(proto.ENUM, number=3, enum=ReportedUsage,)
 
 
 class SynthesizeSpeechResponse(proto.Message):
