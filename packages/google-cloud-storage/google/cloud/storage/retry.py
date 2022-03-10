@@ -29,6 +29,7 @@ _RETRYABLE_TYPES = (
     ConnectionError,
     requests.ConnectionError,
     requests_exceptions.ChunkedEncodingError,
+    requests_exceptions.Timeout,
 )
 
 
