@@ -64,10 +64,38 @@ old_sessions = """
 new_sessions = """
     "lint",
     "unit",
+    "compliance",
     "cover",
 """
 
 s.replace(["noxfile.py"], old_sessions, new_sessions)
+
+# Add compliance tests.
+s.replace(
+    ["noxfile.py"], r"def default\(session\):", "def default(session, tests_path):"
+)
+s.replace(["noxfile.py"], r'os.path.join\("tests", "unit"\),', "tests_path,")
+s.replace(
+    ["noxfile.py"],
+    r'''
+@nox.session\(python=UNIT_TEST_PYTHON_VERSIONS\)
+def unit\(session\):
+    """Run the unit test suite."""
+    default\(session\)
+''',
+    '''
+@nox.session(python=UNIT_TEST_PYTHON_VERSIONS[-1])
+def compliance(session):
+    """Run the compliance test suite."""
+    default(session, os.path.join("tests", "compliance"))
+
+
+@nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
+def unit(session):
+    """Run the unit test suite."""
+    default(session, os.path.join("tests", "unit"))
+''',
+)
 
 # ----------------------------------------------------------------------------
 # Samples templates

@@ -13,13 +13,25 @@
 # limitations under the License.
 
 import datetime
+import operator
 
 import pandas
+import pandas.testing
 import pytest
 
-# To register the types.
-import db_dtypes  # noqa
+import db_dtypes
 from db_dtypes import pandas_backports
+
+
+def test_construct_from_string_with_nonstring():
+    with pytest.raises(TypeError):
+        db_dtypes.DateDtype.construct_from_string(object())
+
+
+def test__cmp_method_with_scalar():
+    input_array = db_dtypes.DateArray([datetime.date(1900, 1, 1)])
+    got = input_array._cmp_method(datetime.date(1900, 1, 1), operator.eq)
+    assert got[0]
 
 
 @pytest.mark.parametrize(
