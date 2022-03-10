@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/googleapis/python-security-private-ca/compare/v1.2.4...v1.3.0) (2022-03-10)
+
+
+### Features
+
+* Add `skip_grace_period` flag to DeleteCertificateAuthority API ([#197](https://github.com/googleapis/python-security-private-ca/issues/197)) ([3119d1a](https://github.com/googleapis/python-security-private-ca/commit/3119d1a55701ddf09d3a1351fafab731bf2b4cf1))
+
 ### [1.2.4](https://github.com/googleapis/python-security-private-ca/compare/v1.2.3...v1.2.4) (2022-03-05)
 
 
