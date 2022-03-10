@@ -162,13 +162,29 @@ class TestConfig(proto.Message):
             Session parameters to be compared when
             calculating differences.
         flow (str):
-            Flow name. If not set, default start flow is assumed.
-            Format:
+            Flow name to start the test case with. Format:
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``.
+
+            Only one of ``flow`` and ``page`` should be set to indicate
+            the starting point of the test case. If both are set,
+            ``page`` takes precedence over ``flow``. If neither is set,
+            the test case will start with start page on the default
+            start flow.
+        page (str):
+            The [page][google.cloud.dialogflow.cx.v3beta1.Page] to start
+            the test case with. Format:
+            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/pages/<Page ID>``.
+
+            Only one of ``flow`` and ``page`` should be set to indicate
+            the starting point of the test case. If both are set,
+            ``page`` takes precedence over ``flow``. If neither is set,
+            the test case will start with start page on the default
+            start flow.
     """
 
     tracking_parameters = proto.RepeatedField(proto.STRING, number=1,)
     flow = proto.Field(proto.STRING, number=2,)
+    page = proto.Field(proto.STRING, number=3,)
 
 
 class ConversationTurn(proto.Message):
