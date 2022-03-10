@@ -45,7 +45,7 @@ class privatecaCallTransformer(cst.CSTTransformer):
         'create_certificate_authority': ('parent', 'certificate_authority_id', 'certificate_authority', 'request_id', ),
         'create_certificate_template': ('parent', 'certificate_template_id', 'certificate_template', 'request_id', ),
         'delete_ca_pool': ('name', 'request_id', ),
-        'delete_certificate_authority': ('name', 'request_id', 'ignore_active_certificates', ),
+        'delete_certificate_authority': ('name', 'request_id', 'ignore_active_certificates', 'skip_grace_period', ),
         'delete_certificate_template': ('name', 'request_id', ),
         'disable_certificate_authority': ('name', 'request_id', ),
         'enable_certificate_authority': ('name', 'request_id', ),

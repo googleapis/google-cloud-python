@@ -657,11 +657,19 @@ class DeleteCertificateAuthorityRequest(proto.Message):
             deleted even if the CA has active certs. Active
             certs include both unrevoked and unexpired
             certs.
+        skip_grace_period (bool):
+            Optional. If this flag is set, the
+            Certificate Authority will be deleted as soon as
+            possible without a 30-day grace period where
+            undeletion would have been allowed. If you
+            proceed, there will be no way to recover this
+            CA.
     """
 
     name = proto.Field(proto.STRING, number=1,)
     request_id = proto.Field(proto.STRING, number=2,)
     ignore_active_certificates = proto.Field(proto.BOOL, number=4,)
+    skip_grace_period = proto.Field(proto.BOOL, number=5,)
 
 
 class UpdateCertificateAuthorityRequest(proto.Message):
