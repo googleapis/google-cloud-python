@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-texttospeech/#history
 
+## [2.11.0](https://github.com/googleapis/python-texttospeech/compare/v2.10.2...v2.11.0) (2022-03-10)
+
+
+### Features
+
+* promote CustomVoiceParams to v1 ([#266](https://github.com/googleapis/python-texttospeech/issues/266)) ([f484e7f](https://github.com/googleapis/python-texttospeech/commit/f484e7fe036fe57a4f432bf30c6421a6541ea486))
+
 ### [2.10.2](https://github.com/googleapis/python-texttospeech/compare/v2.10.1...v2.10.2) (2022-03-05)
 
 
