@@ -24,6 +24,7 @@ class CommonChecksum(object):
         initial_value (Optional[bytes]): the initial chunk of data from
             which the CRC32C checksum is computed.  Defaults to b''.
     """
+    __slots__ = ()
 
     def __init__(self, initial_value=b""):
         self._crc = 0
