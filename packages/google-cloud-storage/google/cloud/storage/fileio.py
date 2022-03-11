@@ -123,9 +123,12 @@ class BlobReader(io.BufferedIOBase):
         # If the read request demands more bytes than are buffered, fetch more.
         remaining_size = size - len(result)
         if remaining_size > 0 or size < 0:
+            self._pos += self._buffer.tell()
+            read_size = len(result)
+
             self._buffer.seek(0)
             self._buffer.truncate(0)  # Clear the buffer to make way for new data.
-            fetch_start = self._pos + len(result)
+            fetch_start = self._pos
             if size > 0:
                 # Fetch the larger of self._chunk_size or the remaining_size.
                 fetch_end = fetch_start + max(remaining_size, self._chunk_size)
@@ -154,9 +157,8 @@ class BlobReader(io.BufferedIOBase):
                 self._buffer.write(result[size:])
                 self._buffer.seek(0)
                 result = result[:size]
-
-        self._pos += len(result)
-
+            # Increment relative offset by true amount read.
+            self._pos += len(result) - read_size
         return result
 
     def read1(self, size=-1):
@@ -174,29 +176,33 @@ class BlobReader(io.BufferedIOBase):
         if self._blob.size is None:
             self._blob.reload(**self._download_kwargs)
 
-        initial_pos = self._pos
+        initial_offset = self._pos + self._buffer.tell()
 
         if whence == 0:
-            self._pos = pos
+            target_pos = pos
         elif whence == 1:
-            self._pos += pos
+            target_pos = initial_offset + pos
         elif whence == 2:
-            self._pos = self._blob.size + pos
+            target_pos = self._blob.size + pos
         if whence not in {0, 1, 2}:
             raise ValueError("invalid whence value")
 
-        if self._pos > self._blob.size:
-            self._pos = self._blob.size
+        if target_pos > self._blob.size:
+            target_pos = self._blob.size
 
         # Seek or invalidate buffer as needed.
-        difference = self._pos - initial_pos
-        new_buffer_pos = self._buffer.seek(difference, 1)
-        if new_buffer_pos != difference:  # Buffer does not contain new pos.
-            # Invalidate buffer.
+        if target_pos < self._pos:
+            # Target position < relative offset <= true offset.
+            # As data is not in buffer, invalidate buffer.
             self._buffer.seek(0)
             self._buffer.truncate(0)
-
-        return self._pos
+            new_pos = target_pos
+            self._pos = target_pos
+        else:
+            # relative offset <= target position <= size of file.
+            difference = target_pos - initial_offset
+            new_pos = self._pos + self._buffer.seek(difference, 1)
+        return new_pos
 
     def close(self):
         self._buffer.close()

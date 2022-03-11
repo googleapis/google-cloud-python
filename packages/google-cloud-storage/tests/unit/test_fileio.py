@@ -247,6 +247,41 @@ class TestBlobReaderBinary(unittest.TestCase, _BlobReaderBase):
 
         reader.close()
 
+    def test_advanced_seek(self):
+        blob = mock.Mock()
+
+        def read_from_fake_data(start=0, end=None, **_):
+            return TEST_BINARY_DATA[start:end] * 1024
+
+        blob.download_as_bytes = mock.Mock(side_effect=read_from_fake_data)
+        blob.size = None
+        download_kwargs = {"if_metageneration_match": 1}
+        reader = self._make_blob_reader(blob, chunk_size=1024, **download_kwargs)
+
+        # Seek needs the blob size to work and should call reload() if the size
+        # is not known. Set a mock to initialize the size if reload() is called.
+        def initialize_size(**_):
+            blob.size = len(TEST_BINARY_DATA) * 1024
+
+        blob.reload = mock.Mock(side_effect=initialize_size)
+
+        self.assertEqual(reader.tell(), 0)
+        # Mimic tarfile access pattern. Read tarinfo block.
+        reader.read(512)
+        self.assertEqual(reader.tell(), 512)
+        self.assertEqual(reader.seek(512), 512)
+        # Mimic read actual tar content.
+        reader.read(400)
+        self.assertEqual(reader.tell(), 912)
+        # Tarfile offsets are rounded up by block size
+        # A sanity seek/read is used to check for unexpected ends.
+        reader.seek(1023)
+        reader.read(1)
+        self.assertEqual(reader.tell(), 1024)
+        reader.read(512)
+        self.assertEqual(reader.tell(), 1536)
+        reader.close()
+
     def test_close(self):
         blob = mock.Mock()
         reader = self._make_blob_reader(blob)
