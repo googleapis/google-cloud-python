@@ -75,9 +75,9 @@ for file in python-pubsublite/samples/**/requirements.txt; do
     echo "- testing $file"
     echo "------------------------------------------------------------"
 
-    # Use pytest to execute tests for py-3.6
-    python3.6 -m venv py-3.6
-    source py-3.6/bin/activate
+    # Use pytest to execute tests for py-3.7
+    python3.7 -m venv py-3.7
+    source py-3.7/bin/activate
     # Install python-pubsublite samples tests requirements.
     python -m pip install --upgrade pip
     python -m pip install -r requirements.txt -q
@@ -87,8 +87,8 @@ for file in python-pubsublite/samples/**/requirements.txt; do
     python -m pytest quickstart_test.py
     EXIT=$?
     
-    deactivate py-3.6
-    rm -rf py-3.6/
+    deactivate py-3.7
+    rm -rf py-3.7/
 
     if [[ $EXIT -ne 0 ]]; then
       RTN=1
