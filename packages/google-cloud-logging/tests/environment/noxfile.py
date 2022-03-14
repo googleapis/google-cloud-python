@@ -69,7 +69,7 @@ def _determine_local_import_names(start_dir: str) -> List[str]:
 # We also need to specify the rules which are ignored by default:
 # ['E226', 'W504', 'E126', 'E123', 'W503', 'E24', 'E704', 'E121']
 
-DEFAULT_PYTHON_VERSION = "3.7"
+DEFAULT_PYTHON_VERSION = "3.9"
 BLACK_PATHS = ["./deployable/python"]
 BLACK_VERSION = "black==19.10b0"
 
