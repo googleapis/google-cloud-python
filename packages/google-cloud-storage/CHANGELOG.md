@@ -4,6 +4,26 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## [2.2.0](https://github.com/googleapis/python-storage/compare/v2.1.0...v2.2.0) (2022-03-14)
+
+
+### Features
+
+* allow no project in client methods using storage emulator ([#703](https://github.com/googleapis/python-storage/issues/703)) ([bcde0ec](https://github.com/googleapis/python-storage/commit/bcde0ec619d7d303892bcc0863b7f977c79f7649))
+
+
+### Bug Fixes
+
+* add user agent in python-storage when calling resumable media ([c7bf615](https://github.com/googleapis/python-storage/commit/c7bf615909a04f3bab3efb1047a9f4ba659bba19))
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#722](https://github.com/googleapis/python-storage/issues/722)) ([e9aab38](https://github.com/googleapis/python-storage/commit/e9aab389f868799d4425133954bad4f1cbb85786))
+* Fix BlobReader handling of interleaved reads and seeks ([#721](https://github.com/googleapis/python-storage/issues/721)) ([5d1cfd2](https://github.com/googleapis/python-storage/commit/5d1cfd2050321481a3bc4acbe80537ea666506fa))
+* retry client side requests timeout ([#727](https://github.com/googleapis/python-storage/issues/727)) ([e0b3b35](https://github.com/googleapis/python-storage/commit/e0b3b354d51e4be7c563d7f2f628a7139df842c0))
+
+
+### Documentation
+
+* fixed download_blob_to_file example ([#704](https://github.com/googleapis/python-storage/issues/704)) ([2c94d98](https://github.com/googleapis/python-storage/commit/2c94d98ed21cc768cfa54fac3d734254fc4d8480))
+
 ## [2.1.0](https://github.com/googleapis/python-storage/compare/v2.0.0...v2.1.0) (2022-01-19)
 
 
