@@ -1,5 +1,12 @@
 # Changelog
 
+### [2.9.2](https://github.com/googleapis/python-secret-manager/compare/v2.9.1...v2.9.2) (2022-03-13)
+
+
+### Documentation
+
+* **samples:** add checksum snippets ([#255](https://github.com/googleapis/python-secret-manager/issues/255)) ([2095a04](https://github.com/googleapis/python-secret-manager/commit/2095a04e73f2437cc4ccbaa272b1998422d18fe3))
+
 ### [2.9.1](https://github.com/googleapis/python-secret-manager/compare/v2.9.0...v2.9.1) (2022-03-05)
 
 
