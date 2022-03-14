@@ -1,5 +1,13 @@
 # Changelog
 
+### [0.17.4](https://github.com/googleapis/python-bigquery-pandas/compare/v0.17.3...v0.17.4) (2022-03-14)
+
+
+### Bug Fixes
+
+* avoid deprecated "out-of-band" authentication flow ([#500](https://github.com/googleapis/python-bigquery-pandas/issues/500)) ([4758e3a](https://github.com/googleapis/python-bigquery-pandas/commit/4758e3a9ccb82109aae65f76258b2910077e02dd))
+* correctly transform query job timeout configuration and exceptions ([#492](https://github.com/googleapis/python-bigquery-pandas/issues/492)) ([d8c3900](https://github.com/googleapis/python-bigquery-pandas/commit/d8c3900eda5aa2cb5b663b2be569d639f6a028a9))
+
 ### [0.17.3](https://github.com/googleapis/python-bigquery-pandas/compare/v0.17.2...v0.17.3) (2022-03-05)
 
 
