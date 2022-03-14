@@ -156,9 +156,11 @@ credentials are not found.
 
    credentials = pydata_google_auth.get_user_credentials(
        SCOPES,
-       # Set auth_local_webserver to True to have a slightly more convienient
-       # authorization flow. Note, this doesn't work if you're running from a
-       # notebook on a remote sever, such as over SSH or with Google Colab.
+       # Note, this doesn't work if you're running from a notebook on a
+       # remote sever, such as over SSH or with Google Colab. In those cases,
+       # install the gcloud command line interface and authenticate with the
+       # `gcloud auth application-default login` command and the `--no-browser`
+       # option.
        auth_local_webserver=True,
    )
 

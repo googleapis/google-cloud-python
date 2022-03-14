@@ -28,7 +28,7 @@ CLIENT_SECRET = "4hqze9yI8fxShls8eJWkeMdJ"
 
 
 def get_credentials(
-    private_key=None, project_id=None, reauth=False, auth_local_webserver=False
+    private_key=None, project_id=None, reauth=False, auth_local_webserver=True
 ):
     import pydata_google_auth
 

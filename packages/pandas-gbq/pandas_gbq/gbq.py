@@ -281,7 +281,7 @@ class GbqConnector(object):
         project_id,
         reauth=False,
         private_key=None,
-        auth_local_webserver=False,
+        auth_local_webserver=True,
         dialect="standard",
         location=None,
         credentials=None,
@@ -722,7 +722,7 @@ def read_gbq(
     index_col=None,
     col_order=None,
     reauth=False,
-    auth_local_webserver=False,
+    auth_local_webserver=True,
     dialect=None,
     location=None,
     configuration=None,
@@ -762,7 +762,7 @@ def read_gbq(
     reauth : boolean, default False
         Force Google BigQuery to re-authenticate the user. This is useful
         if multiple accounts are used.
-    auth_local_webserver : bool, default False
+    auth_local_webserver : bool, default True
         Use the `local webserver flow
         <https://googleapis.dev/python/google-auth-oauthlib/latest/reference/google_auth_oauthlib.flow.html#google_auth_oauthlib.flow.InstalledAppFlow.run_local_server>`_
         instead of the `console flow
@@ -959,7 +959,7 @@ def to_gbq(
     chunksize=None,
     reauth=False,
     if_exists="fail",
-    auth_local_webserver=False,
+    auth_local_webserver=True,
     table_schema=None,
     location=None,
     progress_bar=True,
@@ -1005,7 +1005,7 @@ def to_gbq(
             If table exists, drop it, recreate it, and insert data.
         ``'append'``
             If table exists, insert data. Create if does not exist.
-    auth_local_webserver : bool, default False
+    auth_local_webserver : bool, default True
         Use the `local webserver flow
         <https://googleapis.dev/python/google-auth-oauthlib/latest/reference/google_auth_oauthlib.flow.html#google_auth_oauthlib.flow.InstalledAppFlow.run_local_server>`_
         instead of the `console flow
