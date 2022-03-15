@@ -42,8 +42,11 @@ from google.cloud.redis_v1.services.cloud_redis import transports
 from google.cloud.redis_v1.types import cloud_redis
 from google.longrunning import operations_pb2
 from google.oauth2 import service_account
+from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
+from google.type import dayofweek_pb2  # type: ignore
+from google.type import timeofday_pb2  # type: ignore
 import google.auth
 
 
@@ -975,6 +978,7 @@ def test_get_instance(request_type, transport: str = "grpc"):
             alternative_location_id="alternative_location_id_value",
             redis_version="redis_version_value",
             reserved_ip_range="reserved_ip_range_value",
+            secondary_ip_range="secondary_ip_range_value",
             host="host_value",
             port=453,
             current_location_id="current_location_id_value",
@@ -985,6 +989,8 @@ def test_get_instance(request_type, transport: str = "grpc"):
             authorized_network="authorized_network_value",
             persistence_iam_identity="persistence_iam_identity_value",
             connect_mode=cloud_redis.Instance.ConnectMode.DIRECT_PEERING,
+            auth_enabled=True,
+            transit_encryption_mode=cloud_redis.Instance.TransitEncryptionMode.SERVER_AUTHENTICATION,
             replica_count=1384,
             read_endpoint="read_endpoint_value",
             read_endpoint_port=1920,
@@ -1005,6 +1011,7 @@ def test_get_instance(request_type, transport: str = "grpc"):
     assert response.alternative_location_id == "alternative_location_id_value"
     assert response.redis_version == "redis_version_value"
     assert response.reserved_ip_range == "reserved_ip_range_value"
+    assert response.secondary_ip_range == "secondary_ip_range_value"
     assert response.host == "host_value"
     assert response.port == 453
     assert response.current_location_id == "current_location_id_value"
@@ -1015,6 +1022,11 @@ def test_get_instance(request_type, transport: str = "grpc"):
     assert response.authorized_network == "authorized_network_value"
     assert response.persistence_iam_identity == "persistence_iam_identity_value"
     assert response.connect_mode == cloud_redis.Instance.ConnectMode.DIRECT_PEERING
+    assert response.auth_enabled is True
+    assert (
+        response.transit_encryption_mode
+        == cloud_redis.Instance.TransitEncryptionMode.SERVER_AUTHENTICATION
+    )
     assert response.replica_count == 1384
     assert response.read_endpoint == "read_endpoint_value"
     assert response.read_endpoint_port == 1920
@@ -1062,6 +1074,7 @@ async def test_get_instance_async(
                 alternative_location_id="alternative_location_id_value",
                 redis_version="redis_version_value",
                 reserved_ip_range="reserved_ip_range_value",
+                secondary_ip_range="secondary_ip_range_value",
                 host="host_value",
                 port=453,
                 current_location_id="current_location_id_value",
@@ -1072,6 +1085,8 @@ async def test_get_instance_async(
                 authorized_network="authorized_network_value",
                 persistence_iam_identity="persistence_iam_identity_value",
                 connect_mode=cloud_redis.Instance.ConnectMode.DIRECT_PEERING,
+                auth_enabled=True,
+                transit_encryption_mode=cloud_redis.Instance.TransitEncryptionMode.SERVER_AUTHENTICATION,
                 replica_count=1384,
                 read_endpoint="read_endpoint_value",
                 read_endpoint_port=1920,
@@ -1093,6 +1108,7 @@ async def test_get_instance_async(
     assert response.alternative_location_id == "alternative_location_id_value"
     assert response.redis_version == "redis_version_value"
     assert response.reserved_ip_range == "reserved_ip_range_value"
+    assert response.secondary_ip_range == "secondary_ip_range_value"
     assert response.host == "host_value"
     assert response.port == 453
     assert response.current_location_id == "current_location_id_value"
@@ -1103,6 +1119,11 @@ async def test_get_instance_async(
     assert response.authorized_network == "authorized_network_value"
     assert response.persistence_iam_identity == "persistence_iam_identity_value"
     assert response.connect_mode == cloud_redis.Instance.ConnectMode.DIRECT_PEERING
+    assert response.auth_enabled is True
+    assert (
+        response.transit_encryption_mode
+        == cloud_redis.Instance.TransitEncryptionMode.SERVER_AUTHENTICATION
+    )
     assert response.replica_count == 1384
     assert response.read_endpoint == "read_endpoint_value"
     assert response.read_endpoint_port == 1920
@@ -1233,6 +1254,220 @@ async def test_get_instance_flattened_error_async():
     with pytest.raises(ValueError):
         await client.get_instance(
             cloud_redis.GetInstanceRequest(), name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type", [cloud_redis.GetInstanceAuthStringRequest, dict,]
+)
+def test_get_instance_auth_string(request_type, transport: str = "grpc"):
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_instance_auth_string), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_redis.InstanceAuthString(
+            auth_string="auth_string_value",
+        )
+        response = client.get_instance_auth_string(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis.GetInstanceAuthStringRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_redis.InstanceAuthString)
+    assert response.auth_string == "auth_string_value"
+
+
+def test_get_instance_auth_string_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_instance_auth_string), "__call__"
+    ) as call:
+        client.get_instance_auth_string()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis.GetInstanceAuthStringRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_instance_auth_string_async(
+    transport: str = "grpc_asyncio",
+    request_type=cloud_redis.GetInstanceAuthStringRequest,
+):
+    client = CloudRedisAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_instance_auth_string), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_redis.InstanceAuthString(auth_string="auth_string_value",)
+        )
+        response = await client.get_instance_auth_string(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis.GetInstanceAuthStringRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_redis.InstanceAuthString)
+    assert response.auth_string == "auth_string_value"
+
+
+@pytest.mark.asyncio
+async def test_get_instance_auth_string_async_from_dict():
+    await test_get_instance_auth_string_async(request_type=dict)
+
+
+def test_get_instance_auth_string_field_headers():
+    client = CloudRedisClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_redis.GetInstanceAuthStringRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_instance_auth_string), "__call__"
+    ) as call:
+        call.return_value = cloud_redis.InstanceAuthString()
+        client.get_instance_auth_string(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_instance_auth_string_field_headers_async():
+    client = CloudRedisAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_redis.GetInstanceAuthStringRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_instance_auth_string), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_redis.InstanceAuthString()
+        )
+        await client.get_instance_auth_string(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+def test_get_instance_auth_string_flattened():
+    client = CloudRedisClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_instance_auth_string), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_redis.InstanceAuthString()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_instance_auth_string(name="name_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_instance_auth_string_flattened_error():
+    client = CloudRedisClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_instance_auth_string(
+            cloud_redis.GetInstanceAuthStringRequest(), name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_instance_auth_string_flattened_async():
+    client = CloudRedisAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_instance_auth_string), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_redis.InstanceAuthString()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_redis.InstanceAuthString()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_instance_auth_string(name="name_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_instance_auth_string_flattened_error_async():
+    client = CloudRedisAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_instance_auth_string(
+            cloud_redis.GetInstanceAuthStringRequest(), name="name_value",
         )
 
 
@@ -2737,6 +2972,242 @@ async def test_delete_instance_flattened_error_async():
         )
 
 
+@pytest.mark.parametrize(
+    "request_type", [cloud_redis.RescheduleMaintenanceRequest, dict,]
+)
+def test_reschedule_maintenance(request_type, transport: str = "grpc"):
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.reschedule_maintenance), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.reschedule_maintenance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis.RescheduleMaintenanceRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_reschedule_maintenance_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.reschedule_maintenance), "__call__"
+    ) as call:
+        client.reschedule_maintenance()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis.RescheduleMaintenanceRequest()
+
+
+@pytest.mark.asyncio
+async def test_reschedule_maintenance_async(
+    transport: str = "grpc_asyncio",
+    request_type=cloud_redis.RescheduleMaintenanceRequest,
+):
+    client = CloudRedisAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.reschedule_maintenance), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.reschedule_maintenance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis.RescheduleMaintenanceRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_reschedule_maintenance_async_from_dict():
+    await test_reschedule_maintenance_async(request_type=dict)
+
+
+def test_reschedule_maintenance_field_headers():
+    client = CloudRedisClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_redis.RescheduleMaintenanceRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.reschedule_maintenance), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.reschedule_maintenance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_reschedule_maintenance_field_headers_async():
+    client = CloudRedisAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_redis.RescheduleMaintenanceRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.reschedule_maintenance), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.reschedule_maintenance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+def test_reschedule_maintenance_flattened():
+    client = CloudRedisClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.reschedule_maintenance), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.reschedule_maintenance(
+            name="name_value",
+            reschedule_type=cloud_redis.RescheduleMaintenanceRequest.RescheduleType.IMMEDIATE,
+            schedule_time=timestamp_pb2.Timestamp(seconds=751),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].reschedule_type
+        mock_val = cloud_redis.RescheduleMaintenanceRequest.RescheduleType.IMMEDIATE
+        assert arg == mock_val
+        assert TimestampRule().to_proto(
+            args[0].schedule_time
+        ) == timestamp_pb2.Timestamp(seconds=751)
+
+
+def test_reschedule_maintenance_flattened_error():
+    client = CloudRedisClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.reschedule_maintenance(
+            cloud_redis.RescheduleMaintenanceRequest(),
+            name="name_value",
+            reschedule_type=cloud_redis.RescheduleMaintenanceRequest.RescheduleType.IMMEDIATE,
+            schedule_time=timestamp_pb2.Timestamp(seconds=751),
+        )
+
+
+@pytest.mark.asyncio
+async def test_reschedule_maintenance_flattened_async():
+    client = CloudRedisAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.reschedule_maintenance), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.reschedule_maintenance(
+            name="name_value",
+            reschedule_type=cloud_redis.RescheduleMaintenanceRequest.RescheduleType.IMMEDIATE,
+            schedule_time=timestamp_pb2.Timestamp(seconds=751),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].reschedule_type
+        mock_val = cloud_redis.RescheduleMaintenanceRequest.RescheduleType.IMMEDIATE
+        assert arg == mock_val
+        assert TimestampRule().to_proto(
+            args[0].schedule_time
+        ) == timestamp_pb2.Timestamp(seconds=751)
+
+
+@pytest.mark.asyncio
+async def test_reschedule_maintenance_flattened_error_async():
+    client = CloudRedisAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.reschedule_maintenance(
+            cloud_redis.RescheduleMaintenanceRequest(),
+            name="name_value",
+            reschedule_type=cloud_redis.RescheduleMaintenanceRequest.RescheduleType.IMMEDIATE,
+            schedule_time=timestamp_pb2.Timestamp(seconds=751),
+        )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.CloudRedisGrpcTransport(
@@ -2850,6 +3321,7 @@ def test_cloud_redis_base_transport():
     methods = (
         "list_instances",
         "get_instance",
+        "get_instance_auth_string",
         "create_instance",
         "update_instance",
         "upgrade_instance",
@@ -2857,6 +3329,7 @@ def test_cloud_redis_base_transport():
         "export_instance",
         "failover_instance",
         "delete_instance",
+        "reschedule_maintenance",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):

@@ -363,6 +363,95 @@
           "service": {
             "shortName": "CloudRedis"
           },
+          "shortName": "GetInstanceAuthString"
+        }
+      },
+      "file": "redis_v1_generated_cloud_redis_get_instance_auth_string_async.py",
+      "regionTag": "redis_v1_generated_CloudRedis_GetInstanceAuthString_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "CloudRedis"
+          },
+          "shortName": "GetInstanceAuthString"
+        }
+      },
+      "file": "redis_v1_generated_cloud_redis_get_instance_auth_string_sync.py",
+      "regionTag": "redis_v1_generated_CloudRedis_GetInstanceAuthString_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "CloudRedis"
+          },
           "shortName": "GetInstance"
         }
       },
@@ -619,6 +708,95 @@
         {
           "end": 46,
           "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "CloudRedis"
+          },
+          "shortName": "RescheduleMaintenance"
+        }
+      },
+      "file": "redis_v1_generated_cloud_redis_reschedule_maintenance_async.py",
+      "regionTag": "redis_v1_generated_CloudRedis_RescheduleMaintenance_async",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "start": 47,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "CloudRedis"
+          },
+          "shortName": "RescheduleMaintenance"
+        }
+      },
+      "file": "redis_v1_generated_cloud_redis_reschedule_maintenance_sync.py",
+      "regionTag": "redis_v1_generated_CloudRedis_RescheduleMaintenance_sync",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "start": 47,
           "type": "RESPONSE_HANDLING"
         }
       ]

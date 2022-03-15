@@ -15,8 +15,11 @@
 #
 import proto  # type: ignore
 
+from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
+from google.type import dayofweek_pb2  # type: ignore
+from google.type import timeofday_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -24,9 +27,15 @@ __protobuf__ = proto.module(
     manifest={
         "NodeInfo",
         "Instance",
+        "RescheduleMaintenanceRequest",
+        "MaintenancePolicy",
+        "WeeklyMaintenanceWindow",
+        "MaintenanceSchedule",
         "ListInstancesRequest",
         "ListInstancesResponse",
         "GetInstanceRequest",
+        "GetInstanceAuthStringRequest",
+        "InstanceAuthString",
         "CreateInstanceRequest",
         "UpdateInstanceRequest",
         "UpgradeInstanceRequest",
@@ -41,6 +50,7 @@ __protobuf__ = proto.module(
         "OperationMetadata",
         "LocationMetadata",
         "ZoneMetadata",
+        "TlsCertificate",
     },
 )
 
@@ -61,7 +71,7 @@ class NodeInfo(proto.Message):
 
 
 class Instance(proto.Message):
-    r"""A Google Cloud Redis instance.
+    r"""A Memorystore for Redis instance.
 
     Attributes:
         name (str):
@@ -119,6 +129,13 @@ class Instance(proto.Message):
             provided, the service will choose an unused /29 block, for
             example, 10.0.0.0/29 or 192.168.0.0/29. For
             READ_REPLICAS_ENABLED the default block size is /28.
+        secondary_ip_range (str):
+            Optional. Additional IP range for node placement. Required
+            when enabling read replicas on an existing instance. For
+            DIRECT_PEERING mode value must be a CIDR range of size /28,
+            or "auto". For PRIVATE_SERVICE_ACCESS mode value must be the
+            name of an allocated address range associated with the
+            private service access connection, or "auto".
         host (str):
             Output only. Hostname or IP address of the
             exposed Redis endpoint used by clients to
@@ -179,10 +196,32 @@ class Instance(proto.Message):
         connect_mode (google.cloud.redis_v1.types.Instance.ConnectMode):
             Optional. The network connect mode of the Redis instance. If
             not provided, the connect mode defaults to DIRECT_PEERING.
+        auth_enabled (bool):
+            Optional. Indicates whether OSS Redis AUTH is
+            enabled for the instance. If set to "true" AUTH
+            is enabled on the instance. Default value is
+            "false" meaning AUTH is disabled.
+        server_ca_certs (Sequence[google.cloud.redis_v1.types.TlsCertificate]):
+            Output only. List of server CA certificates
+            for the instance.
+        transit_encryption_mode (google.cloud.redis_v1.types.Instance.TransitEncryptionMode):
+            Optional. The TLS mode of the Redis instance.
+            If not provided, TLS is disabled for the
+            instance.
+        maintenance_policy (google.cloud.redis_v1.types.MaintenancePolicy):
+            Optional. The maintenance policy for the
+            instance. If not provided, maintenance events
+            can be performed at any time.
+        maintenance_schedule (google.cloud.redis_v1.types.MaintenanceSchedule):
+            Output only. Date and time of upcoming
+            maintenance events which have been scheduled.
         replica_count (int):
-            Optional. The number of replica nodes. Valid range for
-            standard tier is [1-5] and defaults to 1. Valid value for
-            basic tier is 0 and defaults to 0.
+            Optional. The number of replica nodes. The valid range for
+            the Standard Tier with read replicas enabled is [1-5] and
+            defaults to 2. If read replicas are not enabled for a
+            Standard Tier instance, the only valid value is 1 and the
+            default is 1. The valid value for basic tier is 0 and the
+            default is also 0.
         nodes (Sequence[google.cloud.redis_v1.types.NodeInfo]):
             Output only. Info per node.
         read_endpoint (str):
@@ -197,7 +236,8 @@ class Instance(proto.Message):
             readonly redis endpoint. Standard tier only.
             Write requests should target 'port'.
         read_replicas_mode (google.cloud.redis_v1.types.Instance.ReadReplicasMode):
-            Optional. Read replica mode.
+            Optional. Read replicas mode for the instance. Defaults to
+            READ_REPLICAS_DISABLED.
     """
 
     class State(proto.Enum):
@@ -224,6 +264,12 @@ class Instance(proto.Message):
         DIRECT_PEERING = 1
         PRIVATE_SERVICE_ACCESS = 2
 
+    class TransitEncryptionMode(proto.Enum):
+        r"""Available TLS modes."""
+        TRANSIT_ENCRYPTION_MODE_UNSPECIFIED = 0
+        SERVER_AUTHENTICATION = 1
+        DISABLED = 2
+
     class ReadReplicasMode(proto.Enum):
         r"""Read replicas mode."""
         READ_REPLICAS_MODE_UNSPECIFIED = 0
@@ -237,6 +283,7 @@ class Instance(proto.Message):
     alternative_location_id = proto.Field(proto.STRING, number=5,)
     redis_version = proto.Field(proto.STRING, number=7,)
     reserved_ip_range = proto.Field(proto.STRING, number=9,)
+    secondary_ip_range = proto.Field(proto.STRING, number=30,)
     host = proto.Field(proto.STRING, number=10,)
     port = proto.Field(proto.INT32, number=11,)
     current_location_id = proto.Field(proto.STRING, number=12,)
@@ -251,11 +298,133 @@ class Instance(proto.Message):
     authorized_network = proto.Field(proto.STRING, number=20,)
     persistence_iam_identity = proto.Field(proto.STRING, number=21,)
     connect_mode = proto.Field(proto.ENUM, number=22, enum=ConnectMode,)
+    auth_enabled = proto.Field(proto.BOOL, number=23,)
+    server_ca_certs = proto.RepeatedField(
+        proto.MESSAGE, number=25, message="TlsCertificate",
+    )
+    transit_encryption_mode = proto.Field(
+        proto.ENUM, number=26, enum=TransitEncryptionMode,
+    )
+    maintenance_policy = proto.Field(
+        proto.MESSAGE, number=27, message="MaintenancePolicy",
+    )
+    maintenance_schedule = proto.Field(
+        proto.MESSAGE, number=28, message="MaintenanceSchedule",
+    )
     replica_count = proto.Field(proto.INT32, number=31,)
     nodes = proto.RepeatedField(proto.MESSAGE, number=32, message="NodeInfo",)
     read_endpoint = proto.Field(proto.STRING, number=33,)
     read_endpoint_port = proto.Field(proto.INT32, number=34,)
     read_replicas_mode = proto.Field(proto.ENUM, number=35, enum=ReadReplicasMode,)
+
+
+class RescheduleMaintenanceRequest(proto.Message):
+    r"""Request for
+    [RescheduleMaintenance][google.cloud.redis.v1.CloudRedis.RescheduleMaintenance].
+
+    Attributes:
+        name (str):
+            Required. Redis instance resource name using the form:
+            ``projects/{project_id}/locations/{location_id}/instances/{instance_id}``
+            where ``location_id`` refers to a GCP region.
+        reschedule_type (google.cloud.redis_v1.types.RescheduleMaintenanceRequest.RescheduleType):
+            Required. If reschedule type is SPECIFIC_TIME, must set up
+            schedule_time as well.
+        schedule_time (google.protobuf.timestamp_pb2.Timestamp):
+            Optional. Timestamp when the maintenance shall be
+            rescheduled to if reschedule_type=SPECIFIC_TIME, in RFC 3339
+            format, for example ``2012-11-15T16:19:00.094Z``.
+    """
+
+    class RescheduleType(proto.Enum):
+        r"""Reschedule options."""
+        RESCHEDULE_TYPE_UNSPECIFIED = 0
+        IMMEDIATE = 1
+        NEXT_AVAILABLE_WINDOW = 2
+        SPECIFIC_TIME = 3
+
+    name = proto.Field(proto.STRING, number=1,)
+    reschedule_type = proto.Field(proto.ENUM, number=2, enum=RescheduleType,)
+    schedule_time = proto.Field(
+        proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,
+    )
+
+
+class MaintenancePolicy(proto.Message):
+    r"""Maintenance policy for an instance.
+
+    Attributes:
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time when the policy was
+            created.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time when the policy was
+            last updated.
+        description (str):
+            Optional. Description of what this policy is for.
+            Create/Update methods return INVALID_ARGUMENT if the length
+            is greater than 512.
+        weekly_maintenance_window (Sequence[google.cloud.redis_v1.types.WeeklyMaintenanceWindow]):
+            Optional. Maintenance window that is applied to resources
+            covered by this policy. Minimum 1. For the current version,
+            the maximum number of weekly_window is expected to be one.
+    """
+
+    create_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
+    update_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
+    description = proto.Field(proto.STRING, number=3,)
+    weekly_maintenance_window = proto.RepeatedField(
+        proto.MESSAGE, number=4, message="WeeklyMaintenanceWindow",
+    )
+
+
+class WeeklyMaintenanceWindow(proto.Message):
+    r"""Time window in which disruptive maintenance updates occur.
+    Non-disruptive updates can occur inside or outside this window.
+
+    Attributes:
+        day (google.type.dayofweek_pb2.DayOfWeek):
+            Required. The day of week that maintenance
+            updates occur.
+        start_time (google.type.timeofday_pb2.TimeOfDay):
+            Required. Start time of the window in UTC
+            time.
+        duration (google.protobuf.duration_pb2.Duration):
+            Output only. Duration of the maintenance
+            window. The current window is fixed at 1 hour.
+    """
+
+    day = proto.Field(proto.ENUM, number=1, enum=dayofweek_pb2.DayOfWeek,)
+    start_time = proto.Field(proto.MESSAGE, number=2, message=timeofday_pb2.TimeOfDay,)
+    duration = proto.Field(proto.MESSAGE, number=3, message=duration_pb2.Duration,)
+
+
+class MaintenanceSchedule(proto.Message):
+    r"""Upcoming maintenance schedule. If no maintenance is
+    scheduled, fields are not populated.
+
+    Attributes:
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The start time of any upcoming
+            scheduled maintenance for this instance.
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The end time of any upcoming
+            scheduled maintenance for this instance.
+        can_reschedule (bool):
+            If the scheduled maintenance can be
+            rescheduled, default is true.
+        schedule_deadline_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The deadline that the
+            maintenance schedule start time can not go
+            beyond, including reschedule.
+    """
+
+    start_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
+    end_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
+    can_reschedule = proto.Field(proto.BOOL, number=3,)
+    schedule_deadline_time = proto.Field(
+        proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,
+    )
 
 
 class ListInstancesRequest(proto.Message):
@@ -334,6 +503,31 @@ class GetInstanceRequest(proto.Message):
     """
 
     name = proto.Field(proto.STRING, number=1,)
+
+
+class GetInstanceAuthStringRequest(proto.Message):
+    r"""Request for
+    [GetInstanceAuthString][google.cloud.redis.v1.CloudRedis.GetInstanceAuthString].
+
+    Attributes:
+        name (str):
+            Required. Redis instance resource name using the form:
+            ``projects/{project_id}/locations/{location_id}/instances/{instance_id}``
+            where ``location_id`` refers to a GCP region.
+    """
+
+    name = proto.Field(proto.STRING, number=1,)
+
+
+class InstanceAuthString(proto.Message):
+    r"""Instance AUTH string details.
+
+    Attributes:
+        auth_string (str):
+            AUTH string set on the instance.
+    """
+
+    auth_string = proto.Field(proto.STRING, number=1,)
 
 
 class CreateInstanceRequest(proto.Message):
@@ -600,6 +794,34 @@ class ZoneMetadata(proto.Message):
     empty and reserved for future use only.
 
     """
+
+
+class TlsCertificate(proto.Message):
+    r"""TlsCertificate Resource
+
+    Attributes:
+        serial_number (str):
+            Serial number, as extracted from the
+            certificate.
+        cert (str):
+            PEM representation.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time when the certificate was created in
+            `RFC 3339 <https://tools.ietf.org/html/rfc3339>`__ format,
+            for example ``2020-05-18T00:00:00.094Z``.
+        expire_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time when the certificate expires in `RFC
+            3339 <https://tools.ietf.org/html/rfc3339>`__ format, for
+            example ``2020-05-18T00:00:00.094Z``.
+        sha1_fingerprint (str):
+            Sha1 Fingerprint of the certificate.
+    """
+
+    serial_number = proto.Field(proto.STRING, number=1,)
+    cert = proto.Field(proto.STRING, number=2,)
+    create_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
+    expire_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
+    sha1_fingerprint = proto.Field(proto.STRING, number=5,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
