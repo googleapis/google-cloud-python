@@ -24,15 +24,23 @@ from __future__ import unicode_literals
 import http.client
 from typing import Dict
 from typing import Union
+import warnings
 
 from google.rpc import error_details_pb2
 
 try:
     import grpc
-    from grpc_status import rpc_status
+
+    try:
+        from grpc_status import rpc_status
+    except ImportError:  # pragma: NO COVER
+        warnings.warn(
+            "Please install grpcio-status to obtain helpful grpc error messages.",
+            ImportWarning,
+        )
+        rpc_status = None
 except ImportError:  # pragma: NO COVER
     grpc = None
-    rpc_status = None
 
 # Lookup tables for mapping exceptions from HTTP and gRPC transports.
 # Populated by _GoogleAPICallErrorMeta
