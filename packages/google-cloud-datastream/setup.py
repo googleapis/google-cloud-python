@@ -23,7 +23,7 @@ import setuptools
 name = "google-cloud-datastream"
 description = "Datastream client library"
 version = "0.4.2"
-release_status = "Development Status :: 3 - Alpha"
+release_status = "Development Status :: 5 - Production/Stable"
 url = "https://github.com/googleapis/python-datastream"
 dependencies = [
     # NOTE: Maintainers, please do not require google-api-core>=2.x.x
