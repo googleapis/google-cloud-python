@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+### [2.2.1](https://github.com/googleapis/python-storage/compare/v2.2.0...v2.2.1) (2022-03-15)
+
+
+### Bug Fixes
+
+* remove py.typed marker file for PEP 561 ([#735](https://github.com/googleapis/python-storage/issues/735)) ([f77d2f7](https://github.com/googleapis/python-storage/commit/f77d2f787f435f2f898e9babcdab81225672ad4f)), closes [#734](https://github.com/googleapis/python-storage/issues/734)
+
 ## [2.2.0](https://github.com/googleapis/python-storage/compare/v2.1.0...v2.2.0) (2022-03-14)
 
 
