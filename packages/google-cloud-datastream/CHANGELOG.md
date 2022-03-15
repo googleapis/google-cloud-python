@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.0](https://github.com/googleapis/python-datastream/compare/v0.4.2...v1.0.0) (2022-03-15)
+
+
+### Features
+
+* bump release level to production/stable ([05b5c87](https://github.com/googleapis/python-datastream/commit/05b5c875df8b6be6d5e9c6a89ffca017e0b5a160))
+
 ### [0.4.2](https://github.com/googleapis/python-datastream/compare/v0.4.1...v0.4.2) (2022-03-05)
 
 
