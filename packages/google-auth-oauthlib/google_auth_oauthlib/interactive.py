@@ -21,10 +21,68 @@ notebooks.
 
 from __future__ import absolute_import
 
+import contextlib
+import socket
+
 import google_auth_oauthlib.flow
 
 
-def get_user_credentials(scopes, client_id, client_secret):
+LOCALHOST = "localhost"
+DEFAULT_PORTS_TO_TRY = 100
+
+
+def is_port_open(port):
+    """Check if a port is open on localhost.
+    Based on StackOverflow answer: https://stackoverflow.com/a/43238489/101923
+    Parameters
+    ----------
+    port : int
+        A port to check on localhost.
+    Returns
+    -------
+    is_open : bool
+        True if a socket can be opened at the requested port.
+    """
+    with contextlib.closing(socket.socket(socket.AF_INET, socket.SOCK_STREAM)) as sock:
+        try:
+            sock.bind((LOCALHOST, port))
+            sock.listen(1)
+        except socket.error:
+            is_open = False
+        else:
+            is_open = True
+    return is_open
+
+
+def find_open_port(start=8080, stop=None):
+    """Find an open port between ``start`` and ``stop``.
+    Parameters
+    ----------
+    start : Optional[int]
+        Beginning of range of ports to try. Defaults to 8080.
+    stop : Optional[int]
+        End of range of ports to try (not including exactly equals ``stop``).
+        This function tries 100 possible ports if no ``stop`` is specified.
+    Returns
+    -------
+    Optional[int]
+        ``None`` if no open port is found, otherwise an integer indicating an
+        open port.
+    """
+    if not stop:
+        stop = start + DEFAULT_PORTS_TO_TRY
+
+    for port in range(start, stop):
+        if is_port_open(port):
+            return port
+
+    # No open ports found.
+    return None
+
+
+def get_user_credentials(
+    scopes, client_id, client_secret, minimum_port=8080, maximum_port=None
+):
     """Gets credentials associated with your Google user account.
 
     This function authenticates using your user credentials by going through
@@ -53,6 +111,12 @@ def get_user_credentials(scopes, client_id, client_secret):
             A string that verifies your application to Google APIs. Find this
             value in the `Credentials page on the Google Developer's Console
             <https://console.developers.google.com/apis/credentials>`_.
+        minimum_port (int):
+            Beginning of range of ports to try for redirect URI HTTP server.
+            Defaults to 8080.
+        maximum_port (Optional[int]):
+            End of range of ports to try (not including exactly equals ``stop``).
+            This function tries 100 possible ports if no ``stop`` is specified.
 
     Returns:
         google.oauth2.credentials.Credentials:
@@ -102,4 +166,8 @@ def get_user_credentials(scopes, client_id, client_secret):
         client_config, scopes=scopes
     )
 
-    return app_flow.run_console()
+    port = find_open_port()
+    if not port:
+        raise ConnectionError("Could not find open port.")
+
+    return app_flow.run_local_server(host=LOCALHOST, port=port)
