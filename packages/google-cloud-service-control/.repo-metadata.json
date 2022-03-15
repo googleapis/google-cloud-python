@@ -10,7 +10,7 @@
     "repo": "googleapis/python-service-control",
     "distribution_name": "google-cloud-service-control",
     "api_id": "servicecontrol.googleapis.com",
-    "default_version": "v2",
+    "default_version": "v1",
     "codeowner_team": "",
     "api_shortname": "servicecontrol"
 }
