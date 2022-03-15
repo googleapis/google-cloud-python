@@ -22,7 +22,7 @@ from hashlib import md5
 import os
 from urllib.parse import urlsplit
 
-from google import resumable_media  # type: ignore
+from google import resumable_media
 from google.auth import environment_vars
 from google.cloud.storage.constants import _DEFAULT_TIMEOUT
 from google.cloud.storage.retry import DEFAULT_RETRY

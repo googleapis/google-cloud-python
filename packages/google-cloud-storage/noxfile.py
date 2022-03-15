@@ -64,16 +64,6 @@ def blacken(session):
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
-def mypy(session):
-    """Verify type hints are mypy compatible."""
-    session.install("-e", ".")
-    session.install(
-        "mypy", "types-setuptools", "types-requests",
-    )
-    session.run("mypy", "-p", "google.cloud.storage", "--no-incremental")
-
-
-@nox.session(python=DEFAULT_PYTHON_VERSION)
 def lint_setup_py(session):
     """Verify that setup.py is valid (including RST check)."""
     session.install("docutils", "pygments")

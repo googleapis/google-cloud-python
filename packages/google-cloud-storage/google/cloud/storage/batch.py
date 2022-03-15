@@ -23,7 +23,7 @@ from email.parser import Parser
 import io
 import json
 
-import requests  # type: ignore
+import requests
 
 from google.cloud import _helpers
 from google.cloud import exceptions

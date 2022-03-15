@@ -13,7 +13,7 @@
 # limitations under the License.
 
 try:
-    import pkg_resources  # type: ignore
+    import pkg_resources
 
     pkg_resources.declare_namespace(__name__)
 except ImportError:

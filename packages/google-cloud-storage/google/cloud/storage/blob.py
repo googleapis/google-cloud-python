@@ -42,7 +42,7 @@ from urllib.parse import urlsplit
 from urllib.parse import urlunsplit
 import warnings
 
-from google import resumable_media  # type: ignore
+from google import resumable_media
 from google.resumable_media.requests import ChunkedDownload
 from google.resumable_media.requests import Download
 from google.resumable_media.requests import RawDownload
