@@ -22,7 +22,7 @@ import setuptools
 
 name = "google-cloud-redis"
 description = "Google Cloud Memorystore for Redis API client library"
-version = "2.7.1"
+version = "2.8.0"
 # Should be one of:
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'

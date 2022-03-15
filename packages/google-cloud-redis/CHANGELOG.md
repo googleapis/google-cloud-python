@@ -4,6 +4,16 @@
 
 [1]: https://pypi.org/project/google-cloud-redis/#history
 
+## [2.8.0](https://github.com/googleapis/python-redis/compare/v2.7.1...v2.8.0) (2022-03-15)
+
+
+### Features
+
+* add secondary_ip_range field ([d08e3b5](https://github.com/googleapis/python-redis/commit/d08e3b5c7c6c635b7dc7277b0a455b088e94dd19))
+* add support for AUTH functionality ([d08e3b5](https://github.com/googleapis/python-redis/commit/d08e3b5c7c6c635b7dc7277b0a455b088e94dd19))
+* add support for TLS functionality ([d08e3b5](https://github.com/googleapis/python-redis/commit/d08e3b5c7c6c635b7dc7277b0a455b088e94dd19))
+* add Support Maintenance Window ([#172](https://github.com/googleapis/python-redis/issues/172)) ([d08e3b5](https://github.com/googleapis/python-redis/commit/d08e3b5c7c6c635b7dc7277b0a455b088e94dd19))
+
 ### [2.7.1](https://github.com/googleapis/python-redis/compare/v2.7.0...v2.7.1) (2022-03-05)
 
 
