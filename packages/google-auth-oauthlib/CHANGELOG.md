@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-auth-oauthlib/#history
 
+### [0.5.1](https://github.com/googleapis/google-auth-library-python-oauthlib/compare/v0.5.0...v0.5.1) (2022-03-15)
+
+
+### Bug Fixes
+
+* avoid deprecated "out-of-band" authentication flow ([#186](https://github.com/googleapis/google-auth-library-python-oauthlib/issues/186)) ([f119c4e](https://github.com/googleapis/google-auth-library-python-oauthlib/commit/f119c4e0f5cad25b1254b0783e8226eda2d361cb))
+
 ## [0.5.0](https://github.com/googleapis/google-auth-library-python-oauthlib/compare/v0.4.6...v0.5.0) (2022-02-24)
 
 
