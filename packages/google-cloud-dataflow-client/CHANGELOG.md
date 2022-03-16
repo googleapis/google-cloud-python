@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0](https://github.com/googleapis/python-dataflow-client/compare/v0.4.1...v0.5.0) (2022-03-16)
+
+
+### Features
+
+* Add capabilities field to SdkHarnessContainerImage ([#84](https://github.com/googleapis/python-dataflow-client/issues/84)) ([3d86713](https://github.com/googleapis/python-dataflow-client/commit/3d867138d9abc434f83556a0177a89b23e187555))
+
 ### [0.4.1](https://github.com/googleapis/python-dataflow-client/compare/v0.4.0...v0.4.1) (2022-03-05)
 
 
