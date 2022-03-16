@@ -260,7 +260,10 @@ class PropertyFilter(proto.Message):
         GREATER_THAN = 3
         GREATER_THAN_OR_EQUAL = 4
         EQUAL = 5
+        IN = 6
+        NOT_EQUAL = 9
         HAS_ANCESTOR = 11
+        NOT_IN = 13
 
     property = proto.Field(proto.MESSAGE, number=1, message="PropertyReference",)
     op = proto.Field(proto.ENUM, number=2, enum=Operator,)

@@ -189,7 +189,7 @@ class Value(proto.Message):
             This field is a member of `oneof`_ ``value_type``.
         string_value (str):
             A UTF-8 encoded string value. When ``exclude_from_indexes``
-            is false (it is indexed), may have at most 1500 bytes.
+            is false (it is indexed) , may have at most 1500 bytes.
             Otherwise, may be set to at most 1,000,000 bytes.
 
             This field is a member of `oneof`_ ``value_type``.
