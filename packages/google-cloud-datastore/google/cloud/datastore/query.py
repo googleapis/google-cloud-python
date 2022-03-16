@@ -86,6 +86,9 @@ class Query(object):
         "<": query_pb2.PropertyFilter.Operator.LESS_THAN,
         ">": query_pb2.PropertyFilter.Operator.GREATER_THAN,
         "=": query_pb2.PropertyFilter.Operator.EQUAL,
+        "!=": query_pb2.PropertyFilter.Operator.NOT_EQUAL,
+        "IN": query_pb2.PropertyFilter.Operator.IN,
+        "NOT_IN": query_pb2.PropertyFilter.Operator.NOT_IN,
     }
     """Mapping of operator strings and their protobuf equivalents."""
 
@@ -215,7 +218,7 @@ class Query(object):
 
         where property is a property stored on the entity in the datastore
         and operator is one of ``OPERATORS``
-        (ie, ``=``, ``<``, ``<=``, ``>``, ``>=``):
+        (ie, ``=``, ``<``, ``<=``, ``>``, ``>=``, ``!=``, ``IN``, ``NOT_IN``):
 
         .. testsetup:: query-filter
 
@@ -235,7 +238,7 @@ class Query(object):
         :param property_name: A property name.
 
         :type operator: str
-        :param operator: One of ``=``, ``<``, ``<=``, ``>``, ``>=``.
+        :param operator: One of ``=``, ``<``, ``<=``, ``>``, ``>=``, ``!=``, ``IN``, ``NOT_IN``.
 
         :type value: :class:`int`, :class:`str`, :class:`bool`,
                      :class:`float`, :class:`NoneType`,
@@ -252,7 +255,7 @@ class Query(object):
         """
         if self.OPERATORS.get(operator) is None:
             error_message = 'Invalid expression: "%s"' % (operator,)
-            choices_message = "Please use one of: =, <, <=, >, >=."
+            choices_message = "Please use one of: =, <, <=, >, >=, !=, IN, NOT_IN."
             raise ValueError(error_message, choices_message)
 
         if property_name == "__key__" and not isinstance(value, Key):
@@ -293,7 +296,7 @@ class Query(object):
         :param key: The key to filter on.
 
         :type operator: str
-        :param operator: (Optional) One of ``=``, ``<``, ``<=``, ``>``, ``>=``.
+        :param operator: (Optional) One of ``=``, ``<``, ``<=``, ``>``, ``>=``, ``!=``, ``IN``, ``NOT_IN``.
                          Defaults to ``=``.
         """
         self.add_filter("__key__", operator, key)
