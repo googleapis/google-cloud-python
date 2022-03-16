@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+### [2.6.2](https://github.com/googleapis/google-auth-library-python/compare/v2.6.1...v2.6.2) (2022-03-16)
+
+
+### Bug Fixes
+
+* Rename aws imdsv2 url field and update token lifetime ([#982](https://github.com/googleapis/google-auth-library-python/issues/982)) ([818e6d2](https://github.com/googleapis/google-auth-library-python/commit/818e6d2e63e58601499f0eaac1dd160345d9d6e4))
+
+
+### Miscellaneous Chores
+
+* let release-please finish the release ([#991](https://github.com/googleapis/google-auth-library-python/issues/991)) ([d2bdc9a](https://github.com/googleapis/google-auth-library-python/commit/d2bdc9a8a23930a01e5b8445e869a135511977cf))
+
 ### [2.6.1](https://github.com/googleapis/google-auth-library-python/compare/v2.6.0...v2.6.1) (2022-02-09)
 
 
