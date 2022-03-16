@@ -486,11 +486,16 @@ class SdkHarnessContainerImage(proto.Message):
             Environment ID for the Beam runner API proto
             Environment that corresponds to the current SDK
             Harness.
+        capabilities (Sequence[str]):
+            The set of capabilities enumerated in the above Environment
+            proto. See also
+            https://github.com/apache/beam/blob/master/model/pipeline/src/main/proto/beam_runner_api.proto
     """
 
     container_image = proto.Field(proto.STRING, number=1,)
     use_single_core_per_container = proto.Field(proto.BOOL, number=2,)
     environment_id = proto.Field(proto.STRING, number=3,)
+    capabilities = proto.RepeatedField(proto.STRING, number=4,)
 
 
 class WorkerPool(proto.Message):
