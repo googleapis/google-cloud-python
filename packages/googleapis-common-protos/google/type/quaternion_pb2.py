@@ -18,7 +18,6 @@
 # source: google/type/quaternion.proto
 """Generated protocol buffer code."""
 from google.protobuf import descriptor as _descriptor
-from google.protobuf import descriptor_pool as _descriptor_pool
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
@@ -28,12 +27,116 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(
-    b'\n\x1cgoogle/type/quaternion.proto\x12\x0bgoogle.type"8\n\nQuaternion\x12\t\n\x01x\x18\x01 \x01(\x01\x12\t\n\x01y\x18\x02 \x01(\x01\x12\t\n\x01z\x18\x03 \x01(\x01\x12\t\n\x01w\x18\x04 \x01(\x01\x42o\n\x0f\x63om.google.typeB\x0fQuaternionProtoP\x01Z@google.golang.org/genproto/googleapis/type/quaternion;quaternion\xf8\x01\x01\xa2\x02\x03GTPb\x06proto3'
+DESCRIPTOR = _descriptor.FileDescriptor(
+    name="google/type/quaternion.proto",
+    package="google.type",
+    syntax="proto3",
+    serialized_options=b"\n\017com.google.typeB\017QuaternionProtoP\001Z@google.golang.org/genproto/googleapis/type/quaternion;quaternion\370\001\001\242\002\003GTP",
+    create_key=_descriptor._internal_create_key,
+    serialized_pb=b'\n\x1cgoogle/type/quaternion.proto\x12\x0bgoogle.type"8\n\nQuaternion\x12\t\n\x01x\x18\x01 \x01(\x01\x12\t\n\x01y\x18\x02 \x01(\x01\x12\t\n\x01z\x18\x03 \x01(\x01\x12\t\n\x01w\x18\x04 \x01(\x01\x42o\n\x0f\x63om.google.typeB\x0fQuaternionProtoP\x01Z@google.golang.org/genproto/googleapis/type/quaternion;quaternion\xf8\x01\x01\xa2\x02\x03GTPb\x06proto3',
 )
 
 
-_QUATERNION = DESCRIPTOR.message_types_by_name["Quaternion"]
+_QUATERNION = _descriptor.Descriptor(
+    name="Quaternion",
+    full_name="google.type.Quaternion",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    create_key=_descriptor._internal_create_key,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="x",
+            full_name="google.type.Quaternion.x",
+            index=0,
+            number=1,
+            type=1,
+            cpp_type=5,
+            label=1,
+            has_default_value=False,
+            default_value=float(0),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
+        _descriptor.FieldDescriptor(
+            name="y",
+            full_name="google.type.Quaternion.y",
+            index=1,
+            number=2,
+            type=1,
+            cpp_type=5,
+            label=1,
+            has_default_value=False,
+            default_value=float(0),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
+        _descriptor.FieldDescriptor(
+            name="z",
+            full_name="google.type.Quaternion.z",
+            index=2,
+            number=3,
+            type=1,
+            cpp_type=5,
+            label=1,
+            has_default_value=False,
+            default_value=float(0),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
+        _descriptor.FieldDescriptor(
+            name="w",
+            full_name="google.type.Quaternion.w",
+            index=3,
+            number=4,
+            type=1,
+            cpp_type=5,
+            label=1,
+            has_default_value=False,
+            default_value=float(0),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=45,
+    serialized_end=101,
+)
+
+DESCRIPTOR.message_types_by_name["Quaternion"] = _QUATERNION
+_sym_db.RegisterFileDescriptor(DESCRIPTOR)
+
 Quaternion = _reflection.GeneratedProtocolMessageType(
     "Quaternion",
     (_message.Message,),
@@ -45,10 +148,6 @@ Quaternion = _reflection.GeneratedProtocolMessageType(
 )
 _sym_db.RegisterMessage(Quaternion)
 
-if _descriptor._USE_C_DESCRIPTORS == False:
 
-    DESCRIPTOR._options = None
-    DESCRIPTOR._serialized_options = b"\n\017com.google.typeB\017QuaternionProtoP\001Z@google.golang.org/genproto/googleapis/type/quaternion;quaternion\370\001\001\242\002\003GTP"
-    _QUATERNION._serialized_start = 45
-    _QUATERNION._serialized_end = 101
+DESCRIPTOR._options = None
 # @@protoc_insertion_point(module_scope)

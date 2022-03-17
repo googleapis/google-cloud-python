@@ -19,7 +19,6 @@
 """Generated protocol buffer code."""
 from google.protobuf.internal import enum_type_wrapper
 from google.protobuf import descriptor as _descriptor
-from google.protobuf import descriptor_pool as _descriptor_pool
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
@@ -29,11 +28,94 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(
-    b"\n\x1bgoogle/type/dayofweek.proto\x12\x0bgoogle.type*\x84\x01\n\tDayOfWeek\x12\x1b\n\x17\x44\x41Y_OF_WEEK_UNSPECIFIED\x10\x00\x12\n\n\x06MONDAY\x10\x01\x12\x0b\n\x07TUESDAY\x10\x02\x12\r\n\tWEDNESDAY\x10\x03\x12\x0c\n\x08THURSDAY\x10\x04\x12\n\n\x06\x46RIDAY\x10\x05\x12\x0c\n\x08SATURDAY\x10\x06\x12\n\n\x06SUNDAY\x10\x07\x42i\n\x0f\x63om.google.typeB\x0e\x44\x61yOfWeekProtoP\x01Z>google.golang.org/genproto/googleapis/type/dayofweek;dayofweek\xa2\x02\x03GTPb\x06proto3"
+DESCRIPTOR = _descriptor.FileDescriptor(
+    name="google/type/dayofweek.proto",
+    package="google.type",
+    syntax="proto3",
+    serialized_options=b"\n\017com.google.typeB\016DayOfWeekProtoP\001Z>google.golang.org/genproto/googleapis/type/dayofweek;dayofweek\242\002\003GTP",
+    create_key=_descriptor._internal_create_key,
+    serialized_pb=b"\n\x1bgoogle/type/dayofweek.proto\x12\x0bgoogle.type*\x84\x01\n\tDayOfWeek\x12\x1b\n\x17\x44\x41Y_OF_WEEK_UNSPECIFIED\x10\x00\x12\n\n\x06MONDAY\x10\x01\x12\x0b\n\x07TUESDAY\x10\x02\x12\r\n\tWEDNESDAY\x10\x03\x12\x0c\n\x08THURSDAY\x10\x04\x12\n\n\x06\x46RIDAY\x10\x05\x12\x0c\n\x08SATURDAY\x10\x06\x12\n\n\x06SUNDAY\x10\x07\x42i\n\x0f\x63om.google.typeB\x0e\x44\x61yOfWeekProtoP\x01Z>google.golang.org/genproto/googleapis/type/dayofweek;dayofweek\xa2\x02\x03GTPb\x06proto3",
 )
 
-_DAYOFWEEK = DESCRIPTOR.enum_types_by_name["DayOfWeek"]
+_DAYOFWEEK = _descriptor.EnumDescriptor(
+    name="DayOfWeek",
+    full_name="google.type.DayOfWeek",
+    filename=None,
+    file=DESCRIPTOR,
+    create_key=_descriptor._internal_create_key,
+    values=[
+        _descriptor.EnumValueDescriptor(
+            name="DAY_OF_WEEK_UNSPECIFIED",
+            index=0,
+            number=0,
+            serialized_options=None,
+            type=None,
+            create_key=_descriptor._internal_create_key,
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="MONDAY",
+            index=1,
+            number=1,
+            serialized_options=None,
+            type=None,
+            create_key=_descriptor._internal_create_key,
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="TUESDAY",
+            index=2,
+            number=2,
+            serialized_options=None,
+            type=None,
+            create_key=_descriptor._internal_create_key,
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="WEDNESDAY",
+            index=3,
+            number=3,
+            serialized_options=None,
+            type=None,
+            create_key=_descriptor._internal_create_key,
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="THURSDAY",
+            index=4,
+            number=4,
+            serialized_options=None,
+            type=None,
+            create_key=_descriptor._internal_create_key,
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="FRIDAY",
+            index=5,
+            number=5,
+            serialized_options=None,
+            type=None,
+            create_key=_descriptor._internal_create_key,
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="SATURDAY",
+            index=6,
+            number=6,
+            serialized_options=None,
+            type=None,
+            create_key=_descriptor._internal_create_key,
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="SUNDAY",
+            index=7,
+            number=7,
+            serialized_options=None,
+            type=None,
+            create_key=_descriptor._internal_create_key,
+        ),
+    ],
+    containing_type=None,
+    serialized_options=None,
+    serialized_start=45,
+    serialized_end=177,
+)
+_sym_db.RegisterEnumDescriptor(_DAYOFWEEK)
+
 DayOfWeek = enum_type_wrapper.EnumTypeWrapper(_DAYOFWEEK)
 DAY_OF_WEEK_UNSPECIFIED = 0
 MONDAY = 1
@@ -45,10 +127,9 @@ SATURDAY = 6
 SUNDAY = 7
 
 
-if _descriptor._USE_C_DESCRIPTORS == False:
+DESCRIPTOR.enum_types_by_name["DayOfWeek"] = _DAYOFWEEK
+_sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-    DESCRIPTOR._options = None
-    DESCRIPTOR._serialized_options = b"\n\017com.google.typeB\016DayOfWeekProtoP\001Z>google.golang.org/genproto/googleapis/type/dayofweek;dayofweek\242\002\003GTP"
-    _DAYOFWEEK._serialized_start = 45
-    _DAYOFWEEK._serialized_end = 177
+
+DESCRIPTOR._options = None
 # @@protoc_insertion_point(module_scope)

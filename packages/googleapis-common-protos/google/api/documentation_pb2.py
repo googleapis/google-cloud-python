@@ -18,7 +18,6 @@
 # source: google/api/documentation.proto
 """Generated protocol buffer code."""
 from google.protobuf import descriptor as _descriptor
-from google.protobuf import descriptor_pool as _descriptor_pool
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
@@ -28,14 +27,298 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(
-    b'\n\x1egoogle/api/documentation.proto\x12\ngoogle.api"\xa1\x01\n\rDocumentation\x12\x0f\n\x07summary\x18\x01 \x01(\t\x12\x1f\n\x05pages\x18\x05 \x03(\x0b\x32\x10.google.api.Page\x12,\n\x05rules\x18\x03 \x03(\x0b\x32\x1d.google.api.DocumentationRule\x12\x1e\n\x16\x64ocumentation_root_url\x18\x04 \x01(\t\x12\x10\n\x08overview\x18\x02 \x01(\t"[\n\x11\x44ocumentationRule\x12\x10\n\x08selector\x18\x01 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t\x12\x1f\n\x17\x64\x65precation_description\x18\x03 \x01(\t"I\n\x04Page\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0f\n\x07\x63ontent\x18\x02 \x01(\t\x12"\n\x08subpages\x18\x03 \x03(\x0b\x32\x10.google.api.PageBt\n\x0e\x63om.google.apiB\x12\x44ocumentationProtoP\x01ZEgoogle.golang.org/genproto/googleapis/api/serviceconfig;serviceconfig\xa2\x02\x04GAPIb\x06proto3'
+DESCRIPTOR = _descriptor.FileDescriptor(
+    name="google/api/documentation.proto",
+    package="google.api",
+    syntax="proto3",
+    serialized_options=b"\n\016com.google.apiB\022DocumentationProtoP\001ZEgoogle.golang.org/genproto/googleapis/api/serviceconfig;serviceconfig\242\002\004GAPI",
+    create_key=_descriptor._internal_create_key,
+    serialized_pb=b'\n\x1egoogle/api/documentation.proto\x12\ngoogle.api"\xa1\x01\n\rDocumentation\x12\x0f\n\x07summary\x18\x01 \x01(\t\x12\x1f\n\x05pages\x18\x05 \x03(\x0b\x32\x10.google.api.Page\x12,\n\x05rules\x18\x03 \x03(\x0b\x32\x1d.google.api.DocumentationRule\x12\x1e\n\x16\x64ocumentation_root_url\x18\x04 \x01(\t\x12\x10\n\x08overview\x18\x02 \x01(\t"[\n\x11\x44ocumentationRule\x12\x10\n\x08selector\x18\x01 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t\x12\x1f\n\x17\x64\x65precation_description\x18\x03 \x01(\t"I\n\x04Page\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0f\n\x07\x63ontent\x18\x02 \x01(\t\x12"\n\x08subpages\x18\x03 \x03(\x0b\x32\x10.google.api.PageBt\n\x0e\x63om.google.apiB\x12\x44ocumentationProtoP\x01ZEgoogle.golang.org/genproto/googleapis/api/serviceconfig;serviceconfig\xa2\x02\x04GAPIb\x06proto3',
 )
 
 
-_DOCUMENTATION = DESCRIPTOR.message_types_by_name["Documentation"]
-_DOCUMENTATIONRULE = DESCRIPTOR.message_types_by_name["DocumentationRule"]
-_PAGE = DESCRIPTOR.message_types_by_name["Page"]
+_DOCUMENTATION = _descriptor.Descriptor(
+    name="Documentation",
+    full_name="google.api.Documentation",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    create_key=_descriptor._internal_create_key,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="summary",
+            full_name="google.api.Documentation.summary",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=b"".decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
+        _descriptor.FieldDescriptor(
+            name="pages",
+            full_name="google.api.Documentation.pages",
+            index=1,
+            number=5,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
+        _descriptor.FieldDescriptor(
+            name="rules",
+            full_name="google.api.Documentation.rules",
+            index=2,
+            number=3,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
+        _descriptor.FieldDescriptor(
+            name="documentation_root_url",
+            full_name="google.api.Documentation.documentation_root_url",
+            index=3,
+            number=4,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=b"".decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
+        _descriptor.FieldDescriptor(
+            name="overview",
+            full_name="google.api.Documentation.overview",
+            index=4,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=b"".decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=47,
+    serialized_end=208,
+)
+
+
+_DOCUMENTATIONRULE = _descriptor.Descriptor(
+    name="DocumentationRule",
+    full_name="google.api.DocumentationRule",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    create_key=_descriptor._internal_create_key,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="selector",
+            full_name="google.api.DocumentationRule.selector",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=b"".decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
+        _descriptor.FieldDescriptor(
+            name="description",
+            full_name="google.api.DocumentationRule.description",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=b"".decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
+        _descriptor.FieldDescriptor(
+            name="deprecation_description",
+            full_name="google.api.DocumentationRule.deprecation_description",
+            index=2,
+            number=3,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=b"".decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=210,
+    serialized_end=301,
+)
+
+
+_PAGE = _descriptor.Descriptor(
+    name="Page",
+    full_name="google.api.Page",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    create_key=_descriptor._internal_create_key,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.api.Page.name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=b"".decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
+        _descriptor.FieldDescriptor(
+            name="content",
+            full_name="google.api.Page.content",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=b"".decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
+        _descriptor.FieldDescriptor(
+            name="subpages",
+            full_name="google.api.Page.subpages",
+            index=2,
+            number=3,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=303,
+    serialized_end=376,
+)
+
+_DOCUMENTATION.fields_by_name["pages"].message_type = _PAGE
+_DOCUMENTATION.fields_by_name["rules"].message_type = _DOCUMENTATIONRULE
+_PAGE.fields_by_name["subpages"].message_type = _PAGE
+DESCRIPTOR.message_types_by_name["Documentation"] = _DOCUMENTATION
+DESCRIPTOR.message_types_by_name["DocumentationRule"] = _DOCUMENTATIONRULE
+DESCRIPTOR.message_types_by_name["Page"] = _PAGE
+_sym_db.RegisterFileDescriptor(DESCRIPTOR)
+
 Documentation = _reflection.GeneratedProtocolMessageType(
     "Documentation",
     (_message.Message,),
@@ -69,14 +352,6 @@ Page = _reflection.GeneratedProtocolMessageType(
 )
 _sym_db.RegisterMessage(Page)
 
-if _descriptor._USE_C_DESCRIPTORS == False:
 
-    DESCRIPTOR._options = None
-    DESCRIPTOR._serialized_options = b"\n\016com.google.apiB\022DocumentationProtoP\001ZEgoogle.golang.org/genproto/googleapis/api/serviceconfig;serviceconfig\242\002\004GAPI"
-    _DOCUMENTATION._serialized_start = 47
-    _DOCUMENTATION._serialized_end = 208
-    _DOCUMENTATIONRULE._serialized_start = 210
-    _DOCUMENTATIONRULE._serialized_end = 301
-    _PAGE._serialized_start = 303
-    _PAGE._serialized_end = 376
+DESCRIPTOR._options = None
 # @@protoc_insertion_point(module_scope)

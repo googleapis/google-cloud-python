@@ -18,7 +18,6 @@
 # source: google/api/label.proto
 """Generated protocol buffer code."""
 from google.protobuf import descriptor as _descriptor
-from google.protobuf import descriptor_pool as _descriptor_pool
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
@@ -28,13 +27,139 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(
-    b'\n\x16google/api/label.proto\x12\ngoogle.api"\x9c\x01\n\x0fLabelDescriptor\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x39\n\nvalue_type\x18\x02 \x01(\x0e\x32%.google.api.LabelDescriptor.ValueType\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t",\n\tValueType\x12\n\n\x06STRING\x10\x00\x12\x08\n\x04\x42OOL\x10\x01\x12\t\n\x05INT64\x10\x02\x42_\n\x0e\x63om.google.apiB\nLabelProtoP\x01Z5google.golang.org/genproto/googleapis/api/label;label\xf8\x01\x01\xa2\x02\x04GAPIb\x06proto3'
+DESCRIPTOR = _descriptor.FileDescriptor(
+    name="google/api/label.proto",
+    package="google.api",
+    syntax="proto3",
+    serialized_options=b"\n\016com.google.apiB\nLabelProtoP\001Z5google.golang.org/genproto/googleapis/api/label;label\370\001\001\242\002\004GAPI",
+    create_key=_descriptor._internal_create_key,
+    serialized_pb=b'\n\x16google/api/label.proto\x12\ngoogle.api"\x9c\x01\n\x0fLabelDescriptor\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x39\n\nvalue_type\x18\x02 \x01(\x0e\x32%.google.api.LabelDescriptor.ValueType\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t",\n\tValueType\x12\n\n\x06STRING\x10\x00\x12\x08\n\x04\x42OOL\x10\x01\x12\t\n\x05INT64\x10\x02\x42_\n\x0e\x63om.google.apiB\nLabelProtoP\x01Z5google.golang.org/genproto/googleapis/api/label;label\xf8\x01\x01\xa2\x02\x04GAPIb\x06proto3',
 )
 
 
-_LABELDESCRIPTOR = DESCRIPTOR.message_types_by_name["LabelDescriptor"]
-_LABELDESCRIPTOR_VALUETYPE = _LABELDESCRIPTOR.enum_types_by_name["ValueType"]
+_LABELDESCRIPTOR_VALUETYPE = _descriptor.EnumDescriptor(
+    name="ValueType",
+    full_name="google.api.LabelDescriptor.ValueType",
+    filename=None,
+    file=DESCRIPTOR,
+    create_key=_descriptor._internal_create_key,
+    values=[
+        _descriptor.EnumValueDescriptor(
+            name="STRING",
+            index=0,
+            number=0,
+            serialized_options=None,
+            type=None,
+            create_key=_descriptor._internal_create_key,
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="BOOL",
+            index=1,
+            number=1,
+            serialized_options=None,
+            type=None,
+            create_key=_descriptor._internal_create_key,
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="INT64",
+            index=2,
+            number=2,
+            serialized_options=None,
+            type=None,
+            create_key=_descriptor._internal_create_key,
+        ),
+    ],
+    containing_type=None,
+    serialized_options=None,
+    serialized_start=151,
+    serialized_end=195,
+)
+_sym_db.RegisterEnumDescriptor(_LABELDESCRIPTOR_VALUETYPE)
+
+
+_LABELDESCRIPTOR = _descriptor.Descriptor(
+    name="LabelDescriptor",
+    full_name="google.api.LabelDescriptor",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    create_key=_descriptor._internal_create_key,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="key",
+            full_name="google.api.LabelDescriptor.key",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=b"".decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
+        _descriptor.FieldDescriptor(
+            name="value_type",
+            full_name="google.api.LabelDescriptor.value_type",
+            index=1,
+            number=2,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
+        _descriptor.FieldDescriptor(
+            name="description",
+            full_name="google.api.LabelDescriptor.description",
+            index=2,
+            number=3,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=b"".decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[_LABELDESCRIPTOR_VALUETYPE],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=39,
+    serialized_end=195,
+)
+
+_LABELDESCRIPTOR.fields_by_name["value_type"].enum_type = _LABELDESCRIPTOR_VALUETYPE
+_LABELDESCRIPTOR_VALUETYPE.containing_type = _LABELDESCRIPTOR
+DESCRIPTOR.message_types_by_name["LabelDescriptor"] = _LABELDESCRIPTOR
+_sym_db.RegisterFileDescriptor(DESCRIPTOR)
+
 LabelDescriptor = _reflection.GeneratedProtocolMessageType(
     "LabelDescriptor",
     (_message.Message,),
@@ -46,12 +171,6 @@ LabelDescriptor = _reflection.GeneratedProtocolMessageType(
 )
 _sym_db.RegisterMessage(LabelDescriptor)
 
-if _descriptor._USE_C_DESCRIPTORS == False:
 
-    DESCRIPTOR._options = None
-    DESCRIPTOR._serialized_options = b"\n\016com.google.apiB\nLabelProtoP\001Z5google.golang.org/genproto/googleapis/api/label;label\370\001\001\242\002\004GAPI"
-    _LABELDESCRIPTOR._serialized_start = 39
-    _LABELDESCRIPTOR._serialized_end = 195
-    _LABELDESCRIPTOR_VALUETYPE._serialized_start = 151
-    _LABELDESCRIPTOR_VALUETYPE._serialized_end = 195
+DESCRIPTOR._options = None
 # @@protoc_insertion_point(module_scope)

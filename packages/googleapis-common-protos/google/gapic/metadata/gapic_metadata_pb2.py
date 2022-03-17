@@ -18,7 +18,6 @@
 # source: google/gapic/metadata/gapic_metadata.proto
 """Generated protocol buffer code."""
 from google.protobuf import descriptor as _descriptor
-from google.protobuf import descriptor_pool as _descriptor_pool
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
@@ -28,24 +27,501 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(
-    b'\n*google/gapic/metadata/gapic_metadata.proto\x12\x15google.gapic.metadata"\xf0\x05\n\rGapicMetadata\x12\x0e\n\x06schema\x18\x01 \x01(\t\x12\x0f\n\x07\x63omment\x18\x02 \x01(\t\x12\x10\n\x08language\x18\x03 \x01(\t\x12\x15\n\rproto_package\x18\x04 \x01(\t\x12\x17\n\x0flibrary_package\x18\x05 \x01(\t\x12\x44\n\x08services\x18\x06 \x03(\x0b\x32\x32.google.gapic.metadata.GapicMetadata.ServicesEntry\x1ai\n\rServicesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12G\n\x05value\x18\x02 \x01(\x0b\x32\x38.google.gapic.metadata.GapicMetadata.ServiceForTransport:\x02\x38\x01\x1a\xd3\x01\n\x13ServiceForTransport\x12V\n\x07\x63lients\x18\x01 \x03(\x0b\x32\x45.google.gapic.metadata.GapicMetadata.ServiceForTransport.ClientsEntry\x1a\x64\n\x0c\x43lientsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x43\n\x05value\x18\x02 \x01(\x0b\x32\x34.google.gapic.metadata.GapicMetadata.ServiceAsClient:\x02\x38\x01\x1a\xd5\x01\n\x0fServiceAsClient\x12\x16\n\x0elibrary_client\x18\x01 \x01(\t\x12L\n\x04rpcs\x18\x02 \x03(\x0b\x32>.google.gapic.metadata.GapicMetadata.ServiceAsClient.RpcsEntry\x1a\\\n\tRpcsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12>\n\x05value\x18\x02 \x01(\x0b\x32/.google.gapic.metadata.GapicMetadata.MethodList:\x02\x38\x01\x1a\x1d\n\nMethodList\x12\x0f\n\x07methods\x18\x01 \x03(\tB\xba\x01\n\x19\x63om.google.gapic.metadataB\x12GapicMetadataProtoP\x01Z=google.golang.org/genproto/googleapis/gapic/metadata;metadata\xaa\x02\x15Google.Gapic.Metadata\xca\x02\x15Google\\Gapic\\Metadata\xea\x02\x17Google::Gapic::Metadatab\x06proto3'
+DESCRIPTOR = _descriptor.FileDescriptor(
+    name="google/gapic/metadata/gapic_metadata.proto",
+    package="google.gapic.metadata",
+    syntax="proto3",
+    serialized_options=b"\n\031com.google.gapic.metadataB\022GapicMetadataProtoP\001Z=google.golang.org/genproto/googleapis/gapic/metadata;metadata\252\002\025Google.Gapic.Metadata\312\002\025Google\\Gapic\\Metadata\352\002\027Google::Gapic::Metadata",
+    create_key=_descriptor._internal_create_key,
+    serialized_pb=b'\n*google/gapic/metadata/gapic_metadata.proto\x12\x15google.gapic.metadata"\xf0\x05\n\rGapicMetadata\x12\x0e\n\x06schema\x18\x01 \x01(\t\x12\x0f\n\x07\x63omment\x18\x02 \x01(\t\x12\x10\n\x08language\x18\x03 \x01(\t\x12\x15\n\rproto_package\x18\x04 \x01(\t\x12\x17\n\x0flibrary_package\x18\x05 \x01(\t\x12\x44\n\x08services\x18\x06 \x03(\x0b\x32\x32.google.gapic.metadata.GapicMetadata.ServicesEntry\x1ai\n\rServicesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12G\n\x05value\x18\x02 \x01(\x0b\x32\x38.google.gapic.metadata.GapicMetadata.ServiceForTransport:\x02\x38\x01\x1a\xd3\x01\n\x13ServiceForTransport\x12V\n\x07\x63lients\x18\x01 \x03(\x0b\x32\x45.google.gapic.metadata.GapicMetadata.ServiceForTransport.ClientsEntry\x1a\x64\n\x0c\x43lientsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x43\n\x05value\x18\x02 \x01(\x0b\x32\x34.google.gapic.metadata.GapicMetadata.ServiceAsClient:\x02\x38\x01\x1a\xd5\x01\n\x0fServiceAsClient\x12\x16\n\x0elibrary_client\x18\x01 \x01(\t\x12L\n\x04rpcs\x18\x02 \x03(\x0b\x32>.google.gapic.metadata.GapicMetadata.ServiceAsClient.RpcsEntry\x1a\\\n\tRpcsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12>\n\x05value\x18\x02 \x01(\x0b\x32/.google.gapic.metadata.GapicMetadata.MethodList:\x02\x38\x01\x1a\x1d\n\nMethodList\x12\x0f\n\x07methods\x18\x01 \x03(\tB\xba\x01\n\x19\x63om.google.gapic.metadataB\x12GapicMetadataProtoP\x01Z=google.golang.org/genproto/googleapis/gapic/metadata;metadata\xaa\x02\x15Google.Gapic.Metadata\xca\x02\x15Google\\Gapic\\Metadata\xea\x02\x17Google::Gapic::Metadatab\x06proto3',
 )
 
 
-_GAPICMETADATA = DESCRIPTOR.message_types_by_name["GapicMetadata"]
-_GAPICMETADATA_SERVICESENTRY = _GAPICMETADATA.nested_types_by_name["ServicesEntry"]
-_GAPICMETADATA_SERVICEFORTRANSPORT = _GAPICMETADATA.nested_types_by_name[
-    "ServiceForTransport"
-]
-_GAPICMETADATA_SERVICEFORTRANSPORT_CLIENTSENTRY = _GAPICMETADATA_SERVICEFORTRANSPORT.nested_types_by_name[
-    "ClientsEntry"
-]
-_GAPICMETADATA_SERVICEASCLIENT = _GAPICMETADATA.nested_types_by_name["ServiceAsClient"]
-_GAPICMETADATA_SERVICEASCLIENT_RPCSENTRY = _GAPICMETADATA_SERVICEASCLIENT.nested_types_by_name[
-    "RpcsEntry"
-]
-_GAPICMETADATA_METHODLIST = _GAPICMETADATA.nested_types_by_name["MethodList"]
+_GAPICMETADATA_SERVICESENTRY = _descriptor.Descriptor(
+    name="ServicesEntry",
+    full_name="google.gapic.metadata.GapicMetadata.ServicesEntry",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    create_key=_descriptor._internal_create_key,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="key",
+            full_name="google.gapic.metadata.GapicMetadata.ServicesEntry.key",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=b"".decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
+        _descriptor.FieldDescriptor(
+            name="value",
+            full_name="google.gapic.metadata.GapicMetadata.ServicesEntry.value",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=b"8\001",
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=256,
+    serialized_end=361,
+)
+
+_GAPICMETADATA_SERVICEFORTRANSPORT_CLIENTSENTRY = _descriptor.Descriptor(
+    name="ClientsEntry",
+    full_name="google.gapic.metadata.GapicMetadata.ServiceForTransport.ClientsEntry",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    create_key=_descriptor._internal_create_key,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="key",
+            full_name="google.gapic.metadata.GapicMetadata.ServiceForTransport.ClientsEntry.key",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=b"".decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
+        _descriptor.FieldDescriptor(
+            name="value",
+            full_name="google.gapic.metadata.GapicMetadata.ServiceForTransport.ClientsEntry.value",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=b"8\001",
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=475,
+    serialized_end=575,
+)
+
+_GAPICMETADATA_SERVICEFORTRANSPORT = _descriptor.Descriptor(
+    name="ServiceForTransport",
+    full_name="google.gapic.metadata.GapicMetadata.ServiceForTransport",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    create_key=_descriptor._internal_create_key,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="clients",
+            full_name="google.gapic.metadata.GapicMetadata.ServiceForTransport.clients",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        )
+    ],
+    extensions=[],
+    nested_types=[_GAPICMETADATA_SERVICEFORTRANSPORT_CLIENTSENTRY],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=364,
+    serialized_end=575,
+)
+
+_GAPICMETADATA_SERVICEASCLIENT_RPCSENTRY = _descriptor.Descriptor(
+    name="RpcsEntry",
+    full_name="google.gapic.metadata.GapicMetadata.ServiceAsClient.RpcsEntry",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    create_key=_descriptor._internal_create_key,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="key",
+            full_name="google.gapic.metadata.GapicMetadata.ServiceAsClient.RpcsEntry.key",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=b"".decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
+        _descriptor.FieldDescriptor(
+            name="value",
+            full_name="google.gapic.metadata.GapicMetadata.ServiceAsClient.RpcsEntry.value",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=b"8\001",
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=699,
+    serialized_end=791,
+)
+
+_GAPICMETADATA_SERVICEASCLIENT = _descriptor.Descriptor(
+    name="ServiceAsClient",
+    full_name="google.gapic.metadata.GapicMetadata.ServiceAsClient",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    create_key=_descriptor._internal_create_key,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="library_client",
+            full_name="google.gapic.metadata.GapicMetadata.ServiceAsClient.library_client",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=b"".decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
+        _descriptor.FieldDescriptor(
+            name="rpcs",
+            full_name="google.gapic.metadata.GapicMetadata.ServiceAsClient.rpcs",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
+    ],
+    extensions=[],
+    nested_types=[_GAPICMETADATA_SERVICEASCLIENT_RPCSENTRY],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=578,
+    serialized_end=791,
+)
+
+_GAPICMETADATA_METHODLIST = _descriptor.Descriptor(
+    name="MethodList",
+    full_name="google.gapic.metadata.GapicMetadata.MethodList",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    create_key=_descriptor._internal_create_key,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="methods",
+            full_name="google.gapic.metadata.GapicMetadata.MethodList.methods",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=793,
+    serialized_end=822,
+)
+
+_GAPICMETADATA = _descriptor.Descriptor(
+    name="GapicMetadata",
+    full_name="google.gapic.metadata.GapicMetadata",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    create_key=_descriptor._internal_create_key,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="schema",
+            full_name="google.gapic.metadata.GapicMetadata.schema",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=b"".decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
+        _descriptor.FieldDescriptor(
+            name="comment",
+            full_name="google.gapic.metadata.GapicMetadata.comment",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=b"".decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
+        _descriptor.FieldDescriptor(
+            name="language",
+            full_name="google.gapic.metadata.GapicMetadata.language",
+            index=2,
+            number=3,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=b"".decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
+        _descriptor.FieldDescriptor(
+            name="proto_package",
+            full_name="google.gapic.metadata.GapicMetadata.proto_package",
+            index=3,
+            number=4,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=b"".decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
+        _descriptor.FieldDescriptor(
+            name="library_package",
+            full_name="google.gapic.metadata.GapicMetadata.library_package",
+            index=4,
+            number=5,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=b"".decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
+        _descriptor.FieldDescriptor(
+            name="services",
+            full_name="google.gapic.metadata.GapicMetadata.services",
+            index=5,
+            number=6,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
+    ],
+    extensions=[],
+    nested_types=[
+        _GAPICMETADATA_SERVICESENTRY,
+        _GAPICMETADATA_SERVICEFORTRANSPORT,
+        _GAPICMETADATA_SERVICEASCLIENT,
+        _GAPICMETADATA_METHODLIST,
+    ],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=70,
+    serialized_end=822,
+)
+
+_GAPICMETADATA_SERVICESENTRY.fields_by_name[
+    "value"
+].message_type = _GAPICMETADATA_SERVICEFORTRANSPORT
+_GAPICMETADATA_SERVICESENTRY.containing_type = _GAPICMETADATA
+_GAPICMETADATA_SERVICEFORTRANSPORT_CLIENTSENTRY.fields_by_name[
+    "value"
+].message_type = _GAPICMETADATA_SERVICEASCLIENT
+_GAPICMETADATA_SERVICEFORTRANSPORT_CLIENTSENTRY.containing_type = (
+    _GAPICMETADATA_SERVICEFORTRANSPORT
+)
+_GAPICMETADATA_SERVICEFORTRANSPORT.fields_by_name[
+    "clients"
+].message_type = _GAPICMETADATA_SERVICEFORTRANSPORT_CLIENTSENTRY
+_GAPICMETADATA_SERVICEFORTRANSPORT.containing_type = _GAPICMETADATA
+_GAPICMETADATA_SERVICEASCLIENT_RPCSENTRY.fields_by_name[
+    "value"
+].message_type = _GAPICMETADATA_METHODLIST
+_GAPICMETADATA_SERVICEASCLIENT_RPCSENTRY.containing_type = (
+    _GAPICMETADATA_SERVICEASCLIENT
+)
+_GAPICMETADATA_SERVICEASCLIENT.fields_by_name[
+    "rpcs"
+].message_type = _GAPICMETADATA_SERVICEASCLIENT_RPCSENTRY
+_GAPICMETADATA_SERVICEASCLIENT.containing_type = _GAPICMETADATA
+_GAPICMETADATA_METHODLIST.containing_type = _GAPICMETADATA
+_GAPICMETADATA.fields_by_name["services"].message_type = _GAPICMETADATA_SERVICESENTRY
+DESCRIPTOR.message_types_by_name["GapicMetadata"] = _GAPICMETADATA
+_sym_db.RegisterFileDescriptor(DESCRIPTOR)
+
 GapicMetadata = _reflection.GeneratedProtocolMessageType(
     "GapicMetadata",
     (_message.Message,),
@@ -117,28 +593,9 @@ _sym_db.RegisterMessage(GapicMetadata.ServiceAsClient)
 _sym_db.RegisterMessage(GapicMetadata.ServiceAsClient.RpcsEntry)
 _sym_db.RegisterMessage(GapicMetadata.MethodList)
 
-if _descriptor._USE_C_DESCRIPTORS == False:
 
-    DESCRIPTOR._options = None
-    DESCRIPTOR._serialized_options = b"\n\031com.google.gapic.metadataB\022GapicMetadataProtoP\001Z=google.golang.org/genproto/googleapis/gapic/metadata;metadata\252\002\025Google.Gapic.Metadata\312\002\025Google\\Gapic\\Metadata\352\002\027Google::Gapic::Metadata"
-    _GAPICMETADATA_SERVICESENTRY._options = None
-    _GAPICMETADATA_SERVICESENTRY._serialized_options = b"8\001"
-    _GAPICMETADATA_SERVICEFORTRANSPORT_CLIENTSENTRY._options = None
-    _GAPICMETADATA_SERVICEFORTRANSPORT_CLIENTSENTRY._serialized_options = b"8\001"
-    _GAPICMETADATA_SERVICEASCLIENT_RPCSENTRY._options = None
-    _GAPICMETADATA_SERVICEASCLIENT_RPCSENTRY._serialized_options = b"8\001"
-    _GAPICMETADATA._serialized_start = 70
-    _GAPICMETADATA._serialized_end = 822
-    _GAPICMETADATA_SERVICESENTRY._serialized_start = 256
-    _GAPICMETADATA_SERVICESENTRY._serialized_end = 361
-    _GAPICMETADATA_SERVICEFORTRANSPORT._serialized_start = 364
-    _GAPICMETADATA_SERVICEFORTRANSPORT._serialized_end = 575
-    _GAPICMETADATA_SERVICEFORTRANSPORT_CLIENTSENTRY._serialized_start = 475
-    _GAPICMETADATA_SERVICEFORTRANSPORT_CLIENTSENTRY._serialized_end = 575
-    _GAPICMETADATA_SERVICEASCLIENT._serialized_start = 578
-    _GAPICMETADATA_SERVICEASCLIENT._serialized_end = 791
-    _GAPICMETADATA_SERVICEASCLIENT_RPCSENTRY._serialized_start = 699
-    _GAPICMETADATA_SERVICEASCLIENT_RPCSENTRY._serialized_end = 791
-    _GAPICMETADATA_METHODLIST._serialized_start = 793
-    _GAPICMETADATA_METHODLIST._serialized_end = 822
+DESCRIPTOR._options = None
+_GAPICMETADATA_SERVICESENTRY._options = None
+_GAPICMETADATA_SERVICEFORTRANSPORT_CLIENTSENTRY._options = None
+_GAPICMETADATA_SERVICEASCLIENT_RPCSENTRY._options = None
 # @@protoc_insertion_point(module_scope)
