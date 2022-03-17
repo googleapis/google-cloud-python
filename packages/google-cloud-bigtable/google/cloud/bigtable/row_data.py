@@ -625,16 +625,12 @@ class _ReadRowsRequestManager(object):
     def build_updated_request(self):
         """Updates the given message request as per last scanned key"""
 
-        # TODO: Generalize this to ensure fields don't get rewritten when retrying the request
-
-        r_kwargs = {
-            "table_name": self.message.table_name,
-            "filter": self.message.filter,
-            "app_profile_id": self.message.app_profile_id,
-        }
+        resume_request = data_messages_v2_pb2.ReadRowsRequest()
+        data_messages_v2_pb2.ReadRowsRequest.copy_from(resume_request, self.message)
 
         if self.message.rows_limit != 0:
-            r_kwargs["rows_limit"] = max(
+            # TODO: Throw an error if rows_limit - read_so_far is 0 or negative.
+            resume_request.rows_limit = max(
                 1, self.message.rows_limit - self.rows_read_so_far
             )
 
@@ -643,14 +639,14 @@ class _ReadRowsRequestManager(object):
         # to request only rows that have not been returned yet
         if "rows" not in self.message:
             row_range = data_v2_pb2.RowRange(start_key_open=self.last_scanned_key)
-            r_kwargs["rows"] = data_v2_pb2.RowSet(row_ranges=[row_range])
+            resume_request.rows = data_v2_pb2.RowSet(row_ranges=[row_range])
         else:
             row_keys = self._filter_rows_keys()
             row_ranges = self._filter_row_ranges()
-            r_kwargs["rows"] = data_v2_pb2.RowSet(
+            resume_request.rows = data_v2_pb2.RowSet(
                 row_keys=row_keys, row_ranges=row_ranges
             )
-        return data_messages_v2_pb2.ReadRowsRequest(**r_kwargs)
+        return resume_request
 
     def _filter_rows_keys(self):
         """ Helper for :meth:`build_updated_request`"""

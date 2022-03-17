@@ -928,7 +928,7 @@ def test_RRRM_build_updated_request_full_table():
     request_manager = _make_read_rows_request_manager(request, last_scanned_key, 2)
 
     result = request_manager.build_updated_request()
-    expected_result = _ReadRowsRequestPB(table_name=TABLE_NAME, filter={})
+    expected_result = _ReadRowsRequestPB(table_name=TABLE_NAME)
     row_range1 = types.RowRange(start_key_open=last_scanned_key)
     expected_result.rows.row_ranges.append(row_range1)
     assert expected_result == result
@@ -1021,7 +1021,7 @@ def test_RRRM_build_updated_request_rows_limit():
     request_manager = _make_read_rows_request_manager(request, last_scanned_key, 2)
 
     result = request_manager.build_updated_request()
-    expected_result = _ReadRowsRequestPB(table_name=TABLE_NAME, filter={}, rows_limit=8)
+    expected_result = _ReadRowsRequestPB(table_name=TABLE_NAME, rows_limit=8)
     row_range1 = types.RowRange(start_key_open=last_scanned_key)
     expected_result.rows.row_ranges.append(row_range1)
     assert expected_result == result
