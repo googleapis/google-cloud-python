@@ -673,6 +673,9 @@ class Document(proto.Message):
             text_segments (Sequence[google.cloud.documentai_v1beta2.types.Document.TextAnchor.TextSegment]):
                 The text segments from the
                 [Document.text][google.cloud.documentai.v1beta2.Document.text].
+            content (str):
+                Contains the content of the text span so that users do not
+                have to look it up in the text_segments.
         """
 
         class TextSegment(proto.Message):
@@ -699,6 +702,7 @@ class Document(proto.Message):
         text_segments = proto.RepeatedField(
             proto.MESSAGE, number=1, message="Document.TextAnchor.TextSegment",
         )
+        content = proto.Field(proto.STRING, number=2,)
 
     class PageAnchor(proto.Message):
         r"""Referencing elements in
