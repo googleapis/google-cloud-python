@@ -11,6 +11,6 @@
     "distribution_name": "google-cloud-datastore",
     "api_id": "datastore.googleapis.com",
     "default_version": "v1",
-    "codeowner_team": "@googleapis/firestore-dpe",
+    "codeowner_team": "@googleapis/cloud-native-db-dpes",
     "api_shortname": "datastore"
 }
