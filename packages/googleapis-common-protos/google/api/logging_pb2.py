@@ -27,17 +27,13 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
-from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
-
-
 DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/api/logging.proto",
     package="google.api",
     syntax="proto3",
     serialized_options=b"\n\016com.google.apiB\014LoggingProtoP\001ZEgoogle.golang.org/genproto/googleapis/api/serviceconfig;serviceconfig\242\002\004GAPI",
     create_key=_descriptor._internal_create_key,
-    serialized_pb=b'\n\x18google/api/logging.proto\x12\ngoogle.api\x1a\x1cgoogle/api/annotations.proto"\xd7\x01\n\x07Logging\x12\x45\n\x15producer_destinations\x18\x01 \x03(\x0b\x32&.google.api.Logging.LoggingDestination\x12\x45\n\x15\x63onsumer_destinations\x18\x02 \x03(\x0b\x32&.google.api.Logging.LoggingDestination\x1a>\n\x12LoggingDestination\x12\x1a\n\x12monitored_resource\x18\x03 \x01(\t\x12\x0c\n\x04logs\x18\x01 \x03(\tBn\n\x0e\x63om.google.apiB\x0cLoggingProtoP\x01ZEgoogle.golang.org/genproto/googleapis/api/serviceconfig;serviceconfig\xa2\x02\x04GAPIb\x06proto3',
-    dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR],
+    serialized_pb=b'\n\x18google/api/logging.proto\x12\ngoogle.api"\xd7\x01\n\x07Logging\x12\x45\n\x15producer_destinations\x18\x01 \x03(\x0b\x32&.google.api.Logging.LoggingDestination\x12\x45\n\x15\x63onsumer_destinations\x18\x02 \x03(\x0b\x32&.google.api.Logging.LoggingDestination\x1a>\n\x12LoggingDestination\x12\x1a\n\x12monitored_resource\x18\x03 \x01(\t\x12\x0c\n\x04logs\x18\x01 \x03(\tBn\n\x0e\x63om.google.apiB\x0cLoggingProtoP\x01ZEgoogle.golang.org/genproto/googleapis/api/serviceconfig;serviceconfig\xa2\x02\x04GAPIb\x06proto3',
 )
 
 
@@ -96,8 +92,8 @@ _LOGGING_LOGGINGDESTINATION = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=224,
-    serialized_end=286,
+    serialized_start=194,
+    serialized_end=256,
 )
 
 _LOGGING = _descriptor.Descriptor(
@@ -155,8 +151,8 @@ _LOGGING = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=71,
-    serialized_end=286,
+    serialized_start=41,
+    serialized_end=256,
 )
 
 _LOGGING_LOGGINGDESTINATION.containing_type = _LOGGING

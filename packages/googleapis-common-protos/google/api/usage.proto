@@ -1,4 +1,4 @@
-// Copyright 2018 Google LLC.
+// Copyright 2015 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,20 +16,23 @@ syntax = "proto3";
 
 package google.api;
 
-import "google/api/annotations.proto";
-
 option go_package = "google.golang.org/genproto/googleapis/api/serviceconfig;serviceconfig";
 option java_multiple_files = true;
 option java_outer_classname = "UsageProto";
 option java_package = "com.google.api";
 option objc_class_prefix = "GAPI";
 
-
 // Configuration controlling usage of a service.
 message Usage {
   // Requirements that must be satisfied before a consumer project can use the
   // service. Each requirement is of the form <service.name>/<requirement-id>;
   // for example 'serviceusage.googleapis.com/billing-enabled'.
+  //
+  // For Google APIs, a Terms of Service requirement must be included here.
+  // Google Cloud APIs must include "serviceusage.googleapis.com/tos/cloud".
+  // Other Google APIs should include
+  // "serviceusage.googleapis.com/tos/universal". Additional ToS can be
+  // included based on the business needs.
   repeated string requirements = 1;
 
   // A list of usage rules that apply to individual API methods.

@@ -33,7 +33,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     syntax="proto3",
     serialized_options=b"\n\016com.google.apiB\022DocumentationProtoP\001ZEgoogle.golang.org/genproto/googleapis/api/serviceconfig;serviceconfig\242\002\004GAPI",
     create_key=_descriptor._internal_create_key,
-    serialized_pb=b'\n\x1egoogle/api/documentation.proto\x12\ngoogle.api"\xa1\x01\n\rDocumentation\x12\x0f\n\x07summary\x18\x01 \x01(\t\x12\x1f\n\x05pages\x18\x05 \x03(\x0b\x32\x10.google.api.Page\x12,\n\x05rules\x18\x03 \x03(\x0b\x32\x1d.google.api.DocumentationRule\x12\x1e\n\x16\x64ocumentation_root_url\x18\x04 \x01(\t\x12\x10\n\x08overview\x18\x02 \x01(\t"[\n\x11\x44ocumentationRule\x12\x10\n\x08selector\x18\x01 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t\x12\x1f\n\x17\x64\x65precation_description\x18\x03 \x01(\t"I\n\x04Page\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0f\n\x07\x63ontent\x18\x02 \x01(\t\x12"\n\x08subpages\x18\x03 \x03(\x0b\x32\x10.google.api.PageBt\n\x0e\x63om.google.apiB\x12\x44ocumentationProtoP\x01ZEgoogle.golang.org/genproto/googleapis/api/serviceconfig;serviceconfig\xa2\x02\x04GAPIb\x06proto3',
+    serialized_pb=b'\n\x1egoogle/api/documentation.proto\x12\ngoogle.api"\xbb\x01\n\rDocumentation\x12\x0f\n\x07summary\x18\x01 \x01(\t\x12\x1f\n\x05pages\x18\x05 \x03(\x0b\x32\x10.google.api.Page\x12,\n\x05rules\x18\x03 \x03(\x0b\x32\x1d.google.api.DocumentationRule\x12\x1e\n\x16\x64ocumentation_root_url\x18\x04 \x01(\t\x12\x18\n\x10service_root_url\x18\x06 \x01(\t\x12\x10\n\x08overview\x18\x02 \x01(\t"[\n\x11\x44ocumentationRule\x12\x10\n\x08selector\x18\x01 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t\x12\x1f\n\x17\x64\x65precation_description\x18\x03 \x01(\t"I\n\x04Page\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0f\n\x07\x63ontent\x18\x02 \x01(\t\x12"\n\x08subpages\x18\x03 \x03(\x0b\x32\x10.google.api.PageBt\n\x0e\x63om.google.apiB\x12\x44ocumentationProtoP\x01ZEgoogle.golang.org/genproto/googleapis/api/serviceconfig;serviceconfig\xa2\x02\x04GAPIb\x06proto3',
 )
 
 
@@ -122,9 +122,28 @@ _DOCUMENTATION = _descriptor.Descriptor(
             create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
+            name="service_root_url",
+            full_name="google.api.Documentation.service_root_url",
+            index=4,
+            number=6,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=b"".decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
+        _descriptor.FieldDescriptor(
             name="overview",
             full_name="google.api.Documentation.overview",
-            index=4,
+            index=5,
             number=2,
             type=9,
             cpp_type=9,
@@ -150,7 +169,7 @@ _DOCUMENTATION = _descriptor.Descriptor(
     extension_ranges=[],
     oneofs=[],
     serialized_start=47,
-    serialized_end=208,
+    serialized_end=234,
 )
 
 
@@ -228,8 +247,8 @@ _DOCUMENTATIONRULE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=210,
-    serialized_end=301,
+    serialized_start=236,
+    serialized_end=327,
 )
 
 
@@ -307,8 +326,8 @@ _PAGE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=303,
-    serialized_end=376,
+    serialized_start=329,
+    serialized_end=402,
 )
 
 _DOCUMENTATION.fields_by_name["pages"].message_type = _PAGE

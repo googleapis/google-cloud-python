@@ -1,4 +1,4 @@
-// Copyright 2017 Google Inc.
+// Copyright 2015 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@ syntax = "proto3";
 
 package google.api;
 
-import "google/api/annotations.proto";
 import "google/api/auth.proto";
 import "google/api/backend.proto";
 import "google/api/billing.proto";
@@ -25,15 +24,18 @@ import "google/api/control.proto";
 import "google/api/documentation.proto";
 import "google/api/endpoint.proto";
 import "google/api/http.proto";
+import "google/api/label.proto";
 import "google/api/log.proto";
 import "google/api/logging.proto";
 import "google/api/metric.proto";
 import "google/api/monitored_resource.proto";
 import "google/api/monitoring.proto";
 import "google/api/quota.proto";
+import "google/api/resource.proto";
 import "google/api/source_info.proto";
 import "google/api/system_parameter.proto";
 import "google/api/usage.proto";
+import "google/protobuf/any.proto";
 import "google/protobuf/api.proto";
 import "google/protobuf/type.proto";
 import "google/protobuf/wrappers.proto";
@@ -44,7 +46,6 @@ option java_outer_classname = "ServiceProto";
 option java_package = "com.google.api";
 option objc_class_prefix = "GAPI";
 
-
 // `Service` is the root object of Google service configuration schema. It
 // describes basic information about a service, such as the name and the
 // title, and delegates other aspects to sub-sections. Each sub-section is
@@ -54,7 +55,6 @@ option objc_class_prefix = "GAPI";
 // Example:
 //
 //     type: google.api.Service
-//     config_version: 3
 //     name: calendar.googleapis.com
 //     title: Google Calendar API
 //     apis:
@@ -69,26 +69,23 @@ option objc_class_prefix = "GAPI";
 //         requirements:
 //           provider_id: google_calendar_auth
 message Service {
-  // The semantic version of the service configuration. The config version
-  // affects the interpretation of the service configuration. For example,
-  // certain features are enabled by default for certain config versions.
-  // The latest config version is `3`.
-  google.protobuf.UInt32Value config_version = 20;
-
-  // The DNS address at which this service is available,
-  // e.g. `calendar.googleapis.com`.
+  // The service name, which is a DNS-like logical identifier for the
+  // service, such as `calendar.googleapis.com`. The service name
+  // typically goes through DNS verification to make sure the owner
+  // of the service also owns the DNS name.
   string name = 1;
-
-  // A unique ID for a specific instance of this message, typically assigned
-  // by the client for tracking purpose. If empty, the server may choose to
-  // generate one instead.
-  string id = 33;
 
   // The product title for this service.
   string title = 2;
 
   // The Google project that owns this service.
   string producer_project_id = 22;
+
+  // A unique ID for a specific instance of this message, typically assigned
+  // by the client for tracking purpose. Must be no longer than 63 characters
+  // and only lower case letters, digits, '.', '_' and '-' are allowed. If
+  // empty, the server may choose to generate one instead.
+  string id = 33;
 
   // A list of API interfaces exported by this service. Only the `name` field
   // of the [google.protobuf.Api][google.protobuf.Api] needs to be provided by the configuration
@@ -170,6 +167,9 @@ message Service {
   // Output only. The source information for this configuration if available.
   SourceInfo source_info = 37;
 
-  // Experimental configuration.
-  reserved 101;
+  // Obsolete. Do not use.
+  //
+  // This field has no semantic meaning. The service config compiler always
+  // sets this field to `3`.
+  google.protobuf.UInt32Value config_version = 20 [deprecated = true];
 }

@@ -16,35 +16,21 @@ syntax = "proto3";
 
 package google.type;
 
-option go_package = "google.golang.org/genproto/googleapis/type/dayofweek;dayofweek";
+option cc_enable_arenas = true;
+option go_package = "google.golang.org/genproto/googleapis/type/localized_text;localized_text";
 option java_multiple_files = true;
-option java_outer_classname = "DayOfWeekProto";
+option java_outer_classname = "LocalizedTextProto";
 option java_package = "com.google.type";
 option objc_class_prefix = "GTP";
 
-// Represents a day of the week.
-enum DayOfWeek {
-  // The day of the week is unspecified.
-  DAY_OF_WEEK_UNSPECIFIED = 0;
+// Localized variant of a text in a particular language.
+message LocalizedText {
+  // Localized string in the language corresponding to `language_code' below.
+  string text = 1;
 
-  // Monday
-  MONDAY = 1;
-
-  // Tuesday
-  TUESDAY = 2;
-
-  // Wednesday
-  WEDNESDAY = 3;
-
-  // Thursday
-  THURSDAY = 4;
-
-  // Friday
-  FRIDAY = 5;
-
-  // Saturday
-  SATURDAY = 6;
-
-  // Sunday
-  SUNDAY = 7;
+  // The text's BCP-47 language code, such as "en-US" or "sr-Latn".
+  //
+  // For more information, see
+  // http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.
+  string language_code = 2;
 }

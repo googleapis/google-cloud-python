@@ -27,7 +27,6 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
-from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 from google.api import auth_pb2 as google_dot_api_dot_auth__pb2
 from google.api import backend_pb2 as google_dot_api_dot_backend__pb2
 from google.api import billing_pb2 as google_dot_api_dot_billing__pb2
@@ -36,6 +35,7 @@ from google.api import control_pb2 as google_dot_api_dot_control__pb2
 from google.api import documentation_pb2 as google_dot_api_dot_documentation__pb2
 from google.api import endpoint_pb2 as google_dot_api_dot_endpoint__pb2
 from google.api import http_pb2 as google_dot_api_dot_http__pb2
+from google.api import label_pb2 as google_dot_api_dot_label__pb2
 from google.api import log_pb2 as google_dot_api_dot_log__pb2
 from google.api import logging_pb2 as google_dot_api_dot_logging__pb2
 from google.api import metric_pb2 as google_dot_api_dot_metric__pb2
@@ -44,9 +44,11 @@ from google.api import (
 )
 from google.api import monitoring_pb2 as google_dot_api_dot_monitoring__pb2
 from google.api import quota_pb2 as google_dot_api_dot_quota__pb2
+from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
 from google.api import source_info_pb2 as google_dot_api_dot_source__info__pb2
 from google.api import system_parameter_pb2 as google_dot_api_dot_system__parameter__pb2
 from google.api import usage_pb2 as google_dot_api_dot_usage__pb2
+from google.protobuf import any_pb2 as google_dot_protobuf_dot_any__pb2
 from google.protobuf import api_pb2 as google_dot_protobuf_dot_api__pb2
 from google.protobuf import type_pb2 as google_dot_protobuf_dot_type__pb2
 from google.protobuf import wrappers_pb2 as google_dot_protobuf_dot_wrappers__pb2
@@ -58,9 +60,8 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     syntax="proto3",
     serialized_options=b"\n\016com.google.apiB\014ServiceProtoP\001ZEgoogle.golang.org/genproto/googleapis/api/serviceconfig;serviceconfig\242\002\004GAPI",
     create_key=_descriptor._internal_create_key,
-    serialized_pb=b"\n\x18google/api/service.proto\x12\ngoogle.api\x1a\x1cgoogle/api/annotations.proto\x1a\x15google/api/auth.proto\x1a\x18google/api/backend.proto\x1a\x18google/api/billing.proto\x1a\x18google/api/context.proto\x1a\x18google/api/control.proto\x1a\x1egoogle/api/documentation.proto\x1a\x19google/api/endpoint.proto\x1a\x15google/api/http.proto\x1a\x14google/api/log.proto\x1a\x18google/api/logging.proto\x1a\x17google/api/metric.proto\x1a#google/api/monitored_resource.proto\x1a\x1bgoogle/api/monitoring.proto\x1a\x16google/api/quota.proto\x1a\x1cgoogle/api/source_info.proto\x1a!google/api/system_parameter.proto\x1a\x16google/api/usage.proto\x1a\x19google/protobuf/api.proto\x1a\x1agoogle/protobuf/type.proto\x1a\x1egoogle/protobuf/wrappers.proto\"\xdc\x07\n\x07Service\x12\x34\n\x0e\x63onfig_version\x18\x14 \x01(\x0b\x32\x1c.google.protobuf.UInt32Value\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\n\n\x02id\x18! \x01(\t\x12\r\n\x05title\x18\x02 \x01(\t\x12\x1b\n\x13producer_project_id\x18\x16 \x01(\t\x12\"\n\x04\x61pis\x18\x03 \x03(\x0b\x32\x14.google.protobuf.Api\x12$\n\x05types\x18\x04 \x03(\x0b\x32\x15.google.protobuf.Type\x12$\n\x05\x65nums\x18\x05 \x03(\x0b\x32\x15.google.protobuf.Enum\x12\x30\n\rdocumentation\x18\x06 \x01(\x0b\x32\x19.google.api.Documentation\x12$\n\x07\x62\x61\x63kend\x18\x08 \x01(\x0b\x32\x13.google.api.Backend\x12\x1e\n\x04http\x18\t \x01(\x0b\x32\x10.google.api.Http\x12 \n\x05quota\x18\n \x01(\x0b\x32\x11.google.api.Quota\x12\x32\n\x0e\x61uthentication\x18\x0b \x01(\x0b\x32\x1a.google.api.Authentication\x12$\n\x07\x63ontext\x18\x0c \x01(\x0b\x32\x13.google.api.Context\x12 \n\x05usage\x18\x0f \x01(\x0b\x32\x11.google.api.Usage\x12'\n\tendpoints\x18\x12 \x03(\x0b\x32\x14.google.api.Endpoint\x12$\n\x07\x63ontrol\x18\x15 \x01(\x0b\x32\x13.google.api.Control\x12'\n\x04logs\x18\x17 \x03(\x0b\x32\x19.google.api.LogDescriptor\x12-\n\x07metrics\x18\x18 \x03(\x0b\x32\x1c.google.api.MetricDescriptor\x12\x44\n\x13monitored_resources\x18\x19 \x03(\x0b\x32'.google.api.MonitoredResourceDescriptor\x12$\n\x07\x62illing\x18\x1a \x01(\x0b\x32\x13.google.api.Billing\x12$\n\x07logging\x18\x1b \x01(\x0b\x32\x13.google.api.Logging\x12*\n\nmonitoring\x18\x1c \x01(\x0b\x32\x16.google.api.Monitoring\x12\x37\n\x11system_parameters\x18\x1d \x01(\x0b\x32\x1c.google.api.SystemParameters\x12+\n\x0bsource_info\x18% \x01(\x0b\x32\x16.google.api.SourceInfoJ\x04\x08\x65\x10\x66\x42n\n\x0e\x63om.google.apiB\x0cServiceProtoP\x01ZEgoogle.golang.org/genproto/googleapis/api/serviceconfig;serviceconfig\xa2\x02\x04GAPIb\x06proto3",
+    serialized_pb=b"\n\x18google/api/service.proto\x12\ngoogle.api\x1a\x15google/api/auth.proto\x1a\x18google/api/backend.proto\x1a\x18google/api/billing.proto\x1a\x18google/api/context.proto\x1a\x18google/api/control.proto\x1a\x1egoogle/api/documentation.proto\x1a\x19google/api/endpoint.proto\x1a\x15google/api/http.proto\x1a\x16google/api/label.proto\x1a\x14google/api/log.proto\x1a\x18google/api/logging.proto\x1a\x17google/api/metric.proto\x1a#google/api/monitored_resource.proto\x1a\x1bgoogle/api/monitoring.proto\x1a\x16google/api/quota.proto\x1a\x19google/api/resource.proto\x1a\x1cgoogle/api/source_info.proto\x1a!google/api/system_parameter.proto\x1a\x16google/api/usage.proto\x1a\x19google/protobuf/any.proto\x1a\x19google/protobuf/api.proto\x1a\x1agoogle/protobuf/type.proto\x1a\x1egoogle/protobuf/wrappers.proto\"\xda\x07\n\x07Service\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05title\x18\x02 \x01(\t\x12\x1b\n\x13producer_project_id\x18\x16 \x01(\t\x12\n\n\x02id\x18! \x01(\t\x12\"\n\x04\x61pis\x18\x03 \x03(\x0b\x32\x14.google.protobuf.Api\x12$\n\x05types\x18\x04 \x03(\x0b\x32\x15.google.protobuf.Type\x12$\n\x05\x65nums\x18\x05 \x03(\x0b\x32\x15.google.protobuf.Enum\x12\x30\n\rdocumentation\x18\x06 \x01(\x0b\x32\x19.google.api.Documentation\x12$\n\x07\x62\x61\x63kend\x18\x08 \x01(\x0b\x32\x13.google.api.Backend\x12\x1e\n\x04http\x18\t \x01(\x0b\x32\x10.google.api.Http\x12 \n\x05quota\x18\n \x01(\x0b\x32\x11.google.api.Quota\x12\x32\n\x0e\x61uthentication\x18\x0b \x01(\x0b\x32\x1a.google.api.Authentication\x12$\n\x07\x63ontext\x18\x0c \x01(\x0b\x32\x13.google.api.Context\x12 \n\x05usage\x18\x0f \x01(\x0b\x32\x11.google.api.Usage\x12'\n\tendpoints\x18\x12 \x03(\x0b\x32\x14.google.api.Endpoint\x12$\n\x07\x63ontrol\x18\x15 \x01(\x0b\x32\x13.google.api.Control\x12'\n\x04logs\x18\x17 \x03(\x0b\x32\x19.google.api.LogDescriptor\x12-\n\x07metrics\x18\x18 \x03(\x0b\x32\x1c.google.api.MetricDescriptor\x12\x44\n\x13monitored_resources\x18\x19 \x03(\x0b\x32'.google.api.MonitoredResourceDescriptor\x12$\n\x07\x62illing\x18\x1a \x01(\x0b\x32\x13.google.api.Billing\x12$\n\x07logging\x18\x1b \x01(\x0b\x32\x13.google.api.Logging\x12*\n\nmonitoring\x18\x1c \x01(\x0b\x32\x16.google.api.Monitoring\x12\x37\n\x11system_parameters\x18\x1d \x01(\x0b\x32\x1c.google.api.SystemParameters\x12+\n\x0bsource_info\x18% \x01(\x0b\x32\x16.google.api.SourceInfo\x12\x38\n\x0e\x63onfig_version\x18\x14 \x01(\x0b\x32\x1c.google.protobuf.UInt32ValueB\x02\x18\x01\x42n\n\x0e\x63om.google.apiB\x0cServiceProtoP\x01ZEgoogle.golang.org/genproto/googleapis/api/serviceconfig;serviceconfig\xa2\x02\x04GAPIb\x06proto3",
     dependencies=[
-        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
         google_dot_api_dot_auth__pb2.DESCRIPTOR,
         google_dot_api_dot_backend__pb2.DESCRIPTOR,
         google_dot_api_dot_billing__pb2.DESCRIPTOR,
@@ -69,15 +70,18 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         google_dot_api_dot_documentation__pb2.DESCRIPTOR,
         google_dot_api_dot_endpoint__pb2.DESCRIPTOR,
         google_dot_api_dot_http__pb2.DESCRIPTOR,
+        google_dot_api_dot_label__pb2.DESCRIPTOR,
         google_dot_api_dot_log__pb2.DESCRIPTOR,
         google_dot_api_dot_logging__pb2.DESCRIPTOR,
         google_dot_api_dot_metric__pb2.DESCRIPTOR,
         google_dot_api_dot_monitored__resource__pb2.DESCRIPTOR,
         google_dot_api_dot_monitoring__pb2.DESCRIPTOR,
         google_dot_api_dot_quota__pb2.DESCRIPTOR,
+        google_dot_api_dot_resource__pb2.DESCRIPTOR,
         google_dot_api_dot_source__info__pb2.DESCRIPTOR,
         google_dot_api_dot_system__parameter__pb2.DESCRIPTOR,
         google_dot_api_dot_usage__pb2.DESCRIPTOR,
+        google_dot_protobuf_dot_any__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_api__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_type__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_wrappers__pb2.DESCRIPTOR,
@@ -94,48 +98,10 @@ _SERVICE = _descriptor.Descriptor(
     create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
-            name="config_version",
-            full_name="google.api.Service.config_version",
-            index=0,
-            number=20,
-            type=11,
-            cpp_type=10,
-            label=1,
-            has_default_value=False,
-            default_value=None,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-            create_key=_descriptor._internal_create_key,
-        ),
-        _descriptor.FieldDescriptor(
             name="name",
             full_name="google.api.Service.name",
-            index=1,
+            index=0,
             number=1,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=b"".decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-            create_key=_descriptor._internal_create_key,
-        ),
-        _descriptor.FieldDescriptor(
-            name="id",
-            full_name="google.api.Service.id",
-            index=2,
-            number=33,
             type=9,
             cpp_type=9,
             label=1,
@@ -153,7 +119,7 @@ _SERVICE = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="title",
             full_name="google.api.Service.title",
-            index=3,
+            index=1,
             number=2,
             type=9,
             cpp_type=9,
@@ -172,8 +138,27 @@ _SERVICE = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="producer_project_id",
             full_name="google.api.Service.producer_project_id",
-            index=4,
+            index=2,
             number=22,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=b"".decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
+        _descriptor.FieldDescriptor(
+            name="id",
+            full_name="google.api.Service.id",
+            index=3,
+            number=33,
             type=9,
             cpp_type=9,
             label=1,
@@ -191,7 +176,7 @@ _SERVICE = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="apis",
             full_name="google.api.Service.apis",
-            index=5,
+            index=4,
             number=3,
             type=11,
             cpp_type=10,
@@ -210,7 +195,7 @@ _SERVICE = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="types",
             full_name="google.api.Service.types",
-            index=6,
+            index=5,
             number=4,
             type=11,
             cpp_type=10,
@@ -229,7 +214,7 @@ _SERVICE = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="enums",
             full_name="google.api.Service.enums",
-            index=7,
+            index=6,
             number=5,
             type=11,
             cpp_type=10,
@@ -248,7 +233,7 @@ _SERVICE = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="documentation",
             full_name="google.api.Service.documentation",
-            index=8,
+            index=7,
             number=6,
             type=11,
             cpp_type=10,
@@ -267,7 +252,7 @@ _SERVICE = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="backend",
             full_name="google.api.Service.backend",
-            index=9,
+            index=8,
             number=8,
             type=11,
             cpp_type=10,
@@ -286,7 +271,7 @@ _SERVICE = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="http",
             full_name="google.api.Service.http",
-            index=10,
+            index=9,
             number=9,
             type=11,
             cpp_type=10,
@@ -305,7 +290,7 @@ _SERVICE = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="quota",
             full_name="google.api.Service.quota",
-            index=11,
+            index=10,
             number=10,
             type=11,
             cpp_type=10,
@@ -324,7 +309,7 @@ _SERVICE = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="authentication",
             full_name="google.api.Service.authentication",
-            index=12,
+            index=11,
             number=11,
             type=11,
             cpp_type=10,
@@ -343,7 +328,7 @@ _SERVICE = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="context",
             full_name="google.api.Service.context",
-            index=13,
+            index=12,
             number=12,
             type=11,
             cpp_type=10,
@@ -362,7 +347,7 @@ _SERVICE = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="usage",
             full_name="google.api.Service.usage",
-            index=14,
+            index=13,
             number=15,
             type=11,
             cpp_type=10,
@@ -381,7 +366,7 @@ _SERVICE = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="endpoints",
             full_name="google.api.Service.endpoints",
-            index=15,
+            index=14,
             number=18,
             type=11,
             cpp_type=10,
@@ -400,7 +385,7 @@ _SERVICE = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="control",
             full_name="google.api.Service.control",
-            index=16,
+            index=15,
             number=21,
             type=11,
             cpp_type=10,
@@ -419,7 +404,7 @@ _SERVICE = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="logs",
             full_name="google.api.Service.logs",
-            index=17,
+            index=16,
             number=23,
             type=11,
             cpp_type=10,
@@ -438,7 +423,7 @@ _SERVICE = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="metrics",
             full_name="google.api.Service.metrics",
-            index=18,
+            index=17,
             number=24,
             type=11,
             cpp_type=10,
@@ -457,7 +442,7 @@ _SERVICE = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="monitored_resources",
             full_name="google.api.Service.monitored_resources",
-            index=19,
+            index=18,
             number=25,
             type=11,
             cpp_type=10,
@@ -476,7 +461,7 @@ _SERVICE = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="billing",
             full_name="google.api.Service.billing",
-            index=20,
+            index=19,
             number=26,
             type=11,
             cpp_type=10,
@@ -495,7 +480,7 @@ _SERVICE = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="logging",
             full_name="google.api.Service.logging",
-            index=21,
+            index=20,
             number=27,
             type=11,
             cpp_type=10,
@@ -514,7 +499,7 @@ _SERVICE = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="monitoring",
             full_name="google.api.Service.monitoring",
-            index=22,
+            index=21,
             number=28,
             type=11,
             cpp_type=10,
@@ -533,7 +518,7 @@ _SERVICE = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="system_parameters",
             full_name="google.api.Service.system_parameters",
-            index=23,
+            index=22,
             number=29,
             type=11,
             cpp_type=10,
@@ -552,7 +537,7 @@ _SERVICE = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="source_info",
             full_name="google.api.Service.source_info",
-            index=24,
+            index=23,
             number=37,
             type=11,
             cpp_type=10,
@@ -568,6 +553,25 @@ _SERVICE = _descriptor.Descriptor(
             file=DESCRIPTOR,
             create_key=_descriptor._internal_create_key,
         ),
+        _descriptor.FieldDescriptor(
+            name="config_version",
+            full_name="google.api.Service.config_version",
+            index=24,
+            number=20,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=b"\030\001",
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -577,13 +581,10 @@ _SERVICE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=619,
-    serialized_end=1607,
+    serialized_start=667,
+    serialized_end=1653,
 )
 
-_SERVICE.fields_by_name[
-    "config_version"
-].message_type = google_dot_protobuf_dot_wrappers__pb2._UINT32VALUE
 _SERVICE.fields_by_name["apis"].message_type = google_dot_protobuf_dot_api__pb2._API
 _SERVICE.fields_by_name["types"].message_type = google_dot_protobuf_dot_type__pb2._TYPE
 _SERVICE.fields_by_name["enums"].message_type = google_dot_protobuf_dot_type__pb2._ENUM
@@ -634,6 +635,9 @@ _SERVICE.fields_by_name[
 _SERVICE.fields_by_name[
     "source_info"
 ].message_type = google_dot_api_dot_source__info__pb2._SOURCEINFO
+_SERVICE.fields_by_name[
+    "config_version"
+].message_type = google_dot_protobuf_dot_wrappers__pb2._UINT32VALUE
 DESCRIPTOR.message_types_by_name["Service"] = _SERVICE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -650,4 +654,5 @@ _sym_db.RegisterMessage(Service)
 
 
 DESCRIPTOR._options = None
+_SERVICE.fields_by_name["config_version"]._options = None
 # @@protoc_insertion_point(module_scope)

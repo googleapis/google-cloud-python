@@ -27,6 +27,8 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
+from google.protobuf import any_pb2 as google_dot_protobuf_dot_any__pb2
+from google.protobuf import duration_pb2 as google_dot_protobuf_dot_duration__pb2
 from google.protobuf import struct_pb2 as google_dot_protobuf_dot_struct__pb2
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 
@@ -37,8 +39,10 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     syntax="proto3",
     serialized_options=b"\n\026com.google.rpc.contextB\025AttributeContextProtoP\001ZUgoogle.golang.org/genproto/googleapis/rpc/context/attribute_context;attribute_context\370\001\001",
     create_key=_descriptor._internal_create_key,
-    serialized_pb=b"\n*google/rpc/context/attribute_context.proto\x12\x12google.rpc.context\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xc6\x0c\n\x10\x41ttributeContext\x12\x39\n\x06origin\x18\x07 \x01(\x0b\x32).google.rpc.context.AttributeContext.Peer\x12\x39\n\x06source\x18\x01 \x01(\x0b\x32).google.rpc.context.AttributeContext.Peer\x12>\n\x0b\x64\x65stination\x18\x02 \x01(\x0b\x32).google.rpc.context.AttributeContext.Peer\x12=\n\x07request\x18\x03 \x01(\x0b\x32,.google.rpc.context.AttributeContext.Request\x12?\n\x08response\x18\x04 \x01(\x0b\x32-.google.rpc.context.AttributeContext.Response\x12?\n\x08resource\x18\x05 \x01(\x0b\x32-.google.rpc.context.AttributeContext.Resource\x12\x35\n\x03\x61pi\x18\x06 \x01(\x0b\x32(.google.rpc.context.AttributeContext.Api\x1a\xbe\x01\n\x04Peer\x12\n\n\x02ip\x18\x01 \x01(\t\x12\x0c\n\x04port\x18\x02 \x01(\x03\x12\x45\n\x06labels\x18\x06 \x03(\x0b\x32\x35.google.rpc.context.AttributeContext.Peer.LabelsEntry\x12\x11\n\tprincipal\x18\x07 \x01(\t\x12\x13\n\x0bregion_code\x18\x08 \x01(\t\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x1aL\n\x03\x41pi\x12\x0f\n\x07service\x18\x01 \x01(\t\x12\x11\n\toperation\x18\x02 \x01(\t\x12\x10\n\x08protocol\x18\x03 \x01(\t\x12\x0f\n\x07version\x18\x04 \x01(\t\x1a\x7f\n\x04\x41uth\x12\x11\n\tprincipal\x18\x01 \x01(\t\x12\x11\n\taudiences\x18\x02 \x03(\t\x12\x11\n\tpresenter\x18\x03 \x01(\t\x12'\n\x06\x63laims\x18\x04 \x01(\x0b\x32\x17.google.protobuf.Struct\x12\x15\n\raccess_levels\x18\x05 \x03(\t\x1a\xef\x02\n\x07Request\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0e\n\x06method\x18\x02 \x01(\t\x12J\n\x07headers\x18\x03 \x03(\x0b\x32\x39.google.rpc.context.AttributeContext.Request.HeadersEntry\x12\x0c\n\x04path\x18\x04 \x01(\t\x12\x0c\n\x04host\x18\x05 \x01(\t\x12\x0e\n\x06scheme\x18\x06 \x01(\t\x12\r\n\x05query\x18\x07 \x01(\t\x12(\n\x04time\x18\t \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x0c\n\x04size\x18\n \x01(\x03\x12\x10\n\x08protocol\x18\x0b \x01(\t\x12\x0e\n\x06reason\x18\x0c \x01(\t\x12\x37\n\x04\x61uth\x18\r \x01(\x0b\x32).google.rpc.context.AttributeContext.Auth\x1a.\n\x0cHeadersEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x1a\xcd\x01\n\x08Response\x12\x0c\n\x04\x63ode\x18\x01 \x01(\x03\x12\x0c\n\x04size\x18\x02 \x01(\x03\x12K\n\x07headers\x18\x03 \x03(\x0b\x32:.google.rpc.context.AttributeContext.Response.HeadersEntry\x12(\n\x04time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x1a.\n\x0cHeadersEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x1a\xb1\x01\n\x08Resource\x12\x0f\n\x07service\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0c\n\x04type\x18\x03 \x01(\t\x12I\n\x06labels\x18\x04 \x03(\x0b\x32\x39.google.rpc.context.AttributeContext.Resource.LabelsEntry\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42\x8b\x01\n\x16\x63om.google.rpc.contextB\x15\x41ttributeContextProtoP\x01ZUgoogle.golang.org/genproto/googleapis/rpc/context/attribute_context;attribute_context\xf8\x01\x01\x62\x06proto3",
+    serialized_pb=b"\n*google/rpc/context/attribute_context.proto\x12\x12google.rpc.context\x1a\x19google/protobuf/any.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x83\x10\n\x10\x41ttributeContext\x12\x39\n\x06origin\x18\x07 \x01(\x0b\x32).google.rpc.context.AttributeContext.Peer\x12\x39\n\x06source\x18\x01 \x01(\x0b\x32).google.rpc.context.AttributeContext.Peer\x12>\n\x0b\x64\x65stination\x18\x02 \x01(\x0b\x32).google.rpc.context.AttributeContext.Peer\x12=\n\x07request\x18\x03 \x01(\x0b\x32,.google.rpc.context.AttributeContext.Request\x12?\n\x08response\x18\x04 \x01(\x0b\x32-.google.rpc.context.AttributeContext.Response\x12?\n\x08resource\x18\x05 \x01(\x0b\x32-.google.rpc.context.AttributeContext.Resource\x12\x35\n\x03\x61pi\x18\x06 \x01(\x0b\x32(.google.rpc.context.AttributeContext.Api\x12(\n\nextensions\x18\x08 \x03(\x0b\x32\x14.google.protobuf.Any\x1a\xbe\x01\n\x04Peer\x12\n\n\x02ip\x18\x01 \x01(\t\x12\x0c\n\x04port\x18\x02 \x01(\x03\x12\x45\n\x06labels\x18\x06 \x03(\x0b\x32\x35.google.rpc.context.AttributeContext.Peer.LabelsEntry\x12\x11\n\tprincipal\x18\x07 \x01(\t\x12\x13\n\x0bregion_code\x18\x08 \x01(\t\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x1aL\n\x03\x41pi\x12\x0f\n\x07service\x18\x01 \x01(\t\x12\x11\n\toperation\x18\x02 \x01(\t\x12\x10\n\x08protocol\x18\x03 \x01(\t\x12\x0f\n\x07version\x18\x04 \x01(\t\x1a\x7f\n\x04\x41uth\x12\x11\n\tprincipal\x18\x01 \x01(\t\x12\x11\n\taudiences\x18\x02 \x03(\t\x12\x11\n\tpresenter\x18\x03 \x01(\t\x12'\n\x06\x63laims\x18\x04 \x01(\x0b\x32\x17.google.protobuf.Struct\x12\x15\n\raccess_levels\x18\x05 \x03(\t\x1a\xef\x02\n\x07Request\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0e\n\x06method\x18\x02 \x01(\t\x12J\n\x07headers\x18\x03 \x03(\x0b\x32\x39.google.rpc.context.AttributeContext.Request.HeadersEntry\x12\x0c\n\x04path\x18\x04 \x01(\t\x12\x0c\n\x04host\x18\x05 \x01(\t\x12\x0e\n\x06scheme\x18\x06 \x01(\t\x12\r\n\x05query\x18\x07 \x01(\t\x12(\n\x04time\x18\t \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x0c\n\x04size\x18\n \x01(\x03\x12\x10\n\x08protocol\x18\x0b \x01(\t\x12\x0e\n\x06reason\x18\x0c \x01(\t\x12\x37\n\x04\x61uth\x18\r \x01(\x0b\x32).google.rpc.context.AttributeContext.Auth\x1a.\n\x0cHeadersEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x1a\x81\x02\n\x08Response\x12\x0c\n\x04\x63ode\x18\x01 \x01(\x03\x12\x0c\n\x04size\x18\x02 \x01(\x03\x12K\n\x07headers\x18\x03 \x03(\x0b\x32:.google.rpc.context.AttributeContext.Response.HeadersEntry\x12(\n\x04time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x32\n\x0f\x62\x61\x63kend_latency\x18\x05 \x01(\x0b\x32\x19.google.protobuf.Duration\x1a.\n\x0cHeadersEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x1a\x90\x04\n\x08Resource\x12\x0f\n\x07service\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0c\n\x04type\x18\x03 \x01(\t\x12I\n\x06labels\x18\x04 \x03(\x0b\x32\x39.google.rpc.context.AttributeContext.Resource.LabelsEntry\x12\x0b\n\x03uid\x18\x05 \x01(\t\x12S\n\x0b\x61nnotations\x18\x06 \x03(\x0b\x32>.google.rpc.context.AttributeContext.Resource.AnnotationsEntry\x12\x14\n\x0c\x64isplay_name\x18\x07 \x01(\t\x12/\n\x0b\x63reate_time\x18\x08 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0bupdate_time\x18\t \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0b\x64\x65lete_time\x18\n \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x0c\n\x04\x65tag\x18\x0b \x01(\t\x12\x10\n\x08location\x18\x0c \x01(\t\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x1a\x32\n\x10\x41nnotationsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42\x8b\x01\n\x16\x63om.google.rpc.contextB\x15\x41ttributeContextProtoP\x01ZUgoogle.golang.org/genproto/googleapis/rpc/context/attribute_context;attribute_context\xf8\x01\x01\x62\x06proto3",
     dependencies=[
+        google_dot_protobuf_dot_any__pb2.DESCRIPTOR,
+        google_dot_protobuf_dot_duration__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_struct__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
     ],
@@ -100,8 +104,8 @@ _ATTRIBUTECONTEXT_PEER_LABELSENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=726,
-    serialized_end=771,
+    serialized_start=827,
+    serialized_end=872,
 )
 
 _ATTRIBUTECONTEXT_PEER = _descriptor.Descriptor(
@@ -216,8 +220,8 @@ _ATTRIBUTECONTEXT_PEER = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=581,
-    serialized_end=771,
+    serialized_start=682,
+    serialized_end=872,
 )
 
 _ATTRIBUTECONTEXT_API = _descriptor.Descriptor(
@@ -313,8 +317,8 @@ _ATTRIBUTECONTEXT_API = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=773,
-    serialized_end=849,
+    serialized_start=874,
+    serialized_end=950,
 )
 
 _ATTRIBUTECONTEXT_AUTH = _descriptor.Descriptor(
@@ -429,8 +433,8 @@ _ATTRIBUTECONTEXT_AUTH = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=851,
-    serialized_end=978,
+    serialized_start=952,
+    serialized_end=1079,
 )
 
 _ATTRIBUTECONTEXT_REQUEST_HEADERSENTRY = _descriptor.Descriptor(
@@ -488,8 +492,8 @@ _ATTRIBUTECONTEXT_REQUEST_HEADERSENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1302,
-    serialized_end=1348,
+    serialized_start=1403,
+    serialized_end=1449,
 )
 
 _ATTRIBUTECONTEXT_REQUEST = _descriptor.Descriptor(
@@ -737,8 +741,8 @@ _ATTRIBUTECONTEXT_REQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=981,
-    serialized_end=1348,
+    serialized_start=1082,
+    serialized_end=1449,
 )
 
 _ATTRIBUTECONTEXT_RESPONSE_HEADERSENTRY = _descriptor.Descriptor(
@@ -796,8 +800,8 @@ _ATTRIBUTECONTEXT_RESPONSE_HEADERSENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1302,
-    serialized_end=1348,
+    serialized_start=1403,
+    serialized_end=1449,
 )
 
 _ATTRIBUTECONTEXT_RESPONSE = _descriptor.Descriptor(
@@ -884,6 +888,25 @@ _ATTRIBUTECONTEXT_RESPONSE = _descriptor.Descriptor(
             file=DESCRIPTOR,
             create_key=_descriptor._internal_create_key,
         ),
+        _descriptor.FieldDescriptor(
+            name="backend_latency",
+            full_name="google.rpc.context.AttributeContext.Response.backend_latency",
+            index=4,
+            number=5,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
     ],
     extensions=[],
     nested_types=[_ATTRIBUTECONTEXT_RESPONSE_HEADERSENTRY],
@@ -893,8 +916,8 @@ _ATTRIBUTECONTEXT_RESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1351,
-    serialized_end=1556,
+    serialized_start=1452,
+    serialized_end=1709,
 )
 
 _ATTRIBUTECONTEXT_RESOURCE_LABELSENTRY = _descriptor.Descriptor(
@@ -952,8 +975,67 @@ _ATTRIBUTECONTEXT_RESOURCE_LABELSENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=726,
-    serialized_end=771,
+    serialized_start=827,
+    serialized_end=872,
+)
+
+_ATTRIBUTECONTEXT_RESOURCE_ANNOTATIONSENTRY = _descriptor.Descriptor(
+    name="AnnotationsEntry",
+    full_name="google.rpc.context.AttributeContext.Resource.AnnotationsEntry",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    create_key=_descriptor._internal_create_key,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="key",
+            full_name="google.rpc.context.AttributeContext.Resource.AnnotationsEntry.key",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=b"".decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
+        _descriptor.FieldDescriptor(
+            name="value",
+            full_name="google.rpc.context.AttributeContext.Resource.AnnotationsEntry.value",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=b"".decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=b"8\001",
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=2190,
+    serialized_end=2240,
 )
 
 _ATTRIBUTECONTEXT_RESOURCE = _descriptor.Descriptor(
@@ -1040,17 +1122,172 @@ _ATTRIBUTECONTEXT_RESOURCE = _descriptor.Descriptor(
             file=DESCRIPTOR,
             create_key=_descriptor._internal_create_key,
         ),
+        _descriptor.FieldDescriptor(
+            name="uid",
+            full_name="google.rpc.context.AttributeContext.Resource.uid",
+            index=4,
+            number=5,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=b"".decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
+        _descriptor.FieldDescriptor(
+            name="annotations",
+            full_name="google.rpc.context.AttributeContext.Resource.annotations",
+            index=5,
+            number=6,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
+        _descriptor.FieldDescriptor(
+            name="display_name",
+            full_name="google.rpc.context.AttributeContext.Resource.display_name",
+            index=6,
+            number=7,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=b"".decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
+        _descriptor.FieldDescriptor(
+            name="create_time",
+            full_name="google.rpc.context.AttributeContext.Resource.create_time",
+            index=7,
+            number=8,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
+        _descriptor.FieldDescriptor(
+            name="update_time",
+            full_name="google.rpc.context.AttributeContext.Resource.update_time",
+            index=8,
+            number=9,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
+        _descriptor.FieldDescriptor(
+            name="delete_time",
+            full_name="google.rpc.context.AttributeContext.Resource.delete_time",
+            index=9,
+            number=10,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
+        _descriptor.FieldDescriptor(
+            name="etag",
+            full_name="google.rpc.context.AttributeContext.Resource.etag",
+            index=10,
+            number=11,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=b"".decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
+        _descriptor.FieldDescriptor(
+            name="location",
+            full_name="google.rpc.context.AttributeContext.Resource.location",
+            index=11,
+            number=12,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=b"".decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
     ],
     extensions=[],
-    nested_types=[_ATTRIBUTECONTEXT_RESOURCE_LABELSENTRY],
+    nested_types=[
+        _ATTRIBUTECONTEXT_RESOURCE_LABELSENTRY,
+        _ATTRIBUTECONTEXT_RESOURCE_ANNOTATIONSENTRY,
+    ],
     enum_types=[],
     serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1559,
-    serialized_end=1736,
+    serialized_start=1712,
+    serialized_end=2240,
 )
 
 _ATTRIBUTECONTEXT = _descriptor.Descriptor(
@@ -1194,6 +1431,25 @@ _ATTRIBUTECONTEXT = _descriptor.Descriptor(
             file=DESCRIPTOR,
             create_key=_descriptor._internal_create_key,
         ),
+        _descriptor.FieldDescriptor(
+            name="extensions",
+            full_name="google.rpc.context.AttributeContext.extensions",
+            index=7,
+            number=8,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
     ],
     extensions=[],
     nested_types=[
@@ -1210,8 +1466,8 @@ _ATTRIBUTECONTEXT = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=130,
-    serialized_end=1736,
+    serialized_start=189,
+    serialized_end=2240,
 )
 
 _ATTRIBUTECONTEXT_PEER_LABELSENTRY.containing_type = _ATTRIBUTECONTEXT_PEER
@@ -1240,11 +1496,27 @@ _ATTRIBUTECONTEXT_RESPONSE.fields_by_name[
 _ATTRIBUTECONTEXT_RESPONSE.fields_by_name[
     "time"
 ].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_ATTRIBUTECONTEXT_RESPONSE.fields_by_name[
+    "backend_latency"
+].message_type = google_dot_protobuf_dot_duration__pb2._DURATION
 _ATTRIBUTECONTEXT_RESPONSE.containing_type = _ATTRIBUTECONTEXT
 _ATTRIBUTECONTEXT_RESOURCE_LABELSENTRY.containing_type = _ATTRIBUTECONTEXT_RESOURCE
+_ATTRIBUTECONTEXT_RESOURCE_ANNOTATIONSENTRY.containing_type = _ATTRIBUTECONTEXT_RESOURCE
 _ATTRIBUTECONTEXT_RESOURCE.fields_by_name[
     "labels"
 ].message_type = _ATTRIBUTECONTEXT_RESOURCE_LABELSENTRY
+_ATTRIBUTECONTEXT_RESOURCE.fields_by_name[
+    "annotations"
+].message_type = _ATTRIBUTECONTEXT_RESOURCE_ANNOTATIONSENTRY
+_ATTRIBUTECONTEXT_RESOURCE.fields_by_name[
+    "create_time"
+].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_ATTRIBUTECONTEXT_RESOURCE.fields_by_name[
+    "update_time"
+].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_ATTRIBUTECONTEXT_RESOURCE.fields_by_name[
+    "delete_time"
+].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
 _ATTRIBUTECONTEXT_RESOURCE.containing_type = _ATTRIBUTECONTEXT
 _ATTRIBUTECONTEXT.fields_by_name["origin"].message_type = _ATTRIBUTECONTEXT_PEER
 _ATTRIBUTECONTEXT.fields_by_name["source"].message_type = _ATTRIBUTECONTEXT_PEER
@@ -1253,6 +1525,9 @@ _ATTRIBUTECONTEXT.fields_by_name["request"].message_type = _ATTRIBUTECONTEXT_REQ
 _ATTRIBUTECONTEXT.fields_by_name["response"].message_type = _ATTRIBUTECONTEXT_RESPONSE
 _ATTRIBUTECONTEXT.fields_by_name["resource"].message_type = _ATTRIBUTECONTEXT_RESOURCE
 _ATTRIBUTECONTEXT.fields_by_name["api"].message_type = _ATTRIBUTECONTEXT_API
+_ATTRIBUTECONTEXT.fields_by_name[
+    "extensions"
+].message_type = google_dot_protobuf_dot_any__pb2._ANY
 DESCRIPTOR.message_types_by_name["AttributeContext"] = _ATTRIBUTECONTEXT
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -1345,6 +1620,15 @@ AttributeContext = _reflection.GeneratedProtocolMessageType(
                         # @@protoc_insertion_point(class_scope:google.rpc.context.AttributeContext.Resource.LabelsEntry)
                     },
                 ),
+                "AnnotationsEntry": _reflection.GeneratedProtocolMessageType(
+                    "AnnotationsEntry",
+                    (_message.Message,),
+                    {
+                        "DESCRIPTOR": _ATTRIBUTECONTEXT_RESOURCE_ANNOTATIONSENTRY,
+                        "__module__": "google.rpc.context.attribute_context_pb2"
+                        # @@protoc_insertion_point(class_scope:google.rpc.context.AttributeContext.Resource.AnnotationsEntry)
+                    },
+                ),
                 "DESCRIPTOR": _ATTRIBUTECONTEXT_RESOURCE,
                 "__module__": "google.rpc.context.attribute_context_pb2"
                 # @@protoc_insertion_point(class_scope:google.rpc.context.AttributeContext.Resource)
@@ -1366,6 +1650,7 @@ _sym_db.RegisterMessage(AttributeContext.Response)
 _sym_db.RegisterMessage(AttributeContext.Response.HeadersEntry)
 _sym_db.RegisterMessage(AttributeContext.Resource)
 _sym_db.RegisterMessage(AttributeContext.Resource.LabelsEntry)
+_sym_db.RegisterMessage(AttributeContext.Resource.AnnotationsEntry)
 
 
 DESCRIPTOR._options = None
@@ -1373,4 +1658,5 @@ _ATTRIBUTECONTEXT_PEER_LABELSENTRY._options = None
 _ATTRIBUTECONTEXT_REQUEST_HEADERSENTRY._options = None
 _ATTRIBUTECONTEXT_RESPONSE_HEADERSENTRY._options = None
 _ATTRIBUTECONTEXT_RESOURCE_LABELSENTRY._options = None
+_ATTRIBUTECONTEXT_RESOURCE_ANNOTATIONSENTRY._options = None
 # @@protoc_insertion_point(module_scope)

@@ -1,4 +1,4 @@
-// Copyright 2019 Google LLC.
+// Copyright 2021 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -11,7 +11,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//
 
 syntax = "proto3";
 
@@ -25,7 +24,7 @@ option objc_class_prefix = "GTP";
 
 // Represents a fraction in terms of a numerator divided by a denominator.
 message Fraction {
-  // The portion of the denominator in the faction, e.g. 2 in 2/3.
+  // The numerator in the fraction, e.g. 2 in 2/3.
   int64 numerator = 1;
 
   // The value by which the numerator is divided, e.g. 3 in 2/3. Must be

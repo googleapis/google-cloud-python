@@ -23,29 +23,6 @@ from synthtool.sources import git
 
 API_COMMON_PROTOS_REPO = "googleapis/api-common-protos"
 GOOGLEAPIS_REPO = "googleapis/googleapis"
-# ----------------------------------------------------------------------------
-#  Get api-common-protos
-# ----------------------------------------------------------------------------
-
-# Clean up api-common-protos
-shutil.rmtree('api-common-protos', ignore_errors=True)
-
-# Clone api-common-protos
-api_common_protos_url = git.make_repo_clone_url(API_COMMON_PROTOS_REPO)
-subprocess.run(["git", "clone", api_common_protos_url])
-
-# This is required in order for s.copy() to work
-s._tracked_paths.add("api-common-protos/google")
-
-excludes = [
-    # Exclude iam protos (they are released in a separate package)
-    "iam/**/*",
-    "**/BUILD.bazel",
-]
-s.copy("api-common-protos/google", "google", excludes=excludes)
-
-# Clean up api-common-protos
-shutil.rmtree('api-common-protos')
 
 # ----------------------------------------------------------------------------
 #  Get gapic metadata proto from googleapis
@@ -59,11 +36,20 @@ googleapis_url = git.make_repo_clone_url(GOOGLEAPIS_REPO)
 subprocess.run(["git", "clone", googleapis_url])
 
 # This is required in order for s.copy() to work
-s._tracked_paths.add("googleapis/gapic")
+s._tracked_paths.add("googleapis")
 
 # Gapic metadata proto needed by gapic-generator-python
 # Desired import is "from google.gapic.metadata import gapic_metadata_pb2"
-s.copy("googleapis/gapic",  "google/gapic", excludes=["lang/", "packaging/", "**/BUILD.bazel"],)
+s.copy("googleapis/gapic", "google/gapic", excludes=["lang/", "packaging/", "**/BUILD.bazel"],)
+
+s.copy("googleapis/google/api/*.proto", "google/api")
+s.copy("googleapis/google/cloud/extended_operations.proto", "google/cloud")
+s.copy("googleapis/google/cloud/location/locations.proto", "google/cloud/location")
+s.copy("googleapis/google/logging/type/*.proto", "google/logging/type")
+s.copy("googleapis/google/longrunning/*.proto", "google/longrunning")
+s.copy("googleapis/google/rpc/*.proto", "google/rpc")
+s.copy("googleapis/google/rpc/context/*.proto", "google/rpc/context")
+s.copy("googleapis/google/type/*.proto", "google/type")
 
 # Clean up googleapis
 shutil.rmtree('googleapis')

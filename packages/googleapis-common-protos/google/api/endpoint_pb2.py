@@ -27,17 +27,13 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
-from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
-
-
 DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/api/endpoint.proto",
     package="google.api",
     syntax="proto3",
     serialized_options=b"\n\016com.google.apiB\rEndpointProtoP\001ZEgoogle.golang.org/genproto/googleapis/api/serviceconfig;serviceconfig\242\002\004GAPI",
     create_key=_descriptor._internal_create_key,
-    serialized_pb=b'\n\x19google/api/endpoint.proto\x12\ngoogle.api\x1a\x1cgoogle/api/annotations.proto"_\n\x08\x45ndpoint\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0f\n\x07\x61liases\x18\x02 \x03(\t\x12\x10\n\x08\x66\x65\x61tures\x18\x04 \x03(\t\x12\x0e\n\x06target\x18\x65 \x01(\t\x12\x12\n\nallow_cors\x18\x05 \x01(\x08\x42o\n\x0e\x63om.google.apiB\rEndpointProtoP\x01ZEgoogle.golang.org/genproto/googleapis/api/serviceconfig;serviceconfig\xa2\x02\x04GAPIb\x06proto3',
-    dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR],
+    serialized_pb=b'\n\x19google/api/endpoint.proto\x12\ngoogle.api"Q\n\x08\x45ndpoint\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x13\n\x07\x61liases\x18\x02 \x03(\tB\x02\x18\x01\x12\x0e\n\x06target\x18\x65 \x01(\t\x12\x12\n\nallow_cors\x18\x05 \x01(\x08\x42o\n\x0e\x63om.google.apiB\rEndpointProtoP\x01ZEgoogle.golang.org/genproto/googleapis/api/serviceconfig;serviceconfig\xa2\x02\x04GAPIb\x06proto3',
 )
 
 
@@ -83,33 +79,14 @@ _ENDPOINT = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-            create_key=_descriptor._internal_create_key,
-        ),
-        _descriptor.FieldDescriptor(
-            name="features",
-            full_name="google.api.Endpoint.features",
-            index=2,
-            number=4,
-            type=9,
-            cpp_type=9,
-            label=3,
-            has_default_value=False,
-            default_value=[],
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
+            serialized_options=b"\030\001",
             file=DESCRIPTOR,
             create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="target",
             full_name="google.api.Endpoint.target",
-            index=3,
+            index=2,
             number=101,
             type=9,
             cpp_type=9,
@@ -128,7 +105,7 @@ _ENDPOINT = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="allow_cors",
             full_name="google.api.Endpoint.allow_cors",
-            index=4,
+            index=3,
             number=5,
             type=8,
             cpp_type=7,
@@ -153,8 +130,8 @@ _ENDPOINT = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=71,
-    serialized_end=166,
+    serialized_start=41,
+    serialized_end=122,
 )
 
 DESCRIPTOR.message_types_by_name["Endpoint"] = _ENDPOINT
@@ -173,4 +150,5 @@ _sym_db.RegisterMessage(Endpoint)
 
 
 DESCRIPTOR._options = None
+_ENDPOINT.fields_by_name["aliases"]._options = None
 # @@protoc_insertion_point(module_scope)

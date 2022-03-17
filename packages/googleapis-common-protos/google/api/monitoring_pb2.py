@@ -27,17 +27,13 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
-from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
-
-
 DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/api/monitoring.proto",
     package="google.api",
     syntax="proto3",
     serialized_options=b"\n\016com.google.apiB\017MonitoringProtoP\001ZEgoogle.golang.org/genproto/googleapis/api/serviceconfig;serviceconfig\242\002\004GAPI",
     create_key=_descriptor._internal_create_key,
-    serialized_pb=b'\n\x1bgoogle/api/monitoring.proto\x12\ngoogle.api\x1a\x1cgoogle/api/annotations.proto"\xec\x01\n\nMonitoring\x12K\n\x15producer_destinations\x18\x01 \x03(\x0b\x32,.google.api.Monitoring.MonitoringDestination\x12K\n\x15\x63onsumer_destinations\x18\x02 \x03(\x0b\x32,.google.api.Monitoring.MonitoringDestination\x1a\x44\n\x15MonitoringDestination\x12\x1a\n\x12monitored_resource\x18\x01 \x01(\t\x12\x0f\n\x07metrics\x18\x02 \x03(\tBq\n\x0e\x63om.google.apiB\x0fMonitoringProtoP\x01ZEgoogle.golang.org/genproto/googleapis/api/serviceconfig;serviceconfig\xa2\x02\x04GAPIb\x06proto3',
-    dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR],
+    serialized_pb=b'\n\x1bgoogle/api/monitoring.proto\x12\ngoogle.api"\xec\x01\n\nMonitoring\x12K\n\x15producer_destinations\x18\x01 \x03(\x0b\x32,.google.api.Monitoring.MonitoringDestination\x12K\n\x15\x63onsumer_destinations\x18\x02 \x03(\x0b\x32,.google.api.Monitoring.MonitoringDestination\x1a\x44\n\x15MonitoringDestination\x12\x1a\n\x12monitored_resource\x18\x01 \x01(\t\x12\x0f\n\x07metrics\x18\x02 \x03(\tBq\n\x0e\x63om.google.apiB\x0fMonitoringProtoP\x01ZEgoogle.golang.org/genproto/googleapis/api/serviceconfig;serviceconfig\xa2\x02\x04GAPIb\x06proto3',
 )
 
 
@@ -96,8 +92,8 @@ _MONITORING_MONITORINGDESTINATION = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=242,
-    serialized_end=310,
+    serialized_start=212,
+    serialized_end=280,
 )
 
 _MONITORING = _descriptor.Descriptor(
@@ -155,8 +151,8 @@ _MONITORING = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=74,
-    serialized_end=310,
+    serialized_start=44,
+    serialized_end=280,
 )
 
 _MONITORING_MONITORINGDESTINATION.containing_type = _MONITORING

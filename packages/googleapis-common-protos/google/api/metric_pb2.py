@@ -28,6 +28,8 @@ _sym_db = _symbol_database.Default()
 
 
 from google.api import label_pb2 as google_dot_api_dot_label__pb2
+from google.api import launch_stage_pb2 as google_dot_api_dot_launch__stage__pb2
+from google.protobuf import duration_pb2 as google_dot_protobuf_dot_duration__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
@@ -36,8 +38,12 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     syntax="proto3",
     serialized_options=b"\n\016com.google.apiB\013MetricProtoP\001Z7google.golang.org/genproto/googleapis/api/metric;metric\242\002\004GAPI",
     create_key=_descriptor._internal_create_key,
-    serialized_pb=b'\n\x17google/api/metric.proto\x12\ngoogle.api\x1a\x16google/api/label.proto"\xd2\x03\n\x10MetricDescriptor\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0c\n\x04type\x18\x08 \x01(\t\x12+\n\x06labels\x18\x02 \x03(\x0b\x32\x1b.google.api.LabelDescriptor\x12<\n\x0bmetric_kind\x18\x03 \x01(\x0e\x32\'.google.api.MetricDescriptor.MetricKind\x12:\n\nvalue_type\x18\x04 \x01(\x0e\x32&.google.api.MetricDescriptor.ValueType\x12\x0c\n\x04unit\x18\x05 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x06 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x07 \x01(\t"O\n\nMetricKind\x12\x1b\n\x17METRIC_KIND_UNSPECIFIED\x10\x00\x12\t\n\x05GAUGE\x10\x01\x12\t\n\x05\x44\x45LTA\x10\x02\x12\x0e\n\nCUMULATIVE\x10\x03"q\n\tValueType\x12\x1a\n\x16VALUE_TYPE_UNSPECIFIED\x10\x00\x12\x08\n\x04\x42OOL\x10\x01\x12\t\n\x05INT64\x10\x02\x12\n\n\x06\x44OUBLE\x10\x03\x12\n\n\x06STRING\x10\x04\x12\x10\n\x0c\x44ISTRIBUTION\x10\x05\x12\t\n\x05MONEY\x10\x06"u\n\x06Metric\x12\x0c\n\x04type\x18\x03 \x01(\t\x12.\n\x06labels\x18\x02 \x03(\x0b\x32\x1e.google.api.Metric.LabelsEntry\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42_\n\x0e\x63om.google.apiB\x0bMetricProtoP\x01Z7google.golang.org/genproto/googleapis/api/metric;metric\xa2\x02\x04GAPIb\x06proto3',
-    dependencies=[google_dot_api_dot_label__pb2.DESCRIPTOR],
+    serialized_pb=b'\n\x17google/api/metric.proto\x12\ngoogle.api\x1a\x16google/api/label.proto\x1a\x1dgoogle/api/launch_stage.proto\x1a\x1egoogle/protobuf/duration.proto"\x9f\x06\n\x10MetricDescriptor\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0c\n\x04type\x18\x08 \x01(\t\x12+\n\x06labels\x18\x02 \x03(\x0b\x32\x1b.google.api.LabelDescriptor\x12<\n\x0bmetric_kind\x18\x03 \x01(\x0e\x32\'.google.api.MetricDescriptor.MetricKind\x12:\n\nvalue_type\x18\x04 \x01(\x0e\x32&.google.api.MetricDescriptor.ValueType\x12\x0c\n\x04unit\x18\x05 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x06 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x07 \x01(\t\x12G\n\x08metadata\x18\n \x01(\x0b\x32\x35.google.api.MetricDescriptor.MetricDescriptorMetadata\x12-\n\x0claunch_stage\x18\x0c \x01(\x0e\x32\x17.google.api.LaunchStage\x12 \n\x18monitored_resource_types\x18\r \x03(\t\x1a\xb0\x01\n\x18MetricDescriptorMetadata\x12\x31\n\x0claunch_stage\x18\x01 \x01(\x0e\x32\x17.google.api.LaunchStageB\x02\x18\x01\x12\x30\n\rsample_period\x18\x02 \x01(\x0b\x32\x19.google.protobuf.Duration\x12/\n\x0cingest_delay\x18\x03 \x01(\x0b\x32\x19.google.protobuf.Duration"O\n\nMetricKind\x12\x1b\n\x17METRIC_KIND_UNSPECIFIED\x10\x00\x12\t\n\x05GAUGE\x10\x01\x12\t\n\x05\x44\x45LTA\x10\x02\x12\x0e\n\nCUMULATIVE\x10\x03"q\n\tValueType\x12\x1a\n\x16VALUE_TYPE_UNSPECIFIED\x10\x00\x12\x08\n\x04\x42OOL\x10\x01\x12\t\n\x05INT64\x10\x02\x12\n\n\x06\x44OUBLE\x10\x03\x12\n\n\x06STRING\x10\x04\x12\x10\n\x0c\x44ISTRIBUTION\x10\x05\x12\t\n\x05MONEY\x10\x06"u\n\x06Metric\x12\x0c\n\x04type\x18\x03 \x01(\t\x12.\n\x06labels\x18\x02 \x03(\x0b\x32\x1e.google.api.Metric.LabelsEntry\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42_\n\x0e\x63om.google.apiB\x0bMetricProtoP\x01Z7google.golang.org/genproto/googleapis/api/metric;metric\xa2\x02\x04GAPIb\x06proto3',
+    dependencies=[
+        google_dot_api_dot_label__pb2.DESCRIPTOR,
+        google_dot_api_dot_launch__stage__pb2.DESCRIPTOR,
+        google_dot_protobuf_dot_duration__pb2.DESCRIPTOR,
+    ],
 )
 
 
@@ -83,8 +89,8 @@ _METRICDESCRIPTOR_METRICKIND = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=336,
-    serialized_end=415,
+    serialized_start=732,
+    serialized_end=811,
 )
 _sym_db.RegisterEnumDescriptor(_METRICDESCRIPTOR_METRICKIND)
 
@@ -154,11 +160,89 @@ _METRICDESCRIPTOR_VALUETYPE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=417,
-    serialized_end=530,
+    serialized_start=813,
+    serialized_end=926,
 )
 _sym_db.RegisterEnumDescriptor(_METRICDESCRIPTOR_VALUETYPE)
 
+
+_METRICDESCRIPTOR_METRICDESCRIPTORMETADATA = _descriptor.Descriptor(
+    name="MetricDescriptorMetadata",
+    full_name="google.api.MetricDescriptor.MetricDescriptorMetadata",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    create_key=_descriptor._internal_create_key,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="launch_stage",
+            full_name="google.api.MetricDescriptor.MetricDescriptorMetadata.launch_stage",
+            index=0,
+            number=1,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=b"\030\001",
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
+        _descriptor.FieldDescriptor(
+            name="sample_period",
+            full_name="google.api.MetricDescriptor.MetricDescriptorMetadata.sample_period",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
+        _descriptor.FieldDescriptor(
+            name="ingest_delay",
+            full_name="google.api.MetricDescriptor.MetricDescriptorMetadata.ingest_delay",
+            index=2,
+            number=3,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=554,
+    serialized_end=730,
+)
 
 _METRICDESCRIPTOR = _descriptor.Descriptor(
     name="MetricDescriptor",
@@ -320,17 +404,74 @@ _METRICDESCRIPTOR = _descriptor.Descriptor(
             file=DESCRIPTOR,
             create_key=_descriptor._internal_create_key,
         ),
+        _descriptor.FieldDescriptor(
+            name="metadata",
+            full_name="google.api.MetricDescriptor.metadata",
+            index=8,
+            number=10,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
+        _descriptor.FieldDescriptor(
+            name="launch_stage",
+            full_name="google.api.MetricDescriptor.launch_stage",
+            index=9,
+            number=12,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
+        _descriptor.FieldDescriptor(
+            name="monitored_resource_types",
+            full_name="google.api.MetricDescriptor.monitored_resource_types",
+            index=10,
+            number=13,
+            type=9,
+            cpp_type=9,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
     ],
     extensions=[],
-    nested_types=[],
+    nested_types=[_METRICDESCRIPTOR_METRICDESCRIPTORMETADATA],
     enum_types=[_METRICDESCRIPTOR_METRICKIND, _METRICDESCRIPTOR_VALUETYPE],
     serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=64,
-    serialized_end=530,
+    serialized_start=127,
+    serialized_end=926,
 )
 
 
@@ -389,8 +530,8 @@ _METRIC_LABELSENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=604,
-    serialized_end=649,
+    serialized_start=1000,
+    serialized_end=1045,
 )
 
 _METRIC = _descriptor.Descriptor(
@@ -448,15 +589,31 @@ _METRIC = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=532,
-    serialized_end=649,
+    serialized_start=928,
+    serialized_end=1045,
 )
 
+_METRICDESCRIPTOR_METRICDESCRIPTORMETADATA.fields_by_name[
+    "launch_stage"
+].enum_type = google_dot_api_dot_launch__stage__pb2._LAUNCHSTAGE
+_METRICDESCRIPTOR_METRICDESCRIPTORMETADATA.fields_by_name[
+    "sample_period"
+].message_type = google_dot_protobuf_dot_duration__pb2._DURATION
+_METRICDESCRIPTOR_METRICDESCRIPTORMETADATA.fields_by_name[
+    "ingest_delay"
+].message_type = google_dot_protobuf_dot_duration__pb2._DURATION
+_METRICDESCRIPTOR_METRICDESCRIPTORMETADATA.containing_type = _METRICDESCRIPTOR
 _METRICDESCRIPTOR.fields_by_name[
     "labels"
 ].message_type = google_dot_api_dot_label__pb2._LABELDESCRIPTOR
 _METRICDESCRIPTOR.fields_by_name["metric_kind"].enum_type = _METRICDESCRIPTOR_METRICKIND
 _METRICDESCRIPTOR.fields_by_name["value_type"].enum_type = _METRICDESCRIPTOR_VALUETYPE
+_METRICDESCRIPTOR.fields_by_name[
+    "metadata"
+].message_type = _METRICDESCRIPTOR_METRICDESCRIPTORMETADATA
+_METRICDESCRIPTOR.fields_by_name[
+    "launch_stage"
+].enum_type = google_dot_api_dot_launch__stage__pb2._LAUNCHSTAGE
 _METRICDESCRIPTOR_METRICKIND.containing_type = _METRICDESCRIPTOR
 _METRICDESCRIPTOR_VALUETYPE.containing_type = _METRICDESCRIPTOR
 _METRIC_LABELSENTRY.containing_type = _METRIC
@@ -469,12 +626,22 @@ MetricDescriptor = _reflection.GeneratedProtocolMessageType(
     "MetricDescriptor",
     (_message.Message,),
     {
+        "MetricDescriptorMetadata": _reflection.GeneratedProtocolMessageType(
+            "MetricDescriptorMetadata",
+            (_message.Message,),
+            {
+                "DESCRIPTOR": _METRICDESCRIPTOR_METRICDESCRIPTORMETADATA,
+                "__module__": "google.api.metric_pb2"
+                # @@protoc_insertion_point(class_scope:google.api.MetricDescriptor.MetricDescriptorMetadata)
+            },
+        ),
         "DESCRIPTOR": _METRICDESCRIPTOR,
         "__module__": "google.api.metric_pb2"
         # @@protoc_insertion_point(class_scope:google.api.MetricDescriptor)
     },
 )
 _sym_db.RegisterMessage(MetricDescriptor)
+_sym_db.RegisterMessage(MetricDescriptor.MetricDescriptorMetadata)
 
 Metric = _reflection.GeneratedProtocolMessageType(
     "Metric",
@@ -499,5 +666,8 @@ _sym_db.RegisterMessage(Metric.LabelsEntry)
 
 
 DESCRIPTOR._options = None
+_METRICDESCRIPTOR_METRICDESCRIPTORMETADATA.fields_by_name[
+    "launch_stage"
+]._options = None
 _METRIC_LABELSENTRY._options = None
 # @@protoc_insertion_point(module_scope)

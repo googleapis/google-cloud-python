@@ -1,4 +1,4 @@
-// Copyright 2016 Google Inc.
+// Copyright 2016 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,7 +20,6 @@ option go_package = "google.golang.org/genproto/googleapis/api/serviceconfig;ser
 option java_multiple_files = true;
 option java_outer_classname = "ConsumerProto";
 option java_package = "com.google.api";
-
 
 // A descriptor for defining project properties for a service. One service may
 // have many consumer projects, and the service may want to behave differently

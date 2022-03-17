@@ -27,17 +27,13 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
-from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
-
-
 DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/api/auth.proto",
     package="google.api",
     syntax="proto3",
     serialized_options=b"\n\016com.google.apiB\tAuthProtoP\001ZEgoogle.golang.org/genproto/googleapis/api/serviceconfig;serviceconfig\242\002\004GAPI",
     create_key=_descriptor._internal_create_key,
-    serialized_pb=b'\n\x15google/api/auth.proto\x12\ngoogle.api\x1a\x1cgoogle/api/annotations.proto"l\n\x0e\x41uthentication\x12-\n\x05rules\x18\x03 \x03(\x0b\x32\x1e.google.api.AuthenticationRule\x12+\n\tproviders\x18\x04 \x03(\x0b\x32\x18.google.api.AuthProvider"\xa9\x01\n\x12\x41uthenticationRule\x12\x10\n\x08selector\x18\x01 \x01(\t\x12,\n\x05oauth\x18\x02 \x01(\x0b\x32\x1d.google.api.OAuthRequirements\x12 \n\x18\x61llow_without_credential\x18\x05 \x01(\x08\x12\x31\n\x0crequirements\x18\x07 \x03(\x0b\x32\x1b.google.api.AuthRequirement"j\n\x0c\x41uthProvider\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0e\n\x06issuer\x18\x02 \x01(\t\x12\x10\n\x08jwks_uri\x18\x03 \x01(\t\x12\x11\n\taudiences\x18\x04 \x01(\t\x12\x19\n\x11\x61uthorization_url\x18\x05 \x01(\t"-\n\x11OAuthRequirements\x12\x18\n\x10\x63\x61nonical_scopes\x18\x01 \x01(\t"9\n\x0f\x41uthRequirement\x12\x13\n\x0bprovider_id\x18\x01 \x01(\t\x12\x11\n\taudiences\x18\x02 \x01(\tBk\n\x0e\x63om.google.apiB\tAuthProtoP\x01ZEgoogle.golang.org/genproto/googleapis/api/serviceconfig;serviceconfig\xa2\x02\x04GAPIb\x06proto3',
-    dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR],
+    serialized_pb=b'\n\x15google/api/auth.proto\x12\ngoogle.api"l\n\x0e\x41uthentication\x12-\n\x05rules\x18\x03 \x03(\x0b\x32\x1e.google.api.AuthenticationRule\x12+\n\tproviders\x18\x04 \x03(\x0b\x32\x18.google.api.AuthProvider"\xa9\x01\n\x12\x41uthenticationRule\x12\x10\n\x08selector\x18\x01 \x01(\t\x12,\n\x05oauth\x18\x02 \x01(\x0b\x32\x1d.google.api.OAuthRequirements\x12 \n\x18\x61llow_without_credential\x18\x05 \x01(\x08\x12\x31\n\x0crequirements\x18\x07 \x03(\x0b\x32\x1b.google.api.AuthRequirement"L\n\x0bJwtLocation\x12\x10\n\x06header\x18\x01 \x01(\tH\x00\x12\x0f\n\x05query\x18\x02 \x01(\tH\x00\x12\x14\n\x0cvalue_prefix\x18\x03 \x01(\tB\x04\n\x02in"\x9a\x01\n\x0c\x41uthProvider\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0e\n\x06issuer\x18\x02 \x01(\t\x12\x10\n\x08jwks_uri\x18\x03 \x01(\t\x12\x11\n\taudiences\x18\x04 \x01(\t\x12\x19\n\x11\x61uthorization_url\x18\x05 \x01(\t\x12.\n\rjwt_locations\x18\x06 \x03(\x0b\x32\x17.google.api.JwtLocation"-\n\x11OAuthRequirements\x12\x18\n\x10\x63\x61nonical_scopes\x18\x01 \x01(\t"9\n\x0f\x41uthRequirement\x12\x13\n\x0bprovider_id\x18\x01 \x01(\t\x12\x11\n\taudiences\x18\x02 \x01(\tBk\n\x0e\x63om.google.apiB\tAuthProtoP\x01ZEgoogle.golang.org/genproto/googleapis/api/serviceconfig;serviceconfig\xa2\x02\x04GAPIb\x06proto3',
 )
 
 
@@ -96,8 +92,8 @@ _AUTHENTICATION = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=67,
-    serialized_end=175,
+    serialized_start=37,
+    serialized_end=145,
 )
 
 
@@ -194,8 +190,96 @@ _AUTHENTICATIONRULE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=178,
-    serialized_end=347,
+    serialized_start=148,
+    serialized_end=317,
+)
+
+
+_JWTLOCATION = _descriptor.Descriptor(
+    name="JwtLocation",
+    full_name="google.api.JwtLocation",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    create_key=_descriptor._internal_create_key,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="header",
+            full_name="google.api.JwtLocation.header",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=b"".decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
+        _descriptor.FieldDescriptor(
+            name="query",
+            full_name="google.api.JwtLocation.query",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=b"".decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
+        _descriptor.FieldDescriptor(
+            name="value_prefix",
+            full_name="google.api.JwtLocation.value_prefix",
+            index=2,
+            number=3,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=b"".decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[
+        _descriptor.OneofDescriptor(
+            name="in",
+            full_name="google.api.JwtLocation.in",
+            index=0,
+            containing_type=None,
+            create_key=_descriptor._internal_create_key,
+            fields=[],
+        )
+    ],
+    serialized_start=319,
+    serialized_end=395,
 )
 
 
@@ -302,6 +386,25 @@ _AUTHPROVIDER = _descriptor.Descriptor(
             file=DESCRIPTOR,
             create_key=_descriptor._internal_create_key,
         ),
+        _descriptor.FieldDescriptor(
+            name="jwt_locations",
+            full_name="google.api.AuthProvider.jwt_locations",
+            index=5,
+            number=6,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -311,8 +414,8 @@ _AUTHPROVIDER = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=349,
-    serialized_end=455,
+    serialized_start=398,
+    serialized_end=552,
 )
 
 
@@ -352,8 +455,8 @@ _OAUTHREQUIREMENTS = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=457,
-    serialized_end=502,
+    serialized_start=554,
+    serialized_end=599,
 )
 
 
@@ -412,16 +515,26 @@ _AUTHREQUIREMENT = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=504,
-    serialized_end=561,
+    serialized_start=601,
+    serialized_end=658,
 )
 
 _AUTHENTICATION.fields_by_name["rules"].message_type = _AUTHENTICATIONRULE
 _AUTHENTICATION.fields_by_name["providers"].message_type = _AUTHPROVIDER
 _AUTHENTICATIONRULE.fields_by_name["oauth"].message_type = _OAUTHREQUIREMENTS
 _AUTHENTICATIONRULE.fields_by_name["requirements"].message_type = _AUTHREQUIREMENT
+_JWTLOCATION.oneofs_by_name["in"].fields.append(_JWTLOCATION.fields_by_name["header"])
+_JWTLOCATION.fields_by_name["header"].containing_oneof = _JWTLOCATION.oneofs_by_name[
+    "in"
+]
+_JWTLOCATION.oneofs_by_name["in"].fields.append(_JWTLOCATION.fields_by_name["query"])
+_JWTLOCATION.fields_by_name["query"].containing_oneof = _JWTLOCATION.oneofs_by_name[
+    "in"
+]
+_AUTHPROVIDER.fields_by_name["jwt_locations"].message_type = _JWTLOCATION
 DESCRIPTOR.message_types_by_name["Authentication"] = _AUTHENTICATION
 DESCRIPTOR.message_types_by_name["AuthenticationRule"] = _AUTHENTICATIONRULE
+DESCRIPTOR.message_types_by_name["JwtLocation"] = _JWTLOCATION
 DESCRIPTOR.message_types_by_name["AuthProvider"] = _AUTHPROVIDER
 DESCRIPTOR.message_types_by_name["OAuthRequirements"] = _OAUTHREQUIREMENTS
 DESCRIPTOR.message_types_by_name["AuthRequirement"] = _AUTHREQUIREMENT
@@ -448,6 +561,17 @@ AuthenticationRule = _reflection.GeneratedProtocolMessageType(
     },
 )
 _sym_db.RegisterMessage(AuthenticationRule)
+
+JwtLocation = _reflection.GeneratedProtocolMessageType(
+    "JwtLocation",
+    (_message.Message,),
+    {
+        "DESCRIPTOR": _JWTLOCATION,
+        "__module__": "google.api.auth_pb2"
+        # @@protoc_insertion_point(class_scope:google.api.JwtLocation)
+    },
+)
+_sym_db.RegisterMessage(JwtLocation)
 
 AuthProvider = _reflection.GeneratedProtocolMessageType(
     "AuthProvider",

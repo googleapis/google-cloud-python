@@ -27,7 +27,7 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
-from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
+from google.api import metric_pb2 as google_dot_api_dot_metric__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
@@ -36,8 +36,8 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     syntax="proto3",
     serialized_options=b"\n\016com.google.apiB\014BillingProtoP\001ZEgoogle.golang.org/genproto/googleapis/api/serviceconfig;serviceconfig\242\002\004GAPI",
     create_key=_descriptor._internal_create_key,
-    serialized_pb=b'\n\x18google/api/billing.proto\x12\ngoogle.api\x1a\x1cgoogle/api/annotations.proto"\x93\x01\n\x07\x42illing\x12\x45\n\x15\x63onsumer_destinations\x18\x08 \x03(\x0b\x32&.google.api.Billing.BillingDestination\x1a\x41\n\x12\x42illingDestination\x12\x1a\n\x12monitored_resource\x18\x01 \x01(\t\x12\x0f\n\x07metrics\x18\x02 \x03(\tBn\n\x0e\x63om.google.apiB\x0c\x42illingProtoP\x01ZEgoogle.golang.org/genproto/googleapis/api/serviceconfig;serviceconfig\xa2\x02\x04GAPIb\x06proto3',
-    dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR],
+    serialized_pb=b'\n\x18google/api/billing.proto\x12\ngoogle.api\x1a\x17google/api/metric.proto"\x93\x01\n\x07\x42illing\x12\x45\n\x15\x63onsumer_destinations\x18\x08 \x03(\x0b\x32&.google.api.Billing.BillingDestination\x1a\x41\n\x12\x42illingDestination\x12\x1a\n\x12monitored_resource\x18\x01 \x01(\t\x12\x0f\n\x07metrics\x18\x02 \x03(\tBn\n\x0e\x63om.google.apiB\x0c\x42illingProtoP\x01ZEgoogle.golang.org/genproto/googleapis/api/serviceconfig;serviceconfig\xa2\x02\x04GAPIb\x06proto3',
+    dependencies=[google_dot_api_dot_metric__pb2.DESCRIPTOR],
 )
 
 
@@ -96,8 +96,8 @@ _BILLING_BILLINGDESTINATION = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=153,
-    serialized_end=218,
+    serialized_start=148,
+    serialized_end=213,
 )
 
 _BILLING = _descriptor.Descriptor(
@@ -136,8 +136,8 @@ _BILLING = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=71,
-    serialized_end=218,
+    serialized_start=66,
+    serialized_end=213,
 )
 
 _BILLING_BILLINGDESTINATION.containing_type = _BILLING

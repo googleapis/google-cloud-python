@@ -1,4 +1,4 @@
-// Copyright 2018 Google LLC.
+// Copyright 2015 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ syntax = "proto3";
 package google.api;
 
 import "google/api/label.proto";
+import "google/api/launch_stage.proto";
 import "google/protobuf/struct.proto";
 
 option cc_enable_arenas = true;
@@ -25,7 +26,6 @@ option java_multiple_files = true;
 option java_outer_classname = "MonitoredResourceProto";
 option java_package = "com.google.api";
 option objc_class_prefix = "GAPI";
-
 
 // An object that describes the schema of a [MonitoredResource][google.api.MonitoredResource] object using a
 // type name and a set of labels.  For example, the monitored resource
@@ -36,6 +36,7 @@ option objc_class_prefix = "GAPI";
 // Different APIs can support different monitored resource types. APIs generally
 // provide a `list` method that returns the monitored resource descriptors used
 // by the API.
+//
 message MonitoredResourceDescriptor {
   // Optional. The resource name of the monitored resource descriptor:
   // `"projects/{project_id}/monitoredResourceDescriptors/{type}"` where
@@ -47,7 +48,6 @@ message MonitoredResourceDescriptor {
 
   // Required. The monitored resource type. For example, the type
   // `"cloudsql_database"` represents databases in Google Cloud SQL.
-  // The maximum length of this value is 256 characters.
   string type = 1;
 
   // Optional. A concise name for the monitored resource type that might be
@@ -64,6 +64,9 @@ message MonitoredResourceDescriptor {
   // resource type. For example, an individual Google Cloud SQL database is
   // identified by values for the labels `"database_id"` and `"zone"`.
   repeated LabelDescriptor labels = 4;
+
+  // Optional. The launch stage of the monitored resource definition.
+  LaunchStage launch_stage = 7;
 }
 
 // An object representing a resource that can be used for monitoring, logging,
@@ -94,14 +97,13 @@ message MonitoredResource {
 // Auxiliary metadata for a [MonitoredResource][google.api.MonitoredResource] object.
 // [MonitoredResource][google.api.MonitoredResource] objects contain the minimum set of information to
 // uniquely identify a monitored resource instance. There is some other useful
-// auxiliary metadata. Google Stackdriver Monitoring & Logging uses an ingestion
-// pipeline to extract metadata for cloud resources of all types , and stores
+// auxiliary metadata. Monitoring and Logging use an ingestion
+// pipeline to extract metadata for cloud resources of all types, and store
 // the metadata in this message.
 message MonitoredResourceMetadata {
   // Output only. Values for predefined system metadata labels.
-  // System labels are a kind of metadata extracted by Google Stackdriver.
-  // Stackdriver determines what system labels are useful and how to obtain
-  // their values. Some examples: "machine_image", "vpc", "subnet_id",
+  // System labels are a kind of metadata extracted by Google, including
+  // "machine_image", "vpc", "subnet_id",
   // "security_group", "name", etc.
   // System label values can be only strings, Boolean values, or a list of
   // strings. For example:
