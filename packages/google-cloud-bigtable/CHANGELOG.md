@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+### [2.7.1](https://github.com/googleapis/python-bigtable/compare/v2.7.0...v2.7.1) (2022-03-17)
+
+
+### Bug Fixes
+
+* Ensure message fields are copied when building retry request ([#533](https://github.com/googleapis/python-bigtable/issues/533)) ([ff7f190](https://github.com/googleapis/python-bigtable/commit/ff7f1901b6420e66e1388e757eeec20d30484ad9))
+
 ## [2.7.0](https://github.com/googleapis/python-bigtable/compare/v2.6.0...v2.7.0) (2022-03-06)
 
 
