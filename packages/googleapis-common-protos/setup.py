@@ -20,7 +20,7 @@ import setuptools
 
 name = "googleapis-common-protos"
 description = "Common protobufs used in Google APIs"
-version = "1.55.0"
+version = "1.56.0"
 release_status = "Development Status :: 5 - Production/Stable"
 dependencies = ["protobuf >= 3.12.0"]
 
