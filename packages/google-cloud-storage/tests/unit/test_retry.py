@@ -34,7 +34,7 @@ class Test_should_retry(unittest.TestCase):
         exc = eTransportError(caught_exc)
         self.assertTrue(retry._should_retry(exc))
 
-    def test_w_wrapped_type(self):
+    def test_w_retryable_types(self):
         from google.cloud.storage import retry
 
         for exc_type in retry._RETRYABLE_TYPES:
@@ -55,25 +55,9 @@ class Test_should_retry(unittest.TestCase):
         exc.code = 999
         self.assertFalse(self._call_fut(exc))
 
-    def test_w_requests_connection_error(self):
-        import requests
-
-        exc = requests.ConnectionError()
-        self.assertTrue(self._call_fut(exc))
-
-    def test_w_requests_chunked_encoding_error(self):
-        import requests.exceptions
-
-        exc = requests.exceptions.ChunkedEncodingError()
-        self.assertTrue(self._call_fut(exc))
-
-    def test_miss_w_stdlib_error(self):
+    def test_w_stdlib_error_miss(self):
         exc = ValueError("testing")
         self.assertFalse(self._call_fut(exc))
-
-    def test_w_stdlib_connection_error(self):
-        exc = ConnectionError()
-        self.assertTrue(self._call_fut(exc))
 
 
 class TestConditionalRetryPolicy(unittest.TestCase):
