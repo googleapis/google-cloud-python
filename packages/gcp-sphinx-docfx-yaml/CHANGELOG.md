@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.4.5](https://github.com/googleapis/sphinx-docfx-yaml/compare/v1.4.4...v1.4.5) (2022-03-18)
+
+
+### Bug Fixes
+
+* format code snippets properly ([#193](https://github.com/googleapis/sphinx-docfx-yaml/issues/193)) ([ef7a337](https://github.com/googleapis/sphinx-docfx-yaml/commit/ef7a3370756ba20cc78ad8193abfaaf5cd268f0c))
+
 ### [1.4.4](https://github.com/googleapis/sphinx-docfx-yaml/compare/v1.4.3...v1.4.4) (2022-03-03)
 
 
