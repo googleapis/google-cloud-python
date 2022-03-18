@@ -1,4 +1,4 @@
-Using Cloud Error Reporting
+Using Error Reporting
 =================================
 
 After configuring your environment, create a
@@ -35,7 +35,7 @@ also optionally specify a version for that service, which defaults to
 Reporting an exception
 -----------------------
 
-Report a stacktrace to Cloud Error Reporting after an exception:
+Report a stacktrace to Error Reporting after an exception:
 
 .. code-block:: python
 
@@ -54,7 +54,7 @@ the client's constructor, or the default service of "python".
 The user and HTTP context can also be included in the exception. The HTTP
 context can be constructed using
 :class:`google.cloud.error_reporting.HTTPContext`. This will be used by
-Cloud Error Reporting to help group exceptions.
+Error Reporting to help group exceptions.
 
 .. code-block:: python
 
@@ -88,7 +88,7 @@ object is provided.
 Reporting an error without an exception
 -----------------------------------------
 
-Errors can also be reported to Cloud Error Reporting outside the context
+Errors can also be reported to Error Reporting outside the context
 of an exception.  The library will include the file path, function name, and
 line number of the location where the error was reported.
 
