@@ -4127,7 +4127,7 @@ def _get_upload_headers(user_agent):
         "Accept": "application/json",
         "Accept-Encoding": "gzip, deflate",
         "User-Agent": user_agent,
-        "content-type": "application/json",
+        "content-type": "application/json; charset=UTF-8",
     }
 
 
