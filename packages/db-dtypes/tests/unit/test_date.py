@@ -15,12 +15,36 @@
 import datetime
 import operator
 
+import numpy
 import pandas
 import pandas.testing
 import pytest
 
 import db_dtypes
 from db_dtypes import pandas_backports
+
+
+def test_box_func():
+    input_array = db_dtypes.DateArray([])
+    input_datetime = datetime.datetime(2022, 3, 16)
+    input_np = numpy.datetime64(input_datetime)
+
+    boxed_value = input_array._box_func(input_np)
+    assert boxed_value.year == 2022
+    assert boxed_value.month == 3
+    assert boxed_value.day == 16
+
+    input_delta = input_datetime - datetime.datetime(1970, 1, 1)
+    input_nanoseconds = (
+        1_000 * input_delta.microseconds
+        + 1_000_000_000 * input_delta.seconds
+        + 1_000_000_000 * 60 * 60 * 24 * input_delta.days
+    )
+
+    boxed_value = input_array._box_func(input_nanoseconds)
+    assert boxed_value.year == 2022
+    assert boxed_value.month == 3
+    assert boxed_value.day == 16
 
 
 def test_construct_from_string_with_nonstring():

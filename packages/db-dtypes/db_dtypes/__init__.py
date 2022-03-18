@@ -34,6 +34,14 @@ date_dtype_name = "dbdate"
 time_dtype_name = "dbtime"
 _EPOCH = datetime.datetime(1970, 1, 1)
 _NPEPOCH = numpy.datetime64(_EPOCH)
+_NP_DTYPE = "datetime64[ns]"
+
+# Numpy converts datetime64 scalars to datetime.datetime only if microsecond or
+# smaller precision is used.
+#
+# TODO(https://github.com/googleapis/python-db-dtypes-pandas/issues/63): Keep
+# nanosecond precision when boxing scalars.
+_NP_BOX_DTYPE = "datetime64[us]"
 
 pandas_release = packaging.version.parse(pandas.__version__).release
 
@@ -149,12 +157,14 @@ class TimeArray(core.BaseDatetimeArray):
             return pandas.NaT
 
         try:
-            return x.astype("<M8[us]").astype(datetime.datetime).time()
+            return x.astype(_NP_BOX_DTYPE).item().time()
         except AttributeError:
-            x = numpy.datetime64(x)
-            return x.astype("<M8[us]").astype(datetime.datetime).time()
+            x = numpy.datetime64(
+                x, "ns"
+            )  # Integers are stored with nanosecond precision.
+            return x.astype(_NP_BOX_DTYPE).item().time()
 
-    __return_deltas = {"timedelta", "timedelta64", "timedelta64[ns]", "<m8", "<m8[ns]"}
+    __return_deltas = {"timedelta", "timedelta64", "timedelta64[ns]", "<m8", _NP_DTYPE}
 
     def astype(self, dtype, copy=True):
         deltas = self._ndarray - _NPEPOCH
@@ -253,10 +263,12 @@ class DateArray(core.BaseDatetimeArray):
         if pandas.isna(x):
             return pandas.NaT
         try:
-            return x.astype("<M8[us]").astype(datetime.datetime).date()
+            return x.astype(_NP_BOX_DTYPE).item().date()
         except AttributeError:
-            x = numpy.datetime64(x)
-            return x.astype("<M8[us]").astype(datetime.datetime).date()
+            x = numpy.datetime64(
+                x, "ns"
+            )  # Integers are stored with nanosecond precision.
+            return x.astype(_NP_BOX_DTYPE).item().date()
 
     def astype(self, dtype, copy=True):
         stype = str(dtype)

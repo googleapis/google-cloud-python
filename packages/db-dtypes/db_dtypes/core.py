@@ -46,6 +46,12 @@ class BaseDatetimeDtype(pandas.api.extensions.ExtensionDtype):
 class BaseDatetimeArray(
     pandas_backports.OpsMixin, pandas_backports.NDArrayBackedExtensionArray
 ):
+    # scalar used to denote NA value inside our self._ndarray, e.g. -1 for
+    # Categorical, iNaT for Period. Outside of object dtype, self.isna() should
+    # be exactly locations in self._ndarray with _internal_fill_value. See:
+    # https://github.com/pandas-dev/pandas/blob/main/pandas/core/arrays/_mixins.py
+    _internal_fill_value = numpy.datetime64("NaT")
+
     def __init__(self, values, dtype=None, copy: bool = False):
         if not (
             isinstance(values, numpy.ndarray) and values.dtype == numpy.dtype("<M8[ns]")

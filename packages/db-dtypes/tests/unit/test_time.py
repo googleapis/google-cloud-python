@@ -14,12 +14,38 @@
 
 import datetime
 
+import numpy
 import pandas
 import pytest
 
 # To register the types.
 import db_dtypes  # noqa
 from db_dtypes import pandas_backports
+
+
+def test_box_func():
+    input_array = db_dtypes.TimeArray([])
+    input_datetime = datetime.datetime(1970, 1, 1, 1, 2, 3, 456789)
+    input_np = numpy.datetime64(input_datetime)
+
+    boxed_value = input_array._box_func(input_np)
+    assert boxed_value.hour == 1
+    assert boxed_value.minute == 2
+    assert boxed_value.second == 3
+    assert boxed_value.microsecond == 456789
+
+    input_delta = input_datetime - datetime.datetime(1970, 1, 1)
+    input_nanoseconds = (
+        1_000 * input_delta.microseconds
+        + 1_000_000_000 * input_delta.seconds
+        + 1_000_000_000 * 60 * 60 * 24 * input_delta.days
+    )
+
+    boxed_value = input_array._box_func(input_nanoseconds)
+    assert boxed_value.hour == 1
+    assert boxed_value.minute == 2
+    assert boxed_value.second == 3
+    assert boxed_value.microsecond == 456789
 
 
 @pytest.mark.parametrize(
