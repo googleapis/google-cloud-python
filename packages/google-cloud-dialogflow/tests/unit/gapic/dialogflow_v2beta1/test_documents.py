@@ -972,6 +972,7 @@ def test_get_document(request_type, transport: str = "grpc"):
             mime_type="mime_type_value",
             knowledge_types=[document.Document.KnowledgeType.FAQ],
             enable_auto_reload=True,
+            state=document.Document.State.CREATING,
             content_uri="content_uri_value",
         )
         response = client.get_document(request)
@@ -988,6 +989,7 @@ def test_get_document(request_type, transport: str = "grpc"):
     assert response.mime_type == "mime_type_value"
     assert response.knowledge_types == [document.Document.KnowledgeType.FAQ]
     assert response.enable_auto_reload is True
+    assert response.state == document.Document.State.CREATING
 
 
 def test_get_document_empty_call():
@@ -1027,6 +1029,7 @@ async def test_get_document_async(
                 mime_type="mime_type_value",
                 knowledge_types=[document.Document.KnowledgeType.FAQ],
                 enable_auto_reload=True,
+                state=document.Document.State.CREATING,
             )
         )
         response = await client.get_document(request)
@@ -1043,6 +1046,7 @@ async def test_get_document_async(
     assert response.mime_type == "mime_type_value"
     assert response.knowledge_types == [document.Document.KnowledgeType.FAQ]
     assert response.enable_auto_reload is True
+    assert response.state == document.Document.State.CREATING
 
 
 @pytest.mark.asyncio

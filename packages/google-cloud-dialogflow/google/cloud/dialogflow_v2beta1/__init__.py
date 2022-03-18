@@ -101,6 +101,8 @@ from .types.conversation import ListMessagesRequest
 from .types.conversation import ListMessagesResponse
 from .types.conversation_event import ConversationEvent
 from .types.conversation_profile import AutomatedAgentConfig
+from .types.conversation_profile import ClearSuggestionFeatureConfigOperationMetadata
+from .types.conversation_profile import ClearSuggestionFeatureConfigRequest
 from .types.conversation_profile import ConversationProfile
 from .types.conversation_profile import CreateConversationProfileRequest
 from .types.conversation_profile import DeleteConversationProfileRequest
@@ -111,10 +113,13 @@ from .types.conversation_profile import ListConversationProfilesRequest
 from .types.conversation_profile import ListConversationProfilesResponse
 from .types.conversation_profile import LoggingConfig
 from .types.conversation_profile import NotificationConfig
+from .types.conversation_profile import SetSuggestionFeatureConfigOperationMetadata
+from .types.conversation_profile import SetSuggestionFeatureConfigRequest
 from .types.conversation_profile import UpdateConversationProfileRequest
 from .types.document import CreateDocumentRequest
 from .types.document import DeleteDocumentRequest
 from .types.document import Document
+from .types.document import ExportOperationMetadata
 from .types.document import GetDocumentRequest
 from .types.document import ImportDocumentsRequest
 from .types.document import ImportDocumentsResponse
@@ -151,6 +156,7 @@ from .types.environment import UpdateEnvironmentRequest
 from .types.fulfillment import Fulfillment
 from .types.fulfillment import GetFulfillmentRequest
 from .types.fulfillment import UpdateFulfillmentRequest
+from .types.gcs import GcsDestination
 from .types.gcs import GcsSource
 from .types.gcs import GcsSources
 from .types.human_agent_assistant_event import HumanAgentAssistantEvent
@@ -281,6 +287,8 @@ __all__ = (
     "BatchUpdateEntityTypesResponse",
     "BatchUpdateIntentsRequest",
     "BatchUpdateIntentsResponse",
+    "ClearSuggestionFeatureConfigOperationMetadata",
+    "ClearSuggestionFeatureConfigRequest",
     "CompileSuggestionRequest",
     "CompileSuggestionResponse",
     "CompleteConversationRequest",
@@ -329,9 +337,11 @@ __all__ = (
     "EventInput",
     "ExportAgentRequest",
     "ExportAgentResponse",
+    "ExportOperationMetadata",
     "FaqAnswer",
     "Fulfillment",
     "FulfillmentsClient",
+    "GcsDestination",
     "GcsSource",
     "GcsSources",
     "GetAgentRequest",
@@ -419,6 +429,8 @@ __all__ = (
     "SessionEntityTypesClient",
     "SessionsClient",
     "SetAgentRequest",
+    "SetSuggestionFeatureConfigOperationMetadata",
+    "SetSuggestionFeatureConfigRequest",
     "SmartReplyAnswer",
     "SpeechContext",
     "SpeechModelVariant",

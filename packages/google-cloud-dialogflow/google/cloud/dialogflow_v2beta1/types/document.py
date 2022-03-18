@@ -34,6 +34,7 @@ __protobuf__ = proto.module(
         "ImportDocumentsResponse",
         "DeleteDocumentRequest",
         "UpdateDocumentRequest",
+        "ExportOperationMetadata",
         "KnowledgeOperationMetadata",
         "ReloadDocumentRequest",
     },
@@ -111,7 +112,7 @@ class Document(proto.Message):
 
             If a reload fails with internal errors, the system will try
             to reload the document on the next day. If a reload fails
-            with non-retriable errors (e.g. PERMISION_DENIED), the
+            with non-retriable errors (e.g. PERMISSION_DENIED), the
             system will not try to reload the document anymore. You need
             to manually reload the document successfully by calling
             ``ReloadDocument`` and clear the errors.
@@ -126,15 +127,29 @@ class Document(proto.Message):
             storing a document's title, an external URL distinct from
             the document's content_uri, etc. The max size of a ``key``
             or a ``value`` of the metadata is 1024 bytes.
+        state (google.cloud.dialogflow_v2beta1.types.Document.State):
+            Output only. The current state of the
+            document.
     """
 
     class KnowledgeType(proto.Enum):
         r"""The knowledge type of document content."""
+        _pb_options = {"allow_alias": True}
         KNOWLEDGE_TYPE_UNSPECIFIED = 0
         FAQ = 1
         EXTRACTIVE_QA = 2
         ARTICLE_SUGGESTION = 3
+        AGENT_FACING_SMART_REPLY = 4
         SMART_REPLY = 4
+
+    class State(proto.Enum):
+        r"""Possible states of the document"""
+        STATE_UNSPECIFIED = 0
+        CREATING = 1
+        ACTIVE = 2
+        UPDATING = 3
+        RELOADING = 4
+        DELETING = 5
 
     class ReloadStatus(proto.Message):
         r"""The status of a reload attempt.
@@ -163,6 +178,7 @@ class Document(proto.Message):
     enable_auto_reload = proto.Field(proto.BOOL, number=11,)
     latest_reload_status = proto.Field(proto.MESSAGE, number=12, message=ReloadStatus,)
     metadata = proto.MapField(proto.STRING, proto.STRING, number=7,)
+    state = proto.Field(proto.ENUM, number=13, enum=State,)
 
 
 class GetDocumentRequest(proto.Message):
@@ -377,9 +393,26 @@ class UpdateDocumentRequest(proto.Message):
     )
 
 
+class ExportOperationMetadata(proto.Message):
+    r"""Metadata related to the Export Data Operations (e.g.
+    ExportDocument).
+
+    Attributes:
+        exported_gcs_destination (google.cloud.dialogflow_v2beta1.types.GcsDestination):
+            Cloud Storage file path of the exported data.
+    """
+
+    exported_gcs_destination = proto.Field(
+        proto.MESSAGE, number=1, message=gcs.GcsDestination,
+    )
+
+
 class KnowledgeOperationMetadata(proto.Message):
     r"""Metadata in google::longrunning::Operation for Knowledge
     operations.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         state (google.cloud.dialogflow_v2beta1.types.KnowledgeOperationMetadata.State):
@@ -388,6 +421,11 @@ class KnowledgeOperationMetadata(proto.Message):
         knowledge_base (str):
             The name of the knowledge base interacted
             with during the operation.
+        export_operation_metadata (google.cloud.dialogflow_v2beta1.types.ExportOperationMetadata):
+            Metadata for the Export Data Operation such
+            as the destination of export.
+
+            This field is a member of `oneof`_ ``operation_metadata``.
     """
 
     class State(proto.Enum):
@@ -399,6 +437,12 @@ class KnowledgeOperationMetadata(proto.Message):
 
     state = proto.Field(proto.ENUM, number=1, enum=State,)
     knowledge_base = proto.Field(proto.STRING, number=3,)
+    export_operation_metadata = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="operation_metadata",
+        message="ExportOperationMetadata",
+    )
 
 
 class ReloadDocumentRequest(proto.Message):

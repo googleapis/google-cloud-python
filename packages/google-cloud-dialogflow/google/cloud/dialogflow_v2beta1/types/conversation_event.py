@@ -53,6 +53,7 @@ class ConversationEvent(proto.Message):
         TYPE_UNSPECIFIED = 0
         CONVERSATION_STARTED = 1
         CONVERSATION_FINISHED = 2
+        HUMAN_INTERVENTION_NEEDED = 3
         NEW_MESSAGE = 5
         UNRECOVERABLE_ERROR = 4
 

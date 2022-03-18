@@ -18,6 +18,7 @@ from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1
 from google.api_core import grpc_helpers_async
+from google.api_core import operations_v1
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 
@@ -28,6 +29,7 @@ from google.cloud.dialogflow_v2beta1.types import conversation_profile
 from google.cloud.dialogflow_v2beta1.types import (
     conversation_profile as gcd_conversation_profile,
 )
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from .base import ConversationProfilesTransport, DEFAULT_CLIENT_INFO
 from .grpc import ConversationProfilesGrpcTransport
@@ -161,6 +163,7 @@ class ConversationProfilesGrpcAsyncIOTransport(ConversationProfilesTransport):
         self._grpc_channel = None
         self._ssl_channel_credentials = ssl_channel_credentials
         self._stubs: Dict[str, Callable] = {}
+        self._operations_client: Optional[operations_v1.OperationsAsyncClient] = None
 
         if api_mtls_endpoint:
             warnings.warn("api_mtls_endpoint is deprecated", DeprecationWarning)
@@ -234,6 +237,22 @@ class ConversationProfilesGrpcAsyncIOTransport(ConversationProfilesTransport):
         """
         # Return the channel from cache.
         return self._grpc_channel
+
+    @property
+    def operations_client(self) -> operations_v1.OperationsAsyncClient:
+        """Create the client designed to process long-running operations.
+
+        This property caches on the instance; repeated calls return the same
+        client.
+        """
+        # Quick check: Only create a new client if we do not already have one.
+        if self._operations_client is None:
+            self._operations_client = operations_v1.OperationsAsyncClient(
+                self.grpc_channel
+            )
+
+        # Return the client from cache.
+        return self._operations_client
 
     @property
     def list_conversation_profiles(
@@ -392,6 +411,99 @@ class ConversationProfilesGrpcAsyncIOTransport(ConversationProfilesTransport):
                 response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_conversation_profile"]
+
+    @property
+    def set_suggestion_feature_config(
+        self,
+    ) -> Callable[
+        [gcd_conversation_profile.SetSuggestionFeatureConfigRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the set suggestion feature config method over gRPC.
+
+        Adds or updates a suggestion feature in a conversation profile.
+        If the conversation profile contains the type of suggestion
+        feature for the participant role, it will update it. Otherwise
+        it will insert the suggestion feature.
+
+        This method is a `long-running
+        operation <https://cloud.google.com/dialogflow/es/docs/how/long-running-operations>`__.
+        The returned ``Operation`` type has the following
+        method-specific fields:
+
+        -  ``metadata``:
+           [SetSuggestionFeatureConfigOperationMetadata][google.cloud.dialogflow.v2beta1.SetSuggestionFeatureConfigOperationMetadata]
+        -  ``response``:
+           [ConversationProfile][google.cloud.dialogflow.v2beta1.ConversationProfile]
+
+        If a long running operation to add or update suggestion feature
+        config for the same conversation profile, participant role and
+        suggestion feature type exists, please cancel the existing long
+        running operation before sending such request, otherwise the
+        request will be rejected.
+
+        Returns:
+            Callable[[~.SetSuggestionFeatureConfigRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "set_suggestion_feature_config" not in self._stubs:
+            self._stubs[
+                "set_suggestion_feature_config"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.dialogflow.v2beta1.ConversationProfiles/SetSuggestionFeatureConfig",
+                request_serializer=gcd_conversation_profile.SetSuggestionFeatureConfigRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["set_suggestion_feature_config"]
+
+    @property
+    def clear_suggestion_feature_config(
+        self,
+    ) -> Callable[
+        [gcd_conversation_profile.ClearSuggestionFeatureConfigRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the clear suggestion feature
+        config method over gRPC.
+
+        Clears a suggestion feature from a conversation profile for the
+        given participant role.
+
+        This method is a `long-running
+        operation <https://cloud.google.com/dialogflow/es/docs/how/long-running-operations>`__.
+        The returned ``Operation`` type has the following
+        method-specific fields:
+
+        -  ``metadata``:
+           [ClearSuggestionFeatureConfigOperationMetadata][google.cloud.dialogflow.v2beta1.ClearSuggestionFeatureConfigOperationMetadata]
+        -  ``response``:
+           [ConversationProfile][google.cloud.dialogflow.v2beta1.ConversationProfile]
+
+        Returns:
+            Callable[[~.ClearSuggestionFeatureConfigRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "clear_suggestion_feature_config" not in self._stubs:
+            self._stubs[
+                "clear_suggestion_feature_config"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.dialogflow.v2beta1.ConversationProfiles/ClearSuggestionFeatureConfig",
+                request_serializer=gcd_conversation_profile.ClearSuggestionFeatureConfigRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["clear_suggestion_feature_config"]
 
     def close(self):
         return self.grpc_channel.close()

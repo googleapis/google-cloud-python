@@ -232,6 +232,11 @@
         "grpc": {
           "libraryClient": "ConversationProfilesClient",
           "rpcs": {
+            "ClearSuggestionFeatureConfig": {
+              "methods": [
+                "clear_suggestion_feature_config"
+              ]
+            },
             "CreateConversationProfile": {
               "methods": [
                 "create_conversation_profile"
@@ -250,6 +255,11 @@
             "ListConversationProfiles": {
               "methods": [
                 "list_conversation_profiles"
+              ]
+            },
+            "SetSuggestionFeatureConfig": {
+              "methods": [
+                "set_suggestion_feature_config"
               ]
             },
             "UpdateConversationProfile": {
@@ -262,6 +272,11 @@
         "grpc-async": {
           "libraryClient": "ConversationProfilesAsyncClient",
           "rpcs": {
+            "ClearSuggestionFeatureConfig": {
+              "methods": [
+                "clear_suggestion_feature_config"
+              ]
+            },
             "CreateConversationProfile": {
               "methods": [
                 "create_conversation_profile"
@@ -280,6 +295,11 @@
             "ListConversationProfiles": {
               "methods": [
                 "list_conversation_profiles"
+              ]
+            },
+            "SetSuggestionFeatureConfig": {
+              "methods": [
+                "set_suggestion_feature_config"
               ]
             },
             "UpdateConversationProfile": {

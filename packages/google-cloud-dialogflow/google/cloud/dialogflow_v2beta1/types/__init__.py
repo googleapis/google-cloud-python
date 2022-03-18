@@ -80,6 +80,8 @@ from .conversation import (
 from .conversation_event import ConversationEvent
 from .conversation_profile import (
     AutomatedAgentConfig,
+    ClearSuggestionFeatureConfigOperationMetadata,
+    ClearSuggestionFeatureConfigRequest,
     ConversationProfile,
     CreateConversationProfileRequest,
     DeleteConversationProfileRequest,
@@ -90,12 +92,15 @@ from .conversation_profile import (
     ListConversationProfilesResponse,
     LoggingConfig,
     NotificationConfig,
+    SetSuggestionFeatureConfigOperationMetadata,
+    SetSuggestionFeatureConfigRequest,
     UpdateConversationProfileRequest,
 )
 from .document import (
     CreateDocumentRequest,
     DeleteDocumentRequest,
     Document,
+    ExportOperationMetadata,
     GetDocumentRequest,
     ImportDocumentsRequest,
     ImportDocumentsResponse,
@@ -140,6 +145,7 @@ from .fulfillment import (
     UpdateFulfillmentRequest,
 )
 from .gcs import (
+    GcsDestination,
     GcsSource,
     GcsSources,
 )
@@ -302,6 +308,8 @@ __all__ = (
     "ListMessagesResponse",
     "ConversationEvent",
     "AutomatedAgentConfig",
+    "ClearSuggestionFeatureConfigOperationMetadata",
+    "ClearSuggestionFeatureConfigRequest",
     "ConversationProfile",
     "CreateConversationProfileRequest",
     "DeleteConversationProfileRequest",
@@ -312,10 +320,13 @@ __all__ = (
     "ListConversationProfilesResponse",
     "LoggingConfig",
     "NotificationConfig",
+    "SetSuggestionFeatureConfigOperationMetadata",
+    "SetSuggestionFeatureConfigRequest",
     "UpdateConversationProfileRequest",
     "CreateDocumentRequest",
     "DeleteDocumentRequest",
     "Document",
+    "ExportOperationMetadata",
     "GetDocumentRequest",
     "ImportDocumentsRequest",
     "ImportDocumentsResponse",
@@ -352,6 +363,7 @@ __all__ = (
     "Fulfillment",
     "GetFulfillmentRequest",
     "UpdateFulfillmentRequest",
+    "GcsDestination",
     "GcsSource",
     "GcsSources",
     "HumanAgentAssistantEvent",

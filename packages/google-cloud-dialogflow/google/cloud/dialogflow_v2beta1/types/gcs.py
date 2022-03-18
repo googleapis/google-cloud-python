@@ -17,7 +17,8 @@ import proto  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.dialogflow.v2beta1", manifest={"GcsSources", "GcsSource",},
+    package="google.cloud.dialogflow.v2beta1",
+    manifest={"GcsSources", "GcsSource", "GcsDestination",},
 )
 
 
@@ -46,6 +47,22 @@ class GcsSource(proto.Message):
               gs://bucket/object-prefix-or-name
             Whether a prefix or name is used depends on the
             use case.
+    """
+
+    uri = proto.Field(proto.STRING, number=1,)
+
+
+class GcsDestination(proto.Message):
+    r"""Google Cloud Storage location for the output.
+
+    Attributes:
+        uri (str):
+            Required. The Google Cloud Storage URIs for
+            the output. A URI is of the form:
+              gs://bucket/object-prefix-or-name
+            Whether a prefix or name is used depends on the
+            use case. The requesting user must have
+            "write-permission" to the bucket.
     """
 
     uri = proto.Field(proto.STRING, number=1,)
