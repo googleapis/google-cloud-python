@@ -14,24 +14,33 @@ from yaml import load, Loader
 import tempfile
 
 class TestGenerate(unittest.TestCase):
-    def test_indent_code_left(self):
+    code_testdata = [
         # Check that the code indents to left based on first line.
-        code_want = \
+        [
+            \
+"""    def foo():
+        print('test function for indent')
+        return ('left-indented-code')
+""",
+            \
 """def foo():
     print('test function for indent')
     return ('left-indented-code')
 """
-
-        code = \
-"""    def foo():
-        print('test function for indent')
-        return ('left-indented-code')
-"""
-        code = indent_code_left(code)
-        self.assertEqual(code, code_want)
-
+        ],
         # Check that if there's no whitespace, it does not indent
-        code_want = \
+        [
+            \
+"""
+print('test function for no impact indent')
+for i in range(10):
+    print(i)
+    if i%5 == 0:
+        i += 1
+    else:
+        continue
+""",
+            \
 """
 print('test function for no impact indent')
 for i in range(10):
@@ -41,9 +50,34 @@ for i in range(10):
     else:
         continue
 """
+        ],
+    ]
+    @parameterized.expand(code_testdata)
+    def test_indent_code_left(self, code, code_want):
+        parts = code.split("\n")
+        tab_space = len(parts[0]) - len(parts[0].lstrip(" "))
+        code_got = indent_code_left(code, tab_space)
+        self.assertEqual(code_got, code_want)
 
-        code_got = indent_code_left(code_want)
-        # Confirm that nothing changes.
+
+    def test_indent_code_blocks_left(self):
+        # Check code blocks are indented properly.
+        code_want = \
+"""def foo():
+
+    print('test function for indent')
+
+    return ('left-indented-blocks')
+"""
+
+        # Test with how blocks would appear in the code block
+        code = [
+            "    def foo():",
+            "        print('test function for indent')",
+            "        return ('left-indented-blocks')\n"
+        ]
+        tab_space = len(code[0]) - len(code[0].lstrip(" "))
+        code_got = "\n\n".join([indent_code_left(part, tab_space) for part in code])
         self.assertEqual(code_got, code_want)
 
 

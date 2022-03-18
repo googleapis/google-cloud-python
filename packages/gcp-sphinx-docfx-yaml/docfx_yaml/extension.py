@@ -386,13 +386,17 @@ def extract_keyword(line):
         return line
 
 
-# Given lines of code, indent to left by 1 block, based on
-# amount of trailing white space of first line as 1 block.
-def indent_code_left(lines):
+def indent_code_left(lines, tab_space):
+    """Indents code lines left by tab_space.
+
+    Args:
+        lines: String lines of code.
+        tab_space: Number of spaces to indent to left by.
+
+    Returns:
+        String lines of left-indented code.
+    """
     parts = lines.split("\n")
-    # Count how much leading whitespaces there are based on first line.
-    # lstrip(" ") removes all trailing whitespace from the string.
-    tab_space = len(parts[0]) - len(parts[0].lstrip(" "))
     parts = [part[tab_space:] for part in parts]
     return "\n".join(parts)
 
@@ -417,6 +421,9 @@ def _parse_docstring_summary(summary):
         if keyword and keyword in [CODE, CODEBLOCK]:
             # If we reach the end of keyword, close up the code block.
             if not part.startswith(" "*tab_space) or part.startswith(".."):
+                if code_snippet:
+                    parts = [indent_code_left(part, tab_space) for part in code_snippet]
+                    summary_parts.append("\n\n".join(parts))
                 summary_parts.append("```\n")
                 keyword = ""
 
@@ -428,9 +435,12 @@ def _parse_docstring_summary(summary):
                         raise ValueError(f"Code in the code block should be indented. Please check the docstring: \n{summary}")
                 if not part.startswith(" "*tab_space):
                     # No longer looking at code-block, reset keyword.
+                    if code_snippet:
+                        parts = [indent_code_left(part, tab_space) for part in code_snippet]
+                        summary_parts.append("\n\n".join(parts))
                     keyword = ""
                     summary_parts.append("```\n")
-                summary_parts.append(indent_code_left(part))
+                code_snippet.append(part)
                 continue
 
         # Attributes come in 3 parts, parse the latter two here.
@@ -472,6 +482,7 @@ def _parse_docstring_summary(summary):
                 language = part.split("::")[1].strip()
                 summary_parts.append(f"```{language}")
 
+                code_snippet = []
                 tab_space = -1
 
             # Extract the name for attribute first.
@@ -490,6 +501,9 @@ def _parse_docstring_summary(summary):
     # Close up from the keyword if needed.
     if keyword and keyword in [CODE, CODEBLOCK]:
         # Check if it's already closed.
+        if code_snippet:
+            parts = [indent_code_left(part, tab_space) for part in code_snippet]
+            summary_parts.append("\n\n".join(parts))
         if summary_parts[-1] != "```\n":
             summary_parts.append("```\n")
 
