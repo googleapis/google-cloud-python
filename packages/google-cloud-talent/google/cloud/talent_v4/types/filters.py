@@ -103,9 +103,17 @@ class JobQuery(proto.Message):
 
             Currently we don't support sorting by commute time.
         company_display_names (Sequence[str]):
-            This filter specifies the exact company
+            This filter specifies the company
             [Company.display_name][google.cloud.talent.v4.Company.display_name]
-            of the jobs to search against.
+            of the jobs to search against. The company name must match
+            the value exactly (case sensitive).
+
+            Alternatively, if the value being searched for is wrapped in
+            ``SUBSTRING_MATCH([value])``, the company name must contain
+            a case insensitive substring match of the value. Using this
+            function may increase latency.
+
+            Sample Values: ``["Google LLC", "SUBSTRING_MATCH(google)"]``
 
             If a value isn't specified, jobs within the search results
             are associated with any company.
@@ -259,7 +267,14 @@ class LocationFilter(proto.Message):
             [lat_lng][google.cloud.talent.v4.LocationFilter.lat_lng] are
             ignored. If not set or set to
             [TelecommutePreference.TELECOMMUTE_EXCLUDED][google.cloud.talent.v4.LocationFilter.TelecommutePreference.TELECOMMUTE_EXCLUDED],
-            telecommute job are not searched.
+            the telecommute status of the jobs is ignored. Jobs that
+            have
+            [PostingRegion.TELECOMMUTE][google.cloud.talent.v4.PostingRegion.TELECOMMUTE]
+            and have additional
+            [Job.addresses][google.cloud.talent.v4.Job.addresses] may
+            still be matched based on other location filters using
+            [address][google.cloud.talent.v4.LocationFilter.address] or
+            [latlng][].
 
             This filter can be used by itself to search exclusively for
             telecommuting jobs, or it can be combined with another
