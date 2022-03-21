@@ -1033,6 +1033,7 @@ def test_get_service(request_type, transport: str = "grpc"):
             tier=metastore.Service.Tier.DEVELOPER,
             uid="uid_value",
             release_channel=metastore.Service.ReleaseChannel.CANARY,
+            database_type=metastore.Service.DatabaseType.MYSQL,
             hive_metastore_config=metastore.HiveMetastoreConfig(
                 version="version_value"
             ),
@@ -1056,6 +1057,7 @@ def test_get_service(request_type, transport: str = "grpc"):
     assert response.tier == metastore.Service.Tier.DEVELOPER
     assert response.uid == "uid_value"
     assert response.release_channel == metastore.Service.ReleaseChannel.CANARY
+    assert response.database_type == metastore.Service.DatabaseType.MYSQL
 
 
 def test_get_service_empty_call():
@@ -1100,6 +1102,7 @@ async def test_get_service_async(
                 tier=metastore.Service.Tier.DEVELOPER,
                 uid="uid_value",
                 release_channel=metastore.Service.ReleaseChannel.CANARY,
+                database_type=metastore.Service.DatabaseType.MYSQL,
             )
         )
         response = await client.get_service(request)
@@ -1121,6 +1124,7 @@ async def test_get_service_async(
     assert response.tier == metastore.Service.Tier.DEVELOPER
     assert response.uid == "uid_value"
     assert response.release_channel == metastore.Service.ReleaseChannel.CANARY
+    assert response.database_type == metastore.Service.DatabaseType.MYSQL
 
 
 @pytest.mark.asyncio
@@ -3775,6 +3779,7 @@ def test_get_backup(request_type, transport: str = "grpc"):
             name="name_value",
             state=metastore.Backup.State.CREATING,
             description="description_value",
+            restoring_services=["restoring_services_value"],
         )
         response = client.get_backup(request)
 
@@ -3788,6 +3793,7 @@ def test_get_backup(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.state == metastore.Backup.State.CREATING
     assert response.description == "description_value"
+    assert response.restoring_services == ["restoring_services_value"]
 
 
 def test_get_backup_empty_call():
@@ -3825,6 +3831,7 @@ async def test_get_backup_async(
                 name="name_value",
                 state=metastore.Backup.State.CREATING,
                 description="description_value",
+                restoring_services=["restoring_services_value"],
             )
         )
         response = await client.get_backup(request)
@@ -3839,6 +3846,7 @@ async def test_get_backup_async(
     assert response.name == "name_value"
     assert response.state == metastore.Backup.State.CREATING
     assert response.description == "description_value"
+    assert response.restoring_services == ["restoring_services_value"]
 
 
 @pytest.mark.asyncio
@@ -4873,11 +4881,35 @@ def test_parse_backup_path():
     assert expected == actual
 
 
-def test_metadata_import_path():
+def test_lake_path():
     project = "winkle"
     location = "nautilus"
-    service = "scallop"
-    metadata_import = "abalone"
+    lake = "scallop"
+    expected = "projects/{project}/locations/{location}/lakes/{lake}".format(
+        project=project, location=location, lake=lake,
+    )
+    actual = DataprocMetastoreClient.lake_path(project, location, lake)
+    assert expected == actual
+
+
+def test_parse_lake_path():
+    expected = {
+        "project": "abalone",
+        "location": "squid",
+        "lake": "clam",
+    }
+    path = DataprocMetastoreClient.lake_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = DataprocMetastoreClient.parse_lake_path(path)
+    assert expected == actual
+
+
+def test_metadata_import_path():
+    project = "whelk"
+    location = "octopus"
+    service = "oyster"
+    metadata_import = "nudibranch"
     expected = "projects/{project}/locations/{location}/services/{service}/metadataImports/{metadata_import}".format(
         project=project,
         location=location,
@@ -4892,10 +4924,10 @@ def test_metadata_import_path():
 
 def test_parse_metadata_import_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
-        "service": "whelk",
-        "metadata_import": "octopus",
+        "project": "cuttlefish",
+        "location": "mussel",
+        "service": "winkle",
+        "metadata_import": "nautilus",
     }
     path = DataprocMetastoreClient.metadata_import_path(**expected)
 
@@ -4905,8 +4937,8 @@ def test_parse_metadata_import_path():
 
 
 def test_network_path():
-    project = "oyster"
-    network = "nudibranch"
+    project = "scallop"
+    network = "abalone"
     expected = "projects/{project}/global/networks/{network}".format(
         project=project, network=network,
     )
@@ -4916,8 +4948,8 @@ def test_network_path():
 
 def test_parse_network_path():
     expected = {
-        "project": "cuttlefish",
-        "network": "mussel",
+        "project": "squid",
+        "network": "clam",
     }
     path = DataprocMetastoreClient.network_path(**expected)
 
@@ -4927,9 +4959,9 @@ def test_parse_network_path():
 
 
 def test_service_path():
-    project = "winkle"
-    location = "nautilus"
-    service = "scallop"
+    project = "whelk"
+    location = "octopus"
+    service = "oyster"
     expected = "projects/{project}/locations/{location}/services/{service}".format(
         project=project, location=location, service=service,
     )
@@ -4939,14 +4971,38 @@ def test_service_path():
 
 def test_parse_service_path():
     expected = {
-        "project": "abalone",
-        "location": "squid",
-        "service": "clam",
+        "project": "nudibranch",
+        "location": "cuttlefish",
+        "service": "mussel",
     }
     path = DataprocMetastoreClient.service_path(**expected)
 
     # Check that the path construction is reversible.
     actual = DataprocMetastoreClient.parse_service_path(path)
+    assert expected == actual
+
+
+def test_subnetwork_path():
+    project = "winkle"
+    region = "nautilus"
+    subnetwork = "scallop"
+    expected = "projects/{project}/regions/{region}/subnetworks/{subnetwork}".format(
+        project=project, region=region, subnetwork=subnetwork,
+    )
+    actual = DataprocMetastoreClient.subnetwork_path(project, region, subnetwork)
+    assert expected == actual
+
+
+def test_parse_subnetwork_path():
+    expected = {
+        "project": "abalone",
+        "region": "squid",
+        "subnetwork": "clam",
+    }
+    path = DataprocMetastoreClient.subnetwork_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = DataprocMetastoreClient.parse_subnetwork_path(path)
     assert expected == actual
 
 

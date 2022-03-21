@@ -35,12 +35,11 @@ class DataprocMetastoreGrpcAsyncIOTransport(DataprocMetastoreTransport):
     """gRPC AsyncIO backend transport for DataprocMetastore.
 
     Configures and manages metastore services. Metastore services are
-    fully managed, highly available, auto-scaled, auto-healing,
-    OSS-native deployments of technical metadata management software.
-    Each metastore service exposes a network endpoint through which
-    metadata queries are served. Metadata queries can originate from a
-    variety of sources, including Apache Hive, Apache Presto, and Apache
-    Spark.
+    fully managed, highly available, autoscaled, autohealing, OSS-native
+    deployments of technical metadata management software. Each
+    metastore service exposes a network endpoint through which metadata
+    queries are served. Metadata queries can originate from a variety of
+    sources, including Apache Hive, Apache Presto, and Apache Spark.
 
     The Dataproc Metastore API defines the following resource model:
 
@@ -642,7 +641,7 @@ class DataprocMetastoreGrpcAsyncIOTransport(DataprocMetastoreTransport):
     ) -> Callable[[metastore.CreateBackupRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create backup method over gRPC.
 
-        Creates a new Backup in a given project and location.
+        Creates a new backup in a given project and location.
 
         Returns:
             Callable[[~.CreateBackupRequest],

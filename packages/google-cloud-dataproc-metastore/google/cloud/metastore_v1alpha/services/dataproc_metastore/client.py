@@ -83,12 +83,11 @@ class DataprocMetastoreClientMeta(type):
 
 class DataprocMetastoreClient(metaclass=DataprocMetastoreClientMeta):
     """Configures and manages metastore services. Metastore services are
-    fully managed, highly available, auto-scaled, auto-healing,
-    OSS-native deployments of technical metadata management software.
-    Each metastore service exposes a network endpoint through which
-    metadata queries are served. Metadata queries can originate from a
-    variety of sources, including Apache Hive, Apache Presto, and Apache
-    Spark.
+    fully managed, highly available, autoscaled, autohealing, OSS-native
+    deployments of technical metadata management software. Each
+    metastore service exposes a network endpoint through which metadata
+    queries are served. Metadata queries can originate from a variety of
+    sources, including Apache Hive, Apache Presto, and Apache Spark.
 
     The Dataproc Metastore API defines the following resource model:
 
@@ -206,6 +205,22 @@ class DataprocMetastoreClient(metaclass=DataprocMetastoreClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def lake_path(project: str, location: str, lake: str,) -> str:
+        """Returns a fully-qualified lake string."""
+        return "projects/{project}/locations/{location}/lakes/{lake}".format(
+            project=project, location=location, lake=lake,
+        )
+
+    @staticmethod
+    def parse_lake_path(path: str) -> Dict[str, str]:
+        """Parses a lake path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/lakes/(?P<lake>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def metadata_import_path(
         project: str, location: str, service: str, metadata_import: str,
     ) -> str:
@@ -253,6 +268,22 @@ class DataprocMetastoreClient(metaclass=DataprocMetastoreClientMeta):
         """Parses a service path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/services/(?P<service>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def subnetwork_path(project: str, region: str, subnetwork: str,) -> str:
+        """Returns a fully-qualified subnetwork string."""
+        return "projects/{project}/regions/{region}/subnetworks/{subnetwork}".format(
+            project=project, region=region, subnetwork=subnetwork,
+        )
+
+    @staticmethod
+    def parse_subnetwork_path(path: str) -> Dict[str, str]:
+        """Parses a subnetwork path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/regions/(?P<region>.+?)/subnetworks/(?P<subnetwork>.+?)$",
             path,
         )
         return m.groupdict() if m else {}
@@ -1297,7 +1328,7 @@ class DataprocMetastoreClient(metaclass=DataprocMetastoreClientMeta):
                 which to create a metastore import, in the following
                 form:
 
-                ``projects/{project_number}/locations/{location_id}/services/{service_id}``
+                ``projects/{project_number}/locations/{location_id}/services/{service_id}``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1643,7 +1674,7 @@ class DataprocMetastoreClient(metaclass=DataprocMetastoreClientMeta):
                 Required. The relative resource name of the metastore
                 service to run restore, in the following form:
 
-                ``projects/{project_id}/locations/{location_id}/services/{service_id}``
+                ``projects/{project_id}/locations/{location_id}/services/{service_id}``.
 
                 This corresponds to the ``service`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1652,7 +1683,7 @@ class DataprocMetastoreClient(metaclass=DataprocMetastoreClientMeta):
                 Required. The relative resource name of the metastore
                 service backup to restore from, in the following form:
 
-                ``projects/{project_id}/locations/{location_id}/services/{service_id}/backups/{backup_id}``
+                ``projects/{project_id}/locations/{location_id}/services/{service_id}/backups/{backup_id}``.
 
                 This corresponds to the ``backup`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1922,7 +1953,7 @@ class DataprocMetastoreClient(metaclass=DataprocMetastoreClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
-        r"""Creates a new Backup in a given project and location.
+        r"""Creates a new backup in a given project and location.
 
         .. code-block:: python
 
@@ -1956,7 +1987,7 @@ class DataprocMetastoreClient(metaclass=DataprocMetastoreClientMeta):
                 Required. The relative resource name of the service in
                 which to create a backup of the following form:
 
-                ``projects/{project_number}/locations/{location_id}/services/{service_id}``
+                ``projects/{project_number}/locations/{location_id}/services/{service_id}``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
