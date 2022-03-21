@@ -106,6 +106,9 @@ class TimeArray(core.BaseDatetimeArray):
             r"(?:\.(?P<fraction>\d*))?)?)?\s*$"
         ).match,
     ) -> Optional[numpy.datetime64]:
+        if isinstance(scalar, numpy.datetime64):
+            return scalar
+
         # Convert pyarrow values to datetime.time.
         if isinstance(scalar, (pyarrow.Time32Scalar, pyarrow.Time64Scalar)):
             scalar = (
@@ -116,7 +119,7 @@ class TimeArray(core.BaseDatetimeArray):
             )
 
         if pandas.isna(scalar):
-            return None
+            return numpy.datetime64("NaT")
         if isinstance(scalar, datetime.time):
             return pandas.Timestamp(
                 year=1970,
@@ -238,12 +241,15 @@ class DateArray(core.BaseDatetimeArray):
         scalar,
         match_fn=re.compile(r"\s*(?P<year>\d+)-(?P<month>\d+)-(?P<day>\d+)\s*$").match,
     ) -> Optional[numpy.datetime64]:
+        if isinstance(scalar, numpy.datetime64):
+            return scalar
+
         # Convert pyarrow values to datetime.date.
         if isinstance(scalar, (pyarrow.Date32Scalar, pyarrow.Date64Scalar)):
             scalar = scalar.as_py()
 
         if pandas.isna(scalar):
-            return None
+            return numpy.datetime64("NaT")
         elif isinstance(scalar, datetime.date):
             return pandas.Timestamp(
                 year=scalar.year, month=scalar.month, day=scalar.day

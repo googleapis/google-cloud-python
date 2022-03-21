@@ -73,8 +73,14 @@ def test_box_func():
         # Fractional seconds can cause rounding problems if cast to float. See:
         # https://github.com/googleapis/python-db-dtypes-pandas/issues/18
         ("0:0:59.876543", datetime.time(0, 0, 59, 876543)),
+        (
+            numpy.datetime64("1970-01-01 00:00:59.876543"),
+            datetime.time(0, 0, 59, 876543),
+        ),
         ("01:01:01.010101", datetime.time(1, 1, 1, 10101)),
+        (pandas.Timestamp("1970-01-01 01:01:01.010101"), datetime.time(1, 1, 1, 10101)),
         ("09:09:09.090909", datetime.time(9, 9, 9, 90909)),
+        (datetime.time(9, 9, 9, 90909), datetime.time(9, 9, 9, 90909)),
         ("11:11:11.111111", datetime.time(11, 11, 11, 111111)),
         ("19:16:23.987654", datetime.time(19, 16, 23, 987654)),
         # Microsecond precision

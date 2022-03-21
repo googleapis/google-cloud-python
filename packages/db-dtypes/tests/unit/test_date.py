@@ -24,6 +24,33 @@ import db_dtypes
 from db_dtypes import pandas_backports
 
 
+VALUE_PARSING_TEST_CASES = [
+    # Min/Max values for pandas.Timestamp.
+    ("1677-09-22", datetime.date(1677, 9, 22)),
+    ("2262-04-11", datetime.date(2262, 4, 11)),
+    # Typical "zero" values.
+    ("1900-01-01", datetime.date(1900, 1, 1)),
+    ("1970-01-01", datetime.date(1970, 1, 1)),
+    # Assorted values.
+    ("1993-10-31", datetime.date(1993, 10, 31)),
+    (datetime.date(1993, 10, 31), datetime.date(1993, 10, 31)),
+    ("2012-02-29", datetime.date(2012, 2, 29)),
+    (numpy.datetime64("2012-02-29"), datetime.date(2012, 2, 29)),
+    ("2021-12-17", datetime.date(2021, 12, 17)),
+    (pandas.Timestamp("2021-12-17"), datetime.date(2021, 12, 17)),
+    ("2038-01-19", datetime.date(2038, 1, 19)),
+]
+
+NULL_VALUE_TEST_CASES = [
+    None,
+    pandas.NaT,
+    float("nan"),
+]
+
+if hasattr(pandas, "NA"):
+    NULL_VALUE_TEST_CASES.append(pandas.NA)
+
+
 def test_box_func():
     input_array = db_dtypes.DateArray([])
     input_datetime = datetime.datetime(2022, 3, 16)
@@ -58,24 +85,47 @@ def test__cmp_method_with_scalar():
     assert got[0]
 
 
-@pytest.mark.parametrize(
-    "value, expected",
-    [
-        # Min/Max values for pandas.Timestamp.
-        ("1677-09-22", datetime.date(1677, 9, 22)),
-        ("2262-04-11", datetime.date(2262, 4, 11)),
-        # Typical "zero" values.
-        ("1900-01-01", datetime.date(1900, 1, 1)),
-        ("1970-01-01", datetime.date(1970, 1, 1)),
-        # Assorted values.
-        ("1993-10-31", datetime.date(1993, 10, 31)),
-        ("2012-02-29", datetime.date(2012, 2, 29)),
-        ("2021-12-17", datetime.date(2021, 12, 17)),
-        ("2038-01-19", datetime.date(2038, 1, 19)),
-    ],
-)
+@pytest.mark.parametrize("value, expected", VALUE_PARSING_TEST_CASES)
 def test_date_parsing(value, expected):
     assert pandas.Series([value], dtype="dbdate")[0] == expected
+
+
+@pytest.mark.parametrize("value", NULL_VALUE_TEST_CASES)
+def test_date_parsing_null(value):
+    assert pandas.Series([value], dtype="dbdate")[0] is pandas.NaT
+
+
+@pytest.mark.parametrize("value, expected", VALUE_PARSING_TEST_CASES)
+def test_date_set_item(value, expected):
+    series = pandas.Series([None], dtype="dbdate")
+    series[0] = value
+    assert series[0] == expected
+
+
+@pytest.mark.parametrize("value", NULL_VALUE_TEST_CASES)
+def test_date_set_item_null(value):
+    series = pandas.Series(["1970-01-01"], dtype="dbdate")
+    series[0] = value
+    assert series[0] is pandas.NaT
+
+
+def test_date_set_slice():
+    series = pandas.Series([None, None, None], dtype="dbdate")
+    series[:] = [
+        datetime.date(2022, 3, 21),
+        "2011-12-13",
+        numpy.datetime64("1998-09-04"),
+    ]
+    assert series[0] == datetime.date(2022, 3, 21)
+    assert series[1] == datetime.date(2011, 12, 13)
+    assert series[2] == datetime.date(1998, 9, 4)
+
+
+def test_date_set_slice_null():
+    series = pandas.Series(["1970-01-01"] * len(NULL_VALUE_TEST_CASES), dtype="dbdate")
+    series[:] = NULL_VALUE_TEST_CASES
+    for row_index in range(len(NULL_VALUE_TEST_CASES)):
+        assert series[row_index] is pandas.NaT
 
 
 @pytest.mark.parametrize(

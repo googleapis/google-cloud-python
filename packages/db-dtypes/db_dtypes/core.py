@@ -100,14 +100,6 @@ class BaseDatetimeArray(
             return NotImplemented
         return op(self._ndarray, other._ndarray)
 
-    def __setitem__(self, key, value):
-        if is_list_like(value):
-            _datetime = self._datetime
-            value = [_datetime(v) for v in value]
-        elif not pandas.isna(value):
-            value = self._datetime(value)
-        return super().__setitem__(key, value)
-
     def _from_factorized(self, unique, original):
         return self.__class__(unique)
 
@@ -119,6 +111,16 @@ class BaseDatetimeArray(
         Validate and convert a scalar value to datetime64[ns] for storage in
         backing NumPy array.
         """
+        return self._datetime(value)
+
+    def _validate_setitem_value(self, value):
+        """
+        Convert a value for use in setting a value in the backing numpy array.
+        """
+        if is_list_like(value):
+            _datetime = self._datetime
+            return [_datetime(v) for v in value]
+
         return self._datetime(value)
 
     def any(

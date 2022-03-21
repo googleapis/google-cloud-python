@@ -126,7 +126,7 @@ class NDArrayBackedExtensionArray(pandas.core.arrays.base.ExtensionArray):
         return self.__class__(value, self._dtype)
 
     def __setitem__(self, index, value):
-        self._ndarray[index] = value
+        self._ndarray[index] = self._validate_setitem_value(value)
 
     def __len__(self):
         return len(self._ndarray)
