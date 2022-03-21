@@ -594,6 +594,44 @@ class DatabaseAdminGrpcTransport(DatabaseAdminTransport):
         return self._stubs["create_backup"]
 
     @property
+    def copy_backup(
+        self,
+    ) -> Callable[[backup.CopyBackupRequest], operations_pb2.Operation]:
+        r"""Return a callable for the copy backup method over gRPC.
+
+        Starts copying a Cloud Spanner Backup. The returned backup
+        [long-running operation][google.longrunning.Operation] will have
+        a name of the format
+        ``projects/<project>/instances/<instance>/backups/<backup>/operations/<operation_id>``
+        and can be used to track copying of the backup. The operation is
+        associated with the destination backup. The
+        [metadata][google.longrunning.Operation.metadata] field type is
+        [CopyBackupMetadata][google.spanner.admin.database.v1.CopyBackupMetadata].
+        The [response][google.longrunning.Operation.response] field type
+        is [Backup][google.spanner.admin.database.v1.Backup], if
+        successful. Cancelling the returned operation will stop the
+        copying and delete the backup. Concurrent CopyBackup requests
+        can run on the same source backup.
+
+        Returns:
+            Callable[[~.CopyBackupRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "copy_backup" not in self._stubs:
+            self._stubs["copy_backup"] = self.grpc_channel.unary_unary(
+                "/google.spanner.admin.database.v1.DatabaseAdmin/CopyBackup",
+                request_serializer=backup.CopyBackupRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["copy_backup"]
+
+    @property
     def get_backup(self) -> Callable[[backup.GetBackupRequest], backup.Backup]:
         r"""Return a callable for the get backup method over gRPC.
 

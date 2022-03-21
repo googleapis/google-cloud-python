@@ -10,6 +10,11 @@
         "grpc": {
           "libraryClient": "DatabaseAdminClient",
           "rpcs": {
+            "CopyBackup": {
+              "methods": [
+                "copy_backup"
+              ]
+            },
             "CreateBackup": {
               "methods": [
                 "create_backup"
@@ -100,6 +105,11 @@
         "grpc-async": {
           "libraryClient": "DatabaseAdminAsyncClient",
           "rpcs": {
+            "CopyBackup": {
+              "methods": [
+                "copy_backup"
+              ]
+            },
             "CreateBackup": {
               "methods": [
                 "create_backup"

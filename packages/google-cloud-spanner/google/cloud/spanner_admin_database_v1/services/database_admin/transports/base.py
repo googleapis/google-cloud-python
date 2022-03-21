@@ -234,6 +234,9 @@ class DatabaseAdminTransport(abc.ABC):
             self.create_backup: gapic_v1.method.wrap_method(
                 self.create_backup, default_timeout=3600.0, client_info=client_info,
             ),
+            self.copy_backup: gapic_v1.method.wrap_method(
+                self.copy_backup, default_timeout=3600.0, client_info=client_info,
+            ),
             self.get_backup: gapic_v1.method.wrap_method(
                 self.get_backup,
                 default_retry=retries.Retry(
@@ -440,6 +443,15 @@ class DatabaseAdminTransport(abc.ABC):
         self,
     ) -> Callable[
         [gsad_backup.CreateBackupRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def copy_backup(
+        self,
+    ) -> Callable[
+        [backup.CopyBackupRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()

@@ -19,6 +19,9 @@ from .services.database_admin import DatabaseAdminAsyncClient
 
 from .types.backup import Backup
 from .types.backup import BackupInfo
+from .types.backup import CopyBackupEncryptionConfig
+from .types.backup import CopyBackupMetadata
+from .types.backup import CopyBackupRequest
 from .types.backup import CreateBackupEncryptionConfig
 from .types.backup import CreateBackupMetadata
 from .types.backup import CreateBackupRequest
@@ -57,6 +60,9 @@ __all__ = (
     "DatabaseAdminAsyncClient",
     "Backup",
     "BackupInfo",
+    "CopyBackupEncryptionConfig",
+    "CopyBackupMetadata",
+    "CopyBackupRequest",
     "CreateBackupEncryptionConfig",
     "CreateBackupMetadata",
     "CreateBackupRequest",
