@@ -25,7 +25,7 @@ import packaging.version
 import pytest
 import sqlalchemy
 
-import fauxdbi
+from . import fauxdbi
 
 sqlalchemy_version = packaging.version.parse(sqlalchemy.__version__)
 sqlalchemy_1_3_or_higher = pytest.mark.skipif(

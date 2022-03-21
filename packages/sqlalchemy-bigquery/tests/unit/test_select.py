@@ -26,7 +26,7 @@ import sqlalchemy
 
 import sqlalchemy_bigquery
 
-from conftest import (
+from .conftest import (
     setup_table,
     sqlalchemy_version,
     sqlalchemy_1_3_or_higher,

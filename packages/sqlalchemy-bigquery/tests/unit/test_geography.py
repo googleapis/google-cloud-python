@@ -19,7 +19,7 @@
 
 import pytest
 
-from conftest import setup_table
+from .conftest import setup_table
 
 geoalchemy2 = pytest.importorskip("geoalchemy2")
 

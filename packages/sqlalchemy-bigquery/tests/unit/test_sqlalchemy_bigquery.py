@@ -14,7 +14,7 @@ import packaging.version
 import pytest
 import sqlalchemy
 
-from conftest import setup_table
+from .conftest import setup_table
 
 
 @pytest.fixture

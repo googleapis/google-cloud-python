@@ -19,7 +19,7 @@
 
 import sqlalchemy
 
-from conftest import setup_table
+from .conftest import setup_table
 
 
 def test_inline_comments(faux_conn):

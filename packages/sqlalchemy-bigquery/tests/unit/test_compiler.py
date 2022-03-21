@@ -20,8 +20,8 @@
 import pytest
 import sqlalchemy.exc
 
-from conftest import setup_table
-from conftest import sqlalchemy_1_4_or_higher
+from .conftest import setup_table
+from .conftest import sqlalchemy_1_4_or_higher
 
 
 def test_constraints_are_ignored(faux_conn, metadata):
