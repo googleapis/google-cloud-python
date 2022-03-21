@@ -433,9 +433,9 @@ def test_unnest_w_no_table_references(faux_conn, alias):
     )
 
 
-def test_array_indexing(engine, metadata):
+def test_array_indexing(faux_conn, metadata):
     t = sqlalchemy.Table(
         "t", metadata, sqlalchemy.Column("a", sqlalchemy.ARRAY(sqlalchemy.String)),
     )
-    got = str(sqlalchemy.select([t.c.a[0]]).compile(engine))
+    got = str(sqlalchemy.select([t.c.a[0]]).compile(faux_conn.engine))
     assert got == "SELECT `t`.`a`[OFFSET(%(a_1:INT64)s)] AS `anon_1` \nFROM `t`"

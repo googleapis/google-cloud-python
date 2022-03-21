@@ -43,11 +43,6 @@ sqlalchemy_before_1_4 = pytest.mark.skipif(
 
 
 @pytest.fixture()
-def engine():
-    return sqlalchemy.create_engine("bigquery://myproject/mydataset")
-
-
-@pytest.fixture()
 def faux_conn():
     test_data = dict(execute=[])
     connection = sqlite3.connect(":memory:")
