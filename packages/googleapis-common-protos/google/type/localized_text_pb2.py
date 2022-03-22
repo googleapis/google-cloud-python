@@ -18,6 +18,7 @@
 # source: google/type/localized_text.proto
 """Generated protocol buffer code."""
 from google.protobuf import descriptor as _descriptor
+from google.protobuf import descriptor_pool as _descriptor_pool
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
@@ -27,78 +28,12 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
-DESCRIPTOR = _descriptor.FileDescriptor(
-    name="google/type/localized_text.proto",
-    package="google.type",
-    syntax="proto3",
-    serialized_options=b"\n\017com.google.typeB\022LocalizedTextProtoP\001ZHgoogle.golang.org/genproto/googleapis/type/localized_text;localized_text\370\001\001\242\002\003GTP",
-    create_key=_descriptor._internal_create_key,
-    serialized_pb=b'\n google/type/localized_text.proto\x12\x0bgoogle.type"4\n\rLocalizedText\x12\x0c\n\x04text\x18\x01 \x01(\t\x12\x15\n\rlanguage_code\x18\x02 \x01(\tBz\n\x0f\x63om.google.typeB\x12LocalizedTextProtoP\x01ZHgoogle.golang.org/genproto/googleapis/type/localized_text;localized_text\xf8\x01\x01\xa2\x02\x03GTPb\x06proto3',
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(
+    b'\n google/type/localized_text.proto\x12\x0bgoogle.type"4\n\rLocalizedText\x12\x0c\n\x04text\x18\x01 \x01(\t\x12\x15\n\rlanguage_code\x18\x02 \x01(\tBz\n\x0f\x63om.google.typeB\x12LocalizedTextProtoP\x01ZHgoogle.golang.org/genproto/googleapis/type/localized_text;localized_text\xf8\x01\x01\xa2\x02\x03GTPb\x06proto3'
 )
 
 
-_LOCALIZEDTEXT = _descriptor.Descriptor(
-    name="LocalizedText",
-    full_name="google.type.LocalizedText",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    create_key=_descriptor._internal_create_key,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="text",
-            full_name="google.type.LocalizedText.text",
-            index=0,
-            number=1,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=b"".decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-            create_key=_descriptor._internal_create_key,
-        ),
-        _descriptor.FieldDescriptor(
-            name="language_code",
-            full_name="google.type.LocalizedText.language_code",
-            index=1,
-            number=2,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=b"".decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-            create_key=_descriptor._internal_create_key,
-        ),
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=49,
-    serialized_end=101,
-)
-
-DESCRIPTOR.message_types_by_name["LocalizedText"] = _LOCALIZEDTEXT
-_sym_db.RegisterFileDescriptor(DESCRIPTOR)
-
+_LOCALIZEDTEXT = DESCRIPTOR.message_types_by_name["LocalizedText"]
 LocalizedText = _reflection.GeneratedProtocolMessageType(
     "LocalizedText",
     (_message.Message,),
@@ -110,6 +45,10 @@ LocalizedText = _reflection.GeneratedProtocolMessageType(
 )
 _sym_db.RegisterMessage(LocalizedText)
 
+if _descriptor._USE_C_DESCRIPTORS == False:
 
-DESCRIPTOR._options = None
+    DESCRIPTOR._options = None
+    DESCRIPTOR._serialized_options = b"\n\017com.google.typeB\022LocalizedTextProtoP\001ZHgoogle.golang.org/genproto/googleapis/type/localized_text;localized_text\370\001\001\242\002\003GTP"
+    _LOCALIZEDTEXT._serialized_start = 49
+    _LOCALIZEDTEXT._serialized_end = 101
 # @@protoc_insertion_point(module_scope)

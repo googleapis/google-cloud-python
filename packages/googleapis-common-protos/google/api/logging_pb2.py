@@ -18,6 +18,7 @@
 # source: google/api/logging.proto
 """Generated protocol buffer code."""
 from google.protobuf import descriptor as _descriptor
+from google.protobuf import descriptor_pool as _descriptor_pool
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
@@ -27,144 +28,13 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
-DESCRIPTOR = _descriptor.FileDescriptor(
-    name="google/api/logging.proto",
-    package="google.api",
-    syntax="proto3",
-    serialized_options=b"\n\016com.google.apiB\014LoggingProtoP\001ZEgoogle.golang.org/genproto/googleapis/api/serviceconfig;serviceconfig\242\002\004GAPI",
-    create_key=_descriptor._internal_create_key,
-    serialized_pb=b'\n\x18google/api/logging.proto\x12\ngoogle.api"\xd7\x01\n\x07Logging\x12\x45\n\x15producer_destinations\x18\x01 \x03(\x0b\x32&.google.api.Logging.LoggingDestination\x12\x45\n\x15\x63onsumer_destinations\x18\x02 \x03(\x0b\x32&.google.api.Logging.LoggingDestination\x1a>\n\x12LoggingDestination\x12\x1a\n\x12monitored_resource\x18\x03 \x01(\t\x12\x0c\n\x04logs\x18\x01 \x03(\tBn\n\x0e\x63om.google.apiB\x0cLoggingProtoP\x01ZEgoogle.golang.org/genproto/googleapis/api/serviceconfig;serviceconfig\xa2\x02\x04GAPIb\x06proto3',
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(
+    b'\n\x18google/api/logging.proto\x12\ngoogle.api"\xd7\x01\n\x07Logging\x12\x45\n\x15producer_destinations\x18\x01 \x03(\x0b\x32&.google.api.Logging.LoggingDestination\x12\x45\n\x15\x63onsumer_destinations\x18\x02 \x03(\x0b\x32&.google.api.Logging.LoggingDestination\x1a>\n\x12LoggingDestination\x12\x1a\n\x12monitored_resource\x18\x03 \x01(\t\x12\x0c\n\x04logs\x18\x01 \x03(\tBn\n\x0e\x63om.google.apiB\x0cLoggingProtoP\x01ZEgoogle.golang.org/genproto/googleapis/api/serviceconfig;serviceconfig\xa2\x02\x04GAPIb\x06proto3'
 )
 
 
-_LOGGING_LOGGINGDESTINATION = _descriptor.Descriptor(
-    name="LoggingDestination",
-    full_name="google.api.Logging.LoggingDestination",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    create_key=_descriptor._internal_create_key,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="monitored_resource",
-            full_name="google.api.Logging.LoggingDestination.monitored_resource",
-            index=0,
-            number=3,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=b"".decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-            create_key=_descriptor._internal_create_key,
-        ),
-        _descriptor.FieldDescriptor(
-            name="logs",
-            full_name="google.api.Logging.LoggingDestination.logs",
-            index=1,
-            number=1,
-            type=9,
-            cpp_type=9,
-            label=3,
-            has_default_value=False,
-            default_value=[],
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-            create_key=_descriptor._internal_create_key,
-        ),
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=194,
-    serialized_end=256,
-)
-
-_LOGGING = _descriptor.Descriptor(
-    name="Logging",
-    full_name="google.api.Logging",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    create_key=_descriptor._internal_create_key,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="producer_destinations",
-            full_name="google.api.Logging.producer_destinations",
-            index=0,
-            number=1,
-            type=11,
-            cpp_type=10,
-            label=3,
-            has_default_value=False,
-            default_value=[],
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-            create_key=_descriptor._internal_create_key,
-        ),
-        _descriptor.FieldDescriptor(
-            name="consumer_destinations",
-            full_name="google.api.Logging.consumer_destinations",
-            index=1,
-            number=2,
-            type=11,
-            cpp_type=10,
-            label=3,
-            has_default_value=False,
-            default_value=[],
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-            create_key=_descriptor._internal_create_key,
-        ),
-    ],
-    extensions=[],
-    nested_types=[_LOGGING_LOGGINGDESTINATION],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=41,
-    serialized_end=256,
-)
-
-_LOGGING_LOGGINGDESTINATION.containing_type = _LOGGING
-_LOGGING.fields_by_name[
-    "producer_destinations"
-].message_type = _LOGGING_LOGGINGDESTINATION
-_LOGGING.fields_by_name[
-    "consumer_destinations"
-].message_type = _LOGGING_LOGGINGDESTINATION
-DESCRIPTOR.message_types_by_name["Logging"] = _LOGGING
-_sym_db.RegisterFileDescriptor(DESCRIPTOR)
-
+_LOGGING = DESCRIPTOR.message_types_by_name["Logging"]
+_LOGGING_LOGGINGDESTINATION = _LOGGING.nested_types_by_name["LoggingDestination"]
 Logging = _reflection.GeneratedProtocolMessageType(
     "Logging",
     (_message.Message,),
@@ -186,6 +56,12 @@ Logging = _reflection.GeneratedProtocolMessageType(
 _sym_db.RegisterMessage(Logging)
 _sym_db.RegisterMessage(Logging.LoggingDestination)
 
+if _descriptor._USE_C_DESCRIPTORS == False:
 
-DESCRIPTOR._options = None
+    DESCRIPTOR._options = None
+    DESCRIPTOR._serialized_options = b"\n\016com.google.apiB\014LoggingProtoP\001ZEgoogle.golang.org/genproto/googleapis/api/serviceconfig;serviceconfig\242\002\004GAPI"
+    _LOGGING._serialized_start = 41
+    _LOGGING._serialized_end = 256
+    _LOGGING_LOGGINGDESTINATION._serialized_start = 194
+    _LOGGING_LOGGINGDESTINATION._serialized_end = 256
 # @@protoc_insertion_point(module_scope)

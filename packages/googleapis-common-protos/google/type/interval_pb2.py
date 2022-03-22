@@ -18,6 +18,7 @@
 # source: google/type/interval.proto
 """Generated protocol buffer code."""
 from google.protobuf import descriptor as _descriptor
+from google.protobuf import descriptor_pool as _descriptor_pool
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
@@ -30,85 +31,12 @@ _sym_db = _symbol_database.Default()
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 
 
-DESCRIPTOR = _descriptor.FileDescriptor(
-    name="google/type/interval.proto",
-    package="google.type",
-    syntax="proto3",
-    serialized_options=b"\n\017com.google.typeB\rIntervalProtoP\001Z<google.golang.org/genproto/googleapis/type/interval;interval\370\001\001\242\002\003GTP",
-    create_key=_descriptor._internal_create_key,
-    serialized_pb=b'\n\x1agoogle/type/interval.proto\x12\x0bgoogle.type\x1a\x1fgoogle/protobuf/timestamp.proto"h\n\x08Interval\x12.\n\nstart_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.TimestampBi\n\x0f\x63om.google.typeB\rIntervalProtoP\x01Z<google.golang.org/genproto/googleapis/type/interval;interval\xf8\x01\x01\xa2\x02\x03GTPb\x06proto3',
-    dependencies=[google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR],
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(
+    b'\n\x1agoogle/type/interval.proto\x12\x0bgoogle.type\x1a\x1fgoogle/protobuf/timestamp.proto"h\n\x08Interval\x12.\n\nstart_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.TimestampBi\n\x0f\x63om.google.typeB\rIntervalProtoP\x01Z<google.golang.org/genproto/googleapis/type/interval;interval\xf8\x01\x01\xa2\x02\x03GTPb\x06proto3'
 )
 
 
-_INTERVAL = _descriptor.Descriptor(
-    name="Interval",
-    full_name="google.type.Interval",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    create_key=_descriptor._internal_create_key,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="start_time",
-            full_name="google.type.Interval.start_time",
-            index=0,
-            number=1,
-            type=11,
-            cpp_type=10,
-            label=1,
-            has_default_value=False,
-            default_value=None,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-            create_key=_descriptor._internal_create_key,
-        ),
-        _descriptor.FieldDescriptor(
-            name="end_time",
-            full_name="google.type.Interval.end_time",
-            index=1,
-            number=2,
-            type=11,
-            cpp_type=10,
-            label=1,
-            has_default_value=False,
-            default_value=None,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-            create_key=_descriptor._internal_create_key,
-        ),
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=76,
-    serialized_end=180,
-)
-
-_INTERVAL.fields_by_name[
-    "start_time"
-].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
-_INTERVAL.fields_by_name[
-    "end_time"
-].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
-DESCRIPTOR.message_types_by_name["Interval"] = _INTERVAL
-_sym_db.RegisterFileDescriptor(DESCRIPTOR)
-
+_INTERVAL = DESCRIPTOR.message_types_by_name["Interval"]
 Interval = _reflection.GeneratedProtocolMessageType(
     "Interval",
     (_message.Message,),
@@ -120,6 +48,10 @@ Interval = _reflection.GeneratedProtocolMessageType(
 )
 _sym_db.RegisterMessage(Interval)
 
+if _descriptor._USE_C_DESCRIPTORS == False:
 
-DESCRIPTOR._options = None
+    DESCRIPTOR._options = None
+    DESCRIPTOR._serialized_options = b"\n\017com.google.typeB\rIntervalProtoP\001Z<google.golang.org/genproto/googleapis/type/interval;interval\370\001\001\242\002\003GTP"
+    _INTERVAL._serialized_start = 76
+    _INTERVAL._serialized_end = 180
 # @@protoc_insertion_point(module_scope)

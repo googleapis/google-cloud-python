@@ -18,6 +18,7 @@
 # source: google/api/backend.proto
 """Generated protocol buffer code."""
 from google.protobuf import descriptor as _descriptor
+from google.protobuf import descriptor_pool as _descriptor_pool
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
@@ -27,317 +28,14 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
-DESCRIPTOR = _descriptor.FileDescriptor(
-    name="google/api/backend.proto",
-    package="google.api",
-    syntax="proto3",
-    serialized_options=b"\n\016com.google.apiB\014BackendProtoP\001ZEgoogle.golang.org/genproto/googleapis/api/serviceconfig;serviceconfig\242\002\004GAPI",
-    create_key=_descriptor._internal_create_key,
-    serialized_pb=b'\n\x18google/api/backend.proto\x12\ngoogle.api"1\n\x07\x42\x61\x63kend\x12&\n\x05rules\x18\x01 \x03(\x0b\x32\x17.google.api.BackendRule"\xf2\x02\n\x0b\x42\x61\x63kendRule\x12\x10\n\x08selector\x18\x01 \x01(\t\x12\x0f\n\x07\x61\x64\x64ress\x18\x02 \x01(\t\x12\x10\n\x08\x64\x65\x61\x64line\x18\x03 \x01(\x01\x12\x14\n\x0cmin_deadline\x18\x04 \x01(\x01\x12\x1a\n\x12operation_deadline\x18\x05 \x01(\x01\x12\x41\n\x10path_translation\x18\x06 \x01(\x0e\x32\'.google.api.BackendRule.PathTranslation\x12\x16\n\x0cjwt_audience\x18\x07 \x01(\tH\x00\x12\x16\n\x0c\x64isable_auth\x18\x08 \x01(\x08H\x00\x12\x10\n\x08protocol\x18\t \x01(\t"e\n\x0fPathTranslation\x12 \n\x1cPATH_TRANSLATION_UNSPECIFIED\x10\x00\x12\x14\n\x10\x43ONSTANT_ADDRESS\x10\x01\x12\x1a\n\x16\x41PPEND_PATH_TO_ADDRESS\x10\x02\x42\x10\n\x0e\x61uthenticationBn\n\x0e\x63om.google.apiB\x0c\x42\x61\x63kendProtoP\x01ZEgoogle.golang.org/genproto/googleapis/api/serviceconfig;serviceconfig\xa2\x02\x04GAPIb\x06proto3',
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(
+    b'\n\x18google/api/backend.proto\x12\ngoogle.api"1\n\x07\x42\x61\x63kend\x12&\n\x05rules\x18\x01 \x03(\x0b\x32\x17.google.api.BackendRule"\xf2\x02\n\x0b\x42\x61\x63kendRule\x12\x10\n\x08selector\x18\x01 \x01(\t\x12\x0f\n\x07\x61\x64\x64ress\x18\x02 \x01(\t\x12\x10\n\x08\x64\x65\x61\x64line\x18\x03 \x01(\x01\x12\x14\n\x0cmin_deadline\x18\x04 \x01(\x01\x12\x1a\n\x12operation_deadline\x18\x05 \x01(\x01\x12\x41\n\x10path_translation\x18\x06 \x01(\x0e\x32\'.google.api.BackendRule.PathTranslation\x12\x16\n\x0cjwt_audience\x18\x07 \x01(\tH\x00\x12\x16\n\x0c\x64isable_auth\x18\x08 \x01(\x08H\x00\x12\x10\n\x08protocol\x18\t \x01(\t"e\n\x0fPathTranslation\x12 \n\x1cPATH_TRANSLATION_UNSPECIFIED\x10\x00\x12\x14\n\x10\x43ONSTANT_ADDRESS\x10\x01\x12\x1a\n\x16\x41PPEND_PATH_TO_ADDRESS\x10\x02\x42\x10\n\x0e\x61uthenticationBn\n\x0e\x63om.google.apiB\x0c\x42\x61\x63kendProtoP\x01ZEgoogle.golang.org/genproto/googleapis/api/serviceconfig;serviceconfig\xa2\x02\x04GAPIb\x06proto3'
 )
 
 
-_BACKENDRULE_PATHTRANSLATION = _descriptor.EnumDescriptor(
-    name="PathTranslation",
-    full_name="google.api.BackendRule.PathTranslation",
-    filename=None,
-    file=DESCRIPTOR,
-    create_key=_descriptor._internal_create_key,
-    values=[
-        _descriptor.EnumValueDescriptor(
-            name="PATH_TRANSLATION_UNSPECIFIED",
-            index=0,
-            number=0,
-            serialized_options=None,
-            type=None,
-            create_key=_descriptor._internal_create_key,
-        ),
-        _descriptor.EnumValueDescriptor(
-            name="CONSTANT_ADDRESS",
-            index=1,
-            number=1,
-            serialized_options=None,
-            type=None,
-            create_key=_descriptor._internal_create_key,
-        ),
-        _descriptor.EnumValueDescriptor(
-            name="APPEND_PATH_TO_ADDRESS",
-            index=2,
-            number=2,
-            serialized_options=None,
-            type=None,
-            create_key=_descriptor._internal_create_key,
-        ),
-    ],
-    containing_type=None,
-    serialized_options=None,
-    serialized_start=343,
-    serialized_end=444,
-)
-_sym_db.RegisterEnumDescriptor(_BACKENDRULE_PATHTRANSLATION)
-
-
-_BACKEND = _descriptor.Descriptor(
-    name="Backend",
-    full_name="google.api.Backend",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    create_key=_descriptor._internal_create_key,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="rules",
-            full_name="google.api.Backend.rules",
-            index=0,
-            number=1,
-            type=11,
-            cpp_type=10,
-            label=3,
-            has_default_value=False,
-            default_value=[],
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-            create_key=_descriptor._internal_create_key,
-        )
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=40,
-    serialized_end=89,
-)
-
-
-_BACKENDRULE = _descriptor.Descriptor(
-    name="BackendRule",
-    full_name="google.api.BackendRule",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    create_key=_descriptor._internal_create_key,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="selector",
-            full_name="google.api.BackendRule.selector",
-            index=0,
-            number=1,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=b"".decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-            create_key=_descriptor._internal_create_key,
-        ),
-        _descriptor.FieldDescriptor(
-            name="address",
-            full_name="google.api.BackendRule.address",
-            index=1,
-            number=2,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=b"".decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-            create_key=_descriptor._internal_create_key,
-        ),
-        _descriptor.FieldDescriptor(
-            name="deadline",
-            full_name="google.api.BackendRule.deadline",
-            index=2,
-            number=3,
-            type=1,
-            cpp_type=5,
-            label=1,
-            has_default_value=False,
-            default_value=float(0),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-            create_key=_descriptor._internal_create_key,
-        ),
-        _descriptor.FieldDescriptor(
-            name="min_deadline",
-            full_name="google.api.BackendRule.min_deadline",
-            index=3,
-            number=4,
-            type=1,
-            cpp_type=5,
-            label=1,
-            has_default_value=False,
-            default_value=float(0),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-            create_key=_descriptor._internal_create_key,
-        ),
-        _descriptor.FieldDescriptor(
-            name="operation_deadline",
-            full_name="google.api.BackendRule.operation_deadline",
-            index=4,
-            number=5,
-            type=1,
-            cpp_type=5,
-            label=1,
-            has_default_value=False,
-            default_value=float(0),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-            create_key=_descriptor._internal_create_key,
-        ),
-        _descriptor.FieldDescriptor(
-            name="path_translation",
-            full_name="google.api.BackendRule.path_translation",
-            index=5,
-            number=6,
-            type=14,
-            cpp_type=8,
-            label=1,
-            has_default_value=False,
-            default_value=0,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-            create_key=_descriptor._internal_create_key,
-        ),
-        _descriptor.FieldDescriptor(
-            name="jwt_audience",
-            full_name="google.api.BackendRule.jwt_audience",
-            index=6,
-            number=7,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=b"".decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-            create_key=_descriptor._internal_create_key,
-        ),
-        _descriptor.FieldDescriptor(
-            name="disable_auth",
-            full_name="google.api.BackendRule.disable_auth",
-            index=7,
-            number=8,
-            type=8,
-            cpp_type=7,
-            label=1,
-            has_default_value=False,
-            default_value=False,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-            create_key=_descriptor._internal_create_key,
-        ),
-        _descriptor.FieldDescriptor(
-            name="protocol",
-            full_name="google.api.BackendRule.protocol",
-            index=8,
-            number=9,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=b"".decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-            create_key=_descriptor._internal_create_key,
-        ),
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[_BACKENDRULE_PATHTRANSLATION],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[
-        _descriptor.OneofDescriptor(
-            name="authentication",
-            full_name="google.api.BackendRule.authentication",
-            index=0,
-            containing_type=None,
-            create_key=_descriptor._internal_create_key,
-            fields=[],
-        )
-    ],
-    serialized_start=92,
-    serialized_end=462,
-)
-
-_BACKEND.fields_by_name["rules"].message_type = _BACKENDRULE
-_BACKENDRULE.fields_by_name["path_translation"].enum_type = _BACKENDRULE_PATHTRANSLATION
-_BACKENDRULE_PATHTRANSLATION.containing_type = _BACKENDRULE
-_BACKENDRULE.oneofs_by_name["authentication"].fields.append(
-    _BACKENDRULE.fields_by_name["jwt_audience"]
-)
-_BACKENDRULE.fields_by_name[
-    "jwt_audience"
-].containing_oneof = _BACKENDRULE.oneofs_by_name["authentication"]
-_BACKENDRULE.oneofs_by_name["authentication"].fields.append(
-    _BACKENDRULE.fields_by_name["disable_auth"]
-)
-_BACKENDRULE.fields_by_name[
-    "disable_auth"
-].containing_oneof = _BACKENDRULE.oneofs_by_name["authentication"]
-DESCRIPTOR.message_types_by_name["Backend"] = _BACKEND
-DESCRIPTOR.message_types_by_name["BackendRule"] = _BACKENDRULE
-_sym_db.RegisterFileDescriptor(DESCRIPTOR)
-
+_BACKEND = DESCRIPTOR.message_types_by_name["Backend"]
+_BACKENDRULE = DESCRIPTOR.message_types_by_name["BackendRule"]
+_BACKENDRULE_PATHTRANSLATION = _BACKENDRULE.enum_types_by_name["PathTranslation"]
 Backend = _reflection.GeneratedProtocolMessageType(
     "Backend",
     (_message.Message,),
@@ -360,6 +58,14 @@ BackendRule = _reflection.GeneratedProtocolMessageType(
 )
 _sym_db.RegisterMessage(BackendRule)
 
+if _descriptor._USE_C_DESCRIPTORS == False:
 
-DESCRIPTOR._options = None
+    DESCRIPTOR._options = None
+    DESCRIPTOR._serialized_options = b"\n\016com.google.apiB\014BackendProtoP\001ZEgoogle.golang.org/genproto/googleapis/api/serviceconfig;serviceconfig\242\002\004GAPI"
+    _BACKEND._serialized_start = 40
+    _BACKEND._serialized_end = 89
+    _BACKENDRULE._serialized_start = 92
+    _BACKENDRULE._serialized_end = 462
+    _BACKENDRULE_PATHTRANSLATION._serialized_start = 343
+    _BACKENDRULE_PATHTRANSLATION._serialized_end = 444
 # @@protoc_insertion_point(module_scope)

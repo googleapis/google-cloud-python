@@ -22,7 +22,7 @@ name = "googleapis-common-protos"
 description = "Common protobufs used in Google APIs"
 version = "1.56.0"
 release_status = "Development Status :: 5 - Production/Stable"
-dependencies = ["protobuf >= 3.12.0"]
+dependencies = ["protobuf >= 3.15.0"]
 
 extras_require = {"grpc": ["grpcio >= 1.0.0"]}
 

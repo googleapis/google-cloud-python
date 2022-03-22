@@ -18,6 +18,7 @@
 # source: google/api/monitoring.proto
 """Generated protocol buffer code."""
 from google.protobuf import descriptor as _descriptor
+from google.protobuf import descriptor_pool as _descriptor_pool
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
@@ -27,144 +28,15 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
-DESCRIPTOR = _descriptor.FileDescriptor(
-    name="google/api/monitoring.proto",
-    package="google.api",
-    syntax="proto3",
-    serialized_options=b"\n\016com.google.apiB\017MonitoringProtoP\001ZEgoogle.golang.org/genproto/googleapis/api/serviceconfig;serviceconfig\242\002\004GAPI",
-    create_key=_descriptor._internal_create_key,
-    serialized_pb=b'\n\x1bgoogle/api/monitoring.proto\x12\ngoogle.api"\xec\x01\n\nMonitoring\x12K\n\x15producer_destinations\x18\x01 \x03(\x0b\x32,.google.api.Monitoring.MonitoringDestination\x12K\n\x15\x63onsumer_destinations\x18\x02 \x03(\x0b\x32,.google.api.Monitoring.MonitoringDestination\x1a\x44\n\x15MonitoringDestination\x12\x1a\n\x12monitored_resource\x18\x01 \x01(\t\x12\x0f\n\x07metrics\x18\x02 \x03(\tBq\n\x0e\x63om.google.apiB\x0fMonitoringProtoP\x01ZEgoogle.golang.org/genproto/googleapis/api/serviceconfig;serviceconfig\xa2\x02\x04GAPIb\x06proto3',
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(
+    b'\n\x1bgoogle/api/monitoring.proto\x12\ngoogle.api"\xec\x01\n\nMonitoring\x12K\n\x15producer_destinations\x18\x01 \x03(\x0b\x32,.google.api.Monitoring.MonitoringDestination\x12K\n\x15\x63onsumer_destinations\x18\x02 \x03(\x0b\x32,.google.api.Monitoring.MonitoringDestination\x1a\x44\n\x15MonitoringDestination\x12\x1a\n\x12monitored_resource\x18\x01 \x01(\t\x12\x0f\n\x07metrics\x18\x02 \x03(\tBq\n\x0e\x63om.google.apiB\x0fMonitoringProtoP\x01ZEgoogle.golang.org/genproto/googleapis/api/serviceconfig;serviceconfig\xa2\x02\x04GAPIb\x06proto3'
 )
 
 
-_MONITORING_MONITORINGDESTINATION = _descriptor.Descriptor(
-    name="MonitoringDestination",
-    full_name="google.api.Monitoring.MonitoringDestination",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    create_key=_descriptor._internal_create_key,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="monitored_resource",
-            full_name="google.api.Monitoring.MonitoringDestination.monitored_resource",
-            index=0,
-            number=1,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=b"".decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-            create_key=_descriptor._internal_create_key,
-        ),
-        _descriptor.FieldDescriptor(
-            name="metrics",
-            full_name="google.api.Monitoring.MonitoringDestination.metrics",
-            index=1,
-            number=2,
-            type=9,
-            cpp_type=9,
-            label=3,
-            has_default_value=False,
-            default_value=[],
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-            create_key=_descriptor._internal_create_key,
-        ),
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=212,
-    serialized_end=280,
-)
-
-_MONITORING = _descriptor.Descriptor(
-    name="Monitoring",
-    full_name="google.api.Monitoring",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    create_key=_descriptor._internal_create_key,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="producer_destinations",
-            full_name="google.api.Monitoring.producer_destinations",
-            index=0,
-            number=1,
-            type=11,
-            cpp_type=10,
-            label=3,
-            has_default_value=False,
-            default_value=[],
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-            create_key=_descriptor._internal_create_key,
-        ),
-        _descriptor.FieldDescriptor(
-            name="consumer_destinations",
-            full_name="google.api.Monitoring.consumer_destinations",
-            index=1,
-            number=2,
-            type=11,
-            cpp_type=10,
-            label=3,
-            has_default_value=False,
-            default_value=[],
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-            create_key=_descriptor._internal_create_key,
-        ),
-    ],
-    extensions=[],
-    nested_types=[_MONITORING_MONITORINGDESTINATION],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=44,
-    serialized_end=280,
-)
-
-_MONITORING_MONITORINGDESTINATION.containing_type = _MONITORING
-_MONITORING.fields_by_name[
-    "producer_destinations"
-].message_type = _MONITORING_MONITORINGDESTINATION
-_MONITORING.fields_by_name[
-    "consumer_destinations"
-].message_type = _MONITORING_MONITORINGDESTINATION
-DESCRIPTOR.message_types_by_name["Monitoring"] = _MONITORING
-_sym_db.RegisterFileDescriptor(DESCRIPTOR)
-
+_MONITORING = DESCRIPTOR.message_types_by_name["Monitoring"]
+_MONITORING_MONITORINGDESTINATION = _MONITORING.nested_types_by_name[
+    "MonitoringDestination"
+]
 Monitoring = _reflection.GeneratedProtocolMessageType(
     "Monitoring",
     (_message.Message,),
@@ -186,6 +58,12 @@ Monitoring = _reflection.GeneratedProtocolMessageType(
 _sym_db.RegisterMessage(Monitoring)
 _sym_db.RegisterMessage(Monitoring.MonitoringDestination)
 
+if _descriptor._USE_C_DESCRIPTORS == False:
 
-DESCRIPTOR._options = None
+    DESCRIPTOR._options = None
+    DESCRIPTOR._serialized_options = b"\n\016com.google.apiB\017MonitoringProtoP\001ZEgoogle.golang.org/genproto/googleapis/api/serviceconfig;serviceconfig\242\002\004GAPI"
+    _MONITORING._serialized_start = 44
+    _MONITORING._serialized_end = 280
+    _MONITORING_MONITORINGDESTINATION._serialized_start = 212
+    _MONITORING_MONITORINGDESTINATION._serialized_end = 280
 # @@protoc_insertion_point(module_scope)

@@ -18,6 +18,7 @@
 # source: google/type/phone_number.proto
 """Generated protocol buffer code."""
 from google.protobuf import descriptor as _descriptor
+from google.protobuf import descriptor_pool as _descriptor_pool
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
@@ -27,179 +28,13 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
-DESCRIPTOR = _descriptor.FileDescriptor(
-    name="google/type/phone_number.proto",
-    package="google.type",
-    syntax="proto3",
-    serialized_options=b"\n\017com.google.typeB\020PhoneNumberProtoP\001ZDgoogle.golang.org/genproto/googleapis/type/phone_number;phone_number\370\001\001\242\002\003GTP",
-    create_key=_descriptor._internal_create_key,
-    serialized_pb=b'\n\x1egoogle/type/phone_number.proto\x12\x0bgoogle.type"\xab\x01\n\x0bPhoneNumber\x12\x15\n\x0b\x65\x31\x36\x34_number\x18\x01 \x01(\tH\x00\x12\x38\n\nshort_code\x18\x02 \x01(\x0b\x32".google.type.PhoneNumber.ShortCodeH\x00\x12\x11\n\textension\x18\x03 \x01(\t\x1a\x30\n\tShortCode\x12\x13\n\x0bregion_code\x18\x01 \x01(\t\x12\x0e\n\x06number\x18\x02 \x01(\tB\x06\n\x04kindBt\n\x0f\x63om.google.typeB\x10PhoneNumberProtoP\x01ZDgoogle.golang.org/genproto/googleapis/type/phone_number;phone_number\xf8\x01\x01\xa2\x02\x03GTPb\x06proto3',
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(
+    b'\n\x1egoogle/type/phone_number.proto\x12\x0bgoogle.type"\xab\x01\n\x0bPhoneNumber\x12\x15\n\x0b\x65\x31\x36\x34_number\x18\x01 \x01(\tH\x00\x12\x38\n\nshort_code\x18\x02 \x01(\x0b\x32".google.type.PhoneNumber.ShortCodeH\x00\x12\x11\n\textension\x18\x03 \x01(\t\x1a\x30\n\tShortCode\x12\x13\n\x0bregion_code\x18\x01 \x01(\t\x12\x0e\n\x06number\x18\x02 \x01(\tB\x06\n\x04kindBt\n\x0f\x63om.google.typeB\x10PhoneNumberProtoP\x01ZDgoogle.golang.org/genproto/googleapis/type/phone_number;phone_number\xf8\x01\x01\xa2\x02\x03GTPb\x06proto3'
 )
 
 
-_PHONENUMBER_SHORTCODE = _descriptor.Descriptor(
-    name="ShortCode",
-    full_name="google.type.PhoneNumber.ShortCode",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    create_key=_descriptor._internal_create_key,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="region_code",
-            full_name="google.type.PhoneNumber.ShortCode.region_code",
-            index=0,
-            number=1,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=b"".decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-            create_key=_descriptor._internal_create_key,
-        ),
-        _descriptor.FieldDescriptor(
-            name="number",
-            full_name="google.type.PhoneNumber.ShortCode.number",
-            index=1,
-            number=2,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=b"".decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-            create_key=_descriptor._internal_create_key,
-        ),
-    ],
-    extensions=[],
-    nested_types=[],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[],
-    serialized_start=163,
-    serialized_end=211,
-)
-
-_PHONENUMBER = _descriptor.Descriptor(
-    name="PhoneNumber",
-    full_name="google.type.PhoneNumber",
-    filename=None,
-    file=DESCRIPTOR,
-    containing_type=None,
-    create_key=_descriptor._internal_create_key,
-    fields=[
-        _descriptor.FieldDescriptor(
-            name="e164_number",
-            full_name="google.type.PhoneNumber.e164_number",
-            index=0,
-            number=1,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=b"".decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-            create_key=_descriptor._internal_create_key,
-        ),
-        _descriptor.FieldDescriptor(
-            name="short_code",
-            full_name="google.type.PhoneNumber.short_code",
-            index=1,
-            number=2,
-            type=11,
-            cpp_type=10,
-            label=1,
-            has_default_value=False,
-            default_value=None,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-            create_key=_descriptor._internal_create_key,
-        ),
-        _descriptor.FieldDescriptor(
-            name="extension",
-            full_name="google.type.PhoneNumber.extension",
-            index=2,
-            number=3,
-            type=9,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=b"".decode("utf-8"),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-            create_key=_descriptor._internal_create_key,
-        ),
-    ],
-    extensions=[],
-    nested_types=[_PHONENUMBER_SHORTCODE],
-    enum_types=[],
-    serialized_options=None,
-    is_extendable=False,
-    syntax="proto3",
-    extension_ranges=[],
-    oneofs=[
-        _descriptor.OneofDescriptor(
-            name="kind",
-            full_name="google.type.PhoneNumber.kind",
-            index=0,
-            containing_type=None,
-            create_key=_descriptor._internal_create_key,
-            fields=[],
-        )
-    ],
-    serialized_start=48,
-    serialized_end=219,
-)
-
-_PHONENUMBER_SHORTCODE.containing_type = _PHONENUMBER
-_PHONENUMBER.fields_by_name["short_code"].message_type = _PHONENUMBER_SHORTCODE
-_PHONENUMBER.oneofs_by_name["kind"].fields.append(
-    _PHONENUMBER.fields_by_name["e164_number"]
-)
-_PHONENUMBER.fields_by_name[
-    "e164_number"
-].containing_oneof = _PHONENUMBER.oneofs_by_name["kind"]
-_PHONENUMBER.oneofs_by_name["kind"].fields.append(
-    _PHONENUMBER.fields_by_name["short_code"]
-)
-_PHONENUMBER.fields_by_name[
-    "short_code"
-].containing_oneof = _PHONENUMBER.oneofs_by_name["kind"]
-DESCRIPTOR.message_types_by_name["PhoneNumber"] = _PHONENUMBER
-_sym_db.RegisterFileDescriptor(DESCRIPTOR)
-
+_PHONENUMBER = DESCRIPTOR.message_types_by_name["PhoneNumber"]
+_PHONENUMBER_SHORTCODE = _PHONENUMBER.nested_types_by_name["ShortCode"]
 PhoneNumber = _reflection.GeneratedProtocolMessageType(
     "PhoneNumber",
     (_message.Message,),
@@ -221,6 +56,12 @@ PhoneNumber = _reflection.GeneratedProtocolMessageType(
 _sym_db.RegisterMessage(PhoneNumber)
 _sym_db.RegisterMessage(PhoneNumber.ShortCode)
 
+if _descriptor._USE_C_DESCRIPTORS == False:
 
-DESCRIPTOR._options = None
+    DESCRIPTOR._options = None
+    DESCRIPTOR._serialized_options = b"\n\017com.google.typeB\020PhoneNumberProtoP\001ZDgoogle.golang.org/genproto/googleapis/type/phone_number;phone_number\370\001\001\242\002\003GTP"
+    _PHONENUMBER._serialized_start = 48
+    _PHONENUMBER._serialized_end = 219
+    _PHONENUMBER_SHORTCODE._serialized_start = 163
+    _PHONENUMBER_SHORTCODE._serialized_end = 211
 # @@protoc_insertion_point(module_scope)
