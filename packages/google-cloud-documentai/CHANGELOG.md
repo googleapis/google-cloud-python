@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/googleapis/python-documentai/compare/v1.3.0...v1.4.0) (2022-03-19)
+
+
+### Features
+
+* add `content` field in TextAnchor ([#294](https://github.com/googleapis/python-documentai/issues/294)) ([f8b3e05](https://github.com/googleapis/python-documentai/commit/f8b3e05718d26da6711aef42d58951d275d7d87d))
+
 ## [1.3.0](https://github.com/googleapis/python-documentai/compare/v1.2.1...v1.3.0) (2022-03-05)
 
 
