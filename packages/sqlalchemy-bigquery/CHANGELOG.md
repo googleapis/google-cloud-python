@@ -14,6 +14,19 @@ Older versions of this project were distributed as [pybigquery][0].
 [2]: https://pypi.org/project/pybigquery/#history
 
 
+### [1.4.2](https://github.com/googleapis/python-bigquery-sqlalchemy/compare/v1.4.1...v1.4.2) (2022-03-22)
+
+
+### Bug Fixes
+
+* use explicit rather than implicit relative imports ([#433](https://github.com/googleapis/python-bigquery-sqlalchemy/issues/433)) ([ca20d3d](https://github.com/googleapis/python-bigquery-sqlalchemy/commit/ca20d3d20939b780abe49dfc833375eecd31ae04))
+* use faux_conn rather than engine in unit tests ([#431](https://github.com/googleapis/python-bigquery-sqlalchemy/issues/431)) ([275506f](https://github.com/googleapis/python-bigquery-sqlalchemy/commit/275506f0c9b7ac0e67410dbd7ceab8c9f593a259))
+
+
+### Dependencies
+
+* require google-cloud-bigquery-storage to avoid performance warning ([#414](https://github.com/googleapis/python-bigquery-sqlalchemy/issues/414)) ([ff3273f](https://github.com/googleapis/python-bigquery-sqlalchemy/commit/ff3273feacfa1f34bb9090f28f11c2ac470759fc))
+
 ### [1.4.1](https://github.com/googleapis/python-bigquery-sqlalchemy/compare/v1.4.0...v1.4.1) (2022-03-07)
 
 
