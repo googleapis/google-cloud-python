@@ -1,5 +1,26 @@
 # Changelog
 
+## [1.5.0](https://github.com/googleapis/python-dataproc-metastore/compare/v1.4.1...v1.5.0) (2022-03-21)
+
+
+### Features
+
+* Added additional endTime field for MetadataImports ([0a768dd](https://github.com/googleapis/python-dataproc-metastore/commit/0a768dd7f9541231f124d7ff6cd1c9c8a497c1ed))
+* Added AuxiliaryVersionConfig for configuring the auxiliary hive versions during creation or update of the DPMS instance ([0a768dd](https://github.com/googleapis/python-dataproc-metastore/commit/0a768dd7f9541231f124d7ff6cd1c9c8a497c1ed))
+* Added AVRO DatabaseDumpSpec for importing and exporting Avro files ([0a768dd](https://github.com/googleapis/python-dataproc-metastore/commit/0a768dd7f9541231f124d7ff6cd1c9c8a497c1ed))
+* Added configuration for Dataplex integration ([0a768dd](https://github.com/googleapis/python-dataproc-metastore/commit/0a768dd7f9541231f124d7ff6cd1c9c8a497c1ed))
+* Added DatabaseType field for the type of backing store used ([#122](https://github.com/googleapis/python-dataproc-metastore/issues/122)) ([0a768dd](https://github.com/googleapis/python-dataproc-metastore/commit/0a768dd7f9541231f124d7ff6cd1c9c8a497c1ed))
+* Added EncryptionConfig which contains information used to configure the Dataproc Metastore service to encrypt customer data at rest (CMEK) ([0a768dd](https://github.com/googleapis/python-dataproc-metastore/commit/0a768dd7f9541231f124d7ff6cd1c9c8a497c1ed))
+* Added NetworkConfig for exposing the DPMS endpoint in multiple subnetworks using PSC (this skips the need for VPC peering) ([0a768dd](https://github.com/googleapis/python-dataproc-metastore/commit/0a768dd7f9541231f124d7ff6cd1c9c8a497c1ed))
+* Added RESTORING status on Backups ([0a768dd](https://github.com/googleapis/python-dataproc-metastore/commit/0a768dd7f9541231f124d7ff6cd1c9c8a497c1ed))
+* Added support for IAM management for metadata resources ([0a768dd](https://github.com/googleapis/python-dataproc-metastore/commit/0a768dd7f9541231f124d7ff6cd1c9c8a497c1ed))
+* Added support to record the services that are restoring the backup ([0a768dd](https://github.com/googleapis/python-dataproc-metastore/commit/0a768dd7f9541231f124d7ff6cd1c9c8a497c1ed))
+
+
+### Documentation
+
+* formatting improvements ([0a768dd](https://github.com/googleapis/python-dataproc-metastore/commit/0a768dd7f9541231f124d7ff6cd1c9c8a497c1ed))
+
 ### [1.4.1](https://github.com/googleapis/python-dataproc-metastore/compare/v1.4.0...v1.4.1) (2022-03-05)
 
 
