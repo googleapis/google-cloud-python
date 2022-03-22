@@ -435,18 +435,13 @@ class QueryParameters(proto.Message):
 
             -  MapKey type: string
             -  MapKey value: parameter name
-            -  MapValue type:
-
-               -  If parameter's entity type is a composite entity: map
-               -  Else: depending on parameter value type, could be one
-                  of string, number, boolean, null, list or map
-
-            -  MapValue value:
-
-               -  If parameter's entity type is a composite entity: map
-                  from composite entity property names to property
-                  values
-               -  Else: parameter value
+            -  MapValue type: If parameter's entity type is a composite
+               entity then use map, otherwise, depending on the
+               parameter value type, it could be one of string, number,
+               boolean, null, list or map.
+            -  MapValue value: If parameter's entity type is a composite
+               entity then use map from composite entity property names
+               to property values, otherwise, use parameter value.
         current_page (str):
             The unique identifier of the
             [page][google.cloud.dialogflow.cx.v3.Page] to override the
@@ -620,18 +615,13 @@ class QueryResult(proto.Message):
 
             -  MapKey type: string
             -  MapKey value: parameter name
-            -  MapValue type:
-
-               -  If parameter's entity type is a composite entity: map
-               -  Else: depending on parameter value type, could be one
-                  of string, number, boolean, null, list or map
-
-            -  MapValue value:
-
-               -  If parameter's entity type is a composite entity: map
-                  from composite entity property names to property
-                  values
-               -  Else: parameter value
+            -  MapValue type: If parameter's entity type is a composite
+               entity then use map, otherwise, depending on the
+               parameter value type, it could be one of string, number,
+               boolean, null, list or map.
+            -  MapValue value: If parameter's entity type is a composite
+               entity then use map from composite entity property names
+               to property values, otherwise, use parameter value.
         response_messages (Sequence[google.cloud.dialogflowcx_v3.types.ResponseMessage]):
             The list of rich messages returned to the
             client. Responses vary from simple text messages
@@ -805,25 +795,22 @@ class Match(proto.Message):
             [``NO_INPUT``][google.cloud.dialogflow.cx.v3.Match.MatchType]
             match types.
         parameters (google.protobuf.struct_pb2.Struct):
-            The collection of parameters extracted from
-            the query.
-            Depending on your protocol or client library
-            language, this is a map, associative array,
-            symbol table, dictionary, or JSON object
-            composed of a collection of (MapKey, MapValue)
+            The collection of parameters extracted from the query.
+
+            Depending on your protocol or client library language, this
+            is a map, associative array, symbol table, dictionary, or
+            JSON object composed of a collection of (MapKey, MapValue)
             pairs:
-            -   MapKey type: string
-            -   MapKey value: parameter name
-            -   MapValue type:
-                -   If parameter's entity type is a
-            composite entity: map     -   Else: depending on
-            parameter value type, could be one of string,
-            number, boolean, null, list or map
-            -   MapValue value:
-                -   If parameter's entity type is a
-            composite entity:         map from composite
-            entity property names to property values     -
-            Else: parameter value
+
+            -  MapKey type: string
+            -  MapKey value: parameter name
+            -  MapValue type: If parameter's entity type is a composite
+               entity then use map, otherwise, depending on the
+               parameter value type, it could be one of string, number,
+               boolean, null, list or map.
+            -  MapValue value: If parameter's entity type is a composite
+               entity then use map from composite entity property names
+               to property values, otherwise, use parameter value.
         resolved_input (str):
             Final text input which was matched during
             MatchIntent. This value can be different from
