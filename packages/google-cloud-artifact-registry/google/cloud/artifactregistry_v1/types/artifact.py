@@ -20,7 +20,12 @@ from google.protobuf import timestamp_pb2  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.devtools.artifactregistry.v1",
-    manifest={"DockerImage", "ListDockerImagesRequest", "ListDockerImagesResponse",},
+    manifest={
+        "DockerImage",
+        "ListDockerImagesRequest",
+        "ListDockerImagesResponse",
+        "GetDockerImageRequest",
+    },
 )
 
 
@@ -120,6 +125,17 @@ class ListDockerImagesResponse(proto.Message):
 
     docker_images = proto.RepeatedField(proto.MESSAGE, number=1, message="DockerImage",)
     next_page_token = proto.Field(proto.STRING, number=2,)
+
+
+class GetDockerImageRequest(proto.Message):
+    r"""The request to get docker images.
+
+    Attributes:
+        name (str):
+            Required. The name of the docker images.
+    """
+
+    name = proto.Field(proto.STRING, number=1,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

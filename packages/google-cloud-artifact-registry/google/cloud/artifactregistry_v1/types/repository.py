@@ -15,6 +15,7 @@
 #
 import proto  # type: ignore
 
+from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
 
@@ -25,6 +26,9 @@ __protobuf__ = proto.module(
         "ListRepositoriesRequest",
         "ListRepositoriesResponse",
         "GetRepositoryRequest",
+        "CreateRepositoryRequest",
+        "UpdateRepositoryRequest",
+        "DeleteRepositoryRequest",
     },
 )
 
@@ -32,7 +36,15 @@ __protobuf__ = proto.module(
 class Repository(proto.Message):
     r"""A Repository for storing artifacts with a specific format.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
+        maven_config (google.cloud.artifactregistry_v1.types.Repository.MavenRepositoryConfig):
+            Maven repository config contains repository
+            level configuration for the repositories of
+            maven type.
+
+            This field is a member of `oneof`_ ``format_config``.
         name (str):
             The name of the repository, for example:
             "projects/p1/locations/us-central1/repositories/repo1".
@@ -57,7 +69,7 @@ class Repository(proto.Message):
             updated.
         kms_key_name (str):
             The Cloud KMS resource name of the customer managed
-            encryption key that’s used to encrypt the contents of the
+            encryption key that's used to encrypt the contents of the
             Repository. Has the form:
             ``projects/my-project/locations/my-region/keyRings/my-kr/cryptoKeys/my-key``.
             This value may not be changed after the Repository has been
@@ -74,6 +86,34 @@ class Repository(proto.Message):
         YUM = 6
         PYTHON = 8
 
+    class MavenRepositoryConfig(proto.Message):
+        r"""MavenRepositoryConfig is maven related repository details.
+        Provides additional configuration details for repositories of
+        the maven format type.
+
+        Attributes:
+            allow_snapshot_overwrites (bool):
+                The repository with this flag will allow
+                publishing the same snapshot versions.
+            version_policy (google.cloud.artifactregistry_v1.types.Repository.MavenRepositoryConfig.VersionPolicy):
+                Version policy defines the versions that the
+                registry will accept.
+        """
+
+        class VersionPolicy(proto.Enum):
+            r"""VersionPolicy is the version policy for the repository."""
+            VERSION_POLICY_UNSPECIFIED = 0
+            RELEASE = 1
+            SNAPSHOT = 2
+
+        allow_snapshot_overwrites = proto.Field(proto.BOOL, number=1,)
+        version_policy = proto.Field(
+            proto.ENUM, number=2, enum="Repository.MavenRepositoryConfig.VersionPolicy",
+        )
+
+    maven_config = proto.Field(
+        proto.MESSAGE, number=9, oneof="format_config", message=MavenRepositoryConfig,
+    )
     name = proto.Field(proto.STRING, number=1,)
     format_ = proto.Field(proto.ENUM, number=2, enum=Format,)
     description = proto.Field(proto.STRING, number=3,)
@@ -92,6 +132,7 @@ class ListRepositoriesRequest(proto.Message):
             whose repositories will be listed.
         page_size (int):
             The maximum number of repositories to return.
+            Maximum page size is 1,000.
         page_token (str):
             The next_page_token value returned from a previous list
             request, if any.
@@ -129,6 +170,55 @@ class GetRepositoryRequest(proto.Message):
         name (str):
             Required. The name of the repository to
             retrieve.
+    """
+
+    name = proto.Field(proto.STRING, number=1,)
+
+
+class CreateRepositoryRequest(proto.Message):
+    r"""The request to create a new repository.
+
+    Attributes:
+        parent (str):
+            Required. The name of the parent resource
+            where the repository will be created.
+        repository_id (str):
+            The repository id to use for this repository.
+        repository (google.cloud.artifactregistry_v1.types.Repository):
+            The repository to be created.
+    """
+
+    parent = proto.Field(proto.STRING, number=1,)
+    repository_id = proto.Field(proto.STRING, number=2,)
+    repository = proto.Field(proto.MESSAGE, number=3, message="Repository",)
+
+
+class UpdateRepositoryRequest(proto.Message):
+    r"""The request to update a repository.
+
+    Attributes:
+        repository (google.cloud.artifactregistry_v1.types.Repository):
+            The repository that replaces the resource on
+            the server.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            The update mask applies to the resource. For the
+            ``FieldMask`` definition, see
+            https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask
+    """
+
+    repository = proto.Field(proto.MESSAGE, number=1, message="Repository",)
+    update_mask = proto.Field(
+        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+    )
+
+
+class DeleteRepositoryRequest(proto.Message):
+    r"""The request to delete a repository.
+
+    Attributes:
+        name (str):
+            Required. The name of the repository to
+            delete.
     """
 
     name = proto.Field(proto.STRING, number=1,)

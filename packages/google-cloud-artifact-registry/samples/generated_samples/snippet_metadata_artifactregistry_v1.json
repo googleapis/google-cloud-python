@@ -7,6 +7,981 @@
           "service": {
             "shortName": "ArtifactRegistry"
           },
+          "shortName": "CreateRepository"
+        }
+      },
+      "file": "artifactregistry_v1_generated_artifact_registry_create_repository_async.py",
+      "regionTag": "artifactregistry_v1_generated_ArtifactRegistry_CreateRepository_async",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "ArtifactRegistry"
+          },
+          "shortName": "CreateRepository"
+        }
+      },
+      "file": "artifactregistry_v1_generated_artifact_registry_create_repository_sync.py",
+      "regionTag": "artifactregistry_v1_generated_ArtifactRegistry_CreateRepository_sync",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "ArtifactRegistry"
+          },
+          "shortName": "CreateTag"
+        }
+      },
+      "file": "artifactregistry_v1_generated_artifact_registry_create_tag_async.py",
+      "regionTag": "artifactregistry_v1_generated_ArtifactRegistry_CreateTag_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "ArtifactRegistry"
+          },
+          "shortName": "CreateTag"
+        }
+      },
+      "file": "artifactregistry_v1_generated_artifact_registry_create_tag_sync.py",
+      "regionTag": "artifactregistry_v1_generated_ArtifactRegistry_CreateTag_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "ArtifactRegistry"
+          },
+          "shortName": "DeletePackage"
+        }
+      },
+      "file": "artifactregistry_v1_generated_artifact_registry_delete_package_async.py",
+      "regionTag": "artifactregistry_v1_generated_ArtifactRegistry_DeletePackage_async",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "ArtifactRegistry"
+          },
+          "shortName": "DeletePackage"
+        }
+      },
+      "file": "artifactregistry_v1_generated_artifact_registry_delete_package_sync.py",
+      "regionTag": "artifactregistry_v1_generated_ArtifactRegistry_DeletePackage_sync",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "ArtifactRegistry"
+          },
+          "shortName": "DeleteRepository"
+        }
+      },
+      "file": "artifactregistry_v1_generated_artifact_registry_delete_repository_async.py",
+      "regionTag": "artifactregistry_v1_generated_ArtifactRegistry_DeleteRepository_async",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "ArtifactRegistry"
+          },
+          "shortName": "DeleteRepository"
+        }
+      },
+      "file": "artifactregistry_v1_generated_artifact_registry_delete_repository_sync.py",
+      "regionTag": "artifactregistry_v1_generated_ArtifactRegistry_DeleteRepository_sync",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "ArtifactRegistry"
+          },
+          "shortName": "DeleteTag"
+        }
+      },
+      "file": "artifactregistry_v1_generated_artifact_registry_delete_tag_async.py",
+      "regionTag": "artifactregistry_v1_generated_ArtifactRegistry_DeleteTag_async",
+      "segments": [
+        {
+          "end": 41,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 41,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "ArtifactRegistry"
+          },
+          "shortName": "DeleteTag"
+        }
+      },
+      "file": "artifactregistry_v1_generated_artifact_registry_delete_tag_sync.py",
+      "regionTag": "artifactregistry_v1_generated_ArtifactRegistry_DeleteTag_sync",
+      "segments": [
+        {
+          "end": 41,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 41,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "ArtifactRegistry"
+          },
+          "shortName": "DeleteVersion"
+        }
+      },
+      "file": "artifactregistry_v1_generated_artifact_registry_delete_version_async.py",
+      "regionTag": "artifactregistry_v1_generated_ArtifactRegistry_DeleteVersion_async",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "start": 45,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "ArtifactRegistry"
+          },
+          "shortName": "DeleteVersion"
+        }
+      },
+      "file": "artifactregistry_v1_generated_artifact_registry_delete_version_sync.py",
+      "regionTag": "artifactregistry_v1_generated_ArtifactRegistry_DeleteVersion_sync",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "start": 45,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "ArtifactRegistry"
+          },
+          "shortName": "GetDockerImage"
+        }
+      },
+      "file": "artifactregistry_v1_generated_artifact_registry_get_docker_image_async.py",
+      "regionTag": "artifactregistry_v1_generated_ArtifactRegistry_GetDockerImage_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "ArtifactRegistry"
+          },
+          "shortName": "GetDockerImage"
+        }
+      },
+      "file": "artifactregistry_v1_generated_artifact_registry_get_docker_image_sync.py",
+      "regionTag": "artifactregistry_v1_generated_ArtifactRegistry_GetDockerImage_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "ArtifactRegistry"
+          },
+          "shortName": "GetFile"
+        }
+      },
+      "file": "artifactregistry_v1_generated_artifact_registry_get_file_async.py",
+      "regionTag": "artifactregistry_v1_generated_ArtifactRegistry_GetFile_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "ArtifactRegistry"
+          },
+          "shortName": "GetFile"
+        }
+      },
+      "file": "artifactregistry_v1_generated_artifact_registry_get_file_sync.py",
+      "regionTag": "artifactregistry_v1_generated_ArtifactRegistry_GetFile_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "ArtifactRegistry"
+          },
+          "shortName": "GetIamPolicy"
+        }
+      },
+      "file": "artifactregistry_v1_generated_artifact_registry_get_iam_policy_async.py",
+      "regionTag": "artifactregistry_v1_generated_ArtifactRegistry_GetIamPolicy_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "ArtifactRegistry"
+          },
+          "shortName": "GetIamPolicy"
+        }
+      },
+      "file": "artifactregistry_v1_generated_artifact_registry_get_iam_policy_sync.py",
+      "regionTag": "artifactregistry_v1_generated_ArtifactRegistry_GetIamPolicy_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "ArtifactRegistry"
+          },
+          "shortName": "GetPackage"
+        }
+      },
+      "file": "artifactregistry_v1_generated_artifact_registry_get_package_async.py",
+      "regionTag": "artifactregistry_v1_generated_ArtifactRegistry_GetPackage_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "ArtifactRegistry"
+          },
+          "shortName": "GetPackage"
+        }
+      },
+      "file": "artifactregistry_v1_generated_artifact_registry_get_package_sync.py",
+      "regionTag": "artifactregistry_v1_generated_ArtifactRegistry_GetPackage_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "ArtifactRegistry"
+          },
+          "shortName": "GetProjectSettings"
+        }
+      },
+      "file": "artifactregistry_v1_generated_artifact_registry_get_project_settings_async.py",
+      "regionTag": "artifactregistry_v1_generated_ArtifactRegistry_GetProjectSettings_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "ArtifactRegistry"
+          },
+          "shortName": "GetProjectSettings"
+        }
+      },
+      "file": "artifactregistry_v1_generated_artifact_registry_get_project_settings_sync.py",
+      "regionTag": "artifactregistry_v1_generated_ArtifactRegistry_GetProjectSettings_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "ArtifactRegistry"
+          },
           "shortName": "GetRepository"
         }
       },
@@ -96,6 +1071,362 @@
           "service": {
             "shortName": "ArtifactRegistry"
           },
+          "shortName": "GetTag"
+        }
+      },
+      "file": "artifactregistry_v1_generated_artifact_registry_get_tag_async.py",
+      "regionTag": "artifactregistry_v1_generated_ArtifactRegistry_GetTag_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "ArtifactRegistry"
+          },
+          "shortName": "GetTag"
+        }
+      },
+      "file": "artifactregistry_v1_generated_artifact_registry_get_tag_sync.py",
+      "regionTag": "artifactregistry_v1_generated_ArtifactRegistry_GetTag_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "ArtifactRegistry"
+          },
+          "shortName": "GetVersion"
+        }
+      },
+      "file": "artifactregistry_v1_generated_artifact_registry_get_version_async.py",
+      "regionTag": "artifactregistry_v1_generated_ArtifactRegistry_GetVersion_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "ArtifactRegistry"
+          },
+          "shortName": "GetVersion"
+        }
+      },
+      "file": "artifactregistry_v1_generated_artifact_registry_get_version_sync.py",
+      "regionTag": "artifactregistry_v1_generated_ArtifactRegistry_GetVersion_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "ArtifactRegistry"
+          },
+          "shortName": "ImportAptArtifacts"
+        }
+      },
+      "file": "artifactregistry_v1_generated_artifact_registry_import_apt_artifacts_async.py",
+      "regionTag": "artifactregistry_v1_generated_ArtifactRegistry_ImportAptArtifacts_async",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "start": 45,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "ArtifactRegistry"
+          },
+          "shortName": "ImportAptArtifacts"
+        }
+      },
+      "file": "artifactregistry_v1_generated_artifact_registry_import_apt_artifacts_sync.py",
+      "regionTag": "artifactregistry_v1_generated_ArtifactRegistry_ImportAptArtifacts_sync",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "start": 45,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "ArtifactRegistry"
+          },
+          "shortName": "ImportYumArtifacts"
+        }
+      },
+      "file": "artifactregistry_v1_generated_artifact_registry_import_yum_artifacts_async.py",
+      "regionTag": "artifactregistry_v1_generated_ArtifactRegistry_ImportYumArtifacts_async",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "start": 45,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "ArtifactRegistry"
+          },
+          "shortName": "ImportYumArtifacts"
+        }
+      },
+      "file": "artifactregistry_v1_generated_artifact_registry_import_yum_artifacts_sync.py",
+      "regionTag": "artifactregistry_v1_generated_ArtifactRegistry_ImportYumArtifacts_sync",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "start": 45,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "ArtifactRegistry"
+          },
           "shortName": "ListDockerImages"
         }
       },
@@ -145,6 +1476,184 @@
       },
       "file": "artifactregistry_v1_generated_artifact_registry_list_docker_images_sync.py",
       "regionTag": "artifactregistry_v1_generated_ArtifactRegistry_ListDockerImages_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "ArtifactRegistry"
+          },
+          "shortName": "ListFiles"
+        }
+      },
+      "file": "artifactregistry_v1_generated_artifact_registry_list_files_async.py",
+      "regionTag": "artifactregistry_v1_generated_ArtifactRegistry_ListFiles_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "ArtifactRegistry"
+          },
+          "shortName": "ListFiles"
+        }
+      },
+      "file": "artifactregistry_v1_generated_artifact_registry_list_files_sync.py",
+      "regionTag": "artifactregistry_v1_generated_ArtifactRegistry_ListFiles_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "ArtifactRegistry"
+          },
+          "shortName": "ListPackages"
+        }
+      },
+      "file": "artifactregistry_v1_generated_artifact_registry_list_packages_async.py",
+      "regionTag": "artifactregistry_v1_generated_ArtifactRegistry_ListPackages_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "ArtifactRegistry"
+          },
+          "shortName": "ListPackages"
+        }
+      },
+      "file": "artifactregistry_v1_generated_artifact_registry_list_packages_sync.py",
+      "regionTag": "artifactregistry_v1_generated_ArtifactRegistry_ListPackages_sync",
       "segments": [
         {
           "end": 45,
@@ -263,6 +1772,629 @@
         {
           "end": 46,
           "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "ArtifactRegistry"
+          },
+          "shortName": "ListTags"
+        }
+      },
+      "file": "artifactregistry_v1_generated_artifact_registry_list_tags_async.py",
+      "regionTag": "artifactregistry_v1_generated_ArtifactRegistry_ListTags_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "ArtifactRegistry"
+          },
+          "shortName": "ListTags"
+        }
+      },
+      "file": "artifactregistry_v1_generated_artifact_registry_list_tags_sync.py",
+      "regionTag": "artifactregistry_v1_generated_ArtifactRegistry_ListTags_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "ArtifactRegistry"
+          },
+          "shortName": "ListVersions"
+        }
+      },
+      "file": "artifactregistry_v1_generated_artifact_registry_list_versions_async.py",
+      "regionTag": "artifactregistry_v1_generated_ArtifactRegistry_ListVersions_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "ArtifactRegistry"
+          },
+          "shortName": "ListVersions"
+        }
+      },
+      "file": "artifactregistry_v1_generated_artifact_registry_list_versions_sync.py",
+      "regionTag": "artifactregistry_v1_generated_ArtifactRegistry_ListVersions_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "ArtifactRegistry"
+          },
+          "shortName": "SetIamPolicy"
+        }
+      },
+      "file": "artifactregistry_v1_generated_artifact_registry_set_iam_policy_async.py",
+      "regionTag": "artifactregistry_v1_generated_ArtifactRegistry_SetIamPolicy_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "ArtifactRegistry"
+          },
+          "shortName": "SetIamPolicy"
+        }
+      },
+      "file": "artifactregistry_v1_generated_artifact_registry_set_iam_policy_sync.py",
+      "regionTag": "artifactregistry_v1_generated_ArtifactRegistry_SetIamPolicy_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "ArtifactRegistry"
+          },
+          "shortName": "TestIamPermissions"
+        }
+      },
+      "file": "artifactregistry_v1_generated_artifact_registry_test_iam_permissions_async.py",
+      "regionTag": "artifactregistry_v1_generated_ArtifactRegistry_TestIamPermissions_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "ArtifactRegistry"
+          },
+          "shortName": "TestIamPermissions"
+        }
+      },
+      "file": "artifactregistry_v1_generated_artifact_registry_test_iam_permissions_sync.py",
+      "regionTag": "artifactregistry_v1_generated_ArtifactRegistry_TestIamPermissions_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "ArtifactRegistry"
+          },
+          "shortName": "UpdateProjectSettings"
+        }
+      },
+      "file": "artifactregistry_v1_generated_artifact_registry_update_project_settings_async.py",
+      "regionTag": "artifactregistry_v1_generated_ArtifactRegistry_UpdateProjectSettings_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "ArtifactRegistry"
+          },
+          "shortName": "UpdateProjectSettings"
+        }
+      },
+      "file": "artifactregistry_v1_generated_artifact_registry_update_project_settings_sync.py",
+      "regionTag": "artifactregistry_v1_generated_ArtifactRegistry_UpdateProjectSettings_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "ArtifactRegistry"
+          },
+          "shortName": "UpdateRepository"
+        }
+      },
+      "file": "artifactregistry_v1_generated_artifact_registry_update_repository_async.py",
+      "regionTag": "artifactregistry_v1_generated_ArtifactRegistry_UpdateRepository_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "ArtifactRegistry"
+          },
+          "shortName": "UpdateRepository"
+        }
+      },
+      "file": "artifactregistry_v1_generated_artifact_registry_update_repository_sync.py",
+      "regionTag": "artifactregistry_v1_generated_ArtifactRegistry_UpdateRepository_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "ArtifactRegistry"
+          },
+          "shortName": "UpdateTag"
+        }
+      },
+      "file": "artifactregistry_v1_generated_artifact_registry_update_tag_async.py",
+      "regionTag": "artifactregistry_v1_generated_ArtifactRegistry_UpdateTag_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "ArtifactRegistry"
+          },
+          "shortName": "UpdateTag"
+        }
+      },
+      "file": "artifactregistry_v1_generated_artifact_registry_update_tag_sync.py",
+      "regionTag": "artifactregistry_v1_generated_ArtifactRegistry_UpdateTag_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
           "type": "RESPONSE_HANDLING"
         }
       ]
