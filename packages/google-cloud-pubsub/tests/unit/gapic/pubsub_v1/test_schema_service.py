@@ -634,6 +634,7 @@ def test_schema_service_client_create_channel_credentials_file(
             options=[
                 ("grpc.max_send_message_length", -1),
                 ("grpc.max_receive_message_length", -1),
+                ("grpc.max_metadata_size", 4 * 1024 * 1024),
                 ("grpc.keepalive_time_ms", 30000),
             ],
         )
@@ -2175,6 +2176,7 @@ def test_schema_service_transport_create_channel(transport_class, grpc_helpers):
             options=[
                 ("grpc.max_send_message_length", -1),
                 ("grpc.max_receive_message_length", -1),
+                ("grpc.max_metadata_size", 4 * 1024 * 1024),
                 ("grpc.keepalive_time_ms", 30000),
             ],
         )
@@ -2208,6 +2210,7 @@ def test_schema_service_grpc_transport_client_cert_source_for_mtls(transport_cla
             options=[
                 ("grpc.max_send_message_length", -1),
                 ("grpc.max_receive_message_length", -1),
+                ("grpc.max_metadata_size", 4 * 1024 * 1024),
                 ("grpc.keepalive_time_ms", 30000),
             ],
         )
@@ -2316,6 +2319,7 @@ def test_schema_service_transport_channel_mtls_with_client_cert_source(transport
                 options=[
                     ("grpc.max_send_message_length", -1),
                     ("grpc.max_receive_message_length", -1),
+                    ("grpc.max_metadata_size", 4 * 1024 * 1024),
                     ("grpc.keepalive_time_ms", 30000),
                 ],
             )
@@ -2364,6 +2368,7 @@ def test_schema_service_transport_channel_mtls_with_adc(transport_class):
                 options=[
                     ("grpc.max_send_message_length", -1),
                     ("grpc.max_receive_message_length", -1),
+                    ("grpc.max_metadata_size", 4 * 1024 * 1024),
                     ("grpc.keepalive_time_ms", 30000),
                 ],
             )

@@ -72,6 +72,7 @@ for library in s.get_staging_dirs(default_version):
         """options=[
                     ("grpc.max_send_message_length", -1),
                     ("grpc.max_receive_message_length", -1),
+                    ("grpc.max_metadata_size", 4 * 1024 * 1024),
                     ("grpc.keepalive_time_ms", 30000),
                 ]""",
         flags=re.MULTILINE | re.DOTALL,
