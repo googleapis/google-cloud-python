@@ -1,0 +1,223 @@
+ {
+  "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
+  "language": "python",
+  "libraryPackage": "google.cloud.bare_metal_solution_v2",
+  "protoPackage": "google.cloud.baremetalsolution.v2",
+  "schema": "1.0",
+  "services": {
+    "BareMetalSolution": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "BareMetalSolutionClient",
+          "rpcs": {
+            "CreateSnapshotSchedulePolicy": {
+              "methods": [
+                "create_snapshot_schedule_policy"
+              ]
+            },
+            "CreateVolumeSnapshot": {
+              "methods": [
+                "create_volume_snapshot"
+              ]
+            },
+            "DeleteSnapshotSchedulePolicy": {
+              "methods": [
+                "delete_snapshot_schedule_policy"
+              ]
+            },
+            "DeleteVolumeSnapshot": {
+              "methods": [
+                "delete_volume_snapshot"
+              ]
+            },
+            "GetInstance": {
+              "methods": [
+                "get_instance"
+              ]
+            },
+            "GetLun": {
+              "methods": [
+                "get_lun"
+              ]
+            },
+            "GetNetwork": {
+              "methods": [
+                "get_network"
+              ]
+            },
+            "GetSnapshotSchedulePolicy": {
+              "methods": [
+                "get_snapshot_schedule_policy"
+              ]
+            },
+            "GetVolume": {
+              "methods": [
+                "get_volume"
+              ]
+            },
+            "GetVolumeSnapshot": {
+              "methods": [
+                "get_volume_snapshot"
+              ]
+            },
+            "ListInstances": {
+              "methods": [
+                "list_instances"
+              ]
+            },
+            "ListLuns": {
+              "methods": [
+                "list_luns"
+              ]
+            },
+            "ListNetworks": {
+              "methods": [
+                "list_networks"
+              ]
+            },
+            "ListSnapshotSchedulePolicies": {
+              "methods": [
+                "list_snapshot_schedule_policies"
+              ]
+            },
+            "ListVolumeSnapshots": {
+              "methods": [
+                "list_volume_snapshots"
+              ]
+            },
+            "ListVolumes": {
+              "methods": [
+                "list_volumes"
+              ]
+            },
+            "ResetInstance": {
+              "methods": [
+                "reset_instance"
+              ]
+            },
+            "RestoreVolumeSnapshot": {
+              "methods": [
+                "restore_volume_snapshot"
+              ]
+            },
+            "UpdateSnapshotSchedulePolicy": {
+              "methods": [
+                "update_snapshot_schedule_policy"
+              ]
+            },
+            "UpdateVolume": {
+              "methods": [
+                "update_volume"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "BareMetalSolutionAsyncClient",
+          "rpcs": {
+            "CreateSnapshotSchedulePolicy": {
+              "methods": [
+                "create_snapshot_schedule_policy"
+              ]
+            },
+            "CreateVolumeSnapshot": {
+              "methods": [
+                "create_volume_snapshot"
+              ]
+            },
+            "DeleteSnapshotSchedulePolicy": {
+              "methods": [
+                "delete_snapshot_schedule_policy"
+              ]
+            },
+            "DeleteVolumeSnapshot": {
+              "methods": [
+                "delete_volume_snapshot"
+              ]
+            },
+            "GetInstance": {
+              "methods": [
+                "get_instance"
+              ]
+            },
+            "GetLun": {
+              "methods": [
+                "get_lun"
+              ]
+            },
+            "GetNetwork": {
+              "methods": [
+                "get_network"
+              ]
+            },
+            "GetSnapshotSchedulePolicy": {
+              "methods": [
+                "get_snapshot_schedule_policy"
+              ]
+            },
+            "GetVolume": {
+              "methods": [
+                "get_volume"
+              ]
+            },
+            "GetVolumeSnapshot": {
+              "methods": [
+                "get_volume_snapshot"
+              ]
+            },
+            "ListInstances": {
+              "methods": [
+                "list_instances"
+              ]
+            },
+            "ListLuns": {
+              "methods": [
+                "list_luns"
+              ]
+            },
+            "ListNetworks": {
+              "methods": [
+                "list_networks"
+              ]
+            },
+            "ListSnapshotSchedulePolicies": {
+              "methods": [
+                "list_snapshot_schedule_policies"
+              ]
+            },
+            "ListVolumeSnapshots": {
+              "methods": [
+                "list_volume_snapshots"
+              ]
+            },
+            "ListVolumes": {
+              "methods": [
+                "list_volumes"
+              ]
+            },
+            "ResetInstance": {
+              "methods": [
+                "reset_instance"
+              ]
+            },
+            "RestoreVolumeSnapshot": {
+              "methods": [
+                "restore_volume_snapshot"
+              ]
+            },
+            "UpdateSnapshotSchedulePolicy": {
+              "methods": [
+                "update_snapshot_schedule_policy"
+              ]
+            },
+            "UpdateVolume": {
+              "methods": [
+                "update_volume"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

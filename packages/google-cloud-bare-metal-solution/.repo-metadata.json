@@ -1,0 +1,16 @@
+{
+    "name": "baremetalsolution",
+    "name_pretty": "Bare Metal Solution",
+    "product_documentation": "https://cloud.google.com/bare-metal/docs",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/baremetalsolution/latest",
+    "issue_tracker": "",
+    "release_level": "preview",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/python-bare-metal-solution",
+    "distribution_name": "google-cloud-bare-metal-solution",
+    "api_id": "baremetalsolution.googleapis.com",
+    "default_version": "v2",
+    "codeowner_team": "",
+    "api_shortname": "baremetalsolution"
+}
