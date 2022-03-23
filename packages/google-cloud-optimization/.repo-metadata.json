@@ -1,0 +1,16 @@
+{
+    "name": "optimization",
+    "name_pretty": "Cloud Optimization",
+    "product_documentation": "https://cloud.google.com/optimization/docs",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/optimization/latest",
+    "issue_tracker": "",
+    "release_level": "preview",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/python-optimization",
+    "distribution_name": "google-cloud-optimization",
+    "api_id": "optimization.googleapis.com",
+    "default_version": "v1",
+    "codeowner_team": "",
+    "api_shortname": "optimization"
+}
