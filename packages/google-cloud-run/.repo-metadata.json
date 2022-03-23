@@ -1,0 +1,16 @@
+{
+    "name": "run",
+    "name_pretty": "Cloud Run",
+    "product_documentation": "https://cloud.google.com/run/docs",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/run/latest",
+    "issue_tracker": "",
+    "release_level": "preview",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/python-run",
+    "distribution_name": "google-cloud-run",
+    "api_id": "run.googleapis.com",
+    "default_version": "v2",
+    "codeowner_team": "@googleapis/aap-dpes",
+    "api_shortname": "run"
+}
