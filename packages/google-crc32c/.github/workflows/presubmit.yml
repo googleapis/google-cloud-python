@@ -90,7 +90,7 @@ jobs:
 
     - id: load-cache
       name: Load cached C library
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: ${{ github.workspace }}/usr
         key:
@@ -158,7 +158,7 @@ jobs:
 
     - id: load-cache
       name: Load cached C library
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: ${{ github.workspace }}\usr
         key:
