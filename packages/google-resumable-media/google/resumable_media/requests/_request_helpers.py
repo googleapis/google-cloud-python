@@ -37,6 +37,7 @@ _DEFAULT_READ_TIMEOUT = 60
 _CONNECTION_ERROR_CLASSES = (
     requests.exceptions.ConnectionError,
     requests.exceptions.ChunkedEncodingError,
+    requests.exceptions.Timeout,
     urllib3.exceptions.ProtocolError,
     ConnectionError,  # Python 3.x only, superclass of ConnectionResetError.
 )
