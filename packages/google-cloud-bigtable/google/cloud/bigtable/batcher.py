@@ -33,7 +33,7 @@ class MutationsBatcher(object):
     request.
 
     This class is not suited for usage in systems where each mutation
-    needs to guaranteed to be sent, since calling mutate may only result in an
+    must be guaranteed to be sent, since calling mutate may only result in an
     in-memory change. In a case of a system crash, any DirectRows remaining in
     memory will not necessarily be sent to the service, even after the
     completion of the mutate() method.
@@ -105,7 +105,7 @@ class MutationsBatcher(object):
             self.flush()
 
     def mutate_rows(self, rows):
-        """Add a row to the batch. If the current batch meets one of the size
+        """Add multiple rows to the batch. If the current batch meets one of the size
         limits, the batch is sent synchronously.
 
         For example:
