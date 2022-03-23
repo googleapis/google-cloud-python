@@ -1713,6 +1713,21 @@ def test_process_requests_no_errors():
     assert not requests_to_retry
 
 
+def test_process_requests_no_errors_no_future():
+    # no errors, request should be completed, even when future is None.
+    ack_reqs_dict = {
+        "ackid1": requests.AckRequest(
+            ack_id="ackid1", byte_size=0, time_to_ack=20, ordering_key="", future=None
+        )
+    }
+    errors_dict = {}
+    requests_completed, requests_to_retry = streaming_pull_manager._process_requests(
+        None, ack_reqs_dict, errors_dict
+    )
+    assert requests_completed[0].ack_id == "ackid1"
+    assert not requests_to_retry
+
+
 def test_process_requests_permanent_error_raises_exception():
     # a permanent error raises an exception
     future = futures.Future()
@@ -1732,6 +1747,40 @@ def test_process_requests_permanent_error_raises_exception():
         exc_info.value.error_code
         == subscriber_exceptions.AcknowledgeStatus.INVALID_ACK_ID
     )
+    assert not requests_to_retry
+
+
+def test_process_requests_permanent_error_other_raises_exception():
+    # a permanent error of other raises an exception
+    future = futures.Future()
+    ack_reqs_dict = {
+        "ackid1": requests.AckRequest(
+            ack_id="ackid1", byte_size=0, time_to_ack=20, ordering_key="", future=future
+        )
+    }
+    errors_dict = {"ackid1": "PERMANENT_FAILURE_OTHER"}
+    requests_completed, requests_to_retry = streaming_pull_manager._process_requests(
+        None, ack_reqs_dict, errors_dict
+    )
+    assert requests_completed[0].ack_id == "ackid1"
+    with pytest.raises(subscriber_exceptions.AcknowledgeError) as exc_info:
+        future.result()
+    assert exc_info.value.error_code == subscriber_exceptions.AcknowledgeStatus.OTHER
+    assert not requests_to_retry
+
+
+def test_process_requests_permanent_error_other_raises_exception_no_future():
+    # with a permanent error, request is completed even when future is None.
+    ack_reqs_dict = {
+        "ackid1": requests.AckRequest(
+            ack_id="ackid1", byte_size=0, time_to_ack=20, ordering_key="", future=None
+        )
+    }
+    errors_dict = {"ackid1": "PERMANENT_FAILURE_OTHER"}
+    requests_completed, requests_to_retry = streaming_pull_manager._process_requests(
+        None, ack_reqs_dict, errors_dict
+    )
+    assert requests_completed[0].ack_id == "ackid1"
     assert not requests_to_retry
 
 
@@ -1869,6 +1918,23 @@ def test_process_requests_other_error_status_raises_exception():
     with pytest.raises(subscriber_exceptions.AcknowledgeError) as exc_info:
         future.result()
     assert exc_info.value.error_code == subscriber_exceptions.AcknowledgeStatus.OTHER
+    assert not requests_to_retry
+
+
+def test_process_requests_other_error_status_raises_exception_no_future():
+    # with an unrecognized error status, requests are completed, even when
+    # future is None.
+    ack_reqs_dict = {
+        "ackid1": requests.AckRequest(
+            ack_id="ackid1", byte_size=0, time_to_ack=20, ordering_key="", future=None
+        )
+    }
+    st = status_pb2.Status()
+    st.code = code_pb2.Code.OUT_OF_RANGE
+    requests_completed, requests_to_retry = streaming_pull_manager._process_requests(
+        st, ack_reqs_dict, None
+    )
+    assert requests_completed[0].ack_id == "ackid1"
     assert not requests_to_retry
 
 
