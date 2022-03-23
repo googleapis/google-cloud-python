@@ -266,16 +266,24 @@ class API:
         invalid_module_names = set(keyword.kwlist) | {
             "metadata", "retry", "timeout", "request"}
 
-        def disambiguate_keyword_fname(
+        def disambiguate_keyword_sanitize_fname(
                 full_path: str,
                 visited_names: Container[str]) -> str:
             path, fname = os.path.split(full_path)
             name, ext = os.path.splitext(fname)
+
+            # Replace `.` with `_` in the basename as
+            # `.` is not a valid character for modules names.
+            # See https://peps.python.org/pep-0008/#package-and-module-names
+            if "." in name:
+                name = name.replace(".", "_")
+                full_path = os.path.join(path, name + ext)
+
             if name in invalid_module_names or full_path in visited_names:
                 name += "_"
                 full_path = os.path.join(path, name + ext)
                 if full_path in visited_names:
-                    return disambiguate_keyword_fname(full_path, visited_names)
+                    return disambiguate_keyword_sanitize_fname(full_path, visited_names)
 
             return full_path
 
@@ -294,7 +302,7 @@ class API:
         # load the services and methods with the full scope of types.
         pre_protos: Dict[str, Proto] = dict(prior_protos or {})
         for fd in file_descriptors:
-            fd.name = disambiguate_keyword_fname(fd.name, pre_protos)
+            fd.name = disambiguate_keyword_sanitize_fname(fd.name, pre_protos)
             pre_protos[fd.name] = Proto.build(
                 file_descriptor=fd,
                 file_to_generate=fd.package.startswith(package),
