@@ -16,6 +16,7 @@ import datetime
 import operator
 
 import numpy
+import numpy.testing
 import pandas
 import pandas.testing
 import pytest
@@ -154,6 +155,100 @@ def test_date_parsing_errors(value, error):
         pandas.Series([value], dtype="dbdate")
 
 
+def test_date_max_2d():
+    input_array = db_dtypes.DateArray(
+        numpy.array(
+            [
+                [
+                    numpy.datetime64("1970-01-01"),
+                    numpy.datetime64("1980-02-02"),
+                    numpy.datetime64("1990-03-03"),
+                ],
+                [
+                    numpy.datetime64("1971-02-02"),
+                    numpy.datetime64("1981-03-03"),
+                    numpy.datetime64("1991-04-04"),
+                ],
+                [
+                    numpy.datetime64("1972-03-03"),
+                    numpy.datetime64("1982-04-04"),
+                    numpy.datetime64("1992-05-05"),
+                ],
+            ],
+            dtype="datetime64[ns]",
+        )
+    )
+    numpy.testing.assert_array_equal(
+        input_array.max(axis=0)._ndarray,
+        numpy.array(
+            [
+                numpy.datetime64("1972-03-03"),
+                numpy.datetime64("1982-04-04"),
+                numpy.datetime64("1992-05-05"),
+            ],
+            dtype="datetime64[ns]",
+        ),
+    )
+    numpy.testing.assert_array_equal(
+        input_array.max(axis=1)._ndarray,
+        numpy.array(
+            [
+                numpy.datetime64("1990-03-03"),
+                numpy.datetime64("1991-04-04"),
+                numpy.datetime64("1992-05-05"),
+            ],
+            dtype="datetime64[ns]",
+        ),
+    )
+
+
+def test_date_min_2d():
+    input_array = db_dtypes.DateArray(
+        numpy.array(
+            [
+                [
+                    numpy.datetime64("1970-01-01"),
+                    numpy.datetime64("1980-02-02"),
+                    numpy.datetime64("1990-03-03"),
+                ],
+                [
+                    numpy.datetime64("1971-02-02"),
+                    numpy.datetime64("1981-03-03"),
+                    numpy.datetime64("1991-04-04"),
+                ],
+                [
+                    numpy.datetime64("1972-03-03"),
+                    numpy.datetime64("1982-04-04"),
+                    numpy.datetime64("1992-05-05"),
+                ],
+            ],
+            dtype="datetime64[ns]",
+        )
+    )
+    numpy.testing.assert_array_equal(
+        input_array.min(axis=0)._ndarray,
+        numpy.array(
+            [
+                numpy.datetime64("1970-01-01"),
+                numpy.datetime64("1980-02-02"),
+                numpy.datetime64("1990-03-03"),
+            ],
+            dtype="datetime64[ns]",
+        ),
+    )
+    numpy.testing.assert_array_equal(
+        input_array.min(axis=1)._ndarray,
+        numpy.array(
+            [
+                numpy.datetime64("1970-01-01"),
+                numpy.datetime64("1971-02-02"),
+                numpy.datetime64("1972-03-03"),
+            ],
+            dtype="datetime64[ns]",
+        ),
+    )
+
+
 @pytest.mark.skipif(
     not hasattr(pandas_backports, "numpy_validate_median"),
     reason="median not available with this version of pandas",
@@ -178,3 +273,58 @@ def test_date_parsing_errors(value, error):
 def test_date_median(values, expected):
     series = pandas.Series(values, dtype="dbdate")
     assert series.median() == expected
+
+
+@pytest.mark.skipif(
+    not hasattr(pandas_backports, "numpy_validate_median"),
+    reason="median not available with this version of pandas",
+)
+def test_date_median_2d():
+    input_array = db_dtypes.DateArray(
+        numpy.array(
+            [
+                [
+                    numpy.datetime64("1970-01-01"),
+                    numpy.datetime64("1980-02-02"),
+                    numpy.datetime64("1990-03-03"),
+                ],
+                [
+                    numpy.datetime64("1971-02-02"),
+                    numpy.datetime64("1981-03-03"),
+                    numpy.datetime64("1991-04-04"),
+                ],
+                [
+                    numpy.datetime64("1972-03-03"),
+                    numpy.datetime64("1982-04-04"),
+                    numpy.datetime64("1992-05-05"),
+                ],
+            ],
+            dtype="datetime64[ns]",
+        )
+    )
+    pandas.testing.assert_extension_array_equal(
+        input_array.median(axis=0),
+        db_dtypes.DateArray(
+            numpy.array(
+                [
+                    numpy.datetime64("1971-02-02"),
+                    numpy.datetime64("1981-03-03"),
+                    numpy.datetime64("1991-04-04"),
+                ],
+                dtype="datetime64[ns]",
+            )
+        ),
+    )
+    pandas.testing.assert_extension_array_equal(
+        input_array.median(axis=1),
+        db_dtypes.DateArray(
+            numpy.array(
+                [
+                    numpy.datetime64("1980-02-02"),
+                    numpy.datetime64("1981-03-03"),
+                    numpy.datetime64("1982-04-04"),
+                ],
+                dtype="datetime64[ns]",
+            )
+        ),
+    )

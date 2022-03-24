@@ -106,12 +106,8 @@ class OpsMixin:
 # See: https://github.com/pandas-dev/pandas/pull/45544
 @import_default("pandas.core.arrays._mixins", pandas_release < (1, 3))
 class NDArrayBackedExtensionArray(pandas.core.arrays.base.ExtensionArray):
-
-    ndim = 1
-
     def __init__(self, values, dtype):
         assert isinstance(values, numpy.ndarray)
-        assert values.ndim == 1
         self._ndarray = values
         self._dtype = dtype
 
