@@ -1,5 +1,34 @@
 # Changelog
 
+## [0.4.0](https://github.com/googleapis/python-db-dtypes-pandas/compare/v0.3.1...v0.4.0) (2022-03-24)
+
+
+### ⚠ BREAKING CHANGES
+
+* dbdate and dbtime dtypes return NaT instead of None for missing values
+
+### Features
+
+* dbdate and dbtime support numpy.datetime64 values in array constructor ([1db1357](https://github.com/googleapis/python-db-dtypes-pandas/commit/1db1357186b234a28b2ced10174bbd06e2f0ab73))
+
+
+### Bug Fixes
+
+* address failing 2D array compliance tests  in DateArray ([#64](https://github.com/googleapis/python-db-dtypes-pandas/issues/64)) ([b771e05](https://github.com/googleapis/python-db-dtypes-pandas/commit/b771e050acd2bdbf469a97f7477036c159b500f8))
+* address failing tests with pandas 1.5.0 ([#82](https://github.com/googleapis/python-db-dtypes-pandas/issues/82)) ([38ac28d](https://github.com/googleapis/python-db-dtypes-pandas/commit/38ac28d8b16f9b86b5029c85e45e9f2e034159b7))
+* allow comparison with scalar values ([#88](https://github.com/googleapis/python-db-dtypes-pandas/issues/88)) ([7495698](https://github.com/googleapis/python-db-dtypes-pandas/commit/7495698b3be3b7e8055ae450e24cd0e366b1b72a))
+* avoid TypeError when using sorted search ([#84](https://github.com/googleapis/python-db-dtypes-pandas/issues/84)) ([42bc2d9](https://github.com/googleapis/python-db-dtypes-pandas/commit/42bc2d90174d152dfed782acf77016da55dbdaca))
+* correct TypeError and comparison issues discovered in DateArray compliance tests ([#79](https://github.com/googleapis/python-db-dtypes-pandas/issues/79)) ([1e979cf](https://github.com/googleapis/python-db-dtypes-pandas/commit/1e979cf360eb586e77b415f7b710a8a41c22e981))
+* dbdate and dbtime support set item with null values ([#85](https://github.com/googleapis/python-db-dtypes-pandas/issues/85)) ([1db1357](https://github.com/googleapis/python-db-dtypes-pandas/commit/1db1357186b234a28b2ced10174bbd06e2f0ab73))
+* use `pandas.NaT` for missing values in dbdate and dbtime dtypes ([#67](https://github.com/googleapis/python-db-dtypes-pandas/issues/67)) ([f903c2c](https://github.com/googleapis/python-db-dtypes-pandas/commit/f903c2c68da1629241cf3bf37e1226babae669f4))
+* use public pandas APIs where possible ([#60](https://github.com/googleapis/python-db-dtypes-pandas/issues/60)) ([e9d41d1](https://github.com/googleapis/python-db-dtypes-pandas/commit/e9d41d17b5d6a7d83c46e2497feb8e314545adcb))
+
+
+### Tests
+
+* add dbtime compliance tests ([#90](https://github.com/googleapis/python-db-dtypes-pandas/issues/90)) ([f14fb2b](https://github.com/googleapis/python-db-dtypes-pandas/commit/f14fb2bf78d8427b9546db4cdad1d893c1b1e5e1))
+* add final dbdate compliance tests and sort ([#89](https://github.com/googleapis/python-db-dtypes-pandas/issues/89)) ([efe7e6d](https://github.com/googleapis/python-db-dtypes-pandas/commit/efe7e6d8953ebf8d2b4d9468c7c92638ea2ec9f9))
+
 ### [0.3.1](https://www.github.com/googleapis/python-db-dtypes-pandas/compare/v0.3.0...v0.3.1) (2021-12-04)
 
 
