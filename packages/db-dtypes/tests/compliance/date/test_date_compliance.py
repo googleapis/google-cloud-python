@@ -27,11 +27,18 @@ import pytest
 import db_dtypes
 
 
-class TestDtype(base.BaseDtypeTests):
+# TODO(https://github.com/googleapis/python-db-dtypes-pandas/issues/87): Add
+# compliance tests for arithmetic operations.
+
+# TODO(https://github.com/googleapis/python-db-dtypes-pandas/issues/78): Add
+# compliance tests for reduction operations.
+
+
+class TestComparisonOps(base.BaseComparisonOpsTests):
     pass
 
 
-class TestInterface(base.BaseInterfaceTests):
+class TestCasting(base.BaseCastingTests):
     pass
 
 
@@ -39,7 +46,7 @@ class TestConstructors(base.BaseConstructorsTests):
     pass
 
 
-class TestReshaping(base.BaseReshapingTests):
+class TestDtype(base.BaseDtypeTests):
     pass
 
 
@@ -47,12 +54,20 @@ class TestGetitem(base.BaseGetitemTests):
     pass
 
 
-class TestMissing(base.BaseMissingTests):
+class TestGroupby(base.BaseGroupbyTests):
     pass
 
 
-# TODO(https://github.com/googleapis/python-db-dtypes-pandas/issues/78): Add
-# compliance tests for reduction operations.
+class TestIndex(base.BaseIndexTests):
+    pass
+
+
+class TestInterface(base.BaseInterfaceTests):
+    pass
+
+
+class TestMissing(base.BaseMissingTests):
+    pass
 
 
 class TestMethods(base.BaseMethodsTests):
@@ -76,15 +91,7 @@ class TestMethods(base.BaseMethodsTests):
         self.assert_series_equal(result, expected)
 
 
-class TestCasting(base.BaseCastingTests):
-    pass
-
-
-class TestGroupby(base.BaseGroupbyTests):
-    pass
-
-
-class TestSetitem(base.BaseSetitemTests):
+class TestParsing(base.BaseParsingTests):
     pass
 
 
@@ -92,9 +99,9 @@ class TestPrinting(base.BasePrintingTests):
     pass
 
 
-# TODO(https://github.com/googleapis/python-db-dtypes-pandas/issues/78): Add
-# compliance tests for arithmetic operations.
+class TestReshaping(base.BaseReshapingTests):
+    pass
 
 
-class TestComparisonOps(base.BaseComparisonOpsTests):
+class TestSetitem(base.BaseSetitemTests):
     pass
