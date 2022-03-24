@@ -74,3 +74,27 @@ class TestMethods(base.BaseMethodsTests):
         expected = pandas.Series(other).value_counts(dropna=dropna).sort_index()
 
         self.assert_series_equal(result, expected)
+
+
+class TestCasting(base.BaseCastingTests):
+    pass
+
+
+class TestGroupby(base.BaseGroupbyTests):
+    pass
+
+
+class TestSetitem(base.BaseSetitemTests):
+    pass
+
+
+class TestPrinting(base.BasePrintingTests):
+    pass
+
+
+# TODO(https://github.com/googleapis/python-db-dtypes-pandas/issues/78): Add
+# compliance tests for arithmetic operations.
+
+
+class TestComparisonOps(base.BaseComparisonOpsTests):
+    pass

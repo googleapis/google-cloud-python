@@ -12,8 +12,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import operator
+
 import pandas
 import pytest
+
+
+@pytest.fixture(params=[True, False])
+def as_array(request):
+    """
+    Boolean fixture to support ExtensionDtype _from_sequence method testing.
+
+    See:
+    https://github.com/pandas-dev/pandas/blob/main/pandas/tests/extension/conftest.py
+    """
+    return request.param
 
 
 @pytest.fixture(params=[True, False])
@@ -38,11 +51,60 @@ def as_series(request):
     return request.param
 
 
+@pytest.fixture(params=[True, False])
+def box_in_series(request):
+    """
+    Whether to box the data in a Series
+
+    See:
+    https://github.com/pandas-dev/pandas/blob/main/pandas/tests/extension/conftest.py
+    """
+    return request.param
+
+
+@pytest.fixture(
+    params=[
+        operator.eq,
+        operator.ne,
+        operator.gt,
+        operator.ge,
+        operator.lt,
+        operator.le,
+    ]
+)
+def comparison_op(request):
+    """
+    Fixture for operator module comparison functions.
+
+    See: https://github.com/pandas-dev/pandas/blob/main/pandas/conftest.py
+    """
+    return request.param
+
+
 @pytest.fixture(params=["ffill", "bfill"])
 def fillna_method(request):
     """
     Parametrized fixture giving method parameters 'ffill' and 'bfill' for
     Series.fillna(method=<method>) testing.
+
+    See:
+    https://github.com/pandas-dev/pandas/blob/main/pandas/tests/extension/conftest.py
+    """
+    return request.param
+
+
+@pytest.fixture(
+    params=[
+        lambda x: 1,
+        lambda x: [1] * len(x),
+        lambda x: pandas.Series([1] * len(x)),
+        lambda x: x,
+    ],
+    ids=["scalar", "list", "series", "object"],
+)
+def groupby_apply_op(request):
+    """
+    Functions to test groupby.apply().
 
     See:
     https://github.com/pandas-dev/pandas/blob/main/pandas/tests/extension/conftest.py

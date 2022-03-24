@@ -90,14 +90,14 @@ class BaseDatetimeArray(
         if is_scalar(other) and (pandas.isna(other) or type(other) == self.dtype.type):
             other = type(self)([other])
 
+        if type(other) != type(self):
+            return NotImplemented
+
         oshape = getattr(other, "shape", None)
         if oshape != self.shape and oshape != (1,) and self.shape != (1,):
             raise TypeError(
                 "Can't compare arrays with different shapes", self.shape, oshape
             )
-
-        if type(other) != type(self):
-            return NotImplemented
         return op(self._ndarray, other._ndarray)
 
     def _from_factorized(self, unique, original):

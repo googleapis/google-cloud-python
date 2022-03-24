@@ -169,16 +169,12 @@ def test_timearray_comparisons(
         np.testing.assert_array_equal(comparisons[op](left, r), expected)
         np.testing.assert_array_equal(complements[op](left, r), ~expected)
 
-    # Bad shape
-    for bad_shape in ([], [1, 2, 3]):
+    # Bad shape, but same type
+    for bad_shape in ([], sample_values[:3]):
         with pytest.raises(
             TypeError, match="Can't compare arrays with different shapes"
         ):
-            comparisons[op](left, np.array(bad_shape))
-        with pytest.raises(
-            TypeError, match="Can't compare arrays with different shapes"
-        ):
-            complements[op](left, np.array(bad_shape))
+            comparisons[op](left, _cls(dtype)._from_sequence(bad_shape))
 
     # Bad items
     for bad_items in (
