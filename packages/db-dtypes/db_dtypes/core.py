@@ -113,6 +113,14 @@ class BaseDatetimeArray(
         """
         return self._datetime(value)
 
+    def _validate_searchsorted_value(self, value):
+        """
+        Convert a value for use in searching for a value in the backing numpy array.
+
+        TODO: With pandas 2.0, this may be unnecessary. https://github.com/pandas-dev/pandas/pull/45544#issuecomment-1052809232
+        """
+        return self._validate_setitem_value(value)
+
     def _validate_setitem_value(self, value):
         """
         Convert a value for use in setting a value in the backing numpy array.

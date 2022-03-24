@@ -328,3 +328,30 @@ def test_date_median_2d():
             )
         ),
     )
+
+
+@pytest.mark.parametrize(
+    ("search_term", "expected_index"),
+    (
+        (datetime.date(1899, 12, 31), 0),
+        (datetime.date(1900, 1, 1), 0),
+        (datetime.date(1920, 2, 2), 1),
+        (datetime.date(1930, 3, 3), 1),
+        (datetime.date(1950, 5, 5), 2),
+        (datetime.date(1990, 9, 9), 3),
+        (datetime.date(2012, 12, 12), 3),
+        (datetime.date(2022, 3, 24), 4),
+    ),
+)
+def test_date_searchsorted(search_term, expected_index):
+    test_series = pandas.Series(
+        [
+            datetime.date(1900, 1, 1),
+            datetime.date(1930, 3, 3),
+            datetime.date(1980, 8, 8),
+            datetime.date(2012, 12, 12),
+        ],
+        dtype="dbdate",
+    )
+    got = test_series.searchsorted(search_term)
+    assert got == expected_index

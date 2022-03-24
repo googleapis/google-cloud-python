@@ -20,6 +20,15 @@ import pytest
 from db_dtypes import DateArray, DateDtype
 
 
+@pytest.fixture(params=["data", "data_missing"])
+def all_data(request, data, data_missing):
+    """Parametrized fixture giving 'data' and 'data_missing'"""
+    if request.param == "data":
+        return data
+    elif request.param == "data_missing":
+        return data_missing
+
+
 @pytest.fixture
 def data():
     return DateArray(
@@ -33,6 +42,52 @@ def data():
 
 
 @pytest.fixture
+def data_for_grouping():
+    """
+    Data for factorization, grouping, and unique tests.
+
+    Expected to be like [B, B, NA, NA, A, A, B, C]
+
+    Where A < B < C and NA is missing
+
+    See:
+    https://github.com/pandas-dev/pandas/blob/main/pandas/tests/extension/conftest.py
+    """
+    return DateArray(
+        [
+            datetime.date(1980, 1, 27),
+            datetime.date(1980, 1, 27),
+            None,
+            None,
+            datetime.date(1969, 12, 30),
+            datetime.date(1969, 12, 30),
+            datetime.date(1980, 1, 27),
+            datetime.date(2022, 3, 18),
+        ]
+    )
+
+
+@pytest.fixture
+def data_for_sorting():
+    """
+    Length-3 array with a known sort order.
+
+    This should be three items [B, C, A] with
+    A < B < C
+
+    See:
+    https://github.com/pandas-dev/pandas/blob/main/pandas/tests/extension/conftest.py
+    """
+    return DateArray(
+        [
+            datetime.date(1980, 1, 27),
+            datetime.date(2022, 3, 18),
+            datetime.date(1969, 12, 30),
+        ]
+    )
+
+
+@pytest.fixture
 def data_missing():
     """Length-2 array with [NA, Valid]
 
@@ -40,6 +95,36 @@ def data_missing():
     https://github.com/pandas-dev/pandas/blob/main/pandas/tests/extension/conftest.py
     """
     return DateArray([None, datetime.date(2022, 1, 27)])
+
+
+@pytest.fixture
+def data_missing_for_sorting():
+    """
+    Length-3 array with a known sort order.
+
+    This should be three items [B, NA, A] with
+    A < B and NA missing.
+
+    See:
+    https://github.com/pandas-dev/pandas/blob/main/pandas/tests/extension/conftest.py
+    """
+    return DateArray([datetime.date(1980, 1, 27), None, datetime.date(1969, 12, 30)])
+
+
+@pytest.fixture
+def data_repeated(data):
+    """
+    Generate many datasets.
+
+    See:
+    https://github.com/pandas-dev/pandas/blob/main/pandas/tests/extension/conftest.py
+    """
+
+    def gen(count):
+        for _ in range(count):
+            yield data
+
+    return gen
 
 
 @pytest.fixture

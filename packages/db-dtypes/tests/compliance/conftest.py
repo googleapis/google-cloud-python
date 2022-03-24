@@ -16,6 +16,28 @@ import pandas
 import pytest
 
 
+@pytest.fixture(params=[True, False])
+def as_frame(request):
+    """
+    Boolean fixture to support Series and Series.to_frame() comparison testing.
+
+    See:
+    https://github.com/pandas-dev/pandas/blob/main/pandas/tests/extension/conftest.py
+    """
+    return request.param
+
+
+@pytest.fixture(params=[True, False])
+def as_series(request):
+    """
+    Boolean fixture to support arr and Series(arr) comparison testing.
+
+    See:
+    https://github.com/pandas-dev/pandas/blob/main/pandas/tests/extension/conftest.py
+    """
+    return request.param
+
+
 @pytest.fixture(params=["ffill", "bfill"])
 def fillna_method(request):
     """
@@ -26,6 +48,21 @@ def fillna_method(request):
     https://github.com/pandas-dev/pandas/blob/main/pandas/tests/extension/conftest.py
     """
     return request.param
+
+
+@pytest.fixture
+def invalid_scalar(data):
+    """
+    A scalar that *cannot* be held by this ExtensionArray.
+
+    The default should work for most subclasses, but is not guaranteed.
+
+    If the array can hold any item (i.e. object dtype), then use pytest.skip.
+
+    See:
+    https://github.com/pandas-dev/pandas/blob/main/pandas/tests/extension/conftest.py
+    """
+    return object.__new__(object)
 
 
 @pytest.fixture
@@ -51,3 +88,26 @@ def na_cmp():
         return a is pandas.NaT and a is b
 
     return cmp
+
+
+@pytest.fixture(params=[None, lambda x: x])
+def sort_by_key(request):
+    """
+    Simple fixture for testing keys in sorting methods.
+    Tests None (no key) and the identity key.
+
+    See: https://github.com/pandas-dev/pandas/blob/main/pandas/conftest.py
+    """
+    return request.param
+
+
+@pytest.fixture(params=[True, False])
+def use_numpy(request):
+    """
+    Boolean fixture to support comparison testing of ExtensionDtype array
+    and numpy array.
+
+    See:
+    https://github.com/pandas-dev/pandas/blob/main/pandas/tests/extension/conftest.py
+    """
+    return request.param
