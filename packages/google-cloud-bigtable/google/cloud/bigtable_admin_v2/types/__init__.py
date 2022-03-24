@@ -29,6 +29,8 @@ from .bigtable_instance_admin import (
     ListAppProfilesResponse,
     ListClustersRequest,
     ListClustersResponse,
+    ListHotTabletsRequest,
+    ListHotTabletsResponse,
     ListInstancesRequest,
     ListInstancesResponse,
     PartialUpdateClusterMetadata,
@@ -79,6 +81,7 @@ from .instance import (
     AutoscalingLimits,
     AutoscalingTargets,
     Cluster,
+    HotTablet,
     Instance,
 )
 from .table import (
@@ -109,6 +112,8 @@ __all__ = (
     "ListAppProfilesResponse",
     "ListClustersRequest",
     "ListClustersResponse",
+    "ListHotTabletsRequest",
+    "ListHotTabletsResponse",
     "ListInstancesRequest",
     "ListInstancesResponse",
     "PartialUpdateClusterMetadata",
@@ -153,6 +158,7 @@ __all__ = (
     "AutoscalingLimits",
     "AutoscalingTargets",
     "Cluster",
+    "HotTablet",
     "Instance",
     "Backup",
     "BackupInfo",

@@ -70,6 +70,11 @@
                 "list_clusters"
               ]
             },
+            "ListHotTablets": {
+              "methods": [
+                "list_hot_tablets"
+              ]
+            },
             "ListInstances": {
               "methods": [
                 "list_instances"
@@ -173,6 +178,11 @@
             "ListClusters": {
               "methods": [
                 "list_clusters"
+              ]
+            },
+            "ListHotTablets": {
+              "methods": [
+                "list_hot_tablets"
               ]
             },
             "ListInstances": {

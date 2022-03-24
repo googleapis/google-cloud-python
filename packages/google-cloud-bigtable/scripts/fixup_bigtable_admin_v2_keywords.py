@@ -64,6 +64,7 @@ class bigtable_adminCallTransformer(cst.CSTTransformer):
         'list_app_profiles': ('parent', 'page_size', 'page_token', ),
         'list_backups': ('parent', 'filter', 'order_by', 'page_size', 'page_token', ),
         'list_clusters': ('parent', 'page_token', ),
+        'list_hot_tablets': ('parent', 'start_time', 'end_time', 'page_size', 'page_token', ),
         'list_instances': ('parent', 'page_token', ),
         'list_snapshots': ('parent', 'page_size', 'page_token', ),
         'list_tables': ('parent', 'view', 'page_size', 'page_token', ),

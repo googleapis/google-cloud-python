@@ -228,6 +228,24 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def hot_tablet_path(
+        project: str, instance: str, cluster: str, hot_tablet: str,
+    ) -> str:
+        """Returns a fully-qualified hot_tablet string."""
+        return "projects/{project}/instances/{instance}/clusters/{cluster}/hotTablets/{hot_tablet}".format(
+            project=project, instance=instance, cluster=cluster, hot_tablet=hot_tablet,
+        )
+
+    @staticmethod
+    def parse_hot_tablet_path(path: str) -> Dict[str, str]:
+        """Parses a hot_tablet path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/instances/(?P<instance>.+?)/clusters/(?P<cluster>.+?)/hotTablets/(?P<hot_tablet>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def instance_path(project: str, instance: str,) -> str:
         """Returns a fully-qualified instance string."""
         return "projects/{project}/instances/{instance}".format(
@@ -238,6 +256,22 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
     def parse_instance_path(path: str) -> Dict[str, str]:
         """Parses a instance path into its component segments."""
         m = re.match(r"^projects/(?P<project>.+?)/instances/(?P<instance>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def table_path(project: str, instance: str, table: str,) -> str:
+        """Returns a fully-qualified table string."""
+        return "projects/{project}/instances/{instance}/tables/{table}".format(
+            project=project, instance=instance, table=table,
+        )
+
+    @staticmethod
+    def parse_table_path(path: str) -> Dict[str, str]:
+        """Parses a table path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/instances/(?P<instance>.+?)/tables/(?P<table>.+?)$",
+            path,
+        )
         return m.groupdict() if m else {}
 
     @staticmethod
@@ -2211,6 +2245,88 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
 
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    def list_hot_tablets(
+        self,
+        request: Union[bigtable_instance_admin.ListHotTabletsRequest, dict] = None,
+        *,
+        parent: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListHotTabletsPager:
+        r"""Lists hot tablets in a cluster, within the time range
+        provided. Hot tablets are ordered based on CPU usage.
+
+        Args:
+            request (Union[google.cloud.bigtable_admin_v2.types.ListHotTabletsRequest, dict]):
+                The request object. Request message for
+                BigtableInstanceAdmin.ListHotTablets.
+            parent (str):
+                Required. The cluster name to list hot tablets. Value is
+                in the following form:
+                ``projects/{project}/instances/{instance}/clusters/{cluster}``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.bigtable_admin_v2.services.bigtable_instance_admin.pagers.ListHotTabletsPager:
+                Response message for
+                BigtableInstanceAdmin.ListHotTablets.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a bigtable_instance_admin.ListHotTabletsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, bigtable_instance_admin.ListHotTabletsRequest):
+            request = bigtable_instance_admin.ListHotTabletsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_hot_tablets]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListHotTabletsPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
 
         # Done; return the response.
         return response

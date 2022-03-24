@@ -47,6 +47,8 @@ __protobuf__ = proto.module(
         "UpdateAppProfileRequest",
         "DeleteAppProfileRequest",
         "UpdateAppProfileMetadata",
+        "ListHotTabletsRequest",
+        "ListHotTabletsResponse",
     },
 )
 
@@ -551,6 +553,80 @@ class DeleteAppProfileRequest(proto.Message):
 class UpdateAppProfileMetadata(proto.Message):
     r"""The metadata for the Operation returned by UpdateAppProfile.
     """
+
+
+class ListHotTabletsRequest(proto.Message):
+    r"""Request message for BigtableInstanceAdmin.ListHotTablets.
+
+    Attributes:
+        parent (str):
+            Required. The cluster name to list hot tablets. Value is in
+            the following form:
+            ``projects/{project}/instances/{instance}/clusters/{cluster}``.
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
+            The start time to list hot tablets. The hot
+            tablets in the response will have start times
+            between the requested start time and end time.
+            Start time defaults to Now if it is unset, and
+            end time defaults to Now - 24 hours if it is
+            unset. The start time should be less than the
+            end time, and the maximum allowed time range
+            between start time and end time is 48 hours.
+            Start time and end time should have values
+            between Now and Now - 14 days.
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
+            The end time to list hot tablets.
+        page_size (int):
+            Maximum number of results per page.
+
+            A page_size that is empty or zero lets the server choose the
+            number of items to return. A page_size which is strictly
+            positive will return at most that many items. A negative
+            page_size will cause an error.
+
+            Following the first request, subsequent paginated calls do
+            not need a page_size field. If a page_size is set in
+            subsequent calls, it must match the page_size given in the
+            first request.
+        page_token (str):
+            The value of ``next_page_token`` returned by a previous
+            call.
+    """
+
+    parent = proto.Field(proto.STRING, number=1,)
+    start_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
+    end_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
+    page_size = proto.Field(proto.INT32, number=4,)
+    page_token = proto.Field(proto.STRING, number=5,)
+
+
+class ListHotTabletsResponse(proto.Message):
+    r"""Response message for BigtableInstanceAdmin.ListHotTablets.
+
+    Attributes:
+        hot_tablets (Sequence[google.cloud.bigtable_admin_v2.types.HotTablet]):
+            List of hot tablets in the tables of the
+            requested cluster that fall within the requested
+            time range. Hot tablets are ordered by node cpu
+            usage percent. If there are multiple hot tablets
+            that correspond to the same tablet within a
+            15-minute interval, only the hot tablet with the
+            highest node cpu usage will be included in the
+            response.
+        next_page_token (str):
+            Set if not all hot tablets could be returned in a single
+            response. Pass this value to ``page_token`` in another
+            request to get the next page of results.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    hot_tablets = proto.RepeatedField(
+        proto.MESSAGE, number=1, message=gba_instance.HotTablet,
+    )
+    next_page_token = proto.Field(proto.STRING, number=2,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

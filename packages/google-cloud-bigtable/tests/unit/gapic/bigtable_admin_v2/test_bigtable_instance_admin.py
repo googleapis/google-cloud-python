@@ -5242,6 +5242,374 @@ async def test_test_iam_permissions_flattened_error_async():
         )
 
 
+@pytest.mark.parametrize(
+    "request_type", [bigtable_instance_admin.ListHotTabletsRequest, dict,]
+)
+def test_list_hot_tablets(request_type, transport: str = "grpc"):
+    client = BigtableInstanceAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_hot_tablets), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = bigtable_instance_admin.ListHotTabletsResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.list_hot_tablets(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == bigtable_instance_admin.ListHotTabletsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListHotTabletsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_hot_tablets_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BigtableInstanceAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_hot_tablets), "__call__") as call:
+        client.list_hot_tablets()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == bigtable_instance_admin.ListHotTabletsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_hot_tablets_async(
+    transport: str = "grpc_asyncio",
+    request_type=bigtable_instance_admin.ListHotTabletsRequest,
+):
+    client = BigtableInstanceAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_hot_tablets), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            bigtable_instance_admin.ListHotTabletsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_hot_tablets(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == bigtable_instance_admin.ListHotTabletsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListHotTabletsAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_hot_tablets_async_from_dict():
+    await test_list_hot_tablets_async(request_type=dict)
+
+
+def test_list_hot_tablets_field_headers():
+    client = BigtableInstanceAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = bigtable_instance_admin.ListHotTabletsRequest()
+
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_hot_tablets), "__call__") as call:
+        call.return_value = bigtable_instance_admin.ListHotTabletsResponse()
+        client.list_hot_tablets(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_hot_tablets_field_headers_async():
+    client = BigtableInstanceAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = bigtable_instance_admin.ListHotTabletsRequest()
+
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_hot_tablets), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            bigtable_instance_admin.ListHotTabletsResponse()
+        )
+        await client.list_hot_tablets(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
+def test_list_hot_tablets_flattened():
+    client = BigtableInstanceAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_hot_tablets), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = bigtable_instance_admin.ListHotTabletsResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_hot_tablets(parent="parent_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_hot_tablets_flattened_error():
+    client = BigtableInstanceAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_hot_tablets(
+            bigtable_instance_admin.ListHotTabletsRequest(), parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_hot_tablets_flattened_async():
+    client = BigtableInstanceAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_hot_tablets), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = bigtable_instance_admin.ListHotTabletsResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            bigtable_instance_admin.ListHotTabletsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_hot_tablets(parent="parent_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_hot_tablets_flattened_error_async():
+    client = BigtableInstanceAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_hot_tablets(
+            bigtable_instance_admin.ListHotTabletsRequest(), parent="parent_value",
+        )
+
+
+def test_list_hot_tablets_pager(transport_name: str = "grpc"):
+    client = BigtableInstanceAdminClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_hot_tablets), "__call__") as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            bigtable_instance_admin.ListHotTabletsResponse(
+                hot_tablets=[
+                    instance.HotTablet(),
+                    instance.HotTablet(),
+                    instance.HotTablet(),
+                ],
+                next_page_token="abc",
+            ),
+            bigtable_instance_admin.ListHotTabletsResponse(
+                hot_tablets=[], next_page_token="def",
+            ),
+            bigtable_instance_admin.ListHotTabletsResponse(
+                hot_tablets=[instance.HotTablet(),], next_page_token="ghi",
+            ),
+            bigtable_instance_admin.ListHotTabletsResponse(
+                hot_tablets=[instance.HotTablet(), instance.HotTablet(),],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_hot_tablets(request={})
+
+        assert pager._metadata == metadata
+
+        results = [i for i in pager]
+        assert len(results) == 6
+        assert all(isinstance(i, instance.HotTablet) for i in results)
+
+
+def test_list_hot_tablets_pages(transport_name: str = "grpc"):
+    client = BigtableInstanceAdminClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_hot_tablets), "__call__") as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            bigtable_instance_admin.ListHotTabletsResponse(
+                hot_tablets=[
+                    instance.HotTablet(),
+                    instance.HotTablet(),
+                    instance.HotTablet(),
+                ],
+                next_page_token="abc",
+            ),
+            bigtable_instance_admin.ListHotTabletsResponse(
+                hot_tablets=[], next_page_token="def",
+            ),
+            bigtable_instance_admin.ListHotTabletsResponse(
+                hot_tablets=[instance.HotTablet(),], next_page_token="ghi",
+            ),
+            bigtable_instance_admin.ListHotTabletsResponse(
+                hot_tablets=[instance.HotTablet(), instance.HotTablet(),],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_hot_tablets(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_hot_tablets_async_pager():
+    client = BigtableInstanceAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_hot_tablets), "__call__", new_callable=mock.AsyncMock
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            bigtable_instance_admin.ListHotTabletsResponse(
+                hot_tablets=[
+                    instance.HotTablet(),
+                    instance.HotTablet(),
+                    instance.HotTablet(),
+                ],
+                next_page_token="abc",
+            ),
+            bigtable_instance_admin.ListHotTabletsResponse(
+                hot_tablets=[], next_page_token="def",
+            ),
+            bigtable_instance_admin.ListHotTabletsResponse(
+                hot_tablets=[instance.HotTablet(),], next_page_token="ghi",
+            ),
+            bigtable_instance_admin.ListHotTabletsResponse(
+                hot_tablets=[instance.HotTablet(), instance.HotTablet(),],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_hot_tablets(request={},)
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, instance.HotTablet) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_hot_tablets_async_pages():
+    client = BigtableInstanceAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_hot_tablets), "__call__", new_callable=mock.AsyncMock
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            bigtable_instance_admin.ListHotTabletsResponse(
+                hot_tablets=[
+                    instance.HotTablet(),
+                    instance.HotTablet(),
+                    instance.HotTablet(),
+                ],
+                next_page_token="abc",
+            ),
+            bigtable_instance_admin.ListHotTabletsResponse(
+                hot_tablets=[], next_page_token="def",
+            ),
+            bigtable_instance_admin.ListHotTabletsResponse(
+                hot_tablets=[instance.HotTablet(),], next_page_token="ghi",
+            ),
+            bigtable_instance_admin.ListHotTabletsResponse(
+                hot_tablets=[instance.HotTablet(), instance.HotTablet(),],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        async for page_ in (await client.list_hot_tablets(request={})).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.BigtableInstanceAdminGrpcTransport(
@@ -5380,6 +5748,7 @@ def test_bigtable_instance_admin_base_transport():
         "get_iam_policy",
         "set_iam_policy",
         "test_iam_permissions",
+        "list_hot_tablets",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -5821,9 +6190,37 @@ def test_parse_crypto_key_path():
     assert expected == actual
 
 
-def test_instance_path():
+def test_hot_tablet_path():
     project = "winkle"
     instance = "nautilus"
+    cluster = "scallop"
+    hot_tablet = "abalone"
+    expected = "projects/{project}/instances/{instance}/clusters/{cluster}/hotTablets/{hot_tablet}".format(
+        project=project, instance=instance, cluster=cluster, hot_tablet=hot_tablet,
+    )
+    actual = BigtableInstanceAdminClient.hot_tablet_path(
+        project, instance, cluster, hot_tablet
+    )
+    assert expected == actual
+
+
+def test_parse_hot_tablet_path():
+    expected = {
+        "project": "squid",
+        "instance": "clam",
+        "cluster": "whelk",
+        "hot_tablet": "octopus",
+    }
+    path = BigtableInstanceAdminClient.hot_tablet_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = BigtableInstanceAdminClient.parse_hot_tablet_path(path)
+    assert expected == actual
+
+
+def test_instance_path():
+    project = "oyster"
+    instance = "nudibranch"
     expected = "projects/{project}/instances/{instance}".format(
         project=project, instance=instance,
     )
@@ -5833,8 +6230,8 @@ def test_instance_path():
 
 def test_parse_instance_path():
     expected = {
-        "project": "scallop",
-        "instance": "abalone",
+        "project": "cuttlefish",
+        "instance": "mussel",
     }
     path = BigtableInstanceAdminClient.instance_path(**expected)
 
@@ -5843,8 +6240,32 @@ def test_parse_instance_path():
     assert expected == actual
 
 
+def test_table_path():
+    project = "winkle"
+    instance = "nautilus"
+    table = "scallop"
+    expected = "projects/{project}/instances/{instance}/tables/{table}".format(
+        project=project, instance=instance, table=table,
+    )
+    actual = BigtableInstanceAdminClient.table_path(project, instance, table)
+    assert expected == actual
+
+
+def test_parse_table_path():
+    expected = {
+        "project": "abalone",
+        "instance": "squid",
+        "table": "clam",
+    }
+    path = BigtableInstanceAdminClient.table_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = BigtableInstanceAdminClient.parse_table_path(path)
+    assert expected == actual
+
+
 def test_common_billing_account_path():
-    billing_account = "squid"
+    billing_account = "whelk"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -5854,7 +6275,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "clam",
+        "billing_account": "octopus",
     }
     path = BigtableInstanceAdminClient.common_billing_account_path(**expected)
 
@@ -5864,7 +6285,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "whelk"
+    folder = "oyster"
     expected = "folders/{folder}".format(folder=folder,)
     actual = BigtableInstanceAdminClient.common_folder_path(folder)
     assert expected == actual
@@ -5872,7 +6293,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "octopus",
+        "folder": "nudibranch",
     }
     path = BigtableInstanceAdminClient.common_folder_path(**expected)
 
@@ -5882,7 +6303,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "oyster"
+    organization = "cuttlefish"
     expected = "organizations/{organization}".format(organization=organization,)
     actual = BigtableInstanceAdminClient.common_organization_path(organization)
     assert expected == actual
@@ -5890,7 +6311,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nudibranch",
+        "organization": "mussel",
     }
     path = BigtableInstanceAdminClient.common_organization_path(**expected)
 
@@ -5900,7 +6321,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "cuttlefish"
+    project = "winkle"
     expected = "projects/{project}".format(project=project,)
     actual = BigtableInstanceAdminClient.common_project_path(project)
     assert expected == actual
@@ -5908,7 +6329,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "mussel",
+        "project": "nautilus",
     }
     path = BigtableInstanceAdminClient.common_project_path(**expected)
 
@@ -5918,8 +6339,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "winkle"
-    location = "nautilus"
+    project = "scallop"
+    location = "abalone"
     expected = "projects/{project}/locations/{location}".format(
         project=project, location=location,
     )
@@ -5929,8 +6350,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
+        "project": "squid",
+        "location": "clam",
     }
     path = BigtableInstanceAdminClient.common_location_path(**expected)
 

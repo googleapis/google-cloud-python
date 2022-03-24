@@ -69,8 +69,14 @@ class BigtableInstanceAdminAsyncClient:
     parse_crypto_key_path = staticmethod(
         BigtableInstanceAdminClient.parse_crypto_key_path
     )
+    hot_tablet_path = staticmethod(BigtableInstanceAdminClient.hot_tablet_path)
+    parse_hot_tablet_path = staticmethod(
+        BigtableInstanceAdminClient.parse_hot_tablet_path
+    )
     instance_path = staticmethod(BigtableInstanceAdminClient.instance_path)
     parse_instance_path = staticmethod(BigtableInstanceAdminClient.parse_instance_path)
+    table_path = staticmethod(BigtableInstanceAdminClient.table_path)
+    parse_table_path = staticmethod(BigtableInstanceAdminClient.parse_table_path)
     common_billing_account_path = staticmethod(
         BigtableInstanceAdminClient.common_billing_account_path
     )
@@ -2105,6 +2111,98 @@ class BigtableInstanceAdminAsyncClient:
 
         # Send the request.
         response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    async def list_hot_tablets(
+        self,
+        request: Union[bigtable_instance_admin.ListHotTabletsRequest, dict] = None,
+        *,
+        parent: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListHotTabletsAsyncPager:
+        r"""Lists hot tablets in a cluster, within the time range
+        provided. Hot tablets are ordered based on CPU usage.
+
+        Args:
+            request (Union[google.cloud.bigtable_admin_v2.types.ListHotTabletsRequest, dict]):
+                The request object. Request message for
+                BigtableInstanceAdmin.ListHotTablets.
+            parent (:class:`str`):
+                Required. The cluster name to list hot tablets. Value is
+                in the following form:
+                ``projects/{project}/instances/{instance}/clusters/{cluster}``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.bigtable_admin_v2.services.bigtable_instance_admin.pagers.ListHotTabletsAsyncPager:
+                Response message for
+                BigtableInstanceAdmin.ListHotTablets.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = bigtable_instance_admin.ListHotTabletsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.list_hot_tablets,
+            default_retry=retries.Retry(
+                initial=1.0,
+                maximum=60.0,
+                multiplier=2,
+                predicate=retries.if_exception_type(
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
+                ),
+                deadline=60.0,
+            ),
+            default_timeout=60.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListHotTabletsAsyncPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
 
         # Done; return the response.
         return response

@@ -350,6 +350,21 @@ class BigtableInstanceAdminTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.list_hot_tablets: gapic_v1.method.wrap_method(
+                self.list_hot_tablets,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=2,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -553,6 +568,18 @@ class BigtableInstanceAdminTransport(abc.ABC):
         Union[
             iam_policy_pb2.TestIamPermissionsResponse,
             Awaitable[iam_policy_pb2.TestIamPermissionsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_hot_tablets(
+        self,
+    ) -> Callable[
+        [bigtable_instance_admin.ListHotTabletsRequest],
+        Union[
+            bigtable_instance_admin.ListHotTabletsResponse,
+            Awaitable[bigtable_instance_admin.ListHotTabletsResponse],
         ],
     ]:
         raise NotImplementedError()

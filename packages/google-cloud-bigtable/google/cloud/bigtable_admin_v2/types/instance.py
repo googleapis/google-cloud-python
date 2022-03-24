@@ -27,6 +27,7 @@ __protobuf__ = proto.module(
         "AutoscalingLimits",
         "Cluster",
         "AppProfile",
+        "HotTablet",
     },
 )
 
@@ -321,6 +322,48 @@ class AppProfile(proto.Message):
     single_cluster_routing = proto.Field(
         proto.MESSAGE, number=6, oneof="routing_policy", message=SingleClusterRouting,
     )
+
+
+class HotTablet(proto.Message):
+    r"""A tablet is a defined by a start and end key and is explained
+    in https://cloud.google.com/bigtable/docs/overview#architecture
+    and
+    https://cloud.google.com/bigtable/docs/performance#optimization.
+    A Hot tablet is a tablet that exhibits high average cpu usage
+    during the time interval from start time to end time.
+
+    Attributes:
+        name (str):
+            The unique name of the hot tablet. Values are of the form
+            ``projects/{project}/instances/{instance}/clusters/{cluster}/hotTablets/[a-zA-Z0-9_-]*``.
+        table_name (str):
+            Name of the table that contains the tablet. Values are of
+            the form
+            ``projects/{project}/instances/{instance}/tables/[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The start time of the hot
+            tablet.
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The end time of the hot tablet.
+        start_key (str):
+            Tablet Start Key (inclusive).
+        end_key (str):
+            Tablet End Key (inclusive).
+        node_cpu_usage_percent (float):
+            Output only. The average CPU usage spent by a node on this
+            tablet over the start_time to end_time time range. The
+            percentage is the amount of CPU used by the node to serve
+            the tablet, from 0% (tablet was not interacted with) to 100%
+            (the node spent all cycles serving the hot tablet).
+    """
+
+    name = proto.Field(proto.STRING, number=1,)
+    table_name = proto.Field(proto.STRING, number=2,)
+    start_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
+    end_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
+    start_key = proto.Field(proto.STRING, number=5,)
+    end_key = proto.Field(proto.STRING, number=6,)
+    node_cpu_usage_percent = proto.Field(proto.FLOAT, number=7,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

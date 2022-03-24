@@ -34,6 +34,8 @@ from .types.bigtable_instance_admin import ListAppProfilesRequest
 from .types.bigtable_instance_admin import ListAppProfilesResponse
 from .types.bigtable_instance_admin import ListClustersRequest
 from .types.bigtable_instance_admin import ListClustersResponse
+from .types.bigtable_instance_admin import ListHotTabletsRequest
+from .types.bigtable_instance_admin import ListHotTabletsResponse
 from .types.bigtable_instance_admin import ListInstancesRequest
 from .types.bigtable_instance_admin import ListInstancesResponse
 from .types.bigtable_instance_admin import PartialUpdateClusterMetadata
@@ -78,6 +80,7 @@ from .types.instance import AppProfile
 from .types.instance import AutoscalingLimits
 from .types.instance import AutoscalingTargets
 from .types.instance import Cluster
+from .types.instance import HotTablet
 from .types.instance import Instance
 from .types.table import Backup
 from .types.table import BackupInfo
@@ -130,6 +133,7 @@ __all__ = (
     "GetInstanceRequest",
     "GetSnapshotRequest",
     "GetTableRequest",
+    "HotTablet",
     "Instance",
     "ListAppProfilesRequest",
     "ListAppProfilesResponse",
@@ -137,6 +141,8 @@ __all__ = (
     "ListBackupsResponse",
     "ListClustersRequest",
     "ListClustersResponse",
+    "ListHotTabletsRequest",
+    "ListHotTabletsResponse",
     "ListInstancesRequest",
     "ListInstancesResponse",
     "ListSnapshotsRequest",

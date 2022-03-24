@@ -856,6 +856,36 @@ class BigtableInstanceAdminGrpcAsyncIOTransport(BigtableInstanceAdminTransport):
             )
         return self._stubs["test_iam_permissions"]
 
+    @property
+    def list_hot_tablets(
+        self,
+    ) -> Callable[
+        [bigtable_instance_admin.ListHotTabletsRequest],
+        Awaitable[bigtable_instance_admin.ListHotTabletsResponse],
+    ]:
+        r"""Return a callable for the list hot tablets method over gRPC.
+
+        Lists hot tablets in a cluster, within the time range
+        provided. Hot tablets are ordered based on CPU usage.
+
+        Returns:
+            Callable[[~.ListHotTabletsRequest],
+                    Awaitable[~.ListHotTabletsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_hot_tablets" not in self._stubs:
+            self._stubs["list_hot_tablets"] = self.grpc_channel.unary_unary(
+                "/google.bigtable.admin.v2.BigtableInstanceAdmin/ListHotTablets",
+                request_serializer=bigtable_instance_admin.ListHotTabletsRequest.serialize,
+                response_deserializer=bigtable_instance_admin.ListHotTabletsResponse.deserialize,
+            )
+        return self._stubs["list_hot_tablets"]
+
     def close(self):
         return self.grpc_channel.close()
 
