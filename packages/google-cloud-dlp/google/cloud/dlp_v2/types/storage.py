@@ -75,6 +75,8 @@ class FileType(proto.Enum):
     AVRO = 7
     CSV = 8
     TSV = 9
+    POWERPOINT = 11
+    EXCEL = 12
 
 
 class InfoType(proto.Message):
@@ -188,13 +190,12 @@ class CustomInfoType(proto.Message):
         Plane <https://en.wikipedia.org/wiki/Plane_%28Unicode%29#Basic_Multilingual_Plane>`__
         will be replaced with whitespace when scanning for matches, so the
         dictionary phrase "Sam Johnson" will match all three phrases "sam
-        johnson",
-        Plane](https://en.wikipedia.org/wiki/Plane_%28Unicode%29#Basic_Multilingual_Plane)
-        surrounding any match must be of a different type than the adjacent
-        characters within the word, so letters must be next to non-letters
-        and digits next to non-digits. For example, the dictionary word
-        "jen" will match the first three letters of the text "jen123" but
-        will return no matches for "jennifer".
+        johnson", "Sam, Johnson", and "Sam (Johnson)". Additionally, the
+        characters surrounding any match must be of a different type than
+        the adjacent characters within the word, so letters must be next to
+        non-letters and digits next to non-digits. For example, the
+        dictionary word "jen" will match the first three letters of the text
+        "jen123" but will return no matches for "jennifer".
 
         Dictionary words containing a large number of characters that are
         not letters or digits may result in unexpected findings because such
@@ -202,9 +203,7 @@ class CustomInfoType(proto.Message):
         `limits <https://cloud.google.com/dlp/limits>`__ page contains
         details about the size limits of dictionaries. For dictionaries that
         do not fit within these constraints, consider using
-        ``LargeCustomDictionaryConfig`` in the
-        `limits <https://cloud.google.com/dlp/limits>`__ page contains
-        details about
+        ``LargeCustomDictionaryConfig`` in the ``StoredInfoType`` API.
 
         This message has `oneof`_ fields (mutually exclusive fields).
         For each oneof, at most one member field can be set at the same time.
@@ -260,11 +259,9 @@ class CustomInfoType(proto.Message):
                 be found under the google/re2 repository on
                 GitHub.
             group_indexes (Sequence[int]):
-                (https://github.com/google/re2/wiki/Syntax)
-                can be found under the The index of the submatch
-                to extract as findings. When not specified, the
-                entire match is returned. No more than 3 may be
-                included.
+                The index of the submatch to extract as
+                findings. When not specified, the entire match
+                is returned. No more than 3 may be included.
         """
 
         pattern = proto.Field(proto.STRING, number=1,)
@@ -275,10 +272,10 @@ class CustomInfoType(proto.Message):
         such as
         ```CryptoReplaceFfxFpeConfig`` <https://cloud.google.com/dlp/docs/reference/rest/v2/organizations.deidentifyTemplates#cryptoreplaceffxfpeconfig>`__.
         These types of transformations are those that perform
-        pseudonymization, thereby producing a "surrogate" as
-        ```CryptoReplaceFfxFpeConfig`` <https://cloud.google.com/dlp/docs/reference/rest/v2/organizations.deidentifyTemplates#cryptoreplaceffxfpeconfig>`__.
-        transformation such as ``surrogate_info_type``. This CustomInfoType
-        does not support the use of ``detection_rules``.
+        pseudonymization, thereby producing a "surrogate" as output. This
+        should be used in conjunction with a field on the transformation
+        such as ``surrogate_info_type``. This CustomInfoType does not
+        support the use of ``detection_rules``.
 
         """
 
@@ -527,11 +524,9 @@ class CloudStorageRegexFileSet(proto.Message):
             guide can be found under the google/re2 repository on
             GitHub.
         exclude_regex (Sequence[str]):
-            `syntax <https://github.com/google/re2/wiki/Syntax>`__; a
-            guide can be found A list of regular expressions matching
-            file paths to exclude. All files in the bucket that match at
-            least one of these regular expressions will be excluded from
-            the scan.
+            A list of regular expressions matching file paths to
+            exclude. All files in the bucket that match at least one of
+            these regular expressions will be excluded from the scan.
 
             Regular expressions use RE2
             `syntax <https://github.com/google/re2/wiki/Syntax>`__; a

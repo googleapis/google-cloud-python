@@ -189,9 +189,7 @@ class MatchingType(proto.Enum):
 
 
 class ContentOption(proto.Enum):
-    r"""Options describing which parts of the provided content should
-    be scanned.
-    """
+    r"""Deprecated and unused."""
     CONTENT_UNSPECIFIED = 0
     CONTENT_TEXT = 1
     CONTENT_IMAGE = 2
@@ -368,22 +366,22 @@ class InspectConfig(proto.Message):
             to learn more.
         limits (google.cloud.dlp_v2.types.InspectConfig.FindingLimits):
             Configuration to control the number of
-            findings returned.
+            findings returned. This is not used for data
+            profiling.
         include_quote (bool):
             When true, a contextual quote from the data
             that triggered a finding is included in the
-            response; see Finding.quote.
+            response; see Finding.quote. This is not used
+            for data profiling.
         exclude_info_types (bool):
             When true, excludes type information of the
-            findings.
+            findings. This is not used for data profiling.
         custom_info_types (Sequence[google.cloud.dlp_v2.types.CustomInfoType]):
             CustomInfoTypes provided by the user. See
             https://cloud.google.com/dlp/docs/creating-custom-infotypes
             to learn more.
         content_options (Sequence[google.cloud.dlp_v2.types.ContentOption]):
-            List of options defining data content to
-            scan. If empty, text, images, and other content
-            will be included.
+            Deprecated and unused.
         rule_set (Sequence[google.cloud.dlp_v2.types.InspectionRuleSet]):
             Set of rules to apply to the findings for
             this InspectConfig. Exclusion rules, contained
@@ -393,8 +391,9 @@ class InspectConfig(proto.Message):
     """
 
     class FindingLimits(proto.Message):
-        r"""Configuration to control the number of findings returned.
-        Cannot be set if de-identification is requested.
+        r"""Configuration to control the number of findings returned for
+        inspection. This is not used for de-identification or data
+        profiling.
 
         Attributes:
             max_findings_per_item (int):
@@ -476,6 +475,8 @@ class ByteContentItem(proto.Message):
         TEXT_UTF8 = 5
         WORD_DOCUMENT = 7
         PDF = 8
+        POWERPOINT_DOCUMENT = 9
+        EXCEL_DOCUMENT = 10
         AVRO = 11
         CSV = 12
         TSV = 13
