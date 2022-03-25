@@ -1,14 +1,14 @@
 Pandas Data Types for SQL systems (BigQuery, Spanner)
 =====================================================
 
-|beta| |pypi| |versions|
+|ga| |pypi| |versions|
 
 `Pandas extension data types`_ for data from SQL systems such as `BigQuery`_.
 
 - `Library Documentation`_
 
-.. |beta| image:: https://img.shields.io/badge/support-beta-orange.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#beta-support
+.. |ga| image:: https://img.shields.io/badge/support-GA-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#general-availability
 .. |pypi| image:: https://img.shields.io/pypi/v/db-dtypes.svg
    :target: https://pypi.org/project/db-dtypes/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/db-dtypes.svg

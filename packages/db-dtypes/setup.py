@@ -26,7 +26,7 @@ description = "Pandas Data Types for SQL systems (BigQuery, Spanner)"
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'
 # 'Development Status :: 5 - Production/Stable'
-release_status = "Development Status :: 4 - Beta"
+release_status = "Development Status :: 5 - Production/Stable"
 
 dependencies = [
     "packaging >= 17.0",
