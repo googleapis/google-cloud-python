@@ -46,14 +46,11 @@ def enable_autocommit_mode(instance_id, database_id):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description=__doc__,
-        formatter_class=argparse.RawDescriptionHelpFormatter,
+        description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     parser.add_argument("instance_id", help="Your Cloud Spanner instance ID.")
     parser.add_argument(
-        "--database-id",
-        help="Your Cloud Spanner database ID.",
-        default="example_db",
+        "--database-id", help="Your Cloud Spanner database ID.", default="example_db",
     )
     subparsers = parser.add_subparsers(dest="command")
     subparsers.add_parser("enable_autocommit_mode", help=enable_autocommit_mode.__doc__)

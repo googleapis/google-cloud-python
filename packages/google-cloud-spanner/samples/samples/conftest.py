@@ -93,9 +93,7 @@ def instance_config(spanner_client):
 
 @pytest.fixture(scope="module")
 def multi_region_instance_config(spanner_client):
-    return "{}/instanceConfigs/{}".format(
-        spanner_client.project_name, "nam3"
-    )
+    return "{}/instanceConfigs/{}".format(spanner_client.project_name, "nam3")
 
 
 @pytest.fixture(scope="module")
@@ -143,7 +141,7 @@ def multi_region_instance(
         labels={
             "cloud_spanner_samples": "true",
             "sample_name": sample_name,
-            "created": str(int(time.time()))
+            "created": str(int(time.time())),
         },
     )
     op = retry_429(multi_region_instance.create)()

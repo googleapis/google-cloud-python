@@ -21,6 +21,8 @@ from google.cloud.exceptions import NotFound
 from google.cloud.spanner_admin_database_v1 import Backup as BackupPB
 from google.cloud.spanner_admin_database_v1 import CreateBackupEncryptionConfig
 from google.cloud.spanner_admin_database_v1 import CreateBackupRequest
+from google.cloud.spanner_admin_database_v1 import CopyBackupEncryptionConfig
+from google.cloud.spanner_admin_database_v1 import CopyBackupRequest
 from google.cloud.spanner_v1._helpers import _metadata_with_prefix
 
 _BACKUP_NAME_RE = re.compile(
@@ -77,10 +79,12 @@ class Backup(object):
         expire_time=None,
         version_time=None,
         encryption_config=None,
+        source_backup=None,
     ):
         self.backup_id = backup_id
         self._instance = instance
         self._database = database
+        self._source_backup = source_backup
         self._expire_time = expire_time
         self._create_time = None
         self._version_time = version_time
@@ -88,8 +92,17 @@ class Backup(object):
         self._state = None
         self._referencing_databases = None
         self._encryption_info = None
+        self._max_expire_time = None
+        self._referencing_backups = None
         if type(encryption_config) == dict:
-            self._encryption_config = CreateBackupEncryptionConfig(**encryption_config)
+            if source_backup:
+                self._encryption_config = CopyBackupEncryptionConfig(
+                    **encryption_config
+                )
+            else:
+                self._encryption_config = CreateBackupEncryptionConfig(
+                    **encryption_config
+                )
         else:
             self._encryption_config = encryption_config
 
@@ -185,6 +198,24 @@ class Backup(object):
         """
         return self._encryption_info
 
+    @property
+    def max_expire_time(self):
+        """The max allowed expiration time of the backup.
+        :rtype: :class:`datetime.datetime`
+        :returns: a datetime object representing the max expire time of
+            this backup
+        """
+        return self._max_expire_time
+
+    @property
+    def referencing_backups(self):
+        """The names of the destination backups being created by copying this source backup.
+        :rtype: list of strings
+        :returns: a list of backup path strings which specify the backups that are
+            referencing this copy backup
+        """
+        return self._referencing_backups
+
     @classmethod
     def from_pb(cls, backup_pb, instance):
         """Create an instance of this class from a protobuf message.
@@ -223,7 +254,7 @@ class Backup(object):
         return cls(backup_id, instance)
 
     def create(self):
-        """Create this backup within its instance.
+        """Create this backup or backup copy within its instance.
 
         :rtype: :class:`~google.api_core.operation.Operation`
         :returns: a future used to poll the status of the create request
@@ -234,17 +265,39 @@ class Backup(object):
         """
         if not self._expire_time:
             raise ValueError("expire_time not set")
-        if not self._database:
-            raise ValueError("database not set")
+
+        if not self._database and not self._source_backup:
+            raise ValueError("database and source backup both not set")
+
         if (
-            self._encryption_config
+            (
+                self._encryption_config
+                and self._encryption_config.kms_key_name
+                and self._encryption_config.encryption_type
+                != CreateBackupEncryptionConfig.EncryptionType.CUSTOMER_MANAGED_ENCRYPTION
+            )
+            and self._encryption_config
             and self._encryption_config.kms_key_name
             and self._encryption_config.encryption_type
-            != CreateBackupEncryptionConfig.EncryptionType.CUSTOMER_MANAGED_ENCRYPTION
+            != CopyBackupEncryptionConfig.EncryptionType.CUSTOMER_MANAGED_ENCRYPTION
         ):
             raise ValueError("kms_key_name only used with CUSTOMER_MANAGED_ENCRYPTION")
+
         api = self._instance._client.database_admin_api
         metadata = _metadata_with_prefix(self.name)
+
+        if self._source_backup:
+            request = CopyBackupRequest(
+                parent=self._instance.name,
+                backup_id=self.backup_id,
+                source_backup=self._source_backup,
+                expire_time=self._expire_time,
+                encryption_config=self._encryption_config,
+            )
+
+            future = api.copy_backup(request=request, metadata=metadata,)
+            return future
+
         backup = BackupPB(
             database=self._database,
             expire_time=self.expire_time,
@@ -294,6 +347,8 @@ class Backup(object):
         self._state = BackupPB.State(pb.state)
         self._referencing_databases = pb.referencing_databases
         self._encryption_info = pb.encryption_info
+        self._max_expire_time = pb.max_expire_time
+        self._referencing_backups = pb.referencing_backups
 
     def update_expire_time(self, new_expire_time):
         """Update the expire time of this backup.

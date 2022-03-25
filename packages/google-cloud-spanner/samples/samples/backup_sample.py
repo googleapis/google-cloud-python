@@ -34,7 +34,9 @@ def create_backup(instance_id, database_id, backup_id, version_time):
 
     # Create a backup
     expire_time = datetime.utcnow() + timedelta(days=14)
-    backup = instance.backup(backup_id, database=database, expire_time=expire_time, version_time=version_time)
+    backup = instance.backup(
+        backup_id, database=database, expire_time=expire_time, version_time=version_time
+    )
     operation = backup.create()
 
     # Wait for backup operation to complete.
@@ -56,7 +58,9 @@ def create_backup(instance_id, database_id, backup_id, version_time):
 # [END spanner_create_backup]
 
 # [START spanner_create_backup_with_encryption_key]
-def create_backup_with_encryption_key(instance_id, database_id, backup_id, kms_key_name):
+def create_backup_with_encryption_key(
+    instance_id, database_id, backup_id, kms_key_name
+):
     """Creates a backup for a database using a Customer Managed Encryption Key (CMEK)."""
     from google.cloud.spanner_admin_database_v1 import CreateBackupEncryptionConfig
 
@@ -67,10 +71,15 @@ def create_backup_with_encryption_key(instance_id, database_id, backup_id, kms_k
     # Create a backup
     expire_time = datetime.utcnow() + timedelta(days=14)
     encryption_config = {
-        'encryption_type': CreateBackupEncryptionConfig.EncryptionType.CUSTOMER_MANAGED_ENCRYPTION,
-        'kms_key_name': kms_key_name,
+        "encryption_type": CreateBackupEncryptionConfig.EncryptionType.CUSTOMER_MANAGED_ENCRYPTION,
+        "kms_key_name": kms_key_name,
     }
-    backup = instance.backup(backup_id, database=database, expire_time=expire_time, encryption_config=encryption_config)
+    backup = instance.backup(
+        backup_id,
+        database=database,
+        expire_time=expire_time,
+        encryption_config=encryption_config,
+    )
     operation = backup.create()
 
     # Wait for backup operation to complete.
@@ -115,7 +124,7 @@ def restore_database(instance_id, new_database_id, backup_id):
             restore_info.backup_info.source_database,
             new_database_id,
             restore_info.backup_info.backup,
-            restore_info.backup_info.version_time
+            restore_info.backup_info.version_time,
         )
     )
 
@@ -124,7 +133,9 @@ def restore_database(instance_id, new_database_id, backup_id):
 
 
 # [START spanner_restore_backup_with_encryption_key]
-def restore_database_with_encryption_key(instance_id, new_database_id, backup_id, kms_key_name):
+def restore_database_with_encryption_key(
+    instance_id, new_database_id, backup_id, kms_key_name
+):
     """Restores a database from a backup using a Customer Managed Encryption Key (CMEK)."""
     from google.cloud.spanner_admin_database_v1 import RestoreDatabaseEncryptionConfig
 
@@ -134,10 +145,12 @@ def restore_database_with_encryption_key(instance_id, new_database_id, backup_id
     # Start restoring an existing backup to a new database.
     backup = instance.backup(backup_id)
     encryption_config = {
-        'encryption_type': RestoreDatabaseEncryptionConfig.EncryptionType.CUSTOMER_MANAGED_ENCRYPTION,
-        'kms_key_name': kms_key_name,
+        "encryption_type": RestoreDatabaseEncryptionConfig.EncryptionType.CUSTOMER_MANAGED_ENCRYPTION,
+        "kms_key_name": kms_key_name,
     }
-    new_database = instance.database(new_database_id, encryption_config=encryption_config)
+    new_database = instance.database(
+        new_database_id, encryption_config=encryption_config
+    )
     operation = new_database.restore(backup)
 
     # Wait for restore operation to complete.
@@ -192,7 +205,7 @@ def cancel_backup(instance_id, database_id, backup_id):
 
 
 # [START spanner_list_backup_operations]
-def list_backup_operations(instance_id, database_id):
+def list_backup_operations(instance_id, database_id, backup_id):
     spanner_client = spanner.Client()
     instance = spanner_client.instance(instance_id)
 
@@ -208,6 +221,22 @@ def list_backup_operations(instance_id, database_id):
         print(
             "Backup {} on database {}: {}% complete.".format(
                 metadata.name, metadata.database, metadata.progress.progress_percent
+            )
+        )
+
+    # List the CopyBackup operations.
+    filter_ = (
+        "(metadata.@type:type.googleapis.com/google.spanner.admin.database.v1.CopyBackupMetadata) "
+        "AND (metadata.source_backup:{})"
+    ).format(backup_id)
+    operations = instance.list_backup_operations(filter_=filter_)
+    for op in operations:
+        metadata = op.metadata
+        print(
+            "Backup {} on source backup {}: {}% complete.".format(
+                metadata.name,
+                metadata.source_backup,
+                metadata.progress.progress_percent,
             )
         )
 
@@ -291,8 +320,11 @@ def list_backups(instance_id, database_id, backup_id):
     print("All backups with pagination")
     # If there are multiple pages, additional ``ListBackup``
     # requests will be made as needed while iterating.
+    paged_backups = set()
     for backup in instance.list_backups(page_size=2):
-        print(backup.name)
+        paged_backups.add(backup.name)
+    for backup in paged_backups:
+        print(backup)
 
 
 # [END spanner_list_backups]
@@ -330,7 +362,8 @@ def update_backup(instance_id, backup_id):
 
     # Expire time must be within 366 days of the create time of the backup.
     old_expire_time = backup.expire_time
-    new_expire_time = old_expire_time + timedelta(days=30)
+    # New expire time should be less than the max expire time
+    new_expire_time = min(backup.max_expire_time, old_expire_time + timedelta(days=30))
     backup.update_expire_time(new_expire_time)
     print(
         "Backup {} expire time was updated from {} to {}.".format(
@@ -343,7 +376,9 @@ def update_backup(instance_id, backup_id):
 
 
 # [START spanner_create_database_with_version_retention_period]
-def create_database_with_version_retention_period(instance_id, database_id, retention_period):
+def create_database_with_version_retention_period(
+    instance_id, database_id, retention_period
+):
     """Creates a database with a version retention period."""
     spanner_client = spanner.Client()
     instance = spanner_client.instance(instance_id)
@@ -363,7 +398,7 @@ def create_database_with_version_retention_period(instance_id, database_id, rete
         "ALTER DATABASE `{}`"
         " SET OPTIONS (version_retention_period = '{}')".format(
             database_id, retention_period
-        )
+        ),
     ]
     db = instance.database(database_id, ddl_statements)
     operation = db.create()
@@ -372,13 +407,49 @@ def create_database_with_version_retention_period(instance_id, database_id, rete
 
     db.reload()
 
-    print("Database {} created with version retention period {} and earliest version time {}".format(
-        db.database_id, db.version_retention_period, db.earliest_version_time
-    ))
+    print(
+        "Database {} created with version retention period {} and earliest version time {}".format(
+            db.database_id, db.version_retention_period, db.earliest_version_time
+        )
+    )
 
     db.drop()
 
+
 # [END spanner_create_database_with_version_retention_period]
+
+
+# [START spanner_copy_backup]
+def copy_backup(instance_id, backup_id, source_backup_path):
+    """Copies a backup."""
+    spanner_client = spanner.Client()
+    instance = spanner_client.instance(instance_id)
+
+    # Create a backup object and wait for copy backup operation to complete.
+    expire_time = datetime.utcnow() + timedelta(days=14)
+    copy_backup = instance.copy_backup(
+        backup_id=backup_id, source_backup=source_backup_path, expire_time=expire_time
+    )
+    operation = copy_backup.create()
+
+    # Wait for copy backup operation to complete.
+    operation.result(2100)
+
+    # Verify that the copy backup is ready.
+    copy_backup.reload()
+    assert copy_backup.is_ready() is True
+
+    print(
+        "Backup {} of size {} bytes was created at {} with version time {}".format(
+            copy_backup.name,
+            copy_backup.size_bytes,
+            copy_backup.create_time,
+            copy_backup.version_time,
+        )
+    )
+
+
+# [END spanner_copy_backup]
 
 
 if __name__ == "__main__":  # noqa: C901
@@ -404,6 +475,7 @@ if __name__ == "__main__":  # noqa: C901
         "list_database_operations", help=list_database_operations.__doc__
     )
     subparsers.add_parser("delete_backup", help=delete_backup.__doc__)
+    subparsers.add_parser("copy_backup", help=copy_backup.__doc__)
 
     args = parser.parse_args()
 
@@ -418,10 +490,12 @@ if __name__ == "__main__":  # noqa: C901
     elif args.command == "list_backups":
         list_backups(args.instance_id, args.database_id, args.backup_id)
     elif args.command == "list_backup_operations":
-        list_backup_operations(args.instance_id, args.database_id)
+        list_backup_operations(args.instance_id, args.database_id, args.backup_id)
     elif args.command == "list_database_operations":
         list_database_operations(args.instance_id)
     elif args.command == "delete_backup":
         delete_backup(args.instance_id, args.backup_id)
+    elif args.command == "copy_backup":
+        copy_backup(args.instance_id, args.backup_id, args.source_backup_id)
     else:
         print("Command {} did not match expected commands.".format(args.command))

@@ -124,8 +124,12 @@ def test_create_instance_with_processing_units(capsys, lci_instance_id):
     retry_429(instance.delete)()
 
 
-def test_create_database_with_encryption_config(capsys, instance_id, cmek_database_id, kms_key_name):
-    snippets.create_database_with_encryption_key(instance_id, cmek_database_id, kms_key_name)
+def test_create_database_with_encryption_config(
+    capsys, instance_id, cmek_database_id, kms_key_name
+):
+    snippets.create_database_with_encryption_key(
+        instance_id, cmek_database_id, kms_key_name
+    )
     out, _ = capsys.readouterr()
     assert cmek_database_id in out
     assert kms_key_name in out
@@ -150,7 +154,13 @@ def test_list_databases(capsys, instance_id):
     assert "has default leader" in out
 
 
-def test_create_database_with_default_leader(capsys, multi_region_instance, multi_region_instance_id, default_leader_database_id, default_leader):
+def test_create_database_with_default_leader(
+    capsys,
+    multi_region_instance,
+    multi_region_instance_id,
+    default_leader_database_id,
+    default_leader,
+):
     retry_429 = RetryErrors(exceptions.ResourceExhausted, delay=15)
     retry_429(snippets.create_database_with_default_leader)(
         multi_region_instance_id, default_leader_database_id, default_leader
@@ -160,7 +170,13 @@ def test_create_database_with_default_leader(capsys, multi_region_instance, mult
     assert default_leader in out
 
 
-def test_update_database_with_default_leader(capsys, multi_region_instance, multi_region_instance_id, default_leader_database_id, default_leader):
+def test_update_database_with_default_leader(
+    capsys,
+    multi_region_instance,
+    multi_region_instance_id,
+    default_leader_database_id,
+    default_leader,
+):
     retry_429 = RetryErrors(exceptions.ResourceExhausted, delay=15)
     retry_429(snippets.update_database_with_default_leader)(
         multi_region_instance_id, default_leader_database_id, default_leader
@@ -176,7 +192,13 @@ def test_get_database_ddl(capsys, instance_id, sample_database):
     assert sample_database.database_id in out
 
 
-def test_query_information_schema_database_options(capsys, multi_region_instance, multi_region_instance_id, default_leader_database_id, default_leader):
+def test_query_information_schema_database_options(
+    capsys,
+    multi_region_instance,
+    multi_region_instance_id,
+    default_leader_database_id,
+    default_leader,
+):
     snippets.query_information_schema_database_options(
         multi_region_instance_id, default_leader_database_id
     )
@@ -587,7 +609,9 @@ def test_query_data_with_json_parameter(capsys, instance_id, sample_database):
 
 @pytest.mark.dependency(depends=["insert_datatypes_data"])
 def test_query_data_with_timestamp_parameter(capsys, instance_id, sample_database):
-    snippets.query_data_with_timestamp_parameter(instance_id, sample_database.database_id)
+    snippets.query_data_with_timestamp_parameter(
+        instance_id, sample_database.database_id
+    )
     out, _ = capsys.readouterr()
     assert "VenueId: 4, VenueName: Venue 4, LastUpdateTime:" in out
     assert "VenueId: 19, VenueName: Venue 19, LastUpdateTime:" in out

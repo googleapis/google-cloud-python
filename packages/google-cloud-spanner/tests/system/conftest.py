@@ -12,12 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
 import time
 
 import pytest
 
 from google.cloud import spanner_v1
 from . import _helpers
+from google.cloud.spanner_admin_database_v1.types.backup import (
+    CreateBackupEncryptionConfig,
+)
 
 
 @pytest.fixture(scope="function")
@@ -65,6 +69,11 @@ def instance_operation_timeout():
 @pytest.fixture(scope="session")
 def database_operation_timeout():
     return _helpers.DATABASE_OPERATION_TIMEOUT_IN_SECONDS
+
+
+@pytest.fixture(scope="session")
+def backup_operation_timeout():
+    return _helpers.BACKUP_OPERATION_TIMEOUT_IN_SECONDS
 
 
 @pytest.fixture(scope="session")
@@ -150,6 +159,30 @@ def shared_database(shared_instance, database_operation_timeout):
     yield database
 
     database.drop()
+
+
+@pytest.fixture(scope="session")
+def shared_backup(shared_instance, shared_database, backup_operation_timeout):
+    backup_name = _helpers.unique_id("test_backup")
+    expire_time = datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(
+        days=3
+    )
+    source_encryption_enum = CreateBackupEncryptionConfig.EncryptionType
+    source_encryption_config = CreateBackupEncryptionConfig(
+        encryption_type=source_encryption_enum.GOOGLE_DEFAULT_ENCRYPTION,
+    )
+    backup = shared_instance.backup(
+        backup_name,
+        database=shared_database,
+        expire_time=expire_time,
+        encryption_config=source_encryption_config,
+    )
+    operation = backup.create()
+    operation.result(backup_operation_timeout)  # raises on failure / timeout.
+
+    yield backup
+
+    backup.delete()
 
 
 @pytest.fixture(scope="function")

@@ -41,6 +41,7 @@ CMEK_RESTORE_DB_ID = unique_database_id()
 CMEK_BACKUP_ID = unique_backup_id()
 RETENTION_DATABASE_ID = unique_database_id()
 RETENTION_PERIOD = "7d"
+COPY_BACKUP_ID = unique_backup_id()
 
 
 @pytest.mark.dependency(name="create_backup")
@@ -51,13 +52,24 @@ def test_create_backup(capsys, instance_id, sample_database):
         version_time = list(results)[0][0]
 
     backup_sample.create_backup(
-        instance_id,
-        sample_database.database_id,
-        BACKUP_ID,
-        version_time,
+        instance_id, sample_database.database_id, BACKUP_ID, version_time,
     )
     out, _ = capsys.readouterr()
     assert BACKUP_ID in out
+
+
+@pytest.mark.dependency(name="copy_backup", depends=["create_backup"])
+def test_copy_backup(capsys, instance_id, spanner_client):
+    source_backp_path = (
+        spanner_client.project_name
+        + "/instances/"
+        + instance_id
+        + "/backups/"
+        + BACKUP_ID
+    )
+    backup_sample.copy_backup(instance_id, COPY_BACKUP_ID, source_backp_path)
+    out, _ = capsys.readouterr()
+    assert COPY_BACKUP_ID in out
 
 
 @pytest.mark.dependency(name="create_backup_with_encryption_key")
@@ -65,10 +77,7 @@ def test_create_backup_with_encryption_key(
     capsys, instance_id, sample_database, kms_key_name,
 ):
     backup_sample.create_backup_with_encryption_key(
-        instance_id,
-        sample_database.database_id,
-        CMEK_BACKUP_ID,
-        kms_key_name,
+        instance_id, sample_database.database_id, CMEK_BACKUP_ID, kms_key_name,
     )
     out, _ = capsys.readouterr()
     assert CMEK_BACKUP_ID in out
@@ -91,7 +100,8 @@ def test_restore_database_with_encryption_key(
     capsys, instance_id, sample_database, kms_key_name,
 ):
     backup_sample.restore_database_with_encryption_key(
-        instance_id, CMEK_RESTORE_DB_ID, CMEK_BACKUP_ID, kms_key_name)
+        instance_id, CMEK_RESTORE_DB_ID, CMEK_BACKUP_ID, kms_key_name
+    )
     out, _ = capsys.readouterr()
     assert (sample_database.database_id + " restored to ") in out
     assert (CMEK_RESTORE_DB_ID + " from backup ") in out
@@ -99,17 +109,22 @@ def test_restore_database_with_encryption_key(
     assert kms_key_name in out
 
 
-@pytest.mark.dependency(depends=["create_backup"])
+@pytest.mark.dependency(depends=["create_backup", "copy_backup"])
 def test_list_backup_operations(capsys, instance_id, sample_database):
     backup_sample.list_backup_operations(
-        instance_id, sample_database.database_id)
+        instance_id, sample_database.database_id, BACKUP_ID
+    )
     out, _ = capsys.readouterr()
     assert BACKUP_ID in out
     assert sample_database.database_id in out
+    assert COPY_BACKUP_ID in out
+    print(out)
 
 
-@pytest.mark.dependency(depends=["create_backup"])
-def test_list_backups(capsys, instance_id, sample_database):
+@pytest.mark.dependency(name="list_backup", depends=["create_backup", "copy_backup"])
+def test_list_backups(
+    capsys, instance_id, sample_database,
+):
     backup_sample.list_backups(
         instance_id, sample_database.database_id, BACKUP_ID,
     )
@@ -125,11 +140,14 @@ def test_update_backup(capsys, instance_id):
     assert BACKUP_ID in out
 
 
-@pytest.mark.dependency(depends=["create_backup"])
+@pytest.mark.dependency(depends=["create_backup", "copy_backup", "list_backup"])
 def test_delete_backup(capsys, instance_id):
     backup_sample.delete_backup(instance_id, BACKUP_ID)
     out, _ = capsys.readouterr()
     assert BACKUP_ID in out
+    backup_sample.delete_backup(instance_id, COPY_BACKUP_ID)
+    out, _ = capsys.readouterr()
+    assert COPY_BACKUP_ID in out
 
 
 @pytest.mark.dependency(depends=["create_backup"])

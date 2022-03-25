@@ -19,7 +19,7 @@ def sample_name():
 @RetryErrors(exception=Aborted, max_tries=2)
 def test_enable_autocommit_mode(capsys, instance_id, sample_database):
     # Delete table if it exists for retry attempts.
-    table = sample_database.table('Singers')
+    table = sample_database.table("Singers")
     if table.exists():
         op = sample_database.update_ddl(["DROP TABLE Singers"])
         op.result()
