@@ -83,6 +83,11 @@ s.replace(
 s.replace(["noxfile.py"], r'os.path.join\("tests", "unit"\),', "tests_path,")
 s.replace(
     ["noxfile.py"],
+    r'f"--junitxml=unit_{session.python}_sponge_log.xml",',
+    r'f"--junitxml={os.path.split(tests_path)[-1]}_{session.python}_sponge_log.xml",',
+)
+s.replace(
+    ["noxfile.py"],
     r'''
 @nox.session\(python=UNIT_TEST_PYTHON_VERSIONS\)
 def unit\(session\):
@@ -154,7 +159,7 @@ def prerelease(session, tests_path):
     session.run(
         "py.test",
         "--quiet",
-        f"--junitxml=prerelease_unit_{session.python}_sponge_log.xml",
+        f"--junitxml={os.path.split(tests_path)[-1]}_prerelease_{session.python}_sponge_log.xml",
         "--cov=db_dtypes",
         "--cov=tests/unit",
         "--cov-append",
