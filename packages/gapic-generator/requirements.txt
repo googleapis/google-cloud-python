@@ -7,4 +7,4 @@ protobuf==3.19.4
 pypandoc==1.7.4
 PyYAML==6.0
 dataclasses==0.6  # TODO(busunkim) remove when 3.6 support is dropped
-setuptools==61.1.0
+setuptools==61.1.1
