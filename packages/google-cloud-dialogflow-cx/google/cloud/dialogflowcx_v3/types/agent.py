@@ -125,6 +125,10 @@ class Agent(proto.Message):
         enable_spell_correction (bool):
             Indicates if automatic spell correction is
             enabled in detect intent requests.
+        locked (bool):
+            Indiciates whether the agent is locked for changes. If the
+            agent is locked, modifications to the agent will be rejected
+            except for [RestoreAgent][].
         advanced_settings (google.cloud.dialogflowcx_v3.types.AdvancedSettings):
             Hierarchical advanced settings for this
             agent. The settings exposed at the lower level
@@ -146,6 +150,7 @@ class Agent(proto.Message):
     security_settings = proto.Field(proto.STRING, number=17,)
     enable_stackdriver_logging = proto.Field(proto.BOOL, number=18,)
     enable_spell_correction = proto.Field(proto.BOOL, number=20,)
+    locked = proto.Field(proto.BOOL, number=27,)
     advanced_settings = proto.Field(
         proto.MESSAGE, number=22, message=gcdc_advanced_settings.AdvancedSettings,
     )
@@ -275,14 +280,23 @@ class ExportAgentRequest(proto.Message):
             authentication must have write permissions for the object.
             For more information, see `Dialogflow access
             control <https://cloud.google.com/dialogflow/cx/docs/concept/access-control#storage>`__.
+        data_format (google.cloud.dialogflowcx_v3.types.ExportAgentRequest.DataFormat):
+            Optional. The data format of the exported agent. If not
+            specified, ``BLOB`` is assumed.
         environment (str):
             Optional. Environment name. If not set, draft environment is
             assumed. Format:
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>``.
     """
 
+    class DataFormat(proto.Enum):
+        r"""Data format of the exported agent."""
+        DATA_FORMAT_UNSPECIFIED = 0
+        BLOB = 1
+
     name = proto.Field(proto.STRING, number=1,)
     agent_uri = proto.Field(proto.STRING, number=2,)
+    data_format = proto.Field(proto.ENUM, number=3, enum=DataFormat,)
     environment = proto.Field(proto.STRING, number=5,)
 
 

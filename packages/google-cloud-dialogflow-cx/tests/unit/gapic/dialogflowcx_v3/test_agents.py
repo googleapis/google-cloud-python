@@ -928,6 +928,7 @@ def test_get_agent(request_type, transport: str = "grpc"):
             security_settings="security_settings_value",
             enable_stackdriver_logging=True,
             enable_spell_correction=True,
+            locked=True,
         )
         response = client.get_agent(request)
 
@@ -949,6 +950,7 @@ def test_get_agent(request_type, transport: str = "grpc"):
     assert response.security_settings == "security_settings_value"
     assert response.enable_stackdriver_logging is True
     assert response.enable_spell_correction is True
+    assert response.locked is True
 
 
 def test_get_agent_empty_call():
@@ -994,6 +996,7 @@ async def test_get_agent_async(
                 security_settings="security_settings_value",
                 enable_stackdriver_logging=True,
                 enable_spell_correction=True,
+                locked=True,
             )
         )
         response = await client.get_agent(request)
@@ -1016,6 +1019,7 @@ async def test_get_agent_async(
     assert response.security_settings == "security_settings_value"
     assert response.enable_stackdriver_logging is True
     assert response.enable_spell_correction is True
+    assert response.locked is True
 
 
 @pytest.mark.asyncio
@@ -1163,6 +1167,7 @@ def test_create_agent(request_type, transport: str = "grpc"):
             security_settings="security_settings_value",
             enable_stackdriver_logging=True,
             enable_spell_correction=True,
+            locked=True,
         )
         response = client.create_agent(request)
 
@@ -1184,6 +1189,7 @@ def test_create_agent(request_type, transport: str = "grpc"):
     assert response.security_settings == "security_settings_value"
     assert response.enable_stackdriver_logging is True
     assert response.enable_spell_correction is True
+    assert response.locked is True
 
 
 def test_create_agent_empty_call():
@@ -1229,6 +1235,7 @@ async def test_create_agent_async(
                 security_settings="security_settings_value",
                 enable_stackdriver_logging=True,
                 enable_spell_correction=True,
+                locked=True,
             )
         )
         response = await client.create_agent(request)
@@ -1251,6 +1258,7 @@ async def test_create_agent_async(
     assert response.security_settings == "security_settings_value"
     assert response.enable_stackdriver_logging is True
     assert response.enable_spell_correction is True
+    assert response.locked is True
 
 
 @pytest.mark.asyncio
@@ -1412,6 +1420,7 @@ def test_update_agent(request_type, transport: str = "grpc"):
             security_settings="security_settings_value",
             enable_stackdriver_logging=True,
             enable_spell_correction=True,
+            locked=True,
         )
         response = client.update_agent(request)
 
@@ -1433,6 +1442,7 @@ def test_update_agent(request_type, transport: str = "grpc"):
     assert response.security_settings == "security_settings_value"
     assert response.enable_stackdriver_logging is True
     assert response.enable_spell_correction is True
+    assert response.locked is True
 
 
 def test_update_agent_empty_call():
@@ -1478,6 +1488,7 @@ async def test_update_agent_async(
                 security_settings="security_settings_value",
                 enable_stackdriver_logging=True,
                 enable_spell_correction=True,
+                locked=True,
             )
         )
         response = await client.update_agent(request)
@@ -1500,6 +1511,7 @@ async def test_update_agent_async(
     assert response.security_settings == "security_settings_value"
     assert response.enable_stackdriver_logging is True
     assert response.enable_spell_correction is True
+    assert response.locked is True
 
 
 @pytest.mark.asyncio

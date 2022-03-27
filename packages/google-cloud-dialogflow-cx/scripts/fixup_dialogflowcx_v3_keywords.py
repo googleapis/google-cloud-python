@@ -70,7 +70,7 @@ class dialogflowcxCallTransformer(cst.CSTTransformer):
         'delete_webhook': ('name', 'force', ),
         'deploy_flow': ('environment', 'flow_version', ),
         'detect_intent': ('session', 'query_input', 'query_params', 'output_audio_config', ),
-        'export_agent': ('name', 'agent_uri', 'environment', ),
+        'export_agent': ('name', 'agent_uri', 'data_format', 'environment', ),
         'export_flow': ('name', 'flow_uri', 'include_referenced_flows', ),
         'export_test_cases': ('parent', 'gcs_uri', 'data_format', 'filter', ),
         'fulfill_intent': ('match_intent_request', 'match', 'output_audio_config', ),
