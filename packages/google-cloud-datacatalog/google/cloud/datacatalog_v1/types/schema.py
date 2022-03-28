@@ -17,7 +17,11 @@ import proto  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.datacatalog.v1", manifest={"Schema", "ColumnSchema",},
+    package="google.cloud.datacatalog.v1",
+    manifest={
+        "Schema",
+        "ColumnSchema",
+    },
 )
 
 
@@ -33,7 +37,11 @@ class Schema(proto.Message):
             15 levels.
     """
 
-    columns = proto.RepeatedField(proto.MESSAGE, number=2, message="ColumnSchema",)
+    columns = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="ColumnSchema",
+    )
 
 
 class ColumnSchema(proto.Message):
@@ -65,11 +73,27 @@ class ColumnSchema(proto.Message):
             have zero or more sub-columns.
     """
 
-    column = proto.Field(proto.STRING, number=6,)
-    type_ = proto.Field(proto.STRING, number=1,)
-    description = proto.Field(proto.STRING, number=2,)
-    mode = proto.Field(proto.STRING, number=3,)
-    subcolumns = proto.RepeatedField(proto.MESSAGE, number=7, message="ColumnSchema",)
+    column = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    type_ = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    mode = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    subcolumns = proto.RepeatedField(
+        proto.MESSAGE,
+        number=7,
+        message="ColumnSchema",
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

@@ -20,7 +20,10 @@ from google.protobuf import timestamp_pb2  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.datacatalog.v1",
-    manifest={"IntegratedSystem", "PersonalDetails",},
+    manifest={
+        "IntegratedSystem",
+        "PersonalDetails",
+    },
 )
 
 
@@ -45,8 +48,15 @@ class PersonalDetails(proto.Message):
             Set if the entry is starred; unset otherwise.
     """
 
-    starred = proto.Field(proto.BOOL, number=1,)
-    star_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
+    starred = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
+    star_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

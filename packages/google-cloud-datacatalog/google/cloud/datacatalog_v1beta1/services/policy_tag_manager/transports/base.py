@@ -124,40 +124,64 @@ class PolicyTagManagerTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.create_taxonomy: gapic_v1.method.wrap_method(
-                self.create_taxonomy, default_timeout=None, client_info=client_info,
+                self.create_taxonomy,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.delete_taxonomy: gapic_v1.method.wrap_method(
-                self.delete_taxonomy, default_timeout=None, client_info=client_info,
+                self.delete_taxonomy,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.update_taxonomy: gapic_v1.method.wrap_method(
-                self.update_taxonomy, default_timeout=None, client_info=client_info,
+                self.update_taxonomy,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_taxonomies: gapic_v1.method.wrap_method(
-                self.list_taxonomies, default_timeout=None, client_info=client_info,
+                self.list_taxonomies,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_taxonomy: gapic_v1.method.wrap_method(
-                self.get_taxonomy, default_timeout=None, client_info=client_info,
+                self.get_taxonomy,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.create_policy_tag: gapic_v1.method.wrap_method(
-                self.create_policy_tag, default_timeout=None, client_info=client_info,
+                self.create_policy_tag,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.delete_policy_tag: gapic_v1.method.wrap_method(
-                self.delete_policy_tag, default_timeout=None, client_info=client_info,
+                self.delete_policy_tag,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.update_policy_tag: gapic_v1.method.wrap_method(
-                self.update_policy_tag, default_timeout=None, client_info=client_info,
+                self.update_policy_tag,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_policy_tags: gapic_v1.method.wrap_method(
-                self.list_policy_tags, default_timeout=None, client_info=client_info,
+                self.list_policy_tags,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_policy_tag: gapic_v1.method.wrap_method(
-                self.get_policy_tag, default_timeout=None, client_info=client_info,
+                self.get_policy_tag,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_iam_policy: gapic_v1.method.wrap_method(
-                self.get_iam_policy, default_timeout=None, client_info=client_info,
+                self.get_iam_policy,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.set_iam_policy: gapic_v1.method.wrap_method(
-                self.set_iam_policy, default_timeout=None, client_info=client_info,
+                self.set_iam_policy,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.test_iam_permissions: gapic_v1.method.wrap_method(
                 self.test_iam_permissions,
@@ -169,9 +193,9 @@ class PolicyTagManagerTransport(abc.ABC):
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

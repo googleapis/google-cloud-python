@@ -125,13 +125,19 @@ class DataCatalogTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.search_catalog: gapic_v1.method.wrap_method(
-                self.search_catalog, default_timeout=None, client_info=client_info,
+                self.search_catalog,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.create_entry_group: gapic_v1.method.wrap_method(
-                self.create_entry_group, default_timeout=None, client_info=client_info,
+                self.create_entry_group,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.update_entry_group: gapic_v1.method.wrap_method(
-                self.update_entry_group, default_timeout=None, client_info=client_info,
+                self.update_entry_group,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_entry_group: gapic_v1.method.wrap_method(
                 self.get_entry_group,
@@ -164,13 +170,19 @@ class DataCatalogTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.list_entry_groups: gapic_v1.method.wrap_method(
-                self.list_entry_groups, default_timeout=None, client_info=client_info,
+                self.list_entry_groups,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.create_entry: gapic_v1.method.wrap_method(
-                self.create_entry, default_timeout=None, client_info=client_info,
+                self.create_entry,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.update_entry: gapic_v1.method.wrap_method(
-                self.update_entry, default_timeout=None, client_info=client_info,
+                self.update_entry,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.delete_entry: gapic_v1.method.wrap_method(
                 self.delete_entry,
@@ -218,10 +230,14 @@ class DataCatalogTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.list_entries: gapic_v1.method.wrap_method(
-                self.list_entries, default_timeout=None, client_info=client_info,
+                self.list_entries,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.create_tag_template: gapic_v1.method.wrap_method(
-                self.create_tag_template, default_timeout=None, client_info=client_info,
+                self.create_tag_template,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_tag_template: gapic_v1.method.wrap_method(
                 self.get_tag_template,
@@ -239,7 +255,9 @@ class DataCatalogTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.update_tag_template: gapic_v1.method.wrap_method(
-                self.update_tag_template, default_timeout=None, client_info=client_info,
+                self.update_tag_template,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.delete_tag_template: gapic_v1.method.wrap_method(
                 self.delete_tag_template,
@@ -287,10 +305,14 @@ class DataCatalogTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.create_tag: gapic_v1.method.wrap_method(
-                self.create_tag, default_timeout=None, client_info=client_info,
+                self.create_tag,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.update_tag: gapic_v1.method.wrap_method(
-                self.update_tag, default_timeout=None, client_info=client_info,
+                self.update_tag,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.delete_tag: gapic_v1.method.wrap_method(
                 self.delete_tag,
@@ -323,10 +345,14 @@ class DataCatalogTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.set_iam_policy: gapic_v1.method.wrap_method(
-                self.set_iam_policy, default_timeout=None, client_info=client_info,
+                self.set_iam_policy,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_iam_policy: gapic_v1.method.wrap_method(
-                self.get_iam_policy, default_timeout=None, client_info=client_info,
+                self.get_iam_policy,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.test_iam_permissions: gapic_v1.method.wrap_method(
                 self.test_iam_permissions,
@@ -338,9 +364,9 @@ class DataCatalogTransport(abc.ABC):
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

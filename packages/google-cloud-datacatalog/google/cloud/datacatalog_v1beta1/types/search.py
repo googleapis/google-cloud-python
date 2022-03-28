@@ -18,7 +18,10 @@ import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.datacatalog.v1beta1",
-    manifest={"SearchResultType", "SearchCatalogResult",},
+    manifest={
+        "SearchResultType",
+        "SearchCatalogResult",
+    },
 )
 
 
@@ -63,10 +66,23 @@ class SearchCatalogResult(proto.Message):
             -  ``//bigquery.googleapis.com/projects/projectId/datasets/datasetId/tables/tableId``
     """
 
-    search_result_type = proto.Field(proto.ENUM, number=1, enum="SearchResultType",)
-    search_result_subtype = proto.Field(proto.STRING, number=2,)
-    relative_resource_name = proto.Field(proto.STRING, number=3,)
-    linked_resource = proto.Field(proto.STRING, number=4,)
+    search_result_type = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum="SearchResultType",
+    )
+    search_result_subtype = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    relative_resource_name = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    linked_resource = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

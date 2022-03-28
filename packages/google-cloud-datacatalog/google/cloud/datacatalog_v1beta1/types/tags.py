@@ -20,7 +20,13 @@ from google.protobuf import timestamp_pb2  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.datacatalog.v1beta1",
-    manifest={"Tag", "TagField", "TagTemplate", "TagTemplateField", "FieldType",},
+    manifest={
+        "Tag",
+        "TagField",
+        "TagTemplate",
+        "TagTemplateField",
+        "FieldType",
+    },
 )
 
 
@@ -73,11 +79,29 @@ class Tag(proto.Message):
             and at most 500 fields.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    template = proto.Field(proto.STRING, number=2,)
-    template_display_name = proto.Field(proto.STRING, number=5,)
-    column = proto.Field(proto.STRING, number=4, oneof="scope",)
-    fields = proto.MapField(proto.STRING, proto.MESSAGE, number=3, message="TagField",)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    template = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    template_display_name = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    column = proto.Field(
+        proto.STRING,
+        number=4,
+        oneof="scope",
+    )
+    fields = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=3,
+        message="TagField",
+    )
 
 
 class TagField(proto.Message):
@@ -138,17 +162,46 @@ class TagField(proto.Message):
                 The display name of the enum value.
         """
 
-        display_name = proto.Field(proto.STRING, number=1,)
+        display_name = proto.Field(
+            proto.STRING,
+            number=1,
+        )
 
-    display_name = proto.Field(proto.STRING, number=1,)
-    double_value = proto.Field(proto.DOUBLE, number=2, oneof="kind",)
-    string_value = proto.Field(proto.STRING, number=3, oneof="kind",)
-    bool_value = proto.Field(proto.BOOL, number=4, oneof="kind",)
-    timestamp_value = proto.Field(
-        proto.MESSAGE, number=5, oneof="kind", message=timestamp_pb2.Timestamp,
+    display_name = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    enum_value = proto.Field(proto.MESSAGE, number=6, oneof="kind", message=EnumValue,)
-    order = proto.Field(proto.INT32, number=7,)
+    double_value = proto.Field(
+        proto.DOUBLE,
+        number=2,
+        oneof="kind",
+    )
+    string_value = proto.Field(
+        proto.STRING,
+        number=3,
+        oneof="kind",
+    )
+    bool_value = proto.Field(
+        proto.BOOL,
+        number=4,
+        oneof="kind",
+    )
+    timestamp_value = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="kind",
+        message=timestamp_pb2.Timestamp,
+    )
+    enum_value = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        oneof="kind",
+        message=EnumValue,
+    )
+    order = proto.Field(
+        proto.INT32,
+        number=7,
+    )
 
 
 class TagTemplate(proto.Message):
@@ -187,10 +240,19 @@ class TagTemplate(proto.Message):
             must start with a letter or underscore.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    display_name = proto.Field(proto.STRING, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
     fields = proto.MapField(
-        proto.STRING, proto.MESSAGE, number=3, message="TagTemplateField",
+        proto.STRING,
+        proto.MESSAGE,
+        number=3,
+        message="TagTemplateField",
     )
 
 
@@ -224,11 +286,27 @@ class TagTemplateField(proto.Message):
             to be sequential.
     """
 
-    name = proto.Field(proto.STRING, number=6,)
-    display_name = proto.Field(proto.STRING, number=1,)
-    type_ = proto.Field(proto.MESSAGE, number=2, message="FieldType",)
-    is_required = proto.Field(proto.BOOL, number=3,)
-    order = proto.Field(proto.INT32, number=5,)
+    name = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    type_ = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="FieldType",
+    )
+    is_required = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+    order = proto.Field(
+        proto.INT32,
+        number=5,
+    )
 
 
 class FieldType(proto.Message):
@@ -287,17 +365,28 @@ class FieldType(proto.Message):
                     Must not be an empty string.
             """
 
-            display_name = proto.Field(proto.STRING, number=1,)
+            display_name = proto.Field(
+                proto.STRING,
+                number=1,
+            )
 
         allowed_values = proto.RepeatedField(
-            proto.MESSAGE, number=1, message="FieldType.EnumType.EnumValue",
+            proto.MESSAGE,
+            number=1,
+            message="FieldType.EnumType.EnumValue",
         )
 
     primitive_type = proto.Field(
-        proto.ENUM, number=1, oneof="type_decl", enum=PrimitiveType,
+        proto.ENUM,
+        number=1,
+        oneof="type_decl",
+        enum=PrimitiveType,
     )
     enum_type = proto.Field(
-        proto.MESSAGE, number=2, oneof="type_decl", message=EnumType,
+        proto.MESSAGE,
+        number=2,
+        oneof="type_decl",
+        message=EnumType,
     )
 
 

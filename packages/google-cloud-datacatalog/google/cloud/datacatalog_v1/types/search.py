@@ -21,7 +21,10 @@ from google.protobuf import timestamp_pb2  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.datacatalog.v1",
-    manifest={"SearchResultType", "SearchCatalogResult",},
+    manifest={
+        "SearchResultType",
+        "SearchCatalogResult",
+    },
 )
 
 
@@ -113,18 +116,51 @@ class SearchCatalogResult(proto.Message):
             contents.
     """
 
-    search_result_type = proto.Field(proto.ENUM, number=1, enum="SearchResultType",)
-    search_result_subtype = proto.Field(proto.STRING, number=2,)
-    relative_resource_name = proto.Field(proto.STRING, number=3,)
-    linked_resource = proto.Field(proto.STRING, number=4,)
-    modify_time = proto.Field(proto.MESSAGE, number=7, message=timestamp_pb2.Timestamp,)
-    integrated_system = proto.Field(
-        proto.ENUM, number=8, oneof="system", enum=common.IntegratedSystem,
+    search_result_type = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum="SearchResultType",
     )
-    user_specified_system = proto.Field(proto.STRING, number=9, oneof="system",)
-    fully_qualified_name = proto.Field(proto.STRING, number=10,)
-    display_name = proto.Field(proto.STRING, number=12,)
-    description = proto.Field(proto.STRING, number=13,)
+    search_result_subtype = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    relative_resource_name = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    linked_resource = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    modify_time = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=timestamp_pb2.Timestamp,
+    )
+    integrated_system = proto.Field(
+        proto.ENUM,
+        number=8,
+        oneof="system",
+        enum=common.IntegratedSystem,
+    )
+    user_specified_system = proto.Field(
+        proto.STRING,
+        number=9,
+        oneof="system",
+    )
+    fully_qualified_name = proto.Field(
+        proto.STRING,
+        number=10,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=12,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=13,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

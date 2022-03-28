@@ -17,7 +17,10 @@ import proto  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.datacatalog.v1", manifest={"DataSource",},
+    package="google.cloud.datacatalog.v1",
+    manifest={
+        "DataSource",
+    },
 )
 
 
@@ -40,8 +43,15 @@ class DataSource(proto.Message):
         CLOUD_STORAGE = 1
         BIGQUERY = 2
 
-    service = proto.Field(proto.ENUM, number=1, enum=Service,)
-    resource = proto.Field(proto.STRING, number=2,)
+    service = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Service,
+    )
+    resource = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

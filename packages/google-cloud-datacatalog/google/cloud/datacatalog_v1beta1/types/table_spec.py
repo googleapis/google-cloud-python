@@ -60,12 +60,22 @@ class BigQueryTableSpec(proto.Message):
             This field is a member of `oneof`_ ``type_spec``.
     """
 
-    table_source_type = proto.Field(proto.ENUM, number=1, enum="TableSourceType",)
+    table_source_type = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum="TableSourceType",
+    )
     view_spec = proto.Field(
-        proto.MESSAGE, number=2, oneof="type_spec", message="ViewSpec",
+        proto.MESSAGE,
+        number=2,
+        oneof="type_spec",
+        message="ViewSpec",
     )
     table_spec = proto.Field(
-        proto.MESSAGE, number=3, oneof="type_spec", message="TableSpec",
+        proto.MESSAGE,
+        number=3,
+        oneof="type_spec",
+        message="TableSpec",
     )
 
 
@@ -78,7 +88,10 @@ class ViewSpec(proto.Message):
             view.
     """
 
-    view_query = proto.Field(proto.STRING, number=1,)
+    view_query = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class TableSpec(proto.Message):
@@ -94,7 +107,10 @@ class TableSpec(proto.Message):
             Otherwise, ``grouped_entry`` is empty.
     """
 
-    grouped_entry = proto.Field(proto.STRING, number=1,)
+    grouped_entry = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class BigQueryDateShardedSpec(proto.Message):
@@ -116,9 +132,18 @@ class BigQueryDateShardedSpec(proto.Message):
             Output only. Total number of shards.
     """
 
-    dataset = proto.Field(proto.STRING, number=1,)
-    table_prefix = proto.Field(proto.STRING, number=2,)
-    shard_count = proto.Field(proto.INT64, number=3,)
+    dataset = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    table_prefix = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    shard_count = proto.Field(
+        proto.INT64,
+        number=3,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

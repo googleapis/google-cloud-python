@@ -63,7 +63,10 @@ class DataCatalogClientMeta(type):
     _transport_registry["grpc"] = DataCatalogGrpcTransport
     _transport_registry["grpc_asyncio"] = DataCatalogGrpcAsyncIOTransport
 
-    def get_transport_class(cls, label: str = None,) -> Type[DataCatalogTransport]:
+    def get_transport_class(
+        cls,
+        label: str = None,
+    ) -> Type[DataCatalogTransport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -170,10 +173,18 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         return self._transport
 
     @staticmethod
-    def entry_path(project: str, location: str, entry_group: str, entry: str,) -> str:
+    def entry_path(
+        project: str,
+        location: str,
+        entry_group: str,
+        entry: str,
+    ) -> str:
         """Returns a fully-qualified entry string."""
         return "projects/{project}/locations/{location}/entryGroups/{entry_group}/entries/{entry}".format(
-            project=project, location=location, entry_group=entry_group, entry=entry,
+            project=project,
+            location=location,
+            entry_group=entry_group,
+            entry=entry,
         )
 
     @staticmethod
@@ -186,10 +197,18 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def entry_group_path(project: str, location: str, entry_group: str,) -> str:
+    def entry_group_path(
+        project: str,
+        location: str,
+        entry_group: str,
+    ) -> str:
         """Returns a fully-qualified entry_group string."""
-        return "projects/{project}/locations/{location}/entryGroups/{entry_group}".format(
-            project=project, location=location, entry_group=entry_group,
+        return (
+            "projects/{project}/locations/{location}/entryGroups/{entry_group}".format(
+                project=project,
+                location=location,
+                entry_group=entry_group,
+            )
         )
 
     @staticmethod
@@ -203,7 +222,11 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
 
     @staticmethod
     def tag_path(
-        project: str, location: str, entry_group: str, entry: str, tag: str,
+        project: str,
+        location: str,
+        entry_group: str,
+        entry: str,
+        tag: str,
     ) -> str:
         """Returns a fully-qualified tag string."""
         return "projects/{project}/locations/{location}/entryGroups/{entry_group}/entries/{entry}/tags/{tag}".format(
@@ -224,10 +247,16 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def tag_template_path(project: str, location: str, tag_template: str,) -> str:
+    def tag_template_path(
+        project: str,
+        location: str,
+        tag_template: str,
+    ) -> str:
         """Returns a fully-qualified tag_template string."""
         return "projects/{project}/locations/{location}/tagTemplates/{tag_template}".format(
-            project=project, location=location, tag_template=tag_template,
+            project=project,
+            location=location,
+            tag_template=tag_template,
         )
 
     @staticmethod
@@ -241,11 +270,17 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
 
     @staticmethod
     def tag_template_field_path(
-        project: str, location: str, tag_template: str, field: str,
+        project: str,
+        location: str,
+        tag_template: str,
+        field: str,
     ) -> str:
         """Returns a fully-qualified tag_template_field string."""
         return "projects/{project}/locations/{location}/tagTemplates/{tag_template}/fields/{field}".format(
-            project=project, location=location, tag_template=tag_template, field=field,
+            project=project,
+            location=location,
+            tag_template=tag_template,
+            field=field,
         )
 
     @staticmethod
@@ -258,7 +293,9 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_billing_account_path(billing_account: str,) -> str:
+    def common_billing_account_path(
+        billing_account: str,
+    ) -> str:
         """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
@@ -271,9 +308,13 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(folder: str,) -> str:
+    def common_folder_path(
+        folder: str,
+    ) -> str:
         """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(folder=folder,)
+        return "folders/{folder}".format(
+            folder=folder,
+        )
 
     @staticmethod
     def parse_common_folder_path(path: str) -> Dict[str, str]:
@@ -282,9 +323,13 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(organization: str,) -> str:
+    def common_organization_path(
+        organization: str,
+    ) -> str:
         """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(organization=organization,)
+        return "organizations/{organization}".format(
+            organization=organization,
+        )
 
     @staticmethod
     def parse_common_organization_path(path: str) -> Dict[str, str]:
@@ -293,9 +338,13 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(project: str,) -> str:
+    def common_project_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified project string."""
-        return "projects/{project}".format(project=project,)
+        return "projects/{project}".format(
+            project=project,
+        )
 
     @staticmethod
     def parse_common_project_path(path: str) -> Dict[str, str]:
@@ -304,10 +353,14 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(project: str, location: str,) -> str:
+    def common_location_path(
+        project: str,
+        location: str,
+    ) -> str:
         """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
-            project=project, location=location,
+            project=project,
+            location=location,
         )
 
     @staticmethod
@@ -606,12 +659,20 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.search_catalog]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.SearchCatalogPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -743,7 +804,12 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -853,7 +919,12 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -956,7 +1027,12 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1044,7 +1120,10 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def list_entry_groups(
@@ -1139,12 +1218,20 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListEntryGroupsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1285,7 +1372,12 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1431,7 +1523,12 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1521,7 +1618,10 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def get_entry(
@@ -1620,7 +1720,12 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1697,7 +1802,12 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.lookup_entry]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1793,12 +1903,20 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListEntriesPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1925,7 +2043,12 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2023,7 +2146,12 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2147,7 +2275,12 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2249,7 +2382,10 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def create_tag_template_field(
@@ -2378,7 +2514,12 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2512,7 +2653,12 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2621,7 +2767,12 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2726,7 +2877,10 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def create_tag(
@@ -2845,7 +2999,12 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2956,7 +3115,12 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -3039,7 +3203,10 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def list_tags(
@@ -3140,12 +3307,20 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListTagsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -3307,7 +3482,12 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -3472,7 +3652,12 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -3555,7 +3740,12 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response

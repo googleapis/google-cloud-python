@@ -49,14 +49,21 @@ class BigQueryConnectionSpec(proto.Message):
         CONNECTION_TYPE_UNSPECIFIED = 0
         CLOUD_SQL = 1
 
-    connection_type = proto.Field(proto.ENUM, number=1, enum=ConnectionType,)
+    connection_type = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=ConnectionType,
+    )
     cloud_sql = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="connection_spec",
         message="CloudSqlBigQueryConnectionSpec",
     )
-    has_credential = proto.Field(proto.BOOL, number=3,)
+    has_credential = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
 
 
 class CloudSqlBigQueryConnectionSpec(proto.Message):
@@ -79,9 +86,19 @@ class CloudSqlBigQueryConnectionSpec(proto.Message):
         POSTGRES = 1
         MYSQL = 2
 
-    instance_id = proto.Field(proto.STRING, number=1,)
-    database = proto.Field(proto.STRING, number=2,)
-    type_ = proto.Field(proto.ENUM, number=3, enum=DatabaseType,)
+    instance_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    database = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    type_ = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=DatabaseType,
+    )
 
 
 class BigQueryRoutineSpec(proto.Message):
@@ -92,7 +109,10 @@ class BigQueryRoutineSpec(proto.Message):
             Paths of the imported libraries.
     """
 
-    imported_libraries = proto.RepeatedField(proto.STRING, number=1,)
+    imported_libraries = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

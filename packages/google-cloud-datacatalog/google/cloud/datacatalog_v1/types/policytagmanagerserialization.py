@@ -55,13 +55,23 @@ class SerializedTaxonomy(proto.Message):
             taxonomy.
     """
 
-    display_name = proto.Field(proto.STRING, number=1,)
-    description = proto.Field(proto.STRING, number=2,)
+    display_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=2,
+    )
     policy_tags = proto.RepeatedField(
-        proto.MESSAGE, number=3, message="SerializedPolicyTag",
+        proto.MESSAGE,
+        number=3,
+        message="SerializedPolicyTag",
     )
     activated_policy_types = proto.RepeatedField(
-        proto.ENUM, number=4, enum=policytagmanager.Taxonomy.PolicyType,
+        proto.ENUM,
+        number=4,
+        enum=policytagmanager.Taxonomy.PolicyType,
     )
 
 
@@ -85,11 +95,22 @@ class SerializedPolicyTag(proto.Message):
             Children of the policy tag, if any.
     """
 
-    policy_tag = proto.Field(proto.STRING, number=1,)
-    display_name = proto.Field(proto.STRING, number=2,)
-    description = proto.Field(proto.STRING, number=3,)
+    policy_tag = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=3,
+    )
     child_policy_tags = proto.RepeatedField(
-        proto.MESSAGE, number=4, message="SerializedPolicyTag",
+        proto.MESSAGE,
+        number=4,
+        message="SerializedPolicyTag",
     )
 
 
@@ -106,9 +127,14 @@ class ReplaceTaxonomyRequest(proto.Message):
             child policy tags.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     serialized_taxonomy = proto.Field(
-        proto.MESSAGE, number=2, message="SerializedTaxonomy",
+        proto.MESSAGE,
+        number=2,
+        message="SerializedTaxonomy",
     )
 
 
@@ -137,12 +163,21 @@ class ImportTaxonomiesRequest(proto.Message):
             This field is a member of `oneof`_ ``source``.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     inline_source = proto.Field(
-        proto.MESSAGE, number=2, oneof="source", message="InlineSource",
+        proto.MESSAGE,
+        number=2,
+        oneof="source",
+        message="InlineSource",
     )
     cross_regional_source = proto.Field(
-        proto.MESSAGE, number=3, oneof="source", message="CrossRegionalSource",
+        proto.MESSAGE,
+        number=3,
+        oneof="source",
+        message="CrossRegionalSource",
     )
 
 
@@ -155,7 +190,9 @@ class InlineSource(proto.Message):
     """
 
     taxonomies = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="SerializedTaxonomy",
+        proto.MESSAGE,
+        number=1,
+        message="SerializedTaxonomy",
     )
 
 
@@ -169,7 +206,10 @@ class CrossRegionalSource(proto.Message):
             taxonomy to import.
     """
 
-    taxonomy = proto.Field(proto.STRING, number=1,)
+    taxonomy = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ImportTaxonomiesResponse(proto.Message):
@@ -182,7 +222,9 @@ class ImportTaxonomiesResponse(proto.Message):
     """
 
     taxonomies = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=policytagmanager.Taxonomy,
+        proto.MESSAGE,
+        number=1,
+        message=policytagmanager.Taxonomy,
     )
 
 
@@ -207,9 +249,19 @@ class ExportTaxonomiesRequest(proto.Message):
             This field is a member of `oneof`_ ``destination``.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    taxonomies = proto.RepeatedField(proto.STRING, number=2,)
-    serialized_taxonomies = proto.Field(proto.BOOL, number=3, oneof="destination",)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    taxonomies = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+    serialized_taxonomies = proto.Field(
+        proto.BOOL,
+        number=3,
+        oneof="destination",
+    )
 
 
 class ExportTaxonomiesResponse(proto.Message):
@@ -223,7 +275,9 @@ class ExportTaxonomiesResponse(proto.Message):
     """
 
     taxonomies = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="SerializedTaxonomy",
+        proto.MESSAGE,
+        number=1,
+        message="SerializedTaxonomy",
     )
 
 

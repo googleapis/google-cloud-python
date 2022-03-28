@@ -19,7 +19,11 @@ from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.datacatalog.v1", manifest={"UsageStats", "UsageSignal",},
+    package="google.cloud.datacatalog.v1",
+    manifest={
+        "UsageStats",
+        "UsageSignal",
+    },
 )
 
 
@@ -50,10 +54,22 @@ class UsageStats(proto.Message):
             milliseconds.
     """
 
-    total_completions = proto.Field(proto.FLOAT, number=1,)
-    total_failures = proto.Field(proto.FLOAT, number=2,)
-    total_cancellations = proto.Field(proto.FLOAT, number=3,)
-    total_execution_time_for_completions_millis = proto.Field(proto.FLOAT, number=4,)
+    total_completions = proto.Field(
+        proto.FLOAT,
+        number=1,
+    )
+    total_failures = proto.Field(
+        proto.FLOAT,
+        number=2,
+    )
+    total_cancellations = proto.Field(
+        proto.FLOAT,
+        number=3,
+    )
+    total_execution_time_for_completions_millis = proto.Field(
+        proto.FLOAT,
+        number=4,
+    )
 
 
 class UsageSignal(proto.Message):
@@ -71,9 +87,16 @@ class UsageSignal(proto.Message):
             Supported time ranges are ``{"24H", "7D", "30D"}``.
     """
 
-    update_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
     usage_within_time_range = proto.MapField(
-        proto.STRING, proto.MESSAGE, number=2, message="UsageStats",
+        proto.STRING,
+        proto.MESSAGE,
+        number=2,
+        message="UsageStats",
     )
 
 
