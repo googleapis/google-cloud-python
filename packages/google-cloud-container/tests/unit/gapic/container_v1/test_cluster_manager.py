@@ -89,7 +89,11 @@ def test__get_default_mtls_endpoint():
 
 
 @pytest.mark.parametrize(
-    "client_class", [ClusterManagerClient, ClusterManagerAsyncClient,]
+    "client_class",
+    [
+        ClusterManagerClient,
+        ClusterManagerAsyncClient,
+    ],
 )
 def test_cluster_manager_client_from_service_account_info(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -131,7 +135,11 @@ def test_cluster_manager_client_service_account_always_use_jwt(
 
 
 @pytest.mark.parametrize(
-    "client_class", [ClusterManagerClient, ClusterManagerAsyncClient,]
+    "client_class",
+    [
+        ClusterManagerClient,
+        ClusterManagerAsyncClient,
+    ],
 )
 def test_cluster_manager_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -495,7 +503,9 @@ def test_cluster_manager_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -635,10 +645,17 @@ def test_cluster_manager_client_create_channel_credentials_file(
         )
 
 
-@pytest.mark.parametrize("request_type", [cluster_service.ListClustersRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cluster_service.ListClustersRequest,
+        dict,
+    ],
+)
 def test_list_clusters(request_type, transport: str = "grpc"):
     client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -667,7 +684,8 @@ def test_list_clusters_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -683,7 +701,8 @@ async def test_list_clusters_async(
     transport: str = "grpc_asyncio", request_type=cluster_service.ListClustersRequest
 ):
     client = ClusterManagerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -694,7 +713,9 @@ async def test_list_clusters_async(
     with mock.patch.object(type(client.transport.list_clusters), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            cluster_service.ListClustersResponse(missing_zones=["missing_zones_value"],)
+            cluster_service.ListClustersResponse(
+                missing_zones=["missing_zones_value"],
+            )
         )
         response = await client.list_clusters(request)
 
@@ -714,7 +735,9 @@ async def test_list_clusters_async_from_dict():
 
 
 def test_list_clusters_field_headers():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -734,7 +757,10 @@ def test_list_clusters_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -763,11 +789,16 @@ async def test_list_clusters_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_clusters_flattened():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_clusters), "__call__") as call:
@@ -776,7 +807,9 @@ def test_list_clusters_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.list_clusters(
-            project_id="project_id_value", zone="zone_value", parent="parent_value",
+            project_id="project_id_value",
+            zone="zone_value",
+            parent="parent_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -795,7 +828,9 @@ def test_list_clusters_flattened():
 
 
 def test_list_clusters_flattened_error():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -825,7 +860,9 @@ async def test_list_clusters_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.list_clusters(
-            project_id="project_id_value", zone="zone_value", parent="parent_value",
+            project_id="project_id_value",
+            zone="zone_value",
+            parent="parent_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -860,10 +897,17 @@ async def test_list_clusters_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [cluster_service.GetClusterRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cluster_service.GetClusterRequest,
+        dict,
+    ],
+)
 def test_get_cluster(request_type, transport: str = "grpc"):
     client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -948,7 +992,8 @@ def test_get_cluster_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -964,7 +1009,8 @@ async def test_get_cluster_async(
     transport: str = "grpc_asyncio", request_type=cluster_service.GetClusterRequest
 ):
     client = ClusterManagerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1053,7 +1099,9 @@ async def test_get_cluster_async_from_dict():
 
 
 def test_get_cluster_field_headers():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1073,7 +1121,10 @@ def test_get_cluster_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1102,11 +1153,16 @@ async def test_get_cluster_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_cluster_flattened():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_cluster), "__call__") as call:
@@ -1140,7 +1196,9 @@ def test_get_cluster_flattened():
 
 
 def test_get_cluster_flattened_error():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1213,10 +1271,17 @@ async def test_get_cluster_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [cluster_service.CreateClusterRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cluster_service.CreateClusterRequest,
+        dict,
+    ],
+)
 def test_create_cluster(request_type, transport: str = "grpc"):
     client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1265,7 +1330,8 @@ def test_create_cluster_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1281,7 +1347,8 @@ async def test_create_cluster_async(
     transport: str = "grpc_asyncio", request_type=cluster_service.CreateClusterRequest
 ):
     client = ClusterManagerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1334,7 +1401,9 @@ async def test_create_cluster_async_from_dict():
 
 
 def test_create_cluster_field_headers():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1354,7 +1423,10 @@ def test_create_cluster_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1383,11 +1455,16 @@ async def test_create_cluster_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_cluster_flattened():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_cluster), "__call__") as call:
@@ -1421,7 +1498,9 @@ def test_create_cluster_flattened():
 
 
 def test_create_cluster_flattened_error():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1494,10 +1573,17 @@ async def test_create_cluster_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [cluster_service.UpdateClusterRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cluster_service.UpdateClusterRequest,
+        dict,
+    ],
+)
 def test_update_cluster(request_type, transport: str = "grpc"):
     client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1546,7 +1632,8 @@ def test_update_cluster_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1562,7 +1649,8 @@ async def test_update_cluster_async(
     transport: str = "grpc_asyncio", request_type=cluster_service.UpdateClusterRequest
 ):
     client = ClusterManagerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1615,7 +1703,9 @@ async def test_update_cluster_async_from_dict():
 
 
 def test_update_cluster_field_headers():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1635,7 +1725,10 @@ def test_update_cluster_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1664,11 +1757,16 @@ async def test_update_cluster_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_update_cluster_flattened():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_cluster), "__call__") as call:
@@ -1710,7 +1808,9 @@ def test_update_cluster_flattened():
 
 
 def test_update_cluster_flattened_error():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1797,10 +1897,17 @@ async def test_update_cluster_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [cluster_service.UpdateNodePoolRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cluster_service.UpdateNodePoolRequest,
+        dict,
+    ],
+)
 def test_update_node_pool(request_type, transport: str = "grpc"):
     client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1849,7 +1956,8 @@ def test_update_node_pool_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1865,7 +1973,8 @@ async def test_update_node_pool_async(
     transport: str = "grpc_asyncio", request_type=cluster_service.UpdateNodePoolRequest
 ):
     client = ClusterManagerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1918,7 +2027,9 @@ async def test_update_node_pool_async_from_dict():
 
 
 def test_update_node_pool_field_headers():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1938,7 +2049,10 @@ def test_update_node_pool_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1967,15 +2081,23 @@ async def test_update_node_pool_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.parametrize(
-    "request_type", [cluster_service.SetNodePoolAutoscalingRequest, dict,]
+    "request_type",
+    [
+        cluster_service.SetNodePoolAutoscalingRequest,
+        dict,
+    ],
 )
 def test_set_node_pool_autoscaling(request_type, transport: str = "grpc"):
     client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2026,7 +2148,8 @@ def test_set_node_pool_autoscaling_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2045,7 +2168,8 @@ async def test_set_node_pool_autoscaling_async(
     request_type=cluster_service.SetNodePoolAutoscalingRequest,
 ):
     client = ClusterManagerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2100,7 +2224,9 @@ async def test_set_node_pool_autoscaling_async_from_dict():
 
 
 def test_set_node_pool_autoscaling_field_headers():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2122,7 +2248,10 @@ def test_set_node_pool_autoscaling_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2153,15 +2282,23 @@ async def test_set_node_pool_autoscaling_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.parametrize(
-    "request_type", [cluster_service.SetLoggingServiceRequest, dict,]
+    "request_type",
+    [
+        cluster_service.SetLoggingServiceRequest,
+        dict,
+    ],
 )
 def test_set_logging_service(request_type, transport: str = "grpc"):
     client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2212,7 +2349,8 @@ def test_set_logging_service_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2231,7 +2369,8 @@ async def test_set_logging_service_async(
     request_type=cluster_service.SetLoggingServiceRequest,
 ):
     client = ClusterManagerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2286,7 +2425,9 @@ async def test_set_logging_service_async_from_dict():
 
 
 def test_set_logging_service_field_headers():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2308,7 +2449,10 @@ def test_set_logging_service_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2339,11 +2483,16 @@ async def test_set_logging_service_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_set_logging_service_flattened():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2383,7 +2532,9 @@ def test_set_logging_service_flattened():
 
 
 def test_set_logging_service_flattened_error():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2465,11 +2616,16 @@ async def test_set_logging_service_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [cluster_service.SetMonitoringServiceRequest, dict,]
+    "request_type",
+    [
+        cluster_service.SetMonitoringServiceRequest,
+        dict,
+    ],
 )
 def test_set_monitoring_service(request_type, transport: str = "grpc"):
     client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2520,7 +2676,8 @@ def test_set_monitoring_service_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2539,7 +2696,8 @@ async def test_set_monitoring_service_async(
     request_type=cluster_service.SetMonitoringServiceRequest,
 ):
     client = ClusterManagerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2594,7 +2752,9 @@ async def test_set_monitoring_service_async_from_dict():
 
 
 def test_set_monitoring_service_field_headers():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2616,7 +2776,10 @@ def test_set_monitoring_service_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2647,11 +2810,16 @@ async def test_set_monitoring_service_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_set_monitoring_service_flattened():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2691,7 +2859,9 @@ def test_set_monitoring_service_flattened():
 
 
 def test_set_monitoring_service_flattened_error():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2773,11 +2943,16 @@ async def test_set_monitoring_service_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [cluster_service.SetAddonsConfigRequest, dict,]
+    "request_type",
+    [
+        cluster_service.SetAddonsConfigRequest,
+        dict,
+    ],
 )
 def test_set_addons_config(request_type, transport: str = "grpc"):
     client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2828,7 +3003,8 @@ def test_set_addons_config_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2846,7 +3022,8 @@ async def test_set_addons_config_async(
     transport: str = "grpc_asyncio", request_type=cluster_service.SetAddonsConfigRequest
 ):
     client = ClusterManagerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2901,7 +3078,9 @@ async def test_set_addons_config_async_from_dict():
 
 
 def test_set_addons_config_field_headers():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2923,7 +3102,10 @@ def test_set_addons_config_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2954,11 +3136,16 @@ async def test_set_addons_config_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_set_addons_config_flattened():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3002,7 +3189,9 @@ def test_set_addons_config_flattened():
 
 
 def test_set_addons_config_flattened_error():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -3091,10 +3280,17 @@ async def test_set_addons_config_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [cluster_service.SetLocationsRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cluster_service.SetLocationsRequest,
+        dict,
+    ],
+)
 def test_set_locations(request_type, transport: str = "grpc"):
     client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3143,7 +3339,8 @@ def test_set_locations_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3159,7 +3356,8 @@ async def test_set_locations_async(
     transport: str = "grpc_asyncio", request_type=cluster_service.SetLocationsRequest
 ):
     client = ClusterManagerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3212,7 +3410,9 @@ async def test_set_locations_async_from_dict():
 
 
 def test_set_locations_field_headers():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3232,7 +3432,10 @@ def test_set_locations_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -3261,11 +3464,16 @@ async def test_set_locations_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_set_locations_flattened():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_locations), "__call__") as call:
@@ -3303,7 +3511,9 @@ def test_set_locations_flattened():
 
 
 def test_set_locations_flattened_error():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -3382,10 +3592,17 @@ async def test_set_locations_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [cluster_service.UpdateMasterRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cluster_service.UpdateMasterRequest,
+        dict,
+    ],
+)
 def test_update_master(request_type, transport: str = "grpc"):
     client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3434,7 +3651,8 @@ def test_update_master_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3450,7 +3668,8 @@ async def test_update_master_async(
     transport: str = "grpc_asyncio", request_type=cluster_service.UpdateMasterRequest
 ):
     client = ClusterManagerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3503,7 +3722,9 @@ async def test_update_master_async_from_dict():
 
 
 def test_update_master_field_headers():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3523,7 +3744,10 @@ def test_update_master_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -3552,11 +3776,16 @@ async def test_update_master_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_update_master_flattened():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_master), "__call__") as call:
@@ -3594,7 +3823,9 @@ def test_update_master_flattened():
 
 
 def test_update_master_flattened_error():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -3673,10 +3904,17 @@ async def test_update_master_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [cluster_service.SetMasterAuthRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cluster_service.SetMasterAuthRequest,
+        dict,
+    ],
+)
 def test_set_master_auth(request_type, transport: str = "grpc"):
     client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3725,7 +3963,8 @@ def test_set_master_auth_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3741,7 +3980,8 @@ async def test_set_master_auth_async(
     transport: str = "grpc_asyncio", request_type=cluster_service.SetMasterAuthRequest
 ):
     client = ClusterManagerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3794,7 +4034,9 @@ async def test_set_master_auth_async_from_dict():
 
 
 def test_set_master_auth_field_headers():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3814,7 +4056,10 @@ def test_set_master_auth_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -3843,13 +4088,23 @@ async def test_set_master_auth_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
-@pytest.mark.parametrize("request_type", [cluster_service.DeleteClusterRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cluster_service.DeleteClusterRequest,
+        dict,
+    ],
+)
 def test_delete_cluster(request_type, transport: str = "grpc"):
     client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3898,7 +4153,8 @@ def test_delete_cluster_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3914,7 +4170,8 @@ async def test_delete_cluster_async(
     transport: str = "grpc_asyncio", request_type=cluster_service.DeleteClusterRequest
 ):
     client = ClusterManagerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3967,7 +4224,9 @@ async def test_delete_cluster_async_from_dict():
 
 
 def test_delete_cluster_field_headers():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3987,7 +4246,10 @@ def test_delete_cluster_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -4016,11 +4278,16 @@ async def test_delete_cluster_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_cluster_flattened():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_cluster), "__call__") as call:
@@ -4054,7 +4321,9 @@ def test_delete_cluster_flattened():
 
 
 def test_delete_cluster_flattened_error():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -4127,10 +4396,17 @@ async def test_delete_cluster_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [cluster_service.ListOperationsRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cluster_service.ListOperationsRequest,
+        dict,
+    ],
+)
 def test_list_operations(request_type, transport: str = "grpc"):
     client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4159,7 +4435,8 @@ def test_list_operations_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4175,7 +4452,8 @@ async def test_list_operations_async(
     transport: str = "grpc_asyncio", request_type=cluster_service.ListOperationsRequest
 ):
     client = ClusterManagerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4208,7 +4486,9 @@ async def test_list_operations_async_from_dict():
 
 
 def test_list_operations_field_headers():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -4228,7 +4508,10 @@ def test_list_operations_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -4257,11 +4540,16 @@ async def test_list_operations_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_operations_flattened():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
@@ -4270,7 +4558,8 @@ def test_list_operations_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.list_operations(
-            project_id="project_id_value", zone="zone_value",
+            project_id="project_id_value",
+            zone="zone_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -4286,7 +4575,9 @@ def test_list_operations_flattened():
 
 
 def test_list_operations_flattened_error():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -4315,7 +4606,8 @@ async def test_list_operations_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.list_operations(
-            project_id="project_id_value", zone="zone_value",
+            project_id="project_id_value",
+            zone="zone_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -4346,10 +4638,17 @@ async def test_list_operations_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [cluster_service.GetOperationRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cluster_service.GetOperationRequest,
+        dict,
+    ],
+)
 def test_get_operation(request_type, transport: str = "grpc"):
     client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4398,7 +4697,8 @@ def test_get_operation_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4414,7 +4714,8 @@ async def test_get_operation_async(
     transport: str = "grpc_asyncio", request_type=cluster_service.GetOperationRequest
 ):
     client = ClusterManagerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4467,7 +4768,9 @@ async def test_get_operation_async_from_dict():
 
 
 def test_get_operation_field_headers():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -4487,7 +4790,10 @@ def test_get_operation_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -4516,11 +4822,16 @@ async def test_get_operation_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_operation_flattened():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
@@ -4554,7 +4865,9 @@ def test_get_operation_flattened():
 
 
 def test_get_operation_flattened_error():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -4628,11 +4941,16 @@ async def test_get_operation_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [cluster_service.CancelOperationRequest, dict,]
+    "request_type",
+    [
+        cluster_service.CancelOperationRequest,
+        dict,
+    ],
 )
 def test_cancel_operation(request_type, transport: str = "grpc"):
     client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4658,7 +4976,8 @@ def test_cancel_operation_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4674,7 +4993,8 @@ async def test_cancel_operation_async(
     transport: str = "grpc_asyncio", request_type=cluster_service.CancelOperationRequest
 ):
     client = ClusterManagerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4702,7 +5022,9 @@ async def test_cancel_operation_async_from_dict():
 
 
 def test_cancel_operation_field_headers():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -4722,7 +5044,10 @@ def test_cancel_operation_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -4749,11 +5074,16 @@ async def test_cancel_operation_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_cancel_operation_flattened():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
@@ -4787,7 +5117,9 @@ def test_cancel_operation_flattened():
 
 
 def test_cancel_operation_flattened_error():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -4859,11 +5191,16 @@ async def test_cancel_operation_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [cluster_service.GetServerConfigRequest, dict,]
+    "request_type",
+    [
+        cluster_service.GetServerConfigRequest,
+        dict,
+    ],
 )
 def test_get_server_config(request_type, transport: str = "grpc"):
     client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4902,7 +5239,8 @@ def test_get_server_config_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4920,7 +5258,8 @@ async def test_get_server_config_async(
     transport: str = "grpc_asyncio", request_type=cluster_service.GetServerConfigRequest
 ):
     client = ClusterManagerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4963,7 +5302,9 @@ async def test_get_server_config_async_from_dict():
 
 
 def test_get_server_config_field_headers():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -4985,7 +5326,10 @@ def test_get_server_config_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -5016,11 +5360,16 @@ async def test_get_server_config_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_server_config_flattened():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5031,7 +5380,9 @@ def test_get_server_config_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.get_server_config(
-            project_id="project_id_value", zone="zone_value", name="name_value",
+            project_id="project_id_value",
+            zone="zone_value",
+            name="name_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -5050,7 +5401,9 @@ def test_get_server_config_flattened():
 
 
 def test_get_server_config_flattened_error():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -5082,7 +5435,9 @@ async def test_get_server_config_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.get_server_config(
-            project_id="project_id_value", zone="zone_value", name="name_value",
+            project_id="project_id_value",
+            zone="zone_value",
+            name="name_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -5117,10 +5472,17 @@ async def test_get_server_config_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [cluster_service.GetJSONWebKeysRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cluster_service.GetJSONWebKeysRequest,
+        dict,
+    ],
+)
 def test_get_json_web_keys(request_type, transport: str = "grpc"):
     client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5148,7 +5510,8 @@ def test_get_json_web_keys_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5166,7 +5529,8 @@ async def test_get_json_web_keys_async(
     transport: str = "grpc_asyncio", request_type=cluster_service.GetJSONWebKeysRequest
 ):
     client = ClusterManagerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5198,7 +5562,9 @@ async def test_get_json_web_keys_async_from_dict():
 
 
 def test_get_json_web_keys_field_headers():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -5220,7 +5586,10 @@ def test_get_json_web_keys_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -5251,13 +5620,23 @@ async def test_get_json_web_keys_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
-@pytest.mark.parametrize("request_type", [cluster_service.ListNodePoolsRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cluster_service.ListNodePoolsRequest,
+        dict,
+    ],
+)
 def test_list_node_pools(request_type, transport: str = "grpc"):
     client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5283,7 +5662,8 @@ def test_list_node_pools_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5299,7 +5679,8 @@ async def test_list_node_pools_async(
     transport: str = "grpc_asyncio", request_type=cluster_service.ListNodePoolsRequest
 ):
     client = ClusterManagerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5329,7 +5710,9 @@ async def test_list_node_pools_async_from_dict():
 
 
 def test_list_node_pools_field_headers():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -5349,7 +5732,10 @@ def test_list_node_pools_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -5378,11 +5764,16 @@ async def test_list_node_pools_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_node_pools_flattened():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_node_pools), "__call__") as call:
@@ -5416,7 +5807,9 @@ def test_list_node_pools_flattened():
 
 
 def test_list_node_pools_flattened_error():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -5489,10 +5882,17 @@ async def test_list_node_pools_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [cluster_service.GetNodePoolRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cluster_service.GetNodePoolRequest,
+        dict,
+    ],
+)
 def test_get_node_pool(request_type, transport: str = "grpc"):
     client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5537,7 +5937,8 @@ def test_get_node_pool_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5553,7 +5954,8 @@ async def test_get_node_pool_async(
     transport: str = "grpc_asyncio", request_type=cluster_service.GetNodePoolRequest
 ):
     client = ClusterManagerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5602,7 +6004,9 @@ async def test_get_node_pool_async_from_dict():
 
 
 def test_get_node_pool_field_headers():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -5622,7 +6026,10 @@ def test_get_node_pool_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -5651,11 +6058,16 @@ async def test_get_node_pool_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_node_pool_flattened():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_node_pool), "__call__") as call:
@@ -5693,7 +6105,9 @@ def test_get_node_pool_flattened():
 
 
 def test_get_node_pool_flattened_error():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -5772,10 +6186,17 @@ async def test_get_node_pool_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [cluster_service.CreateNodePoolRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cluster_service.CreateNodePoolRequest,
+        dict,
+    ],
+)
 def test_create_node_pool(request_type, transport: str = "grpc"):
     client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5824,7 +6245,8 @@ def test_create_node_pool_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5840,7 +6262,8 @@ async def test_create_node_pool_async(
     transport: str = "grpc_asyncio", request_type=cluster_service.CreateNodePoolRequest
 ):
     client = ClusterManagerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5893,7 +6316,9 @@ async def test_create_node_pool_async_from_dict():
 
 
 def test_create_node_pool_field_headers():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -5913,7 +6338,10 @@ def test_create_node_pool_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -5942,11 +6370,16 @@ async def test_create_node_pool_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_node_pool_flattened():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_node_pool), "__call__") as call:
@@ -5984,7 +6417,9 @@ def test_create_node_pool_flattened():
 
 
 def test_create_node_pool_flattened_error():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -6063,10 +6498,17 @@ async def test_create_node_pool_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [cluster_service.DeleteNodePoolRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cluster_service.DeleteNodePoolRequest,
+        dict,
+    ],
+)
 def test_delete_node_pool(request_type, transport: str = "grpc"):
     client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -6115,7 +6557,8 @@ def test_delete_node_pool_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6131,7 +6574,8 @@ async def test_delete_node_pool_async(
     transport: str = "grpc_asyncio", request_type=cluster_service.DeleteNodePoolRequest
 ):
     client = ClusterManagerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -6184,7 +6628,9 @@ async def test_delete_node_pool_async_from_dict():
 
 
 def test_delete_node_pool_field_headers():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -6204,7 +6650,10 @@ def test_delete_node_pool_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -6233,11 +6682,16 @@ async def test_delete_node_pool_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_node_pool_flattened():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_node_pool), "__call__") as call:
@@ -6275,7 +6729,9 @@ def test_delete_node_pool_flattened():
 
 
 def test_delete_node_pool_flattened_error():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -6355,11 +6811,16 @@ async def test_delete_node_pool_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [cluster_service.RollbackNodePoolUpgradeRequest, dict,]
+    "request_type",
+    [
+        cluster_service.RollbackNodePoolUpgradeRequest,
+        dict,
+    ],
 )
 def test_rollback_node_pool_upgrade(request_type, transport: str = "grpc"):
     client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -6410,7 +6871,8 @@ def test_rollback_node_pool_upgrade_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6429,7 +6891,8 @@ async def test_rollback_node_pool_upgrade_async(
     request_type=cluster_service.RollbackNodePoolUpgradeRequest,
 ):
     client = ClusterManagerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -6484,7 +6947,9 @@ async def test_rollback_node_pool_upgrade_async_from_dict():
 
 
 def test_rollback_node_pool_upgrade_field_headers():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -6506,7 +6971,10 @@ def test_rollback_node_pool_upgrade_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -6537,11 +7005,16 @@ async def test_rollback_node_pool_upgrade_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_rollback_node_pool_upgrade_flattened():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6581,7 +7054,9 @@ def test_rollback_node_pool_upgrade_flattened():
 
 
 def test_rollback_node_pool_upgrade_flattened_error():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -6663,11 +7138,16 @@ async def test_rollback_node_pool_upgrade_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [cluster_service.SetNodePoolManagementRequest, dict,]
+    "request_type",
+    [
+        cluster_service.SetNodePoolManagementRequest,
+        dict,
+    ],
 )
 def test_set_node_pool_management(request_type, transport: str = "grpc"):
     client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -6718,7 +7198,8 @@ def test_set_node_pool_management_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6737,7 +7218,8 @@ async def test_set_node_pool_management_async(
     request_type=cluster_service.SetNodePoolManagementRequest,
 ):
     client = ClusterManagerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -6792,7 +7274,9 @@ async def test_set_node_pool_management_async_from_dict():
 
 
 def test_set_node_pool_management_field_headers():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -6814,7 +7298,10 @@ def test_set_node_pool_management_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -6845,13 +7332,23 @@ async def test_set_node_pool_management_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
-@pytest.mark.parametrize("request_type", [cluster_service.SetLabelsRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cluster_service.SetLabelsRequest,
+        dict,
+    ],
+)
 def test_set_labels(request_type, transport: str = "grpc"):
     client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -6900,7 +7397,8 @@ def test_set_labels_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6916,7 +7414,8 @@ async def test_set_labels_async(
     transport: str = "grpc_asyncio", request_type=cluster_service.SetLabelsRequest
 ):
     client = ClusterManagerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -6969,7 +7468,9 @@ async def test_set_labels_async_from_dict():
 
 
 def test_set_labels_field_headers():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -6989,7 +7490,10 @@ def test_set_labels_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -7018,13 +7522,23 @@ async def test_set_labels_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
-@pytest.mark.parametrize("request_type", [cluster_service.SetLegacyAbacRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cluster_service.SetLegacyAbacRequest,
+        dict,
+    ],
+)
 def test_set_legacy_abac(request_type, transport: str = "grpc"):
     client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -7073,7 +7587,8 @@ def test_set_legacy_abac_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7089,7 +7604,8 @@ async def test_set_legacy_abac_async(
     transport: str = "grpc_asyncio", request_type=cluster_service.SetLegacyAbacRequest
 ):
     client = ClusterManagerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -7142,7 +7658,9 @@ async def test_set_legacy_abac_async_from_dict():
 
 
 def test_set_legacy_abac_field_headers():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -7162,7 +7680,10 @@ def test_set_legacy_abac_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -7191,11 +7712,16 @@ async def test_set_legacy_abac_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_set_legacy_abac_flattened():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_legacy_abac), "__call__") as call:
@@ -7233,7 +7759,9 @@ def test_set_legacy_abac_flattened():
 
 
 def test_set_legacy_abac_flattened_error():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -7313,11 +7841,16 @@ async def test_set_legacy_abac_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [cluster_service.StartIPRotationRequest, dict,]
+    "request_type",
+    [
+        cluster_service.StartIPRotationRequest,
+        dict,
+    ],
 )
 def test_start_ip_rotation(request_type, transport: str = "grpc"):
     client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -7368,7 +7901,8 @@ def test_start_ip_rotation_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7386,7 +7920,8 @@ async def test_start_ip_rotation_async(
     transport: str = "grpc_asyncio", request_type=cluster_service.StartIPRotationRequest
 ):
     client = ClusterManagerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -7441,7 +7976,9 @@ async def test_start_ip_rotation_async_from_dict():
 
 
 def test_start_ip_rotation_field_headers():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -7463,7 +8000,10 @@ def test_start_ip_rotation_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -7494,11 +8034,16 @@ async def test_start_ip_rotation_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_start_ip_rotation_flattened():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7534,7 +8079,9 @@ def test_start_ip_rotation_flattened():
 
 
 def test_start_ip_rotation_flattened_error():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -7610,11 +8157,16 @@ async def test_start_ip_rotation_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [cluster_service.CompleteIPRotationRequest, dict,]
+    "request_type",
+    [
+        cluster_service.CompleteIPRotationRequest,
+        dict,
+    ],
 )
 def test_complete_ip_rotation(request_type, transport: str = "grpc"):
     client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -7665,7 +8217,8 @@ def test_complete_ip_rotation_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7684,7 +8237,8 @@ async def test_complete_ip_rotation_async(
     request_type=cluster_service.CompleteIPRotationRequest,
 ):
     client = ClusterManagerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -7739,7 +8293,9 @@ async def test_complete_ip_rotation_async_from_dict():
 
 
 def test_complete_ip_rotation_field_headers():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -7761,7 +8317,10 @@ def test_complete_ip_rotation_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -7792,11 +8351,16 @@ async def test_complete_ip_rotation_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_complete_ip_rotation_flattened():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7832,7 +8396,9 @@ def test_complete_ip_rotation_flattened():
 
 
 def test_complete_ip_rotation_flattened_error():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -7908,11 +8474,16 @@ async def test_complete_ip_rotation_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [cluster_service.SetNodePoolSizeRequest, dict,]
+    "request_type",
+    [
+        cluster_service.SetNodePoolSizeRequest,
+        dict,
+    ],
 )
 def test_set_node_pool_size(request_type, transport: str = "grpc"):
     client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -7963,7 +8534,8 @@ def test_set_node_pool_size_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7981,7 +8553,8 @@ async def test_set_node_pool_size_async(
     transport: str = "grpc_asyncio", request_type=cluster_service.SetNodePoolSizeRequest
 ):
     client = ClusterManagerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -8036,7 +8609,9 @@ async def test_set_node_pool_size_async_from_dict():
 
 
 def test_set_node_pool_size_field_headers():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -8058,7 +8633,10 @@ def test_set_node_pool_size_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -8089,15 +8667,23 @@ async def test_set_node_pool_size_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.parametrize(
-    "request_type", [cluster_service.SetNetworkPolicyRequest, dict,]
+    "request_type",
+    [
+        cluster_service.SetNetworkPolicyRequest,
+        dict,
+    ],
 )
 def test_set_network_policy(request_type, transport: str = "grpc"):
     client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -8148,7 +8734,8 @@ def test_set_network_policy_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8167,7 +8754,8 @@ async def test_set_network_policy_async(
     request_type=cluster_service.SetNetworkPolicyRequest,
 ):
     client = ClusterManagerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -8222,7 +8810,9 @@ async def test_set_network_policy_async_from_dict():
 
 
 def test_set_network_policy_field_headers():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -8244,7 +8834,10 @@ def test_set_network_policy_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -8275,11 +8868,16 @@ async def test_set_network_policy_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_set_network_policy_flattened():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8323,7 +8921,9 @@ def test_set_network_policy_flattened():
 
 
 def test_set_network_policy_flattened_error():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -8413,11 +9013,16 @@ async def test_set_network_policy_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [cluster_service.SetMaintenancePolicyRequest, dict,]
+    "request_type",
+    [
+        cluster_service.SetMaintenancePolicyRequest,
+        dict,
+    ],
 )
 def test_set_maintenance_policy(request_type, transport: str = "grpc"):
     client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -8468,7 +9073,8 @@ def test_set_maintenance_policy_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8487,7 +9093,8 @@ async def test_set_maintenance_policy_async(
     request_type=cluster_service.SetMaintenancePolicyRequest,
 ):
     client = ClusterManagerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -8542,7 +9149,9 @@ async def test_set_maintenance_policy_async_from_dict():
 
 
 def test_set_maintenance_policy_field_headers():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -8564,7 +9173,10 @@ def test_set_maintenance_policy_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -8595,11 +9207,16 @@ async def test_set_maintenance_policy_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_set_maintenance_policy_flattened():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8651,7 +9268,9 @@ def test_set_maintenance_policy_flattened():
 
 
 def test_set_maintenance_policy_flattened_error():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -8757,11 +9376,16 @@ async def test_set_maintenance_policy_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [cluster_service.ListUsableSubnetworksRequest, dict,]
+    "request_type",
+    [
+        cluster_service.ListUsableSubnetworksRequest,
+        dict,
+    ],
 )
 def test_list_usable_subnetworks(request_type, transport: str = "grpc"):
     client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -8792,7 +9416,8 @@ def test_list_usable_subnetworks_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8811,7 +9436,8 @@ async def test_list_usable_subnetworks_async(
     request_type=cluster_service.ListUsableSubnetworksRequest,
 ):
     client = ClusterManagerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -8846,7 +9472,9 @@ async def test_list_usable_subnetworks_async_from_dict():
 
 
 def test_list_usable_subnetworks_field_headers():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -8868,7 +9496,10 @@ def test_list_usable_subnetworks_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -8899,12 +9530,16 @@ async def test_list_usable_subnetworks_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_usable_subnetworks_pager(transport_name: str = "grpc"):
     client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8922,10 +9557,13 @@ def test_list_usable_subnetworks_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             cluster_service.ListUsableSubnetworksResponse(
-                subnetworks=[], next_page_token="def",
+                subnetworks=[],
+                next_page_token="def",
             ),
             cluster_service.ListUsableSubnetworksResponse(
-                subnetworks=[cluster_service.UsableSubnetwork(),],
+                subnetworks=[
+                    cluster_service.UsableSubnetwork(),
+                ],
                 next_page_token="ghi",
             ),
             cluster_service.ListUsableSubnetworksResponse(
@@ -8952,7 +9590,8 @@ def test_list_usable_subnetworks_pager(transport_name: str = "grpc"):
 
 def test_list_usable_subnetworks_pages(transport_name: str = "grpc"):
     client = ClusterManagerClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8970,10 +9609,13 @@ def test_list_usable_subnetworks_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             cluster_service.ListUsableSubnetworksResponse(
-                subnetworks=[], next_page_token="def",
+                subnetworks=[],
+                next_page_token="def",
             ),
             cluster_service.ListUsableSubnetworksResponse(
-                subnetworks=[cluster_service.UsableSubnetwork(),],
+                subnetworks=[
+                    cluster_service.UsableSubnetwork(),
+                ],
                 next_page_token="ghi",
             ),
             cluster_service.ListUsableSubnetworksResponse(
@@ -8991,7 +9633,9 @@ def test_list_usable_subnetworks_pages(transport_name: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_list_usable_subnetworks_async_pager():
-    client = ClusterManagerAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = ClusterManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9010,10 +9654,13 @@ async def test_list_usable_subnetworks_async_pager():
                 next_page_token="abc",
             ),
             cluster_service.ListUsableSubnetworksResponse(
-                subnetworks=[], next_page_token="def",
+                subnetworks=[],
+                next_page_token="def",
             ),
             cluster_service.ListUsableSubnetworksResponse(
-                subnetworks=[cluster_service.UsableSubnetwork(),],
+                subnetworks=[
+                    cluster_service.UsableSubnetwork(),
+                ],
                 next_page_token="ghi",
             ),
             cluster_service.ListUsableSubnetworksResponse(
@@ -9024,7 +9671,9 @@ async def test_list_usable_subnetworks_async_pager():
             ),
             RuntimeError,
         )
-        async_pager = await client.list_usable_subnetworks(request={},)
+        async_pager = await client.list_usable_subnetworks(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -9036,7 +9685,9 @@ async def test_list_usable_subnetworks_async_pager():
 
 @pytest.mark.asyncio
 async def test_list_usable_subnetworks_async_pages():
-    client = ClusterManagerAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = ClusterManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9055,10 +9706,13 @@ async def test_list_usable_subnetworks_async_pages():
                 next_page_token="abc",
             ),
             cluster_service.ListUsableSubnetworksResponse(
-                subnetworks=[], next_page_token="def",
+                subnetworks=[],
+                next_page_token="def",
             ),
             cluster_service.ListUsableSubnetworksResponse(
-                subnetworks=[cluster_service.UsableSubnetwork(),],
+                subnetworks=[
+                    cluster_service.UsableSubnetwork(),
+                ],
                 next_page_token="ghi",
             ),
             cluster_service.ListUsableSubnetworksResponse(
@@ -9083,7 +9737,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = ClusterManagerClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -9103,7 +9758,10 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = ClusterManagerClient(client_options=options, transport=transport,)
+        client = ClusterManagerClient(
+            client_options=options,
+            transport=transport,
+        )
 
     # It is an error to provide an api_key and a credential.
     options = mock.Mock()
@@ -9119,7 +9777,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = ClusterManagerClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -9164,8 +9823,13 @@ def test_transport_adc(transport_class):
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials(),)
-    assert isinstance(client.transport, transports.ClusterManagerGrpcTransport,)
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    assert isinstance(
+        client.transport,
+        transports.ClusterManagerGrpcTransport,
+    )
 
 
 def test_cluster_manager_base_transport_error():
@@ -9241,7 +9905,8 @@ def test_cluster_manager_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.ClusterManagerTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -9399,7 +10064,8 @@ def test_cluster_manager_grpc_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.ClusterManagerGrpcTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -9411,7 +10077,8 @@ def test_cluster_manager_grpc_asyncio_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.ClusterManagerGrpcAsyncIOTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -9521,7 +10188,10 @@ def test_cluster_manager_transport_channel_mtls_with_adc(transport_class):
 def test_topic_path():
     project = "squid"
     topic = "clam"
-    expected = "projects/{project}/topics/{topic}".format(project=project, topic=topic,)
+    expected = "projects/{project}/topics/{topic}".format(
+        project=project,
+        topic=topic,
+    )
     actual = ClusterManagerClient.topic_path(project, topic)
     assert expected == actual
 
@@ -9560,7 +10230,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "cuttlefish"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = ClusterManagerClient.common_folder_path(folder)
     assert expected == actual
 
@@ -9578,7 +10250,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "winkle"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = ClusterManagerClient.common_organization_path(organization)
     assert expected == actual
 
@@ -9596,7 +10270,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "scallop"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = ClusterManagerClient.common_project_path(project)
     assert expected == actual
 
@@ -9616,7 +10292,8 @@ def test_common_location_path():
     project = "squid"
     location = "clam"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = ClusterManagerClient.common_location_path(project, location)
     assert expected == actual
@@ -9641,7 +10318,8 @@ def test_client_with_default_client_info():
         transports.ClusterManagerTransport, "_prep_wrapped_messages"
     ) as prep:
         client = ClusterManagerClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -9650,7 +10328,8 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = ClusterManagerClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -9658,7 +10337,8 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = ClusterManagerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     with mock.patch.object(
         type(getattr(client.transport, "grpc_channel")), "close"

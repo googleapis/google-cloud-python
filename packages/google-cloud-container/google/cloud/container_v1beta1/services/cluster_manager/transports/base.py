@@ -30,7 +30,9 @@ from google.protobuf import empty_pb2  # type: ignore
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-container",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-container",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
@@ -150,13 +152,19 @@ class ClusterManagerTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.create_cluster: gapic_v1.method.wrap_method(
-                self.create_cluster, default_timeout=45.0, client_info=client_info,
+                self.create_cluster,
+                default_timeout=45.0,
+                client_info=client_info,
             ),
             self.update_cluster: gapic_v1.method.wrap_method(
-                self.update_cluster, default_timeout=45.0, client_info=client_info,
+                self.update_cluster,
+                default_timeout=45.0,
+                client_info=client_info,
             ),
             self.update_node_pool: gapic_v1.method.wrap_method(
-                self.update_node_pool, default_timeout=45.0, client_info=client_info,
+                self.update_node_pool,
+                default_timeout=45.0,
+                client_info=client_info,
             ),
             self.set_node_pool_autoscaling: gapic_v1.method.wrap_method(
                 self.set_node_pool_autoscaling,
@@ -164,7 +172,9 @@ class ClusterManagerTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.set_logging_service: gapic_v1.method.wrap_method(
-                self.set_logging_service, default_timeout=45.0, client_info=client_info,
+                self.set_logging_service,
+                default_timeout=45.0,
+                client_info=client_info,
             ),
             self.set_monitoring_service: gapic_v1.method.wrap_method(
                 self.set_monitoring_service,
@@ -172,16 +182,24 @@ class ClusterManagerTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.set_addons_config: gapic_v1.method.wrap_method(
-                self.set_addons_config, default_timeout=45.0, client_info=client_info,
+                self.set_addons_config,
+                default_timeout=45.0,
+                client_info=client_info,
             ),
             self.set_locations: gapic_v1.method.wrap_method(
-                self.set_locations, default_timeout=45.0, client_info=client_info,
+                self.set_locations,
+                default_timeout=45.0,
+                client_info=client_info,
             ),
             self.update_master: gapic_v1.method.wrap_method(
-                self.update_master, default_timeout=45.0, client_info=client_info,
+                self.update_master,
+                default_timeout=45.0,
+                client_info=client_info,
             ),
             self.set_master_auth: gapic_v1.method.wrap_method(
-                self.set_master_auth, default_timeout=45.0, client_info=client_info,
+                self.set_master_auth,
+                default_timeout=45.0,
+                client_info=client_info,
             ),
             self.delete_cluster: gapic_v1.method.wrap_method(
                 self.delete_cluster,
@@ -229,7 +247,9 @@ class ClusterManagerTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.cancel_operation: gapic_v1.method.wrap_method(
-                self.cancel_operation, default_timeout=45.0, client_info=client_info,
+                self.cancel_operation,
+                default_timeout=45.0,
+                client_info=client_info,
             ),
             self.get_server_config: gapic_v1.method.wrap_method(
                 self.get_server_config,
@@ -262,7 +282,9 @@ class ClusterManagerTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.get_json_web_keys: gapic_v1.method.wrap_method(
-                self.get_json_web_keys, default_timeout=None, client_info=client_info,
+                self.get_json_web_keys,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_node_pool: gapic_v1.method.wrap_method(
                 self.get_node_pool,
@@ -280,7 +302,9 @@ class ClusterManagerTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.create_node_pool: gapic_v1.method.wrap_method(
-                self.create_node_pool, default_timeout=45.0, client_info=client_info,
+                self.create_node_pool,
+                default_timeout=45.0,
+                client_info=client_info,
             ),
             self.delete_node_pool: gapic_v1.method.wrap_method(
                 self.delete_node_pool,
@@ -308,13 +332,19 @@ class ClusterManagerTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.set_labels: gapic_v1.method.wrap_method(
-                self.set_labels, default_timeout=45.0, client_info=client_info,
+                self.set_labels,
+                default_timeout=45.0,
+                client_info=client_info,
             ),
             self.set_legacy_abac: gapic_v1.method.wrap_method(
-                self.set_legacy_abac, default_timeout=45.0, client_info=client_info,
+                self.set_legacy_abac,
+                default_timeout=45.0,
+                client_info=client_info,
             ),
             self.start_ip_rotation: gapic_v1.method.wrap_method(
-                self.start_ip_rotation, default_timeout=45.0, client_info=client_info,
+                self.start_ip_rotation,
+                default_timeout=45.0,
+                client_info=client_info,
             ),
             self.complete_ip_rotation: gapic_v1.method.wrap_method(
                 self.complete_ip_rotation,
@@ -322,10 +352,14 @@ class ClusterManagerTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.set_node_pool_size: gapic_v1.method.wrap_method(
-                self.set_node_pool_size, default_timeout=45.0, client_info=client_info,
+                self.set_node_pool_size,
+                default_timeout=45.0,
+                client_info=client_info,
             ),
             self.set_network_policy: gapic_v1.method.wrap_method(
-                self.set_network_policy, default_timeout=45.0, client_info=client_info,
+                self.set_network_policy,
+                default_timeout=45.0,
+                client_info=client_info,
             ),
             self.set_maintenance_policy: gapic_v1.method.wrap_method(
                 self.set_maintenance_policy,
@@ -367,9 +401,9 @@ class ClusterManagerTransport(abc.ABC):
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 
