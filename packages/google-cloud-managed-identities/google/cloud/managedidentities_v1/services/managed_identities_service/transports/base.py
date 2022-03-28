@@ -134,37 +134,53 @@ class ManagedIdentitiesServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.list_domains: gapic_v1.method.wrap_method(
-                self.list_domains, default_timeout=60.0, client_info=client_info,
+                self.list_domains,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.get_domain: gapic_v1.method.wrap_method(
-                self.get_domain, default_timeout=60.0, client_info=client_info,
+                self.get_domain,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.update_domain: gapic_v1.method.wrap_method(
-                self.update_domain, default_timeout=60.0, client_info=client_info,
+                self.update_domain,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.delete_domain: gapic_v1.method.wrap_method(
-                self.delete_domain, default_timeout=60.0, client_info=client_info,
+                self.delete_domain,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.attach_trust: gapic_v1.method.wrap_method(
-                self.attach_trust, default_timeout=60.0, client_info=client_info,
+                self.attach_trust,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.reconfigure_trust: gapic_v1.method.wrap_method(
-                self.reconfigure_trust, default_timeout=60.0, client_info=client_info,
+                self.reconfigure_trust,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.detach_trust: gapic_v1.method.wrap_method(
-                self.detach_trust, default_timeout=60.0, client_info=client_info,
+                self.detach_trust,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.validate_trust: gapic_v1.method.wrap_method(
-                self.validate_trust, default_timeout=60.0, client_info=client_info,
+                self.validate_trust,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
         }
 
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

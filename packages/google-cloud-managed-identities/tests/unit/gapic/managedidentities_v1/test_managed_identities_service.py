@@ -101,7 +101,10 @@ def test__get_default_mtls_endpoint():
 
 @pytest.mark.parametrize(
     "client_class",
-    [ManagedIdentitiesServiceClient, ManagedIdentitiesServiceAsyncClient,],
+    [
+        ManagedIdentitiesServiceClient,
+        ManagedIdentitiesServiceAsyncClient,
+    ],
 )
 def test_managed_identities_service_client_from_service_account_info(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -144,7 +147,10 @@ def test_managed_identities_service_client_service_account_always_use_jwt(
 
 @pytest.mark.parametrize(
     "client_class",
-    [ManagedIdentitiesServiceClient, ManagedIdentitiesServiceAsyncClient,],
+    [
+        ManagedIdentitiesServiceClient,
+        ManagedIdentitiesServiceAsyncClient,
+    ],
 )
 def test_managed_identities_service_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -533,7 +539,9 @@ def test_managed_identities_service_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -674,11 +682,16 @@ def test_managed_identities_service_client_create_channel_credentials_file(
 
 
 @pytest.mark.parametrize(
-    "request_type", [managed_identities_service.CreateMicrosoftAdDomainRequest, dict,]
+    "request_type",
+    [
+        managed_identities_service.CreateMicrosoftAdDomainRequest,
+        dict,
+    ],
 )
 def test_create_microsoft_ad_domain(request_type, transport: str = "grpc"):
     client = ManagedIdentitiesServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -706,7 +719,8 @@ def test_create_microsoft_ad_domain_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ManagedIdentitiesServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -725,7 +739,8 @@ async def test_create_microsoft_ad_domain_async(
     request_type=managed_identities_service.CreateMicrosoftAdDomainRequest,
 ):
     client = ManagedIdentitiesServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -781,7 +796,10 @@ def test_create_microsoft_ad_domain_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -812,7 +830,10 @@ async def test_create_microsoft_ad_domain_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_microsoft_ad_domain_flattened():
@@ -922,11 +943,16 @@ async def test_create_microsoft_ad_domain_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [managed_identities_service.ResetAdminPasswordRequest, dict,]
+    "request_type",
+    [
+        managed_identities_service.ResetAdminPasswordRequest,
+        dict,
+    ],
 )
 def test_reset_admin_password(request_type, transport: str = "grpc"):
     client = ManagedIdentitiesServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -957,7 +983,8 @@ def test_reset_admin_password_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ManagedIdentitiesServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -976,7 +1003,8 @@ async def test_reset_admin_password_async(
     request_type=managed_identities_service.ResetAdminPasswordRequest,
 ):
     client = ManagedIdentitiesServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1035,7 +1063,10 @@ def test_reset_admin_password_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1066,7 +1097,10 @@ async def test_reset_admin_password_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_reset_admin_password_flattened():
@@ -1082,7 +1116,9 @@ def test_reset_admin_password_flattened():
         call.return_value = managed_identities_service.ResetAdminPasswordResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.reset_admin_password(name="name_value",)
+        client.reset_admin_password(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1102,7 +1138,8 @@ def test_reset_admin_password_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.reset_admin_password(
-            managed_identities_service.ResetAdminPasswordRequest(), name="name_value",
+            managed_identities_service.ResetAdminPasswordRequest(),
+            name="name_value",
         )
 
 
@@ -1124,7 +1161,9 @@ async def test_reset_admin_password_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.reset_admin_password(name="name_value",)
+        response = await client.reset_admin_password(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1145,16 +1184,22 @@ async def test_reset_admin_password_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.reset_admin_password(
-            managed_identities_service.ResetAdminPasswordRequest(), name="name_value",
+            managed_identities_service.ResetAdminPasswordRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [managed_identities_service.ListDomainsRequest, dict,]
+    "request_type",
+    [
+        managed_identities_service.ListDomainsRequest,
+        dict,
+    ],
 )
 def test_list_domains(request_type, transport: str = "grpc"):
     client = ManagedIdentitiesServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1165,7 +1210,8 @@ def test_list_domains(request_type, transport: str = "grpc"):
     with mock.patch.object(type(client.transport.list_domains), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = managed_identities_service.ListDomainsResponse(
-            next_page_token="next_page_token_value", unreachable=["unreachable_value"],
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
         )
         response = client.list_domains(request)
 
@@ -1184,7 +1230,8 @@ def test_list_domains_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ManagedIdentitiesServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1201,7 +1248,8 @@ async def test_list_domains_async(
     request_type=managed_identities_service.ListDomainsRequest,
 ):
     client = ManagedIdentitiesServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1258,7 +1306,10 @@ def test_list_domains_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1287,7 +1338,10 @@ async def test_list_domains_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_domains_flattened():
@@ -1301,7 +1355,9 @@ def test_list_domains_flattened():
         call.return_value = managed_identities_service.ListDomainsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_domains(parent="parent_value",)
+        client.list_domains(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1321,7 +1377,8 @@ def test_list_domains_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_domains(
-            managed_identities_service.ListDomainsRequest(), parent="parent_value",
+            managed_identities_service.ListDomainsRequest(),
+            parent="parent_value",
         )
 
 
@@ -1341,7 +1398,9 @@ async def test_list_domains_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_domains(parent="parent_value",)
+        response = await client.list_domains(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1362,13 +1421,15 @@ async def test_list_domains_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_domains(
-            managed_identities_service.ListDomainsRequest(), parent="parent_value",
+            managed_identities_service.ListDomainsRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_domains_pager(transport_name: str = "grpc"):
     client = ManagedIdentitiesServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1376,17 +1437,28 @@ def test_list_domains_pager(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             managed_identities_service.ListDomainsResponse(
-                domains=[resource.Domain(), resource.Domain(), resource.Domain(),],
+                domains=[
+                    resource.Domain(),
+                    resource.Domain(),
+                    resource.Domain(),
+                ],
                 next_page_token="abc",
             ),
             managed_identities_service.ListDomainsResponse(
-                domains=[], next_page_token="def",
+                domains=[],
+                next_page_token="def",
             ),
             managed_identities_service.ListDomainsResponse(
-                domains=[resource.Domain(),], next_page_token="ghi",
+                domains=[
+                    resource.Domain(),
+                ],
+                next_page_token="ghi",
             ),
             managed_identities_service.ListDomainsResponse(
-                domains=[resource.Domain(), resource.Domain(),],
+                domains=[
+                    resource.Domain(),
+                    resource.Domain(),
+                ],
             ),
             RuntimeError,
         )
@@ -1406,7 +1478,8 @@ def test_list_domains_pager(transport_name: str = "grpc"):
 
 def test_list_domains_pages(transport_name: str = "grpc"):
     client = ManagedIdentitiesServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1414,17 +1487,28 @@ def test_list_domains_pages(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             managed_identities_service.ListDomainsResponse(
-                domains=[resource.Domain(), resource.Domain(), resource.Domain(),],
+                domains=[
+                    resource.Domain(),
+                    resource.Domain(),
+                    resource.Domain(),
+                ],
                 next_page_token="abc",
             ),
             managed_identities_service.ListDomainsResponse(
-                domains=[], next_page_token="def",
+                domains=[],
+                next_page_token="def",
             ),
             managed_identities_service.ListDomainsResponse(
-                domains=[resource.Domain(),], next_page_token="ghi",
+                domains=[
+                    resource.Domain(),
+                ],
+                next_page_token="ghi",
             ),
             managed_identities_service.ListDomainsResponse(
-                domains=[resource.Domain(), resource.Domain(),],
+                domains=[
+                    resource.Domain(),
+                    resource.Domain(),
+                ],
             ),
             RuntimeError,
         )
@@ -1446,21 +1530,34 @@ async def test_list_domains_async_pager():
         # Set the response to a series of pages.
         call.side_effect = (
             managed_identities_service.ListDomainsResponse(
-                domains=[resource.Domain(), resource.Domain(), resource.Domain(),],
+                domains=[
+                    resource.Domain(),
+                    resource.Domain(),
+                    resource.Domain(),
+                ],
                 next_page_token="abc",
             ),
             managed_identities_service.ListDomainsResponse(
-                domains=[], next_page_token="def",
+                domains=[],
+                next_page_token="def",
             ),
             managed_identities_service.ListDomainsResponse(
-                domains=[resource.Domain(),], next_page_token="ghi",
+                domains=[
+                    resource.Domain(),
+                ],
+                next_page_token="ghi",
             ),
             managed_identities_service.ListDomainsResponse(
-                domains=[resource.Domain(), resource.Domain(),],
+                domains=[
+                    resource.Domain(),
+                    resource.Domain(),
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.list_domains(request={},)
+        async_pager = await client.list_domains(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -1483,17 +1580,28 @@ async def test_list_domains_async_pages():
         # Set the response to a series of pages.
         call.side_effect = (
             managed_identities_service.ListDomainsResponse(
-                domains=[resource.Domain(), resource.Domain(), resource.Domain(),],
+                domains=[
+                    resource.Domain(),
+                    resource.Domain(),
+                    resource.Domain(),
+                ],
                 next_page_token="abc",
             ),
             managed_identities_service.ListDomainsResponse(
-                domains=[], next_page_token="def",
+                domains=[],
+                next_page_token="def",
             ),
             managed_identities_service.ListDomainsResponse(
-                domains=[resource.Domain(),], next_page_token="ghi",
+                domains=[
+                    resource.Domain(),
+                ],
+                next_page_token="ghi",
             ),
             managed_identities_service.ListDomainsResponse(
-                domains=[resource.Domain(), resource.Domain(),],
+                domains=[
+                    resource.Domain(),
+                    resource.Domain(),
+                ],
             ),
             RuntimeError,
         )
@@ -1505,11 +1613,16 @@ async def test_list_domains_async_pages():
 
 
 @pytest.mark.parametrize(
-    "request_type", [managed_identities_service.GetDomainRequest, dict,]
+    "request_type",
+    [
+        managed_identities_service.GetDomainRequest,
+        dict,
+    ],
 )
 def test_get_domain(request_type, transport: str = "grpc"):
     client = ManagedIdentitiesServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1552,7 +1665,8 @@ def test_get_domain_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ManagedIdentitiesServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1569,7 +1683,8 @@ async def test_get_domain_async(
     request_type=managed_identities_service.GetDomainRequest,
 ):
     client = ManagedIdentitiesServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1638,7 +1753,10 @@ def test_get_domain_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1665,7 +1783,10 @@ async def test_get_domain_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_domain_flattened():
@@ -1679,7 +1800,9 @@ def test_get_domain_flattened():
         call.return_value = resource.Domain()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_domain(name="name_value",)
+        client.get_domain(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1699,7 +1822,8 @@ def test_get_domain_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_domain(
-            managed_identities_service.GetDomainRequest(), name="name_value",
+            managed_identities_service.GetDomainRequest(),
+            name="name_value",
         )
 
 
@@ -1717,7 +1841,9 @@ async def test_get_domain_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(resource.Domain())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_domain(name="name_value",)
+        response = await client.get_domain(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1738,16 +1864,22 @@ async def test_get_domain_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_domain(
-            managed_identities_service.GetDomainRequest(), name="name_value",
+            managed_identities_service.GetDomainRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [managed_identities_service.UpdateDomainRequest, dict,]
+    "request_type",
+    [
+        managed_identities_service.UpdateDomainRequest,
+        dict,
+    ],
 )
 def test_update_domain(request_type, transport: str = "grpc"):
     client = ManagedIdentitiesServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1773,7 +1905,8 @@ def test_update_domain_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ManagedIdentitiesServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1790,7 +1923,8 @@ async def test_update_domain_async(
     request_type=managed_identities_service.UpdateDomainRequest,
 ):
     client = ManagedIdentitiesServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1842,7 +1976,10 @@ def test_update_domain_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "domain.name=domain.name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "domain.name=domain.name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1871,7 +2008,10 @@ async def test_update_domain_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "domain.name=domain.name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "domain.name=domain.name/value",
+    ) in kw["metadata"]
 
 
 def test_update_domain_flattened():
@@ -1967,11 +2107,16 @@ async def test_update_domain_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [managed_identities_service.DeleteDomainRequest, dict,]
+    "request_type",
+    [
+        managed_identities_service.DeleteDomainRequest,
+        dict,
+    ],
 )
 def test_delete_domain(request_type, transport: str = "grpc"):
     client = ManagedIdentitiesServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1997,7 +2142,8 @@ def test_delete_domain_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ManagedIdentitiesServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2014,7 +2160,8 @@ async def test_delete_domain_async(
     request_type=managed_identities_service.DeleteDomainRequest,
 ):
     client = ManagedIdentitiesServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2066,7 +2213,10 @@ def test_delete_domain_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2095,7 +2245,10 @@ async def test_delete_domain_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_domain_flattened():
@@ -2109,7 +2262,9 @@ def test_delete_domain_flattened():
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_domain(name="name_value",)
+        client.delete_domain(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2129,7 +2284,8 @@ def test_delete_domain_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_domain(
-            managed_identities_service.DeleteDomainRequest(), name="name_value",
+            managed_identities_service.DeleteDomainRequest(),
+            name="name_value",
         )
 
 
@@ -2149,7 +2305,9 @@ async def test_delete_domain_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_domain(name="name_value",)
+        response = await client.delete_domain(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2170,16 +2328,22 @@ async def test_delete_domain_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_domain(
-            managed_identities_service.DeleteDomainRequest(), name="name_value",
+            managed_identities_service.DeleteDomainRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [managed_identities_service.AttachTrustRequest, dict,]
+    "request_type",
+    [
+        managed_identities_service.AttachTrustRequest,
+        dict,
+    ],
 )
 def test_attach_trust(request_type, transport: str = "grpc"):
     client = ManagedIdentitiesServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2205,7 +2369,8 @@ def test_attach_trust_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ManagedIdentitiesServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2222,7 +2387,8 @@ async def test_attach_trust_async(
     request_type=managed_identities_service.AttachTrustRequest,
 ):
     client = ManagedIdentitiesServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2274,7 +2440,10 @@ def test_attach_trust_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2303,7 +2472,10 @@ async def test_attach_trust_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_attach_trust_flattened():
@@ -2399,11 +2571,16 @@ async def test_attach_trust_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [managed_identities_service.ReconfigureTrustRequest, dict,]
+    "request_type",
+    [
+        managed_identities_service.ReconfigureTrustRequest,
+        dict,
+    ],
 )
 def test_reconfigure_trust(request_type, transport: str = "grpc"):
     client = ManagedIdentitiesServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2431,7 +2608,8 @@ def test_reconfigure_trust_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ManagedIdentitiesServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2450,7 +2628,8 @@ async def test_reconfigure_trust_async(
     request_type=managed_identities_service.ReconfigureTrustRequest,
 ):
     client = ManagedIdentitiesServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2506,7 +2685,10 @@ def test_reconfigure_trust_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2537,7 +2719,10 @@ async def test_reconfigure_trust_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_reconfigure_trust_flattened():
@@ -2647,11 +2832,16 @@ async def test_reconfigure_trust_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [managed_identities_service.DetachTrustRequest, dict,]
+    "request_type",
+    [
+        managed_identities_service.DetachTrustRequest,
+        dict,
+    ],
 )
 def test_detach_trust(request_type, transport: str = "grpc"):
     client = ManagedIdentitiesServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2677,7 +2867,8 @@ def test_detach_trust_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ManagedIdentitiesServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2694,7 +2885,8 @@ async def test_detach_trust_async(
     request_type=managed_identities_service.DetachTrustRequest,
 ):
     client = ManagedIdentitiesServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2746,7 +2938,10 @@ def test_detach_trust_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2775,7 +2970,10 @@ async def test_detach_trust_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_detach_trust_flattened():
@@ -2871,11 +3069,16 @@ async def test_detach_trust_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [managed_identities_service.ValidateTrustRequest, dict,]
+    "request_type",
+    [
+        managed_identities_service.ValidateTrustRequest,
+        dict,
+    ],
 )
 def test_validate_trust(request_type, transport: str = "grpc"):
     client = ManagedIdentitiesServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2901,7 +3104,8 @@ def test_validate_trust_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ManagedIdentitiesServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2918,7 +3122,8 @@ async def test_validate_trust_async(
     request_type=managed_identities_service.ValidateTrustRequest,
 ):
     client = ManagedIdentitiesServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2970,7 +3175,10 @@ def test_validate_trust_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2999,7 +3207,10 @@ async def test_validate_trust_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_validate_trust_flattened():
@@ -3101,7 +3312,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = ManagedIdentitiesServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -3122,7 +3334,8 @@ def test_credentials_transport_error():
     options.api_key = "api_key"
     with pytest.raises(ValueError):
         client = ManagedIdentitiesServiceClient(
-            client_options=options, transport=transport,
+            client_options=options,
+            transport=transport,
         )
 
     # It is an error to provide an api_key and a credential.
@@ -3139,7 +3352,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = ManagedIdentitiesServiceClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -3188,7 +3402,8 @@ def test_transport_grpc_default():
         credentials=ga_credentials.AnonymousCredentials(),
     )
     assert isinstance(
-        client.transport, transports.ManagedIdentitiesServiceGrpcTransport,
+        client.transport,
+        transports.ManagedIdentitiesServiceGrpcTransport,
     )
 
 
@@ -3248,7 +3463,8 @@ def test_managed_identities_service_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.ManagedIdentitiesServiceTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -3410,7 +3626,8 @@ def test_managed_identities_service_grpc_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.ManagedIdentitiesServiceGrpcTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -3422,7 +3639,8 @@ def test_managed_identities_service_grpc_asyncio_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.ManagedIdentitiesServiceGrpcAsyncIOTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -3531,12 +3749,16 @@ def test_managed_identities_service_transport_channel_mtls_with_adc(transport_cl
 
 def test_managed_identities_service_grpc_lro_client():
     client = ManagedIdentitiesServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
     transport = client.transport
 
     # Ensure that we have a api-core operations client.
-    assert isinstance(transport.operations_client, operations_v1.OperationsClient,)
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsClient,
+    )
 
     # Ensure that subsequent calls to the property send the exact same object.
     assert transport.operations_client is transport.operations_client
@@ -3544,12 +3766,16 @@ def test_managed_identities_service_grpc_lro_client():
 
 def test_managed_identities_service_grpc_lro_async_client():
     client = ManagedIdentitiesServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     transport = client.transport
 
     # Ensure that we have a api-core operations client.
-    assert isinstance(transport.operations_client, operations_v1.OperationsAsyncClient,)
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsAsyncClient,
+    )
 
     # Ensure that subsequent calls to the property send the exact same object.
     assert transport.operations_client is transport.operations_client
@@ -3560,7 +3786,9 @@ def test_domain_path():
     location = "clam"
     domain = "whelk"
     expected = "projects/{project}/locations/{location}/domains/{domain}".format(
-        project=project, location=location, domain=domain,
+        project=project,
+        location=location,
+        domain=domain,
     )
     actual = ManagedIdentitiesServiceClient.domain_path(project, location, domain)
     assert expected == actual
@@ -3601,7 +3829,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "winkle"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = ManagedIdentitiesServiceClient.common_folder_path(folder)
     assert expected == actual
 
@@ -3619,7 +3849,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "scallop"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = ManagedIdentitiesServiceClient.common_organization_path(organization)
     assert expected == actual
 
@@ -3637,7 +3869,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "squid"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = ManagedIdentitiesServiceClient.common_project_path(project)
     assert expected == actual
 
@@ -3657,7 +3891,8 @@ def test_common_location_path():
     project = "whelk"
     location = "octopus"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = ManagedIdentitiesServiceClient.common_location_path(project, location)
     assert expected == actual
@@ -3682,7 +3917,8 @@ def test_client_with_default_client_info():
         transports.ManagedIdentitiesServiceTransport, "_prep_wrapped_messages"
     ) as prep:
         client = ManagedIdentitiesServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -3691,7 +3927,8 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = ManagedIdentitiesServiceClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -3699,7 +3936,8 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = ManagedIdentitiesServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     with mock.patch.object(
         type(getattr(client.transport, "grpc_channel")), "close"
