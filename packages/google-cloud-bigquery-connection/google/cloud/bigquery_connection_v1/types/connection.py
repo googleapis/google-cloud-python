@@ -54,9 +54,19 @@ class CreateConnectionRequest(proto.Message):
             Required. Connection to create.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    connection_id = proto.Field(proto.STRING, number=2,)
-    connection = proto.Field(proto.MESSAGE, number=3, message="Connection",)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    connection_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    connection = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="Connection",
+    )
 
 
 class GetConnectionRequest(proto.Message):
@@ -69,7 +79,10 @@ class GetConnectionRequest(proto.Message):
             ``projects/{project_id}/locations/{location_id}/connections/{connection_id}``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListConnectionsRequest(proto.Message):
@@ -86,9 +99,18 @@ class ListConnectionsRequest(proto.Message):
             Page token.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=4,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=4,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListConnectionsResponse(proto.Message):
@@ -106,8 +128,15 @@ class ListConnectionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    next_page_token = proto.Field(proto.STRING, number=1,)
-    connections = proto.RepeatedField(proto.MESSAGE, number=2, message="Connection",)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    connections = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="Connection",
+    )
 
 
 class UpdateConnectionRequest(proto.Message):
@@ -126,10 +155,19 @@ class UpdateConnectionRequest(proto.Message):
             fields to be updated.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    connection = proto.Field(proto.MESSAGE, number=2, message="Connection",)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    connection = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="Connection",
+    )
     update_mask = proto.Field(
-        proto.MESSAGE, number=3, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=3,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -142,7 +180,10 @@ class DeleteConnectionRequest(proto.Message):
             ``projects/{project_id}/locations/{location_id}/connections/{connection_id}``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class Connection(proto.Message):
@@ -192,24 +233,54 @@ class Connection(proto.Message):
             configured for this connection.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    friendly_name = proto.Field(proto.STRING, number=2,)
-    description = proto.Field(proto.STRING, number=3,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    friendly_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=3,
+    )
     cloud_sql = proto.Field(
-        proto.MESSAGE, number=4, oneof="properties", message="CloudSqlProperties",
+        proto.MESSAGE,
+        number=4,
+        oneof="properties",
+        message="CloudSqlProperties",
     )
     aws = proto.Field(
-        proto.MESSAGE, number=8, oneof="properties", message="AwsProperties",
+        proto.MESSAGE,
+        number=8,
+        oneof="properties",
+        message="AwsProperties",
     )
     cloud_spanner = proto.Field(
-        proto.MESSAGE, number=21, oneof="properties", message="CloudSpannerProperties",
+        proto.MESSAGE,
+        number=21,
+        oneof="properties",
+        message="CloudSpannerProperties",
     )
     cloud_resource = proto.Field(
-        proto.MESSAGE, number=22, oneof="properties", message="CloudResourceProperties",
+        proto.MESSAGE,
+        number=22,
+        oneof="properties",
+        message="CloudResourceProperties",
     )
-    creation_time = proto.Field(proto.INT64, number=5,)
-    last_modified_time = proto.Field(proto.INT64, number=6,)
-    has_credential = proto.Field(proto.BOOL, number=7,)
+    creation_time = proto.Field(
+        proto.INT64,
+        number=5,
+    )
+    last_modified_time = proto.Field(
+        proto.INT64,
+        number=6,
+    )
+    has_credential = proto.Field(
+        proto.BOOL,
+        number=7,
+    )
 
 
 class CloudSqlProperties(proto.Message):
@@ -233,10 +304,24 @@ class CloudSqlProperties(proto.Message):
         POSTGRES = 1
         MYSQL = 2
 
-    instance_id = proto.Field(proto.STRING, number=1,)
-    database = proto.Field(proto.STRING, number=2,)
-    type_ = proto.Field(proto.ENUM, number=3, enum=DatabaseType,)
-    credential = proto.Field(proto.MESSAGE, number=4, message="CloudSqlCredential",)
+    instance_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    database = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    type_ = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=DatabaseType,
+    )
+    credential = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="CloudSqlCredential",
+    )
 
 
 class CloudSqlCredential(proto.Message):
@@ -249,8 +334,14 @@ class CloudSqlCredential(proto.Message):
             The password for the credential.
     """
 
-    username = proto.Field(proto.STRING, number=1,)
-    password = proto.Field(proto.STRING, number=2,)
+    username = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    password = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class CloudSpannerProperties(proto.Message):
@@ -265,8 +356,14 @@ class CloudSpannerProperties(proto.Message):
             from Cloud Spanner
     """
 
-    database = proto.Field(proto.STRING, number=1,)
-    use_parallelism = proto.Field(proto.BOOL, number=2,)
+    database = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    use_parallelism = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
 
 
 class AwsProperties(proto.Message):
@@ -300,7 +397,10 @@ class AwsProperties(proto.Message):
         message="AwsCrossAccountRole",
     )
     access_role = proto.Field(
-        proto.MESSAGE, number=3, oneof="authentication_method", message="AwsAccessRole",
+        proto.MESSAGE,
+        number=3,
+        oneof="authentication_method",
+        message="AwsAccessRole",
     )
 
 
@@ -323,9 +423,18 @@ class AwsCrossAccountRole(proto.Message):
             https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-user_externalid.html
     """
 
-    iam_role_id = proto.Field(proto.STRING, number=1,)
-    iam_user_id = proto.Field(proto.STRING, number=2,)
-    external_id = proto.Field(proto.STRING, number=3,)
+    iam_role_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    iam_user_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    external_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class AwsAccessRole(proto.Message):
@@ -343,8 +452,14 @@ class AwsAccessRole(proto.Message):
             be used to access the user's AWS IAM Role.
     """
 
-    iam_role_id = proto.Field(proto.STRING, number=1,)
-    identity = proto.Field(proto.STRING, number=2,)
+    iam_role_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    identity = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class CloudResourceProperties(proto.Message):
@@ -368,7 +483,10 @@ class CloudResourceProperties(proto.Message):
             <service-1234>@gcp-sa-bigquery-cloudresource.iam.gserviceaccount.com
     """
 
-    service_account_id = proto.Field(proto.STRING, number=1,)
+    service_account_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
