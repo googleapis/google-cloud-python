@@ -18,7 +18,11 @@ import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.documentai.v1beta2",
-    manifest={"Vertex", "NormalizedVertex", "BoundingPoly",},
+    manifest={
+        "Vertex",
+        "NormalizedVertex",
+        "BoundingPoly",
+    },
 )
 
 
@@ -34,8 +38,14 @@ class Vertex(proto.Message):
             Y coordinate.
     """
 
-    x = proto.Field(proto.INT32, number=1,)
-    y = proto.Field(proto.INT32, number=2,)
+    x = proto.Field(
+        proto.INT32,
+        number=1,
+    )
+    y = proto.Field(
+        proto.INT32,
+        number=2,
+    )
 
 
 class NormalizedVertex(proto.Message):
@@ -50,8 +60,14 @@ class NormalizedVertex(proto.Message):
             Y coordinate.
     """
 
-    x = proto.Field(proto.FLOAT, number=1,)
-    y = proto.Field(proto.FLOAT, number=2,)
+    x = proto.Field(
+        proto.FLOAT,
+        number=1,
+    )
+    y = proto.Field(
+        proto.FLOAT,
+        number=2,
+    )
 
 
 class BoundingPoly(proto.Message):
@@ -64,9 +80,15 @@ class BoundingPoly(proto.Message):
             The bounding polygon normalized vertices.
     """
 
-    vertices = proto.RepeatedField(proto.MESSAGE, number=1, message="Vertex",)
+    vertices = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Vertex",
+    )
     normalized_vertices = proto.RepeatedField(
-        proto.MESSAGE, number=2, message="NormalizedVertex",
+        proto.MESSAGE,
+        number=2,
+        message="NormalizedVertex",
     )
 
 

@@ -19,7 +19,10 @@ from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.documentai.v1beta3", manifest={"CommonOperationMetadata",},
+    package="google.cloud.documentai.v1beta3",
+    manifest={
+        "CommonOperationMetadata",
+    },
 )
 
 
@@ -47,10 +50,25 @@ class CommonOperationMetadata(proto.Message):
         FAILED = 4
         CANCELLED = 5
 
-    state = proto.Field(proto.ENUM, number=1, enum=State,)
-    state_message = proto.Field(proto.STRING, number=2,)
-    create_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
+    state = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=State,
+    )
+    state_message = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

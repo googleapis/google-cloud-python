@@ -83,14 +83,30 @@ class ProcessRequest(proto.Message):
     """
 
     inline_document = proto.Field(
-        proto.MESSAGE, number=4, oneof="source", message=gcd_document.Document,
+        proto.MESSAGE,
+        number=4,
+        oneof="source",
+        message=gcd_document.Document,
     )
     raw_document = proto.Field(
-        proto.MESSAGE, number=5, oneof="source", message=document_io.RawDocument,
+        proto.MESSAGE,
+        number=5,
+        oneof="source",
+        message=document_io.RawDocument,
     )
-    name = proto.Field(proto.STRING, number=1,)
-    document = proto.Field(proto.MESSAGE, number=2, message=gcd_document.Document,)
-    skip_human_review = proto.Field(proto.BOOL, number=3,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    document = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=gcd_document.Document,
+    )
+    skip_human_review = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
 
 
 class HumanReviewStatus(proto.Message):
@@ -119,9 +135,19 @@ class HumanReviewStatus(proto.Message):
         IN_PROGRESS = 3
         ERROR = 4
 
-    state = proto.Field(proto.ENUM, number=1, enum=State,)
-    state_message = proto.Field(proto.STRING, number=2,)
-    human_review_operation = proto.Field(proto.STRING, number=3,)
+    state = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=State,
+    )
+    state_message = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    human_review_operation = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ProcessResponse(proto.Message):
@@ -143,10 +169,19 @@ class ProcessResponse(proto.Message):
             document.
     """
 
-    document = proto.Field(proto.MESSAGE, number=1, message=gcd_document.Document,)
-    human_review_operation = proto.Field(proto.STRING, number=2,)
+    document = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=gcd_document.Document,
+    )
+    human_review_operation = proto.Field(
+        proto.STRING,
+        number=2,
+    )
     human_review_status = proto.Field(
-        proto.MESSAGE, number=3, message="HumanReviewStatus",
+        proto.MESSAGE,
+        number=3,
+        message="HumanReviewStatus",
     )
 
 
@@ -184,8 +219,14 @@ class BatchProcessRequest(proto.Message):
                 should be application/json.
         """
 
-        gcs_source = proto.Field(proto.STRING, number=1,)
-        mime_type = proto.Field(proto.STRING, number=2,)
+        gcs_source = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        mime_type = proto.Field(
+            proto.STRING,
+            number=2,
+        )
 
     class BatchOutputConfig(proto.Message):
         r"""The message for output config in batch process.
@@ -196,25 +237,43 @@ class BatchProcessRequest(proto.Message):
                 processed documents.
         """
 
-        gcs_destination = proto.Field(proto.STRING, number=1,)
+        gcs_destination = proto.Field(
+            proto.STRING,
+            number=1,
+        )
 
-    name = proto.Field(proto.STRING, number=1,)
-    input_configs = proto.RepeatedField(
-        proto.MESSAGE, number=2, message=BatchInputConfig,
+    name = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    output_config = proto.Field(proto.MESSAGE, number=3, message=BatchOutputConfig,)
+    input_configs = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=BatchInputConfig,
+    )
+    output_config = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=BatchOutputConfig,
+    )
     input_documents = proto.Field(
-        proto.MESSAGE, number=5, message=document_io.BatchDocumentsInputConfig,
+        proto.MESSAGE,
+        number=5,
+        message=document_io.BatchDocumentsInputConfig,
     )
     document_output_config = proto.Field(
-        proto.MESSAGE, number=6, message=document_io.DocumentOutputConfig,
+        proto.MESSAGE,
+        number=6,
+        message=document_io.DocumentOutputConfig,
     )
-    skip_human_review = proto.Field(proto.BOOL, number=4,)
+    skip_human_review = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
 
 
 class BatchProcessResponse(proto.Message):
-    r"""Response message for batch process document method.
-    """
+    r"""Response message for batch process document method."""
 
 
 class BatchProcessMetadata(proto.Message):
@@ -275,20 +334,52 @@ class BatchProcessMetadata(proto.Message):
                 document.
         """
 
-        input_gcs_source = proto.Field(proto.STRING, number=1,)
-        status = proto.Field(proto.MESSAGE, number=2, message=status_pb2.Status,)
-        output_gcs_destination = proto.Field(proto.STRING, number=3,)
-        human_review_operation = proto.Field(proto.STRING, number=4,)
+        input_gcs_source = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        status = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message=status_pb2.Status,
+        )
+        output_gcs_destination = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+        human_review_operation = proto.Field(
+            proto.STRING,
+            number=4,
+        )
         human_review_status = proto.Field(
-            proto.MESSAGE, number=5, message="HumanReviewStatus",
+            proto.MESSAGE,
+            number=5,
+            message="HumanReviewStatus",
         )
 
-    state = proto.Field(proto.ENUM, number=1, enum=State,)
-    state_message = proto.Field(proto.STRING, number=2,)
-    create_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
+    state = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=State,
+    )
+    state_message = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
     individual_process_statuses = proto.RepeatedField(
-        proto.MESSAGE, number=5, message=IndividualProcessStatus,
+        proto.MESSAGE,
+        number=5,
+        message=IndividualProcessStatus,
     )
 
 
@@ -302,7 +393,10 @@ class FetchProcessorTypesRequest(proto.Message):
             projects/{project}/locations/{location}
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class FetchProcessorTypesResponse(proto.Message):
@@ -314,7 +408,9 @@ class FetchProcessorTypesResponse(proto.Message):
     """
 
     processor_types = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=processor_type.ProcessorType,
+        proto.MESSAGE,
+        number=1,
+        message=processor_type.ProcessorType,
     )
 
 
@@ -337,9 +433,18 @@ class ListProcessorsRequest(proto.Message):
             next processor.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListProcessorsResponse(proto.Message):
@@ -358,9 +463,14 @@ class ListProcessorsResponse(proto.Message):
         return self
 
     processors = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=gcd_processor.Processor,
+        proto.MESSAGE,
+        number=1,
+        message=gcd_processor.Processor,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class CreateProcessorRequest(proto.Message):
@@ -379,8 +489,15 @@ class CreateProcessorRequest(proto.Message):
             processor is under CMEK if CMEK fields are set.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    processor = proto.Field(proto.MESSAGE, number=2, message=gcd_processor.Processor,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    processor = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=gcd_processor.Processor,
+    )
 
 
 class DeleteProcessorRequest(proto.Message):
@@ -392,7 +509,10 @@ class DeleteProcessorRequest(proto.Message):
             deleted.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class DeleteProcessorMetadata(proto.Message):
@@ -406,7 +526,9 @@ class DeleteProcessorMetadata(proto.Message):
     """
 
     common_metadata = proto.Field(
-        proto.MESSAGE, number=5, message=operation_metadata.CommonOperationMetadata,
+        proto.MESSAGE,
+        number=5,
+        message=operation_metadata.CommonOperationMetadata,
     )
 
 
@@ -419,12 +541,14 @@ class EnableProcessorRequest(proto.Message):
             enabled.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class EnableProcessorResponse(proto.Message):
-    r"""Response message for the enable processor method.
-    """
+    r"""Response message for the enable processor method."""
 
 
 class EnableProcessorMetadata(proto.Message):
@@ -438,7 +562,9 @@ class EnableProcessorMetadata(proto.Message):
     """
 
     common_metadata = proto.Field(
-        proto.MESSAGE, number=5, message=operation_metadata.CommonOperationMetadata,
+        proto.MESSAGE,
+        number=5,
+        message=operation_metadata.CommonOperationMetadata,
     )
 
 
@@ -451,12 +577,14 @@ class DisableProcessorRequest(proto.Message):
             disabled.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class DisableProcessorResponse(proto.Message):
-    r"""Response message for the disable processor method.
-    """
+    r"""Response message for the disable processor method."""
 
 
 class DisableProcessorMetadata(proto.Message):
@@ -470,7 +598,9 @@ class DisableProcessorMetadata(proto.Message):
     """
 
     common_metadata = proto.Field(
-        proto.MESSAGE, number=5, message=operation_metadata.CommonOperationMetadata,
+        proto.MESSAGE,
+        number=5,
+        message=operation_metadata.CommonOperationMetadata,
     )
 
 
@@ -505,12 +635,29 @@ class ReviewDocumentRequest(proto.Message):
         URGENT = 1
 
     inline_document = proto.Field(
-        proto.MESSAGE, number=4, oneof="source", message=gcd_document.Document,
+        proto.MESSAGE,
+        number=4,
+        oneof="source",
+        message=gcd_document.Document,
     )
-    human_review_config = proto.Field(proto.STRING, number=1,)
-    document = proto.Field(proto.MESSAGE, number=2, message=gcd_document.Document,)
-    enable_schema_validation = proto.Field(proto.BOOL, number=3,)
-    priority = proto.Field(proto.ENUM, number=5, enum=Priority,)
+    human_review_config = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    document = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=gcd_document.Document,
+    )
+    enable_schema_validation = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+    priority = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum=Priority,
+    )
 
 
 class ReviewDocumentResponse(proto.Message):
@@ -522,7 +669,10 @@ class ReviewDocumentResponse(proto.Message):
             document.
     """
 
-    gcs_destination = proto.Field(proto.STRING, number=1,)
+    gcs_destination = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ReviewDocumentOperationMetadata(proto.Message):
@@ -556,14 +706,34 @@ class ReviewDocumentOperationMetadata(proto.Message):
         FAILED = 4
         CANCELLED = 5
 
-    state = proto.Field(proto.ENUM, number=1, enum=State,)
-    state_message = proto.Field(proto.STRING, number=2,)
-    create_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
-    common_metadata = proto.Field(
-        proto.MESSAGE, number=5, message=operation_metadata.CommonOperationMetadata,
+    state = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=State,
     )
-    question_id = proto.Field(proto.STRING, number=6,)
+    state_message = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    common_metadata = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=operation_metadata.CommonOperationMetadata,
+    )
+    question_id = proto.Field(
+        proto.STRING,
+        number=6,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

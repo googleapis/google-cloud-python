@@ -40,8 +40,14 @@ class RawDocument(proto.Message):
             of the [content].
     """
 
-    content = proto.Field(proto.BYTES, number=1,)
-    mime_type = proto.Field(proto.STRING, number=2,)
+    content = proto.Field(
+        proto.BYTES,
+        number=1,
+    )
+    mime_type = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GcsDocument(proto.Message):
@@ -54,8 +60,14 @@ class GcsDocument(proto.Message):
             An IANA MIME type (RFC6838) of the content.
     """
 
-    gcs_uri = proto.Field(proto.STRING, number=1,)
-    mime_type = proto.Field(proto.STRING, number=2,)
+    gcs_uri = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    mime_type = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GcsDocuments(proto.Message):
@@ -66,7 +78,11 @@ class GcsDocuments(proto.Message):
             The list of documents.
     """
 
-    documents = proto.RepeatedField(proto.MESSAGE, number=1, message="GcsDocument",)
+    documents = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="GcsDocument",
+    )
 
 
 class GcsPrefix(proto.Message):
@@ -78,7 +94,10 @@ class GcsPrefix(proto.Message):
             The URI prefix.
     """
 
-    gcs_uri_prefix = proto.Field(proto.STRING, number=1,)
+    gcs_uri_prefix = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class BatchDocumentsInputConfig(proto.Message):
@@ -106,10 +125,16 @@ class BatchDocumentsInputConfig(proto.Message):
     """
 
     gcs_prefix = proto.Field(
-        proto.MESSAGE, number=1, oneof="source", message="GcsPrefix",
+        proto.MESSAGE,
+        number=1,
+        oneof="source",
+        message="GcsPrefix",
     )
     gcs_documents = proto.Field(
-        proto.MESSAGE, number=2, oneof="source", message="GcsDocuments",
+        proto.MESSAGE,
+        number=2,
+        oneof="source",
+        message="GcsDocuments",
     )
 
 
@@ -137,10 +162,16 @@ class DocumentOutputConfig(proto.Message):
                 output.
         """
 
-        gcs_uri = proto.Field(proto.STRING, number=1,)
+        gcs_uri = proto.Field(
+            proto.STRING,
+            number=1,
+        )
 
     gcs_output_config = proto.Field(
-        proto.MESSAGE, number=1, oneof="destination", message=GcsOutputConfig,
+        proto.MESSAGE,
+        number=1,
+        oneof="destination",
+        message=GcsOutputConfig,
     )
 
 

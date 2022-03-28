@@ -159,19 +159,29 @@ class DocumentProcessorServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.list_processors: gapic_v1.method.wrap_method(
-                self.list_processors, default_timeout=None, client_info=client_info,
+                self.list_processors,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.create_processor: gapic_v1.method.wrap_method(
-                self.create_processor, default_timeout=None, client_info=client_info,
+                self.create_processor,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.delete_processor: gapic_v1.method.wrap_method(
-                self.delete_processor, default_timeout=None, client_info=client_info,
+                self.delete_processor,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.enable_processor: gapic_v1.method.wrap_method(
-                self.enable_processor, default_timeout=None, client_info=client_info,
+                self.enable_processor,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.disable_processor: gapic_v1.method.wrap_method(
-                self.disable_processor, default_timeout=None, client_info=client_info,
+                self.disable_processor,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.review_document: gapic_v1.method.wrap_method(
                 self.review_document,
@@ -193,9 +203,9 @@ class DocumentProcessorServiceTransport(abc.ABC):
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

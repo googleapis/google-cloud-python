@@ -108,7 +108,10 @@ def test__get_default_mtls_endpoint():
 
 @pytest.mark.parametrize(
     "client_class",
-    [DocumentProcessorServiceClient, DocumentProcessorServiceAsyncClient,],
+    [
+        DocumentProcessorServiceClient,
+        DocumentProcessorServiceAsyncClient,
+    ],
 )
 def test_document_processor_service_client_from_service_account_info(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -151,7 +154,10 @@ def test_document_processor_service_client_service_account_always_use_jwt(
 
 @pytest.mark.parametrize(
     "client_class",
-    [DocumentProcessorServiceClient, DocumentProcessorServiceAsyncClient,],
+    [
+        DocumentProcessorServiceClient,
+        DocumentProcessorServiceAsyncClient,
+    ],
 )
 def test_document_processor_service_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -540,7 +546,9 @@ def test_document_processor_service_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -681,11 +689,16 @@ def test_document_processor_service_client_create_channel_credentials_file(
 
 
 @pytest.mark.parametrize(
-    "request_type", [document_processor_service.ProcessRequest, dict,]
+    "request_type",
+    [
+        document_processor_service.ProcessRequest,
+        dict,
+    ],
 )
 def test_process_document(request_type, transport: str = "grpc"):
     client = DocumentProcessorServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -711,7 +724,8 @@ def test_process_document_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DocumentProcessorServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -728,7 +742,8 @@ async def test_process_document_async(
     request_type=document_processor_service.ProcessRequest,
 ):
     client = DocumentProcessorServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -780,7 +795,10 @@ def test_process_document_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -809,7 +827,10 @@ async def test_process_document_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_process_document_flattened():
@@ -823,7 +844,9 @@ def test_process_document_flattened():
         call.return_value = document_processor_service.ProcessResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.process_document(name="name_value",)
+        client.process_document(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -843,7 +866,8 @@ def test_process_document_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.process_document(
-            document_processor_service.ProcessRequest(), name="name_value",
+            document_processor_service.ProcessRequest(),
+            name="name_value",
         )
 
 
@@ -863,7 +887,9 @@ async def test_process_document_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.process_document(name="name_value",)
+        response = await client.process_document(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -884,16 +910,22 @@ async def test_process_document_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.process_document(
-            document_processor_service.ProcessRequest(), name="name_value",
+            document_processor_service.ProcessRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [document_processor_service.BatchProcessRequest, dict,]
+    "request_type",
+    [
+        document_processor_service.BatchProcessRequest,
+        dict,
+    ],
 )
 def test_batch_process_documents(request_type, transport: str = "grpc"):
     client = DocumentProcessorServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -921,7 +953,8 @@ def test_batch_process_documents_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DocumentProcessorServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -940,7 +973,8 @@ async def test_batch_process_documents_async(
     request_type=document_processor_service.BatchProcessRequest,
 ):
     client = DocumentProcessorServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -996,7 +1030,10 @@ def test_batch_process_documents_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1027,7 +1064,10 @@ async def test_batch_process_documents_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_batch_process_documents_flattened():
@@ -1043,7 +1083,9 @@ def test_batch_process_documents_flattened():
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.batch_process_documents(name="name_value",)
+        client.batch_process_documents(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1063,7 +1105,8 @@ def test_batch_process_documents_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.batch_process_documents(
-            document_processor_service.BatchProcessRequest(), name="name_value",
+            document_processor_service.BatchProcessRequest(),
+            name="name_value",
         )
 
 
@@ -1085,7 +1128,9 @@ async def test_batch_process_documents_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.batch_process_documents(name="name_value",)
+        response = await client.batch_process_documents(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1106,16 +1151,22 @@ async def test_batch_process_documents_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.batch_process_documents(
-            document_processor_service.BatchProcessRequest(), name="name_value",
+            document_processor_service.BatchProcessRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [document_processor_service.ReviewDocumentRequest, dict,]
+    "request_type",
+    [
+        document_processor_service.ReviewDocumentRequest,
+        dict,
+    ],
 )
 def test_review_document(request_type, transport: str = "grpc"):
     client = DocumentProcessorServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1141,7 +1192,8 @@ def test_review_document_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DocumentProcessorServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1158,7 +1210,8 @@ async def test_review_document_async(
     request_type=document_processor_service.ReviewDocumentRequest,
 ):
     client = DocumentProcessorServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1259,7 +1312,9 @@ def test_review_document_flattened():
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.review_document(human_review_config="human_review_config_value",)
+        client.review_document(
+            human_review_config="human_review_config_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1335,7 +1390,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = DocumentProcessorServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -1356,7 +1412,8 @@ def test_credentials_transport_error():
     options.api_key = "api_key"
     with pytest.raises(ValueError):
         client = DocumentProcessorServiceClient(
-            client_options=options, transport=transport,
+            client_options=options,
+            transport=transport,
         )
 
     # It is an error to provide an api_key and a credential.
@@ -1373,7 +1430,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = DocumentProcessorServiceClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -1422,7 +1480,8 @@ def test_transport_grpc_default():
         credentials=ga_credentials.AnonymousCredentials(),
     )
     assert isinstance(
-        client.transport, transports.DocumentProcessorServiceGrpcTransport,
+        client.transport,
+        transports.DocumentProcessorServiceGrpcTransport,
     )
 
 
@@ -1475,7 +1534,8 @@ def test_document_processor_service_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.DocumentProcessorServiceTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -1637,7 +1697,8 @@ def test_document_processor_service_grpc_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.DocumentProcessorServiceGrpcTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -1649,7 +1710,8 @@ def test_document_processor_service_grpc_asyncio_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.DocumentProcessorServiceGrpcAsyncIOTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -1758,12 +1820,16 @@ def test_document_processor_service_transport_channel_mtls_with_adc(transport_cl
 
 def test_document_processor_service_grpc_lro_client():
     client = DocumentProcessorServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
     transport = client.transport
 
     # Ensure that we have a api-core operations client.
-    assert isinstance(transport.operations_client, operations_v1.OperationsClient,)
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsClient,
+    )
 
     # Ensure that subsequent calls to the property send the exact same object.
     assert transport.operations_client is transport.operations_client
@@ -1771,12 +1837,16 @@ def test_document_processor_service_grpc_lro_client():
 
 def test_document_processor_service_grpc_lro_async_client():
     client = DocumentProcessorServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     transport = client.transport
 
     # Ensure that we have a api-core operations client.
-    assert isinstance(transport.operations_client, operations_v1.OperationsAsyncClient,)
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsAsyncClient,
+    )
 
     # Ensure that subsequent calls to the property send the exact same object.
     assert transport.operations_client is transport.operations_client
@@ -1787,7 +1857,9 @@ def test_human_review_config_path():
     location = "clam"
     processor = "whelk"
     expected = "projects/{project}/locations/{location}/processors/{processor}/humanReviewConfig".format(
-        project=project, location=location, processor=processor,
+        project=project,
+        location=location,
+        processor=processor,
     )
     actual = DocumentProcessorServiceClient.human_review_config_path(
         project, location, processor
@@ -1813,7 +1885,9 @@ def test_processor_path():
     location = "mussel"
     processor = "winkle"
     expected = "projects/{project}/locations/{location}/processors/{processor}".format(
-        project=project, location=location, processor=processor,
+        project=project,
+        location=location,
+        processor=processor,
     )
     actual = DocumentProcessorServiceClient.processor_path(project, location, processor)
     assert expected == actual
@@ -1854,7 +1928,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "whelk"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = DocumentProcessorServiceClient.common_folder_path(folder)
     assert expected == actual
 
@@ -1872,7 +1948,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "oyster"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = DocumentProcessorServiceClient.common_organization_path(organization)
     assert expected == actual
 
@@ -1890,7 +1968,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "cuttlefish"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = DocumentProcessorServiceClient.common_project_path(project)
     assert expected == actual
 
@@ -1910,7 +1990,8 @@ def test_common_location_path():
     project = "winkle"
     location = "nautilus"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = DocumentProcessorServiceClient.common_location_path(project, location)
     assert expected == actual
@@ -1935,7 +2016,8 @@ def test_client_with_default_client_info():
         transports.DocumentProcessorServiceTransport, "_prep_wrapped_messages"
     ) as prep:
         client = DocumentProcessorServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -1944,7 +2026,8 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = DocumentProcessorServiceClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -1952,7 +2035,8 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = DocumentProcessorServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     with mock.patch.object(
         type(getattr(client.transport, "grpc_channel")), "close"
