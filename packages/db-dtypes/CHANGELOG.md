@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.0](https://github.com/googleapis/python-db-dtypes-pandas/compare/v0.4.0...v1.0.0) (2022-03-25)
+
+
+### Features
+
+* label package as generally available ([#92](https://github.com/googleapis/python-db-dtypes-pandas/issues/92)) ([0363e87](https://github.com/googleapis/python-db-dtypes-pandas/commit/0363e8725b322881c1fe1e89bdeadd0f67317d22))
+
 ## [0.4.0](https://github.com/googleapis/python-db-dtypes-pandas/compare/v0.3.1...v0.4.0) (2022-03-24)
 
 
