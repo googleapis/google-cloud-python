@@ -18,7 +18,10 @@ import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.phishingprotection.v1beta1",
-    manifest={"ReportPhishingRequest", "ReportPhishingResponse",},
+    manifest={
+        "ReportPhishingRequest",
+        "ReportPhishingResponse",
+    },
 )
 
 
@@ -34,13 +37,18 @@ class ReportPhishingRequest(proto.Message):
             phishing content to be analyzed.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    uri = proto.Field(proto.STRING, number=2,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    uri = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class ReportPhishingResponse(proto.Message):
-    r"""The ReportPhishing (empty) response message.
-    """
+    r"""The ReportPhishing (empty) response message."""
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
