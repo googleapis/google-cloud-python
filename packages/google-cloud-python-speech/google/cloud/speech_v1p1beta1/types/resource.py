@@ -51,11 +51,24 @@ class CustomClass(proto.Message):
                 The class item's value.
         """
 
-        value = proto.Field(proto.STRING, number=1,)
+        value = proto.Field(
+            proto.STRING,
+            number=1,
+        )
 
-    name = proto.Field(proto.STRING, number=1,)
-    custom_class_id = proto.Field(proto.STRING, number=2,)
-    items = proto.RepeatedField(proto.MESSAGE, number=3, message=ClassItem,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    custom_class_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    items = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=ClassItem,
+    )
 
 
 class PhraseSet(proto.Message):
@@ -129,12 +142,28 @@ class PhraseSet(proto.Message):
                 of 0.
         """
 
-        value = proto.Field(proto.STRING, number=1,)
-        boost = proto.Field(proto.FLOAT, number=2,)
+        value = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        boost = proto.Field(
+            proto.FLOAT,
+            number=2,
+        )
 
-    name = proto.Field(proto.STRING, number=1,)
-    phrases = proto.RepeatedField(proto.MESSAGE, number=2, message=Phrase,)
-    boost = proto.Field(proto.FLOAT, number=4,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    phrases = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=Phrase,
+    )
+    boost = proto.Field(
+        proto.FLOAT,
+        number=4,
+    )
 
 
 class SpeechAdaptation(proto.Message):
@@ -156,10 +185,19 @@ class SpeechAdaptation(proto.Message):
             ``custom_class_id``.
     """
 
-    phrase_sets = proto.RepeatedField(proto.MESSAGE, number=1, message="PhraseSet",)
-    phrase_set_references = proto.RepeatedField(proto.STRING, number=2,)
+    phrase_sets = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="PhraseSet",
+    )
+    phrase_set_references = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
     custom_classes = proto.RepeatedField(
-        proto.MESSAGE, number=3, message="CustomClass",
+        proto.MESSAGE,
+        number=3,
+        message="CustomClass",
     )
 
 
@@ -193,11 +231,24 @@ class TranscriptNormalization(proto.Message):
                 Whether the search is case sensitive.
         """
 
-        search = proto.Field(proto.STRING, number=1,)
-        replace = proto.Field(proto.STRING, number=2,)
-        case_sensitive = proto.Field(proto.BOOL, number=3,)
+        search = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        replace = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        case_sensitive = proto.Field(
+            proto.BOOL,
+            number=3,
+        )
 
-    entries = proto.RepeatedField(proto.MESSAGE, number=1, message=Entry,)
+    entries = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=Entry,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
