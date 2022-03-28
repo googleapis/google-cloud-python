@@ -33,11 +33,9 @@ class SearchServiceGrpcAsyncIOTransport(SearchServiceTransport):
     """gRPC AsyncIO backend transport for SearchService.
 
     Service for search.
-
     This feature is only available for users who have Retail Search
-    enabled. Please submit a form
-    `here <https://cloud.google.com/contact>`__ to contact cloud sales
-    if you are interested in using Retail Search.
+    enabled. Please enable Retail Search on Cloud Console before
+    using this feature.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -244,11 +242,9 @@ class SearchServiceGrpcAsyncIOTransport(SearchServiceTransport):
         r"""Return a callable for the search method over gRPC.
 
         Performs a search.
-
-        This feature is only available for users who have Retail Search
-        enabled. Please submit a form
-        `here <https://cloud.google.com/contact>`__ to contact cloud
-        sales if you are interested in using Retail Search.
+        This feature is only available for users who have Retail
+        Search enabled. Please enable Retail Search on Cloud
+        Console before using this feature.
 
         Returns:
             Callable[[~.SearchRequest],

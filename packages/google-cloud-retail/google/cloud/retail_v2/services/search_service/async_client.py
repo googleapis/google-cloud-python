@@ -40,11 +40,9 @@ from .client import SearchServiceClient
 
 class SearchServiceAsyncClient:
     """Service for search.
-
     This feature is only available for users who have Retail Search
-    enabled. Please submit a form
-    `here <https://cloud.google.com/contact>`__ to contact cloud sales
-    if you are interested in using Retail Search.
+    enabled. Please enable Retail Search on Cloud Console before
+    using this feature.
     """
 
     _client: SearchServiceClient
@@ -219,11 +217,9 @@ class SearchServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.SearchAsyncPager:
         r"""Performs a search.
-
-        This feature is only available for users who have Retail Search
-        enabled. Please submit a form
-        `here <https://cloud.google.com/contact>`__ to contact cloud
-        sales if you are interested in using Retail Search.
+        This feature is only available for users who have Retail
+        Search enabled. Please enable Retail Search on Cloud
+        Console before using this feature.
 
 
         .. code-block:: python

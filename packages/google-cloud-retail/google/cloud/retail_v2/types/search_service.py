@@ -35,7 +35,7 @@ class SearchRequest(proto.Message):
         placement (str):
             Required. The resource name of the search engine placement,
             such as
-            ``projects/*/locations/global/catalogs/default_catalog/placements/default_search``.
+            ``projects/*/locations/global/catalogs/default_catalog/placements/default_search``
             This field is used to identify the serving configuration
             name and the set of models that will be used to make the
             search.
@@ -53,6 +53,9 @@ class SearchRequest(proto.Message):
             which should be able to uniquely identify a visitor on a
             single device. This unique identifier should not change if
             the visitor logs in or out of the website.
+
+            This should be the same identifier as
+            [UserEvent.visitor_id][google.cloud.retail.v2.UserEvent.visitor_id].
 
             The field must be a UTF-8 encoded string with a length limit
             of 128 characters. Otherwise, an INVALID_ARGUMENT error is
@@ -97,6 +100,9 @@ class SearchRequest(proto.Message):
             If this field is unrecognizable, an INVALID_ARGUMENT is
             returned.
         canonical_filter (str):
+            The default filter that is applied when a user performs a
+            search without checking any filters on the search page.
+
             The filter applied to every search request when quality
             improvement such as query expansion is needed. For example,
             if a query does not have enough results, an expanded query
@@ -126,12 +132,12 @@ class SearchRequest(proto.Message):
             A maximum of 100 values are allowed. Otherwise, an
             INVALID_ARGUMENT error is returned.
         dynamic_facet_spec (google.cloud.retail_v2.types.SearchRequest.DynamicFacetSpec):
+            Deprecated. Refer to
+            https://cloud.google.com/retail/docs/configs#dynamic
+            to enable dynamic facets. Do not set this field.
             The specification for dynamically generated
             facets. Notice that only textual facets can be
             dynamically generated.
-            This feature requires additional allowlisting.
-            Contact Retail Search support team if you are
-            interested in using dynamic facet feature.
         boost_spec (google.cloud.retail_v2.types.SearchRequest.BoostSpec):
             Boost specification to boost certain products. See more
             details at this `user
@@ -151,14 +157,15 @@ class SearchRequest(proto.Message):
         variant_rollup_keys (Sequence[str]):
             The keys to fetch and rollup the matching
             [variant][google.cloud.retail.v2.Product.Type.VARIANT]
-            [Product][google.cloud.retail.v2.Product]s attributes. The
-            attributes from all the matching
+            [Product][google.cloud.retail.v2.Product]s attributes,
+            [FulfillmentInfo][google.cloud.retail.v2.FulfillmentInfo] or
+            [LocalInventory][google.cloud.retail.v2.LocalInventory]s
+            attributes. The attributes from all the matching
             [variant][google.cloud.retail.v2.Product.Type.VARIANT]
-            [Product][google.cloud.retail.v2.Product]s are merged and
-            de-duplicated. Notice that rollup
-            [variant][google.cloud.retail.v2.Product.Type.VARIANT]
-            [Product][google.cloud.retail.v2.Product]s attributes will
-            lead to extra query latency. Maximum number of keys is 10.
+            [Product][google.cloud.retail.v2.Product]s or
+            [LocalInventory][google.cloud.retail.v2.LocalInventory]s are
+            merged and de-duplicated. Notice that rollup attributes will
+            lead to extra query latency. Maximum number of keys is 30.
 
             For
             [FulfillmentInfo][google.cloud.retail.v2.FulfillmentInfo], a
@@ -175,6 +182,7 @@ class SearchRequest(proto.Message):
             -  discount
             -  variantId
             -  inventory(place_id,price)
+            -  inventory(place_id,original_price)
             -  inventory(place_id,attributes.key), where key is any key
                in the [Product.inventories.attributes][] map.
             -  attributes.key, where key is any key in the
@@ -246,6 +254,8 @@ class SearchRequest(proto.Message):
             The search mode of the search request. If not
             specified, a single search request triggers both
             product search and faceted search.
+        personalization_spec (google.cloud.retail_v2.types.SearchRequest.PersonalizationSpec):
+            The specification for personalization.
     """
 
     class SearchMode(proto.Enum):
@@ -370,6 +380,7 @@ class SearchRequest(proto.Message):
                        -  "ratingCount"
                        -  "attributes.key"
                        -  "inventory(place_id,price)"
+                       -  "inventory(place_id,original_price)"
                        -  "inventory(place_id,attributes.key)".
                 intervals (Sequence[google.cloud.retail_v2.types.Interval]):
                     Set only if values should be bucketized into
@@ -511,6 +522,15 @@ class SearchRequest(proto.Message):
                 specifications are all applied and combined in a
                 non-linear way. Maximum number of specifications
                 is 10.
+            skip_boost_spec_validation (bool):
+                Whether to skip boostspec validation. If this field is set
+                to true, invalid
+                [BoostSpec.condition_boost_specs][google.cloud.retail.v2.SearchRequest.BoostSpec.condition_boost_specs]
+                will be ignored and valid
+                [BoostSpec.condition_boost_specs][google.cloud.retail.v2.SearchRequest.BoostSpec.condition_boost_specs]
+                will still be applied.
+
+                This field is a member of `oneof`_ ``_skip_boost_spec_validation``.
         """
 
         class ConditionBoostSpec(proto.Message):
@@ -560,6 +580,7 @@ class SearchRequest(proto.Message):
             number=1,
             message="SearchRequest.BoostSpec.ConditionBoostSpec",
         )
+        skip_boost_spec_validation = proto.Field(proto.BOOL, number=2, optional=True,)
 
     class QueryExpansionSpec(proto.Message):
         r"""Specification to determine under which conditions query
@@ -590,6 +611,25 @@ class SearchRequest(proto.Message):
         )
         pin_unexpanded_results = proto.Field(proto.BOOL, number=2,)
 
+    class PersonalizationSpec(proto.Message):
+        r"""The specification for personalization.
+
+        Attributes:
+            mode (google.cloud.retail_v2.types.SearchRequest.PersonalizationSpec.Mode):
+                Defaults to
+                [Mode.AUTO][google.cloud.retail.v2.SearchRequest.PersonalizationSpec.Mode.AUTO].
+        """
+
+        class Mode(proto.Enum):
+            r"""The personalization mode of each search request."""
+            MODE_UNSPECIFIED = 0
+            AUTO = 1
+            DISABLED = 2
+
+        mode = proto.Field(
+            proto.ENUM, number=1, enum="SearchRequest.PersonalizationSpec.Mode",
+        )
+
     placement = proto.Field(proto.STRING, number=1,)
     branch = proto.Field(proto.STRING, number=2,)
     query = proto.Field(proto.STRING, number=3,)
@@ -612,6 +652,9 @@ class SearchRequest(proto.Message):
     variant_rollup_keys = proto.RepeatedField(proto.STRING, number=17,)
     page_categories = proto.RepeatedField(proto.STRING, number=23,)
     search_mode = proto.Field(proto.ENUM, number=31, enum=SearchMode,)
+    personalization_spec = proto.Field(
+        proto.MESSAGE, number=32, message=PersonalizationSpec,
+    )
 
 
 class SearchResponse(proto.Message):
@@ -655,6 +698,13 @@ class SearchResponse(proto.Message):
             and
             [attribution_token][google.cloud.retail.v2.SearchResponse.attribution_token]
             will be set in the response.
+        applied_controls (Sequence[str]):
+            The fully qualified resource name of applied
+            `controls <https://cloud.google.com/retail/docs/serving-control-rules>`__.
+        invalid_condition_boost_specs (Sequence[google.cloud.retail_v2.types.SearchRequest.BoostSpec.ConditionBoostSpec]):
+            The invalid
+            [SearchRequest.BoostSpec.condition_boost_specs][google.cloud.retail.v2.SearchRequest.BoostSpec.condition_boost_specs]
+            that are not applied during serving.
     """
 
     class SearchResult(proto.Message):
@@ -830,6 +880,10 @@ class SearchResponse(proto.Message):
         proto.MESSAGE, number=7, message=QueryExpansionInfo,
     )
     redirect_uri = proto.Field(proto.STRING, number=10,)
+    applied_controls = proto.RepeatedField(proto.STRING, number=12,)
+    invalid_condition_boost_specs = proto.RepeatedField(
+        proto.MESSAGE, number=14, message="SearchRequest.BoostSpec.ConditionBoostSpec",
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

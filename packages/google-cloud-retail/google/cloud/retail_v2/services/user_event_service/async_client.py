@@ -622,16 +622,17 @@ class UserEventServiceAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Triggers a user event rejoin operation with latest
+        r"""Starts a user event rejoin operation with latest
         product catalog. Events will not be annotated with
         detailed product information if product is missing from
         the catalog at the time the user event is ingested, and
         these events are stored as unjoined events with a
-        limited usage on training and serving. This API can be
-        used to trigger a 'join' operation on specified events
+        limited usage on training and serving. This method can
+        be used to start a join operation on specified events
         with latest version of product catalog. It can also be
-        used to correct events joined with wrong product
-        catalog.
+        used to correct events joined with the wrong product
+        catalog. A rejoin operation can take hours or days to
+        complete.
 
 
         .. code-block:: python

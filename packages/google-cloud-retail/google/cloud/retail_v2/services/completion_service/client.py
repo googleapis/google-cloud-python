@@ -80,11 +80,9 @@ class CompletionServiceClientMeta(type):
 
 class CompletionServiceClient(metaclass=CompletionServiceClientMeta):
     """Auto-completion service for retail.
-
     This feature is only available for users who have Retail Search
-    enabled. Please submit a form
-    `here <https://cloud.google.com/contact>`__ to contact cloud sales
-    if you are interested in using Retail Search.
+    enabled. Please enable Retail Search on Cloud Console before
+    using this feature.
     """
 
     @staticmethod
@@ -417,12 +415,11 @@ class CompletionServiceClient(metaclass=CompletionServiceClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> completion_service.CompleteQueryResponse:
-        r"""Completes the specified prefix with keyword suggestions.
-
-        This feature is only available for users who have Retail Search
-        enabled. Please submit a form
-        `here <https://cloud.google.com/contact>`__ to contact cloud
-        sales if you are interested in using Retail Search.
+        r"""Completes the specified prefix with keyword
+        suggestions.
+        This feature is only available for users who have Retail
+        Search enabled. Please enable Retail Search on Cloud
+        Console before using this feature.
 
 
         .. code-block:: python
@@ -491,14 +488,14 @@ class CompletionServiceClient(metaclass=CompletionServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Bulk import of processed completion dataset.
-
-        Request processing may be synchronous. Partial updating is not
-        supported.
-
-        This feature is only available for users who have Retail Search
-        enabled. Please submit a form
-        `here <https://cloud.google.com/contact>`__ to contact cloud
-        sales if you are interested in using Retail Search.
+        Request processing is asynchronous. Partial updating is
+        not supported.
+        The operation is successfully finished only after the
+        imported suggestions are indexed successfully and ready
+        for serving. The process takes hours.
+        This feature is only available for users who have Retail
+        Search enabled. Please enable Retail Search on Cloud
+        Console before using this feature.
 
 
         .. code-block:: python

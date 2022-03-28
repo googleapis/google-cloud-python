@@ -44,6 +44,7 @@ from google.cloud.retail_v2.services.user_event_service import transports
 from google.cloud.retail_v2.types import common
 from google.cloud.retail_v2.types import import_config
 from google.cloud.retail_v2.types import product
+from google.cloud.retail_v2.types import promotion
 from google.cloud.retail_v2.types import purge_config
 from google.cloud.retail_v2.types import user_event
 from google.cloud.retail_v2.types import user_event_service

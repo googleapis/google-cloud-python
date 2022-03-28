@@ -127,6 +127,11 @@
                 "add_fulfillment_places"
               ]
             },
+            "AddLocalInventories": {
+              "methods": [
+                "add_local_inventories"
+              ]
+            },
             "CreateProduct": {
               "methods": [
                 "create_product"
@@ -155,6 +160,11 @@
             "RemoveFulfillmentPlaces": {
               "methods": [
                 "remove_fulfillment_places"
+              ]
+            },
+            "RemoveLocalInventories": {
+              "methods": [
+                "remove_local_inventories"
               ]
             },
             "SetInventory": {
@@ -177,6 +187,11 @@
                 "add_fulfillment_places"
               ]
             },
+            "AddLocalInventories": {
+              "methods": [
+                "add_local_inventories"
+              ]
+            },
             "CreateProduct": {
               "methods": [
                 "create_product"
@@ -205,6 +220,11 @@
             "RemoveFulfillmentPlaces": {
               "methods": [
                 "remove_fulfillment_places"
+              ]
+            },
+            "RemoveLocalInventories": {
+              "methods": [
+                "remove_local_inventories"
               ]
             },
             "SetInventory": {

@@ -456,8 +456,8 @@ class ProductServiceGrpcTransport(ProductServiceTransport):
         will be used.
 
         If no inventory fields are set in
-        [UpdateProductRequest.set_mask][], then any existing inventory
-        information will be preserved.
+        [SetInventoryRequest.set_mask][google.cloud.retail.v2.SetInventoryRequest.set_mask],
+        then any existing inventory information will be preserved.
 
         Pre-existing inventory information can only be updated with
         [SetInventory][google.cloud.retail.v2.ProductService.SetInventory],
@@ -466,9 +466,8 @@ class ProductServiceGrpcTransport(ProductServiceTransport):
         [RemoveFulfillmentPlaces][google.cloud.retail.v2.ProductService.RemoveFulfillmentPlaces].
 
         This feature is only available for users who have Retail Search
-        enabled. Please submit a form
-        `here <https://cloud.google.com/contact>`__ to contact cloud
-        sales if you are interested in using Retail Search.
+        enabled. Please enable Retail Search on Cloud Console before
+        using this feature.
 
         Returns:
             Callable[[~.SetInventoryRequest],
@@ -511,9 +510,8 @@ class ProductServiceGrpcTransport(ProductServiceTransport):
         [ListProducts][google.cloud.retail.v2.ProductService.ListProducts].
 
         This feature is only available for users who have Retail Search
-        enabled. Please submit a form
-        `here <https://cloud.google.com/contact>`__ to contact cloud
-        sales if you are interested in using Retail Search.
+        enabled. Please enable Retail Search on Cloud Console before
+        using this feature.
 
         Returns:
             Callable[[~.AddFulfillmentPlacesRequest],
@@ -556,9 +554,8 @@ class ProductServiceGrpcTransport(ProductServiceTransport):
         [ListProducts][google.cloud.retail.v2.ProductService.ListProducts].
 
         This feature is only available for users who have Retail Search
-        enabled. Please submit a form
-        `here <https://cloud.google.com/contact>`__ to contact cloud
-        sales if you are interested in using Retail Search.
+        enabled. Please enable Retail Search on Cloud Console before
+        using this feature.
 
         Returns:
             Callable[[~.RemoveFulfillmentPlacesRequest],
@@ -577,6 +574,109 @@ class ProductServiceGrpcTransport(ProductServiceTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["remove_fulfillment_places"]
+
+    @property
+    def add_local_inventories(
+        self,
+    ) -> Callable[
+        [product_service.AddLocalInventoriesRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the add local inventories method over gRPC.
+
+        Updates local inventory information for a
+        [Product][google.cloud.retail.v2.Product] at a list of places,
+        while respecting the last update timestamps of each inventory
+        field.
+
+        This process is asynchronous and does not require the
+        [Product][google.cloud.retail.v2.Product] to exist before
+        updating inventory information. If the request is valid, the
+        update will be enqueued and processed downstream. As a
+        consequence, when a response is returned, updates are not
+        immediately manifested in the
+        [Product][google.cloud.retail.v2.Product] queried by
+        [GetProduct][google.cloud.retail.v2.ProductService.GetProduct]
+        or
+        [ListProducts][google.cloud.retail.v2.ProductService.ListProducts].
+
+        Local inventory information can only be modified using this
+        method.
+        [CreateProduct][google.cloud.retail.v2.ProductService.CreateProduct]
+        and
+        [UpdateProduct][google.cloud.retail.v2.ProductService.UpdateProduct]
+        has no effect on local inventories.
+
+        This feature is only available for users who have Retail Search
+        enabled. Please enable Retail Search on Cloud Console before
+        using this feature.
+
+        Returns:
+            Callable[[~.AddLocalInventoriesRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "add_local_inventories" not in self._stubs:
+            self._stubs["add_local_inventories"] = self.grpc_channel.unary_unary(
+                "/google.cloud.retail.v2.ProductService/AddLocalInventories",
+                request_serializer=product_service.AddLocalInventoriesRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["add_local_inventories"]
+
+    @property
+    def remove_local_inventories(
+        self,
+    ) -> Callable[
+        [product_service.RemoveLocalInventoriesRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the remove local inventories method over gRPC.
+
+        Remove local inventory information for a
+        [Product][google.cloud.retail.v2.Product] at a list of places at
+        a removal timestamp.
+
+        This process is asynchronous. If the request is valid, the
+        removal will be enqueued and processed downstream. As a
+        consequence, when a response is returned, removals are not
+        immediately manifested in the
+        [Product][google.cloud.retail.v2.Product] queried by
+        [GetProduct][google.cloud.retail.v2.ProductService.GetProduct]
+        or
+        [ListProducts][google.cloud.retail.v2.ProductService.ListProducts].
+
+        Local inventory information can only be removed using this
+        method.
+        [CreateProduct][google.cloud.retail.v2.ProductService.CreateProduct]
+        and
+        [UpdateProduct][google.cloud.retail.v2.ProductService.UpdateProduct]
+        has no effect on local inventories.
+
+        This feature is only available for users who have Retail Search
+        enabled. Please enable Retail Search on Cloud Console before
+        using this feature.
+
+        Returns:
+            Callable[[~.RemoveLocalInventoriesRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "remove_local_inventories" not in self._stubs:
+            self._stubs["remove_local_inventories"] = self.grpc_channel.unary_unary(
+                "/google.cloud.retail.v2.ProductService/RemoveLocalInventories",
+                request_serializer=product_service.RemoveLocalInventoriesRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["remove_local_inventories"]
 
     def close(self):
         self.grpc_channel.close()

@@ -80,6 +80,15 @@ class GcsSource(proto.Message):
                [UserEvent][google.cloud.retail.v2.UserEvent] per line.
             -  ``user_event_ga360``: Using
                https://support.google.com/analytics/answer/3437719.
+
+            Supported values for control imports:
+
+            -  'control' (default): One JSON [Control][] per line.
+
+            Supported values for catalog attribute imports:
+
+            -  'catalog_attribute' (default): One CSV
+               [CatalogAttribute][] per line.
     """
 
     input_uris = proto.RepeatedField(proto.STRING, number=1,)
@@ -136,8 +145,19 @@ class BigQuerySource(proto.Message):
 
             -  ``user_event`` (default): One JSON
                [UserEvent][google.cloud.retail.v2.UserEvent] per line.
-            -  ``user_event_ga360``: Using
+            -  ``user_event_ga360``: The schema is available here:
                https://support.google.com/analytics/answer/3437719.
+            -  ``user_event_ga4``: This feature is in private preview.
+               Please contact the support team for importing Google
+               Analytics 4 events. The schema is available here:
+               https://support.google.com/analytics/answer/7029846.
+
+            Supported values for auto-completion imports:
+
+            -  ``suggestions`` (default): One JSON completion suggestion
+               per line.
+            -  ``denylist``: One JSON deny suggestion per line.
+            -  ``allowlist``: One JSON allow suggestion per line.
     """
 
     partition_date = proto.Field(
@@ -187,10 +207,10 @@ class ImportErrorsConfig(proto.Message):
 
     Attributes:
         gcs_prefix (str):
-            Google Cloud Storage path for import errors. This must be an
-            empty, existing Cloud Storage bucket. Import errors will be
-            written to a file in this bucket, one per line, as a
-            JSON-encoded ``google.rpc.Status`` message.
+            Google Cloud Storage prefix for import errors. This must be
+            an empty, existing Cloud Storage directory. Import errors
+            will be written to sharded files in this directory, one per
+            line, as a JSON-encoded ``google.rpc.Status`` message.
 
             This field is a member of `oneof`_ ``destination``.
     """
@@ -210,16 +230,7 @@ class ImportProductsRequest(proto.Message):
             permission. If updateMask is specified, requires
             products.update permission.
         request_id (str):
-            Unique identifier provided by client, within the ancestor
-            dataset scope. Ensures idempotency and used for request
-            deduplication. Server-generated if unspecified. Up to 128
-            characters long and must match the pattern:
-            ``[a-zA-Z0-9_]+``. This is returned as [Operation.name][] in
-            [ImportMetadata][google.cloud.retail.v2.ImportMetadata].
-
-            Only supported when
-            [ImportProductsRequest.reconciliation_mode][google.cloud.retail.v2.ImportProductsRequest.reconciliation_mode]
-            is set to ``FULL``.
+            Deprecated. This field has no effect.
         input_config (google.cloud.retail_v2.types.ProductInputConfig):
             Required. The desired input location of the
             data.
@@ -432,9 +443,7 @@ class ImportMetadata(proto.Message):
             Count of entries that encountered errors
             while processing.
         request_id (str):
-            Id of the request / operation. This is
-            parroting back the requestId that was passed in
-            the request.
+            Deprecated. This field is never set.
         notification_pubsub_topic (str):
             Pub/Sub topic for receiving notification. If this field is
             set, when the import is finished, a notification will be

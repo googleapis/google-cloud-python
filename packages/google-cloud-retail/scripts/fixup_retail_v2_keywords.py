@@ -40,6 +40,7 @@ class retailCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
         'add_fulfillment_places': ('product', 'type_', 'place_ids', 'add_time', 'allow_missing', ),
+        'add_local_inventories': ('product', 'local_inventories', 'add_mask', 'add_time', 'allow_missing', ),
         'collect_user_event': ('parent', 'user_event', 'uri', 'ets', ),
         'complete_query': ('catalog', 'query', 'visitor_id', 'language_codes', 'device_type', 'dataset', 'max_suggestions', ),
         'create_product': ('parent', 'product', 'product_id', ),
@@ -55,8 +56,9 @@ class retailCallTransformer(cst.CSTTransformer):
         'purge_user_events': ('parent', 'filter', 'force', ),
         'rejoin_user_events': ('parent', 'user_event_rejoin_scope', ),
         'remove_fulfillment_places': ('product', 'type_', 'place_ids', 'remove_time', 'allow_missing', ),
-        'search': ('placement', 'visitor_id', 'branch', 'query', 'user_info', 'page_size', 'page_token', 'offset', 'filter', 'canonical_filter', 'order_by', 'facet_specs', 'dynamic_facet_spec', 'boost_spec', 'query_expansion_spec', 'variant_rollup_keys', 'page_categories', 'search_mode', ),
-        'set_default_branch': ('catalog', 'branch_id', 'note', ),
+        'remove_local_inventories': ('product', 'place_ids', 'remove_time', 'allow_missing', ),
+        'search': ('placement', 'visitor_id', 'branch', 'query', 'user_info', 'page_size', 'page_token', 'offset', 'filter', 'canonical_filter', 'order_by', 'facet_specs', 'dynamic_facet_spec', 'boost_spec', 'query_expansion_spec', 'variant_rollup_keys', 'page_categories', 'search_mode', 'personalization_spec', ),
+        'set_default_branch': ('catalog', 'branch_id', 'note', 'force', ),
         'set_inventory': ('inventory', 'set_mask', 'set_time', 'allow_missing', ),
         'update_catalog': ('catalog', 'update_mask', ),
         'update_product': ('product', 'update_mask', 'allow_missing', ),

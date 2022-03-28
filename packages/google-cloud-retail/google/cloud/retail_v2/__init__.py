@@ -41,8 +41,8 @@ from .types.common import CustomAttribute
 from .types.common import FulfillmentInfo
 from .types.common import Image
 from .types.common import Interval
+from .types.common import LocalInventory
 from .types.common import PriceInfo
-from .types.common import Promotion
 from .types.common import Rating
 from .types.common import UserInfo
 from .types.completion_service import CompleteQueryRequest
@@ -69,6 +69,9 @@ from .types.product import Product
 from .types.product_service import AddFulfillmentPlacesMetadata
 from .types.product_service import AddFulfillmentPlacesRequest
 from .types.product_service import AddFulfillmentPlacesResponse
+from .types.product_service import AddLocalInventoriesMetadata
+from .types.product_service import AddLocalInventoriesRequest
+from .types.product_service import AddLocalInventoriesResponse
 from .types.product_service import CreateProductRequest
 from .types.product_service import DeleteProductRequest
 from .types.product_service import GetProductRequest
@@ -77,10 +80,14 @@ from .types.product_service import ListProductsResponse
 from .types.product_service import RemoveFulfillmentPlacesMetadata
 from .types.product_service import RemoveFulfillmentPlacesRequest
 from .types.product_service import RemoveFulfillmentPlacesResponse
+from .types.product_service import RemoveLocalInventoriesMetadata
+from .types.product_service import RemoveLocalInventoriesRequest
+from .types.product_service import RemoveLocalInventoriesResponse
 from .types.product_service import SetInventoryMetadata
 from .types.product_service import SetInventoryRequest
 from .types.product_service import SetInventoryResponse
 from .types.product_service import UpdateProductRequest
+from .types.promotion import Promotion
 from .types.purge_config import PurgeMetadata
 from .types.purge_config import PurgeUserEventsRequest
 from .types.purge_config import PurgeUserEventsResponse
@@ -106,6 +113,9 @@ __all__ = (
     "AddFulfillmentPlacesMetadata",
     "AddFulfillmentPlacesRequest",
     "AddFulfillmentPlacesResponse",
+    "AddLocalInventoriesMetadata",
+    "AddLocalInventoriesRequest",
+    "AddLocalInventoriesResponse",
     "Audience",
     "BigQuerySource",
     "Catalog",
@@ -139,6 +149,7 @@ __all__ = (
     "ListCatalogsResponse",
     "ListProductsRequest",
     "ListProductsResponse",
+    "LocalInventory",
     "PredictRequest",
     "PredictResponse",
     "PredictionServiceClient",
@@ -161,6 +172,9 @@ __all__ = (
     "RemoveFulfillmentPlacesMetadata",
     "RemoveFulfillmentPlacesRequest",
     "RemoveFulfillmentPlacesResponse",
+    "RemoveLocalInventoriesMetadata",
+    "RemoveLocalInventoriesRequest",
+    "RemoveLocalInventoriesResponse",
     "SearchRequest",
     "SearchResponse",
     "SearchServiceClient",

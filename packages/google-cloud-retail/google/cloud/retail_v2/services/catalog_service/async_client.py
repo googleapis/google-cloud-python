@@ -478,11 +478,6 @@ class CatalogServiceAsyncClient:
         -  UserEventService will only join events with products from
            branch {newBranch}.
 
-        This feature is only available for users who have Retail Search
-        enabled. Please submit a form
-        `here <https://cloud.google.com/contact>`__ to contact cloud
-        sales if you are interested in using Retail Search.
-
 
         .. code-block:: python
 
@@ -564,11 +559,6 @@ class CatalogServiceAsyncClient:
         r"""Get which branch is currently default branch set by
         [CatalogService.SetDefaultBranch][google.cloud.retail.v2.CatalogService.SetDefaultBranch]
         method under a specified parent catalog.
-
-        This feature is only available for users who have Retail Search
-        enabled. Please submit a form
-        `here <https://cloud.google.com/contact>`__ to contact cloud
-        sales if you are interested in using Retail Search.
 
 
         .. code-block:: python

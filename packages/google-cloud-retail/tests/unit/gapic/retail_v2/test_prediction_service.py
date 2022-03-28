@@ -39,6 +39,7 @@ from google.cloud.retail_v2.services.prediction_service import transports
 from google.cloud.retail_v2.types import common
 from google.cloud.retail_v2.types import prediction_service
 from google.cloud.retail_v2.types import product
+from google.cloud.retail_v2.types import promotion
 from google.cloud.retail_v2.types import user_event
 from google.oauth2 import service_account
 from google.protobuf import duration_pb2  # type: ignore

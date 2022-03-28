@@ -42,6 +42,7 @@ from google.cloud.retail_v2.types import import_config
 from google.cloud.retail_v2.types import product
 from google.cloud.retail_v2.types import product as gcr_product
 from google.cloud.retail_v2.types import product_service
+from google.cloud.retail_v2.types import promotion
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -1142,8 +1143,8 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
         will be used.
 
         If no inventory fields are set in
-        [UpdateProductRequest.set_mask][], then any existing inventory
-        information will be preserved.
+        [SetInventoryRequest.set_mask][google.cloud.retail.v2.SetInventoryRequest.set_mask],
+        then any existing inventory information will be preserved.
 
         Pre-existing inventory information can only be updated with
         [SetInventory][google.cloud.retail.v2.ProductService.SetInventory],
@@ -1152,9 +1153,8 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
         [RemoveFulfillmentPlaces][google.cloud.retail.v2.ProductService.RemoveFulfillmentPlaces].
 
         This feature is only available for users who have Retail Search
-        enabled. Please submit a form
-        `here <https://cloud.google.com/contact>`__ to contact cloud
-        sales if you are interested in using Retail Search.
+        enabled. Please enable Retail Search on Cloud Console before
+        using this feature.
 
 
         .. code-block:: python
@@ -1218,6 +1218,26 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
                 provided or default value for
                 [SetInventoryRequest.set_time][google.cloud.retail.v2.SetInventoryRequest.set_time].
 
+                The caller can replace place IDs for a subset of
+                fulfillment types in the following ways:
+
+                -  Adds "fulfillment_info" in
+                   [SetInventoryRequest.set_mask][google.cloud.retail.v2.SetInventoryRequest.set_mask]
+                -  Specifies only the desired fulfillment types and
+                   corresponding place IDs to update in
+                   [SetInventoryRequest.inventory.fulfillment_info][]
+
+                The caller can clear all place IDs from a subset of
+                fulfillment types in the following ways:
+
+                -  Adds "fulfillment_info" in
+                   [SetInventoryRequest.set_mask][google.cloud.retail.v2.SetInventoryRequest.set_mask]
+                -  Specifies only the desired fulfillment types to clear
+                   in [SetInventoryRequest.inventory.fulfillment_info][]
+                -  Checks that only the desired fulfillment info types
+                   have empty
+                   [SetInventoryRequest.inventory.fulfillment_info.place_ids][]
+
                 The last update time is recorded for the following
                 inventory fields:
 
@@ -1235,9 +1255,9 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
                 should not be set.
             set_mask (google.protobuf.field_mask_pb2.FieldMask):
                 Indicates which inventory fields in the provided
-                [Product][google.cloud.retail.v2.Product] to update. If
-                not set or set with empty paths, all inventory fields
-                will be updated.
+                [Product][google.cloud.retail.v2.Product] to update.
+
+                At least one field must be provided.
 
                 If an unsupported or unknown field is provided, an
                 INVALID_ARGUMENT error is returned and the entire update
@@ -1334,9 +1354,8 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
         [ListProducts][google.cloud.retail.v2.ProductService.ListProducts].
 
         This feature is only available for users who have Retail Search
-        enabled. Please submit a form
-        `here <https://cloud.google.com/contact>`__ to contact cloud
-        sales if you are interested in using Retail Search.
+        enabled. Please enable Retail Search on Cloud Console before
+        using this feature.
 
 
         .. code-block:: python
@@ -1465,9 +1484,8 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
         [ListProducts][google.cloud.retail.v2.ProductService.ListProducts].
 
         This feature is only available for users who have Retail Search
-        enabled. Please submit a form
-        `here <https://cloud.google.com/contact>`__ to contact cloud
-        sales if you are interested in using Retail Search.
+        enabled. Please enable Retail Search on Cloud Console before
+        using this feature.
 
 
         .. code-block:: python
@@ -1569,6 +1587,278 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
             self._transport.operations_client,
             product_service.RemoveFulfillmentPlacesResponse,
             metadata_type=product_service.RemoveFulfillmentPlacesMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def add_local_inventories(
+        self,
+        request: Union[product_service.AddLocalInventoriesRequest, dict] = None,
+        *,
+        product: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""Updates local inventory information for a
+        [Product][google.cloud.retail.v2.Product] at a list of places,
+        while respecting the last update timestamps of each inventory
+        field.
+
+        This process is asynchronous and does not require the
+        [Product][google.cloud.retail.v2.Product] to exist before
+        updating inventory information. If the request is valid, the
+        update will be enqueued and processed downstream. As a
+        consequence, when a response is returned, updates are not
+        immediately manifested in the
+        [Product][google.cloud.retail.v2.Product] queried by
+        [GetProduct][google.cloud.retail.v2.ProductService.GetProduct]
+        or
+        [ListProducts][google.cloud.retail.v2.ProductService.ListProducts].
+
+        Local inventory information can only be modified using this
+        method.
+        [CreateProduct][google.cloud.retail.v2.ProductService.CreateProduct]
+        and
+        [UpdateProduct][google.cloud.retail.v2.ProductService.UpdateProduct]
+        has no effect on local inventories.
+
+        This feature is only available for users who have Retail Search
+        enabled. Please enable Retail Search on Cloud Console before
+        using this feature.
+
+
+        .. code-block:: python
+
+            from google.cloud import retail_v2
+
+            def sample_add_local_inventories():
+                # Create a client
+                client = retail_v2.ProductServiceClient()
+
+                # Initialize request argument(s)
+                request = retail_v2.AddLocalInventoriesRequest(
+                    product="product_value",
+                )
+
+                # Make the request
+                operation = client.add_local_inventories(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.retail_v2.types.AddLocalInventoriesRequest, dict]):
+                The request object. Request message for
+                [AddLocalInventories][] method.
+            product (str):
+                Required. Full resource name of
+                [Product][google.cloud.retail.v2.Product], such as
+                ``projects/*/locations/global/catalogs/default_catalog/branches/default_branch/products/some_product_id``.
+
+                If the caller does not have permission to access the
+                [Product][google.cloud.retail.v2.Product], regardless of
+                whether or not it exists, a PERMISSION_DENIED error is
+                returned.
+
+                This corresponds to the ``product`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.retail_v2.types.AddLocalInventoriesResponse` Response of the [AddLocalInventories][] API. Currently empty because
+                   there is no meaningful response populated from the
+                   [AddLocalInventories][] method.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([product])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a product_service.AddLocalInventoriesRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, product_service.AddLocalInventoriesRequest):
+            request = product_service.AddLocalInventoriesRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if product is not None:
+                request.product = product
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.add_local_inventories]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("product", request.product),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            product_service.AddLocalInventoriesResponse,
+            metadata_type=product_service.AddLocalInventoriesMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def remove_local_inventories(
+        self,
+        request: Union[product_service.RemoveLocalInventoriesRequest, dict] = None,
+        *,
+        product: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""Remove local inventory information for a
+        [Product][google.cloud.retail.v2.Product] at a list of places at
+        a removal timestamp.
+
+        This process is asynchronous. If the request is valid, the
+        removal will be enqueued and processed downstream. As a
+        consequence, when a response is returned, removals are not
+        immediately manifested in the
+        [Product][google.cloud.retail.v2.Product] queried by
+        [GetProduct][google.cloud.retail.v2.ProductService.GetProduct]
+        or
+        [ListProducts][google.cloud.retail.v2.ProductService.ListProducts].
+
+        Local inventory information can only be removed using this
+        method.
+        [CreateProduct][google.cloud.retail.v2.ProductService.CreateProduct]
+        and
+        [UpdateProduct][google.cloud.retail.v2.ProductService.UpdateProduct]
+        has no effect on local inventories.
+
+        This feature is only available for users who have Retail Search
+        enabled. Please enable Retail Search on Cloud Console before
+        using this feature.
+
+
+        .. code-block:: python
+
+            from google.cloud import retail_v2
+
+            def sample_remove_local_inventories():
+                # Create a client
+                client = retail_v2.ProductServiceClient()
+
+                # Initialize request argument(s)
+                request = retail_v2.RemoveLocalInventoriesRequest(
+                    product="product_value",
+                    place_ids=['place_ids_value_1', 'place_ids_value_2'],
+                )
+
+                # Make the request
+                operation = client.remove_local_inventories(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.retail_v2.types.RemoveLocalInventoriesRequest, dict]):
+                The request object. Request message for
+                [RemoveLocalInventories][] method.
+            product (str):
+                Required. Full resource name of
+                [Product][google.cloud.retail.v2.Product], such as
+                ``projects/*/locations/global/catalogs/default_catalog/branches/default_branch/products/some_product_id``.
+
+                If the caller does not have permission to access the
+                [Product][google.cloud.retail.v2.Product], regardless of
+                whether or not it exists, a PERMISSION_DENIED error is
+                returned.
+
+                This corresponds to the ``product`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.retail_v2.types.RemoveLocalInventoriesResponse` Response of the [RemoveLocalInventories][] API. Currently empty because
+                   there is no meaningful response populated from the
+                   [RemoveLocalInventories][] method.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([product])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a product_service.RemoveLocalInventoriesRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, product_service.RemoveLocalInventoriesRequest):
+            request = product_service.RemoveLocalInventoriesRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if product is not None:
+                request.product = product
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.remove_local_inventories]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("product", request.product),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            product_service.RemoveLocalInventoriesResponse,
+            metadata_type=product_service.RemoveLocalInventoriesMetadata,
         )
 
         # Done; return the response.

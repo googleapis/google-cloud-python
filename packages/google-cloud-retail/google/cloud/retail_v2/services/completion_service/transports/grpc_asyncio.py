@@ -36,11 +36,9 @@ class CompletionServiceGrpcAsyncIOTransport(CompletionServiceTransport):
     """gRPC AsyncIO backend transport for CompletionService.
 
     Auto-completion service for retail.
-
     This feature is only available for users who have Retail Search
-    enabled. Please submit a form
-    `here <https://cloud.google.com/contact>`__ to contact cloud sales
-    if you are interested in using Retail Search.
+    enabled. Please enable Retail Search on Cloud Console before
+    using this feature.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -264,12 +262,11 @@ class CompletionServiceGrpcAsyncIOTransport(CompletionServiceTransport):
     ]:
         r"""Return a callable for the complete query method over gRPC.
 
-        Completes the specified prefix with keyword suggestions.
-
-        This feature is only available for users who have Retail Search
-        enabled. Please submit a form
-        `here <https://cloud.google.com/contact>`__ to contact cloud
-        sales if you are interested in using Retail Search.
+        Completes the specified prefix with keyword
+        suggestions.
+        This feature is only available for users who have Retail
+        Search enabled. Please enable Retail Search on Cloud
+        Console before using this feature.
 
         Returns:
             Callable[[~.CompleteQueryRequest],
@@ -298,14 +295,14 @@ class CompletionServiceGrpcAsyncIOTransport(CompletionServiceTransport):
         r"""Return a callable for the import completion data method over gRPC.
 
         Bulk import of processed completion dataset.
-
-        Request processing may be synchronous. Partial updating is not
-        supported.
-
-        This feature is only available for users who have Retail Search
-        enabled. Please submit a form
-        `here <https://cloud.google.com/contact>`__ to contact cloud
-        sales if you are interested in using Retail Search.
+        Request processing is asynchronous. Partial updating is
+        not supported.
+        The operation is successfully finished only after the
+        imported suggestions are indexed successfully and ready
+        for serving. The process takes hours.
+        This feature is only available for users who have Retail
+        Search enabled. Please enable Retail Search on Cloud
+        Console before using this feature.
 
         Returns:
             Callable[[~.ImportCompletionDataRequest],

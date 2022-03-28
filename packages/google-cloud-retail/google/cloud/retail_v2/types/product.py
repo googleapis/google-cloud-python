@@ -16,6 +16,7 @@
 import proto  # type: ignore
 
 from google.cloud.retail_v2.types import common
+from google.cloud.retail_v2.types import promotion
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -58,7 +59,7 @@ class Product(proto.Message):
             [publish_time][google.cloud.retail.v2.Product.publish_time],
             otherwise an INVALID_ARGUMENT error is thrown.
 
-            Google Merchant Center property
+            Corresponding properties: Google Merchant Center property
             `expiration_date <https://support.google.com/merchants/answer/6324499>`__.
 
             This field is a member of `oneof`_ ``expiration``.
@@ -99,9 +100,9 @@ class Product(proto.Message):
             limit of 128 characters. Otherwise, an INVALID_ARGUMENT
             error is returned.
 
-            Google Merchant Center property
+            Corresponding properties: Google Merchant Center property
             `id <https://support.google.com/merchants/answer/6324405>`__.
-            Schema.org Property
+            Schema.org property
             `Product.sku <https://schema.org/sku>`__.
         type_ (google.cloud.retail_v2.types.Product.Type):
             Immutable. The type of the product. Default to
@@ -126,21 +127,25 @@ class Product(proto.Message):
             [Product][google.cloud.retail.v2.Product]. Otherwise, an
             INVALID_ARGUMENT error is returned.
 
-            Google Merchant Center Property
+            Corresponding properties: Google Merchant Center property
             `item_group_id <https://support.google.com/merchants/answer/6324507>`__.
-            Schema.org Property
+            Schema.org property
             `Product.inProductGroupWithID <https://schema.org/inProductGroupWithID>`__.
-
-            This field must be enabled before it can be used. `Learn
-            more </recommendations-ai/docs/catalog#item-group-id>`__.
         collection_member_ids (Sequence[str]):
             The [id][google.cloud.retail.v2.Product.id] of the
             collection members when
             [type][google.cloud.retail.v2.Product.type] is
             [Type.COLLECTION][google.cloud.retail.v2.Product.Type.COLLECTION].
 
-            Should not set it for other types. A maximum of 1000 values
-            are allowed. Otherwise, an INVALID_ARGUMENT error is return.
+            Non-existent product ids are allowed. The
+            [type][google.cloud.retail.v2.Product.type] of the members
+            must be either
+            [Type.PRIMARY][google.cloud.retail.v2.Product.Type.PRIMARY]
+            or
+            [Type.VARIANT][google.cloud.retail.v2.Product.Type.VARIANT]
+            otherwise and INVALID_ARGUMENT error is thrown. Should not
+            set it for other types. A maximum of 1000 values are
+            allowed. Otherwise, an INVALID_ARGUMENT error is return.
         gtin (str):
             The Global Trade Item Number (GTIN) of the product.
 
@@ -151,13 +156,13 @@ class Product(proto.Message):
             This field must be a Unigram. Otherwise, an INVALID_ARGUMENT
             error is returned.
 
-            Google Merchant Center property
+            Corresponding properties: Google Merchant Center property
             `gtin <https://support.google.com/merchants/answer/6324461>`__.
             Schema.org property
-            `Product.isbn <https://schema.org/isbn>`__ or
-            `Product.gtin8 <https://schema.org/gtin8>`__ or
-            `Product.gtin12 <https://schema.org/gtin12>`__ or
-            `Product.gtin13 <https://schema.org/gtin13>`__ or
+            `Product.isbn <https://schema.org/isbn>`__,
+            `Product.gtin8 <https://schema.org/gtin8>`__,
+            `Product.gtin12 <https://schema.org/gtin12>`__,
+            `Product.gtin13 <https://schema.org/gtin13>`__, or
             `Product.gtin14 <https://schema.org/gtin14>`__.
 
             If the value is not a valid GTIN, an INVALID_ARGUMENT error
@@ -194,7 +199,7 @@ class Product(proto.Message):
             a length limit of 5,000 characters. Otherwise, an
             INVALID_ARGUMENT error is returned.
 
-            Google Merchant Center property
+            Corresponding properties: Google Merchant Center property
             `google_product_category <https://support.google.com/merchants/answer/6324436>`__.
             Schema.org property [Product.category]
             (https://schema.org/category).
@@ -205,7 +210,7 @@ class Product(proto.Message):
             limit of 1,000 characters. Otherwise, an INVALID_ARGUMENT
             error is returned.
 
-            Google Merchant Center property
+            Corresponding properties: Google Merchant Center property
             `title <https://support.google.com/merchants/answer/6324415>`__.
             Schema.org property
             `Product.name <https://schema.org/name>`__.
@@ -217,7 +222,7 @@ class Product(proto.Message):
             characters. Otherwise, an INVALID_ARGUMENT error is
             returned.
 
-            Google Merchant Center property
+            Corresponding properties: Google Merchant Center property
             `brand <https://support.google.com/merchants/answer/6324351>`__.
             Schema.org property
             `Product.brand <https://schema.org/brand>`__.
@@ -228,14 +233,14 @@ class Product(proto.Message):
             limit of 5,000 characters. Otherwise, an INVALID_ARGUMENT
             error is returned.
 
-            Google Merchant Center property
+            Corresponding properties: Google Merchant Center property
             `description <https://support.google.com/merchants/answer/6324468>`__.
-            schema.org property
+            Schema.org property
             `Product.description <https://schema.org/description>`__.
         language_code (str):
             Language of the title/description and other string
-            attributes. Use language tags defined by [BCP
-            47][https://www.rfc-editor.org/rfc/bcp/bcp47.txt].
+            attributes. Use language tags defined by `BCP
+            47 <https://www.rfc-editor.org/rfc/bcp/bcp47.txt>`__.
 
             For product prediction, this field is ignored and the model
             automatically detects the text language. The
@@ -272,8 +277,13 @@ class Product(proto.Message):
             -  The key must be a UTF-8 encoded string with a length
                limit of 128 characters.
             -  For indexable attribute, the key must match the pattern:
-               ``[a-zA-Z0-9][a-zA-Z0-9_]*``. For example, key0LikeThis
-               or KEY_1_LIKE_THIS.
+               ``[a-zA-Z0-9][a-zA-Z0-9_]*``. For example,
+               ``key0LikeThis`` or ``KEY_1_LIKE_THIS``.
+            -  For text attributes, at most 400 values are allowed.
+               Empty values are not allowed. Each value must be a
+               non-empty UTF-8 encoded string with a length limit of 256
+               characters.
+            -  For number attributes, at most 400 values are allowed.
         tags (Sequence[str]):
             Custom tags associated with the product.
 
@@ -287,12 +297,12 @@ class Product(proto.Message):
             passing the tag as part of the
             [PredictRequest.filter][google.cloud.retail.v2.PredictRequest.filter].
 
-            Google Merchant Center property
+            Corresponding properties: Google Merchant Center property
             `custom_label_0–4 <https://support.google.com/merchants/answer/6324473>`__.
         price_info (google.cloud.retail_v2.types.PriceInfo):
             Product price and cost information.
 
-            Google Merchant Center property
+            Corresponding properties: Google Merchant Center property
             `price <https://support.google.com/merchants/answer/6324371>`__.
         rating (google.cloud.retail_v2.types.Rating):
             The rating of this product.
@@ -306,9 +316,9 @@ class Product(proto.Message):
             [Product][google.cloud.retail.v2.Product]. Default to
             [Availability.IN_STOCK][google.cloud.retail.v2.Product.Availability.IN_STOCK].
 
-            Google Merchant Center Property
+            Corresponding properties: Google Merchant Center property
             `availability <https://support.google.com/merchants/answer/6324448>`__.
-            Schema.org Property
+            Schema.org property
             `Offer.availability <https://schema.org/availability>`__.
         available_quantity (google.protobuf.wrappers_pb2.Int32Value):
             The available quantity of the item.
@@ -330,16 +340,16 @@ class Product(proto.Message):
             limit of 5,000 characters. Otherwise, an INVALID_ARGUMENT
             error is returned.
 
-            Google Merchant Center property
+            Corresponding properties: Google Merchant Center property
             `link <https://support.google.com/merchants/answer/6324416>`__.
             Schema.org property `Offer.url <https://schema.org/url>`__.
         images (Sequence[google.cloud.retail_v2.types.Image]):
-            Product images for the product.Highly recommended to put the
-            main image to the first.
+            Product images for the product. We highly recommend putting
+            the main image first.
 
             A maximum of 300 images are allowed.
 
-            Google Merchant Center property
+            Corresponding properties: Google Merchant Center property
             `image_link <https://support.google.com/merchants/answer/6324350>`__.
             Schema.org property
             `Product.image <https://schema.org/image>`__.
@@ -350,7 +360,7 @@ class Product(proto.Message):
         color_info (google.cloud.retail_v2.types.ColorInfo):
             The color of the product.
 
-            Google Merchant Center property
+            Corresponding properties: Google Merchant Center property
             `color <https://support.google.com/merchants/answer/6324487>`__.
             Schema.org property
             `Product.color <https://schema.org/color>`__.
@@ -372,9 +382,9 @@ class Product(proto.Message):
             characters. Otherwise, an INVALID_ARGUMENT error is
             returned.
 
-            Google Merchant Center property
+            Corresponding properties: Google Merchant Center property
             `size <https://support.google.com/merchants/answer/6324492>`__,
-            `size_type <https://support.google.com/merchants/answer/6324497>`__
+            `size_type <https://support.google.com/merchants/answer/6324497>`__,
             and
             `size_system <https://support.google.com/merchants/answer/6324502>`__.
             Schema.org property
@@ -384,10 +394,10 @@ class Product(proto.Message):
             "wooden".
 
             A maximum of 20 values are allowed. Each value must be a
-            UTF-8 encoded string with a length limit of 128 characters.
+            UTF-8 encoded string with a length limit of 200 characters.
             Otherwise, an INVALID_ARGUMENT error is returned.
 
-            Google Merchant Center property
+            Corresponding properties: Google Merchant Center property
             `material <https://support.google.com/merchants/answer/6324410>`__.
             Schema.org property
             `Product.material <https://schema.org/material>`__.
@@ -401,7 +411,7 @@ class Product(proto.Message):
             characters. Otherwise, an INVALID_ARGUMENT error is
             returned.
 
-            Google Merchant Center property
+            Corresponding properties: Google Merchant Center property
             `pattern <https://support.google.com/merchants/answer/6324483>`__.
             Schema.org property
             `Product.pattern <https://schema.org/pattern>`__.
@@ -409,20 +419,22 @@ class Product(proto.Message):
             The condition of the product. Strongly encouraged to use the
             standard values: "new", "refurbished", "used".
 
-            A maximum of 5 values are allowed per
+            A maximum of 1 value is allowed per
             [Product][google.cloud.retail.v2.Product]. Each value must
             be a UTF-8 encoded string with a length limit of 128
             characters. Otherwise, an INVALID_ARGUMENT error is
             returned.
 
-            Google Merchant Center property
+            Corresponding properties: Google Merchant Center property
             `condition <https://support.google.com/merchants/answer/6324469>`__.
             Schema.org property
             `Offer.itemCondition <https://schema.org/itemCondition>`__.
         promotions (Sequence[google.cloud.retail_v2.types.Promotion]):
             The promotions applied to the product. A maximum of 10
             values are allowed per
-            [Product][google.cloud.retail.v2.Product].
+            [Product][google.cloud.retail.v2.Product]. Only
+            [Promotion.promotion_id][google.cloud.retail.v2.Promotion.promotion_id]
+            will be used, other fields will be ignored if set.
         publish_time (google.protobuf.timestamp_pb2.Timestamp):
             The timestamp when the product is published by the retailer
             for the first time, which indicates the freshness of the
@@ -570,7 +582,7 @@ class Product(proto.Message):
     patterns = proto.RepeatedField(proto.STRING, number=28,)
     conditions = proto.RepeatedField(proto.STRING, number=29,)
     promotions = proto.RepeatedField(
-        proto.MESSAGE, number=34, message=common.Promotion,
+        proto.MESSAGE, number=34, message=promotion.Promotion,
     )
     publish_time = proto.Field(
         proto.MESSAGE, number=33, message=timestamp_pb2.Timestamp,

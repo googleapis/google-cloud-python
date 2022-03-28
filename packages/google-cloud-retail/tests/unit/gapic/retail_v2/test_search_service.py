@@ -651,6 +651,7 @@ def test_search(request_type, transport: str = "grpc"):
             attribution_token="attribution_token_value",
             next_page_token="next_page_token_value",
             redirect_uri="redirect_uri_value",
+            applied_controls=["applied_controls_value"],
         )
         response = client.search(request)
 
@@ -666,6 +667,7 @@ def test_search(request_type, transport: str = "grpc"):
     assert response.attribution_token == "attribution_token_value"
     assert response.next_page_token == "next_page_token_value"
     assert response.redirect_uri == "redirect_uri_value"
+    assert response.applied_controls == ["applied_controls_value"]
 
 
 def test_search_empty_call():
@@ -705,6 +707,7 @@ async def test_search_async(
                 attribution_token="attribution_token_value",
                 next_page_token="next_page_token_value",
                 redirect_uri="redirect_uri_value",
+                applied_controls=["applied_controls_value"],
             )
         )
         response = await client.search(request)
@@ -721,6 +724,7 @@ async def test_search_async(
     assert response.attribution_token == "attribution_token_value"
     assert response.next_page_token == "next_page_token_value"
     assert response.redirect_uri == "redirect_uri_value"
+    assert response.applied_controls == ["applied_controls_value"]
 
 
 @pytest.mark.asyncio
