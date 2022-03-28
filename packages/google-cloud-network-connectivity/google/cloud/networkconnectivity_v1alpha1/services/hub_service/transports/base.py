@@ -124,43 +124,63 @@ class HubServiceTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.list_hubs: gapic_v1.method.wrap_method(
-                self.list_hubs, default_timeout=None, client_info=client_info,
+                self.list_hubs,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_hub: gapic_v1.method.wrap_method(
-                self.get_hub, default_timeout=None, client_info=client_info,
+                self.get_hub,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.create_hub: gapic_v1.method.wrap_method(
-                self.create_hub, default_timeout=60.0, client_info=client_info,
+                self.create_hub,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.update_hub: gapic_v1.method.wrap_method(
-                self.update_hub, default_timeout=60.0, client_info=client_info,
+                self.update_hub,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.delete_hub: gapic_v1.method.wrap_method(
-                self.delete_hub, default_timeout=60.0, client_info=client_info,
+                self.delete_hub,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.list_spokes: gapic_v1.method.wrap_method(
-                self.list_spokes, default_timeout=None, client_info=client_info,
+                self.list_spokes,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_spoke: gapic_v1.method.wrap_method(
-                self.get_spoke, default_timeout=None, client_info=client_info,
+                self.get_spoke,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.create_spoke: gapic_v1.method.wrap_method(
-                self.create_spoke, default_timeout=60.0, client_info=client_info,
+                self.create_spoke,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.update_spoke: gapic_v1.method.wrap_method(
-                self.update_spoke, default_timeout=60.0, client_info=client_info,
+                self.update_spoke,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.delete_spoke: gapic_v1.method.wrap_method(
-                self.delete_spoke, default_timeout=60.0, client_info=client_info,
+                self.delete_spoke,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
         }
 
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

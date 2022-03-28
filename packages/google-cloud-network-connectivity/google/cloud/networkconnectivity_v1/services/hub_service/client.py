@@ -60,7 +60,10 @@ class HubServiceClientMeta(type):
     _transport_registry["grpc"] = HubServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = HubServiceGrpcAsyncIOTransport
 
-    def get_transport_class(cls, label: str = None,) -> Type[HubServiceTransport]:
+    def get_transport_class(
+        cls,
+        label: str = None,
+    ) -> Type[HubServiceTransport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -169,10 +172,14 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
         return self._transport
 
     @staticmethod
-    def hub_path(project: str, hub: str,) -> str:
+    def hub_path(
+        project: str,
+        hub: str,
+    ) -> str:
         """Returns a fully-qualified hub string."""
         return "projects/{project}/locations/global/hubs/{hub}".format(
-            project=project, hub=hub,
+            project=project,
+            hub=hub,
         )
 
     @staticmethod
@@ -184,10 +191,16 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def instance_path(project: str, zone: str, instance: str,) -> str:
+    def instance_path(
+        project: str,
+        zone: str,
+        instance: str,
+    ) -> str:
         """Returns a fully-qualified instance string."""
         return "projects/{project}/zones/{zone}/instances/{instance}".format(
-            project=project, zone=zone, instance=instance,
+            project=project,
+            zone=zone,
+            instance=instance,
         )
 
     @staticmethod
@@ -201,11 +214,15 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
 
     @staticmethod
     def interconnect_attachment_path(
-        project: str, region: str, resource_id: str,
+        project: str,
+        region: str,
+        resource_id: str,
     ) -> str:
         """Returns a fully-qualified interconnect_attachment string."""
         return "projects/{project}/regions/{region}/interconnectAttachments/{resource_id}".format(
-            project=project, region=region, resource_id=resource_id,
+            project=project,
+            region=region,
+            resource_id=resource_id,
         )
 
     @staticmethod
@@ -218,10 +235,14 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def network_path(project: str, resource_id: str,) -> str:
+    def network_path(
+        project: str,
+        resource_id: str,
+    ) -> str:
         """Returns a fully-qualified network string."""
         return "projects/{project}/global/networks/{resource_id}".format(
-            project=project, resource_id=resource_id,
+            project=project,
+            resource_id=resource_id,
         )
 
     @staticmethod
@@ -233,10 +254,16 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def spoke_path(project: str, location: str, spoke: str,) -> str:
+    def spoke_path(
+        project: str,
+        location: str,
+        spoke: str,
+    ) -> str:
         """Returns a fully-qualified spoke string."""
         return "projects/{project}/locations/{location}/spokes/{spoke}".format(
-            project=project, location=location, spoke=spoke,
+            project=project,
+            location=location,
+            spoke=spoke,
         )
 
     @staticmethod
@@ -249,10 +276,16 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def vpn_tunnel_path(project: str, region: str, resource_id: str,) -> str:
+    def vpn_tunnel_path(
+        project: str,
+        region: str,
+        resource_id: str,
+    ) -> str:
         """Returns a fully-qualified vpn_tunnel string."""
         return "projects/{project}/regions/{region}/vpnTunnels/{resource_id}".format(
-            project=project, region=region, resource_id=resource_id,
+            project=project,
+            region=region,
+            resource_id=resource_id,
         )
 
     @staticmethod
@@ -265,7 +298,9 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_billing_account_path(billing_account: str,) -> str:
+    def common_billing_account_path(
+        billing_account: str,
+    ) -> str:
         """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
@@ -278,9 +313,13 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(folder: str,) -> str:
+    def common_folder_path(
+        folder: str,
+    ) -> str:
         """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(folder=folder,)
+        return "folders/{folder}".format(
+            folder=folder,
+        )
 
     @staticmethod
     def parse_common_folder_path(path: str) -> Dict[str, str]:
@@ -289,9 +328,13 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(organization: str,) -> str:
+    def common_organization_path(
+        organization: str,
+    ) -> str:
         """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(organization=organization,)
+        return "organizations/{organization}".format(
+            organization=organization,
+        )
 
     @staticmethod
     def parse_common_organization_path(path: str) -> Dict[str, str]:
@@ -300,9 +343,13 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(project: str,) -> str:
+    def common_project_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified project string."""
-        return "projects/{project}".format(project=project,)
+        return "projects/{project}".format(
+            project=project,
+        )
 
     @staticmethod
     def parse_common_project_path(path: str) -> Dict[str, str]:
@@ -311,10 +358,14 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(project: str, location: str,) -> str:
+    def common_location_path(
+        project: str,
+        location: str,
+    ) -> str:
         """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
-            project=project, location=location,
+            project=project,
+            location=location,
         )
 
     @staticmethod
@@ -577,12 +628,20 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListHubsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -681,7 +740,12 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -802,7 +866,12 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -927,7 +996,12 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1042,7 +1116,12 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1144,12 +1223,20 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListSpokesPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1248,7 +1335,12 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1373,7 +1465,12 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1501,7 +1598,12 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1616,7 +1718,12 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
