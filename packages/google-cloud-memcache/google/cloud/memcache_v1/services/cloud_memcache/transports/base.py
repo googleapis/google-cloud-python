@@ -31,7 +31,9 @@ from google.longrunning import operations_pb2  # type: ignore
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-memcache",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-memcache",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
@@ -121,34 +123,48 @@ class CloudMemcacheTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.list_instances: gapic_v1.method.wrap_method(
-                self.list_instances, default_timeout=1200.0, client_info=client_info,
+                self.list_instances,
+                default_timeout=1200.0,
+                client_info=client_info,
             ),
             self.get_instance: gapic_v1.method.wrap_method(
-                self.get_instance, default_timeout=1200.0, client_info=client_info,
+                self.get_instance,
+                default_timeout=1200.0,
+                client_info=client_info,
             ),
             self.create_instance: gapic_v1.method.wrap_method(
-                self.create_instance, default_timeout=1200.0, client_info=client_info,
+                self.create_instance,
+                default_timeout=1200.0,
+                client_info=client_info,
             ),
             self.update_instance: gapic_v1.method.wrap_method(
-                self.update_instance, default_timeout=1200.0, client_info=client_info,
+                self.update_instance,
+                default_timeout=1200.0,
+                client_info=client_info,
             ),
             self.update_parameters: gapic_v1.method.wrap_method(
-                self.update_parameters, default_timeout=1200.0, client_info=client_info,
+                self.update_parameters,
+                default_timeout=1200.0,
+                client_info=client_info,
             ),
             self.delete_instance: gapic_v1.method.wrap_method(
-                self.delete_instance, default_timeout=1200.0, client_info=client_info,
+                self.delete_instance,
+                default_timeout=1200.0,
+                client_info=client_info,
             ),
             self.apply_parameters: gapic_v1.method.wrap_method(
-                self.apply_parameters, default_timeout=1200.0, client_info=client_info,
+                self.apply_parameters,
+                default_timeout=1200.0,
+                client_info=client_info,
             ),
         }
 
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

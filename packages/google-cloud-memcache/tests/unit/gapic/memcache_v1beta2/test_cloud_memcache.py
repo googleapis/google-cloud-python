@@ -94,7 +94,11 @@ def test__get_default_mtls_endpoint():
 
 
 @pytest.mark.parametrize(
-    "client_class", [CloudMemcacheClient, CloudMemcacheAsyncClient,]
+    "client_class",
+    [
+        CloudMemcacheClient,
+        CloudMemcacheAsyncClient,
+    ],
 )
 def test_cloud_memcache_client_from_service_account_info(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -136,7 +140,11 @@ def test_cloud_memcache_client_service_account_always_use_jwt(
 
 
 @pytest.mark.parametrize(
-    "client_class", [CloudMemcacheClient, CloudMemcacheAsyncClient,]
+    "client_class",
+    [
+        CloudMemcacheClient,
+        CloudMemcacheAsyncClient,
+    ],
 )
 def test_cloud_memcache_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -500,7 +508,9 @@ def test_cloud_memcache_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -640,10 +650,17 @@ def test_cloud_memcache_client_create_channel_credentials_file(
         )
 
 
-@pytest.mark.parametrize("request_type", [cloud_memcache.ListInstancesRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_memcache.ListInstancesRequest,
+        dict,
+    ],
+)
 def test_list_instances(request_type, transport: str = "grpc"):
     client = CloudMemcacheClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -654,7 +671,8 @@ def test_list_instances(request_type, transport: str = "grpc"):
     with mock.patch.object(type(client.transport.list_instances), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = cloud_memcache.ListInstancesResponse(
-            next_page_token="next_page_token_value", unreachable=["unreachable_value"],
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
         )
         response = client.list_instances(request)
 
@@ -673,7 +691,8 @@ def test_list_instances_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudMemcacheClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -689,7 +708,8 @@ async def test_list_instances_async(
     transport: str = "grpc_asyncio", request_type=cloud_memcache.ListInstancesRequest
 ):
     client = CloudMemcacheAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -724,7 +744,9 @@ async def test_list_instances_async_from_dict():
 
 
 def test_list_instances_field_headers():
-    client = CloudMemcacheClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudMemcacheClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -744,7 +766,10 @@ def test_list_instances_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -773,11 +798,16 @@ async def test_list_instances_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_instances_flattened():
-    client = CloudMemcacheClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudMemcacheClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_instances), "__call__") as call:
@@ -785,7 +815,9 @@ def test_list_instances_flattened():
         call.return_value = cloud_memcache.ListInstancesResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_instances(parent="parent_value",)
+        client.list_instances(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -797,13 +829,16 @@ def test_list_instances_flattened():
 
 
 def test_list_instances_flattened_error():
-    client = CloudMemcacheClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudMemcacheClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_instances(
-            cloud_memcache.ListInstancesRequest(), parent="parent_value",
+            cloud_memcache.ListInstancesRequest(),
+            parent="parent_value",
         )
 
 
@@ -823,7 +858,9 @@ async def test_list_instances_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_instances(parent="parent_value",)
+        response = await client.list_instances(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -844,13 +881,15 @@ async def test_list_instances_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_instances(
-            cloud_memcache.ListInstancesRequest(), parent="parent_value",
+            cloud_memcache.ListInstancesRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_instances_pager(transport_name: str = "grpc"):
     client = CloudMemcacheClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -865,12 +904,21 @@ def test_list_instances_pager(transport_name: str = "grpc"):
                 ],
                 next_page_token="abc",
             ),
-            cloud_memcache.ListInstancesResponse(resources=[], next_page_token="def",),
             cloud_memcache.ListInstancesResponse(
-                resources=[cloud_memcache.Instance(),], next_page_token="ghi",
+                resources=[],
+                next_page_token="def",
             ),
             cloud_memcache.ListInstancesResponse(
-                resources=[cloud_memcache.Instance(), cloud_memcache.Instance(),],
+                resources=[
+                    cloud_memcache.Instance(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloud_memcache.ListInstancesResponse(
+                resources=[
+                    cloud_memcache.Instance(),
+                    cloud_memcache.Instance(),
+                ],
             ),
             RuntimeError,
         )
@@ -890,7 +938,8 @@ def test_list_instances_pager(transport_name: str = "grpc"):
 
 def test_list_instances_pages(transport_name: str = "grpc"):
     client = CloudMemcacheClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -905,12 +954,21 @@ def test_list_instances_pages(transport_name: str = "grpc"):
                 ],
                 next_page_token="abc",
             ),
-            cloud_memcache.ListInstancesResponse(resources=[], next_page_token="def",),
             cloud_memcache.ListInstancesResponse(
-                resources=[cloud_memcache.Instance(),], next_page_token="ghi",
+                resources=[],
+                next_page_token="def",
             ),
             cloud_memcache.ListInstancesResponse(
-                resources=[cloud_memcache.Instance(), cloud_memcache.Instance(),],
+                resources=[
+                    cloud_memcache.Instance(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloud_memcache.ListInstancesResponse(
+                resources=[
+                    cloud_memcache.Instance(),
+                    cloud_memcache.Instance(),
+                ],
             ),
             RuntimeError,
         )
@@ -921,7 +979,9 @@ def test_list_instances_pages(transport_name: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_list_instances_async_pager():
-    client = CloudMemcacheAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = CloudMemcacheAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -937,16 +997,27 @@ async def test_list_instances_async_pager():
                 ],
                 next_page_token="abc",
             ),
-            cloud_memcache.ListInstancesResponse(resources=[], next_page_token="def",),
             cloud_memcache.ListInstancesResponse(
-                resources=[cloud_memcache.Instance(),], next_page_token="ghi",
+                resources=[],
+                next_page_token="def",
             ),
             cloud_memcache.ListInstancesResponse(
-                resources=[cloud_memcache.Instance(), cloud_memcache.Instance(),],
+                resources=[
+                    cloud_memcache.Instance(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloud_memcache.ListInstancesResponse(
+                resources=[
+                    cloud_memcache.Instance(),
+                    cloud_memcache.Instance(),
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.list_instances(request={},)
+        async_pager = await client.list_instances(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -958,7 +1029,9 @@ async def test_list_instances_async_pager():
 
 @pytest.mark.asyncio
 async def test_list_instances_async_pages():
-    client = CloudMemcacheAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = CloudMemcacheAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -974,12 +1047,21 @@ async def test_list_instances_async_pages():
                 ],
                 next_page_token="abc",
             ),
-            cloud_memcache.ListInstancesResponse(resources=[], next_page_token="def",),
             cloud_memcache.ListInstancesResponse(
-                resources=[cloud_memcache.Instance(),], next_page_token="ghi",
+                resources=[],
+                next_page_token="def",
             ),
             cloud_memcache.ListInstancesResponse(
-                resources=[cloud_memcache.Instance(), cloud_memcache.Instance(),],
+                resources=[
+                    cloud_memcache.Instance(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloud_memcache.ListInstancesResponse(
+                resources=[
+                    cloud_memcache.Instance(),
+                    cloud_memcache.Instance(),
+                ],
             ),
             RuntimeError,
         )
@@ -990,10 +1072,17 @@ async def test_list_instances_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [cloud_memcache.GetInstanceRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_memcache.GetInstanceRequest,
+        dict,
+    ],
+)
 def test_get_instance(request_type, transport: str = "grpc"):
     client = CloudMemcacheClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1040,7 +1129,8 @@ def test_get_instance_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudMemcacheClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1056,7 +1146,8 @@ async def test_get_instance_async(
     transport: str = "grpc_asyncio", request_type=cloud_memcache.GetInstanceRequest
 ):
     client = CloudMemcacheAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1107,7 +1198,9 @@ async def test_get_instance_async_from_dict():
 
 
 def test_get_instance_field_headers():
-    client = CloudMemcacheClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudMemcacheClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1127,7 +1220,10 @@ def test_get_instance_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1156,11 +1252,16 @@ async def test_get_instance_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_instance_flattened():
-    client = CloudMemcacheClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudMemcacheClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_instance), "__call__") as call:
@@ -1168,7 +1269,9 @@ def test_get_instance_flattened():
         call.return_value = cloud_memcache.Instance()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_instance(name="name_value",)
+        client.get_instance(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1180,13 +1283,16 @@ def test_get_instance_flattened():
 
 
 def test_get_instance_flattened_error():
-    client = CloudMemcacheClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudMemcacheClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_instance(
-            cloud_memcache.GetInstanceRequest(), name="name_value",
+            cloud_memcache.GetInstanceRequest(),
+            name="name_value",
         )
 
 
@@ -1206,7 +1312,9 @@ async def test_get_instance_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_instance(name="name_value",)
+        response = await client.get_instance(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1227,14 +1335,22 @@ async def test_get_instance_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_instance(
-            cloud_memcache.GetInstanceRequest(), name="name_value",
+            cloud_memcache.GetInstanceRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [cloud_memcache.CreateInstanceRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_memcache.CreateInstanceRequest,
+        dict,
+    ],
+)
 def test_create_instance(request_type, transport: str = "grpc"):
     client = CloudMemcacheClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1260,7 +1376,8 @@ def test_create_instance_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudMemcacheClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1276,7 +1393,8 @@ async def test_create_instance_async(
     transport: str = "grpc_asyncio", request_type=cloud_memcache.CreateInstanceRequest
 ):
     client = CloudMemcacheAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1306,7 +1424,9 @@ async def test_create_instance_async_from_dict():
 
 
 def test_create_instance_field_headers():
-    client = CloudMemcacheClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudMemcacheClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1326,7 +1446,10 @@ def test_create_instance_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1355,11 +1478,16 @@ async def test_create_instance_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_instance_flattened():
-    client = CloudMemcacheClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudMemcacheClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_instance), "__call__") as call:
@@ -1389,7 +1517,9 @@ def test_create_instance_flattened():
 
 
 def test_create_instance_flattened_error():
-    client = CloudMemcacheClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudMemcacheClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1456,10 +1586,17 @@ async def test_create_instance_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [cloud_memcache.UpdateInstanceRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_memcache.UpdateInstanceRequest,
+        dict,
+    ],
+)
 def test_update_instance(request_type, transport: str = "grpc"):
     client = CloudMemcacheClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1485,7 +1622,8 @@ def test_update_instance_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudMemcacheClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1501,7 +1639,8 @@ async def test_update_instance_async(
     transport: str = "grpc_asyncio", request_type=cloud_memcache.UpdateInstanceRequest
 ):
     client = CloudMemcacheAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1531,7 +1670,9 @@ async def test_update_instance_async_from_dict():
 
 
 def test_update_instance_field_headers():
-    client = CloudMemcacheClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudMemcacheClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1551,9 +1692,10 @@ def test_update_instance_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "resource.name=resource.name/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "resource.name=resource.name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1582,13 +1724,16 @@ async def test_update_instance_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "resource.name=resource.name/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "resource.name=resource.name/value",
+    ) in kw["metadata"]
 
 
 def test_update_instance_flattened():
-    client = CloudMemcacheClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudMemcacheClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_instance), "__call__") as call:
@@ -1614,7 +1759,9 @@ def test_update_instance_flattened():
 
 
 def test_update_instance_flattened_error():
-    client = CloudMemcacheClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudMemcacheClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1676,11 +1823,16 @@ async def test_update_instance_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [cloud_memcache.UpdateParametersRequest, dict,]
+    "request_type",
+    [
+        cloud_memcache.UpdateParametersRequest,
+        dict,
+    ],
 )
 def test_update_parameters(request_type, transport: str = "grpc"):
     client = CloudMemcacheClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1708,7 +1860,8 @@ def test_update_parameters_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudMemcacheClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1726,7 +1879,8 @@ async def test_update_parameters_async(
     transport: str = "grpc_asyncio", request_type=cloud_memcache.UpdateParametersRequest
 ):
     client = CloudMemcacheAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1758,7 +1912,9 @@ async def test_update_parameters_async_from_dict():
 
 
 def test_update_parameters_field_headers():
-    client = CloudMemcacheClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudMemcacheClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1780,7 +1936,10 @@ def test_update_parameters_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1811,11 +1970,16 @@ async def test_update_parameters_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_update_parameters_flattened():
-    client = CloudMemcacheClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudMemcacheClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1847,7 +2011,9 @@ def test_update_parameters_flattened():
 
 
 def test_update_parameters_flattened_error():
-    client = CloudMemcacheClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudMemcacheClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1916,10 +2082,17 @@ async def test_update_parameters_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [cloud_memcache.DeleteInstanceRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_memcache.DeleteInstanceRequest,
+        dict,
+    ],
+)
 def test_delete_instance(request_type, transport: str = "grpc"):
     client = CloudMemcacheClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1945,7 +2118,8 @@ def test_delete_instance_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudMemcacheClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1961,7 +2135,8 @@ async def test_delete_instance_async(
     transport: str = "grpc_asyncio", request_type=cloud_memcache.DeleteInstanceRequest
 ):
     client = CloudMemcacheAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1991,7 +2166,9 @@ async def test_delete_instance_async_from_dict():
 
 
 def test_delete_instance_field_headers():
-    client = CloudMemcacheClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudMemcacheClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2011,7 +2188,10 @@ def test_delete_instance_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2040,11 +2220,16 @@ async def test_delete_instance_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_instance_flattened():
-    client = CloudMemcacheClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudMemcacheClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_instance), "__call__") as call:
@@ -2052,7 +2237,9 @@ def test_delete_instance_flattened():
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_instance(name="name_value",)
+        client.delete_instance(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2064,13 +2251,16 @@ def test_delete_instance_flattened():
 
 
 def test_delete_instance_flattened_error():
-    client = CloudMemcacheClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudMemcacheClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_instance(
-            cloud_memcache.DeleteInstanceRequest(), name="name_value",
+            cloud_memcache.DeleteInstanceRequest(),
+            name="name_value",
         )
 
 
@@ -2090,7 +2280,9 @@ async def test_delete_instance_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_instance(name="name_value",)
+        response = await client.delete_instance(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2111,14 +2303,22 @@ async def test_delete_instance_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_instance(
-            cloud_memcache.DeleteInstanceRequest(), name="name_value",
+            cloud_memcache.DeleteInstanceRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [cloud_memcache.ApplyParametersRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_memcache.ApplyParametersRequest,
+        dict,
+    ],
+)
 def test_apply_parameters(request_type, transport: str = "grpc"):
     client = CloudMemcacheClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2144,7 +2344,8 @@ def test_apply_parameters_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudMemcacheClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2160,7 +2361,8 @@ async def test_apply_parameters_async(
     transport: str = "grpc_asyncio", request_type=cloud_memcache.ApplyParametersRequest
 ):
     client = CloudMemcacheAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2190,7 +2392,9 @@ async def test_apply_parameters_async_from_dict():
 
 
 def test_apply_parameters_field_headers():
-    client = CloudMemcacheClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudMemcacheClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2210,7 +2414,10 @@ def test_apply_parameters_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2239,11 +2446,16 @@ async def test_apply_parameters_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_apply_parameters_flattened():
-    client = CloudMemcacheClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudMemcacheClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.apply_parameters), "__call__") as call:
@@ -2252,7 +2464,9 @@ def test_apply_parameters_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.apply_parameters(
-            name="name_value", node_ids=["node_ids_value"], apply_all=True,
+            name="name_value",
+            node_ids=["node_ids_value"],
+            apply_all=True,
         )
 
         # Establish that the underlying call was made with the expected
@@ -2271,7 +2485,9 @@ def test_apply_parameters_flattened():
 
 
 def test_apply_parameters_flattened_error():
-    client = CloudMemcacheClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudMemcacheClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2301,7 +2517,9 @@ async def test_apply_parameters_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.apply_parameters(
-            name="name_value", node_ids=["node_ids_value"], apply_all=True,
+            name="name_value",
+            node_ids=["node_ids_value"],
+            apply_all=True,
         )
 
         # Establish that the underlying call was made with the expected
@@ -2337,11 +2555,16 @@ async def test_apply_parameters_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [cloud_memcache.ApplySoftwareUpdateRequest, dict,]
+    "request_type",
+    [
+        cloud_memcache.ApplySoftwareUpdateRequest,
+        dict,
+    ],
 )
 def test_apply_software_update(request_type, transport: str = "grpc"):
     client = CloudMemcacheClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2369,7 +2592,8 @@ def test_apply_software_update_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudMemcacheClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2388,7 +2612,8 @@ async def test_apply_software_update_async(
     request_type=cloud_memcache.ApplySoftwareUpdateRequest,
 ):
     client = CloudMemcacheAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2420,7 +2645,9 @@ async def test_apply_software_update_async_from_dict():
 
 
 def test_apply_software_update_field_headers():
-    client = CloudMemcacheClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudMemcacheClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2442,7 +2669,10 @@ def test_apply_software_update_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "instance=instance/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "instance=instance/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2473,11 +2703,16 @@ async def test_apply_software_update_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "instance=instance/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "instance=instance/value",
+    ) in kw["metadata"]
 
 
 def test_apply_software_update_flattened():
-    client = CloudMemcacheClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudMemcacheClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2488,7 +2723,9 @@ def test_apply_software_update_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.apply_software_update(
-            instance="instance_value", node_ids=["node_ids_value"], apply_all=True,
+            instance="instance_value",
+            node_ids=["node_ids_value"],
+            apply_all=True,
         )
 
         # Establish that the underlying call was made with the expected
@@ -2507,7 +2744,9 @@ def test_apply_software_update_flattened():
 
 
 def test_apply_software_update_flattened_error():
-    client = CloudMemcacheClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudMemcacheClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2539,7 +2778,9 @@ async def test_apply_software_update_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.apply_software_update(
-            instance="instance_value", node_ids=["node_ids_value"], apply_all=True,
+            instance="instance_value",
+            node_ids=["node_ids_value"],
+            apply_all=True,
         )
 
         # Establish that the underlying call was made with the expected
@@ -2581,7 +2822,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = CloudMemcacheClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -2601,7 +2843,10 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = CloudMemcacheClient(client_options=options, transport=transport,)
+        client = CloudMemcacheClient(
+            client_options=options,
+            transport=transport,
+        )
 
     # It is an error to provide an api_key and a credential.
     options = mock.Mock()
@@ -2617,7 +2862,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = CloudMemcacheClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -2662,8 +2908,13 @@ def test_transport_adc(transport_class):
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
-    client = CloudMemcacheClient(credentials=ga_credentials.AnonymousCredentials(),)
-    assert isinstance(client.transport, transports.CloudMemcacheGrpcTransport,)
+    client = CloudMemcacheClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    assert isinstance(
+        client.transport,
+        transports.CloudMemcacheGrpcTransport,
+    )
 
 
 def test_cloud_memcache_base_transport_error():
@@ -2720,7 +2971,8 @@ def test_cloud_memcache_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.CloudMemcacheTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -2878,7 +3130,8 @@ def test_cloud_memcache_grpc_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.CloudMemcacheGrpcTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -2890,7 +3143,8 @@ def test_cloud_memcache_grpc_asyncio_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.CloudMemcacheGrpcAsyncIOTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -2997,12 +3251,16 @@ def test_cloud_memcache_transport_channel_mtls_with_adc(transport_class):
 
 def test_cloud_memcache_grpc_lro_client():
     client = CloudMemcacheClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
     transport = client.transport
 
     # Ensure that we have a api-core operations client.
-    assert isinstance(transport.operations_client, operations_v1.OperationsClient,)
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsClient,
+    )
 
     # Ensure that subsequent calls to the property send the exact same object.
     assert transport.operations_client is transport.operations_client
@@ -3010,12 +3268,16 @@ def test_cloud_memcache_grpc_lro_client():
 
 def test_cloud_memcache_grpc_lro_async_client():
     client = CloudMemcacheAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     transport = client.transport
 
     # Ensure that we have a api-core operations client.
-    assert isinstance(transport.operations_client, operations_v1.OperationsAsyncClient,)
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsAsyncClient,
+    )
 
     # Ensure that subsequent calls to the property send the exact same object.
     assert transport.operations_client is transport.operations_client
@@ -3026,7 +3288,9 @@ def test_instance_path():
     location = "clam"
     instance = "whelk"
     expected = "projects/{project}/locations/{location}/instances/{instance}".format(
-        project=project, location=location, instance=instance,
+        project=project,
+        location=location,
+        instance=instance,
     )
     actual = CloudMemcacheClient.instance_path(project, location, instance)
     assert expected == actual
@@ -3067,7 +3331,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "winkle"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = CloudMemcacheClient.common_folder_path(folder)
     assert expected == actual
 
@@ -3085,7 +3351,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "scallop"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = CloudMemcacheClient.common_organization_path(organization)
     assert expected == actual
 
@@ -3103,7 +3371,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "squid"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = CloudMemcacheClient.common_project_path(project)
     assert expected == actual
 
@@ -3123,7 +3393,8 @@ def test_common_location_path():
     project = "whelk"
     location = "octopus"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = CloudMemcacheClient.common_location_path(project, location)
     assert expected == actual
@@ -3148,7 +3419,8 @@ def test_client_with_default_client_info():
         transports.CloudMemcacheTransport, "_prep_wrapped_messages"
     ) as prep:
         client = CloudMemcacheClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -3157,7 +3429,8 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = CloudMemcacheClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -3165,7 +3438,8 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = CloudMemcacheAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     with mock.patch.object(
         type(getattr(client.transport, "grpc_channel")), "close"
