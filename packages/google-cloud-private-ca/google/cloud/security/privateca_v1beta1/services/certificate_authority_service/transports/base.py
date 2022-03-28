@@ -124,19 +124,29 @@ class CertificateAuthorityServiceTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.create_certificate: gapic_v1.method.wrap_method(
-                self.create_certificate, default_timeout=None, client_info=client_info,
+                self.create_certificate,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_certificate: gapic_v1.method.wrap_method(
-                self.get_certificate, default_timeout=None, client_info=client_info,
+                self.get_certificate,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_certificates: gapic_v1.method.wrap_method(
-                self.list_certificates, default_timeout=None, client_info=client_info,
+                self.list_certificates,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.revoke_certificate: gapic_v1.method.wrap_method(
-                self.revoke_certificate, default_timeout=None, client_info=client_info,
+                self.revoke_certificate,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.update_certificate: gapic_v1.method.wrap_method(
-                self.update_certificate, default_timeout=None, client_info=client_info,
+                self.update_certificate,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.activate_certificate_authority: gapic_v1.method.wrap_method(
                 self.activate_certificate_authority,
@@ -204,7 +214,9 @@ class CertificateAuthorityServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.get_reusable_config: gapic_v1.method.wrap_method(
-                self.get_reusable_config, default_timeout=None, client_info=client_info,
+                self.get_reusable_config,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_reusable_configs: gapic_v1.method.wrap_method(
                 self.list_reusable_configs,
@@ -216,9 +228,9 @@ class CertificateAuthorityServiceTransport(abc.ABC):
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 
