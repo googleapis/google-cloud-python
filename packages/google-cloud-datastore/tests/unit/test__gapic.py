@@ -48,7 +48,9 @@ def test_live_api(make_chan, mock_transport, mock_klass):
     mock_transport.assert_called_once_with(channel=mock.sentinel.channel)
 
     make_chan.assert_called_once_with(
-        mock.sentinel.credentials, DEFAULT_USER_AGENT, "datastore.googleapis.com:443",
+        mock.sentinel.credentials,
+        DEFAULT_USER_AGENT,
+        "datastore.googleapis.com:443",
     )
 
     mock_klass.assert_called_once_with(

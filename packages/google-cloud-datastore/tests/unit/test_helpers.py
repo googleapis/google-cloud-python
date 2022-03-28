@@ -131,7 +131,7 @@ def test_entity_from_protobuf_w_entity_with_meaning():
     name = "hello"
     value_pb = _new_value_pb(entity_pb, name)
     value_pb.meaning = meaning = 9
-    value_pb.string_value = val = u"something"
+    value_pb.string_value = val = "something"
 
     entity = entity_from_protobuf(entity_pb)
     assert entity.key is None
@@ -249,7 +249,7 @@ def test_enity_to_protobf_w_simple_fields():
     name1 = "foo"
     entity[name1] = value1 = 42
     name2 = "bar"
-    entity[name2] = value2 = u"some-string"
+    entity[name2] = value2 = "some-string"
     entity_pb = entity_to_protobuf(entity)
 
     expected_pb = entity_pb2.Entity()
@@ -299,7 +299,7 @@ def test_enity_to_protobf_w_inverts_to_protobuf():
     val_pb1.exclude_from_indexes = True
     # Add a string property.
     val_pb2 = _new_value_pb(original_pb, "bar")
-    val_pb2.string_value = u"hello"
+    val_pb2.string_value = "hello"
 
     # Add a nested (entity) property.
     val_pb3 = _new_value_pb(original_pb, "entity-baz")
@@ -386,7 +386,7 @@ def test_enity_to_protobf_w_dict_to_entity():
     from google.cloud.datastore.helpers import entity_to_protobuf
 
     entity = Entity()
-    entity["a"] = {"b": u"c"}
+    entity["a"] = {"b": "c"}
     entity_pb = entity_to_protobuf(entity)
 
     expected_pb = entity_pb2.Entity(
@@ -624,9 +624,9 @@ def test__pb_attr_value_w_bytes():
 def test__pb_attr_value_w_unicode():
     from google.cloud.datastore.helpers import _pb_attr_value
 
-    name, value = _pb_attr_value(u"str")
+    name, value = _pb_attr_value("str")
     assert name == "string_value"
-    assert value == u"str"
+    assert value == "str"
 
 
 def test__pb_attr_value_w_entity():
@@ -758,8 +758,8 @@ def test__get_value_from_value_pb_w_bytes():
 def test__get_value_from_value_pb_w_unicode():
     from google.cloud.datastore.helpers import _get_value_from_value_pb
 
-    value = _make_value_pb("string_value", u"str")
-    assert _get_value_from_value_pb(value._pb) == u"str"
+    value = _make_value_pb("string_value", "str")
+    assert _get_value_from_value_pb(value._pb) == "str"
 
 
 def test__get_value_from_value_pb_w_entity():
@@ -929,9 +929,9 @@ def test__set_protobuf_value_w_unicode():
     from google.cloud.datastore.helpers import _set_protobuf_value
 
     pb = _make_empty_value_pb()
-    _set_protobuf_value(pb, u"str")
+    _set_protobuf_value(pb, "str")
     value = pb.string_value
-    assert value == u"str"
+    assert value == "str"
 
 
 def test__set_protobuf_value_w_entity_empty_wo_key():
@@ -952,7 +952,7 @@ def test__set_protobuf_value_w_entity_w_key():
     from google.cloud.datastore.helpers import _set_protobuf_value
 
     name = "foo"
-    value = u"Foo"
+    value = "Foo"
     pb = _make_empty_value_pb()
     key = Key("KIND", 123, project="PROJECT")
     entity = Entity(key=key)
@@ -971,7 +971,7 @@ def test__set_protobuf_value_w_array():
     from google.cloud.datastore.helpers import _set_protobuf_value
 
     pb = _make_empty_value_pb()
-    values = [u"a", 0, 3.14]
+    values = ["a", 0, 3.14]
     _set_protobuf_value(pb, values)
     marshalled = pb.array_value.values
     assert len(marshalled) == len(values)
@@ -1009,7 +1009,7 @@ def test__get_meaning_w_single():
 
     value_pb = entity_pb2.Value()
     value_pb.meaning = meaning = 22
-    value_pb.string_value = u"hi"
+    value_pb.string_value = "hi"
     result = _get_meaning(value_pb)
     assert meaning == result
 
@@ -1036,8 +1036,8 @@ def test__get_meaning_w_array_value():
     sub_value_pb2 = value_pb._pb.array_value.values.add()
 
     sub_value_pb1.meaning = sub_value_pb2.meaning = meaning
-    sub_value_pb1.string_value = u"hi"
-    sub_value_pb2.string_value = u"bye"
+    sub_value_pb1.string_value = "hi"
+    sub_value_pb2.string_value = "bye"
 
     result = _get_meaning(value_pb, is_list=True)
     assert meaning == result
@@ -1055,8 +1055,8 @@ def test__get_meaning_w_array_value_multiple_meanings():
 
     sub_value_pb1.meaning = meaning1
     sub_value_pb2.meaning = meaning2
-    sub_value_pb1.string_value = u"hi"
-    sub_value_pb2.string_value = u"bye"
+    sub_value_pb1.string_value = "hi"
+    sub_value_pb2.string_value = "bye"
 
     result = _get_meaning(value_pb, is_list=True)
     assert result == [meaning1, meaning2]
@@ -1072,8 +1072,8 @@ def test__get_meaning_w_array_value_meaning_partially_unset():
     sub_value_pb2 = value_pb._pb.array_value.values.add()
 
     sub_value_pb1.meaning = meaning1
-    sub_value_pb1.string_value = u"hi"
-    sub_value_pb2.string_value = u"bye"
+    sub_value_pb1.string_value = "hi"
+    sub_value_pb2.string_value = "bye"
 
     result = _get_meaning(value_pb, is_list=True)
     assert result == [meaning1, None]

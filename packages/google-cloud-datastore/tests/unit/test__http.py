@@ -240,7 +240,11 @@ def test_api_ctor():
 
 
 def _lookup_single_helper(
-    read_consistency=None, transaction=None, empty=True, retry=None, timeout=None,
+    read_consistency=None,
+    transaction=None,
+    empty=True,
+    retry=None,
+    timeout=None,
 ):
     from google.cloud.datastore_v1.types import datastore as datastore_pb2
     from google.cloud.datastore_v1.types import entity as entity_pb2
@@ -295,7 +299,11 @@ def _lookup_single_helper(
 
     uri = _build_expected_url(client._base_url, project, "lookup")
     request = _verify_protobuf_call(
-        http, uri, datastore_pb2.LookupRequest(), retry=retry, timeout=timeout,
+        http,
+        uri,
+        datastore_pb2.LookupRequest(),
+        retry=retry,
+        timeout=timeout,
     )
 
     if retry is not None:
@@ -336,7 +344,11 @@ def test_api_lookup_single_key_hit_w_timeout():
 
 
 def _lookup_multiple_helper(
-    found=0, missing=0, deferred=0, retry=None, timeout=None,
+    found=0,
+    missing=0,
+    deferred=0,
+    retry=None,
+    timeout=None,
 ):
     from google.cloud.datastore_v1.types import datastore as datastore_pb2
     from google.cloud.datastore_v1.types import entity as entity_pb2
@@ -399,7 +411,11 @@ def _lookup_multiple_helper(
 
     uri = _build_expected_url(client._base_url, project, "lookup")
     request = _verify_protobuf_call(
-        http, uri, datastore_pb2.LookupRequest(), retry=retry, timeout=timeout,
+        http,
+        uri,
+        datastore_pb2.LookupRequest(),
+        retry=retry,
+        timeout=timeout,
     )
     assert list(request.keys) == [key_pb1._pb, key_pb2._pb]
     assert request.read_options == read_options._pb
@@ -499,7 +515,11 @@ def _run_query_helper(
 
     uri = _build_expected_url(client._base_url, project, "runQuery")
     request = _verify_protobuf_call(
-        http, uri, datastore_pb2.RunQueryRequest(), retry=retry, timeout=timeout,
+        http,
+        uri,
+        datastore_pb2.RunQueryRequest(),
+        retry=retry,
+        timeout=timeout,
     )
     assert request.partition_id == partition_id._pb
     assert request.query == query_pb._pb
@@ -615,7 +635,7 @@ def _commit_helper(transaction=None, retry=None, timeout=None):
     insert = mutation.upsert
     insert.key.CopyFrom(key_pb._pb)
     value_pb = _new_value_pb(insert, "foo")
-    value_pb.string_value = u"Foo"
+    value_pb.string_value = "Foo"
 
     http = _make_requests_session(
         [_make_response(content=rsp_pb._pb.SerializeToString())]
@@ -647,7 +667,11 @@ def _commit_helper(transaction=None, retry=None, timeout=None):
 
     uri = _build_expected_url(client._base_url, project, "commit")
     request = _verify_protobuf_call(
-        http, uri, rq_class(), retry=retry, timeout=timeout,
+        http,
+        uri,
+        rq_class(),
+        retry=retry,
+        timeout=timeout,
     )
     assert list(request.mutations) == [mutation]
     assert request.mode == mode
@@ -709,7 +733,11 @@ def _rollback_helper(retry=None, timeout=None):
 
     uri = _build_expected_url(client._base_url, project, "rollback")
     request = _verify_protobuf_call(
-        http, uri, datastore_pb2.RollbackRequest(), retry=retry, timeout=timeout,
+        http,
+        uri,
+        datastore_pb2.RollbackRequest(),
+        retry=retry,
+        timeout=timeout,
     )
     assert request.transaction == transaction
 
@@ -765,7 +793,11 @@ def _allocate_ids_helper(count=0, retry=None, timeout=None):
 
     uri = _build_expected_url(client._base_url, project, "allocateIds")
     request = _verify_protobuf_call(
-        http, uri, datastore_pb2.AllocateIdsRequest(), retry=retry, timeout=timeout,
+        http,
+        uri,
+        datastore_pb2.AllocateIdsRequest(),
+        retry=retry,
+        timeout=timeout,
     )
     assert len(request.keys) == len(before_key_pbs)
     for key_before, key_after in zip(before_key_pbs, request.keys):
@@ -822,7 +854,11 @@ def _reserve_ids_helper(count=0, retry=None, timeout=None):
 
     uri = _build_expected_url(client._base_url, project, "reserveIds")
     request = _verify_protobuf_call(
-        http, uri, datastore_pb2.AllocateIdsRequest(), retry=retry, timeout=timeout,
+        http,
+        uri,
+        datastore_pb2.AllocateIdsRequest(),
+        retry=retry,
+        timeout=timeout,
     )
     assert len(request.keys) == len(before_key_pbs)
     for key_before, key_after in zip(before_key_pbs, request.keys):

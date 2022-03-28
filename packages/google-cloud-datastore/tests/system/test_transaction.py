@@ -23,7 +23,7 @@ from . import _helpers
 def test_transaction_via_with_statement(datastore_client, entities_to_delete):
     key = datastore_client.key("Company", "Google")
     entity = datastore.Entity(key=key)
-    entity["url"] = u"www.google.com"
+    entity["url"] = "www.google.com"
 
     with datastore_client.transaction() as xact:
         result = datastore_client.get(entity.key)
@@ -39,7 +39,8 @@ def test_transaction_via_with_statement(datastore_client, entities_to_delete):
 
 
 def test_transaction_via_explicit_begin_get_commit(
-    datastore_client, entities_to_delete,
+    datastore_client,
+    entities_to_delete,
 ):
     # See
     # github.com/GoogleCloudPlatform/google-cloud-python/issues/1859
@@ -87,7 +88,7 @@ def test_failure_with_contention(datastore_client, entities_to_delete):
     # and updated outside it with a contentious value.
     key = local_client.key("BreakTxn", 1234)
     orig_entity = datastore.Entity(key=key)
-    orig_entity["foo"] = u"bar"
+    orig_entity["foo"] = "bar"
     local_client.put(orig_entity)
 
     entities_to_delete.append(orig_entity)
@@ -97,10 +98,10 @@ def test_failure_with_contention(datastore_client, entities_to_delete):
             entity_in_txn = local_client.get(key)
 
             # Update the original entity outside the transaction.
-            orig_entity[contention_prop_name] = u"outside"
+            orig_entity[contention_prop_name] = "outside"
             datastore_client.put(orig_entity)
 
             # Try to update the entity which we already updated outside the
             # transaction.
-            entity_in_txn[contention_prop_name] = u"inside"
+            entity_in_txn[contention_prop_name] = "inside"
             txn.put(entity_in_txn)

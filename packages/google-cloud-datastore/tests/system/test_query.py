@@ -301,7 +301,8 @@ def test_query_distinct_on(ancestor_query):
 @pytest.fixture(scope="session")
 def large_query_client(datastore_client):
     large_query_client = _helpers.clone_client(
-        datastore_client, namespace=populate_datastore.LARGE_CHARACTER_NAMESPACE,
+        datastore_client,
+        namespace=populate_datastore.LARGE_CHARACTER_NAMESPACE,
     )
     # Populate the datastore if necessary.
     populate_datastore.add_large_character_entities(client=large_query_client)
@@ -322,11 +323,23 @@ def large_query(large_query_client):
     "limit,offset,expected",
     [
         # with no offset there are the correct # of results
-        (None, None, populate_datastore.LARGE_CHARACTER_TOTAL_OBJECTS,),
+        (
+            None,
+            None,
+            populate_datastore.LARGE_CHARACTER_TOTAL_OBJECTS,
+        ),
         # with no limit there are results (offset provided)
-        (None, 900, populate_datastore.LARGE_CHARACTER_TOTAL_OBJECTS - 900,),
+        (
+            None,
+            900,
+            populate_datastore.LARGE_CHARACTER_TOTAL_OBJECTS - 900,
+        ),
         # Offset beyond items larger: verify 200 items found
-        (200, 1100, 200,),
+        (
+            200,
+            1100,
+            200,
+        ),
         # offset within range, expect 50 despite larger limit")
         (100, populate_datastore.LARGE_CHARACTER_TOTAL_OBJECTS - 50, 50),
         # Offset beyond items larger Verify no items found")

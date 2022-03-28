@@ -58,9 +58,20 @@ class LookupRequest(proto.Message):
             Required. Keys of entities to look up.
     """
 
-    project_id = proto.Field(proto.STRING, number=8,)
-    read_options = proto.Field(proto.MESSAGE, number=1, message="ReadOptions",)
-    keys = proto.RepeatedField(proto.MESSAGE, number=3, message=entity.Key,)
+    project_id = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    read_options = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="ReadOptions",
+    )
+    keys = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=entity.Key,
+    )
 
 
 class LookupResponse(proto.Message):
@@ -83,11 +94,21 @@ class LookupResponse(proto.Message):
             the order of the keys in the input.
     """
 
-    found = proto.RepeatedField(proto.MESSAGE, number=1, message=gd_query.EntityResult,)
-    missing = proto.RepeatedField(
-        proto.MESSAGE, number=2, message=gd_query.EntityResult,
+    found = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=gd_query.EntityResult,
     )
-    deferred = proto.RepeatedField(proto.MESSAGE, number=3, message=entity.Key,)
+    missing = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=gd_query.EntityResult,
+    )
+    deferred = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=entity.Key,
+    )
 
 
 class RunQueryRequest(proto.Message):
@@ -123,14 +144,31 @@ class RunQueryRequest(proto.Message):
             This field is a member of `oneof`_ ``query_type``.
     """
 
-    project_id = proto.Field(proto.STRING, number=8,)
-    partition_id = proto.Field(proto.MESSAGE, number=2, message=entity.PartitionId,)
-    read_options = proto.Field(proto.MESSAGE, number=1, message="ReadOptions",)
+    project_id = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    partition_id = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=entity.PartitionId,
+    )
+    read_options = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="ReadOptions",
+    )
     query = proto.Field(
-        proto.MESSAGE, number=3, oneof="query_type", message=gd_query.Query,
+        proto.MESSAGE,
+        number=3,
+        oneof="query_type",
+        message=gd_query.Query,
     )
     gql_query = proto.Field(
-        proto.MESSAGE, number=7, oneof="query_type", message=gd_query.GqlQuery,
+        proto.MESSAGE,
+        number=7,
+        oneof="query_type",
+        message=gd_query.GqlQuery,
     )
 
 
@@ -146,8 +184,16 @@ class RunQueryResponse(proto.Message):
             was set.
     """
 
-    batch = proto.Field(proto.MESSAGE, number=1, message=gd_query.QueryResultBatch,)
-    query = proto.Field(proto.MESSAGE, number=2, message=gd_query.Query,)
+    batch = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=gd_query.QueryResultBatch,
+    )
+    query = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=gd_query.Query,
+    )
 
 
 class BeginTransactionRequest(proto.Message):
@@ -162,9 +208,14 @@ class BeginTransactionRequest(proto.Message):
             Options for a new transaction.
     """
 
-    project_id = proto.Field(proto.STRING, number=8,)
+    project_id = proto.Field(
+        proto.STRING,
+        number=8,
+    )
     transaction_options = proto.Field(
-        proto.MESSAGE, number=10, message="TransactionOptions",
+        proto.MESSAGE,
+        number=10,
+        message="TransactionOptions",
     )
 
 
@@ -177,7 +228,10 @@ class BeginTransactionResponse(proto.Message):
             The transaction identifier (always present).
     """
 
-    transaction = proto.Field(proto.BYTES, number=1,)
+    transaction = proto.Field(
+        proto.BYTES,
+        number=1,
+    )
 
 
 class RollbackRequest(proto.Message):
@@ -193,8 +247,14 @@ class RollbackRequest(proto.Message):
             [Datastore.BeginTransaction][google.datastore.v1.Datastore.BeginTransaction].
     """
 
-    project_id = proto.Field(proto.STRING, number=8,)
-    transaction = proto.Field(proto.BYTES, number=1,)
+    project_id = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    transaction = proto.Field(
+        proto.BYTES,
+        number=1,
+    )
 
 
 class RollbackResponse(proto.Message):
@@ -248,10 +308,25 @@ class CommitRequest(proto.Message):
         TRANSACTIONAL = 1
         NON_TRANSACTIONAL = 2
 
-    project_id = proto.Field(proto.STRING, number=8,)
-    mode = proto.Field(proto.ENUM, number=5, enum=Mode,)
-    transaction = proto.Field(proto.BYTES, number=1, oneof="transaction_selector",)
-    mutations = proto.RepeatedField(proto.MESSAGE, number=6, message="Mutation",)
+    project_id = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    mode = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum=Mode,
+    )
+    transaction = proto.Field(
+        proto.BYTES,
+        number=1,
+        oneof="transaction_selector",
+    )
+    mutations = proto.RepeatedField(
+        proto.MESSAGE,
+        number=6,
+        message="Mutation",
+    )
 
 
 class CommitResponse(proto.Message):
@@ -269,9 +344,14 @@ class CommitResponse(proto.Message):
     """
 
     mutation_results = proto.RepeatedField(
-        proto.MESSAGE, number=3, message="MutationResult",
+        proto.MESSAGE,
+        number=3,
+        message="MutationResult",
     )
-    index_updates = proto.Field(proto.INT32, number=4,)
+    index_updates = proto.Field(
+        proto.INT32,
+        number=4,
+    )
 
 
 class AllocateIdsRequest(proto.Message):
@@ -288,8 +368,15 @@ class AllocateIdsRequest(proto.Message):
             reserved/read-only.
     """
 
-    project_id = proto.Field(proto.STRING, number=8,)
-    keys = proto.RepeatedField(proto.MESSAGE, number=1, message=entity.Key,)
+    project_id = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    keys = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=entity.Key,
+    )
 
 
 class AllocateIdsResponse(proto.Message):
@@ -303,7 +390,11 @@ class AllocateIdsResponse(proto.Message):
             with a newly allocated ID.
     """
 
-    keys = proto.RepeatedField(proto.MESSAGE, number=1, message=entity.Key,)
+    keys = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=entity.Key,
+    )
 
 
 class ReserveIdsRequest(proto.Message):
@@ -323,9 +414,19 @@ class ReserveIdsRequest(proto.Message):
             auto-allocated.
     """
 
-    project_id = proto.Field(proto.STRING, number=8,)
-    database_id = proto.Field(proto.STRING, number=9,)
-    keys = proto.RepeatedField(proto.MESSAGE, number=1, message=entity.Key,)
+    project_id = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    database_id = proto.Field(
+        proto.STRING,
+        number=9,
+    )
+    keys = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=entity.Key,
+    )
 
 
 class ReserveIdsResponse(proto.Message):
@@ -380,19 +481,33 @@ class Mutation(proto.Message):
     """
 
     insert = proto.Field(
-        proto.MESSAGE, number=4, oneof="operation", message=entity.Entity,
+        proto.MESSAGE,
+        number=4,
+        oneof="operation",
+        message=entity.Entity,
     )
     update = proto.Field(
-        proto.MESSAGE, number=5, oneof="operation", message=entity.Entity,
+        proto.MESSAGE,
+        number=5,
+        oneof="operation",
+        message=entity.Entity,
     )
     upsert = proto.Field(
-        proto.MESSAGE, number=6, oneof="operation", message=entity.Entity,
+        proto.MESSAGE,
+        number=6,
+        oneof="operation",
+        message=entity.Entity,
     )
     delete = proto.Field(
-        proto.MESSAGE, number=7, oneof="operation", message=entity.Key,
+        proto.MESSAGE,
+        number=7,
+        oneof="operation",
+        message=entity.Key,
     )
     base_version = proto.Field(
-        proto.INT64, number=8, oneof="conflict_detection_strategy",
+        proto.INT64,
+        number=8,
+        oneof="conflict_detection_strategy",
     )
 
 
@@ -418,9 +533,19 @@ class MutationResult(proto.Message):
             strategy field is not set in the mutation.
     """
 
-    key = proto.Field(proto.MESSAGE, number=3, message=entity.Key,)
-    version = proto.Field(proto.INT64, number=4,)
-    conflict_detected = proto.Field(proto.BOOL, number=5,)
+    key = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=entity.Key,
+    )
+    version = proto.Field(
+        proto.INT64,
+        number=4,
+    )
+    conflict_detected = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
 
 
 class ReadOptions(proto.Message):
@@ -454,9 +579,16 @@ class ReadOptions(proto.Message):
         EVENTUAL = 2
 
     read_consistency = proto.Field(
-        proto.ENUM, number=1, oneof="consistency_type", enum=ReadConsistency,
+        proto.ENUM,
+        number=1,
+        oneof="consistency_type",
+        enum=ReadConsistency,
     )
-    transaction = proto.Field(proto.BYTES, number=2, oneof="consistency_type",)
+    transaction = proto.Field(
+        proto.BYTES,
+        number=2,
+        oneof="consistency_type",
+    )
 
 
 class TransactionOptions(proto.Message):
@@ -496,14 +628,26 @@ class TransactionOptions(proto.Message):
                 being retried.
         """
 
-        previous_transaction = proto.Field(proto.BYTES, number=1,)
+        previous_transaction = proto.Field(
+            proto.BYTES,
+            number=1,
+        )
 
     class ReadOnly(proto.Message):
-        r"""Options specific to read-only transactions.
-        """
+        r"""Options specific to read-only transactions."""
 
-    read_write = proto.Field(proto.MESSAGE, number=1, oneof="mode", message=ReadWrite,)
-    read_only = proto.Field(proto.MESSAGE, number=2, oneof="mode", message=ReadOnly,)
+    read_write = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="mode",
+        message=ReadWrite,
+    )
+    read_only = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="mode",
+        message=ReadOnly,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

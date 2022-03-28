@@ -361,7 +361,7 @@ class Key(object):
         reference.ParseFromString(raw_bytes)
 
         project = _clean_app(reference.app)
-        namespace = _get_empty(reference.name_space, u"")
+        namespace = _get_empty(reference.name_space, "")
         _check_database_id(reference.database_id)
         flat_path = _get_flat_path(reference.path)
         return cls(*flat_path, project=project, namespace=namespace)
@@ -554,7 +554,7 @@ def _check_database_id(database_id):
 
     :raises: :exc:`ValueError` if the ``database_id`` is not empty.
     """
-    if database_id != u"":
+    if database_id != "":
         msg = _DATABASE_ID_TEMPLATE.format(database_id)
         raise ValueError(msg)
 
@@ -580,13 +580,13 @@ def _add_id_or_name(flat_path, element_pb, empty_allowed):
     # NOTE: Below 0 and the empty string are the "null" values for their
     #       respective types, indicating that the value is unset.
     if id_ == 0:
-        if name == u"":
+        if name == "":
             if not empty_allowed:
                 raise ValueError(_EMPTY_ELEMENT)
         else:
             flat_path.append(name)
     else:
-        if name == u"":
+        if name == "":
             flat_path.append(id_)
         else:
             msg = _BAD_ELEMENT_TEMPLATE.format(id_, name)

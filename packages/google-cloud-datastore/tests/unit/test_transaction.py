@@ -144,7 +144,9 @@ def test_transaction_begin_w_retry_w_timeout():
 
     expected_request = _make_begin_request(project)
     ds_api.begin_transaction.assert_called_once_with(
-        request=expected_request, retry=retry, timeout=timeout,
+        request=expected_request,
+        retry=retry,
+        timeout=timeout,
     )
 
 

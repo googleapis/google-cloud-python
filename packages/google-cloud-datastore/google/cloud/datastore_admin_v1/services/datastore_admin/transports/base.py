@@ -127,16 +127,24 @@ class DatastoreAdminTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.export_entities: gapic_v1.method.wrap_method(
-                self.export_entities, default_timeout=60.0, client_info=client_info,
+                self.export_entities,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.import_entities: gapic_v1.method.wrap_method(
-                self.import_entities, default_timeout=60.0, client_info=client_info,
+                self.import_entities,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.create_index: gapic_v1.method.wrap_method(
-                self.create_index, default_timeout=60.0, client_info=client_info,
+                self.create_index,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.delete_index: gapic_v1.method.wrap_method(
-                self.delete_index, default_timeout=60.0, client_info=client_info,
+                self.delete_index,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.get_index: gapic_v1.method.wrap_method(
                 self.get_index,
@@ -173,9 +181,9 @@ class DatastoreAdminTransport(abc.ABC):
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

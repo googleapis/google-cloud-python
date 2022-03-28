@@ -29,10 +29,10 @@ def parent_key(datastore_client):
 
 def _get_post(datastore_client, id_or_name=None, post_content=None):
     post_content = post_content or {
-        "title": u"How to make the perfect pizza in your grill",
-        "tags": [u"pizza", u"grill"],
+        "title": "How to make the perfect pizza in your grill",
+        "tags": ["pizza", "grill"],
         "publishedAt": datetime.datetime(2001, 1, 1, tzinfo=UTC),
-        "author": u"Silvano",
+        "author": "Silvano",
         "isDraft": False,
         "wordCount": 400,
         "rating": 5.0,
@@ -77,15 +77,18 @@ def test_client_put_w_multiple_in_txn(datastore_client, entities_to_delete):
         entities_to_delete.append(entity1)
 
         second_post_content = {
-            "title": u"How to make the perfect homemade pasta",
-            "tags": [u"pasta", u"homemade"],
+            "title": "How to make the perfect homemade pasta",
+            "tags": ["pasta", "homemade"],
             "publishedAt": datetime.datetime(2001, 1, 1),
-            "author": u"Silvano",
+            "author": "Silvano",
             "isDraft": False,
             "wordCount": 450,
             "rating": 4.5,
         }
-        entity2 = _get_post(datastore_client, post_content=second_post_content,)
+        entity2 = _get_post(
+            datastore_client,
+            post_content=second_post_content,
+        )
         xact.put(entity2)
         # Register entity to be deleted.
         entities_to_delete.append(entity2)
@@ -111,7 +114,7 @@ def test_client_put_w_all_value_types(datastore_client, entities_to_delete):
     entity["truthy"] = True
     entity["float"] = 2.718281828
     entity["int"] = 3735928559
-    entity["words"] = u"foo"
+    entity["words"] = "foo"
     entity["blob"] = b"seekretz"
     entity_stored = datastore.Entity(key=key_stored)
     entity_stored["hi"] = "bye"
@@ -133,7 +136,7 @@ def test_client_put_w_entity_w_self_reference(datastore_client, entities_to_dele
     parent_key = datastore_client.key("Residence", "NewYork")
     key = datastore_client.key("Person", "name", parent=parent_key)
     entity = datastore.Entity(key=key)
-    entity["fullName"] = u"Full name"
+    entity["fullName"] = "Full name"
     entity["linkedTo"] = key  # Self reference.
 
     datastore_client.put(entity)

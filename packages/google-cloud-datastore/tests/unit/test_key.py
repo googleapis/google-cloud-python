@@ -72,7 +72,10 @@ def test_key_ctor_parent():
         {"kind": _CHILD_KIND, "id": _CHILD_ID},
     ]
     parent_key = _make_key(
-        _PARENT_KIND, _PARENT_ID, project=_PARENT_PROJECT, namespace=_PARENT_NAMESPACE,
+        _PARENT_KIND,
+        _PARENT_ID,
+        project=_PARENT_PROJECT,
+        namespace=_PARENT_NAMESPACE,
     )
     key = _make_key(_CHILD_KIND, _CHILD_ID, parent=parent_key)
     assert key.project == parent_key.project
@@ -97,7 +100,11 @@ def test_key_ctor_parent_bad_namespace():
     parent_key = _make_key("KIND", 1234, namespace="FOO", project=_DEFAULT_PROJECT)
     with pytest.raises(ValueError):
         _make_key(
-            "KIND2", 1234, namespace="BAR", parent=parent_key, PROJECT=_DEFAULT_PROJECT,
+            "KIND2",
+            1234,
+            namespace="BAR",
+            parent=parent_key,
+            PROJECT=_DEFAULT_PROJECT,
         )
 
 
@@ -585,7 +592,7 @@ def test__cliean_app_w_dev_server():
 def test__get_empty_w_unset():
     from google.cloud.datastore.key import _get_empty
 
-    for empty_value in (u"", 0, 0.0, []):
+    for empty_value in ("", 0, 0.0, []):
         ret_val = _get_empty(empty_value, empty_value)
         assert ret_val is None
 
@@ -593,7 +600,7 @@ def test__get_empty_w_unset():
 def test__get_empty_w_actually_set():
     from google.cloud.datastore.key import _get_empty
 
-    value_pairs = ((u"hello", u""), (10, 0), (3.14, 0.0), (["stuff", "here"], []))
+    value_pairs = (("hello", ""), (10, 0), (3.14, 0.0), (["stuff", "here"], []))
     for value, empty_value in value_pairs:
         ret_val = _get_empty(value, empty_value)
         assert ret_val is value
@@ -602,7 +609,7 @@ def test__get_empty_w_actually_set():
 def test__check_database_id_w_empty_value():
     from google.cloud.datastore.key import _check_database_id
 
-    ret_val = _check_database_id(u"")
+    ret_val = _check_database_id("")
     # Really we are just happy there was no exception.
     assert ret_val is None
 
@@ -611,7 +618,7 @@ def test__check_database_id_w_failure():
     from google.cloud.datastore.key import _check_database_id
 
     with pytest.raises(ValueError):
-        _check_database_id(u"some-database-id")
+        _check_database_id("some-database-id")
 
 
 def test__add_id_or_name_add_id():

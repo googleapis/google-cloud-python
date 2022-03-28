@@ -16,7 +16,12 @@
 import proto  # type: ignore
 
 
-__protobuf__ = proto.module(package="google.datastore.admin.v1", manifest={"Index",},)
+__protobuf__ = proto.module(
+    package="google.datastore.admin.v1",
+    manifest={
+        "Index",
+    },
+)
 
 
 class Index(proto.Message):
@@ -73,15 +78,43 @@ class Index(proto.Message):
                 DIRECTION_UNSPECIFIED.
         """
 
-        name = proto.Field(proto.STRING, number=1,)
-        direction = proto.Field(proto.ENUM, number=2, enum="Index.Direction",)
+        name = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        direction = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum="Index.Direction",
+        )
 
-    project_id = proto.Field(proto.STRING, number=1,)
-    index_id = proto.Field(proto.STRING, number=3,)
-    kind = proto.Field(proto.STRING, number=4,)
-    ancestor = proto.Field(proto.ENUM, number=5, enum=AncestorMode,)
-    properties = proto.RepeatedField(proto.MESSAGE, number=6, message=IndexedProperty,)
-    state = proto.Field(proto.ENUM, number=7, enum=State,)
+    project_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    index_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    kind = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    ancestor = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum=AncestorMode,
+    )
+    properties = proto.RepeatedField(
+        proto.MESSAGE,
+        number=6,
+        message=IndexedProperty,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=7,
+        enum=State,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

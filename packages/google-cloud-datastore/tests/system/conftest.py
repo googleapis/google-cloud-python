@@ -34,7 +34,9 @@ def datastore_client(test_namespace):
     if _helpers.EMULATOR_DATASET is not None:
         http = requests.Session()  # Un-authorized.
         return datastore.Client(
-            project=_helpers.EMULATOR_DATASET, namespace=test_namespace, _http=http,
+            project=_helpers.EMULATOR_DATASET,
+            namespace=test_namespace,
+            _http=http,
         )
     else:
         return datastore.Client(namespace=test_namespace)

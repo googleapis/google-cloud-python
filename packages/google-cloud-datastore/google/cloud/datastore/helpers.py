@@ -418,7 +418,10 @@ def _get_value_from_value_pb(pb):
         ]
 
     elif value_type == "geo_point_value":
-        result = GeoPoint(pb.geo_point_value.latitude, pb.geo_point_value.longitude,)
+        result = GeoPoint(
+            pb.geo_point_value.latitude,
+            pb.geo_point_value.longitude,
+        )
 
     elif value_type == "null_value":
         result = None

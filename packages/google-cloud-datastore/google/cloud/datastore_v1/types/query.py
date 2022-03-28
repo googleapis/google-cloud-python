@@ -75,9 +75,19 @@ class EntityResult(proto.Message):
         PROJECTION = 2
         KEY_ONLY = 3
 
-    entity = proto.Field(proto.MESSAGE, number=1, message=gd_entity.Entity,)
-    version = proto.Field(proto.INT64, number=4,)
-    cursor = proto.Field(proto.BYTES, number=3,)
+    entity = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=gd_entity.Entity,
+    )
+    version = proto.Field(
+        proto.INT64,
+        number=4,
+    )
+    cursor = proto.Field(
+        proto.BYTES,
+        number=3,
+    )
 
 
 class Query(proto.Message):
@@ -122,17 +132,48 @@ class Query(proto.Message):
             Must be >= 0 if specified.
     """
 
-    projection = proto.RepeatedField(proto.MESSAGE, number=2, message="Projection",)
-    kind = proto.RepeatedField(proto.MESSAGE, number=3, message="KindExpression",)
-    filter = proto.Field(proto.MESSAGE, number=4, message="Filter",)
-    order = proto.RepeatedField(proto.MESSAGE, number=5, message="PropertyOrder",)
-    distinct_on = proto.RepeatedField(
-        proto.MESSAGE, number=6, message="PropertyReference",
+    projection = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="Projection",
     )
-    start_cursor = proto.Field(proto.BYTES, number=7,)
-    end_cursor = proto.Field(proto.BYTES, number=8,)
-    offset = proto.Field(proto.INT32, number=10,)
-    limit = proto.Field(proto.MESSAGE, number=12, message=wrappers_pb2.Int32Value,)
+    kind = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message="KindExpression",
+    )
+    filter = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="Filter",
+    )
+    order = proto.RepeatedField(
+        proto.MESSAGE,
+        number=5,
+        message="PropertyOrder",
+    )
+    distinct_on = proto.RepeatedField(
+        proto.MESSAGE,
+        number=6,
+        message="PropertyReference",
+    )
+    start_cursor = proto.Field(
+        proto.BYTES,
+        number=7,
+    )
+    end_cursor = proto.Field(
+        proto.BYTES,
+        number=8,
+    )
+    offset = proto.Field(
+        proto.INT32,
+        number=10,
+    )
+    limit = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        message=wrappers_pb2.Int32Value,
+    )
 
 
 class KindExpression(proto.Message):
@@ -143,7 +184,10 @@ class KindExpression(proto.Message):
             The name of the kind.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class PropertyReference(proto.Message):
@@ -156,7 +200,10 @@ class PropertyReference(proto.Message):
             a property name path.
     """
 
-    name = proto.Field(proto.STRING, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class Projection(proto.Message):
@@ -167,7 +214,11 @@ class Projection(proto.Message):
             The property to project.
     """
 
-    property = proto.Field(proto.MESSAGE, number=1, message="PropertyReference",)
+    property = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="PropertyReference",
+    )
 
 
 class PropertyOrder(proto.Message):
@@ -186,8 +237,16 @@ class PropertyOrder(proto.Message):
         ASCENDING = 1
         DESCENDING = 2
 
-    property = proto.Field(proto.MESSAGE, number=1, message="PropertyReference",)
-    direction = proto.Field(proto.ENUM, number=2, enum=Direction,)
+    property = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="PropertyReference",
+    )
+    direction = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=Direction,
+    )
 
 
 class Filter(proto.Message):
@@ -212,10 +271,16 @@ class Filter(proto.Message):
     """
 
     composite_filter = proto.Field(
-        proto.MESSAGE, number=1, oneof="filter_type", message="CompositeFilter",
+        proto.MESSAGE,
+        number=1,
+        oneof="filter_type",
+        message="CompositeFilter",
     )
     property_filter = proto.Field(
-        proto.MESSAGE, number=2, oneof="filter_type", message="PropertyFilter",
+        proto.MESSAGE,
+        number=2,
+        oneof="filter_type",
+        message="PropertyFilter",
     )
 
 
@@ -236,8 +301,16 @@ class CompositeFilter(proto.Message):
         OPERATOR_UNSPECIFIED = 0
         AND = 1
 
-    op = proto.Field(proto.ENUM, number=1, enum=Operator,)
-    filters = proto.RepeatedField(proto.MESSAGE, number=2, message="Filter",)
+    op = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Operator,
+    )
+    filters = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="Filter",
+    )
 
 
 class PropertyFilter(proto.Message):
@@ -265,9 +338,21 @@ class PropertyFilter(proto.Message):
         HAS_ANCESTOR = 11
         NOT_IN = 13
 
-    property = proto.Field(proto.MESSAGE, number=1, message="PropertyReference",)
-    op = proto.Field(proto.ENUM, number=2, enum=Operator,)
-    value = proto.Field(proto.MESSAGE, number=3, message=gd_entity.Value,)
+    property = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="PropertyReference",
+    )
+    op = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=Operator,
+    )
+    value = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=gd_entity.Value,
+    )
 
 
 class GqlQuery(proto.Message):
@@ -300,13 +385,24 @@ class GqlQuery(proto.Message):
             true.
     """
 
-    query_string = proto.Field(proto.STRING, number=1,)
-    allow_literals = proto.Field(proto.BOOL, number=2,)
+    query_string = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    allow_literals = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
     named_bindings = proto.MapField(
-        proto.STRING, proto.MESSAGE, number=5, message="GqlQueryParameter",
+        proto.STRING,
+        proto.MESSAGE,
+        number=5,
+        message="GqlQueryParameter",
     )
     positional_bindings = proto.RepeatedField(
-        proto.MESSAGE, number=4, message="GqlQueryParameter",
+        proto.MESSAGE,
+        number=4,
+        message="GqlQueryParameter",
     )
 
 
@@ -333,9 +429,16 @@ class GqlQueryParameter(proto.Message):
     """
 
     value = proto.Field(
-        proto.MESSAGE, number=2, oneof="parameter_type", message=gd_entity.Value,
+        proto.MESSAGE,
+        number=2,
+        oneof="parameter_type",
+        message=gd_entity.Value,
     )
-    cursor = proto.Field(proto.BYTES, number=3, oneof="parameter_type",)
+    cursor = proto.Field(
+        proto.BYTES,
+        number=3,
+        oneof="parameter_type",
+    )
 
 
 class QueryResultBatch(proto.Message):
@@ -380,17 +483,37 @@ class QueryResultBatch(proto.Message):
         MORE_RESULTS_AFTER_CURSOR = 4
         NO_MORE_RESULTS = 3
 
-    skipped_results = proto.Field(proto.INT32, number=6,)
-    skipped_cursor = proto.Field(proto.BYTES, number=3,)
+    skipped_results = proto.Field(
+        proto.INT32,
+        number=6,
+    )
+    skipped_cursor = proto.Field(
+        proto.BYTES,
+        number=3,
+    )
     entity_result_type = proto.Field(
-        proto.ENUM, number=1, enum="EntityResult.ResultType",
+        proto.ENUM,
+        number=1,
+        enum="EntityResult.ResultType",
     )
     entity_results = proto.RepeatedField(
-        proto.MESSAGE, number=2, message="EntityResult",
+        proto.MESSAGE,
+        number=2,
+        message="EntityResult",
     )
-    end_cursor = proto.Field(proto.BYTES, number=4,)
-    more_results = proto.Field(proto.ENUM, number=5, enum=MoreResultsType,)
-    snapshot_version = proto.Field(proto.INT64, number=7,)
+    end_cursor = proto.Field(
+        proto.BYTES,
+        number=4,
+    )
+    more_results = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum=MoreResultsType,
+    )
+    snapshot_version = proto.Field(
+        proto.INT64,
+        number=7,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

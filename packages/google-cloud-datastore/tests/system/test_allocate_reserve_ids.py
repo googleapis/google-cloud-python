@@ -18,7 +18,8 @@ import warnings
 def test_client_allocate_ids(datastore_client):
     num_ids = 10
     allocated_keys = datastore_client.allocate_ids(
-        datastore_client.key("Kind"), num_ids,
+        datastore_client.key("Kind"),
+        num_ids,
     )
     assert len(allocated_keys) == num_ids
 

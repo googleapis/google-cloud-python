@@ -29,7 +29,9 @@ from google.cloud.datastore_v1.types import datastore
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-datastore",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-datastore",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
@@ -152,16 +154,24 @@ class DatastoreTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.begin_transaction: gapic_v1.method.wrap_method(
-                self.begin_transaction, default_timeout=60.0, client_info=client_info,
+                self.begin_transaction,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.commit: gapic_v1.method.wrap_method(
-                self.commit, default_timeout=60.0, client_info=client_info,
+                self.commit,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.rollback: gapic_v1.method.wrap_method(
-                self.rollback, default_timeout=60.0, client_info=client_info,
+                self.rollback,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.allocate_ids: gapic_v1.method.wrap_method(
-                self.allocate_ids, default_timeout=60.0, client_info=client_info,
+                self.allocate_ids,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.reserve_ids: gapic_v1.method.wrap_method(
                 self.reserve_ids,
@@ -183,9 +193,9 @@ class DatastoreTransport(abc.ABC):
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

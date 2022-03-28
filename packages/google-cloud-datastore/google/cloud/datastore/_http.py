@@ -53,7 +53,14 @@ def _make_request_pb(request, request_pb_type):
 
 
 def _request(
-    http, project, method, data, base_url, client_info, retry=None, timeout=None,
+    http,
+    project,
+    method,
+    data,
+    base_url,
+    client_info,
+    retry=None,
+    timeout=None,
 ):
     """Make a request over the Http transport to the Cloud Datastore API.
 
@@ -103,7 +110,11 @@ def _request(
 
     if timeout is not None:
         response = requester(
-            url=api_url, method="POST", headers=headers, data=data, timeout=timeout,
+            url=api_url,
+            method="POST",
+            headers=headers,
+            data=data,
+            timeout=timeout,
         )
     else:
         response = requester(url=api_url, method="POST", headers=headers, data=data)

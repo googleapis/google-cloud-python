@@ -130,7 +130,8 @@ def test_client_ctor_w_implicit_inputs():
 
     other = "other"
     patch1 = mock.patch(
-        "google.cloud.datastore.client._determine_default_project", return_value=other,
+        "google.cloud.datastore.client._determine_default_project",
+        return_value=other,
     )
 
     creds = _make_credentials()
@@ -151,7 +152,9 @@ def test_client_ctor_w_implicit_inputs():
     assert client.current_batch is None
     assert client.current_transaction is None
 
-    default.assert_called_once_with(scopes=Client.SCOPE,)
+    default.assert_called_once_with(
+        scopes=Client.SCOPE,
+    )
     _determine_default_project.assert_called_once_with(None)
 
 
@@ -258,7 +261,10 @@ def test_client_base_url_property_w_client_options():
     creds = _make_credentials()
     client_options = {"api_endpoint": "endpoint"}
 
-    client = _make_client(credentials=creds, client_options=client_options,)
+    client = _make_client(
+        credentials=creds,
+        client_options=client_options,
+    )
     assert client.base_url == "endpoint"
 
     client.base_url = alternate_url
@@ -784,7 +790,7 @@ def test_client_put_multi_w_single_empty_entity():
 def test_client_put_multi_no_batch_w_partial_key_w_retry_w_timeout():
     from google.cloud.datastore_v1.types import datastore as datastore_pb2
 
-    entity = _Entity(foo=u"bar")
+    entity = _Entity(foo="bar")
     key = entity.key = _Key(_Key.kind, None)
     retry = mock.Mock()
     timeout = 100000
@@ -817,13 +823,13 @@ def test_client_put_multi_no_batch_w_partial_key_w_retry_w_timeout():
     assert len(prop_list) == 1
     name, value_pb = prop_list[0]
     assert name == "foo"
-    assert value_pb.string_value == u"bar"
+    assert value_pb.string_value == "bar"
 
 
 def test_client_put_multi_existing_batch_w_completed_key():
     creds = _make_credentials()
     client = _make_client(credentials=creds)
-    entity = _Entity(foo=u"bar")
+    entity = _Entity(foo="bar")
     key = entity.key = _Key()
 
     with _NoCommitBatch(client) as CURR_BATCH:
@@ -837,7 +843,7 @@ def test_client_put_multi_existing_batch_w_completed_key():
     assert len(prop_list) == 1
     name, value_pb = prop_list[0]
     assert name == "foo"
-    assert value_pb.string_value == u"bar"
+    assert value_pb.string_value == "bar"
 
 
 def test_client_delete():
