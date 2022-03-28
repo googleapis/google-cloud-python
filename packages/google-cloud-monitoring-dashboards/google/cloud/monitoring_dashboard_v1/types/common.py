@@ -20,7 +20,11 @@ from google.protobuf import duration_pb2  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.monitoring.dashboard.v1",
-    manifest={"Aggregation", "PickTimeSeriesFilter", "StatisticalTimeSeriesFilter",},
+    manifest={
+        "Aggregation",
+        "PickTimeSeriesFilter",
+        "StatisticalTimeSeriesFilter",
+    },
 )
 
 
@@ -183,11 +187,24 @@ class Aggregation(proto.Message):
         REDUCE_PERCENTILE_05 = 12
 
     alignment_period = proto.Field(
-        proto.MESSAGE, number=1, message=duration_pb2.Duration,
+        proto.MESSAGE,
+        number=1,
+        message=duration_pb2.Duration,
     )
-    per_series_aligner = proto.Field(proto.ENUM, number=2, enum=Aligner,)
-    cross_series_reducer = proto.Field(proto.ENUM, number=4, enum=Reducer,)
-    group_by_fields = proto.RepeatedField(proto.STRING, number=5,)
+    per_series_aligner = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=Aligner,
+    )
+    cross_series_reducer = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=Reducer,
+    )
+    group_by_fields = proto.RepeatedField(
+        proto.STRING,
+        number=5,
+    )
 
 
 class PickTimeSeriesFilter(proto.Message):
@@ -231,9 +248,20 @@ class PickTimeSeriesFilter(proto.Message):
         TOP = 1
         BOTTOM = 2
 
-    ranking_method = proto.Field(proto.ENUM, number=1, enum=Method,)
-    num_time_series = proto.Field(proto.INT32, number=2,)
-    direction = proto.Field(proto.ENUM, number=3, enum=Direction,)
+    ranking_method = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Method,
+    )
+    num_time_series = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    direction = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=Direction,
+    )
 
 
 class StatisticalTimeSeriesFilter(proto.Message):
@@ -259,8 +287,15 @@ class StatisticalTimeSeriesFilter(proto.Message):
         METHOD_UNSPECIFIED = 0
         METHOD_CLUSTER_OUTLIER = 1
 
-    ranking_method = proto.Field(proto.ENUM, number=1, enum=Method,)
-    num_time_series = proto.Field(proto.INT32, number=2,)
+    ranking_method = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Method,
+    )
+    num_time_series = proto.Field(
+        proto.INT32,
+        number=2,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

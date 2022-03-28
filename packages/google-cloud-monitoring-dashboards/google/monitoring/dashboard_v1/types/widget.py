@@ -25,7 +25,10 @@ from google.protobuf import empty_pb2 as empty  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.monitoring.dashboard.v1", manifest={"Widget",},
+    package="google.monitoring.dashboard.v1",
+    manifest={
+        "Widget",
+    },
 )
 
 
@@ -50,16 +53,32 @@ class Widget(proto.Message):
     title = proto.Field(proto.STRING, number=1)
 
     xy_chart = proto.Field(
-        proto.MESSAGE, number=2, oneof="content", message=xychart.XyChart,
+        proto.MESSAGE,
+        number=2,
+        oneof="content",
+        message=xychart.XyChart,
     )
 
     scorecard = proto.Field(
-        proto.MESSAGE, number=3, oneof="content", message=gmd_scorecard.Scorecard,
+        proto.MESSAGE,
+        number=3,
+        oneof="content",
+        message=gmd_scorecard.Scorecard,
     )
 
-    text = proto.Field(proto.MESSAGE, number=4, oneof="content", message=gmd_text.Text,)
+    text = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="content",
+        message=gmd_text.Text,
+    )
 
-    blank = proto.Field(proto.MESSAGE, number=5, oneof="content", message=empty.Empty,)
+    blank = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="content",
+        message=empty.Empty,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

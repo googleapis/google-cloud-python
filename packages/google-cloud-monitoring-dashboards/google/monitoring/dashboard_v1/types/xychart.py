@@ -23,7 +23,11 @@ from google.protobuf import duration_pb2 as duration  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.monitoring.dashboard.v1", manifest={"XyChart", "ChartOptions",},
+    package="google.monitoring.dashboard.v1",
+    manifest={
+        "XyChart",
+        "ChartOptions",
+    },
 )
 
 
@@ -85,15 +89,23 @@ class XyChart(proto.Message):
             HEATMAP = 4
 
         time_series_query = proto.Field(
-            proto.MESSAGE, number=1, message=metrics.TimeSeriesQuery,
+            proto.MESSAGE,
+            number=1,
+            message=metrics.TimeSeriesQuery,
         )
 
-        plot_type = proto.Field(proto.ENUM, number=2, enum="XyChart.DataSet.PlotType",)
+        plot_type = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum="XyChart.DataSet.PlotType",
+        )
 
         legend_template = proto.Field(proto.STRING, number=3)
 
         min_alignment_period = proto.Field(
-            proto.MESSAGE, number=4, message=duration.Duration,
+            proto.MESSAGE,
+            number=4,
+            message=duration.Duration,
         )
 
     class Axis(proto.Message):
@@ -115,23 +127,47 @@ class XyChart(proto.Message):
 
         label = proto.Field(proto.STRING, number=1)
 
-        scale = proto.Field(proto.ENUM, number=2, enum="XyChart.Axis.Scale",)
+        scale = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum="XyChart.Axis.Scale",
+        )
 
-    data_sets = proto.RepeatedField(proto.MESSAGE, number=1, message=DataSet,)
+    data_sets = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=DataSet,
+    )
 
     timeshift_duration = proto.Field(
-        proto.MESSAGE, number=4, message=duration.Duration,
+        proto.MESSAGE,
+        number=4,
+        message=duration.Duration,
     )
 
     thresholds = proto.RepeatedField(
-        proto.MESSAGE, number=5, message=metrics.Threshold,
+        proto.MESSAGE,
+        number=5,
+        message=metrics.Threshold,
     )
 
-    x_axis = proto.Field(proto.MESSAGE, number=6, message=Axis,)
+    x_axis = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=Axis,
+    )
 
-    y_axis = proto.Field(proto.MESSAGE, number=7, message=Axis,)
+    y_axis = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=Axis,
+    )
 
-    chart_options = proto.Field(proto.MESSAGE, number=8, message="ChartOptions",)
+    chart_options = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message="ChartOptions",
+    )
 
 
 class ChartOptions(proto.Message):
@@ -149,7 +185,11 @@ class ChartOptions(proto.Message):
         X_RAY = 2
         STATS = 3
 
-    mode = proto.Field(proto.ENUM, number=1, enum=Mode,)
+    mode = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Mode,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

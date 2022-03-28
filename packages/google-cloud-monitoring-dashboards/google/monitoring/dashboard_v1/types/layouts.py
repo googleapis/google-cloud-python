@@ -23,7 +23,11 @@ from google.monitoring.dashboard_v1.types import widget
 
 __protobuf__ = proto.module(
     package="google.monitoring.dashboard.v1",
-    manifest={"GridLayout", "RowLayout", "ColumnLayout",},
+    manifest={
+        "GridLayout",
+        "RowLayout",
+        "ColumnLayout",
+    },
 )
 
 
@@ -44,7 +48,11 @@ class GridLayout(proto.Message):
 
     columns = proto.Field(proto.INT64, number=1)
 
-    widgets = proto.RepeatedField(proto.MESSAGE, number=2, message=widget.Widget,)
+    widgets = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=widget.Widget,
+    )
 
 
 class RowLayout(proto.Message):
@@ -74,9 +82,17 @@ class RowLayout(proto.Message):
 
         weight = proto.Field(proto.INT64, number=1)
 
-        widgets = proto.RepeatedField(proto.MESSAGE, number=2, message=widget.Widget,)
+        widgets = proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message=widget.Widget,
+        )
 
-    rows = proto.RepeatedField(proto.MESSAGE, number=1, message=Row,)
+    rows = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=Row,
+    )
 
 
 class ColumnLayout(proto.Message):
@@ -107,9 +123,17 @@ class ColumnLayout(proto.Message):
 
         weight = proto.Field(proto.INT64, number=1)
 
-        widgets = proto.RepeatedField(proto.MESSAGE, number=2, message=widget.Widget,)
+        widgets = proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message=widget.Widget,
+        )
 
-    columns = proto.RepeatedField(proto.MESSAGE, number=1, message=Column,)
+    columns = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=Column,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

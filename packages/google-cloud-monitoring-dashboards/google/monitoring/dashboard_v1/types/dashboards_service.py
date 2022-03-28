@@ -55,7 +55,11 @@ class CreateDashboardRequest(proto.Message):
 
     parent = proto.Field(proto.STRING, number=1)
 
-    dashboard = proto.Field(proto.MESSAGE, number=2, message=gmd_dashboard.Dashboard,)
+    dashboard = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=gmd_dashboard.Dashboard,
+    )
 
 
 class ListDashboardsRequest(proto.Message):
@@ -105,7 +109,9 @@ class ListDashboardsResponse(proto.Message):
         return self
 
     dashboards = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=gmd_dashboard.Dashboard,
+        proto.MESSAGE,
+        number=1,
+        message=gmd_dashboard.Dashboard,
     )
 
     next_page_token = proto.Field(proto.STRING, number=2)
@@ -151,7 +157,11 @@ class UpdateDashboardRequest(proto.Message):
             existing dashboard.
     """
 
-    dashboard = proto.Field(proto.MESSAGE, number=1, message=gmd_dashboard.Dashboard,)
+    dashboard = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=gmd_dashboard.Dashboard,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

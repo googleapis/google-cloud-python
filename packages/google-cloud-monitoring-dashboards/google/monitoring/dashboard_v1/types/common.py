@@ -23,7 +23,11 @@ from google.protobuf import duration_pb2 as duration  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.monitoring.dashboard.v1",
-    manifest={"Aggregation", "PickTimeSeriesFilter", "StatisticalTimeSeriesFilter",},
+    manifest={
+        "Aggregation",
+        "PickTimeSeriesFilter",
+        "StatisticalTimeSeriesFilter",
+    },
 )
 
 
@@ -182,11 +186,23 @@ class Aggregation(proto.Message):
         REDUCE_PERCENTILE_50 = 11
         REDUCE_PERCENTILE_05 = 12
 
-    alignment_period = proto.Field(proto.MESSAGE, number=1, message=duration.Duration,)
+    alignment_period = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=duration.Duration,
+    )
 
-    per_series_aligner = proto.Field(proto.ENUM, number=2, enum=Aligner,)
+    per_series_aligner = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=Aligner,
+    )
 
-    cross_series_reducer = proto.Field(proto.ENUM, number=4, enum=Reducer,)
+    cross_series_reducer = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=Reducer,
+    )
 
     group_by_fields = proto.RepeatedField(proto.STRING, number=5)
 
@@ -232,11 +248,19 @@ class PickTimeSeriesFilter(proto.Message):
         TOP = 1
         BOTTOM = 2
 
-    ranking_method = proto.Field(proto.ENUM, number=1, enum=Method,)
+    ranking_method = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Method,
+    )
 
     num_time_series = proto.Field(proto.INT32, number=2)
 
-    direction = proto.Field(proto.ENUM, number=3, enum=Direction,)
+    direction = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=Direction,
+    )
 
 
 class StatisticalTimeSeriesFilter(proto.Message):
@@ -262,7 +286,11 @@ class StatisticalTimeSeriesFilter(proto.Message):
         METHOD_UNSPECIFIED = 0
         METHOD_CLUSTER_OUTLIER = 1
 
-    ranking_method = proto.Field(proto.ENUM, number=1, enum=Method,)
+    ranking_method = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Method,
+    )
 
     num_time_series = proto.Field(proto.INT32, number=2)
 

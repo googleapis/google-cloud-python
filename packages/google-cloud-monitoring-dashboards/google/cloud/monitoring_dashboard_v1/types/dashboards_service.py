@@ -53,9 +53,19 @@ class CreateDashboardRequest(proto.Message):
             review, but do not actually save it.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    dashboard = proto.Field(proto.MESSAGE, number=2, message=gmd_dashboard.Dashboard,)
-    validate_only = proto.Field(proto.BOOL, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    dashboard = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=gmd_dashboard.Dashboard,
+    )
+    validate_only = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
 
 
 class ListDashboardsRequest(proto.Message):
@@ -80,9 +90,18 @@ class ListDashboardsRequest(proto.Message):
             additional results from the previous method call.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListDashboardsResponse(proto.Message):
@@ -103,9 +122,14 @@ class ListDashboardsResponse(proto.Message):
         return self
 
     dashboards = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=gmd_dashboard.Dashboard,
+        proto.MESSAGE,
+        number=1,
+        message=gmd_dashboard.Dashboard,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetDashboardRequest(proto.Message):
@@ -121,7 +145,10 @@ class GetDashboardRequest(proto.Message):
                (for custom dashboards).
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class DeleteDashboardRequest(proto.Message):
@@ -136,7 +163,10 @@ class DeleteDashboardRequest(proto.Message):
                 projects/[PROJECT_ID_OR_NUMBER]/dashboards/[DASHBOARD_ID]
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class UpdateDashboardRequest(proto.Message):
@@ -151,8 +181,15 @@ class UpdateDashboardRequest(proto.Message):
             review, but do not actually save it.
     """
 
-    dashboard = proto.Field(proto.MESSAGE, number=1, message=gmd_dashboard.Dashboard,)
-    validate_only = proto.Field(proto.BOOL, number=3,)
+    dashboard = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=gmd_dashboard.Dashboard,
+    )
+    validate_only = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

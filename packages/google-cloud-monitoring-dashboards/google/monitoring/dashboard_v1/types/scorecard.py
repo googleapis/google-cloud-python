@@ -23,7 +23,10 @@ from google.protobuf import duration_pb2 as duration  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.monitoring.dashboard.v1", manifest={"Scorecard",},
+    package="google.monitoring.dashboard.v1",
+    manifest={
+        "Scorecard",
+    },
 )
 
 
@@ -125,27 +128,41 @@ class Scorecard(proto.Message):
         """
 
         spark_chart_type = proto.Field(
-            proto.ENUM, number=1, enum=metrics.SparkChartType,
+            proto.ENUM,
+            number=1,
+            enum=metrics.SparkChartType,
         )
 
         min_alignment_period = proto.Field(
-            proto.MESSAGE, number=2, message=duration.Duration,
+            proto.MESSAGE,
+            number=2,
+            message=duration.Duration,
         )
 
     time_series_query = proto.Field(
-        proto.MESSAGE, number=1, message=metrics.TimeSeriesQuery,
+        proto.MESSAGE,
+        number=1,
+        message=metrics.TimeSeriesQuery,
     )
 
     gauge_view = proto.Field(
-        proto.MESSAGE, number=4, oneof="data_view", message=GaugeView,
+        proto.MESSAGE,
+        number=4,
+        oneof="data_view",
+        message=GaugeView,
     )
 
     spark_chart_view = proto.Field(
-        proto.MESSAGE, number=5, oneof="data_view", message=SparkChartView,
+        proto.MESSAGE,
+        number=5,
+        oneof="data_view",
+        message=SparkChartView,
     )
 
     thresholds = proto.RepeatedField(
-        proto.MESSAGE, number=6, message=metrics.Threshold,
+        proto.MESSAGE,
+        number=6,
+        message=metrics.Threshold,
     )
 
 

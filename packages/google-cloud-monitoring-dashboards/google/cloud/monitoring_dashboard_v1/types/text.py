@@ -17,7 +17,10 @@ import proto  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.monitoring.dashboard.v1", manifest={"Text",},
+    package="google.monitoring.dashboard.v1",
+    manifest={
+        "Text",
+    },
 )
 
 
@@ -37,8 +40,15 @@ class Text(proto.Message):
         MARKDOWN = 1
         RAW = 2
 
-    content = proto.Field(proto.STRING, number=1,)
-    format_ = proto.Field(proto.ENUM, number=2, enum=Format,)
+    content = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    format_ = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=Format,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

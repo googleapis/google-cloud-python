@@ -19,7 +19,10 @@ from google.cloud.monitoring_dashboard_v1.types import layouts
 
 
 __protobuf__ = proto.module(
-    package="google.monitoring.dashboard.v1", manifest={"Dashboard",},
+    package="google.monitoring.dashboard.v1",
+    manifest={
+        "Dashboard",
+    },
 )
 
 
@@ -73,20 +76,41 @@ class Dashboard(proto.Message):
             This field is a member of `oneof`_ ``layout``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    display_name = proto.Field(proto.STRING, number=2,)
-    etag = proto.Field(proto.STRING, number=4,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    etag = proto.Field(
+        proto.STRING,
+        number=4,
+    )
     grid_layout = proto.Field(
-        proto.MESSAGE, number=5, oneof="layout", message=layouts.GridLayout,
+        proto.MESSAGE,
+        number=5,
+        oneof="layout",
+        message=layouts.GridLayout,
     )
     mosaic_layout = proto.Field(
-        proto.MESSAGE, number=6, oneof="layout", message=layouts.MosaicLayout,
+        proto.MESSAGE,
+        number=6,
+        oneof="layout",
+        message=layouts.MosaicLayout,
     )
     row_layout = proto.Field(
-        proto.MESSAGE, number=8, oneof="layout", message=layouts.RowLayout,
+        proto.MESSAGE,
+        number=8,
+        oneof="layout",
+        message=layouts.RowLayout,
     )
     column_layout = proto.Field(
-        proto.MESSAGE, number=9, oneof="layout", message=layouts.ColumnLayout,
+        proto.MESSAGE,
+        number=9,
+        oneof="layout",
+        message=layouts.ColumnLayout,
     )
 
 

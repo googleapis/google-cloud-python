@@ -55,7 +55,8 @@ class DashboardsServiceClientMeta(type):
     _transport_registry["grpc_asyncio"] = DashboardsServiceGrpcAsyncIOTransport
 
     def get_transport_class(
-        cls, label: str = None,
+        cls,
+        label: str = None,
     ) -> Type[DashboardsServiceTransport]:
         """Return an appropriate transport class.
 
@@ -135,10 +136,14 @@ class DashboardsServiceClient(metaclass=DashboardsServiceClientMeta):
     from_service_account_json = from_service_account_file
 
     @staticmethod
-    def dashboard_path(project: str, dashboard: str,) -> str:
+    def dashboard_path(
+        project: str,
+        dashboard: str,
+    ) -> str:
         """Return a fully-qualified dashboard string."""
         return "projects/{project}/dashboards/{dashboard}".format(
-            project=project, dashboard=dashboard,
+            project=project,
+            dashboard=dashboard,
         )
 
     @staticmethod
@@ -284,7 +289,12 @@ class DashboardsServiceClient(metaclass=DashboardsServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -336,12 +346,20 @@ class DashboardsServiceClient(metaclass=DashboardsServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListDashboardsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -394,7 +412,12 @@ class DashboardsServiceClient(metaclass=DashboardsServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -439,7 +462,10 @@ class DashboardsServiceClient(metaclass=DashboardsServiceClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def update_dashboard(
@@ -491,7 +517,12 @@ class DashboardsServiceClient(metaclass=DashboardsServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response

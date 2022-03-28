@@ -17,7 +17,10 @@ import proto  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.monitoring.dashboard.v1", manifest={"AlertChart",},
+    package="google.monitoring.dashboard.v1",
+    manifest={
+        "AlertChart",
+    },
 )
 
 
@@ -34,7 +37,10 @@ class AlertChart(proto.Message):
                 projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

@@ -73,13 +73,26 @@ class TimeSeriesQuery(proto.Message):
     """
 
     time_series_filter = proto.Field(
-        proto.MESSAGE, number=1, oneof="source", message="TimeSeriesFilter",
+        proto.MESSAGE,
+        number=1,
+        oneof="source",
+        message="TimeSeriesFilter",
     )
     time_series_filter_ratio = proto.Field(
-        proto.MESSAGE, number=2, oneof="source", message="TimeSeriesFilterRatio",
+        proto.MESSAGE,
+        number=2,
+        oneof="source",
+        message="TimeSeriesFilterRatio",
     )
-    time_series_query_language = proto.Field(proto.STRING, number=3, oneof="source",)
-    unit_override = proto.Field(proto.STRING, number=5,)
+    time_series_query_language = proto.Field(
+        proto.STRING,
+        number=3,
+        oneof="source",
+    )
+    unit_override = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class TimeSeriesFilter(proto.Message):
@@ -119,10 +132,19 @@ class TimeSeriesFilter(proto.Message):
             This field is a member of `oneof`_ ``output_filter``.
     """
 
-    filter = proto.Field(proto.STRING, number=1,)
-    aggregation = proto.Field(proto.MESSAGE, number=2, message=common.Aggregation,)
+    filter = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    aggregation = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=common.Aggregation,
+    )
     secondary_aggregation = proto.Field(
-        proto.MESSAGE, number=3, message=common.Aggregation,
+        proto.MESSAGE,
+        number=3,
+        message=common.Aggregation,
     )
     pick_time_series_filter = proto.Field(
         proto.MESSAGE,
@@ -187,13 +209,30 @@ class TimeSeriesFilterRatio(proto.Message):
                 time series for different views of the data.
         """
 
-        filter = proto.Field(proto.STRING, number=1,)
-        aggregation = proto.Field(proto.MESSAGE, number=2, message=common.Aggregation,)
+        filter = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        aggregation = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message=common.Aggregation,
+        )
 
-    numerator = proto.Field(proto.MESSAGE, number=1, message=RatioPart,)
-    denominator = proto.Field(proto.MESSAGE, number=2, message=RatioPart,)
+    numerator = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=RatioPart,
+    )
+    denominator = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=RatioPart,
+    )
     secondary_aggregation = proto.Field(
-        proto.MESSAGE, number=3, message=common.Aggregation,
+        proto.MESSAGE,
+        number=3,
+        message=common.Aggregation,
     )
     pick_time_series_filter = proto.Field(
         proto.MESSAGE,
@@ -244,10 +283,24 @@ class Threshold(proto.Message):
         ABOVE = 1
         BELOW = 2
 
-    label = proto.Field(proto.STRING, number=1,)
-    value = proto.Field(proto.DOUBLE, number=2,)
-    color = proto.Field(proto.ENUM, number=3, enum=Color,)
-    direction = proto.Field(proto.ENUM, number=4, enum=Direction,)
+    label = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    value = proto.Field(
+        proto.DOUBLE,
+        number=2,
+    )
+    color = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=Color,
+    )
+    direction = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=Direction,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

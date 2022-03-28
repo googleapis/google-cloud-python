@@ -22,7 +22,10 @@ from google.monitoring.dashboard_v1.types import layouts
 
 
 __protobuf__ = proto.module(
-    package="google.monitoring.dashboard.v1", manifest={"Dashboard",},
+    package="google.monitoring.dashboard.v1",
+    manifest={
+        "Dashboard",
+    },
 )
 
 
@@ -64,15 +67,24 @@ class Dashboard(proto.Message):
     etag = proto.Field(proto.STRING, number=4)
 
     grid_layout = proto.Field(
-        proto.MESSAGE, number=5, oneof="layout", message=layouts.GridLayout,
+        proto.MESSAGE,
+        number=5,
+        oneof="layout",
+        message=layouts.GridLayout,
     )
 
     row_layout = proto.Field(
-        proto.MESSAGE, number=8, oneof="layout", message=layouts.RowLayout,
+        proto.MESSAGE,
+        number=8,
+        oneof="layout",
+        message=layouts.RowLayout,
     )
 
     column_layout = proto.Field(
-        proto.MESSAGE, number=9, oneof="layout", message=layouts.ColumnLayout,
+        proto.MESSAGE,
+        number=9,
+        oneof="layout",
+        message=layouts.ColumnLayout,
     )
 
 

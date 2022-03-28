@@ -23,7 +23,10 @@ from google.protobuf import empty_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.monitoring.dashboard.v1", manifest={"Widget",},
+    package="google.monitoring.dashboard.v1",
+    manifest={
+        "Widget",
+    },
 )
 
 
@@ -64,19 +67,39 @@ class Widget(proto.Message):
             This field is a member of `oneof`_ ``content``.
     """
 
-    title = proto.Field(proto.STRING, number=1,)
+    title = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     xy_chart = proto.Field(
-        proto.MESSAGE, number=2, oneof="content", message=xychart.XyChart,
+        proto.MESSAGE,
+        number=2,
+        oneof="content",
+        message=xychart.XyChart,
     )
     scorecard = proto.Field(
-        proto.MESSAGE, number=3, oneof="content", message=gmd_scorecard.Scorecard,
+        proto.MESSAGE,
+        number=3,
+        oneof="content",
+        message=gmd_scorecard.Scorecard,
     )
-    text = proto.Field(proto.MESSAGE, number=4, oneof="content", message=gmd_text.Text,)
+    text = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="content",
+        message=gmd_text.Text,
+    )
     blank = proto.Field(
-        proto.MESSAGE, number=5, oneof="content", message=empty_pb2.Empty,
+        proto.MESSAGE,
+        number=5,
+        oneof="content",
+        message=empty_pb2.Empty,
     )
     alert_chart = proto.Field(
-        proto.MESSAGE, number=7, oneof="content", message=alertchart.AlertChart,
+        proto.MESSAGE,
+        number=7,
+        oneof="content",
+        message=alertchart.AlertChart,
     )
 
 

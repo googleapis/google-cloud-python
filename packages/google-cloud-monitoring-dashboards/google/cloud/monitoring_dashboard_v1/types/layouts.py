@@ -20,7 +20,12 @@ from google.cloud.monitoring_dashboard_v1.types import widget as gmd_widget
 
 __protobuf__ = proto.module(
     package="google.monitoring.dashboard.v1",
-    manifest={"GridLayout", "MosaicLayout", "RowLayout", "ColumnLayout",},
+    manifest={
+        "GridLayout",
+        "MosaicLayout",
+        "RowLayout",
+        "ColumnLayout",
+    },
 )
 
 
@@ -39,8 +44,15 @@ class GridLayout(proto.Message):
             into the columns row-first.
     """
 
-    columns = proto.Field(proto.INT64, number=1,)
-    widgets = proto.RepeatedField(proto.MESSAGE, number=2, message=gmd_widget.Widget,)
+    columns = proto.Field(
+        proto.INT64,
+        number=1,
+    )
+    widgets = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=gmd_widget.Widget,
+    )
 
 
 class MosaicLayout(proto.Message):
@@ -83,14 +95,37 @@ class MosaicLayout(proto.Message):
                 an ``XyChart``.
         """
 
-        x_pos = proto.Field(proto.INT32, number=1,)
-        y_pos = proto.Field(proto.INT32, number=2,)
-        width = proto.Field(proto.INT32, number=3,)
-        height = proto.Field(proto.INT32, number=4,)
-        widget = proto.Field(proto.MESSAGE, number=5, message=gmd_widget.Widget,)
+        x_pos = proto.Field(
+            proto.INT32,
+            number=1,
+        )
+        y_pos = proto.Field(
+            proto.INT32,
+            number=2,
+        )
+        width = proto.Field(
+            proto.INT32,
+            number=3,
+        )
+        height = proto.Field(
+            proto.INT32,
+            number=4,
+        )
+        widget = proto.Field(
+            proto.MESSAGE,
+            number=5,
+            message=gmd_widget.Widget,
+        )
 
-    columns = proto.Field(proto.INT32, number=1,)
-    tiles = proto.RepeatedField(proto.MESSAGE, number=3, message=Tile,)
+    columns = proto.Field(
+        proto.INT32,
+        number=1,
+    )
+    tiles = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=Tile,
+    )
 
 
 class RowLayout(proto.Message):
@@ -118,12 +153,21 @@ class RowLayout(proto.Message):
                 this row.
         """
 
-        weight = proto.Field(proto.INT64, number=1,)
+        weight = proto.Field(
+            proto.INT64,
+            number=1,
+        )
         widgets = proto.RepeatedField(
-            proto.MESSAGE, number=2, message=gmd_widget.Widget,
+            proto.MESSAGE,
+            number=2,
+            message=gmd_widget.Widget,
         )
 
-    rows = proto.RepeatedField(proto.MESSAGE, number=1, message=Row,)
+    rows = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=Row,
+    )
 
 
 class ColumnLayout(proto.Message):
@@ -152,12 +196,21 @@ class ColumnLayout(proto.Message):
                 this column.
         """
 
-        weight = proto.Field(proto.INT64, number=1,)
+        weight = proto.Field(
+            proto.INT64,
+            number=1,
+        )
         widgets = proto.RepeatedField(
-            proto.MESSAGE, number=2, message=gmd_widget.Widget,
+            proto.MESSAGE,
+            number=2,
+            message=gmd_widget.Widget,
         )
 
-    columns = proto.RepeatedField(proto.MESSAGE, number=1, message=Column,)
+    columns = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=Column,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

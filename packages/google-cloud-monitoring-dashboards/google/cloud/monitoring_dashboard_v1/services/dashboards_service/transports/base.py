@@ -128,28 +128,38 @@ class DashboardsServiceTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.create_dashboard: gapic_v1.method.wrap_method(
-                self.create_dashboard, default_timeout=30.0, client_info=client_info,
+                self.create_dashboard,
+                default_timeout=30.0,
+                client_info=client_info,
             ),
             self.list_dashboards: gapic_v1.method.wrap_method(
-                self.list_dashboards, default_timeout=None, client_info=client_info,
+                self.list_dashboards,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_dashboard: gapic_v1.method.wrap_method(
-                self.get_dashboard, default_timeout=None, client_info=client_info,
+                self.get_dashboard,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.delete_dashboard: gapic_v1.method.wrap_method(
-                self.delete_dashboard, default_timeout=30.0, client_info=client_info,
+                self.delete_dashboard,
+                default_timeout=30.0,
+                client_info=client_info,
             ),
             self.update_dashboard: gapic_v1.method.wrap_method(
-                self.update_dashboard, default_timeout=30.0, client_info=client_info,
+                self.update_dashboard,
+                default_timeout=30.0,
+                client_info=client_info,
             ),
         }
 
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

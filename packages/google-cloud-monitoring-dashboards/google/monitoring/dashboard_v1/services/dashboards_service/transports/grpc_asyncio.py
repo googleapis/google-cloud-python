@@ -193,7 +193,8 @@ class DashboardsServiceGrpcAsyncIOTransport(DashboardsServiceTransport):
         # have one.
         if not hasattr(self, "_grpc_channel"):
             self._grpc_channel = self.create_channel(
-                self._host, credentials=self._credentials,
+                self._host,
+                credentials=self._credentials,
             )
 
         # Return the channel from cache.

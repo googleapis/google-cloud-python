@@ -58,7 +58,8 @@ class DashboardsServiceClientMeta(type):
     _transport_registry["grpc_asyncio"] = DashboardsServiceGrpcAsyncIOTransport
 
     def get_transport_class(
-        cls, label: str = None,
+        cls,
+        label: str = None,
     ) -> Type[DashboardsServiceTransport]:
         """Returns an appropriate transport class.
 
@@ -166,10 +167,14 @@ class DashboardsServiceClient(metaclass=DashboardsServiceClientMeta):
         return self._transport
 
     @staticmethod
-    def alert_policy_path(project: str, alert_policy: str,) -> str:
+    def alert_policy_path(
+        project: str,
+        alert_policy: str,
+    ) -> str:
         """Returns a fully-qualified alert_policy string."""
         return "projects/{project}/alertPolicies/{alert_policy}".format(
-            project=project, alert_policy=alert_policy,
+            project=project,
+            alert_policy=alert_policy,
         )
 
     @staticmethod
@@ -181,10 +186,14 @@ class DashboardsServiceClient(metaclass=DashboardsServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def dashboard_path(project: str, dashboard: str,) -> str:
+    def dashboard_path(
+        project: str,
+        dashboard: str,
+    ) -> str:
         """Returns a fully-qualified dashboard string."""
         return "projects/{project}/dashboards/{dashboard}".format(
-            project=project, dashboard=dashboard,
+            project=project,
+            dashboard=dashboard,
         )
 
     @staticmethod
@@ -194,7 +203,9 @@ class DashboardsServiceClient(metaclass=DashboardsServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_billing_account_path(billing_account: str,) -> str:
+    def common_billing_account_path(
+        billing_account: str,
+    ) -> str:
         """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
@@ -207,9 +218,13 @@ class DashboardsServiceClient(metaclass=DashboardsServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(folder: str,) -> str:
+    def common_folder_path(
+        folder: str,
+    ) -> str:
         """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(folder=folder,)
+        return "folders/{folder}".format(
+            folder=folder,
+        )
 
     @staticmethod
     def parse_common_folder_path(path: str) -> Dict[str, str]:
@@ -218,9 +233,13 @@ class DashboardsServiceClient(metaclass=DashboardsServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(organization: str,) -> str:
+    def common_organization_path(
+        organization: str,
+    ) -> str:
         """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(organization=organization,)
+        return "organizations/{organization}".format(
+            organization=organization,
+        )
 
     @staticmethod
     def parse_common_organization_path(path: str) -> Dict[str, str]:
@@ -229,9 +248,13 @@ class DashboardsServiceClient(metaclass=DashboardsServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(project: str,) -> str:
+    def common_project_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified project string."""
-        return "projects/{project}".format(project=project,)
+        return "projects/{project}".format(
+            project=project,
+        )
 
     @staticmethod
     def parse_common_project_path(path: str) -> Dict[str, str]:
@@ -240,10 +263,14 @@ class DashboardsServiceClient(metaclass=DashboardsServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(project: str, location: str,) -> str:
+    def common_location_path(
+        project: str,
+        location: str,
+    ) -> str:
         """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
-            project=project, location=location,
+            project=project,
+            location=location,
         )
 
     @staticmethod
@@ -493,7 +520,12 @@ class DashboardsServiceClient(metaclass=DashboardsServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -570,12 +602,20 @@ class DashboardsServiceClient(metaclass=DashboardsServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListDashboardsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -652,7 +692,12 @@ class DashboardsServiceClient(metaclass=DashboardsServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -718,7 +763,10 @@ class DashboardsServiceClient(metaclass=DashboardsServiceClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def update_dashboard(
@@ -797,7 +845,12 @@ class DashboardsServiceClient(metaclass=DashboardsServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
