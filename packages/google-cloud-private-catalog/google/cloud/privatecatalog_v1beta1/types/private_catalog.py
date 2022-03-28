@@ -65,10 +65,22 @@ class SearchCatalogsRequest(proto.Message):
             listing should continue from.
     """
 
-    resource = proto.Field(proto.STRING, number=1,)
-    query = proto.Field(proto.STRING, number=2,)
-    page_size = proto.Field(proto.INT32, number=3,)
-    page_token = proto.Field(proto.STRING, number=4,)
+    resource = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    query = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class SearchCatalogsResponse(proto.Message):
@@ -88,8 +100,15 @@ class SearchCatalogsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    catalogs = proto.RepeatedField(proto.MESSAGE, number=1, message="Catalog",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    catalogs = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Catalog",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class SearchProductsRequest(proto.Message):
@@ -120,10 +139,22 @@ class SearchProductsRequest(proto.Message):
             listing should continue from.
     """
 
-    resource = proto.Field(proto.STRING, number=1,)
-    query = proto.Field(proto.STRING, number=2,)
-    page_size = proto.Field(proto.INT32, number=3,)
-    page_token = proto.Field(proto.STRING, number=4,)
+    resource = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    query = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class SearchProductsResponse(proto.Message):
@@ -144,8 +175,15 @@ class SearchProductsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    products = proto.RepeatedField(proto.MESSAGE, number=1, message="Product",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    products = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Product",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class SearchVersionsRequest(proto.Message):
@@ -175,10 +213,22 @@ class SearchVersionsRequest(proto.Message):
             listing should continue from.
     """
 
-    resource = proto.Field(proto.STRING, number=1,)
-    query = proto.Field(proto.STRING, number=2,)
-    page_size = proto.Field(proto.INT32, number=3,)
-    page_token = proto.Field(proto.STRING, number=4,)
+    resource = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    query = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class SearchVersionsResponse(proto.Message):
@@ -199,8 +249,15 @@ class SearchVersionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    versions = proto.RepeatedField(proto.MESSAGE, number=1, message="Version",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    versions = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Version",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class Catalog(proto.Message):
@@ -224,11 +281,28 @@ class Catalog(proto.Message):
             last updated.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    display_name = proto.Field(proto.STRING, number=2,)
-    description = proto.Field(proto.STRING, number=3,)
-    create_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 class Product(proto.Message):
@@ -422,15 +496,38 @@ class Product(proto.Message):
             last updated.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    asset_type = proto.Field(proto.STRING, number=2,)
-    display_metadata = proto.Field(proto.MESSAGE, number=3, message=struct_pb2.Struct,)
-    icon_uri = proto.Field(proto.STRING, number=4,)
-    asset_references = proto.RepeatedField(
-        proto.MESSAGE, number=10, message="AssetReference",
+    name = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    create_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,)
+    asset_type = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    display_metadata = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=struct_pb2.Struct,
+    )
+    icon_uri = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    asset_references = proto.RepeatedField(
+        proto.MESSAGE,
+        number=10,
+        message="AssetReference",
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 class AssetReference(proto.Message):
@@ -492,26 +589,64 @@ class AssetReference(proto.Message):
         VALID = 2
         INVALID = 3
 
-    id = proto.Field(proto.STRING, number=1,)
-    description = proto.Field(proto.STRING, number=2,)
-    inputs = proto.Field(proto.MESSAGE, number=6, message="Inputs",)
-    validation_status = proto.Field(proto.ENUM, number=7, enum=AssetValidationState,)
+    id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    inputs = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message="Inputs",
+    )
+    validation_status = proto.Field(
+        proto.ENUM,
+        number=7,
+        enum=AssetValidationState,
+    )
     validation_operation = proto.Field(
-        proto.MESSAGE, number=8, message=operations_pb2.Operation,
+        proto.MESSAGE,
+        number=8,
+        message=operations_pb2.Operation,
     )
-    asset = proto.Field(proto.STRING, number=10, oneof="source",)
-    gcs_path = proto.Field(proto.STRING, number=11, oneof="source",)
+    asset = proto.Field(
+        proto.STRING,
+        number=10,
+        oneof="source",
+    )
+    gcs_path = proto.Field(
+        proto.STRING,
+        number=11,
+        oneof="source",
+    )
     git_source = proto.Field(
-        proto.MESSAGE, number=15, oneof="source", message="GitSource",
+        proto.MESSAGE,
+        number=15,
+        oneof="source",
+        message="GitSource",
     )
-    gcs_source = proto.Field(proto.MESSAGE, number=16, message="GcsSource",)
+    gcs_source = proto.Field(
+        proto.MESSAGE,
+        number=16,
+        message="GcsSource",
+    )
     create_time = proto.Field(
-        proto.MESSAGE, number=12, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=12,
+        message=timestamp_pb2.Timestamp,
     )
     update_time = proto.Field(
-        proto.MESSAGE, number=13, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=13,
+        message=timestamp_pb2.Timestamp,
     )
-    version = proto.Field(proto.STRING, number=14,)
+    version = proto.Field(
+        proto.STRING,
+        number=14,
+    )
 
 
 class Inputs(proto.Message):
@@ -523,7 +658,11 @@ class Inputs(proto.Message):
             inputs and their formats.
     """
 
-    parameters = proto.Field(proto.MESSAGE, number=1, message=struct_pb2.Struct,)
+    parameters = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=struct_pb2.Struct,
+    )
 
 
 class GcsSource(proto.Message):
@@ -541,9 +680,19 @@ class GcsSource(proto.Message):
             metadata was last changed.
     """
 
-    gcs_path = proto.Field(proto.STRING, number=1,)
-    generation = proto.Field(proto.INT64, number=2,)
-    update_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
+    gcs_path = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    generation = proto.Field(
+        proto.INT64,
+        number=2,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 class GitSource(proto.Message):
@@ -580,11 +729,29 @@ class GitSource(proto.Message):
             This field is a member of `oneof`_ ``ref``.
     """
 
-    repo = proto.Field(proto.STRING, number=1,)
-    dir_ = proto.Field(proto.STRING, number=2,)
-    commit = proto.Field(proto.STRING, number=3, oneof="ref",)
-    branch = proto.Field(proto.STRING, number=4, oneof="ref",)
-    tag = proto.Field(proto.STRING, number=5, oneof="ref",)
+    repo = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    dir_ = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    commit = proto.Field(
+        proto.STRING,
+        number=3,
+        oneof="ref",
+    )
+    branch = proto.Field(
+        proto.STRING,
+        number=4,
+        oneof="ref",
+    )
+    tag = proto.Field(
+        proto.STRING,
+        number=5,
+        oneof="ref",
+    )
 
 
 class Version(proto.Message):
@@ -613,11 +780,29 @@ class Version(proto.Message):
             last updated.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    description = proto.Field(proto.STRING, number=2,)
-    asset = proto.Field(proto.MESSAGE, number=3, message=struct_pb2.Struct,)
-    create_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    asset = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=struct_pb2.Struct,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

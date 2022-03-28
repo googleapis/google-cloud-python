@@ -89,7 +89,11 @@ def test__get_default_mtls_endpoint():
 
 
 @pytest.mark.parametrize(
-    "client_class", [PrivateCatalogClient, PrivateCatalogAsyncClient,]
+    "client_class",
+    [
+        PrivateCatalogClient,
+        PrivateCatalogAsyncClient,
+    ],
 )
 def test_private_catalog_client_from_service_account_info(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -131,7 +135,11 @@ def test_private_catalog_client_service_account_always_use_jwt(
 
 
 @pytest.mark.parametrize(
-    "client_class", [PrivateCatalogClient, PrivateCatalogAsyncClient,]
+    "client_class",
+    [
+        PrivateCatalogClient,
+        PrivateCatalogAsyncClient,
+    ],
 )
 def test_private_catalog_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -495,7 +503,9 @@ def test_private_catalog_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -635,10 +645,17 @@ def test_private_catalog_client_create_channel_credentials_file(
         )
 
 
-@pytest.mark.parametrize("request_type", [private_catalog.SearchCatalogsRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        private_catalog.SearchCatalogsRequest,
+        dict,
+    ],
+)
 def test_search_catalogs(request_type, transport: str = "grpc"):
     client = PrivateCatalogClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -667,7 +684,8 @@ def test_search_catalogs_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = PrivateCatalogClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -683,7 +701,8 @@ async def test_search_catalogs_async(
     transport: str = "grpc_asyncio", request_type=private_catalog.SearchCatalogsRequest
 ):
     client = PrivateCatalogAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -716,7 +735,9 @@ async def test_search_catalogs_async_from_dict():
 
 
 def test_search_catalogs_field_headers():
-    client = PrivateCatalogClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = PrivateCatalogClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -736,7 +757,10 @@ def test_search_catalogs_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -765,12 +789,16 @@ async def test_search_catalogs_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
 
 
 def test_search_catalogs_pager(transport_name: str = "grpc"):
     client = PrivateCatalogClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -785,12 +813,21 @@ def test_search_catalogs_pager(transport_name: str = "grpc"):
                 ],
                 next_page_token="abc",
             ),
-            private_catalog.SearchCatalogsResponse(catalogs=[], next_page_token="def",),
             private_catalog.SearchCatalogsResponse(
-                catalogs=[private_catalog.Catalog(),], next_page_token="ghi",
+                catalogs=[],
+                next_page_token="def",
             ),
             private_catalog.SearchCatalogsResponse(
-                catalogs=[private_catalog.Catalog(), private_catalog.Catalog(),],
+                catalogs=[
+                    private_catalog.Catalog(),
+                ],
+                next_page_token="ghi",
+            ),
+            private_catalog.SearchCatalogsResponse(
+                catalogs=[
+                    private_catalog.Catalog(),
+                    private_catalog.Catalog(),
+                ],
             ),
             RuntimeError,
         )
@@ -810,7 +847,8 @@ def test_search_catalogs_pager(transport_name: str = "grpc"):
 
 def test_search_catalogs_pages(transport_name: str = "grpc"):
     client = PrivateCatalogClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -825,12 +863,21 @@ def test_search_catalogs_pages(transport_name: str = "grpc"):
                 ],
                 next_page_token="abc",
             ),
-            private_catalog.SearchCatalogsResponse(catalogs=[], next_page_token="def",),
             private_catalog.SearchCatalogsResponse(
-                catalogs=[private_catalog.Catalog(),], next_page_token="ghi",
+                catalogs=[],
+                next_page_token="def",
             ),
             private_catalog.SearchCatalogsResponse(
-                catalogs=[private_catalog.Catalog(), private_catalog.Catalog(),],
+                catalogs=[
+                    private_catalog.Catalog(),
+                ],
+                next_page_token="ghi",
+            ),
+            private_catalog.SearchCatalogsResponse(
+                catalogs=[
+                    private_catalog.Catalog(),
+                    private_catalog.Catalog(),
+                ],
             ),
             RuntimeError,
         )
@@ -841,7 +888,9 @@ def test_search_catalogs_pages(transport_name: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_search_catalogs_async_pager():
-    client = PrivateCatalogAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = PrivateCatalogAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -857,16 +906,27 @@ async def test_search_catalogs_async_pager():
                 ],
                 next_page_token="abc",
             ),
-            private_catalog.SearchCatalogsResponse(catalogs=[], next_page_token="def",),
             private_catalog.SearchCatalogsResponse(
-                catalogs=[private_catalog.Catalog(),], next_page_token="ghi",
+                catalogs=[],
+                next_page_token="def",
             ),
             private_catalog.SearchCatalogsResponse(
-                catalogs=[private_catalog.Catalog(), private_catalog.Catalog(),],
+                catalogs=[
+                    private_catalog.Catalog(),
+                ],
+                next_page_token="ghi",
+            ),
+            private_catalog.SearchCatalogsResponse(
+                catalogs=[
+                    private_catalog.Catalog(),
+                    private_catalog.Catalog(),
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.search_catalogs(request={},)
+        async_pager = await client.search_catalogs(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -878,7 +938,9 @@ async def test_search_catalogs_async_pager():
 
 @pytest.mark.asyncio
 async def test_search_catalogs_async_pages():
-    client = PrivateCatalogAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = PrivateCatalogAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -894,12 +956,21 @@ async def test_search_catalogs_async_pages():
                 ],
                 next_page_token="abc",
             ),
-            private_catalog.SearchCatalogsResponse(catalogs=[], next_page_token="def",),
             private_catalog.SearchCatalogsResponse(
-                catalogs=[private_catalog.Catalog(),], next_page_token="ghi",
+                catalogs=[],
+                next_page_token="def",
             ),
             private_catalog.SearchCatalogsResponse(
-                catalogs=[private_catalog.Catalog(), private_catalog.Catalog(),],
+                catalogs=[
+                    private_catalog.Catalog(),
+                ],
+                next_page_token="ghi",
+            ),
+            private_catalog.SearchCatalogsResponse(
+                catalogs=[
+                    private_catalog.Catalog(),
+                    private_catalog.Catalog(),
+                ],
             ),
             RuntimeError,
         )
@@ -910,10 +981,17 @@ async def test_search_catalogs_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [private_catalog.SearchProductsRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        private_catalog.SearchProductsRequest,
+        dict,
+    ],
+)
 def test_search_products(request_type, transport: str = "grpc"):
     client = PrivateCatalogClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -942,7 +1020,8 @@ def test_search_products_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = PrivateCatalogClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -958,7 +1037,8 @@ async def test_search_products_async(
     transport: str = "grpc_asyncio", request_type=private_catalog.SearchProductsRequest
 ):
     client = PrivateCatalogAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -991,7 +1071,9 @@ async def test_search_products_async_from_dict():
 
 
 def test_search_products_field_headers():
-    client = PrivateCatalogClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = PrivateCatalogClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1011,7 +1093,10 @@ def test_search_products_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1040,12 +1125,16 @@ async def test_search_products_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
 
 
 def test_search_products_pager(transport_name: str = "grpc"):
     client = PrivateCatalogClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1060,12 +1149,21 @@ def test_search_products_pager(transport_name: str = "grpc"):
                 ],
                 next_page_token="abc",
             ),
-            private_catalog.SearchProductsResponse(products=[], next_page_token="def",),
             private_catalog.SearchProductsResponse(
-                products=[private_catalog.Product(),], next_page_token="ghi",
+                products=[],
+                next_page_token="def",
             ),
             private_catalog.SearchProductsResponse(
-                products=[private_catalog.Product(), private_catalog.Product(),],
+                products=[
+                    private_catalog.Product(),
+                ],
+                next_page_token="ghi",
+            ),
+            private_catalog.SearchProductsResponse(
+                products=[
+                    private_catalog.Product(),
+                    private_catalog.Product(),
+                ],
             ),
             RuntimeError,
         )
@@ -1085,7 +1183,8 @@ def test_search_products_pager(transport_name: str = "grpc"):
 
 def test_search_products_pages(transport_name: str = "grpc"):
     client = PrivateCatalogClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1100,12 +1199,21 @@ def test_search_products_pages(transport_name: str = "grpc"):
                 ],
                 next_page_token="abc",
             ),
-            private_catalog.SearchProductsResponse(products=[], next_page_token="def",),
             private_catalog.SearchProductsResponse(
-                products=[private_catalog.Product(),], next_page_token="ghi",
+                products=[],
+                next_page_token="def",
             ),
             private_catalog.SearchProductsResponse(
-                products=[private_catalog.Product(), private_catalog.Product(),],
+                products=[
+                    private_catalog.Product(),
+                ],
+                next_page_token="ghi",
+            ),
+            private_catalog.SearchProductsResponse(
+                products=[
+                    private_catalog.Product(),
+                    private_catalog.Product(),
+                ],
             ),
             RuntimeError,
         )
@@ -1116,7 +1224,9 @@ def test_search_products_pages(transport_name: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_search_products_async_pager():
-    client = PrivateCatalogAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = PrivateCatalogAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1132,16 +1242,27 @@ async def test_search_products_async_pager():
                 ],
                 next_page_token="abc",
             ),
-            private_catalog.SearchProductsResponse(products=[], next_page_token="def",),
             private_catalog.SearchProductsResponse(
-                products=[private_catalog.Product(),], next_page_token="ghi",
+                products=[],
+                next_page_token="def",
             ),
             private_catalog.SearchProductsResponse(
-                products=[private_catalog.Product(), private_catalog.Product(),],
+                products=[
+                    private_catalog.Product(),
+                ],
+                next_page_token="ghi",
+            ),
+            private_catalog.SearchProductsResponse(
+                products=[
+                    private_catalog.Product(),
+                    private_catalog.Product(),
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.search_products(request={},)
+        async_pager = await client.search_products(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -1153,7 +1274,9 @@ async def test_search_products_async_pager():
 
 @pytest.mark.asyncio
 async def test_search_products_async_pages():
-    client = PrivateCatalogAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = PrivateCatalogAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1169,12 +1292,21 @@ async def test_search_products_async_pages():
                 ],
                 next_page_token="abc",
             ),
-            private_catalog.SearchProductsResponse(products=[], next_page_token="def",),
             private_catalog.SearchProductsResponse(
-                products=[private_catalog.Product(),], next_page_token="ghi",
+                products=[],
+                next_page_token="def",
             ),
             private_catalog.SearchProductsResponse(
-                products=[private_catalog.Product(), private_catalog.Product(),],
+                products=[
+                    private_catalog.Product(),
+                ],
+                next_page_token="ghi",
+            ),
+            private_catalog.SearchProductsResponse(
+                products=[
+                    private_catalog.Product(),
+                    private_catalog.Product(),
+                ],
             ),
             RuntimeError,
         )
@@ -1185,10 +1317,17 @@ async def test_search_products_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [private_catalog.SearchVersionsRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        private_catalog.SearchVersionsRequest,
+        dict,
+    ],
+)
 def test_search_versions(request_type, transport: str = "grpc"):
     client = PrivateCatalogClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1217,7 +1356,8 @@ def test_search_versions_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = PrivateCatalogClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1233,7 +1373,8 @@ async def test_search_versions_async(
     transport: str = "grpc_asyncio", request_type=private_catalog.SearchVersionsRequest
 ):
     client = PrivateCatalogAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1266,7 +1407,9 @@ async def test_search_versions_async_from_dict():
 
 
 def test_search_versions_field_headers():
-    client = PrivateCatalogClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = PrivateCatalogClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1286,7 +1429,10 @@ def test_search_versions_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1315,12 +1461,16 @@ async def test_search_versions_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
 
 
 def test_search_versions_pager(transport_name: str = "grpc"):
     client = PrivateCatalogClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1335,12 +1485,21 @@ def test_search_versions_pager(transport_name: str = "grpc"):
                 ],
                 next_page_token="abc",
             ),
-            private_catalog.SearchVersionsResponse(versions=[], next_page_token="def",),
             private_catalog.SearchVersionsResponse(
-                versions=[private_catalog.Version(),], next_page_token="ghi",
+                versions=[],
+                next_page_token="def",
             ),
             private_catalog.SearchVersionsResponse(
-                versions=[private_catalog.Version(), private_catalog.Version(),],
+                versions=[
+                    private_catalog.Version(),
+                ],
+                next_page_token="ghi",
+            ),
+            private_catalog.SearchVersionsResponse(
+                versions=[
+                    private_catalog.Version(),
+                    private_catalog.Version(),
+                ],
             ),
             RuntimeError,
         )
@@ -1360,7 +1519,8 @@ def test_search_versions_pager(transport_name: str = "grpc"):
 
 def test_search_versions_pages(transport_name: str = "grpc"):
     client = PrivateCatalogClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1375,12 +1535,21 @@ def test_search_versions_pages(transport_name: str = "grpc"):
                 ],
                 next_page_token="abc",
             ),
-            private_catalog.SearchVersionsResponse(versions=[], next_page_token="def",),
             private_catalog.SearchVersionsResponse(
-                versions=[private_catalog.Version(),], next_page_token="ghi",
+                versions=[],
+                next_page_token="def",
             ),
             private_catalog.SearchVersionsResponse(
-                versions=[private_catalog.Version(), private_catalog.Version(),],
+                versions=[
+                    private_catalog.Version(),
+                ],
+                next_page_token="ghi",
+            ),
+            private_catalog.SearchVersionsResponse(
+                versions=[
+                    private_catalog.Version(),
+                    private_catalog.Version(),
+                ],
             ),
             RuntimeError,
         )
@@ -1391,7 +1560,9 @@ def test_search_versions_pages(transport_name: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_search_versions_async_pager():
-    client = PrivateCatalogAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = PrivateCatalogAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1407,16 +1578,27 @@ async def test_search_versions_async_pager():
                 ],
                 next_page_token="abc",
             ),
-            private_catalog.SearchVersionsResponse(versions=[], next_page_token="def",),
             private_catalog.SearchVersionsResponse(
-                versions=[private_catalog.Version(),], next_page_token="ghi",
+                versions=[],
+                next_page_token="def",
             ),
             private_catalog.SearchVersionsResponse(
-                versions=[private_catalog.Version(), private_catalog.Version(),],
+                versions=[
+                    private_catalog.Version(),
+                ],
+                next_page_token="ghi",
+            ),
+            private_catalog.SearchVersionsResponse(
+                versions=[
+                    private_catalog.Version(),
+                    private_catalog.Version(),
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.search_versions(request={},)
+        async_pager = await client.search_versions(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -1428,7 +1610,9 @@ async def test_search_versions_async_pager():
 
 @pytest.mark.asyncio
 async def test_search_versions_async_pages():
-    client = PrivateCatalogAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = PrivateCatalogAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1444,12 +1628,21 @@ async def test_search_versions_async_pages():
                 ],
                 next_page_token="abc",
             ),
-            private_catalog.SearchVersionsResponse(versions=[], next_page_token="def",),
             private_catalog.SearchVersionsResponse(
-                versions=[private_catalog.Version(),], next_page_token="ghi",
+                versions=[],
+                next_page_token="def",
             ),
             private_catalog.SearchVersionsResponse(
-                versions=[private_catalog.Version(), private_catalog.Version(),],
+                versions=[
+                    private_catalog.Version(),
+                ],
+                next_page_token="ghi",
+            ),
+            private_catalog.SearchVersionsResponse(
+                versions=[
+                    private_catalog.Version(),
+                    private_catalog.Version(),
+                ],
             ),
             RuntimeError,
         )
@@ -1467,7 +1660,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = PrivateCatalogClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -1487,7 +1681,10 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = PrivateCatalogClient(client_options=options, transport=transport,)
+        client = PrivateCatalogClient(
+            client_options=options,
+            transport=transport,
+        )
 
     # It is an error to provide an api_key and a credential.
     options = mock.Mock()
@@ -1503,7 +1700,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = PrivateCatalogClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -1548,8 +1746,13 @@ def test_transport_adc(transport_class):
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
-    client = PrivateCatalogClient(credentials=ga_credentials.AnonymousCredentials(),)
-    assert isinstance(client.transport, transports.PrivateCatalogGrpcTransport,)
+    client = PrivateCatalogClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    assert isinstance(
+        client.transport,
+        transports.PrivateCatalogGrpcTransport,
+    )
 
 
 def test_private_catalog_base_transport_error():
@@ -1596,7 +1799,8 @@ def test_private_catalog_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.PrivateCatalogTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -1754,7 +1958,8 @@ def test_private_catalog_grpc_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.PrivateCatalogGrpcTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -1766,7 +1971,8 @@ def test_private_catalog_grpc_asyncio_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.PrivateCatalogGrpcAsyncIOTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -1875,7 +2081,9 @@ def test_private_catalog_transport_channel_mtls_with_adc(transport_class):
 
 def test_catalog_path():
     catalog = "squid"
-    expected = "catalogs/{catalog}".format(catalog=catalog,)
+    expected = "catalogs/{catalog}".format(
+        catalog=catalog,
+    )
     actual = PrivateCatalogClient.catalog_path(catalog)
     assert expected == actual
 
@@ -1893,7 +2101,9 @@ def test_parse_catalog_path():
 
 def test_product_path():
     product = "whelk"
-    expected = "products/{product}".format(product=product,)
+    expected = "products/{product}".format(
+        product=product,
+    )
     actual = PrivateCatalogClient.product_path(product)
     assert expected == actual
 
@@ -1914,7 +2124,9 @@ def test_version_path():
     product = "nudibranch"
     version = "cuttlefish"
     expected = "catalogs/{catalog}/products/{product}/versions/{version}".format(
-        catalog=catalog, product=product, version=version,
+        catalog=catalog,
+        product=product,
+        version=version,
     )
     actual = PrivateCatalogClient.version_path(catalog, product, version)
     assert expected == actual
@@ -1955,7 +2167,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "squid"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = PrivateCatalogClient.common_folder_path(folder)
     assert expected == actual
 
@@ -1973,7 +2187,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "whelk"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = PrivateCatalogClient.common_organization_path(organization)
     assert expected == actual
 
@@ -1991,7 +2207,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "oyster"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = PrivateCatalogClient.common_project_path(project)
     assert expected == actual
 
@@ -2011,7 +2229,8 @@ def test_common_location_path():
     project = "cuttlefish"
     location = "mussel"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = PrivateCatalogClient.common_location_path(project, location)
     assert expected == actual
@@ -2036,7 +2255,8 @@ def test_client_with_default_client_info():
         transports.PrivateCatalogTransport, "_prep_wrapped_messages"
     ) as prep:
         client = PrivateCatalogClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -2045,7 +2265,8 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = PrivateCatalogClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -2053,7 +2274,8 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = PrivateCatalogAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     with mock.patch.object(
         type(getattr(client.transport, "grpc_channel")), "close"
