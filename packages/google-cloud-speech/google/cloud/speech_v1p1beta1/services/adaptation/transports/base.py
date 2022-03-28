@@ -31,7 +31,9 @@ from google.protobuf import empty_pb2  # type: ignore
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-speech",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-speech",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
@@ -121,43 +123,63 @@ class AdaptationTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.create_phrase_set: gapic_v1.method.wrap_method(
-                self.create_phrase_set, default_timeout=None, client_info=client_info,
+                self.create_phrase_set,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_phrase_set: gapic_v1.method.wrap_method(
-                self.get_phrase_set, default_timeout=None, client_info=client_info,
+                self.get_phrase_set,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_phrase_set: gapic_v1.method.wrap_method(
-                self.list_phrase_set, default_timeout=None, client_info=client_info,
+                self.list_phrase_set,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.update_phrase_set: gapic_v1.method.wrap_method(
-                self.update_phrase_set, default_timeout=None, client_info=client_info,
+                self.update_phrase_set,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.delete_phrase_set: gapic_v1.method.wrap_method(
-                self.delete_phrase_set, default_timeout=None, client_info=client_info,
+                self.delete_phrase_set,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.create_custom_class: gapic_v1.method.wrap_method(
-                self.create_custom_class, default_timeout=None, client_info=client_info,
+                self.create_custom_class,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_custom_class: gapic_v1.method.wrap_method(
-                self.get_custom_class, default_timeout=None, client_info=client_info,
+                self.get_custom_class,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_custom_classes: gapic_v1.method.wrap_method(
-                self.list_custom_classes, default_timeout=None, client_info=client_info,
+                self.list_custom_classes,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.update_custom_class: gapic_v1.method.wrap_method(
-                self.update_custom_class, default_timeout=None, client_info=client_info,
+                self.update_custom_class,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.delete_custom_class: gapic_v1.method.wrap_method(
-                self.delete_custom_class, default_timeout=None, client_info=client_info,
+                self.delete_custom_class,
+                default_timeout=None,
+                client_info=client_info,
             ),
         }
 
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 
