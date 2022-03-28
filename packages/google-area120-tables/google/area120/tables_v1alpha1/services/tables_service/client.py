@@ -54,7 +54,10 @@ class TablesServiceClientMeta(type):
     _transport_registry["grpc"] = TablesServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = TablesServiceGrpcAsyncIOTransport
 
-    def get_transport_class(cls, label: str = None,) -> Type[TablesServiceTransport]:
+    def get_transport_class(
+        cls,
+        label: str = None,
+    ) -> Type[TablesServiceTransport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -173,9 +176,15 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
         return self._transport
 
     @staticmethod
-    def row_path(table: str, row: str,) -> str:
+    def row_path(
+        table: str,
+        row: str,
+    ) -> str:
         """Returns a fully-qualified row string."""
-        return "tables/{table}/rows/{row}".format(table=table, row=row,)
+        return "tables/{table}/rows/{row}".format(
+            table=table,
+            row=row,
+        )
 
     @staticmethod
     def parse_row_path(path: str) -> Dict[str, str]:
@@ -184,9 +193,13 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def table_path(table: str,) -> str:
+    def table_path(
+        table: str,
+    ) -> str:
         """Returns a fully-qualified table string."""
-        return "tables/{table}".format(table=table,)
+        return "tables/{table}".format(
+            table=table,
+        )
 
     @staticmethod
     def parse_table_path(path: str) -> Dict[str, str]:
@@ -195,9 +208,13 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def workspace_path(workspace: str,) -> str:
+    def workspace_path(
+        workspace: str,
+    ) -> str:
         """Returns a fully-qualified workspace string."""
-        return "workspaces/{workspace}".format(workspace=workspace,)
+        return "workspaces/{workspace}".format(
+            workspace=workspace,
+        )
 
     @staticmethod
     def parse_workspace_path(path: str) -> Dict[str, str]:
@@ -206,7 +223,9 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_billing_account_path(billing_account: str,) -> str:
+    def common_billing_account_path(
+        billing_account: str,
+    ) -> str:
         """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
@@ -219,9 +238,13 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(folder: str,) -> str:
+    def common_folder_path(
+        folder: str,
+    ) -> str:
         """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(folder=folder,)
+        return "folders/{folder}".format(
+            folder=folder,
+        )
 
     @staticmethod
     def parse_common_folder_path(path: str) -> Dict[str, str]:
@@ -230,9 +253,13 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(organization: str,) -> str:
+    def common_organization_path(
+        organization: str,
+    ) -> str:
         """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(organization=organization,)
+        return "organizations/{organization}".format(
+            organization=organization,
+        )
 
     @staticmethod
     def parse_common_organization_path(path: str) -> Dict[str, str]:
@@ -241,9 +268,13 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(project: str,) -> str:
+    def common_project_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified project string."""
-        return "projects/{project}".format(project=project,)
+        return "projects/{project}".format(
+            project=project,
+        )
 
     @staticmethod
     def parse_common_project_path(path: str) -> Dict[str, str]:
@@ -252,10 +283,14 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(project: str, location: str,) -> str:
+    def common_location_path(
+        project: str,
+        location: str,
+    ) -> str:
         """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
-            project=project, location=location,
+            project=project,
+            location=location,
         )
 
     @staticmethod
@@ -512,7 +547,12 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -578,12 +618,20 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.list_tables]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListTablesPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -675,7 +723,12 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -741,12 +794,20 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.list_workspaces]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListWorkspacesPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -838,7 +899,12 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -934,12 +1000,20 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListRowsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1037,7 +1111,12 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1110,7 +1189,12 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1203,7 +1287,12 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1272,7 +1361,12 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1355,7 +1449,10 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def batch_delete_rows(
@@ -1415,7 +1512,10 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def __enter__(self):
@@ -1434,7 +1534,9 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-area120-tables",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-area120-tables",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()

@@ -66,7 +66,10 @@ class GetTableRequest(proto.Message):
             Format: tables/{table}
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListTablesRequest(proto.Message):
@@ -89,8 +92,14 @@ class ListTablesRequest(proto.Message):
             token.
     """
 
-    page_size = proto.Field(proto.INT32, number=1,)
-    page_token = proto.Field(proto.STRING, number=2,)
+    page_size = proto.Field(
+        proto.INT32,
+        number=1,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class ListTablesResponse(proto.Message):
@@ -109,8 +118,15 @@ class ListTablesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    tables = proto.RepeatedField(proto.MESSAGE, number=1, message="Table",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    tables = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Table",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetWorkspaceRequest(proto.Message):
@@ -122,7 +138,10 @@ class GetWorkspaceRequest(proto.Message):
             retrieve. Format: workspaces/{workspace}
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListWorkspacesRequest(proto.Message):
@@ -144,8 +163,14 @@ class ListWorkspacesRequest(proto.Message):
             page token.
     """
 
-    page_size = proto.Field(proto.INT32, number=1,)
-    page_token = proto.Field(proto.STRING, number=2,)
+    page_size = proto.Field(
+        proto.INT32,
+        number=1,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class ListWorkspacesResponse(proto.Message):
@@ -164,8 +189,15 @@ class ListWorkspacesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    workspaces = proto.RepeatedField(proto.MESSAGE, number=1, message="Workspace",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    workspaces = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Workspace",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetRowRequest(proto.Message):
@@ -180,8 +212,15 @@ class GetRowRequest(proto.Message):
             row. Defaults to user entered name.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    view = proto.Field(proto.ENUM, number=2, enum="View",)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    view = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum="View",
+    )
 
 
 class ListRowsRequest(proto.Message):
@@ -215,11 +254,27 @@ class ListRowsRequest(proto.Message):
             filtering not supported.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    view = proto.Field(proto.ENUM, number=4, enum="View",)
-    filter = proto.Field(proto.STRING, number=5,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    view = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum="View",
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class ListRowsResponse(proto.Message):
@@ -238,8 +293,15 @@ class ListRowsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    rows = proto.RepeatedField(proto.MESSAGE, number=1, message="Row",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    rows = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Row",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class CreateRowRequest(proto.Message):
@@ -256,9 +318,20 @@ class CreateRowRequest(proto.Message):
             row. Defaults to user entered name.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    row = proto.Field(proto.MESSAGE, number=2, message="Row",)
-    view = proto.Field(proto.ENUM, number=3, enum="View",)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    row = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="Row",
+    )
+    view = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum="View",
+    )
 
 
 class BatchCreateRowsRequest(proto.Message):
@@ -275,8 +348,15 @@ class BatchCreateRowsRequest(proto.Message):
             batch.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    requests = proto.RepeatedField(proto.MESSAGE, number=2, message="CreateRowRequest",)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    requests = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="CreateRowRequest",
+    )
 
 
 class BatchCreateRowsResponse(proto.Message):
@@ -287,7 +367,11 @@ class BatchCreateRowsResponse(proto.Message):
             The created rows.
     """
 
-    rows = proto.RepeatedField(proto.MESSAGE, number=1, message="Row",)
+    rows = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Row",
+    )
 
 
 class UpdateRowRequest(proto.Message):
@@ -303,11 +387,21 @@ class UpdateRowRequest(proto.Message):
             row. Defaults to user entered name.
     """
 
-    row = proto.Field(proto.MESSAGE, number=1, message="Row",)
-    update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+    row = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="Row",
     )
-    view = proto.Field(proto.ENUM, number=3, enum="View",)
+    update_mask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+    view = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum="View",
+    )
 
 
 class BatchUpdateRowsRequest(proto.Message):
@@ -324,8 +418,15 @@ class BatchUpdateRowsRequest(proto.Message):
             single batch.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    requests = proto.RepeatedField(proto.MESSAGE, number=2, message="UpdateRowRequest",)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    requests = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="UpdateRowRequest",
+    )
 
 
 class BatchUpdateRowsResponse(proto.Message):
@@ -336,7 +437,11 @@ class BatchUpdateRowsResponse(proto.Message):
             The updated rows.
     """
 
-    rows = proto.RepeatedField(proto.MESSAGE, number=1, message="Row",)
+    rows = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Row",
+    )
 
 
 class DeleteRowRequest(proto.Message):
@@ -348,7 +453,10 @@ class DeleteRowRequest(proto.Message):
             Format: tables/{table}/rows/{row}
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class BatchDeleteRowsRequest(proto.Message):
@@ -366,8 +474,14 @@ class BatchDeleteRowsRequest(proto.Message):
             Format: tables/{table}/rows/{row}
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    names = proto.RepeatedField(proto.STRING, number=2,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    names = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
 
 
 class Table(proto.Message):
@@ -384,9 +498,19 @@ class Table(proto.Message):
             Order of columns matches the display order.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    display_name = proto.Field(proto.STRING, number=2,)
-    columns = proto.RepeatedField(proto.MESSAGE, number=3, message="ColumnDescription",)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    columns = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message="ColumnDescription",
+    )
 
 
 class ColumnDescription(proto.Message):
@@ -423,14 +547,33 @@ class ColumnDescription(proto.Message):
             relationship column.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    data_type = proto.Field(proto.STRING, number=2,)
-    id = proto.Field(proto.STRING, number=3,)
-    labels = proto.RepeatedField(proto.MESSAGE, number=4, message="LabeledItem",)
-    relationship_details = proto.Field(
-        proto.MESSAGE, number=5, message="RelationshipDetails",
+    name = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    lookup_details = proto.Field(proto.MESSAGE, number=6, message="LookupDetails",)
+    data_type = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    labels = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message="LabeledItem",
+    )
+    relationship_details = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message="RelationshipDetails",
+    )
+    lookup_details = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message="LookupDetails",
+    )
 
 
 class LabeledItem(proto.Message):
@@ -443,8 +586,14 @@ class LabeledItem(proto.Message):
             Internal id associated with the item.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    id = proto.Field(proto.STRING, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class RelationshipDetails(proto.Message):
@@ -456,7 +605,10 @@ class RelationshipDetails(proto.Message):
             linked to.
     """
 
-    linked_table = proto.Field(proto.STRING, number=1,)
+    linked_table = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class LookupDetails(proto.Message):
@@ -471,8 +623,14 @@ class LookupDetails(proto.Message):
             The id of the relationship column.
     """
 
-    relationship_column = proto.Field(proto.STRING, number=1,)
-    relationship_column_id = proto.Field(proto.STRING, number=2,)
+    relationship_column = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    relationship_column_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class Row(proto.Message):
@@ -490,9 +648,15 @@ class Row(proto.Message):
             the view in the request.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     values = proto.MapField(
-        proto.STRING, proto.MESSAGE, number=2, message=struct_pb2.Value,
+        proto.STRING,
+        proto.MESSAGE,
+        number=2,
+        message=struct_pb2.Value,
     )
 
 
@@ -509,9 +673,19 @@ class Workspace(proto.Message):
             The list of tables in the workspace.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    display_name = proto.Field(proto.STRING, number=2,)
-    tables = proto.RepeatedField(proto.MESSAGE, number=3, message="Table",)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    tables = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message="Table",
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

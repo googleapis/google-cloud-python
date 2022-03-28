@@ -30,7 +30,9 @@ from google.protobuf import empty_pb2  # type: ignore
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-area120-tables",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-area120-tables",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
@@ -127,49 +129,73 @@ class TablesServiceTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.get_table: gapic_v1.method.wrap_method(
-                self.get_table, default_timeout=60.0, client_info=client_info,
+                self.get_table,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.list_tables: gapic_v1.method.wrap_method(
-                self.list_tables, default_timeout=60.0, client_info=client_info,
+                self.list_tables,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.get_workspace: gapic_v1.method.wrap_method(
-                self.get_workspace, default_timeout=60.0, client_info=client_info,
+                self.get_workspace,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.list_workspaces: gapic_v1.method.wrap_method(
-                self.list_workspaces, default_timeout=60.0, client_info=client_info,
+                self.list_workspaces,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.get_row: gapic_v1.method.wrap_method(
-                self.get_row, default_timeout=60.0, client_info=client_info,
+                self.get_row,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.list_rows: gapic_v1.method.wrap_method(
-                self.list_rows, default_timeout=60.0, client_info=client_info,
+                self.list_rows,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.create_row: gapic_v1.method.wrap_method(
-                self.create_row, default_timeout=60.0, client_info=client_info,
+                self.create_row,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.batch_create_rows: gapic_v1.method.wrap_method(
-                self.batch_create_rows, default_timeout=60.0, client_info=client_info,
+                self.batch_create_rows,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.update_row: gapic_v1.method.wrap_method(
-                self.update_row, default_timeout=60.0, client_info=client_info,
+                self.update_row,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.batch_update_rows: gapic_v1.method.wrap_method(
-                self.batch_update_rows, default_timeout=60.0, client_info=client_info,
+                self.batch_update_rows,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.delete_row: gapic_v1.method.wrap_method(
-                self.delete_row, default_timeout=60.0, client_info=client_info,
+                self.delete_row,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.batch_delete_rows: gapic_v1.method.wrap_method(
-                self.batch_delete_rows, default_timeout=60.0, client_info=client_info,
+                self.batch_delete_rows,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
         }
 
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 
