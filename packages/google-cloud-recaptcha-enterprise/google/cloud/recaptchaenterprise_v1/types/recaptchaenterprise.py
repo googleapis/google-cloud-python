@@ -71,8 +71,15 @@ class CreateAssessmentRequest(proto.Message):
             Required. The assessment details.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    assessment = proto.Field(proto.MESSAGE, number=2, message="Assessment",)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    assessment = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="Assessment",
+    )
 
 
 class AnnotateAssessmentRequest(proto.Message):
@@ -124,15 +131,28 @@ class AnnotateAssessmentRequest(proto.Message):
         CORRECT_PASSWORD = 5
         INCORRECT_PASSWORD = 6
 
-    name = proto.Field(proto.STRING, number=1,)
-    annotation = proto.Field(proto.ENUM, number=2, enum=Annotation,)
-    reasons = proto.RepeatedField(proto.ENUM, number=3, enum=Reason,)
-    hashed_account_id = proto.Field(proto.BYTES, number=4,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    annotation = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=Annotation,
+    )
+    reasons = proto.RepeatedField(
+        proto.ENUM,
+        number=3,
+        enum=Reason,
+    )
+    hashed_account_id = proto.Field(
+        proto.BYTES,
+        number=4,
+    )
 
 
 class AnnotateAssessmentResponse(proto.Message):
-    r"""Empty response for AnnotateAssessment.
-    """
+    r"""Empty response for AnnotateAssessment."""
 
 
 class Assessment(proto.Message):
@@ -156,12 +176,29 @@ class Assessment(proto.Message):
             hashed_account_id is provided.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    event = proto.Field(proto.MESSAGE, number=2, message="Event",)
-    risk_analysis = proto.Field(proto.MESSAGE, number=3, message="RiskAnalysis",)
-    token_properties = proto.Field(proto.MESSAGE, number=4, message="TokenProperties",)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    event = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="Event",
+    )
+    risk_analysis = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="RiskAnalysis",
+    )
+    token_properties = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="TokenProperties",
+    )
     account_defender_assessment = proto.Field(
-        proto.MESSAGE, number=6, message="AccountDefenderAssessment",
+        proto.MESSAGE,
+        number=6,
+        message="AccountDefenderAssessment",
     )
 
 
@@ -197,12 +234,30 @@ class Event(proto.Message):
             stable secret.
     """
 
-    token = proto.Field(proto.STRING, number=1,)
-    site_key = proto.Field(proto.STRING, number=2,)
-    user_agent = proto.Field(proto.STRING, number=3,)
-    user_ip_address = proto.Field(proto.STRING, number=4,)
-    expected_action = proto.Field(proto.STRING, number=5,)
-    hashed_account_id = proto.Field(proto.BYTES, number=6,)
+    token = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    site_key = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    user_agent = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    user_ip_address = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    expected_action = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    hashed_account_id = proto.Field(
+        proto.BYTES,
+        number=6,
+    )
 
 
 class RiskAnalysis(proto.Message):
@@ -227,8 +282,15 @@ class RiskAnalysis(proto.Message):
         UNEXPECTED_USAGE_PATTERNS = 4
         LOW_CONFIDENCE_SCORE = 5
 
-    score = proto.Field(proto.FLOAT, number=1,)
-    reasons = proto.RepeatedField(proto.ENUM, number=2, enum=ClassificationReason,)
+    score = proto.Field(
+        proto.FLOAT,
+        number=1,
+    )
+    reasons = proto.RepeatedField(
+        proto.ENUM,
+        number=2,
+        enum=ClassificationReason,
+    )
 
 
 class TokenProperties(proto.Message):
@@ -265,11 +327,28 @@ class TokenProperties(proto.Message):
         MISSING = 5
         BROWSER_ERROR = 6
 
-    valid = proto.Field(proto.BOOL, number=1,)
-    invalid_reason = proto.Field(proto.ENUM, number=2, enum=InvalidReason,)
-    create_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
-    hostname = proto.Field(proto.STRING, number=4,)
-    action = proto.Field(proto.STRING, number=5,)
+    valid = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
+    invalid_reason = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=InvalidReason,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    hostname = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    action = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class AccountDefenderAssessment(proto.Message):
@@ -288,7 +367,11 @@ class AccountDefenderAssessment(proto.Message):
         SUSPICIOUS_ACCOUNT_CREATION = 3
         RELATED_ACCOUNTS_NUMBER_HIGH = 4
 
-    labels = proto.RepeatedField(proto.ENUM, number=1, enum=AccountDefenderLabel,)
+    labels = proto.RepeatedField(
+        proto.ENUM,
+        number=1,
+        enum=AccountDefenderLabel,
+    )
 
 
 class CreateKeyRequest(proto.Message):
@@ -304,8 +387,15 @@ class CreateKeyRequest(proto.Message):
             Enterprise key.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    key = proto.Field(proto.MESSAGE, number=2, message="Key",)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    key = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="Key",
+    )
 
 
 class ListKeysRequest(proto.Message):
@@ -324,9 +414,18 @@ class ListKeysRequest(proto.Message):
             previous. ListKeysRequest, if any.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListKeysResponse(proto.Message):
@@ -344,8 +443,15 @@ class ListKeysResponse(proto.Message):
     def raw_page(self):
         return self
 
-    keys = proto.RepeatedField(proto.MESSAGE, number=1, message="Key",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    keys = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Key",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetKeyRequest(proto.Message):
@@ -357,7 +463,10 @@ class GetKeyRequest(proto.Message):
             the format "projects/{project}/keys/{key}".
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class UpdateKeyRequest(proto.Message):
@@ -372,9 +481,15 @@ class UpdateKeyRequest(proto.Message):
             all fields will be updated.
     """
 
-    key = proto.Field(proto.MESSAGE, number=1, message="Key",)
+    key = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="Key",
+    )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -387,7 +502,10 @@ class DeleteKeyRequest(proto.Message):
             in the format "projects/{project}/keys/{key}".
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class MigrateKeyRequest(proto.Message):
@@ -399,7 +517,10 @@ class MigrateKeyRequest(proto.Message):
             in the format "projects/{project}/keys/{key}".
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class GetMetricsRequest(proto.Message):
@@ -412,7 +533,10 @@ class GetMetricsRequest(proto.Message):
             "projects/{project}/keys/{key}/metrics".
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class Metrics(proto.Message):
@@ -435,13 +559,24 @@ class Metrics(proto.Message):
             have challenge-based data.
     """
 
-    name = proto.Field(proto.STRING, number=4,)
-    start_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
+    name = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    start_time = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
     score_metrics = proto.RepeatedField(
-        proto.MESSAGE, number=2, message="ScoreMetrics",
+        proto.MESSAGE,
+        number=2,
+        message="ScoreMetrics",
     )
     challenge_metrics = proto.RepeatedField(
-        proto.MESSAGE, number=3, message="ChallengeMetrics",
+        proto.MESSAGE,
+        number=3,
+        message="ChallengeMetrics",
     )
 
 
@@ -489,10 +624,19 @@ class Key(proto.Message):
             Options for user acceptance testing.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    display_name = proto.Field(proto.STRING, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
     web_settings = proto.Field(
-        proto.MESSAGE, number=3, oneof="platform_settings", message="WebKeySettings",
+        proto.MESSAGE,
+        number=3,
+        oneof="platform_settings",
+        message="WebKeySettings",
     )
     android_settings = proto.Field(
         proto.MESSAGE,
@@ -501,11 +645,26 @@ class Key(proto.Message):
         message="AndroidKeySettings",
     )
     ios_settings = proto.Field(
-        proto.MESSAGE, number=5, oneof="platform_settings", message="IOSKeySettings",
+        proto.MESSAGE,
+        number=5,
+        oneof="platform_settings",
+        message="IOSKeySettings",
     )
-    labels = proto.MapField(proto.STRING, proto.STRING, number=6,)
-    create_time = proto.Field(proto.MESSAGE, number=7, message=timestamp_pb2.Timestamp,)
-    testing_options = proto.Field(proto.MESSAGE, number=9, message="TestingOptions",)
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=6,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=timestamp_pb2.Timestamp,
+    )
+    testing_options = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message="TestingOptions",
+    )
 
 
 class TestingOptions(proto.Message):
@@ -531,8 +690,15 @@ class TestingOptions(proto.Message):
         NOCAPTCHA = 1
         UNSOLVABLE_CHALLENGE = 2
 
-    testing_score = proto.Field(proto.FLOAT, number=1,)
-    testing_challenge = proto.Field(proto.ENUM, number=2, enum=TestingChallenge,)
+    testing_score = proto.Field(
+        proto.FLOAT,
+        number=1,
+    )
+    testing_challenge = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=TestingChallenge,
+    )
 
 
 class WebKeySettings(proto.Message):
@@ -579,12 +745,27 @@ class WebKeySettings(proto.Message):
         BALANCE = 2
         SECURITY = 3
 
-    allow_all_domains = proto.Field(proto.BOOL, number=3,)
-    allowed_domains = proto.RepeatedField(proto.STRING, number=1,)
-    allow_amp_traffic = proto.Field(proto.BOOL, number=2,)
-    integration_type = proto.Field(proto.ENUM, number=4, enum=IntegrationType,)
+    allow_all_domains = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+    allowed_domains = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
+    allow_amp_traffic = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+    integration_type = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=IntegrationType,
+    )
     challenge_security_preference = proto.Field(
-        proto.ENUM, number=5, enum=ChallengeSecurityPreference,
+        proto.ENUM,
+        number=5,
+        enum=ChallengeSecurityPreference,
     )
 
 
@@ -599,8 +780,14 @@ class AndroidKeySettings(proto.Message):
             the key. Example: 'com.companyname.appname'
     """
 
-    allow_all_package_names = proto.Field(proto.BOOL, number=2,)
-    allowed_package_names = proto.RepeatedField(proto.STRING, number=1,)
+    allow_all_package_names = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+    allowed_package_names = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
 
 
 class IOSKeySettings(proto.Message):
@@ -615,8 +802,14 @@ class IOSKeySettings(proto.Message):
             'com.companyname.productname.appname'
     """
 
-    allow_all_bundle_ids = proto.Field(proto.BOOL, number=2,)
-    allowed_bundle_ids = proto.RepeatedField(proto.STRING, number=1,)
+    allow_all_bundle_ids = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+    allowed_bundle_ids = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ScoreDistribution(proto.Message):
@@ -630,7 +823,11 @@ class ScoreDistribution(proto.Message):
             (ie. 10).
     """
 
-    score_buckets = proto.MapField(proto.INT32, proto.INT64, number=1,)
+    score_buckets = proto.MapField(
+        proto.INT32,
+        proto.INT64,
+        number=1,
+    )
 
 
 class ScoreMetrics(proto.Message):
@@ -646,9 +843,16 @@ class ScoreMetrics(proto.Message):
             Populated only for SCORE keys.
     """
 
-    overall_metrics = proto.Field(proto.MESSAGE, number=1, message="ScoreDistribution",)
+    overall_metrics = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="ScoreDistribution",
+    )
     action_metrics = proto.MapField(
-        proto.STRING, proto.MESSAGE, number=2, message="ScoreDistribution",
+        proto.STRING,
+        proto.MESSAGE,
+        number=2,
+        message="ScoreDistribution",
     )
 
 
@@ -674,10 +878,22 @@ class ChallengeMetrics(proto.Message):
             verification.
     """
 
-    pageload_count = proto.Field(proto.INT64, number=1,)
-    nocaptcha_count = proto.Field(proto.INT64, number=2,)
-    failed_count = proto.Field(proto.INT64, number=3,)
-    passed_count = proto.Field(proto.INT64, number=4,)
+    pageload_count = proto.Field(
+        proto.INT64,
+        number=1,
+    )
+    nocaptcha_count = proto.Field(
+        proto.INT64,
+        number=2,
+    )
+    failed_count = proto.Field(
+        proto.INT64,
+        number=3,
+    )
+    passed_count = proto.Field(
+        proto.INT64,
+        number=4,
+    )
 
 
 class ListRelatedAccountGroupMembershipsRequest(proto.Message):
@@ -704,9 +920,18 @@ class ListRelatedAccountGroupMembershipsRequest(proto.Message):
             that provided the page token.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListRelatedAccountGroupMembershipsResponse(proto.Message):
@@ -726,9 +951,14 @@ class ListRelatedAccountGroupMembershipsResponse(proto.Message):
         return self
 
     related_account_group_memberships = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="RelatedAccountGroupMembership",
+        proto.MESSAGE,
+        number=1,
+        message="RelatedAccountGroupMembership",
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class ListRelatedAccountGroupsRequest(proto.Message):
@@ -755,9 +985,18 @@ class ListRelatedAccountGroupsRequest(proto.Message):
             provided the page token.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListRelatedAccountGroupsResponse(proto.Message):
@@ -778,9 +1017,14 @@ class ListRelatedAccountGroupsResponse(proto.Message):
         return self
 
     related_account_groups = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="RelatedAccountGroup",
+        proto.MESSAGE,
+        number=1,
+        message="RelatedAccountGroup",
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class SearchRelatedAccountGroupMembershipsRequest(proto.Message):
@@ -813,10 +1057,22 @@ class SearchRelatedAccountGroupMembershipsRequest(proto.Message):
             that provided the page token.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    hashed_account_id = proto.Field(proto.BYTES, number=2,)
-    page_size = proto.Field(proto.INT32, number=3,)
-    page_token = proto.Field(proto.STRING, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    hashed_account_id = proto.Field(
+        proto.BYTES,
+        number=2,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class SearchRelatedAccountGroupMembershipsResponse(proto.Message):
@@ -836,9 +1092,14 @@ class SearchRelatedAccountGroupMembershipsResponse(proto.Message):
         return self
 
     related_account_group_memberships = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="RelatedAccountGroupMembership",
+        proto.MESSAGE,
+        number=1,
+        message="RelatedAccountGroupMembership",
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class RelatedAccountGroupMembership(proto.Message):
@@ -855,8 +1116,14 @@ class RelatedAccountGroupMembership(proto.Message):
             in a previous CreateAssessment or AnnotateAssessment call.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    hashed_account_id = proto.Field(proto.BYTES, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    hashed_account_id = proto.Field(
+        proto.BYTES,
+        number=2,
+    )
 
 
 class RelatedAccountGroup(proto.Message):
@@ -869,7 +1136,10 @@ class RelatedAccountGroup(proto.Message):
             ``projects/{project}/relatedaccountgroups/{related_account_group}``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

@@ -122,7 +122,9 @@ class RecaptchaEnterpriseServiceTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.create_assessment: gapic_v1.method.wrap_method(
-                self.create_assessment, default_timeout=600.0, client_info=client_info,
+                self.create_assessment,
+                default_timeout=600.0,
+                client_info=client_info,
             ),
             self.annotate_assessment: gapic_v1.method.wrap_method(
                 self.annotate_assessment,
@@ -130,25 +132,39 @@ class RecaptchaEnterpriseServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.create_key: gapic_v1.method.wrap_method(
-                self.create_key, default_timeout=600.0, client_info=client_info,
+                self.create_key,
+                default_timeout=600.0,
+                client_info=client_info,
             ),
             self.list_keys: gapic_v1.method.wrap_method(
-                self.list_keys, default_timeout=600.0, client_info=client_info,
+                self.list_keys,
+                default_timeout=600.0,
+                client_info=client_info,
             ),
             self.get_key: gapic_v1.method.wrap_method(
-                self.get_key, default_timeout=600.0, client_info=client_info,
+                self.get_key,
+                default_timeout=600.0,
+                client_info=client_info,
             ),
             self.update_key: gapic_v1.method.wrap_method(
-                self.update_key, default_timeout=600.0, client_info=client_info,
+                self.update_key,
+                default_timeout=600.0,
+                client_info=client_info,
             ),
             self.delete_key: gapic_v1.method.wrap_method(
-                self.delete_key, default_timeout=600.0, client_info=client_info,
+                self.delete_key,
+                default_timeout=600.0,
+                client_info=client_info,
             ),
             self.migrate_key: gapic_v1.method.wrap_method(
-                self.migrate_key, default_timeout=None, client_info=client_info,
+                self.migrate_key,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_metrics: gapic_v1.method.wrap_method(
-                self.get_metrics, default_timeout=None, client_info=client_info,
+                self.get_metrics,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_related_account_groups: gapic_v1.method.wrap_method(
                 self.list_related_account_groups,
@@ -170,9 +186,9 @@ class RecaptchaEnterpriseServiceTransport(abc.ABC):
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 
