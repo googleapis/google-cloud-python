@@ -96,15 +96,34 @@ class ComputeThreatListDiffRequest(proto.Message):
                 client.
         """
 
-        max_diff_entries = proto.Field(proto.INT32, number=1,)
-        max_database_entries = proto.Field(proto.INT32, number=2,)
+        max_diff_entries = proto.Field(
+            proto.INT32,
+            number=1,
+        )
+        max_database_entries = proto.Field(
+            proto.INT32,
+            number=2,
+        )
         supported_compressions = proto.RepeatedField(
-            proto.ENUM, number=3, enum="CompressionType",
+            proto.ENUM,
+            number=3,
+            enum="CompressionType",
         )
 
-    threat_type = proto.Field(proto.ENUM, number=1, enum="ThreatType",)
-    version_token = proto.Field(proto.BYTES, number=2,)
-    constraints = proto.Field(proto.MESSAGE, number=3, message=Constraints,)
+    threat_type = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum="ThreatType",
+    )
+    version_token = proto.Field(
+        proto.BYTES,
+        number=2,
+    )
+    constraints = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=Constraints,
+    )
 
 
 class ComputeThreatListDiffResponse(proto.Message):
@@ -158,15 +177,39 @@ class ComputeThreatListDiffResponse(proto.Message):
                 database.
         """
 
-        sha256 = proto.Field(proto.BYTES, number=1,)
+        sha256 = proto.Field(
+            proto.BYTES,
+            number=1,
+        )
 
-    response_type = proto.Field(proto.ENUM, number=4, enum=ResponseType,)
-    additions = proto.Field(proto.MESSAGE, number=5, message="ThreatEntryAdditions",)
-    removals = proto.Field(proto.MESSAGE, number=6, message="ThreatEntryRemovals",)
-    new_version_token = proto.Field(proto.BYTES, number=7,)
-    checksum = proto.Field(proto.MESSAGE, number=8, message=Checksum,)
+    response_type = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=ResponseType,
+    )
+    additions = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message="ThreatEntryAdditions",
+    )
+    removals = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message="ThreatEntryRemovals",
+    )
+    new_version_token = proto.Field(
+        proto.BYTES,
+        number=7,
+    )
+    checksum = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=Checksum,
+    )
     recommended_next_diff = proto.Field(
-        proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
     )
 
 
@@ -181,8 +224,15 @@ class SearchUrisRequest(proto.Message):
             Multiple ThreatLists may be specified.
     """
 
-    uri = proto.Field(proto.STRING, number=1,)
-    threat_types = proto.RepeatedField(proto.ENUM, number=2, enum="ThreatType",)
+    uri = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    threat_types = proto.RepeatedField(
+        proto.ENUM,
+        number=2,
+        enum="ThreatType",
+    )
 
 
 class SearchUrisResponse(proto.Message):
@@ -206,12 +256,22 @@ class SearchUrisResponse(proto.Message):
                 timestamp to avoid false positives.
         """
 
-        threat_types = proto.RepeatedField(proto.ENUM, number=1, enum="ThreatType",)
+        threat_types = proto.RepeatedField(
+            proto.ENUM,
+            number=1,
+            enum="ThreatType",
+        )
         expire_time = proto.Field(
-            proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,
+            proto.MESSAGE,
+            number=2,
+            message=timestamp_pb2.Timestamp,
         )
 
-    threat = proto.Field(proto.MESSAGE, number=1, message=ThreatUri,)
+    threat = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=ThreatUri,
+    )
 
 
 class SearchHashesRequest(proto.Message):
@@ -228,8 +288,15 @@ class SearchHashesRequest(proto.Message):
             Multiple ThreatLists may be specified.
     """
 
-    hash_prefix = proto.Field(proto.BYTES, number=1,)
-    threat_types = proto.RepeatedField(proto.ENUM, number=2, enum="ThreatType",)
+    hash_prefix = proto.Field(
+        proto.BYTES,
+        number=1,
+    )
+    threat_types = proto.RepeatedField(
+        proto.ENUM,
+        number=2,
+        enum="ThreatType",
+    )
 
 
 class SearchHashesResponse(proto.Message):
@@ -262,15 +329,30 @@ class SearchHashesResponse(proto.Message):
                 timestamp to avoid false positives.
         """
 
-        threat_types = proto.RepeatedField(proto.ENUM, number=1, enum="ThreatType",)
-        hash_ = proto.Field(proto.BYTES, number=2,)
+        threat_types = proto.RepeatedField(
+            proto.ENUM,
+            number=1,
+            enum="ThreatType",
+        )
+        hash_ = proto.Field(
+            proto.BYTES,
+            number=2,
+        )
         expire_time = proto.Field(
-            proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,
+            proto.MESSAGE,
+            number=3,
+            message=timestamp_pb2.Timestamp,
         )
 
-    threats = proto.RepeatedField(proto.MESSAGE, number=1, message=ThreatHash,)
+    threats = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=ThreatHash,
+    )
     negative_expire_time = proto.Field(
-        proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
     )
 
 
@@ -291,8 +373,16 @@ class ThreatEntryAdditions(proto.Message):
             stored as encoded_data.
     """
 
-    raw_hashes = proto.RepeatedField(proto.MESSAGE, number=1, message="RawHashes",)
-    rice_hashes = proto.Field(proto.MESSAGE, number=2, message="RiceDeltaEncoding",)
+    raw_hashes = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="RawHashes",
+    )
+    rice_hashes = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="RiceDeltaEncoding",
+    )
 
 
 class ThreatEntryRemovals(proto.Message):
@@ -309,8 +399,16 @@ class ThreatEntryRemovals(proto.Message):
             encoded_data.
     """
 
-    raw_indices = proto.Field(proto.MESSAGE, number=1, message="RawIndices",)
-    rice_indices = proto.Field(proto.MESSAGE, number=2, message="RiceDeltaEncoding",)
+    raw_indices = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="RawIndices",
+    )
+    rice_indices = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="RiceDeltaEncoding",
+    )
 
 
 class RawIndices(proto.Message):
@@ -322,7 +420,10 @@ class RawIndices(proto.Message):
             lexicographically-sorted local list.
     """
 
-    indices = proto.RepeatedField(proto.INT32, number=1,)
+    indices = proto.RepeatedField(
+        proto.INT32,
+        number=1,
+    )
 
 
 class RawHashes(proto.Message):
@@ -349,8 +450,14 @@ class RawHashes(proto.Message):
             are base64-encoded.
     """
 
-    prefix_size = proto.Field(proto.INT32, number=1,)
-    raw_hashes = proto.Field(proto.BYTES, number=2,)
+    prefix_size = proto.Field(
+        proto.INT32,
+        number=1,
+    )
+    raw_hashes = proto.Field(
+        proto.BYTES,
+        number=2,
+    )
 
 
 class RiceDeltaEncoding(proto.Message):
@@ -376,10 +483,22 @@ class RiceDeltaEncoding(proto.Message):
             Golomb-Rice coder.
     """
 
-    first_value = proto.Field(proto.INT64, number=1,)
-    rice_parameter = proto.Field(proto.INT32, number=2,)
-    entry_count = proto.Field(proto.INT32, number=3,)
-    encoded_data = proto.Field(proto.BYTES, number=4,)
+    first_value = proto.Field(
+        proto.INT64,
+        number=1,
+    )
+    rice_parameter = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    entry_count = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    encoded_data = proto.Field(
+        proto.BYTES,
+        number=4,
+    )
 
 
 class Submission(proto.Message):
@@ -391,7 +510,10 @@ class Submission(proto.Message):
             phishing content to be analyzed.
     """
 
-    uri = proto.Field(proto.STRING, number=1,)
+    uri = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CreateSubmissionRequest(proto.Message):
@@ -407,8 +529,15 @@ class CreateSubmissionRequest(proto.Message):
             content of the phishing report.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    submission = proto.Field(proto.MESSAGE, number=2, message="Submission",)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    submission = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="Submission",
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

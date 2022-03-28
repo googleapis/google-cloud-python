@@ -29,7 +29,9 @@ from google.cloud.webrisk_v1.types import webrisk
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-webrisk",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-webrisk",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
@@ -164,16 +166,18 @@ class WebRiskServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.create_submission: gapic_v1.method.wrap_method(
-                self.create_submission, default_timeout=60.0, client_info=client_info,
+                self.create_submission,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
         }
 
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 
