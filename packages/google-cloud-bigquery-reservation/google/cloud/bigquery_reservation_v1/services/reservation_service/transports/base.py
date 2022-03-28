@@ -126,7 +126,9 @@ class ReservationServiceTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.create_reservation: gapic_v1.method.wrap_method(
-                self.create_reservation, default_timeout=300.0, client_info=client_info,
+                self.create_reservation,
+                default_timeout=300.0,
+                client_info=client_info,
             ),
             self.list_reservations: gapic_v1.method.wrap_method(
                 self.list_reservations,
@@ -174,7 +176,9 @@ class ReservationServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.update_reservation: gapic_v1.method.wrap_method(
-                self.update_reservation, default_timeout=300.0, client_info=client_info,
+                self.update_reservation,
+                default_timeout=300.0,
+                client_info=client_info,
             ),
             self.create_capacity_commitment: gapic_v1.method.wrap_method(
                 self.create_capacity_commitment,
@@ -242,7 +246,9 @@ class ReservationServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.create_assignment: gapic_v1.method.wrap_method(
-                self.create_assignment, default_timeout=300.0, client_info=client_info,
+                self.create_assignment,
+                default_timeout=300.0,
+                client_info=client_info,
             ),
             self.list_assignments: gapic_v1.method.wrap_method(
                 self.list_assignments,
@@ -295,7 +301,9 @@ class ReservationServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.move_assignment: gapic_v1.method.wrap_method(
-                self.move_assignment, default_timeout=300.0, client_info=client_info,
+                self.move_assignment,
+                default_timeout=300.0,
+                client_info=client_info,
             ),
             self.get_bi_reservation: gapic_v1.method.wrap_method(
                 self.get_bi_reservation,
@@ -322,9 +330,9 @@ class ReservationServiceTransport(abc.ABC):
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

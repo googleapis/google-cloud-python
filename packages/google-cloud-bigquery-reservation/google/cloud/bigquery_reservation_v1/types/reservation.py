@@ -92,13 +92,28 @@ class Reservation(proto.Message):
             reservation.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    slot_capacity = proto.Field(proto.INT64, number=2,)
-    ignore_idle_slots = proto.Field(proto.BOOL, number=4,)
-    creation_time = proto.Field(
-        proto.MESSAGE, number=8, message=timestamp_pb2.Timestamp,
+    name = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    update_time = proto.Field(proto.MESSAGE, number=9, message=timestamp_pb2.Timestamp,)
+    slot_capacity = proto.Field(
+        proto.INT64,
+        number=2,
+    )
+    ignore_idle_slots = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
+    creation_time = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 class CapacityCommitment(proto.Message):
@@ -162,18 +177,44 @@ class CapacityCommitment(proto.Message):
         ACTIVE = 2
         FAILED = 3
 
-    name = proto.Field(proto.STRING, number=1,)
-    slot_count = proto.Field(proto.INT64, number=2,)
-    plan = proto.Field(proto.ENUM, number=3, enum=CommitmentPlan,)
-    state = proto.Field(proto.ENUM, number=4, enum=State,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    slot_count = proto.Field(
+        proto.INT64,
+        number=2,
+    )
+    plan = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=CommitmentPlan,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=State,
+    )
     commitment_start_time = proto.Field(
-        proto.MESSAGE, number=9, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=9,
+        message=timestamp_pb2.Timestamp,
     )
     commitment_end_time = proto.Field(
-        proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
     )
-    failure_status = proto.Field(proto.MESSAGE, number=7, message=status_pb2.Status,)
-    renewal_plan = proto.Field(proto.ENUM, number=8, enum=CommitmentPlan,)
+    failure_status = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=status_pb2.Status,
+    )
+    renewal_plan = proto.Field(
+        proto.ENUM,
+        number=8,
+        enum=CommitmentPlan,
+    )
 
 
 class CreateReservationRequest(proto.Message):
@@ -192,9 +233,19 @@ class CreateReservationRequest(proto.Message):
             Definition of the new reservation to create.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    reservation_id = proto.Field(proto.STRING, number=2,)
-    reservation = proto.Field(proto.MESSAGE, number=3, message="Reservation",)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    reservation_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    reservation = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="Reservation",
+    )
 
 
 class ListReservationsRequest(proto.Message):
@@ -213,9 +264,18 @@ class ListReservationsRequest(proto.Message):
             request, if any.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListReservationsResponse(proto.Message):
@@ -235,8 +295,15 @@ class ListReservationsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    reservations = proto.RepeatedField(proto.MESSAGE, number=1, message="Reservation",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    reservations = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Reservation",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetReservationRequest(proto.Message):
@@ -250,7 +317,10 @@ class GetReservationRequest(proto.Message):
             ``projects/myproject/locations/US/reservations/team1-prod``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class DeleteReservationRequest(proto.Message):
@@ -264,7 +334,10 @@ class DeleteReservationRequest(proto.Message):
             ``projects/myproject/locations/US/reservations/team1-prod``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class UpdateReservationRequest(proto.Message):
@@ -279,9 +352,15 @@ class UpdateReservationRequest(proto.Message):
             be updated.
     """
 
-    reservation = proto.Field(proto.MESSAGE, number=1, message="Reservation",)
+    reservation = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="Reservation",
+    )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -308,12 +387,23 @@ class CreateCapacityCommitmentRequest(proto.Message):
             commitment is split or merged.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    capacity_commitment = proto.Field(
-        proto.MESSAGE, number=2, message="CapacityCommitment",
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    enforce_single_admin_project_per_org = proto.Field(proto.BOOL, number=4,)
-    capacity_commitment_id = proto.Field(proto.STRING, number=5,)
+    capacity_commitment = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="CapacityCommitment",
+    )
+    enforce_single_admin_project_per_org = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
+    capacity_commitment_id = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class ListCapacityCommitmentsRequest(proto.Message):
@@ -331,9 +421,18 @@ class ListCapacityCommitmentsRequest(proto.Message):
             request, if any.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListCapacityCommitmentsResponse(proto.Message):
@@ -355,9 +454,14 @@ class ListCapacityCommitmentsResponse(proto.Message):
         return self
 
     capacity_commitments = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="CapacityCommitment",
+        proto.MESSAGE,
+        number=1,
+        message="CapacityCommitment",
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetCapacityCommitmentRequest(proto.Message):
@@ -371,7 +475,10 @@ class GetCapacityCommitmentRequest(proto.Message):
             ``projects/myproject/locations/US/capacityCommitments/123``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class DeleteCapacityCommitmentRequest(proto.Message):
@@ -390,8 +497,14 @@ class DeleteCapacityCommitmentRequest(proto.Message):
             longer have access to slots.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    force = proto.Field(proto.BOOL, number=3,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    force = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
 
 
 class UpdateCapacityCommitmentRequest(proto.Message):
@@ -407,10 +520,14 @@ class UpdateCapacityCommitmentRequest(proto.Message):
     """
 
     capacity_commitment = proto.Field(
-        proto.MESSAGE, number=1, message="CapacityCommitment",
+        proto.MESSAGE,
+        number=1,
+        message="CapacityCommitment",
     )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -427,8 +544,14 @@ class SplitCapacityCommitmentRequest(proto.Message):
             after the split.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    slot_count = proto.Field(proto.INT64, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    slot_count = proto.Field(
+        proto.INT64,
+        number=2,
+    )
 
 
 class SplitCapacityCommitmentResponse(proto.Message):
@@ -443,8 +566,16 @@ class SplitCapacityCommitmentResponse(proto.Message):
             split.
     """
 
-    first = proto.Field(proto.MESSAGE, number=1, message="CapacityCommitment",)
-    second = proto.Field(proto.MESSAGE, number=2, message="CapacityCommitment",)
+    first = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="CapacityCommitment",
+    )
+    second = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="CapacityCommitment",
+    )
 
 
 class MergeCapacityCommitmentsRequest(proto.Message):
@@ -465,8 +596,14 @@ class MergeCapacityCommitmentsRequest(proto.Message):
             projects/myproject/locations/US/capacityCommitments/abc
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    capacity_commitment_ids = proto.RepeatedField(proto.STRING, number=2,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    capacity_commitment_ids = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
 
 
 class Assignment(proto.Message):
@@ -505,10 +642,24 @@ class Assignment(proto.Message):
         PENDING = 1
         ACTIVE = 2
 
-    name = proto.Field(proto.STRING, number=1,)
-    assignee = proto.Field(proto.STRING, number=4,)
-    job_type = proto.Field(proto.ENUM, number=3, enum=JobType,)
-    state = proto.Field(proto.ENUM, number=6, enum=State,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    assignee = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    job_type = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=JobType,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum=State,
+    )
 
 
 class CreateAssignmentRequest(proto.Message):
@@ -531,9 +682,19 @@ class CreateAssignmentRequest(proto.Message):
             64 characters.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    assignment = proto.Field(proto.MESSAGE, number=2, message="Assignment",)
-    assignment_id = proto.Field(proto.STRING, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    assignment = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="Assignment",
+    )
+    assignment_id = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class ListAssignmentsRequest(proto.Message):
@@ -557,9 +718,18 @@ class ListAssignmentsRequest(proto.Message):
             request, if any.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListAssignmentsResponse(proto.Message):
@@ -579,8 +749,15 @@ class ListAssignmentsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    assignments = proto.RepeatedField(proto.MESSAGE, number=1, message="Assignment",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    assignments = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Assignment",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class DeleteAssignmentRequest(proto.Message):
@@ -595,7 +772,10 @@ class DeleteAssignmentRequest(proto.Message):
             ``projects/myproject/locations/US/reservations/team1-prod/assignments/123``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class SearchAssignmentsRequest(proto.Message):
@@ -625,10 +805,22 @@ class SearchAssignmentsRequest(proto.Message):
             request, if any.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    query = proto.Field(proto.STRING, number=2,)
-    page_size = proto.Field(proto.INT32, number=3,)
-    page_token = proto.Field(proto.STRING, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    query = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class SearchAllAssignmentsRequest(proto.Message):
@@ -658,10 +850,22 @@ class SearchAllAssignmentsRequest(proto.Message):
             request, if any.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    query = proto.Field(proto.STRING, number=2,)
-    page_size = proto.Field(proto.INT32, number=3,)
-    page_token = proto.Field(proto.STRING, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    query = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class SearchAssignmentsResponse(proto.Message):
@@ -681,8 +885,15 @@ class SearchAssignmentsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    assignments = proto.RepeatedField(proto.MESSAGE, number=1, message="Assignment",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    assignments = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Assignment",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class SearchAllAssignmentsResponse(proto.Message):
@@ -702,8 +913,15 @@ class SearchAllAssignmentsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    assignments = proto.RepeatedField(proto.MESSAGE, number=1, message="Assignment",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    assignments = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Assignment",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class MoveAssignmentRequest(proto.Message):
@@ -726,8 +944,14 @@ class MoveAssignmentRequest(proto.Message):
             ``projects/myotherproject/locations/US/reservations/team2-prod``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    destination_id = proto.Field(proto.STRING, number=3,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    destination_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class BiReservation(proto.Message):
@@ -745,9 +969,19 @@ class BiReservation(proto.Message):
             Size of a reservation, in bytes.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    update_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
-    size = proto.Field(proto.INT64, number=4,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    size = proto.Field(
+        proto.INT64,
+        number=4,
+    )
 
 
 class GetBiReservationRequest(proto.Message):
@@ -759,7 +993,10 @@ class GetBiReservationRequest(proto.Message):
             ``projects/{project_id}/locations/{location_id}/biReservation``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class UpdateBiReservationRequest(proto.Message):
@@ -773,9 +1010,15 @@ class UpdateBiReservationRequest(proto.Message):
             request.
     """
 
-    bi_reservation = proto.Field(proto.MESSAGE, number=1, message="BiReservation",)
+    bi_reservation = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="BiReservation",
+    )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 
