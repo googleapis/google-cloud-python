@@ -20,7 +20,11 @@ from google.protobuf import timestamp_pb2  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.notebooks.v1",
-    manifest={"Environment", "VmImage", "ContainerImage",},
+    manifest={
+        "Environment",
+        "VmImage",
+        "ContainerImage",
+    },
 )
 
 
@@ -63,17 +67,39 @@ class Environment(proto.Message):
             environment was created.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    display_name = proto.Field(proto.STRING, number=2,)
-    description = proto.Field(proto.STRING, number=3,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=3,
+    )
     vm_image = proto.Field(
-        proto.MESSAGE, number=6, oneof="image_type", message="VmImage",
+        proto.MESSAGE,
+        number=6,
+        oneof="image_type",
+        message="VmImage",
     )
     container_image = proto.Field(
-        proto.MESSAGE, number=7, oneof="image_type", message="ContainerImage",
+        proto.MESSAGE,
+        number=7,
+        oneof="image_type",
+        message="ContainerImage",
     )
-    post_startup_script = proto.Field(proto.STRING, number=8,)
-    create_time = proto.Field(proto.MESSAGE, number=9, message=timestamp_pb2.Timestamp,)
+    post_startup_script = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 class VmImage(proto.Message):
@@ -103,9 +129,20 @@ class VmImage(proto.Message):
             This field is a member of `oneof`_ ``image``.
     """
 
-    project = proto.Field(proto.STRING, number=1,)
-    image_name = proto.Field(proto.STRING, number=2, oneof="image",)
-    image_family = proto.Field(proto.STRING, number=3, oneof="image",)
+    project = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    image_name = proto.Field(
+        proto.STRING,
+        number=2,
+        oneof="image",
+    )
+    image_family = proto.Field(
+        proto.STRING,
+        number=3,
+        oneof="image",
+    )
 
 
 class ContainerImage(proto.Message):
@@ -121,8 +158,14 @@ class ContainerImage(proto.Message):
             specified, this defaults to the latest tag.
     """
 
-    repository = proto.Field(proto.STRING, number=1,)
-    tag = proto.Field(proto.STRING, number=2,)
+    repository = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    tag = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

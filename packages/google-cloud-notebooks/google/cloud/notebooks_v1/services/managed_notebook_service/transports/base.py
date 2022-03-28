@@ -32,7 +32,9 @@ from google.longrunning import operations_pb2  # type: ignore
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-notebooks",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-notebooks",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
@@ -122,28 +124,44 @@ class ManagedNotebookServiceTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.list_runtimes: gapic_v1.method.wrap_method(
-                self.list_runtimes, default_timeout=60.0, client_info=client_info,
+                self.list_runtimes,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.get_runtime: gapic_v1.method.wrap_method(
-                self.get_runtime, default_timeout=60.0, client_info=client_info,
+                self.get_runtime,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.create_runtime: gapic_v1.method.wrap_method(
-                self.create_runtime, default_timeout=60.0, client_info=client_info,
+                self.create_runtime,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.delete_runtime: gapic_v1.method.wrap_method(
-                self.delete_runtime, default_timeout=60.0, client_info=client_info,
+                self.delete_runtime,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.start_runtime: gapic_v1.method.wrap_method(
-                self.start_runtime, default_timeout=60.0, client_info=client_info,
+                self.start_runtime,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.stop_runtime: gapic_v1.method.wrap_method(
-                self.stop_runtime, default_timeout=60.0, client_info=client_info,
+                self.stop_runtime,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.switch_runtime: gapic_v1.method.wrap_method(
-                self.switch_runtime, default_timeout=60.0, client_info=client_info,
+                self.switch_runtime,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.reset_runtime: gapic_v1.method.wrap_method(
-                self.reset_runtime, default_timeout=None, client_info=client_info,
+                self.reset_runtime,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.report_runtime_event: gapic_v1.method.wrap_method(
                 self.report_runtime_event,
@@ -155,9 +173,9 @@ class ManagedNotebookServiceTransport(abc.ABC):
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

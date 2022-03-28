@@ -19,7 +19,11 @@ from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.notebooks.v1", manifest={"ExecutionTemplate", "Execution",},
+    package="google.cloud.notebooks.v1",
+    manifest={
+        "ExecutionTemplate",
+        "Execution",
+    },
 )
 
 
@@ -172,9 +176,14 @@ class ExecutionTemplate(proto.Message):
         """
 
         type_ = proto.Field(
-            proto.ENUM, number=1, enum="ExecutionTemplate.SchedulerAcceleratorType",
+            proto.ENUM,
+            number=1,
+            enum="ExecutionTemplate.SchedulerAcceleratorType",
         )
-        core_count = proto.Field(proto.INT64, number=2,)
+        core_count = proto.Field(
+            proto.INT64,
+            number=2,
+        )
 
     class DataprocParameters(proto.Message):
         r"""Parameters used in Dataproc JobType executions.
@@ -185,23 +194,64 @@ class ExecutionTemplate(proto.Message):
                 ``projects/{PROJECT_ID}/regions/{REGION}/clusters/{CLUSTER_NAME}``
         """
 
-        cluster = proto.Field(proto.STRING, number=1,)
+        cluster = proto.Field(
+            proto.STRING,
+            number=1,
+        )
 
-    scale_tier = proto.Field(proto.ENUM, number=1, enum=ScaleTier,)
-    master_type = proto.Field(proto.STRING, number=2,)
-    accelerator_config = proto.Field(
-        proto.MESSAGE, number=3, message=SchedulerAcceleratorConfig,
+    scale_tier = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=ScaleTier,
     )
-    labels = proto.MapField(proto.STRING, proto.STRING, number=4,)
-    input_notebook_file = proto.Field(proto.STRING, number=5,)
-    container_image_uri = proto.Field(proto.STRING, number=6,)
-    output_notebook_folder = proto.Field(proto.STRING, number=7,)
-    params_yaml_file = proto.Field(proto.STRING, number=8,)
-    parameters = proto.Field(proto.STRING, number=9,)
-    service_account = proto.Field(proto.STRING, number=10,)
-    job_type = proto.Field(proto.ENUM, number=11, enum=JobType,)
+    master_type = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    accelerator_config = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=SchedulerAcceleratorConfig,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=4,
+    )
+    input_notebook_file = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    container_image_uri = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    output_notebook_folder = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    params_yaml_file = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    parameters = proto.Field(
+        proto.STRING,
+        number=9,
+    )
+    service_account = proto.Field(
+        proto.STRING,
+        number=10,
+    )
+    job_type = proto.Field(
+        proto.ENUM,
+        number=11,
+        enum=JobType,
+    )
     dataproc_parameters = proto.Field(
-        proto.MESSAGE, number=12, oneof="job_parameters", message=DataprocParameters,
+        proto.MESSAGE,
+        number=12,
+        oneof="job_parameters",
+        message=DataprocParameters,
     )
 
 
@@ -251,16 +301,45 @@ class Execution(proto.Message):
         INITIALIZING = 10
 
     execution_template = proto.Field(
-        proto.MESSAGE, number=1, message="ExecutionTemplate",
+        proto.MESSAGE,
+        number=1,
+        message="ExecutionTemplate",
     )
-    name = proto.Field(proto.STRING, number=2,)
-    display_name = proto.Field(proto.STRING, number=3,)
-    description = proto.Field(proto.STRING, number=4,)
-    create_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,)
-    state = proto.Field(proto.ENUM, number=7, enum=State,)
-    output_notebook_file = proto.Field(proto.STRING, number=8,)
-    job_uri = proto.Field(proto.STRING, number=9,)
+    name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=7,
+        enum=State,
+    )
+    output_notebook_file = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    job_uri = proto.Field(
+        proto.STRING,
+        number=9,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

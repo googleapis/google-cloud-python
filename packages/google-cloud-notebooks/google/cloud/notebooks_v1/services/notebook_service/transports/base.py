@@ -35,7 +35,9 @@ from google.longrunning import operations_pb2  # type: ignore
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-notebooks",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-notebooks",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
@@ -125,16 +127,24 @@ class NotebookServiceTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.list_instances: gapic_v1.method.wrap_method(
-                self.list_instances, default_timeout=60.0, client_info=client_info,
+                self.list_instances,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.get_instance: gapic_v1.method.wrap_method(
-                self.get_instance, default_timeout=60.0, client_info=client_info,
+                self.get_instance,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.create_instance: gapic_v1.method.wrap_method(
-                self.create_instance, default_timeout=60.0, client_info=client_info,
+                self.create_instance,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.register_instance: gapic_v1.method.wrap_method(
-                self.register_instance, default_timeout=60.0, client_info=client_info,
+                self.register_instance,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.set_instance_accelerator: gapic_v1.method.wrap_method(
                 self.set_instance_accelerator,
@@ -157,19 +167,29 @@ class NotebookServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.set_instance_labels: gapic_v1.method.wrap_method(
-                self.set_instance_labels, default_timeout=60.0, client_info=client_info,
+                self.set_instance_labels,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.delete_instance: gapic_v1.method.wrap_method(
-                self.delete_instance, default_timeout=60.0, client_info=client_info,
+                self.delete_instance,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.start_instance: gapic_v1.method.wrap_method(
-                self.start_instance, default_timeout=60.0, client_info=client_info,
+                self.start_instance,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.stop_instance: gapic_v1.method.wrap_method(
-                self.stop_instance, default_timeout=60.0, client_info=client_info,
+                self.stop_instance,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.reset_instance: gapic_v1.method.wrap_method(
-                self.reset_instance, default_timeout=60.0, client_info=client_info,
+                self.reset_instance,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.report_instance_info: gapic_v1.method.wrap_method(
                 self.report_instance_info,
@@ -182,13 +202,19 @@ class NotebookServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.get_instance_health: gapic_v1.method.wrap_method(
-                self.get_instance_health, default_timeout=60.0, client_info=client_info,
+                self.get_instance_health,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.upgrade_instance: gapic_v1.method.wrap_method(
-                self.upgrade_instance, default_timeout=60.0, client_info=client_info,
+                self.upgrade_instance,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.rollback_instance: gapic_v1.method.wrap_method(
-                self.rollback_instance, default_timeout=60.0, client_info=client_info,
+                self.rollback_instance,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.upgrade_instance_internal: gapic_v1.method.wrap_method(
                 self.upgrade_instance_internal,
@@ -196,52 +222,78 @@ class NotebookServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.list_environments: gapic_v1.method.wrap_method(
-                self.list_environments, default_timeout=60.0, client_info=client_info,
+                self.list_environments,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.get_environment: gapic_v1.method.wrap_method(
-                self.get_environment, default_timeout=60.0, client_info=client_info,
+                self.get_environment,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.create_environment: gapic_v1.method.wrap_method(
-                self.create_environment, default_timeout=60.0, client_info=client_info,
+                self.create_environment,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.delete_environment: gapic_v1.method.wrap_method(
-                self.delete_environment, default_timeout=60.0, client_info=client_info,
+                self.delete_environment,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.list_schedules: gapic_v1.method.wrap_method(
-                self.list_schedules, default_timeout=60.0, client_info=client_info,
+                self.list_schedules,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.get_schedule: gapic_v1.method.wrap_method(
-                self.get_schedule, default_timeout=60.0, client_info=client_info,
+                self.get_schedule,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.delete_schedule: gapic_v1.method.wrap_method(
-                self.delete_schedule, default_timeout=60.0, client_info=client_info,
+                self.delete_schedule,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.create_schedule: gapic_v1.method.wrap_method(
-                self.create_schedule, default_timeout=60.0, client_info=client_info,
+                self.create_schedule,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.trigger_schedule: gapic_v1.method.wrap_method(
-                self.trigger_schedule, default_timeout=None, client_info=client_info,
+                self.trigger_schedule,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_executions: gapic_v1.method.wrap_method(
-                self.list_executions, default_timeout=60.0, client_info=client_info,
+                self.list_executions,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.get_execution: gapic_v1.method.wrap_method(
-                self.get_execution, default_timeout=60.0, client_info=client_info,
+                self.get_execution,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.delete_execution: gapic_v1.method.wrap_method(
-                self.delete_execution, default_timeout=60.0, client_info=client_info,
+                self.delete_execution,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.create_execution: gapic_v1.method.wrap_method(
-                self.create_execution, default_timeout=60.0, client_info=client_info,
+                self.create_execution,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
         }
 
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

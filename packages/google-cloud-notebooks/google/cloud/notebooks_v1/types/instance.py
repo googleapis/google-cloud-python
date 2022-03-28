@@ -20,7 +20,11 @@ from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.notebooks.v1", manifest={"ReservationAffinity", "Instance",},
+    package="google.cloud.notebooks.v1",
+    manifest={
+        "ReservationAffinity",
+        "Instance",
+    },
 )
 
 
@@ -47,9 +51,19 @@ class ReservationAffinity(proto.Message):
         ANY_RESERVATION = 2
         SPECIFIC_RESERVATION = 3
 
-    consume_reservation_type = proto.Field(proto.ENUM, number=1, enum=Type,)
-    key = proto.Field(proto.STRING, number=2,)
-    values = proto.RepeatedField(proto.STRING, number=3,)
+    consume_reservation_type = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Type,
+    )
+    key = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    values = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 class Instance(proto.Message):
@@ -272,8 +286,15 @@ class Instance(proto.Message):
                 Count of cores of this accelerator.
         """
 
-        type_ = proto.Field(proto.ENUM, number=1, enum="Instance.AcceleratorType",)
-        core_count = proto.Field(proto.INT64, number=2,)
+        type_ = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="Instance.AcceleratorType",
+        )
+        core_count = proto.Field(
+            proto.INT64,
+            number=2,
+        )
 
     class Disk(proto.Message):
         r"""An instance-attached disk resource.
@@ -366,22 +387,60 @@ class Instance(proto.Message):
                     -  WINDOWS
             """
 
-            type_ = proto.Field(proto.STRING, number=1,)
+            type_ = proto.Field(
+                proto.STRING,
+                number=1,
+            )
 
-        auto_delete = proto.Field(proto.BOOL, number=1,)
-        boot = proto.Field(proto.BOOL, number=2,)
-        device_name = proto.Field(proto.STRING, number=3,)
-        disk_size_gb = proto.Field(proto.INT64, number=4,)
-        guest_os_features = proto.RepeatedField(
-            proto.MESSAGE, number=5, message="Instance.Disk.GuestOsFeature",
+        auto_delete = proto.Field(
+            proto.BOOL,
+            number=1,
         )
-        index = proto.Field(proto.INT64, number=6,)
-        interface = proto.Field(proto.STRING, number=7,)
-        kind = proto.Field(proto.STRING, number=8,)
-        licenses = proto.RepeatedField(proto.STRING, number=9,)
-        mode = proto.Field(proto.STRING, number=10,)
-        source = proto.Field(proto.STRING, number=11,)
-        type_ = proto.Field(proto.STRING, number=12,)
+        boot = proto.Field(
+            proto.BOOL,
+            number=2,
+        )
+        device_name = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+        disk_size_gb = proto.Field(
+            proto.INT64,
+            number=4,
+        )
+        guest_os_features = proto.RepeatedField(
+            proto.MESSAGE,
+            number=5,
+            message="Instance.Disk.GuestOsFeature",
+        )
+        index = proto.Field(
+            proto.INT64,
+            number=6,
+        )
+        interface = proto.Field(
+            proto.STRING,
+            number=7,
+        )
+        kind = proto.Field(
+            proto.STRING,
+            number=8,
+        )
+        licenses = proto.RepeatedField(
+            proto.STRING,
+            number=9,
+        )
+        mode = proto.Field(
+            proto.STRING,
+            number=10,
+        )
+        source = proto.Field(
+            proto.STRING,
+            number=11,
+        )
+        type_ = proto.Field(
+            proto.STRING,
+            number=12,
+        )
 
     class ShieldedInstanceConfig(proto.Message):
         r"""A set of Shielded Instance options. Check [Images using supported
@@ -410,9 +469,18 @@ class Instance(proto.Message):
                 is created. Enabled by default.
         """
 
-        enable_secure_boot = proto.Field(proto.BOOL, number=1,)
-        enable_vtpm = proto.Field(proto.BOOL, number=2,)
-        enable_integrity_monitoring = proto.Field(proto.BOOL, number=3,)
+        enable_secure_boot = proto.Field(
+            proto.BOOL,
+            number=1,
+        )
+        enable_vtpm = proto.Field(
+            proto.BOOL,
+            number=2,
+        )
+        enable_integrity_monitoring = proto.Field(
+            proto.BOOL,
+            number=3,
+        )
 
     class UpgradeHistoryEntry(proto.Message):
         r"""The entry of VM image upgrade history.
@@ -459,26 +527,59 @@ class Instance(proto.Message):
             UPGRADE = 1
             ROLLBACK = 2
 
-        snapshot = proto.Field(proto.STRING, number=1,)
-        vm_image = proto.Field(proto.STRING, number=2,)
-        container_image = proto.Field(proto.STRING, number=3,)
-        framework = proto.Field(proto.STRING, number=4,)
-        version = proto.Field(proto.STRING, number=5,)
+        snapshot = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        vm_image = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        container_image = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+        framework = proto.Field(
+            proto.STRING,
+            number=4,
+        )
+        version = proto.Field(
+            proto.STRING,
+            number=5,
+        )
         state = proto.Field(
-            proto.ENUM, number=6, enum="Instance.UpgradeHistoryEntry.State",
+            proto.ENUM,
+            number=6,
+            enum="Instance.UpgradeHistoryEntry.State",
         )
         create_time = proto.Field(
-            proto.MESSAGE, number=7, message=timestamp_pb2.Timestamp,
+            proto.MESSAGE,
+            number=7,
+            message=timestamp_pb2.Timestamp,
         )
-        target_image = proto.Field(proto.STRING, number=8,)
+        target_image = proto.Field(
+            proto.STRING,
+            number=8,
+        )
         action = proto.Field(
-            proto.ENUM, number=9, enum="Instance.UpgradeHistoryEntry.Action",
+            proto.ENUM,
+            number=9,
+            enum="Instance.UpgradeHistoryEntry.Action",
         )
-        target_version = proto.Field(proto.STRING, number=10,)
+        target_version = proto.Field(
+            proto.STRING,
+            number=10,
+        )
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     vm_image = proto.Field(
-        proto.MESSAGE, number=2, oneof="environment", message=environment.VmImage,
+        proto.MESSAGE,
+        number=2,
+        oneof="environment",
+        message=environment.VmImage,
     )
     container_image = proto.Field(
         proto.MESSAGE,
@@ -486,48 +587,143 @@ class Instance(proto.Message):
         oneof="environment",
         message=environment.ContainerImage,
     )
-    post_startup_script = proto.Field(proto.STRING, number=4,)
-    proxy_uri = proto.Field(proto.STRING, number=5,)
-    instance_owners = proto.RepeatedField(proto.STRING, number=6,)
-    service_account = proto.Field(proto.STRING, number=7,)
-    service_account_scopes = proto.RepeatedField(proto.STRING, number=31,)
-    machine_type = proto.Field(proto.STRING, number=8,)
+    post_startup_script = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    proxy_uri = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    instance_owners = proto.RepeatedField(
+        proto.STRING,
+        number=6,
+    )
+    service_account = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    service_account_scopes = proto.RepeatedField(
+        proto.STRING,
+        number=31,
+    )
+    machine_type = proto.Field(
+        proto.STRING,
+        number=8,
+    )
     accelerator_config = proto.Field(
-        proto.MESSAGE, number=9, message=AcceleratorConfig,
+        proto.MESSAGE,
+        number=9,
+        message=AcceleratorConfig,
     )
-    state = proto.Field(proto.ENUM, number=10, enum=State,)
-    install_gpu_driver = proto.Field(proto.BOOL, number=11,)
-    custom_gpu_driver_path = proto.Field(proto.STRING, number=12,)
-    boot_disk_type = proto.Field(proto.ENUM, number=13, enum=DiskType,)
-    boot_disk_size_gb = proto.Field(proto.INT64, number=14,)
-    data_disk_type = proto.Field(proto.ENUM, number=25, enum=DiskType,)
-    data_disk_size_gb = proto.Field(proto.INT64, number=26,)
-    no_remove_data_disk = proto.Field(proto.BOOL, number=27,)
-    disk_encryption = proto.Field(proto.ENUM, number=15, enum=DiskEncryption,)
-    kms_key = proto.Field(proto.STRING, number=16,)
-    disks = proto.RepeatedField(proto.MESSAGE, number=28, message=Disk,)
+    state = proto.Field(
+        proto.ENUM,
+        number=10,
+        enum=State,
+    )
+    install_gpu_driver = proto.Field(
+        proto.BOOL,
+        number=11,
+    )
+    custom_gpu_driver_path = proto.Field(
+        proto.STRING,
+        number=12,
+    )
+    boot_disk_type = proto.Field(
+        proto.ENUM,
+        number=13,
+        enum=DiskType,
+    )
+    boot_disk_size_gb = proto.Field(
+        proto.INT64,
+        number=14,
+    )
+    data_disk_type = proto.Field(
+        proto.ENUM,
+        number=25,
+        enum=DiskType,
+    )
+    data_disk_size_gb = proto.Field(
+        proto.INT64,
+        number=26,
+    )
+    no_remove_data_disk = proto.Field(
+        proto.BOOL,
+        number=27,
+    )
+    disk_encryption = proto.Field(
+        proto.ENUM,
+        number=15,
+        enum=DiskEncryption,
+    )
+    kms_key = proto.Field(
+        proto.STRING,
+        number=16,
+    )
+    disks = proto.RepeatedField(
+        proto.MESSAGE,
+        number=28,
+        message=Disk,
+    )
     shielded_instance_config = proto.Field(
-        proto.MESSAGE, number=30, message=ShieldedInstanceConfig,
+        proto.MESSAGE,
+        number=30,
+        message=ShieldedInstanceConfig,
     )
-    no_public_ip = proto.Field(proto.BOOL, number=17,)
-    no_proxy_access = proto.Field(proto.BOOL, number=18,)
-    network = proto.Field(proto.STRING, number=19,)
-    subnet = proto.Field(proto.STRING, number=20,)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=21,)
-    metadata = proto.MapField(proto.STRING, proto.STRING, number=22,)
-    tags = proto.RepeatedField(proto.STRING, number=32,)
+    no_public_ip = proto.Field(
+        proto.BOOL,
+        number=17,
+    )
+    no_proxy_access = proto.Field(
+        proto.BOOL,
+        number=18,
+    )
+    network = proto.Field(
+        proto.STRING,
+        number=19,
+    )
+    subnet = proto.Field(
+        proto.STRING,
+        number=20,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=21,
+    )
+    metadata = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=22,
+    )
+    tags = proto.RepeatedField(
+        proto.STRING,
+        number=32,
+    )
     upgrade_history = proto.RepeatedField(
-        proto.MESSAGE, number=29, message=UpgradeHistoryEntry,
+        proto.MESSAGE,
+        number=29,
+        message=UpgradeHistoryEntry,
     )
-    nic_type = proto.Field(proto.ENUM, number=33, enum=NicType,)
+    nic_type = proto.Field(
+        proto.ENUM,
+        number=33,
+        enum=NicType,
+    )
     reservation_affinity = proto.Field(
-        proto.MESSAGE, number=34, message="ReservationAffinity",
+        proto.MESSAGE,
+        number=34,
+        message="ReservationAffinity",
     )
     create_time = proto.Field(
-        proto.MESSAGE, number=23, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=23,
+        message=timestamp_pb2.Timestamp,
     )
     update_time = proto.Field(
-        proto.MESSAGE, number=24, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=24,
+        message=timestamp_pb2.Timestamp,
     )
 
 

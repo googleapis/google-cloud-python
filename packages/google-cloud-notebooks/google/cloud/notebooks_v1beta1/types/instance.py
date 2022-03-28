@@ -20,7 +20,10 @@ from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.notebooks.v1beta1", manifest={"Instance",},
+    package="google.cloud.notebooks.v1beta1",
+    manifest={
+        "Instance",
+    },
 )
 
 
@@ -205,12 +208,25 @@ class Instance(proto.Message):
                 Count of cores of this accelerator.
         """
 
-        type_ = proto.Field(proto.ENUM, number=1, enum="Instance.AcceleratorType",)
-        core_count = proto.Field(proto.INT64, number=2,)
+        type_ = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="Instance.AcceleratorType",
+        )
+        core_count = proto.Field(
+            proto.INT64,
+            number=2,
+        )
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     vm_image = proto.Field(
-        proto.MESSAGE, number=2, oneof="environment", message=environment.VmImage,
+        proto.MESSAGE,
+        number=2,
+        oneof="environment",
+        message=environment.VmImage,
     )
     container_image = proto.Field(
         proto.MESSAGE,
@@ -218,35 +234,110 @@ class Instance(proto.Message):
         oneof="environment",
         message=environment.ContainerImage,
     )
-    post_startup_script = proto.Field(proto.STRING, number=4,)
-    proxy_uri = proto.Field(proto.STRING, number=5,)
-    instance_owners = proto.RepeatedField(proto.STRING, number=6,)
-    service_account = proto.Field(proto.STRING, number=7,)
-    machine_type = proto.Field(proto.STRING, number=8,)
-    accelerator_config = proto.Field(
-        proto.MESSAGE, number=9, message=AcceleratorConfig,
+    post_startup_script = proto.Field(
+        proto.STRING,
+        number=4,
     )
-    state = proto.Field(proto.ENUM, number=10, enum=State,)
-    install_gpu_driver = proto.Field(proto.BOOL, number=11,)
-    custom_gpu_driver_path = proto.Field(proto.STRING, number=12,)
-    boot_disk_type = proto.Field(proto.ENUM, number=13, enum=DiskType,)
-    boot_disk_size_gb = proto.Field(proto.INT64, number=14,)
-    data_disk_type = proto.Field(proto.ENUM, number=25, enum=DiskType,)
-    data_disk_size_gb = proto.Field(proto.INT64, number=26,)
-    no_remove_data_disk = proto.Field(proto.BOOL, number=27,)
-    disk_encryption = proto.Field(proto.ENUM, number=15, enum=DiskEncryption,)
-    kms_key = proto.Field(proto.STRING, number=16,)
-    no_public_ip = proto.Field(proto.BOOL, number=17,)
-    no_proxy_access = proto.Field(proto.BOOL, number=18,)
-    network = proto.Field(proto.STRING, number=19,)
-    subnet = proto.Field(proto.STRING, number=20,)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=21,)
-    metadata = proto.MapField(proto.STRING, proto.STRING, number=22,)
+    proxy_uri = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    instance_owners = proto.RepeatedField(
+        proto.STRING,
+        number=6,
+    )
+    service_account = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    machine_type = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    accelerator_config = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message=AcceleratorConfig,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=10,
+        enum=State,
+    )
+    install_gpu_driver = proto.Field(
+        proto.BOOL,
+        number=11,
+    )
+    custom_gpu_driver_path = proto.Field(
+        proto.STRING,
+        number=12,
+    )
+    boot_disk_type = proto.Field(
+        proto.ENUM,
+        number=13,
+        enum=DiskType,
+    )
+    boot_disk_size_gb = proto.Field(
+        proto.INT64,
+        number=14,
+    )
+    data_disk_type = proto.Field(
+        proto.ENUM,
+        number=25,
+        enum=DiskType,
+    )
+    data_disk_size_gb = proto.Field(
+        proto.INT64,
+        number=26,
+    )
+    no_remove_data_disk = proto.Field(
+        proto.BOOL,
+        number=27,
+    )
+    disk_encryption = proto.Field(
+        proto.ENUM,
+        number=15,
+        enum=DiskEncryption,
+    )
+    kms_key = proto.Field(
+        proto.STRING,
+        number=16,
+    )
+    no_public_ip = proto.Field(
+        proto.BOOL,
+        number=17,
+    )
+    no_proxy_access = proto.Field(
+        proto.BOOL,
+        number=18,
+    )
+    network = proto.Field(
+        proto.STRING,
+        number=19,
+    )
+    subnet = proto.Field(
+        proto.STRING,
+        number=20,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=21,
+    )
+    metadata = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=22,
+    )
     create_time = proto.Field(
-        proto.MESSAGE, number=23, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=23,
+        message=timestamp_pb2.Timestamp,
     )
     update_time = proto.Field(
-        proto.MESSAGE, number=24, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=24,
+        message=timestamp_pb2.Timestamp,
     )
 
 

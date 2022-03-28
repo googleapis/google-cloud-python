@@ -97,14 +97,40 @@ class OperationMetadata(proto.Message):
             API endpoint name of this operation.
     """
 
-    create_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
-    end_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    target = proto.Field(proto.STRING, number=3,)
-    verb = proto.Field(proto.STRING, number=4,)
-    status_message = proto.Field(proto.STRING, number=5,)
-    requested_cancellation = proto.Field(proto.BOOL, number=6,)
-    api_version = proto.Field(proto.STRING, number=7,)
-    endpoint = proto.Field(proto.STRING, number=8,)
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    target = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    verb = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    status_message = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    requested_cancellation = proto.Field(
+        proto.BOOL,
+        number=6,
+    )
+    api_version = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    endpoint = proto.Field(
+        proto.STRING,
+        number=8,
+    )
 
 
 class ListInstancesRequest(proto.Message):
@@ -121,9 +147,18 @@ class ListInstancesRequest(proto.Message):
             used to continue listing from the last result.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListInstancesResponse(proto.Message):
@@ -147,10 +182,18 @@ class ListInstancesResponse(proto.Message):
         return self
 
     instances = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=gcn_instance.Instance,
+        proto.MESSAGE,
+        number=1,
+        message=gcn_instance.Instance,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
-    unreachable = proto.RepeatedField(proto.STRING, number=3,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 class GetInstanceRequest(proto.Message):
@@ -162,7 +205,10 @@ class GetInstanceRequest(proto.Message):
             ``projects/{project_id}/locations/{location}/instances/{instance_id}``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CreateInstanceRequest(proto.Message):
@@ -179,9 +225,19 @@ class CreateInstanceRequest(proto.Message):
             Required. The instance to be created.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    instance_id = proto.Field(proto.STRING, number=2,)
-    instance = proto.Field(proto.MESSAGE, number=3, message=gcn_instance.Instance,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    instance_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    instance = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=gcn_instance.Instance,
+    )
 
 
 class RegisterInstanceRequest(proto.Message):
@@ -199,8 +255,14 @@ class RegisterInstanceRequest(proto.Message):
             character cannot be a dash.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    instance_id = proto.Field(proto.STRING, number=2,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    instance_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class SetInstanceAcceleratorRequest(proto.Message):
@@ -220,11 +282,19 @@ class SetInstanceAcceleratorRequest(proto.Message):
             to find a valid combination. TPUs are not supported.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    type_ = proto.Field(
-        proto.ENUM, number=2, enum=gcn_instance.Instance.AcceleratorType,
+    name = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    core_count = proto.Field(proto.INT64, number=3,)
+    type_ = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=gcn_instance.Instance.AcceleratorType,
+    )
+    core_count = proto.Field(
+        proto.INT64,
+        number=3,
+    )
 
 
 class SetInstanceMachineTypeRequest(proto.Message):
@@ -239,8 +309,14 @@ class SetInstanceMachineTypeRequest(proto.Message):
             type <https://cloud.google.com/compute/docs/machine-types>`__.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    machine_type = proto.Field(proto.STRING, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    machine_type = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class UpdateInstanceConfigRequest(proto.Message):
@@ -254,9 +330,14 @@ class UpdateInstanceConfigRequest(proto.Message):
             The instance configurations to be updated.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     config = proto.Field(
-        proto.MESSAGE, number=2, message=instance_config.InstanceConfig,
+        proto.MESSAGE,
+        number=2,
+        message=instance_config.InstanceConfig,
     )
 
 
@@ -273,8 +354,15 @@ class SetInstanceLabelsRequest(proto.Message):
             method
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=2,
+    )
 
 
 class UpdateShieldedInstanceConfigRequest(proto.Message):
@@ -290,9 +378,14 @@ class UpdateShieldedInstanceConfigRequest(proto.Message):
             ShieldedInstance configuration to be updated.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     shielded_instance_config = proto.Field(
-        proto.MESSAGE, number=2, message=gcn_instance.Instance.ShieldedInstanceConfig,
+        proto.MESSAGE,
+        number=2,
+        message=gcn_instance.Instance.ShieldedInstanceConfig,
     )
 
 
@@ -305,7 +398,10 @@ class DeleteInstanceRequest(proto.Message):
             ``projects/{project_id}/locations/{location}/instances/{instance_id}``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class StartInstanceRequest(proto.Message):
@@ -317,7 +413,10 @@ class StartInstanceRequest(proto.Message):
             ``projects/{project_id}/locations/{location}/instances/{instance_id}``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class StopInstanceRequest(proto.Message):
@@ -329,7 +428,10 @@ class StopInstanceRequest(proto.Message):
             ``projects/{project_id}/locations/{location}/instances/{instance_id}``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ResetInstanceRequest(proto.Message):
@@ -341,7 +443,10 @@ class ResetInstanceRequest(proto.Message):
             ``projects/{project_id}/locations/{location}/instances/{instance_id}``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ReportInstanceInfoRequest(proto.Message):
@@ -361,9 +466,19 @@ class ReportInstanceInfoRequest(proto.Message):
             will be merged to the instance metadata store
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    vm_id = proto.Field(proto.STRING, number=2,)
-    metadata = proto.MapField(proto.STRING, proto.STRING, number=3,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    vm_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    metadata = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=3,
+    )
 
 
 class IsInstanceUpgradeableRequest(proto.Message):
@@ -375,7 +490,10 @@ class IsInstanceUpgradeableRequest(proto.Message):
             ``projects/{project_id}/locations/{location}/instances/{instance_id}``
     """
 
-    notebook_instance = proto.Field(proto.STRING, number=1,)
+    notebook_instance = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class IsInstanceUpgradeableResponse(proto.Message):
@@ -397,10 +515,22 @@ class IsInstanceUpgradeableResponse(proto.Message):
             upgradeable is true.
     """
 
-    upgradeable = proto.Field(proto.BOOL, number=1,)
-    upgrade_version = proto.Field(proto.STRING, number=2,)
-    upgrade_info = proto.Field(proto.STRING, number=3,)
-    upgrade_image = proto.Field(proto.STRING, number=4,)
+    upgradeable = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
+    upgrade_version = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    upgrade_info = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    upgrade_image = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class GetInstanceHealthRequest(proto.Message):
@@ -412,7 +542,10 @@ class GetInstanceHealthRequest(proto.Message):
             ``projects/{project_id}/locations/{location}/instances/{instance_id}``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class GetInstanceHealthResponse(proto.Message):
@@ -437,8 +570,16 @@ class GetInstanceHealthResponse(proto.Message):
         AGENT_NOT_INSTALLED = 3
         AGENT_NOT_RUNNING = 4
 
-    health_state = proto.Field(proto.ENUM, number=1, enum=HealthState,)
-    health_info = proto.MapField(proto.STRING, proto.STRING, number=2,)
+    health_state = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=HealthState,
+    )
+    health_info = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=2,
+    )
 
 
 class UpgradeInstanceRequest(proto.Message):
@@ -450,7 +591,10 @@ class UpgradeInstanceRequest(proto.Message):
             ``projects/{project_id}/locations/{location}/instances/{instance_id}``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class RollbackInstanceRequest(proto.Message):
@@ -466,8 +610,14 @@ class RollbackInstanceRequest(proto.Message):
             "projects/test-project/global/snapshots/krwlzipynril".
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    target_snapshot = proto.Field(proto.STRING, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    target_snapshot = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class UpgradeInstanceInternalRequest(proto.Message):
@@ -483,8 +633,14 @@ class UpgradeInstanceInternalRequest(proto.Message):
             https://cloud.google.com/compute/docs/instances/verifying-instance-identity
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    vm_id = proto.Field(proto.STRING, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    vm_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class ListEnvironmentsRequest(proto.Message):
@@ -501,9 +657,18 @@ class ListEnvironmentsRequest(proto.Message):
             used to continue listing from the last result.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListEnvironmentsResponse(proto.Message):
@@ -525,10 +690,18 @@ class ListEnvironmentsResponse(proto.Message):
         return self
 
     environments = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=gcn_environment.Environment,
+        proto.MESSAGE,
+        number=1,
+        message=gcn_environment.Environment,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
-    unreachable = proto.RepeatedField(proto.STRING, number=3,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 class GetEnvironmentRequest(proto.Message):
@@ -540,7 +713,10 @@ class GetEnvironmentRequest(proto.Message):
             ``projects/{project_id}/locations/{location}/environments/{environment_id}``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CreateEnvironmentRequest(proto.Message):
@@ -560,10 +736,18 @@ class CreateEnvironmentRequest(proto.Message):
             Required. The environment to be created.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    environment_id = proto.Field(proto.STRING, number=2,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    environment_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
     environment = proto.Field(
-        proto.MESSAGE, number=3, message=gcn_environment.Environment,
+        proto.MESSAGE,
+        number=3,
+        message=gcn_environment.Environment,
     )
 
 
@@ -576,7 +760,10 @@ class DeleteEnvironmentRequest(proto.Message):
             ``projects/{project_id}/locations/{location}/environments/{environment_id}``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListSchedulesRequest(proto.Message):
@@ -597,11 +784,26 @@ class ListSchedulesRequest(proto.Message):
             Field to order results by.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    filter = proto.Field(proto.STRING, number=4,)
-    order_by = proto.Field(proto.STRING, number=5,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class ListSchedulesResponse(proto.Message):
@@ -628,10 +830,18 @@ class ListSchedulesResponse(proto.Message):
         return self
 
     schedules = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=gcn_schedule.Schedule,
+        proto.MESSAGE,
+        number=1,
+        message=gcn_schedule.Schedule,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
-    unreachable = proto.RepeatedField(proto.STRING, number=3,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 class GetScheduleRequest(proto.Message):
@@ -643,7 +853,10 @@ class GetScheduleRequest(proto.Message):
             ``projects/{project_id}/locations/{location}/schedules/{schedule_id}``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class DeleteScheduleRequest(proto.Message):
@@ -655,7 +868,10 @@ class DeleteScheduleRequest(proto.Message):
             ``projects/{project_id}/locations/{location}/schedules/{schedule_id}``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CreateScheduleRequest(proto.Message):
@@ -672,9 +888,19 @@ class CreateScheduleRequest(proto.Message):
             Required. The schedule to be created.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    schedule_id = proto.Field(proto.STRING, number=2,)
-    schedule = proto.Field(proto.MESSAGE, number=3, message=gcn_schedule.Schedule,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    schedule_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    schedule = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=gcn_schedule.Schedule,
+    )
 
 
 class TriggerScheduleRequest(proto.Message):
@@ -686,7 +912,10 @@ class TriggerScheduleRequest(proto.Message):
             ``parent=projects/{project_id}/locations/{location}/schedules/{schedule_id}``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListExecutionsRequest(proto.Message):
@@ -709,11 +938,26 @@ class ListExecutionsRequest(proto.Message):
             Sort by field.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    filter = proto.Field(proto.STRING, number=4,)
-    order_by = proto.Field(proto.STRING, number=5,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class ListExecutionsResponse(proto.Message):
@@ -740,10 +984,18 @@ class ListExecutionsResponse(proto.Message):
         return self
 
     executions = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=gcn_execution.Execution,
+        proto.MESSAGE,
+        number=1,
+        message=gcn_execution.Execution,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
-    unreachable = proto.RepeatedField(proto.STRING, number=3,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 class GetExecutionRequest(proto.Message):
@@ -755,7 +1007,10 @@ class GetExecutionRequest(proto.Message):
             ``projects/{project_id}/locations/{location}/executions/{execution_id}``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class DeleteExecutionRequest(proto.Message):
@@ -767,7 +1022,10 @@ class DeleteExecutionRequest(proto.Message):
             ``projects/{project_id}/locations/{location}/executions/{execution_id}``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CreateExecutionRequest(proto.Message):
@@ -784,9 +1042,19 @@ class CreateExecutionRequest(proto.Message):
             Required. The execution to be created.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    execution_id = proto.Field(proto.STRING, number=2,)
-    execution = proto.Field(proto.MESSAGE, number=3, message=gcn_execution.Execution,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    execution_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    execution = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=gcn_execution.Execution,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

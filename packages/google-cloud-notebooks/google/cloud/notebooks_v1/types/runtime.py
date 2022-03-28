@@ -87,22 +87,50 @@ class Runtime(proto.Message):
         HEALTHY = 1
         UNHEALTHY = 2
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     virtual_machine = proto.Field(
-        proto.MESSAGE, number=2, oneof="runtime_type", message="VirtualMachine",
+        proto.MESSAGE,
+        number=2,
+        oneof="runtime_type",
+        message="VirtualMachine",
     )
-    state = proto.Field(proto.ENUM, number=3, enum=State,)
-    health_state = proto.Field(proto.ENUM, number=4, enum=HealthState,)
-    access_config = proto.Field(proto.MESSAGE, number=5, message="RuntimeAccessConfig",)
+    state = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=State,
+    )
+    health_state = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=HealthState,
+    )
+    access_config = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message="RuntimeAccessConfig",
+    )
     software_config = proto.Field(
-        proto.MESSAGE, number=6, message="RuntimeSoftwareConfig",
+        proto.MESSAGE,
+        number=6,
+        message="RuntimeSoftwareConfig",
     )
-    metrics = proto.Field(proto.MESSAGE, number=7, message="RuntimeMetrics",)
+    metrics = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message="RuntimeMetrics",
+    )
     create_time = proto.Field(
-        proto.MESSAGE, number=20, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=20,
+        message=timestamp_pb2.Timestamp,
     )
     update_time = proto.Field(
-        proto.MESSAGE, number=21, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=21,
+        message=timestamp_pb2.Timestamp,
     )
 
 
@@ -141,8 +169,15 @@ class RuntimeAcceleratorConfig(proto.Message):
         NVIDIA_TESLA_P100_VWS = 10
         NVIDIA_TESLA_P4_VWS = 11
 
-    type_ = proto.Field(proto.ENUM, number=1, enum=AcceleratorType,)
-    core_count = proto.Field(proto.INT64, number=2,)
+    type_ = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=AcceleratorType,
+    )
+    core_count = proto.Field(
+        proto.INT64,
+        number=2,
+    )
 
 
 class EncryptionConfig(proto.Message):
@@ -158,7 +193,10 @@ class EncryptionConfig(proto.Message):
             ``projects/{PROJECT_ID}/locations/{REGION}/keyRings/{KEY_RING_NAME}/cryptoKeys/{KEY_NAME}``
     """
 
-    kms_key = proto.Field(proto.STRING, number=1,)
+    kms_key = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class LocalDisk(proto.Message):
@@ -267,24 +305,61 @@ class LocalDisk(proto.Message):
                 -  WINDOWS
         """
 
-        type_ = proto.Field(proto.STRING, number=1,)
+        type_ = proto.Field(
+            proto.STRING,
+            number=1,
+        )
 
-    auto_delete = proto.Field(proto.BOOL, number=1,)
-    boot = proto.Field(proto.BOOL, number=2,)
-    device_name = proto.Field(proto.STRING, number=3,)
+    auto_delete = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
+    boot = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+    device_name = proto.Field(
+        proto.STRING,
+        number=3,
+    )
     guest_os_features = proto.RepeatedField(
-        proto.MESSAGE, number=4, message=RuntimeGuestOsFeature,
+        proto.MESSAGE,
+        number=4,
+        message=RuntimeGuestOsFeature,
     )
-    index = proto.Field(proto.INT32, number=5,)
+    index = proto.Field(
+        proto.INT32,
+        number=5,
+    )
     initialize_params = proto.Field(
-        proto.MESSAGE, number=6, message="LocalDiskInitializeParams",
+        proto.MESSAGE,
+        number=6,
+        message="LocalDiskInitializeParams",
     )
-    interface = proto.Field(proto.STRING, number=7,)
-    kind = proto.Field(proto.STRING, number=8,)
-    licenses = proto.RepeatedField(proto.STRING, number=9,)
-    mode = proto.Field(proto.STRING, number=10,)
-    source = proto.Field(proto.STRING, number=11,)
-    type_ = proto.Field(proto.STRING, number=12,)
+    interface = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    kind = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    licenses = proto.RepeatedField(
+        proto.STRING,
+        number=9,
+    )
+    mode = proto.Field(
+        proto.STRING,
+        number=10,
+    )
+    source = proto.Field(
+        proto.STRING,
+        number=11,
+    )
+    type_ = proto.Field(
+        proto.STRING,
+        number=12,
+    )
 
 
 class LocalDiskInitializeParams(proto.Message):
@@ -329,11 +404,28 @@ class LocalDiskInitializeParams(proto.Message):
         PD_SSD = 2
         PD_BALANCED = 3
 
-    description = proto.Field(proto.STRING, number=1,)
-    disk_name = proto.Field(proto.STRING, number=2,)
-    disk_size_gb = proto.Field(proto.INT64, number=3,)
-    disk_type = proto.Field(proto.ENUM, number=4, enum=DiskType,)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=5,)
+    description = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    disk_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    disk_size_gb = proto.Field(
+        proto.INT64,
+        number=3,
+    )
+    disk_type = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=DiskType,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=5,
+    )
 
 
 class RuntimeAccessConfig(proto.Message):
@@ -357,9 +449,19 @@ class RuntimeAccessConfig(proto.Message):
         RUNTIME_ACCESS_TYPE_UNSPECIFIED = 0
         SINGLE_USER = 1
 
-    access_type = proto.Field(proto.ENUM, number=1, enum=RuntimeAccessType,)
-    runtime_owner = proto.Field(proto.STRING, number=2,)
-    proxy_uri = proto.Field(proto.STRING, number=3,)
+    access_type = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=RuntimeAccessType,
+    )
+    runtime_owner = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    proxy_uri = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class RuntimeSoftwareConfig(proto.Message):
@@ -401,13 +503,36 @@ class RuntimeSoftwareConfig(proto.Message):
             Cloud Storage path (``gs://path-to-file/file-name``).
     """
 
-    notebook_upgrade_schedule = proto.Field(proto.STRING, number=1,)
-    enable_health_monitoring = proto.Field(proto.BOOL, number=2, optional=True,)
-    idle_shutdown = proto.Field(proto.BOOL, number=3, optional=True,)
-    idle_shutdown_timeout = proto.Field(proto.INT32, number=4,)
-    install_gpu_driver = proto.Field(proto.BOOL, number=5,)
-    custom_gpu_driver_path = proto.Field(proto.STRING, number=6,)
-    post_startup_script = proto.Field(proto.STRING, number=7,)
+    notebook_upgrade_schedule = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    enable_health_monitoring = proto.Field(
+        proto.BOOL,
+        number=2,
+        optional=True,
+    )
+    idle_shutdown = proto.Field(
+        proto.BOOL,
+        number=3,
+        optional=True,
+    )
+    idle_shutdown_timeout = proto.Field(
+        proto.INT32,
+        number=4,
+    )
+    install_gpu_driver = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
+    custom_gpu_driver_path = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    post_startup_script = proto.Field(
+        proto.STRING,
+        number=7,
+    )
 
 
 class RuntimeMetrics(proto.Message):
@@ -419,7 +544,11 @@ class RuntimeMetrics(proto.Message):
             Output only. The system metrics.
     """
 
-    system_metrics = proto.MapField(proto.STRING, proto.STRING, number=1,)
+    system_metrics = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=1,
+    )
 
 
 class RuntimeShieldedInstanceConfig(proto.Message):
@@ -451,9 +580,18 @@ class RuntimeShieldedInstanceConfig(proto.Message):
             is created. Enabled by default.
     """
 
-    enable_secure_boot = proto.Field(proto.BOOL, number=1,)
-    enable_vtpm = proto.Field(proto.BOOL, number=2,)
-    enable_integrity_monitoring = proto.Field(proto.BOOL, number=3,)
+    enable_secure_boot = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
+    enable_vtpm = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+    enable_integrity_monitoring = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
 
 
 class VirtualMachine(proto.Message):
@@ -470,10 +608,18 @@ class VirtualMachine(proto.Message):
             Virtual Machine configuration settings.
     """
 
-    instance_name = proto.Field(proto.STRING, number=1,)
-    instance_id = proto.Field(proto.STRING, number=2,)
+    instance_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    instance_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
     virtual_machine_config = proto.Field(
-        proto.MESSAGE, number=3, message="VirtualMachineConfig",
+        proto.MESSAGE,
+        number=3,
+        message="VirtualMachineConfig",
     )
 
 
@@ -575,29 +721,75 @@ class VirtualMachineConfig(proto.Message):
         VIRTIO_NET = 1
         GVNIC = 2
 
-    zone = proto.Field(proto.STRING, number=1,)
-    machine_type = proto.Field(proto.STRING, number=2,)
-    container_images = proto.RepeatedField(
-        proto.MESSAGE, number=3, message=environment.ContainerImage,
+    zone = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    data_disk = proto.Field(proto.MESSAGE, number=4, message="LocalDisk",)
+    machine_type = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    container_images = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=environment.ContainerImage,
+    )
+    data_disk = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="LocalDisk",
+    )
     encryption_config = proto.Field(
-        proto.MESSAGE, number=5, message="EncryptionConfig",
+        proto.MESSAGE,
+        number=5,
+        message="EncryptionConfig",
     )
     shielded_instance_config = proto.Field(
-        proto.MESSAGE, number=6, message="RuntimeShieldedInstanceConfig",
+        proto.MESSAGE,
+        number=6,
+        message="RuntimeShieldedInstanceConfig",
     )
     accelerator_config = proto.Field(
-        proto.MESSAGE, number=7, message="RuntimeAcceleratorConfig",
+        proto.MESSAGE,
+        number=7,
+        message="RuntimeAcceleratorConfig",
     )
-    network = proto.Field(proto.STRING, number=8,)
-    subnet = proto.Field(proto.STRING, number=9,)
-    internal_ip_only = proto.Field(proto.BOOL, number=10,)
-    tags = proto.RepeatedField(proto.STRING, number=13,)
-    guest_attributes = proto.MapField(proto.STRING, proto.STRING, number=14,)
-    metadata = proto.MapField(proto.STRING, proto.STRING, number=15,)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=16,)
-    nic_type = proto.Field(proto.ENUM, number=17, enum=NicType,)
+    network = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    subnet = proto.Field(
+        proto.STRING,
+        number=9,
+    )
+    internal_ip_only = proto.Field(
+        proto.BOOL,
+        number=10,
+    )
+    tags = proto.RepeatedField(
+        proto.STRING,
+        number=13,
+    )
+    guest_attributes = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=14,
+    )
+    metadata = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=15,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=16,
+    )
+    nic_type = proto.Field(
+        proto.ENUM,
+        number=17,
+        enum=NicType,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

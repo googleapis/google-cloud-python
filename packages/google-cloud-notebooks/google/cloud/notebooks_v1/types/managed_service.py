@@ -50,9 +50,18 @@ class ListRuntimesRequest(proto.Message):
             used to continue listing from the last result.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListRuntimesResponse(proto.Message):
@@ -76,10 +85,18 @@ class ListRuntimesResponse(proto.Message):
         return self
 
     runtimes = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=gcn_runtime.Runtime,
+        proto.MESSAGE,
+        number=1,
+        message=gcn_runtime.Runtime,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
-    unreachable = proto.RepeatedField(proto.STRING, number=3,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 class GetRuntimeRequest(proto.Message):
@@ -91,7 +108,10 @@ class GetRuntimeRequest(proto.Message):
             ``projects/{project_id}/locations/{location}/runtimes/{runtime_id}``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CreateRuntimeRequest(proto.Message):
@@ -108,9 +128,19 @@ class CreateRuntimeRequest(proto.Message):
             Required. The Runtime to be created.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    runtime_id = proto.Field(proto.STRING, number=2,)
-    runtime = proto.Field(proto.MESSAGE, number=3, message=gcn_runtime.Runtime,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    runtime_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    runtime = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=gcn_runtime.Runtime,
+    )
 
 
 class DeleteRuntimeRequest(proto.Message):
@@ -122,7 +152,10 @@ class DeleteRuntimeRequest(proto.Message):
             ``projects/{project_id}/locations/{location}/runtimes/{runtime_id}``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class StartRuntimeRequest(proto.Message):
@@ -134,7 +167,10 @@ class StartRuntimeRequest(proto.Message):
             ``projects/{project_id}/locations/{location}/runtimes/{runtime_id}``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class StopRuntimeRequest(proto.Message):
@@ -146,7 +182,10 @@ class StopRuntimeRequest(proto.Message):
             ``projects/{project_id}/locations/{location}/runtimes/{runtime_id}``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class SwitchRuntimeRequest(proto.Message):
@@ -162,10 +201,18 @@ class SwitchRuntimeRequest(proto.Message):
             accelerator config.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    machine_type = proto.Field(proto.STRING, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    machine_type = proto.Field(
+        proto.STRING,
+        number=2,
+    )
     accelerator_config = proto.Field(
-        proto.MESSAGE, number=3, message=gcn_runtime.RuntimeAcceleratorConfig,
+        proto.MESSAGE,
+        number=3,
+        message=gcn_runtime.RuntimeAcceleratorConfig,
     )
 
 
@@ -178,7 +225,10 @@ class ResetRuntimeRequest(proto.Message):
             ``projects/{project_id}/locations/{location}/runtimes/{runtime_id}``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ReportRuntimeEventRequest(proto.Message):
@@ -196,9 +246,19 @@ class ReportRuntimeEventRequest(proto.Message):
             Required. The Event to be reported.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    vm_id = proto.Field(proto.STRING, number=2,)
-    event = proto.Field(proto.MESSAGE, number=3, message=gcn_event.Event,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    vm_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    event = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=gcn_event.Event,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

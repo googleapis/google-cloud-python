@@ -17,7 +17,10 @@ import proto  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.notebooks.v1", manifest={"InstanceConfig",},
+    package="google.cloud.notebooks.v1",
+    manifest={
+        "InstanceConfig",
+    },
 )
 
 
@@ -33,8 +36,14 @@ class InstanceConfig(proto.Message):
             Verifies core internal services are running.
     """
 
-    notebook_upgrade_schedule = proto.Field(proto.STRING, number=1,)
-    enable_health_monitoring = proto.Field(proto.BOOL, number=2,)
+    notebook_upgrade_schedule = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    enable_health_monitoring = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

@@ -18,7 +18,12 @@ import proto  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
 
-__protobuf__ = proto.module(package="google.cloud.notebooks.v1", manifest={"Event",},)
+__protobuf__ = proto.module(
+    package="google.cloud.notebooks.v1",
+    manifest={
+        "Event",
+    },
+)
 
 
 class Event(proto.Message):
@@ -37,8 +42,16 @@ class Event(proto.Message):
         EVENT_TYPE_UNSPECIFIED = 0
         IDLE = 1
 
-    report_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
-    type_ = proto.Field(proto.ENUM, number=2, enum=EventType,)
+    report_time = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    type_ = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=EventType,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

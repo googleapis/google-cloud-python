@@ -20,7 +20,10 @@ from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.notebooks.v1", manifest={"Schedule",},
+    package="google.cloud.notebooks.v1",
+    manifest={
+        "Schedule",
+    },
 )
 
 
@@ -78,19 +81,50 @@ class Schedule(proto.Message):
         INITIALIZING = 5
         DELETING = 6
 
-    name = proto.Field(proto.STRING, number=1,)
-    display_name = proto.Field(proto.STRING, number=2,)
-    description = proto.Field(proto.STRING, number=3,)
-    state = proto.Field(proto.ENUM, number=4, enum=State,)
-    cron_schedule = proto.Field(proto.STRING, number=5,)
-    time_zone = proto.Field(proto.STRING, number=6,)
-    create_time = proto.Field(proto.MESSAGE, number=7, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=8, message=timestamp_pb2.Timestamp,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=State,
+    )
+    cron_schedule = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    time_zone = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=timestamp_pb2.Timestamp,
+    )
     execution_template = proto.Field(
-        proto.MESSAGE, number=9, message=execution.ExecutionTemplate,
+        proto.MESSAGE,
+        number=9,
+        message=execution.ExecutionTemplate,
     )
     recent_executions = proto.RepeatedField(
-        proto.MESSAGE, number=10, message=execution.Execution,
+        proto.MESSAGE,
+        number=10,
+        message=execution.Execution,
     )
 
 
