@@ -20,7 +20,12 @@ from google.protobuf import duration_pb2  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.datalabeling.v1beta1",
-    manifest={"ImagePayload", "TextPayload", "VideoThumbnail", "VideoPayload",},
+    manifest={
+        "ImagePayload",
+        "TextPayload",
+        "VideoThumbnail",
+        "VideoPayload",
+    },
 )
 
 
@@ -39,10 +44,22 @@ class ImagePayload(proto.Message):
             bucket.
     """
 
-    mime_type = proto.Field(proto.STRING, number=1,)
-    image_thumbnail = proto.Field(proto.BYTES, number=2,)
-    image_uri = proto.Field(proto.STRING, number=3,)
-    signed_uri = proto.Field(proto.STRING, number=4,)
+    mime_type = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    image_thumbnail = proto.Field(
+        proto.BYTES,
+        number=2,
+    )
+    image_uri = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    signed_uri = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class TextPayload(proto.Message):
@@ -53,7 +70,10 @@ class TextPayload(proto.Message):
             Text content.
     """
 
-    text_content = proto.Field(proto.STRING, number=1,)
+    text_content = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class VideoThumbnail(proto.Message):
@@ -68,8 +88,15 @@ class VideoThumbnail(proto.Message):
             the thumbnail has been extracted from.
     """
 
-    thumbnail = proto.Field(proto.BYTES, number=1,)
-    time_offset = proto.Field(proto.MESSAGE, number=2, message=duration_pb2.Duration,)
+    thumbnail = proto.Field(
+        proto.BYTES,
+        number=1,
+    )
+    time_offset = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=duration_pb2.Duration,
+    )
 
 
 class VideoPayload(proto.Message):
@@ -89,13 +116,27 @@ class VideoPayload(proto.Message):
             bucket.
     """
 
-    mime_type = proto.Field(proto.STRING, number=1,)
-    video_uri = proto.Field(proto.STRING, number=2,)
-    video_thumbnails = proto.RepeatedField(
-        proto.MESSAGE, number=3, message="VideoThumbnail",
+    mime_type = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    frame_rate = proto.Field(proto.FLOAT, number=4,)
-    signed_uri = proto.Field(proto.STRING, number=5,)
+    video_uri = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    video_thumbnails = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message="VideoThumbnail",
+    )
+    frame_rate = proto.Field(
+        proto.FLOAT,
+        number=4,
+    )
+    signed_uri = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

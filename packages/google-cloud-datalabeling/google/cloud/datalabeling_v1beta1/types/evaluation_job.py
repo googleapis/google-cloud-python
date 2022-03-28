@@ -113,19 +113,49 @@ class EvaluationJob(proto.Message):
         PAUSED = 3
         STOPPED = 4
 
-    name = proto.Field(proto.STRING, number=1,)
-    description = proto.Field(proto.STRING, number=2,)
-    state = proto.Field(proto.ENUM, number=3, enum=State,)
-    schedule = proto.Field(proto.STRING, number=4,)
-    model_version = proto.Field(proto.STRING, number=5,)
-    evaluation_job_config = proto.Field(
-        proto.MESSAGE, number=6, message="EvaluationJobConfig",
+    name = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    annotation_spec_set = proto.Field(proto.STRING, number=7,)
-    label_missing_ground_truth = proto.Field(proto.BOOL, number=8,)
-    attempts = proto.RepeatedField(proto.MESSAGE, number=9, message="Attempt",)
+    description = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=State,
+    )
+    schedule = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    model_version = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    evaluation_job_config = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message="EvaluationJobConfig",
+    )
+    annotation_spec_set = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    label_missing_ground_truth = proto.Field(
+        proto.BOOL,
+        number=8,
+    )
+    attempts = proto.RepeatedField(
+        proto.MESSAGE,
+        number=9,
+        message="Attempt",
+    )
     create_time = proto.Field(
-        proto.MESSAGE, number=10, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=10,
+        message=timestamp_pb2.Timestamp,
     )
 
 
@@ -274,20 +304,38 @@ class EvaluationJobConfig(proto.Message):
         oneof="human_annotation_request_config",
         message=gcd_human_annotation_config.TextClassificationConfig,
     )
-    input_config = proto.Field(proto.MESSAGE, number=1, message=dataset.InputConfig,)
+    input_config = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=dataset.InputConfig,
+    )
     evaluation_config = proto.Field(
-        proto.MESSAGE, number=2, message=evaluation.EvaluationConfig,
+        proto.MESSAGE,
+        number=2,
+        message=evaluation.EvaluationConfig,
     )
     human_annotation_config = proto.Field(
         proto.MESSAGE,
         number=3,
         message=gcd_human_annotation_config.HumanAnnotationConfig,
     )
-    bigquery_import_keys = proto.MapField(proto.STRING, proto.STRING, number=9,)
-    example_count = proto.Field(proto.INT32, number=10,)
-    example_sample_percentage = proto.Field(proto.DOUBLE, number=11,)
+    bigquery_import_keys = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=9,
+    )
+    example_count = proto.Field(
+        proto.INT32,
+        number=10,
+    )
+    example_sample_percentage = proto.Field(
+        proto.DOUBLE,
+        number=11,
+    )
     evaluation_job_alert_config = proto.Field(
-        proto.MESSAGE, number=13, message="EvaluationJobAlertConfig",
+        proto.MESSAGE,
+        number=13,
+        message="EvaluationJobAlertConfig",
     )
 
 
@@ -308,8 +356,14 @@ class EvaluationJobAlertConfig(proto.Message):
             specified email.
     """
 
-    email = proto.Field(proto.STRING, number=1,)
-    min_acceptable_mean_average_precision = proto.Field(proto.DOUBLE, number=2,)
+    email = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    min_acceptable_mean_average_precision = proto.Field(
+        proto.DOUBLE,
+        number=2,
+    )
 
 
 class Attempt(proto.Message):
@@ -323,10 +377,14 @@ class Attempt(proto.Message):
     """
 
     attempt_time = proto.Field(
-        proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
     )
     partial_failures = proto.RepeatedField(
-        proto.MESSAGE, number=2, message=status_pb2.Status,
+        proto.MESSAGE,
+        number=2,
+        message=status_pb2.Status,
     )
 
 

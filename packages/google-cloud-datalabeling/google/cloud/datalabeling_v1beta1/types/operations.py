@@ -60,9 +60,18 @@ class ImportDataOperationResponse(proto.Message):
             successfully.
     """
 
-    dataset = proto.Field(proto.STRING, number=1,)
-    total_count = proto.Field(proto.INT32, number=2,)
-    import_count = proto.Field(proto.INT32, number=3,)
+    dataset = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    total_count = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    import_count = proto.Field(
+        proto.INT32,
+        number=3,
+    )
 
 
 class ExportDataOperationResponse(proto.Message):
@@ -84,12 +93,27 @@ class ExportDataOperationResponse(proto.Message):
             Output only. output_config in the ExportData request.
     """
 
-    dataset = proto.Field(proto.STRING, number=1,)
-    total_count = proto.Field(proto.INT32, number=2,)
-    export_count = proto.Field(proto.INT32, number=3,)
-    label_stats = proto.Field(proto.MESSAGE, number=4, message=gcd_dataset.LabelStats,)
+    dataset = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    total_count = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    export_count = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    label_stats = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=gcd_dataset.LabelStats,
+    )
     output_config = proto.Field(
-        proto.MESSAGE, number=5, message=gcd_dataset.OutputConfig,
+        proto.MESSAGE,
+        number=5,
+        message=gcd_dataset.OutputConfig,
     )
 
 
@@ -110,11 +134,20 @@ class ImportDataOperationMetadata(proto.Message):
             request was created.
     """
 
-    dataset = proto.Field(proto.STRING, number=1,)
-    partial_failures = proto.RepeatedField(
-        proto.MESSAGE, number=2, message=status_pb2.Status,
+    dataset = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    create_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
+    partial_failures = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=status_pb2.Status,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 class ExportDataOperationMetadata(proto.Message):
@@ -134,11 +167,20 @@ class ExportDataOperationMetadata(proto.Message):
             request was created.
     """
 
-    dataset = proto.Field(proto.STRING, number=1,)
-    partial_failures = proto.RepeatedField(
-        proto.MESSAGE, number=2, message=status_pb2.Status,
+    dataset = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    create_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
+    partial_failures = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=status_pb2.Status,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 class LabelOperationMetadata(proto.Message):
@@ -295,12 +337,19 @@ class LabelOperationMetadata(proto.Message):
         oneof="details",
         message="LabelTextEntityExtractionOperationMetadata",
     )
-    progress_percent = proto.Field(proto.INT32, number=1,)
+    progress_percent = proto.Field(
+        proto.INT32,
+        number=1,
+    )
     partial_failures = proto.RepeatedField(
-        proto.MESSAGE, number=2, message=status_pb2.Status,
+        proto.MESSAGE,
+        number=2,
+        message=status_pb2.Status,
     )
     create_time = proto.Field(
-        proto.MESSAGE, number=16, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=16,
+        message=timestamp_pb2.Timestamp,
     )
 
 
@@ -314,7 +363,9 @@ class LabelImageClassificationOperationMetadata(proto.Message):
     """
 
     basic_config = proto.Field(
-        proto.MESSAGE, number=1, message=human_annotation_config.HumanAnnotationConfig,
+        proto.MESSAGE,
+        number=1,
+        message=human_annotation_config.HumanAnnotationConfig,
     )
 
 
@@ -328,7 +379,9 @@ class LabelImageBoundingBoxOperationMetadata(proto.Message):
     """
 
     basic_config = proto.Field(
-        proto.MESSAGE, number=1, message=human_annotation_config.HumanAnnotationConfig,
+        proto.MESSAGE,
+        number=1,
+        message=human_annotation_config.HumanAnnotationConfig,
     )
 
 
@@ -342,7 +395,9 @@ class LabelImageOrientedBoundingBoxOperationMetadata(proto.Message):
     """
 
     basic_config = proto.Field(
-        proto.MESSAGE, number=1, message=human_annotation_config.HumanAnnotationConfig,
+        proto.MESSAGE,
+        number=1,
+        message=human_annotation_config.HumanAnnotationConfig,
     )
 
 
@@ -356,7 +411,9 @@ class LabelImageBoundingPolyOperationMetadata(proto.Message):
     """
 
     basic_config = proto.Field(
-        proto.MESSAGE, number=1, message=human_annotation_config.HumanAnnotationConfig,
+        proto.MESSAGE,
+        number=1,
+        message=human_annotation_config.HumanAnnotationConfig,
     )
 
 
@@ -370,7 +427,9 @@ class LabelImagePolylineOperationMetadata(proto.Message):
     """
 
     basic_config = proto.Field(
-        proto.MESSAGE, number=1, message=human_annotation_config.HumanAnnotationConfig,
+        proto.MESSAGE,
+        number=1,
+        message=human_annotation_config.HumanAnnotationConfig,
     )
 
 
@@ -383,7 +442,9 @@ class LabelImageSegmentationOperationMetadata(proto.Message):
     """
 
     basic_config = proto.Field(
-        proto.MESSAGE, number=1, message=human_annotation_config.HumanAnnotationConfig,
+        proto.MESSAGE,
+        number=1,
+        message=human_annotation_config.HumanAnnotationConfig,
     )
 
 
@@ -397,7 +458,9 @@ class LabelVideoClassificationOperationMetadata(proto.Message):
     """
 
     basic_config = proto.Field(
-        proto.MESSAGE, number=1, message=human_annotation_config.HumanAnnotationConfig,
+        proto.MESSAGE,
+        number=1,
+        message=human_annotation_config.HumanAnnotationConfig,
     )
 
 
@@ -411,7 +474,9 @@ class LabelVideoObjectDetectionOperationMetadata(proto.Message):
     """
 
     basic_config = proto.Field(
-        proto.MESSAGE, number=1, message=human_annotation_config.HumanAnnotationConfig,
+        proto.MESSAGE,
+        number=1,
+        message=human_annotation_config.HumanAnnotationConfig,
     )
 
 
@@ -425,7 +490,9 @@ class LabelVideoObjectTrackingOperationMetadata(proto.Message):
     """
 
     basic_config = proto.Field(
-        proto.MESSAGE, number=1, message=human_annotation_config.HumanAnnotationConfig,
+        proto.MESSAGE,
+        number=1,
+        message=human_annotation_config.HumanAnnotationConfig,
     )
 
 
@@ -439,7 +506,9 @@ class LabelVideoEventOperationMetadata(proto.Message):
     """
 
     basic_config = proto.Field(
-        proto.MESSAGE, number=1, message=human_annotation_config.HumanAnnotationConfig,
+        proto.MESSAGE,
+        number=1,
+        message=human_annotation_config.HumanAnnotationConfig,
     )
 
 
@@ -453,7 +522,9 @@ class LabelTextClassificationOperationMetadata(proto.Message):
     """
 
     basic_config = proto.Field(
-        proto.MESSAGE, number=1, message=human_annotation_config.HumanAnnotationConfig,
+        proto.MESSAGE,
+        number=1,
+        message=human_annotation_config.HumanAnnotationConfig,
     )
 
 
@@ -467,7 +538,9 @@ class LabelTextEntityExtractionOperationMetadata(proto.Message):
     """
 
     basic_config = proto.Field(
-        proto.MESSAGE, number=1, message=human_annotation_config.HumanAnnotationConfig,
+        proto.MESSAGE,
+        number=1,
+        message=human_annotation_config.HumanAnnotationConfig,
     )
 
 
@@ -488,11 +561,20 @@ class CreateInstructionMetadata(proto.Message):
             created.
     """
 
-    instruction = proto.Field(proto.STRING, number=1,)
-    partial_failures = proto.RepeatedField(
-        proto.MESSAGE, number=2, message=status_pb2.Status,
+    instruction = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    create_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
+    partial_failures = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=status_pb2.Status,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

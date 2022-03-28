@@ -115,7 +115,11 @@ def test__get_default_mtls_endpoint():
 
 
 @pytest.mark.parametrize(
-    "client_class", [DataLabelingServiceClient, DataLabelingServiceAsyncClient,]
+    "client_class",
+    [
+        DataLabelingServiceClient,
+        DataLabelingServiceAsyncClient,
+    ],
 )
 def test_data_labeling_service_client_from_service_account_info(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -157,7 +161,11 @@ def test_data_labeling_service_client_service_account_always_use_jwt(
 
 
 @pytest.mark.parametrize(
-    "client_class", [DataLabelingServiceClient, DataLabelingServiceAsyncClient,]
+    "client_class",
+    [
+        DataLabelingServiceClient,
+        DataLabelingServiceAsyncClient,
+    ],
 )
 def test_data_labeling_service_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -539,7 +547,9 @@ def test_data_labeling_service_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -680,11 +690,16 @@ def test_data_labeling_service_client_create_channel_credentials_file(
 
 
 @pytest.mark.parametrize(
-    "request_type", [data_labeling_service.CreateDatasetRequest, dict,]
+    "request_type",
+    [
+        data_labeling_service.CreateDatasetRequest,
+        dict,
+    ],
 )
 def test_create_dataset(request_type, transport: str = "grpc"):
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -721,7 +736,8 @@ def test_create_dataset_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -738,7 +754,8 @@ async def test_create_dataset_async(
     request_type=data_labeling_service.CreateDatasetRequest,
 ):
     client = DataLabelingServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -801,7 +818,10 @@ def test_create_dataset_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -828,7 +848,10 @@ async def test_create_dataset_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_dataset_flattened():
@@ -843,7 +866,8 @@ def test_create_dataset_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.create_dataset(
-            parent="parent_value", dataset=gcd_dataset.Dataset(name="name_value"),
+            parent="parent_value",
+            dataset=gcd_dataset.Dataset(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -888,7 +912,8 @@ async def test_create_dataset_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.create_dataset(
-            parent="parent_value", dataset=gcd_dataset.Dataset(name="name_value"),
+            parent="parent_value",
+            dataset=gcd_dataset.Dataset(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -920,11 +945,16 @@ async def test_create_dataset_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [data_labeling_service.GetDatasetRequest, dict,]
+    "request_type",
+    [
+        data_labeling_service.GetDatasetRequest,
+        dict,
+    ],
 )
 def test_get_dataset(request_type, transport: str = "grpc"):
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -961,7 +991,8 @@ def test_get_dataset_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -978,7 +1009,8 @@ async def test_get_dataset_async(
     request_type=data_labeling_service.GetDatasetRequest,
 ):
     client = DataLabelingServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1041,7 +1073,10 @@ def test_get_dataset_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1068,7 +1103,10 @@ async def test_get_dataset_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_dataset_flattened():
@@ -1082,7 +1120,9 @@ def test_get_dataset_flattened():
         call.return_value = dataset.Dataset()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_dataset(name="name_value",)
+        client.get_dataset(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1102,7 +1142,8 @@ def test_get_dataset_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_dataset(
-            data_labeling_service.GetDatasetRequest(), name="name_value",
+            data_labeling_service.GetDatasetRequest(),
+            name="name_value",
         )
 
 
@@ -1120,7 +1161,9 @@ async def test_get_dataset_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(dataset.Dataset())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_dataset(name="name_value",)
+        response = await client.get_dataset(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1141,16 +1184,22 @@ async def test_get_dataset_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_dataset(
-            data_labeling_service.GetDatasetRequest(), name="name_value",
+            data_labeling_service.GetDatasetRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [data_labeling_service.ListDatasetsRequest, dict,]
+    "request_type",
+    [
+        data_labeling_service.ListDatasetsRequest,
+        dict,
+    ],
 )
 def test_list_datasets(request_type, transport: str = "grpc"):
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1179,7 +1228,8 @@ def test_list_datasets_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1196,7 +1246,8 @@ async def test_list_datasets_async(
     request_type=data_labeling_service.ListDatasetsRequest,
 ):
     client = DataLabelingServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1251,7 +1302,10 @@ def test_list_datasets_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1280,7 +1334,10 @@ async def test_list_datasets_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_datasets_flattened():
@@ -1295,7 +1352,8 @@ def test_list_datasets_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.list_datasets(
-            parent="parent_value", filter="filter_value",
+            parent="parent_value",
+            filter="filter_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -1342,7 +1400,8 @@ async def test_list_datasets_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.list_datasets(
-            parent="parent_value", filter="filter_value",
+            parent="parent_value",
+            filter="filter_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -1375,7 +1434,8 @@ async def test_list_datasets_flattened_error_async():
 
 def test_list_datasets_pager(transport_name: str = "grpc"):
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1383,17 +1443,28 @@ def test_list_datasets_pager(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             data_labeling_service.ListDatasetsResponse(
-                datasets=[dataset.Dataset(), dataset.Dataset(), dataset.Dataset(),],
+                datasets=[
+                    dataset.Dataset(),
+                    dataset.Dataset(),
+                    dataset.Dataset(),
+                ],
                 next_page_token="abc",
             ),
             data_labeling_service.ListDatasetsResponse(
-                datasets=[], next_page_token="def",
+                datasets=[],
+                next_page_token="def",
             ),
             data_labeling_service.ListDatasetsResponse(
-                datasets=[dataset.Dataset(),], next_page_token="ghi",
+                datasets=[
+                    dataset.Dataset(),
+                ],
+                next_page_token="ghi",
             ),
             data_labeling_service.ListDatasetsResponse(
-                datasets=[dataset.Dataset(), dataset.Dataset(),],
+                datasets=[
+                    dataset.Dataset(),
+                    dataset.Dataset(),
+                ],
             ),
             RuntimeError,
         )
@@ -1413,7 +1484,8 @@ def test_list_datasets_pager(transport_name: str = "grpc"):
 
 def test_list_datasets_pages(transport_name: str = "grpc"):
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1421,17 +1493,28 @@ def test_list_datasets_pages(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             data_labeling_service.ListDatasetsResponse(
-                datasets=[dataset.Dataset(), dataset.Dataset(), dataset.Dataset(),],
+                datasets=[
+                    dataset.Dataset(),
+                    dataset.Dataset(),
+                    dataset.Dataset(),
+                ],
                 next_page_token="abc",
             ),
             data_labeling_service.ListDatasetsResponse(
-                datasets=[], next_page_token="def",
+                datasets=[],
+                next_page_token="def",
             ),
             data_labeling_service.ListDatasetsResponse(
-                datasets=[dataset.Dataset(),], next_page_token="ghi",
+                datasets=[
+                    dataset.Dataset(),
+                ],
+                next_page_token="ghi",
             ),
             data_labeling_service.ListDatasetsResponse(
-                datasets=[dataset.Dataset(), dataset.Dataset(),],
+                datasets=[
+                    dataset.Dataset(),
+                    dataset.Dataset(),
+                ],
             ),
             RuntimeError,
         )
@@ -1453,21 +1536,34 @@ async def test_list_datasets_async_pager():
         # Set the response to a series of pages.
         call.side_effect = (
             data_labeling_service.ListDatasetsResponse(
-                datasets=[dataset.Dataset(), dataset.Dataset(), dataset.Dataset(),],
+                datasets=[
+                    dataset.Dataset(),
+                    dataset.Dataset(),
+                    dataset.Dataset(),
+                ],
                 next_page_token="abc",
             ),
             data_labeling_service.ListDatasetsResponse(
-                datasets=[], next_page_token="def",
+                datasets=[],
+                next_page_token="def",
             ),
             data_labeling_service.ListDatasetsResponse(
-                datasets=[dataset.Dataset(),], next_page_token="ghi",
+                datasets=[
+                    dataset.Dataset(),
+                ],
+                next_page_token="ghi",
             ),
             data_labeling_service.ListDatasetsResponse(
-                datasets=[dataset.Dataset(), dataset.Dataset(),],
+                datasets=[
+                    dataset.Dataset(),
+                    dataset.Dataset(),
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.list_datasets(request={},)
+        async_pager = await client.list_datasets(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -1490,17 +1586,28 @@ async def test_list_datasets_async_pages():
         # Set the response to a series of pages.
         call.side_effect = (
             data_labeling_service.ListDatasetsResponse(
-                datasets=[dataset.Dataset(), dataset.Dataset(), dataset.Dataset(),],
+                datasets=[
+                    dataset.Dataset(),
+                    dataset.Dataset(),
+                    dataset.Dataset(),
+                ],
                 next_page_token="abc",
             ),
             data_labeling_service.ListDatasetsResponse(
-                datasets=[], next_page_token="def",
+                datasets=[],
+                next_page_token="def",
             ),
             data_labeling_service.ListDatasetsResponse(
-                datasets=[dataset.Dataset(),], next_page_token="ghi",
+                datasets=[
+                    dataset.Dataset(),
+                ],
+                next_page_token="ghi",
             ),
             data_labeling_service.ListDatasetsResponse(
-                datasets=[dataset.Dataset(), dataset.Dataset(),],
+                datasets=[
+                    dataset.Dataset(),
+                    dataset.Dataset(),
+                ],
             ),
             RuntimeError,
         )
@@ -1512,11 +1619,16 @@ async def test_list_datasets_async_pages():
 
 
 @pytest.mark.parametrize(
-    "request_type", [data_labeling_service.DeleteDatasetRequest, dict,]
+    "request_type",
+    [
+        data_labeling_service.DeleteDatasetRequest,
+        dict,
+    ],
 )
 def test_delete_dataset(request_type, transport: str = "grpc"):
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1542,7 +1654,8 @@ def test_delete_dataset_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1559,7 +1672,8 @@ async def test_delete_dataset_async(
     request_type=data_labeling_service.DeleteDatasetRequest,
 ):
     client = DataLabelingServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1609,7 +1723,10 @@ def test_delete_dataset_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1636,7 +1753,10 @@ async def test_delete_dataset_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_dataset_flattened():
@@ -1650,7 +1770,9 @@ def test_delete_dataset_flattened():
         call.return_value = None
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_dataset(name="name_value",)
+        client.delete_dataset(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1670,7 +1792,8 @@ def test_delete_dataset_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_dataset(
-            data_labeling_service.DeleteDatasetRequest(), name="name_value",
+            data_labeling_service.DeleteDatasetRequest(),
+            name="name_value",
         )
 
 
@@ -1688,7 +1811,9 @@ async def test_delete_dataset_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_dataset(name="name_value",)
+        response = await client.delete_dataset(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1709,16 +1834,22 @@ async def test_delete_dataset_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_dataset(
-            data_labeling_service.DeleteDatasetRequest(), name="name_value",
+            data_labeling_service.DeleteDatasetRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [data_labeling_service.ImportDataRequest, dict,]
+    "request_type",
+    [
+        data_labeling_service.ImportDataRequest,
+        dict,
+    ],
 )
 def test_import_data(request_type, transport: str = "grpc"):
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1744,7 +1875,8 @@ def test_import_data_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1761,7 +1893,8 @@ async def test_import_data_async(
     request_type=data_labeling_service.ImportDataRequest,
 ):
     client = DataLabelingServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1813,7 +1946,10 @@ def test_import_data_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1842,7 +1978,10 @@ async def test_import_data_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_import_data_flattened():
@@ -1950,11 +2089,16 @@ async def test_import_data_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [data_labeling_service.ExportDataRequest, dict,]
+    "request_type",
+    [
+        data_labeling_service.ExportDataRequest,
+        dict,
+    ],
 )
 def test_export_data(request_type, transport: str = "grpc"):
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1980,7 +2124,8 @@ def test_export_data_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1997,7 +2142,8 @@ async def test_export_data_async(
     request_type=data_labeling_service.ExportDataRequest,
 ):
     client = DataLabelingServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2049,7 +2195,10 @@ def test_export_data_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2078,7 +2227,10 @@ async def test_export_data_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_export_data_flattened():
@@ -2206,11 +2358,16 @@ async def test_export_data_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [data_labeling_service.GetDataItemRequest, dict,]
+    "request_type",
+    [
+        data_labeling_service.GetDataItemRequest,
+        dict,
+    ],
 )
 def test_get_data_item(request_type, transport: str = "grpc"):
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2240,7 +2397,8 @@ def test_get_data_item_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2257,7 +2415,8 @@ async def test_get_data_item_async(
     request_type=data_labeling_service.GetDataItemRequest,
 ):
     client = DataLabelingServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2268,7 +2427,9 @@ async def test_get_data_item_async(
     with mock.patch.object(type(client.transport.get_data_item), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            dataset.DataItem(name="name_value",)
+            dataset.DataItem(
+                name="name_value",
+            )
         )
         response = await client.get_data_item(request)
 
@@ -2310,7 +2471,10 @@ def test_get_data_item_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2337,7 +2501,10 @@ async def test_get_data_item_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_data_item_flattened():
@@ -2351,7 +2518,9 @@ def test_get_data_item_flattened():
         call.return_value = dataset.DataItem()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_data_item(name="name_value",)
+        client.get_data_item(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2371,7 +2540,8 @@ def test_get_data_item_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_data_item(
-            data_labeling_service.GetDataItemRequest(), name="name_value",
+            data_labeling_service.GetDataItemRequest(),
+            name="name_value",
         )
 
 
@@ -2389,7 +2559,9 @@ async def test_get_data_item_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(dataset.DataItem())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_data_item(name="name_value",)
+        response = await client.get_data_item(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2410,16 +2582,22 @@ async def test_get_data_item_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_data_item(
-            data_labeling_service.GetDataItemRequest(), name="name_value",
+            data_labeling_service.GetDataItemRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [data_labeling_service.ListDataItemsRequest, dict,]
+    "request_type",
+    [
+        data_labeling_service.ListDataItemsRequest,
+        dict,
+    ],
 )
 def test_list_data_items(request_type, transport: str = "grpc"):
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2448,7 +2626,8 @@ def test_list_data_items_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2465,7 +2644,8 @@ async def test_list_data_items_async(
     request_type=data_labeling_service.ListDataItemsRequest,
 ):
     client = DataLabelingServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2520,7 +2700,10 @@ def test_list_data_items_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2549,7 +2732,10 @@ async def test_list_data_items_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_data_items_flattened():
@@ -2564,7 +2750,8 @@ def test_list_data_items_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.list_data_items(
-            parent="parent_value", filter="filter_value",
+            parent="parent_value",
+            filter="filter_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -2611,7 +2798,8 @@ async def test_list_data_items_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.list_data_items(
-            parent="parent_value", filter="filter_value",
+            parent="parent_value",
+            filter="filter_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -2644,7 +2832,8 @@ async def test_list_data_items_flattened_error_async():
 
 def test_list_data_items_pager(transport_name: str = "grpc"):
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2660,13 +2849,20 @@ def test_list_data_items_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             data_labeling_service.ListDataItemsResponse(
-                data_items=[], next_page_token="def",
+                data_items=[],
+                next_page_token="def",
             ),
             data_labeling_service.ListDataItemsResponse(
-                data_items=[dataset.DataItem(),], next_page_token="ghi",
+                data_items=[
+                    dataset.DataItem(),
+                ],
+                next_page_token="ghi",
             ),
             data_labeling_service.ListDataItemsResponse(
-                data_items=[dataset.DataItem(), dataset.DataItem(),],
+                data_items=[
+                    dataset.DataItem(),
+                    dataset.DataItem(),
+                ],
             ),
             RuntimeError,
         )
@@ -2686,7 +2882,8 @@ def test_list_data_items_pager(transport_name: str = "grpc"):
 
 def test_list_data_items_pages(transport_name: str = "grpc"):
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2702,13 +2899,20 @@ def test_list_data_items_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             data_labeling_service.ListDataItemsResponse(
-                data_items=[], next_page_token="def",
+                data_items=[],
+                next_page_token="def",
             ),
             data_labeling_service.ListDataItemsResponse(
-                data_items=[dataset.DataItem(),], next_page_token="ghi",
+                data_items=[
+                    dataset.DataItem(),
+                ],
+                next_page_token="ghi",
             ),
             data_labeling_service.ListDataItemsResponse(
-                data_items=[dataset.DataItem(), dataset.DataItem(),],
+                data_items=[
+                    dataset.DataItem(),
+                    dataset.DataItem(),
+                ],
             ),
             RuntimeError,
         )
@@ -2738,17 +2942,26 @@ async def test_list_data_items_async_pager():
                 next_page_token="abc",
             ),
             data_labeling_service.ListDataItemsResponse(
-                data_items=[], next_page_token="def",
+                data_items=[],
+                next_page_token="def",
             ),
             data_labeling_service.ListDataItemsResponse(
-                data_items=[dataset.DataItem(),], next_page_token="ghi",
+                data_items=[
+                    dataset.DataItem(),
+                ],
+                next_page_token="ghi",
             ),
             data_labeling_service.ListDataItemsResponse(
-                data_items=[dataset.DataItem(), dataset.DataItem(),],
+                data_items=[
+                    dataset.DataItem(),
+                    dataset.DataItem(),
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.list_data_items(request={},)
+        async_pager = await client.list_data_items(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -2779,13 +2992,20 @@ async def test_list_data_items_async_pages():
                 next_page_token="abc",
             ),
             data_labeling_service.ListDataItemsResponse(
-                data_items=[], next_page_token="def",
+                data_items=[],
+                next_page_token="def",
             ),
             data_labeling_service.ListDataItemsResponse(
-                data_items=[dataset.DataItem(),], next_page_token="ghi",
+                data_items=[
+                    dataset.DataItem(),
+                ],
+                next_page_token="ghi",
             ),
             data_labeling_service.ListDataItemsResponse(
-                data_items=[dataset.DataItem(), dataset.DataItem(),],
+                data_items=[
+                    dataset.DataItem(),
+                    dataset.DataItem(),
+                ],
             ),
             RuntimeError,
         )
@@ -2797,11 +3017,16 @@ async def test_list_data_items_async_pages():
 
 
 @pytest.mark.parametrize(
-    "request_type", [data_labeling_service.GetAnnotatedDatasetRequest, dict,]
+    "request_type",
+    [
+        data_labeling_service.GetAnnotatedDatasetRequest,
+        dict,
+    ],
 )
 def test_get_annotated_dataset(request_type, transport: str = "grpc"):
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2849,7 +3074,8 @@ def test_get_annotated_dataset_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2868,7 +3094,8 @@ async def test_get_annotated_dataset_async(
     request_type=data_labeling_service.GetAnnotatedDatasetRequest,
 ):
     client = DataLabelingServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2944,7 +3171,10 @@ def test_get_annotated_dataset_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2975,7 +3205,10 @@ async def test_get_annotated_dataset_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_annotated_dataset_flattened():
@@ -2991,7 +3224,9 @@ def test_get_annotated_dataset_flattened():
         call.return_value = dataset.AnnotatedDataset()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_annotated_dataset(name="name_value",)
+        client.get_annotated_dataset(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3011,7 +3246,8 @@ def test_get_annotated_dataset_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_annotated_dataset(
-            data_labeling_service.GetAnnotatedDatasetRequest(), name="name_value",
+            data_labeling_service.GetAnnotatedDatasetRequest(),
+            name="name_value",
         )
 
 
@@ -3033,7 +3269,9 @@ async def test_get_annotated_dataset_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_annotated_dataset(name="name_value",)
+        response = await client.get_annotated_dataset(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3054,16 +3292,22 @@ async def test_get_annotated_dataset_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_annotated_dataset(
-            data_labeling_service.GetAnnotatedDatasetRequest(), name="name_value",
+            data_labeling_service.GetAnnotatedDatasetRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [data_labeling_service.ListAnnotatedDatasetsRequest, dict,]
+    "request_type",
+    [
+        data_labeling_service.ListAnnotatedDatasetsRequest,
+        dict,
+    ],
 )
 def test_list_annotated_datasets(request_type, transport: str = "grpc"):
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3094,7 +3338,8 @@ def test_list_annotated_datasets_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3113,7 +3358,8 @@ async def test_list_annotated_datasets_async(
     request_type=data_labeling_service.ListAnnotatedDatasetsRequest,
 ):
     client = DataLabelingServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3172,7 +3418,10 @@ def test_list_annotated_datasets_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -3203,7 +3452,10 @@ async def test_list_annotated_datasets_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_annotated_datasets_flattened():
@@ -3220,7 +3472,8 @@ def test_list_annotated_datasets_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.list_annotated_datasets(
-            parent="parent_value", filter="filter_value",
+            parent="parent_value",
+            filter="filter_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -3269,7 +3522,8 @@ async def test_list_annotated_datasets_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.list_annotated_datasets(
-            parent="parent_value", filter="filter_value",
+            parent="parent_value",
+            filter="filter_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -3302,7 +3556,8 @@ async def test_list_annotated_datasets_flattened_error_async():
 
 def test_list_annotated_datasets_pager(transport_name: str = "grpc"):
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3320,10 +3575,14 @@ def test_list_annotated_datasets_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             data_labeling_service.ListAnnotatedDatasetsResponse(
-                annotated_datasets=[], next_page_token="def",
+                annotated_datasets=[],
+                next_page_token="def",
             ),
             data_labeling_service.ListAnnotatedDatasetsResponse(
-                annotated_datasets=[dataset.AnnotatedDataset(),], next_page_token="ghi",
+                annotated_datasets=[
+                    dataset.AnnotatedDataset(),
+                ],
+                next_page_token="ghi",
             ),
             data_labeling_service.ListAnnotatedDatasetsResponse(
                 annotated_datasets=[
@@ -3349,7 +3608,8 @@ def test_list_annotated_datasets_pager(transport_name: str = "grpc"):
 
 def test_list_annotated_datasets_pages(transport_name: str = "grpc"):
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3367,10 +3627,14 @@ def test_list_annotated_datasets_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             data_labeling_service.ListAnnotatedDatasetsResponse(
-                annotated_datasets=[], next_page_token="def",
+                annotated_datasets=[],
+                next_page_token="def",
             ),
             data_labeling_service.ListAnnotatedDatasetsResponse(
-                annotated_datasets=[dataset.AnnotatedDataset(),], next_page_token="ghi",
+                annotated_datasets=[
+                    dataset.AnnotatedDataset(),
+                ],
+                next_page_token="ghi",
             ),
             data_labeling_service.ListAnnotatedDatasetsResponse(
                 annotated_datasets=[
@@ -3408,10 +3672,14 @@ async def test_list_annotated_datasets_async_pager():
                 next_page_token="abc",
             ),
             data_labeling_service.ListAnnotatedDatasetsResponse(
-                annotated_datasets=[], next_page_token="def",
+                annotated_datasets=[],
+                next_page_token="def",
             ),
             data_labeling_service.ListAnnotatedDatasetsResponse(
-                annotated_datasets=[dataset.AnnotatedDataset(),], next_page_token="ghi",
+                annotated_datasets=[
+                    dataset.AnnotatedDataset(),
+                ],
+                next_page_token="ghi",
             ),
             data_labeling_service.ListAnnotatedDatasetsResponse(
                 annotated_datasets=[
@@ -3421,7 +3689,9 @@ async def test_list_annotated_datasets_async_pager():
             ),
             RuntimeError,
         )
-        async_pager = await client.list_annotated_datasets(request={},)
+        async_pager = await client.list_annotated_datasets(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -3454,10 +3724,14 @@ async def test_list_annotated_datasets_async_pages():
                 next_page_token="abc",
             ),
             data_labeling_service.ListAnnotatedDatasetsResponse(
-                annotated_datasets=[], next_page_token="def",
+                annotated_datasets=[],
+                next_page_token="def",
             ),
             data_labeling_service.ListAnnotatedDatasetsResponse(
-                annotated_datasets=[dataset.AnnotatedDataset(),], next_page_token="ghi",
+                annotated_datasets=[
+                    dataset.AnnotatedDataset(),
+                ],
+                next_page_token="ghi",
             ),
             data_labeling_service.ListAnnotatedDatasetsResponse(
                 annotated_datasets=[
@@ -3475,11 +3749,16 @@ async def test_list_annotated_datasets_async_pages():
 
 
 @pytest.mark.parametrize(
-    "request_type", [data_labeling_service.DeleteAnnotatedDatasetRequest, dict,]
+    "request_type",
+    [
+        data_labeling_service.DeleteAnnotatedDatasetRequest,
+        dict,
+    ],
 )
 def test_delete_annotated_dataset(request_type, transport: str = "grpc"):
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3507,7 +3786,8 @@ def test_delete_annotated_dataset_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3526,7 +3806,8 @@ async def test_delete_annotated_dataset_async(
     request_type=data_labeling_service.DeleteAnnotatedDatasetRequest,
 ):
     client = DataLabelingServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3580,7 +3861,10 @@ def test_delete_annotated_dataset_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -3609,15 +3893,23 @@ async def test_delete_annotated_dataset_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.parametrize(
-    "request_type", [data_labeling_service.LabelImageRequest, dict,]
+    "request_type",
+    [
+        data_labeling_service.LabelImageRequest,
+        dict,
+    ],
 )
 def test_label_image(request_type, transport: str = "grpc"):
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3643,7 +3935,8 @@ def test_label_image_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3660,7 +3953,8 @@ async def test_label_image_async(
     request_type=data_labeling_service.LabelImageRequest,
 ):
     client = DataLabelingServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3712,7 +4006,10 @@ def test_label_image_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -3741,7 +4038,10 @@ async def test_label_image_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_label_image_flattened():
@@ -3859,11 +4159,16 @@ async def test_label_image_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [data_labeling_service.LabelVideoRequest, dict,]
+    "request_type",
+    [
+        data_labeling_service.LabelVideoRequest,
+        dict,
+    ],
 )
 def test_label_video(request_type, transport: str = "grpc"):
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3889,7 +4194,8 @@ def test_label_video_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3906,7 +4212,8 @@ async def test_label_video_async(
     request_type=data_labeling_service.LabelVideoRequest,
 ):
     client = DataLabelingServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3958,7 +4265,10 @@ def test_label_video_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -3987,7 +4297,10 @@ async def test_label_video_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_label_video_flattened():
@@ -4105,11 +4418,16 @@ async def test_label_video_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [data_labeling_service.LabelTextRequest, dict,]
+    "request_type",
+    [
+        data_labeling_service.LabelTextRequest,
+        dict,
+    ],
 )
 def test_label_text(request_type, transport: str = "grpc"):
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4135,7 +4453,8 @@ def test_label_text_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4151,7 +4470,8 @@ async def test_label_text_async(
     transport: str = "grpc_asyncio", request_type=data_labeling_service.LabelTextRequest
 ):
     client = DataLabelingServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4203,7 +4523,10 @@ def test_label_text_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -4232,7 +4555,10 @@ async def test_label_text_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_label_text_flattened():
@@ -4350,11 +4676,16 @@ async def test_label_text_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [data_labeling_service.GetExampleRequest, dict,]
+    "request_type",
+    [
+        data_labeling_service.GetExampleRequest,
+        dict,
+    ],
 )
 def test_get_example(request_type, transport: str = "grpc"):
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4384,7 +4715,8 @@ def test_get_example_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4401,7 +4733,8 @@ async def test_get_example_async(
     request_type=data_labeling_service.GetExampleRequest,
 ):
     client = DataLabelingServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4412,7 +4745,9 @@ async def test_get_example_async(
     with mock.patch.object(type(client.transport.get_example), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            dataset.Example(name="name_value",)
+            dataset.Example(
+                name="name_value",
+            )
         )
         response = await client.get_example(request)
 
@@ -4454,7 +4789,10 @@ def test_get_example_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -4481,7 +4819,10 @@ async def test_get_example_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_example_flattened():
@@ -4496,7 +4837,8 @@ def test_get_example_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.get_example(
-            name="name_value", filter="filter_value",
+            name="name_value",
+            filter="filter_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -4540,7 +4882,10 @@ async def test_get_example_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(dataset.Example())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_example(name="name_value", filter="filter_value",)
+        response = await client.get_example(
+            name="name_value",
+            filter="filter_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -4571,11 +4916,16 @@ async def test_get_example_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [data_labeling_service.ListExamplesRequest, dict,]
+    "request_type",
+    [
+        data_labeling_service.ListExamplesRequest,
+        dict,
+    ],
 )
 def test_list_examples(request_type, transport: str = "grpc"):
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4604,7 +4954,8 @@ def test_list_examples_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4621,7 +4972,8 @@ async def test_list_examples_async(
     request_type=data_labeling_service.ListExamplesRequest,
 ):
     client = DataLabelingServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4676,7 +5028,10 @@ def test_list_examples_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -4705,7 +5060,10 @@ async def test_list_examples_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_examples_flattened():
@@ -4720,7 +5078,8 @@ def test_list_examples_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.list_examples(
-            parent="parent_value", filter="filter_value",
+            parent="parent_value",
+            filter="filter_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -4767,7 +5126,8 @@ async def test_list_examples_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.list_examples(
-            parent="parent_value", filter="filter_value",
+            parent="parent_value",
+            filter="filter_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -4800,7 +5160,8 @@ async def test_list_examples_flattened_error_async():
 
 def test_list_examples_pager(transport_name: str = "grpc"):
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4808,17 +5169,28 @@ def test_list_examples_pager(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             data_labeling_service.ListExamplesResponse(
-                examples=[dataset.Example(), dataset.Example(), dataset.Example(),],
+                examples=[
+                    dataset.Example(),
+                    dataset.Example(),
+                    dataset.Example(),
+                ],
                 next_page_token="abc",
             ),
             data_labeling_service.ListExamplesResponse(
-                examples=[], next_page_token="def",
+                examples=[],
+                next_page_token="def",
             ),
             data_labeling_service.ListExamplesResponse(
-                examples=[dataset.Example(),], next_page_token="ghi",
+                examples=[
+                    dataset.Example(),
+                ],
+                next_page_token="ghi",
             ),
             data_labeling_service.ListExamplesResponse(
-                examples=[dataset.Example(), dataset.Example(),],
+                examples=[
+                    dataset.Example(),
+                    dataset.Example(),
+                ],
             ),
             RuntimeError,
         )
@@ -4838,7 +5210,8 @@ def test_list_examples_pager(transport_name: str = "grpc"):
 
 def test_list_examples_pages(transport_name: str = "grpc"):
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4846,17 +5219,28 @@ def test_list_examples_pages(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             data_labeling_service.ListExamplesResponse(
-                examples=[dataset.Example(), dataset.Example(), dataset.Example(),],
+                examples=[
+                    dataset.Example(),
+                    dataset.Example(),
+                    dataset.Example(),
+                ],
                 next_page_token="abc",
             ),
             data_labeling_service.ListExamplesResponse(
-                examples=[], next_page_token="def",
+                examples=[],
+                next_page_token="def",
             ),
             data_labeling_service.ListExamplesResponse(
-                examples=[dataset.Example(),], next_page_token="ghi",
+                examples=[
+                    dataset.Example(),
+                ],
+                next_page_token="ghi",
             ),
             data_labeling_service.ListExamplesResponse(
-                examples=[dataset.Example(), dataset.Example(),],
+                examples=[
+                    dataset.Example(),
+                    dataset.Example(),
+                ],
             ),
             RuntimeError,
         )
@@ -4878,21 +5262,34 @@ async def test_list_examples_async_pager():
         # Set the response to a series of pages.
         call.side_effect = (
             data_labeling_service.ListExamplesResponse(
-                examples=[dataset.Example(), dataset.Example(), dataset.Example(),],
+                examples=[
+                    dataset.Example(),
+                    dataset.Example(),
+                    dataset.Example(),
+                ],
                 next_page_token="abc",
             ),
             data_labeling_service.ListExamplesResponse(
-                examples=[], next_page_token="def",
+                examples=[],
+                next_page_token="def",
             ),
             data_labeling_service.ListExamplesResponse(
-                examples=[dataset.Example(),], next_page_token="ghi",
+                examples=[
+                    dataset.Example(),
+                ],
+                next_page_token="ghi",
             ),
             data_labeling_service.ListExamplesResponse(
-                examples=[dataset.Example(), dataset.Example(),],
+                examples=[
+                    dataset.Example(),
+                    dataset.Example(),
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.list_examples(request={},)
+        async_pager = await client.list_examples(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -4915,17 +5312,28 @@ async def test_list_examples_async_pages():
         # Set the response to a series of pages.
         call.side_effect = (
             data_labeling_service.ListExamplesResponse(
-                examples=[dataset.Example(), dataset.Example(), dataset.Example(),],
+                examples=[
+                    dataset.Example(),
+                    dataset.Example(),
+                    dataset.Example(),
+                ],
                 next_page_token="abc",
             ),
             data_labeling_service.ListExamplesResponse(
-                examples=[], next_page_token="def",
+                examples=[],
+                next_page_token="def",
             ),
             data_labeling_service.ListExamplesResponse(
-                examples=[dataset.Example(),], next_page_token="ghi",
+                examples=[
+                    dataset.Example(),
+                ],
+                next_page_token="ghi",
             ),
             data_labeling_service.ListExamplesResponse(
-                examples=[dataset.Example(), dataset.Example(),],
+                examples=[
+                    dataset.Example(),
+                    dataset.Example(),
+                ],
             ),
             RuntimeError,
         )
@@ -4937,11 +5345,16 @@ async def test_list_examples_async_pages():
 
 
 @pytest.mark.parametrize(
-    "request_type", [data_labeling_service.CreateAnnotationSpecSetRequest, dict,]
+    "request_type",
+    [
+        data_labeling_service.CreateAnnotationSpecSetRequest,
+        dict,
+    ],
 )
 def test_create_annotation_spec_set(request_type, transport: str = "grpc"):
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4978,7 +5391,8 @@ def test_create_annotation_spec_set_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4997,7 +5411,8 @@ async def test_create_annotation_spec_set_async(
     request_type=data_labeling_service.CreateAnnotationSpecSetRequest,
 ):
     client = DataLabelingServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5062,7 +5477,10 @@ def test_create_annotation_spec_set_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -5093,7 +5511,10 @@ async def test_create_annotation_spec_set_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_annotation_spec_set_flattened():
@@ -5201,11 +5622,16 @@ async def test_create_annotation_spec_set_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [data_labeling_service.GetAnnotationSpecSetRequest, dict,]
+    "request_type",
+    [
+        data_labeling_service.GetAnnotationSpecSetRequest,
+        dict,
+    ],
 )
 def test_get_annotation_spec_set(request_type, transport: str = "grpc"):
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5242,7 +5668,8 @@ def test_get_annotation_spec_set_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5261,7 +5688,8 @@ async def test_get_annotation_spec_set_async(
     request_type=data_labeling_service.GetAnnotationSpecSetRequest,
 ):
     client = DataLabelingServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5326,7 +5754,10 @@ def test_get_annotation_spec_set_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -5357,7 +5788,10 @@ async def test_get_annotation_spec_set_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_annotation_spec_set_flattened():
@@ -5373,7 +5807,9 @@ def test_get_annotation_spec_set_flattened():
         call.return_value = annotation_spec_set.AnnotationSpecSet()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_annotation_spec_set(name="name_value",)
+        client.get_annotation_spec_set(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -5393,7 +5829,8 @@ def test_get_annotation_spec_set_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_annotation_spec_set(
-            data_labeling_service.GetAnnotationSpecSetRequest(), name="name_value",
+            data_labeling_service.GetAnnotationSpecSetRequest(),
+            name="name_value",
         )
 
 
@@ -5415,7 +5852,9 @@ async def test_get_annotation_spec_set_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_annotation_spec_set(name="name_value",)
+        response = await client.get_annotation_spec_set(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -5436,16 +5875,22 @@ async def test_get_annotation_spec_set_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_annotation_spec_set(
-            data_labeling_service.GetAnnotationSpecSetRequest(), name="name_value",
+            data_labeling_service.GetAnnotationSpecSetRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [data_labeling_service.ListAnnotationSpecSetsRequest, dict,]
+    "request_type",
+    [
+        data_labeling_service.ListAnnotationSpecSetsRequest,
+        dict,
+    ],
 )
 def test_list_annotation_spec_sets(request_type, transport: str = "grpc"):
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5476,7 +5921,8 @@ def test_list_annotation_spec_sets_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5495,7 +5941,8 @@ async def test_list_annotation_spec_sets_async(
     request_type=data_labeling_service.ListAnnotationSpecSetsRequest,
 ):
     client = DataLabelingServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5554,7 +6001,10 @@ def test_list_annotation_spec_sets_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -5585,7 +6035,10 @@ async def test_list_annotation_spec_sets_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_annotation_spec_sets_flattened():
@@ -5602,7 +6055,8 @@ def test_list_annotation_spec_sets_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.list_annotation_spec_sets(
-            parent="parent_value", filter="filter_value",
+            parent="parent_value",
+            filter="filter_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -5651,7 +6105,8 @@ async def test_list_annotation_spec_sets_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.list_annotation_spec_sets(
-            parent="parent_value", filter="filter_value",
+            parent="parent_value",
+            filter="filter_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -5684,7 +6139,8 @@ async def test_list_annotation_spec_sets_flattened_error_async():
 
 def test_list_annotation_spec_sets_pager(transport_name: str = "grpc"):
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5702,10 +6158,13 @@ def test_list_annotation_spec_sets_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             data_labeling_service.ListAnnotationSpecSetsResponse(
-                annotation_spec_sets=[], next_page_token="def",
+                annotation_spec_sets=[],
+                next_page_token="def",
             ),
             data_labeling_service.ListAnnotationSpecSetsResponse(
-                annotation_spec_sets=[annotation_spec_set.AnnotationSpecSet(),],
+                annotation_spec_sets=[
+                    annotation_spec_set.AnnotationSpecSet(),
+                ],
                 next_page_token="ghi",
             ),
             data_labeling_service.ListAnnotationSpecSetsResponse(
@@ -5734,7 +6193,8 @@ def test_list_annotation_spec_sets_pager(transport_name: str = "grpc"):
 
 def test_list_annotation_spec_sets_pages(transport_name: str = "grpc"):
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5752,10 +6212,13 @@ def test_list_annotation_spec_sets_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             data_labeling_service.ListAnnotationSpecSetsResponse(
-                annotation_spec_sets=[], next_page_token="def",
+                annotation_spec_sets=[],
+                next_page_token="def",
             ),
             data_labeling_service.ListAnnotationSpecSetsResponse(
-                annotation_spec_sets=[annotation_spec_set.AnnotationSpecSet(),],
+                annotation_spec_sets=[
+                    annotation_spec_set.AnnotationSpecSet(),
+                ],
                 next_page_token="ghi",
             ),
             data_labeling_service.ListAnnotationSpecSetsResponse(
@@ -5794,10 +6257,13 @@ async def test_list_annotation_spec_sets_async_pager():
                 next_page_token="abc",
             ),
             data_labeling_service.ListAnnotationSpecSetsResponse(
-                annotation_spec_sets=[], next_page_token="def",
+                annotation_spec_sets=[],
+                next_page_token="def",
             ),
             data_labeling_service.ListAnnotationSpecSetsResponse(
-                annotation_spec_sets=[annotation_spec_set.AnnotationSpecSet(),],
+                annotation_spec_sets=[
+                    annotation_spec_set.AnnotationSpecSet(),
+                ],
                 next_page_token="ghi",
             ),
             data_labeling_service.ListAnnotationSpecSetsResponse(
@@ -5808,7 +6274,9 @@ async def test_list_annotation_spec_sets_async_pager():
             ),
             RuntimeError,
         )
-        async_pager = await client.list_annotation_spec_sets(request={},)
+        async_pager = await client.list_annotation_spec_sets(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -5843,10 +6311,13 @@ async def test_list_annotation_spec_sets_async_pages():
                 next_page_token="abc",
             ),
             data_labeling_service.ListAnnotationSpecSetsResponse(
-                annotation_spec_sets=[], next_page_token="def",
+                annotation_spec_sets=[],
+                next_page_token="def",
             ),
             data_labeling_service.ListAnnotationSpecSetsResponse(
-                annotation_spec_sets=[annotation_spec_set.AnnotationSpecSet(),],
+                annotation_spec_sets=[
+                    annotation_spec_set.AnnotationSpecSet(),
+                ],
                 next_page_token="ghi",
             ),
             data_labeling_service.ListAnnotationSpecSetsResponse(
@@ -5865,11 +6336,16 @@ async def test_list_annotation_spec_sets_async_pages():
 
 
 @pytest.mark.parametrize(
-    "request_type", [data_labeling_service.DeleteAnnotationSpecSetRequest, dict,]
+    "request_type",
+    [
+        data_labeling_service.DeleteAnnotationSpecSetRequest,
+        dict,
+    ],
 )
 def test_delete_annotation_spec_set(request_type, transport: str = "grpc"):
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5897,7 +6373,8 @@ def test_delete_annotation_spec_set_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5916,7 +6393,8 @@ async def test_delete_annotation_spec_set_async(
     request_type=data_labeling_service.DeleteAnnotationSpecSetRequest,
 ):
     client = DataLabelingServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5970,7 +6448,10 @@ def test_delete_annotation_spec_set_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -5999,7 +6480,10 @@ async def test_delete_annotation_spec_set_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_annotation_spec_set_flattened():
@@ -6015,7 +6499,9 @@ def test_delete_annotation_spec_set_flattened():
         call.return_value = None
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_annotation_spec_set(name="name_value",)
+        client.delete_annotation_spec_set(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -6035,7 +6521,8 @@ def test_delete_annotation_spec_set_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_annotation_spec_set(
-            data_labeling_service.DeleteAnnotationSpecSetRequest(), name="name_value",
+            data_labeling_service.DeleteAnnotationSpecSetRequest(),
+            name="name_value",
         )
 
 
@@ -6055,7 +6542,9 @@ async def test_delete_annotation_spec_set_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_annotation_spec_set(name="name_value",)
+        response = await client.delete_annotation_spec_set(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -6076,16 +6565,22 @@ async def test_delete_annotation_spec_set_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_annotation_spec_set(
-            data_labeling_service.DeleteAnnotationSpecSetRequest(), name="name_value",
+            data_labeling_service.DeleteAnnotationSpecSetRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [data_labeling_service.CreateInstructionRequest, dict,]
+    "request_type",
+    [
+        data_labeling_service.CreateInstructionRequest,
+        dict,
+    ],
 )
 def test_create_instruction(request_type, transport: str = "grpc"):
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -6113,7 +6608,8 @@ def test_create_instruction_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6132,7 +6628,8 @@ async def test_create_instruction_async(
     request_type=data_labeling_service.CreateInstructionRequest,
 ):
     client = DataLabelingServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -6188,7 +6685,10 @@ def test_create_instruction_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -6219,7 +6719,10 @@ async def test_create_instruction_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_instruction_flattened():
@@ -6319,11 +6822,16 @@ async def test_create_instruction_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [data_labeling_service.GetInstructionRequest, dict,]
+    "request_type",
+    [
+        data_labeling_service.GetInstructionRequest,
+        dict,
+    ],
 )
 def test_get_instruction(request_type, transport: str = "grpc"):
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -6360,7 +6868,8 @@ def test_get_instruction_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6377,7 +6886,8 @@ async def test_get_instruction_async(
     request_type=data_labeling_service.GetInstructionRequest,
 ):
     client = DataLabelingServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -6440,7 +6950,10 @@ def test_get_instruction_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -6469,7 +6982,10 @@ async def test_get_instruction_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_instruction_flattened():
@@ -6483,7 +6999,9 @@ def test_get_instruction_flattened():
         call.return_value = instruction.Instruction()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_instruction(name="name_value",)
+        client.get_instruction(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -6503,7 +7021,8 @@ def test_get_instruction_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_instruction(
-            data_labeling_service.GetInstructionRequest(), name="name_value",
+            data_labeling_service.GetInstructionRequest(),
+            name="name_value",
         )
 
 
@@ -6523,7 +7042,9 @@ async def test_get_instruction_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_instruction(name="name_value",)
+        response = await client.get_instruction(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -6544,16 +7065,22 @@ async def test_get_instruction_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_instruction(
-            data_labeling_service.GetInstructionRequest(), name="name_value",
+            data_labeling_service.GetInstructionRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [data_labeling_service.ListInstructionsRequest, dict,]
+    "request_type",
+    [
+        data_labeling_service.ListInstructionsRequest,
+        dict,
+    ],
 )
 def test_list_instructions(request_type, transport: str = "grpc"):
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -6584,7 +7111,8 @@ def test_list_instructions_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6603,7 +7131,8 @@ async def test_list_instructions_async(
     request_type=data_labeling_service.ListInstructionsRequest,
 ):
     client = DataLabelingServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -6662,7 +7191,10 @@ def test_list_instructions_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -6693,7 +7225,10 @@ async def test_list_instructions_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_instructions_flattened():
@@ -6710,7 +7245,8 @@ def test_list_instructions_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.list_instructions(
-            parent="parent_value", filter="filter_value",
+            parent="parent_value",
+            filter="filter_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -6759,7 +7295,8 @@ async def test_list_instructions_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.list_instructions(
-            parent="parent_value", filter="filter_value",
+            parent="parent_value",
+            filter="filter_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -6792,7 +7329,8 @@ async def test_list_instructions_flattened_error_async():
 
 def test_list_instructions_pager(transport_name: str = "grpc"):
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6810,13 +7348,20 @@ def test_list_instructions_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             data_labeling_service.ListInstructionsResponse(
-                instructions=[], next_page_token="def",
+                instructions=[],
+                next_page_token="def",
             ),
             data_labeling_service.ListInstructionsResponse(
-                instructions=[instruction.Instruction(),], next_page_token="ghi",
+                instructions=[
+                    instruction.Instruction(),
+                ],
+                next_page_token="ghi",
             ),
             data_labeling_service.ListInstructionsResponse(
-                instructions=[instruction.Instruction(), instruction.Instruction(),],
+                instructions=[
+                    instruction.Instruction(),
+                    instruction.Instruction(),
+                ],
             ),
             RuntimeError,
         )
@@ -6836,7 +7381,8 @@ def test_list_instructions_pager(transport_name: str = "grpc"):
 
 def test_list_instructions_pages(transport_name: str = "grpc"):
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6854,13 +7400,20 @@ def test_list_instructions_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             data_labeling_service.ListInstructionsResponse(
-                instructions=[], next_page_token="def",
+                instructions=[],
+                next_page_token="def",
             ),
             data_labeling_service.ListInstructionsResponse(
-                instructions=[instruction.Instruction(),], next_page_token="ghi",
+                instructions=[
+                    instruction.Instruction(),
+                ],
+                next_page_token="ghi",
             ),
             data_labeling_service.ListInstructionsResponse(
-                instructions=[instruction.Instruction(), instruction.Instruction(),],
+                instructions=[
+                    instruction.Instruction(),
+                    instruction.Instruction(),
+                ],
             ),
             RuntimeError,
         )
@@ -6892,17 +7445,26 @@ async def test_list_instructions_async_pager():
                 next_page_token="abc",
             ),
             data_labeling_service.ListInstructionsResponse(
-                instructions=[], next_page_token="def",
+                instructions=[],
+                next_page_token="def",
             ),
             data_labeling_service.ListInstructionsResponse(
-                instructions=[instruction.Instruction(),], next_page_token="ghi",
+                instructions=[
+                    instruction.Instruction(),
+                ],
+                next_page_token="ghi",
             ),
             data_labeling_service.ListInstructionsResponse(
-                instructions=[instruction.Instruction(), instruction.Instruction(),],
+                instructions=[
+                    instruction.Instruction(),
+                    instruction.Instruction(),
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.list_instructions(request={},)
+        async_pager = await client.list_instructions(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -6935,13 +7497,20 @@ async def test_list_instructions_async_pages():
                 next_page_token="abc",
             ),
             data_labeling_service.ListInstructionsResponse(
-                instructions=[], next_page_token="def",
+                instructions=[],
+                next_page_token="def",
             ),
             data_labeling_service.ListInstructionsResponse(
-                instructions=[instruction.Instruction(),], next_page_token="ghi",
+                instructions=[
+                    instruction.Instruction(),
+                ],
+                next_page_token="ghi",
             ),
             data_labeling_service.ListInstructionsResponse(
-                instructions=[instruction.Instruction(), instruction.Instruction(),],
+                instructions=[
+                    instruction.Instruction(),
+                    instruction.Instruction(),
+                ],
             ),
             RuntimeError,
         )
@@ -6953,11 +7522,16 @@ async def test_list_instructions_async_pages():
 
 
 @pytest.mark.parametrize(
-    "request_type", [data_labeling_service.DeleteInstructionRequest, dict,]
+    "request_type",
+    [
+        data_labeling_service.DeleteInstructionRequest,
+        dict,
+    ],
 )
 def test_delete_instruction(request_type, transport: str = "grpc"):
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -6985,7 +7559,8 @@ def test_delete_instruction_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7004,7 +7579,8 @@ async def test_delete_instruction_async(
     request_type=data_labeling_service.DeleteInstructionRequest,
 ):
     client = DataLabelingServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -7058,7 +7634,10 @@ def test_delete_instruction_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -7087,7 +7666,10 @@ async def test_delete_instruction_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_instruction_flattened():
@@ -7103,7 +7685,9 @@ def test_delete_instruction_flattened():
         call.return_value = None
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_instruction(name="name_value",)
+        client.delete_instruction(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -7123,7 +7707,8 @@ def test_delete_instruction_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_instruction(
-            data_labeling_service.DeleteInstructionRequest(), name="name_value",
+            data_labeling_service.DeleteInstructionRequest(),
+            name="name_value",
         )
 
 
@@ -7143,7 +7728,9 @@ async def test_delete_instruction_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_instruction(name="name_value",)
+        response = await client.delete_instruction(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -7164,16 +7751,22 @@ async def test_delete_instruction_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_instruction(
-            data_labeling_service.DeleteInstructionRequest(), name="name_value",
+            data_labeling_service.DeleteInstructionRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [data_labeling_service.GetEvaluationRequest, dict,]
+    "request_type",
+    [
+        data_labeling_service.GetEvaluationRequest,
+        dict,
+    ],
 )
 def test_get_evaluation(request_type, transport: str = "grpc"):
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -7209,7 +7802,8 @@ def test_get_evaluation_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7226,7 +7820,8 @@ async def test_get_evaluation_async(
     request_type=data_labeling_service.GetEvaluationRequest,
 ):
     client = DataLabelingServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -7288,7 +7883,10 @@ def test_get_evaluation_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -7317,7 +7915,10 @@ async def test_get_evaluation_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_evaluation_flattened():
@@ -7331,7 +7932,9 @@ def test_get_evaluation_flattened():
         call.return_value = evaluation.Evaluation()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_evaluation(name="name_value",)
+        client.get_evaluation(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -7351,7 +7954,8 @@ def test_get_evaluation_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_evaluation(
-            data_labeling_service.GetEvaluationRequest(), name="name_value",
+            data_labeling_service.GetEvaluationRequest(),
+            name="name_value",
         )
 
 
@@ -7371,7 +7975,9 @@ async def test_get_evaluation_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_evaluation(name="name_value",)
+        response = await client.get_evaluation(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -7392,16 +7998,22 @@ async def test_get_evaluation_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_evaluation(
-            data_labeling_service.GetEvaluationRequest(), name="name_value",
+            data_labeling_service.GetEvaluationRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [data_labeling_service.SearchEvaluationsRequest, dict,]
+    "request_type",
+    [
+        data_labeling_service.SearchEvaluationsRequest,
+        dict,
+    ],
 )
 def test_search_evaluations(request_type, transport: str = "grpc"):
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -7432,7 +8044,8 @@ def test_search_evaluations_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7451,7 +8064,8 @@ async def test_search_evaluations_async(
     request_type=data_labeling_service.SearchEvaluationsRequest,
 ):
     client = DataLabelingServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -7510,7 +8124,10 @@ def test_search_evaluations_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -7541,7 +8158,10 @@ async def test_search_evaluations_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_search_evaluations_flattened():
@@ -7558,7 +8178,8 @@ def test_search_evaluations_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.search_evaluations(
-            parent="parent_value", filter="filter_value",
+            parent="parent_value",
+            filter="filter_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -7607,7 +8228,8 @@ async def test_search_evaluations_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.search_evaluations(
-            parent="parent_value", filter="filter_value",
+            parent="parent_value",
+            filter="filter_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -7640,7 +8262,8 @@ async def test_search_evaluations_flattened_error_async():
 
 def test_search_evaluations_pager(transport_name: str = "grpc"):
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7658,13 +8281,20 @@ def test_search_evaluations_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             data_labeling_service.SearchEvaluationsResponse(
-                evaluations=[], next_page_token="def",
+                evaluations=[],
+                next_page_token="def",
             ),
             data_labeling_service.SearchEvaluationsResponse(
-                evaluations=[evaluation.Evaluation(),], next_page_token="ghi",
+                evaluations=[
+                    evaluation.Evaluation(),
+                ],
+                next_page_token="ghi",
             ),
             data_labeling_service.SearchEvaluationsResponse(
-                evaluations=[evaluation.Evaluation(), evaluation.Evaluation(),],
+                evaluations=[
+                    evaluation.Evaluation(),
+                    evaluation.Evaluation(),
+                ],
             ),
             RuntimeError,
         )
@@ -7684,7 +8314,8 @@ def test_search_evaluations_pager(transport_name: str = "grpc"):
 
 def test_search_evaluations_pages(transport_name: str = "grpc"):
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7702,13 +8333,20 @@ def test_search_evaluations_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             data_labeling_service.SearchEvaluationsResponse(
-                evaluations=[], next_page_token="def",
+                evaluations=[],
+                next_page_token="def",
             ),
             data_labeling_service.SearchEvaluationsResponse(
-                evaluations=[evaluation.Evaluation(),], next_page_token="ghi",
+                evaluations=[
+                    evaluation.Evaluation(),
+                ],
+                next_page_token="ghi",
             ),
             data_labeling_service.SearchEvaluationsResponse(
-                evaluations=[evaluation.Evaluation(), evaluation.Evaluation(),],
+                evaluations=[
+                    evaluation.Evaluation(),
+                    evaluation.Evaluation(),
+                ],
             ),
             RuntimeError,
         )
@@ -7740,17 +8378,26 @@ async def test_search_evaluations_async_pager():
                 next_page_token="abc",
             ),
             data_labeling_service.SearchEvaluationsResponse(
-                evaluations=[], next_page_token="def",
+                evaluations=[],
+                next_page_token="def",
             ),
             data_labeling_service.SearchEvaluationsResponse(
-                evaluations=[evaluation.Evaluation(),], next_page_token="ghi",
+                evaluations=[
+                    evaluation.Evaluation(),
+                ],
+                next_page_token="ghi",
             ),
             data_labeling_service.SearchEvaluationsResponse(
-                evaluations=[evaluation.Evaluation(), evaluation.Evaluation(),],
+                evaluations=[
+                    evaluation.Evaluation(),
+                    evaluation.Evaluation(),
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.search_evaluations(request={},)
+        async_pager = await client.search_evaluations(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -7783,13 +8430,20 @@ async def test_search_evaluations_async_pages():
                 next_page_token="abc",
             ),
             data_labeling_service.SearchEvaluationsResponse(
-                evaluations=[], next_page_token="def",
+                evaluations=[],
+                next_page_token="def",
             ),
             data_labeling_service.SearchEvaluationsResponse(
-                evaluations=[evaluation.Evaluation(),], next_page_token="ghi",
+                evaluations=[
+                    evaluation.Evaluation(),
+                ],
+                next_page_token="ghi",
             ),
             data_labeling_service.SearchEvaluationsResponse(
-                evaluations=[evaluation.Evaluation(), evaluation.Evaluation(),],
+                evaluations=[
+                    evaluation.Evaluation(),
+                    evaluation.Evaluation(),
+                ],
             ),
             RuntimeError,
         )
@@ -7801,11 +8455,16 @@ async def test_search_evaluations_async_pages():
 
 
 @pytest.mark.parametrize(
-    "request_type", [data_labeling_service.SearchExampleComparisonsRequest, dict,]
+    "request_type",
+    [
+        data_labeling_service.SearchExampleComparisonsRequest,
+        dict,
+    ],
 )
 def test_search_example_comparisons(request_type, transport: str = "grpc"):
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -7836,7 +8495,8 @@ def test_search_example_comparisons_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7855,7 +8515,8 @@ async def test_search_example_comparisons_async(
     request_type=data_labeling_service.SearchExampleComparisonsRequest,
 ):
     client = DataLabelingServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -7914,7 +8575,10 @@ def test_search_example_comparisons_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -7945,7 +8609,10 @@ async def test_search_example_comparisons_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_search_example_comparisons_flattened():
@@ -7961,7 +8628,9 @@ def test_search_example_comparisons_flattened():
         call.return_value = data_labeling_service.SearchExampleComparisonsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.search_example_comparisons(parent="parent_value",)
+        client.search_example_comparisons(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -8004,7 +8673,9 @@ async def test_search_example_comparisons_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.search_example_comparisons(parent="parent_value",)
+        response = await client.search_example_comparisons(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -8032,7 +8703,8 @@ async def test_search_example_comparisons_flattened_error_async():
 
 def test_search_example_comparisons_pager(transport_name: str = "grpc"):
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8050,7 +8722,8 @@ def test_search_example_comparisons_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             data_labeling_service.SearchExampleComparisonsResponse(
-                example_comparisons=[], next_page_token="def",
+                example_comparisons=[],
+                next_page_token="def",
             ),
             data_labeling_service.SearchExampleComparisonsResponse(
                 example_comparisons=[
@@ -8088,7 +8761,8 @@ def test_search_example_comparisons_pager(transport_name: str = "grpc"):
 
 def test_search_example_comparisons_pages(transport_name: str = "grpc"):
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8106,7 +8780,8 @@ def test_search_example_comparisons_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             data_labeling_service.SearchExampleComparisonsResponse(
-                example_comparisons=[], next_page_token="def",
+                example_comparisons=[],
+                next_page_token="def",
             ),
             data_labeling_service.SearchExampleComparisonsResponse(
                 example_comparisons=[
@@ -8150,7 +8825,8 @@ async def test_search_example_comparisons_async_pager():
                 next_page_token="abc",
             ),
             data_labeling_service.SearchExampleComparisonsResponse(
-                example_comparisons=[], next_page_token="def",
+                example_comparisons=[],
+                next_page_token="def",
             ),
             data_labeling_service.SearchExampleComparisonsResponse(
                 example_comparisons=[
@@ -8166,7 +8842,9 @@ async def test_search_example_comparisons_async_pager():
             ),
             RuntimeError,
         )
-        async_pager = await client.search_example_comparisons(request={},)
+        async_pager = await client.search_example_comparisons(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -8205,7 +8883,8 @@ async def test_search_example_comparisons_async_pages():
                 next_page_token="abc",
             ),
             data_labeling_service.SearchExampleComparisonsResponse(
-                example_comparisons=[], next_page_token="def",
+                example_comparisons=[],
+                next_page_token="def",
             ),
             data_labeling_service.SearchExampleComparisonsResponse(
                 example_comparisons=[
@@ -8229,11 +8908,16 @@ async def test_search_example_comparisons_async_pages():
 
 
 @pytest.mark.parametrize(
-    "request_type", [data_labeling_service.CreateEvaluationJobRequest, dict,]
+    "request_type",
+    [
+        data_labeling_service.CreateEvaluationJobRequest,
+        dict,
+    ],
 )
 def test_create_evaluation_job(request_type, transport: str = "grpc"):
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -8276,7 +8960,8 @@ def test_create_evaluation_job_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8295,7 +8980,8 @@ async def test_create_evaluation_job_async(
     request_type=data_labeling_service.CreateEvaluationJobRequest,
 ):
     client = DataLabelingServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -8366,7 +9052,10 @@ def test_create_evaluation_job_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -8397,7 +9086,10 @@ async def test_create_evaluation_job_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_evaluation_job_flattened():
@@ -8414,7 +9106,8 @@ def test_create_evaluation_job_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.create_evaluation_job(
-            parent="parent_value", job=evaluation_job.EvaluationJob(name="name_value"),
+            parent="parent_value",
+            job=evaluation_job.EvaluationJob(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -8463,7 +9156,8 @@ async def test_create_evaluation_job_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.create_evaluation_job(
-            parent="parent_value", job=evaluation_job.EvaluationJob(name="name_value"),
+            parent="parent_value",
+            job=evaluation_job.EvaluationJob(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -8495,11 +9189,16 @@ async def test_create_evaluation_job_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [data_labeling_service.UpdateEvaluationJobRequest, dict,]
+    "request_type",
+    [
+        data_labeling_service.UpdateEvaluationJobRequest,
+        dict,
+    ],
 )
 def test_update_evaluation_job(request_type, transport: str = "grpc"):
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -8542,7 +9241,8 @@ def test_update_evaluation_job_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8561,7 +9261,8 @@ async def test_update_evaluation_job_async(
     request_type=data_labeling_service.UpdateEvaluationJobRequest,
 ):
     client = DataLabelingServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -8769,11 +9470,16 @@ async def test_update_evaluation_job_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [data_labeling_service.GetEvaluationJobRequest, dict,]
+    "request_type",
+    [
+        data_labeling_service.GetEvaluationJobRequest,
+        dict,
+    ],
 )
 def test_get_evaluation_job(request_type, transport: str = "grpc"):
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -8816,7 +9522,8 @@ def test_get_evaluation_job_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8835,7 +9542,8 @@ async def test_get_evaluation_job_async(
     request_type=data_labeling_service.GetEvaluationJobRequest,
 ):
     client = DataLabelingServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -8906,7 +9614,10 @@ def test_get_evaluation_job_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -8937,7 +9648,10 @@ async def test_get_evaluation_job_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_evaluation_job_flattened():
@@ -8953,7 +9667,9 @@ def test_get_evaluation_job_flattened():
         call.return_value = evaluation_job.EvaluationJob()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_evaluation_job(name="name_value",)
+        client.get_evaluation_job(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -8973,7 +9689,8 @@ def test_get_evaluation_job_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_evaluation_job(
-            data_labeling_service.GetEvaluationJobRequest(), name="name_value",
+            data_labeling_service.GetEvaluationJobRequest(),
+            name="name_value",
         )
 
 
@@ -8995,7 +9712,9 @@ async def test_get_evaluation_job_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_evaluation_job(name="name_value",)
+        response = await client.get_evaluation_job(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -9016,16 +9735,22 @@ async def test_get_evaluation_job_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_evaluation_job(
-            data_labeling_service.GetEvaluationJobRequest(), name="name_value",
+            data_labeling_service.GetEvaluationJobRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [data_labeling_service.PauseEvaluationJobRequest, dict,]
+    "request_type",
+    [
+        data_labeling_service.PauseEvaluationJobRequest,
+        dict,
+    ],
 )
 def test_pause_evaluation_job(request_type, transport: str = "grpc"):
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -9053,7 +9778,8 @@ def test_pause_evaluation_job_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9072,7 +9798,8 @@ async def test_pause_evaluation_job_async(
     request_type=data_labeling_service.PauseEvaluationJobRequest,
 ):
     client = DataLabelingServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -9126,7 +9853,10 @@ def test_pause_evaluation_job_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -9155,7 +9885,10 @@ async def test_pause_evaluation_job_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_pause_evaluation_job_flattened():
@@ -9171,7 +9904,9 @@ def test_pause_evaluation_job_flattened():
         call.return_value = None
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.pause_evaluation_job(name="name_value",)
+        client.pause_evaluation_job(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -9191,7 +9926,8 @@ def test_pause_evaluation_job_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.pause_evaluation_job(
-            data_labeling_service.PauseEvaluationJobRequest(), name="name_value",
+            data_labeling_service.PauseEvaluationJobRequest(),
+            name="name_value",
         )
 
 
@@ -9211,7 +9947,9 @@ async def test_pause_evaluation_job_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.pause_evaluation_job(name="name_value",)
+        response = await client.pause_evaluation_job(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -9232,16 +9970,22 @@ async def test_pause_evaluation_job_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.pause_evaluation_job(
-            data_labeling_service.PauseEvaluationJobRequest(), name="name_value",
+            data_labeling_service.PauseEvaluationJobRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [data_labeling_service.ResumeEvaluationJobRequest, dict,]
+    "request_type",
+    [
+        data_labeling_service.ResumeEvaluationJobRequest,
+        dict,
+    ],
 )
 def test_resume_evaluation_job(request_type, transport: str = "grpc"):
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -9269,7 +10013,8 @@ def test_resume_evaluation_job_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9288,7 +10033,8 @@ async def test_resume_evaluation_job_async(
     request_type=data_labeling_service.ResumeEvaluationJobRequest,
 ):
     client = DataLabelingServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -9342,7 +10088,10 @@ def test_resume_evaluation_job_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -9371,7 +10120,10 @@ async def test_resume_evaluation_job_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_resume_evaluation_job_flattened():
@@ -9387,7 +10139,9 @@ def test_resume_evaluation_job_flattened():
         call.return_value = None
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.resume_evaluation_job(name="name_value",)
+        client.resume_evaluation_job(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -9407,7 +10161,8 @@ def test_resume_evaluation_job_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.resume_evaluation_job(
-            data_labeling_service.ResumeEvaluationJobRequest(), name="name_value",
+            data_labeling_service.ResumeEvaluationJobRequest(),
+            name="name_value",
         )
 
 
@@ -9427,7 +10182,9 @@ async def test_resume_evaluation_job_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.resume_evaluation_job(name="name_value",)
+        response = await client.resume_evaluation_job(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -9448,16 +10205,22 @@ async def test_resume_evaluation_job_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.resume_evaluation_job(
-            data_labeling_service.ResumeEvaluationJobRequest(), name="name_value",
+            data_labeling_service.ResumeEvaluationJobRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [data_labeling_service.DeleteEvaluationJobRequest, dict,]
+    "request_type",
+    [
+        data_labeling_service.DeleteEvaluationJobRequest,
+        dict,
+    ],
 )
 def test_delete_evaluation_job(request_type, transport: str = "grpc"):
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -9485,7 +10248,8 @@ def test_delete_evaluation_job_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9504,7 +10268,8 @@ async def test_delete_evaluation_job_async(
     request_type=data_labeling_service.DeleteEvaluationJobRequest,
 ):
     client = DataLabelingServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -9558,7 +10323,10 @@ def test_delete_evaluation_job_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -9587,7 +10355,10 @@ async def test_delete_evaluation_job_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_evaluation_job_flattened():
@@ -9603,7 +10374,9 @@ def test_delete_evaluation_job_flattened():
         call.return_value = None
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_evaluation_job(name="name_value",)
+        client.delete_evaluation_job(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -9623,7 +10396,8 @@ def test_delete_evaluation_job_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_evaluation_job(
-            data_labeling_service.DeleteEvaluationJobRequest(), name="name_value",
+            data_labeling_service.DeleteEvaluationJobRequest(),
+            name="name_value",
         )
 
 
@@ -9643,7 +10417,9 @@ async def test_delete_evaluation_job_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_evaluation_job(name="name_value",)
+        response = await client.delete_evaluation_job(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -9664,16 +10440,22 @@ async def test_delete_evaluation_job_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_evaluation_job(
-            data_labeling_service.DeleteEvaluationJobRequest(), name="name_value",
+            data_labeling_service.DeleteEvaluationJobRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [data_labeling_service.ListEvaluationJobsRequest, dict,]
+    "request_type",
+    [
+        data_labeling_service.ListEvaluationJobsRequest,
+        dict,
+    ],
 )
 def test_list_evaluation_jobs(request_type, transport: str = "grpc"):
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -9704,7 +10486,8 @@ def test_list_evaluation_jobs_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9723,7 +10506,8 @@ async def test_list_evaluation_jobs_async(
     request_type=data_labeling_service.ListEvaluationJobsRequest,
 ):
     client = DataLabelingServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -9782,7 +10566,10 @@ def test_list_evaluation_jobs_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -9813,7 +10600,10 @@ async def test_list_evaluation_jobs_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_evaluation_jobs_flattened():
@@ -9830,7 +10620,8 @@ def test_list_evaluation_jobs_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.list_evaluation_jobs(
-            parent="parent_value", filter="filter_value",
+            parent="parent_value",
+            filter="filter_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -9879,7 +10670,8 @@ async def test_list_evaluation_jobs_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.list_evaluation_jobs(
-            parent="parent_value", filter="filter_value",
+            parent="parent_value",
+            filter="filter_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -9912,7 +10704,8 @@ async def test_list_evaluation_jobs_flattened_error_async():
 
 def test_list_evaluation_jobs_pager(transport_name: str = "grpc"):
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9930,10 +10723,13 @@ def test_list_evaluation_jobs_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             data_labeling_service.ListEvaluationJobsResponse(
-                evaluation_jobs=[], next_page_token="def",
+                evaluation_jobs=[],
+                next_page_token="def",
             ),
             data_labeling_service.ListEvaluationJobsResponse(
-                evaluation_jobs=[evaluation_job.EvaluationJob(),],
+                evaluation_jobs=[
+                    evaluation_job.EvaluationJob(),
+                ],
                 next_page_token="ghi",
             ),
             data_labeling_service.ListEvaluationJobsResponse(
@@ -9960,7 +10756,8 @@ def test_list_evaluation_jobs_pager(transport_name: str = "grpc"):
 
 def test_list_evaluation_jobs_pages(transport_name: str = "grpc"):
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9978,10 +10775,13 @@ def test_list_evaluation_jobs_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             data_labeling_service.ListEvaluationJobsResponse(
-                evaluation_jobs=[], next_page_token="def",
+                evaluation_jobs=[],
+                next_page_token="def",
             ),
             data_labeling_service.ListEvaluationJobsResponse(
-                evaluation_jobs=[evaluation_job.EvaluationJob(),],
+                evaluation_jobs=[
+                    evaluation_job.EvaluationJob(),
+                ],
                 next_page_token="ghi",
             ),
             data_labeling_service.ListEvaluationJobsResponse(
@@ -10020,10 +10820,13 @@ async def test_list_evaluation_jobs_async_pager():
                 next_page_token="abc",
             ),
             data_labeling_service.ListEvaluationJobsResponse(
-                evaluation_jobs=[], next_page_token="def",
+                evaluation_jobs=[],
+                next_page_token="def",
             ),
             data_labeling_service.ListEvaluationJobsResponse(
-                evaluation_jobs=[evaluation_job.EvaluationJob(),],
+                evaluation_jobs=[
+                    evaluation_job.EvaluationJob(),
+                ],
                 next_page_token="ghi",
             ),
             data_labeling_service.ListEvaluationJobsResponse(
@@ -10034,7 +10837,9 @@ async def test_list_evaluation_jobs_async_pager():
             ),
             RuntimeError,
         )
-        async_pager = await client.list_evaluation_jobs(request={},)
+        async_pager = await client.list_evaluation_jobs(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -10067,10 +10872,13 @@ async def test_list_evaluation_jobs_async_pages():
                 next_page_token="abc",
             ),
             data_labeling_service.ListEvaluationJobsResponse(
-                evaluation_jobs=[], next_page_token="def",
+                evaluation_jobs=[],
+                next_page_token="def",
             ),
             data_labeling_service.ListEvaluationJobsResponse(
-                evaluation_jobs=[evaluation_job.EvaluationJob(),],
+                evaluation_jobs=[
+                    evaluation_job.EvaluationJob(),
+                ],
                 next_page_token="ghi",
             ),
             data_labeling_service.ListEvaluationJobsResponse(
@@ -10095,7 +10903,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = DataLabelingServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -10115,7 +10924,10 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = DataLabelingServiceClient(client_options=options, transport=transport,)
+        client = DataLabelingServiceClient(
+            client_options=options,
+            transport=transport,
+        )
 
     # It is an error to provide an api_key and a credential.
     options = mock.Mock()
@@ -10131,7 +10943,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = DataLabelingServiceClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -10179,7 +10992,10 @@ def test_transport_grpc_default():
     client = DataLabelingServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
-    assert isinstance(client.transport, transports.DataLabelingServiceGrpcTransport,)
+    assert isinstance(
+        client.transport,
+        transports.DataLabelingServiceGrpcTransport,
+    )
 
 
 def test_data_labeling_service_base_transport_error():
@@ -10262,7 +11078,8 @@ def test_data_labeling_service_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.DataLabelingServiceTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -10422,7 +11239,8 @@ def test_data_labeling_service_grpc_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.DataLabelingServiceGrpcTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -10434,7 +11252,8 @@ def test_data_labeling_service_grpc_asyncio_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.DataLabelingServiceGrpcAsyncIOTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -10543,12 +11362,16 @@ def test_data_labeling_service_transport_channel_mtls_with_adc(transport_class):
 
 def test_data_labeling_service_grpc_lro_client():
     client = DataLabelingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
     transport = client.transport
 
     # Ensure that we have a api-core operations client.
-    assert isinstance(transport.operations_client, operations_v1.OperationsClient,)
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsClient,
+    )
 
     # Ensure that subsequent calls to the property send the exact same object.
     assert transport.operations_client is transport.operations_client
@@ -10556,12 +11379,16 @@ def test_data_labeling_service_grpc_lro_client():
 
 def test_data_labeling_service_grpc_lro_async_client():
     client = DataLabelingServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     transport = client.transport
 
     # Ensure that we have a api-core operations client.
-    assert isinstance(transport.operations_client, operations_v1.OperationsAsyncClient,)
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsAsyncClient,
+    )
 
     # Ensure that subsequent calls to the property send the exact same object.
     assert transport.operations_client is transport.operations_client
@@ -10572,7 +11399,9 @@ def test_annotated_dataset_path():
     dataset = "clam"
     annotated_dataset = "whelk"
     expected = "projects/{project}/datasets/{dataset}/annotatedDatasets/{annotated_dataset}".format(
-        project=project, dataset=dataset, annotated_dataset=annotated_dataset,
+        project=project,
+        dataset=dataset,
+        annotated_dataset=annotated_dataset,
     )
     actual = DataLabelingServiceClient.annotated_dataset_path(
         project, dataset, annotated_dataset
@@ -10597,7 +11426,8 @@ def test_annotation_spec_set_path():
     project = "cuttlefish"
     annotation_spec_set = "mussel"
     expected = "projects/{project}/annotationSpecSets/{annotation_spec_set}".format(
-        project=project, annotation_spec_set=annotation_spec_set,
+        project=project,
+        annotation_spec_set=annotation_spec_set,
     )
     actual = DataLabelingServiceClient.annotation_spec_set_path(
         project, annotation_spec_set
@@ -10622,7 +11452,9 @@ def test_data_item_path():
     dataset = "abalone"
     data_item = "squid"
     expected = "projects/{project}/datasets/{dataset}/dataItems/{data_item}".format(
-        project=project, dataset=dataset, data_item=data_item,
+        project=project,
+        dataset=dataset,
+        data_item=data_item,
     )
     actual = DataLabelingServiceClient.data_item_path(project, dataset, data_item)
     assert expected == actual
@@ -10645,7 +11477,8 @@ def test_dataset_path():
     project = "oyster"
     dataset = "nudibranch"
     expected = "projects/{project}/datasets/{dataset}".format(
-        project=project, dataset=dataset,
+        project=project,
+        dataset=dataset,
     )
     actual = DataLabelingServiceClient.dataset_path(project, dataset)
     assert expected == actual
@@ -10668,7 +11501,9 @@ def test_evaluation_path():
     dataset = "nautilus"
     evaluation = "scallop"
     expected = "projects/{project}/datasets/{dataset}/evaluations/{evaluation}".format(
-        project=project, dataset=dataset, evaluation=evaluation,
+        project=project,
+        dataset=dataset,
+        evaluation=evaluation,
     )
     actual = DataLabelingServiceClient.evaluation_path(project, dataset, evaluation)
     assert expected == actual
@@ -10691,7 +11526,8 @@ def test_evaluation_job_path():
     project = "whelk"
     evaluation_job = "octopus"
     expected = "projects/{project}/evaluationJobs/{evaluation_job}".format(
-        project=project, evaluation_job=evaluation_job,
+        project=project,
+        evaluation_job=evaluation_job,
     )
     actual = DataLabelingServiceClient.evaluation_job_path(project, evaluation_job)
     assert expected == actual
@@ -10744,7 +11580,8 @@ def test_instruction_path():
     project = "whelk"
     instruction = "octopus"
     expected = "projects/{project}/instructions/{instruction}".format(
-        project=project, instruction=instruction,
+        project=project,
+        instruction=instruction,
     )
     actual = DataLabelingServiceClient.instruction_path(project, instruction)
     assert expected == actual
@@ -10784,7 +11621,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "winkle"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = DataLabelingServiceClient.common_folder_path(folder)
     assert expected == actual
 
@@ -10802,7 +11641,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "scallop"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = DataLabelingServiceClient.common_organization_path(organization)
     assert expected == actual
 
@@ -10820,7 +11661,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "squid"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = DataLabelingServiceClient.common_project_path(project)
     assert expected == actual
 
@@ -10840,7 +11683,8 @@ def test_common_location_path():
     project = "whelk"
     location = "octopus"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = DataLabelingServiceClient.common_location_path(project, location)
     assert expected == actual
@@ -10865,7 +11709,8 @@ def test_client_with_default_client_info():
         transports.DataLabelingServiceTransport, "_prep_wrapped_messages"
     ) as prep:
         client = DataLabelingServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -10874,7 +11719,8 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = DataLabelingServiceClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -10882,7 +11728,8 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = DataLabelingServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     with mock.patch.object(
         type(getattr(client.transport, "grpc_channel")), "close"

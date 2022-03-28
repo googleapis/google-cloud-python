@@ -75,7 +75,8 @@ class DataLabelingServiceClientMeta(type):
     _transport_registry["grpc_asyncio"] = DataLabelingServiceGrpcAsyncIOTransport
 
     def get_transport_class(
-        cls, label: str = None,
+        cls,
+        label: str = None,
     ) -> Type[DataLabelingServiceTransport]:
         """Returns an appropriate transport class.
 
@@ -182,11 +183,15 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
     @staticmethod
     def annotated_dataset_path(
-        project: str, dataset: str, annotated_dataset: str,
+        project: str,
+        dataset: str,
+        annotated_dataset: str,
     ) -> str:
         """Returns a fully-qualified annotated_dataset string."""
         return "projects/{project}/datasets/{dataset}/annotatedDatasets/{annotated_dataset}".format(
-            project=project, dataset=dataset, annotated_dataset=annotated_dataset,
+            project=project,
+            dataset=dataset,
+            annotated_dataset=annotated_dataset,
         )
 
     @staticmethod
@@ -199,10 +204,14 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def annotation_spec_set_path(project: str, annotation_spec_set: str,) -> str:
+    def annotation_spec_set_path(
+        project: str,
+        annotation_spec_set: str,
+    ) -> str:
         """Returns a fully-qualified annotation_spec_set string."""
         return "projects/{project}/annotationSpecSets/{annotation_spec_set}".format(
-            project=project, annotation_spec_set=annotation_spec_set,
+            project=project,
+            annotation_spec_set=annotation_spec_set,
         )
 
     @staticmethod
@@ -215,10 +224,16 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def data_item_path(project: str, dataset: str, data_item: str,) -> str:
+    def data_item_path(
+        project: str,
+        dataset: str,
+        data_item: str,
+    ) -> str:
         """Returns a fully-qualified data_item string."""
         return "projects/{project}/datasets/{dataset}/dataItems/{data_item}".format(
-            project=project, dataset=dataset, data_item=data_item,
+            project=project,
+            dataset=dataset,
+            data_item=data_item,
         )
 
     @staticmethod
@@ -231,10 +246,14 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def dataset_path(project: str, dataset: str,) -> str:
+    def dataset_path(
+        project: str,
+        dataset: str,
+    ) -> str:
         """Returns a fully-qualified dataset string."""
         return "projects/{project}/datasets/{dataset}".format(
-            project=project, dataset=dataset,
+            project=project,
+            dataset=dataset,
         )
 
     @staticmethod
@@ -244,10 +263,16 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def evaluation_path(project: str, dataset: str, evaluation: str,) -> str:
+    def evaluation_path(
+        project: str,
+        dataset: str,
+        evaluation: str,
+    ) -> str:
         """Returns a fully-qualified evaluation string."""
         return "projects/{project}/datasets/{dataset}/evaluations/{evaluation}".format(
-            project=project, dataset=dataset, evaluation=evaluation,
+            project=project,
+            dataset=dataset,
+            evaluation=evaluation,
         )
 
     @staticmethod
@@ -260,10 +285,14 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def evaluation_job_path(project: str, evaluation_job: str,) -> str:
+    def evaluation_job_path(
+        project: str,
+        evaluation_job: str,
+    ) -> str:
         """Returns a fully-qualified evaluation_job string."""
         return "projects/{project}/evaluationJobs/{evaluation_job}".format(
-            project=project, evaluation_job=evaluation_job,
+            project=project,
+            evaluation_job=evaluation_job,
         )
 
     @staticmethod
@@ -276,7 +305,10 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
     @staticmethod
     def example_path(
-        project: str, dataset: str, annotated_dataset: str, example: str,
+        project: str,
+        dataset: str,
+        annotated_dataset: str,
+        example: str,
     ) -> str:
         """Returns a fully-qualified example string."""
         return "projects/{project}/datasets/{dataset}/annotatedDatasets/{annotated_dataset}/examples/{example}".format(
@@ -296,10 +328,14 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def instruction_path(project: str, instruction: str,) -> str:
+    def instruction_path(
+        project: str,
+        instruction: str,
+    ) -> str:
         """Returns a fully-qualified instruction string."""
         return "projects/{project}/instructions/{instruction}".format(
-            project=project, instruction=instruction,
+            project=project,
+            instruction=instruction,
         )
 
     @staticmethod
@@ -311,7 +347,9 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_billing_account_path(billing_account: str,) -> str:
+    def common_billing_account_path(
+        billing_account: str,
+    ) -> str:
         """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
@@ -324,9 +362,13 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(folder: str,) -> str:
+    def common_folder_path(
+        folder: str,
+    ) -> str:
         """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(folder=folder,)
+        return "folders/{folder}".format(
+            folder=folder,
+        )
 
     @staticmethod
     def parse_common_folder_path(path: str) -> Dict[str, str]:
@@ -335,9 +377,13 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(organization: str,) -> str:
+    def common_organization_path(
+        organization: str,
+    ) -> str:
         """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(organization=organization,)
+        return "organizations/{organization}".format(
+            organization=organization,
+        )
 
     @staticmethod
     def parse_common_organization_path(path: str) -> Dict[str, str]:
@@ -346,9 +392,13 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(project: str,) -> str:
+    def common_project_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified project string."""
-        return "projects/{project}".format(project=project,)
+        return "projects/{project}".format(
+            project=project,
+        )
 
     @staticmethod
     def parse_common_project_path(path: str) -> Dict[str, str]:
@@ -357,10 +407,14 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(project: str, location: str,) -> str:
+    def common_location_path(
+        project: str,
+        location: str,
+    ) -> str:
         """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
-            project=project, location=location,
+            project=project,
+            location=location,
         )
 
     @staticmethod
@@ -630,7 +684,12 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -721,7 +780,12 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -826,12 +890,20 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListDatasetsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -913,7 +985,10 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def import_data(
@@ -1023,7 +1098,12 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1161,7 +1241,12 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1260,7 +1345,12 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1366,12 +1456,20 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListDataItemsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1466,7 +1564,12 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1573,12 +1676,20 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListAnnotatedDatasetsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1642,7 +1753,10 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def label_image(
@@ -1769,7 +1883,12 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1905,7 +2024,12 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -2041,7 +2165,12 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -2153,7 +2282,12 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2258,12 +2392,20 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListExamplesPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -2377,7 +2519,12 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2471,7 +2618,12 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2581,12 +2733,20 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListAnnotationSpecSetsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -2675,7 +2835,10 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def create_instruction(
@@ -2781,7 +2944,12 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -2880,7 +3048,12 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2986,12 +3159,20 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListInstructionsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -3074,7 +3255,10 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def get_evaluation(
@@ -3166,7 +3350,12 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -3303,12 +3492,20 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.SearchEvaluationsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -3416,12 +3613,20 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.SearchExampleComparisonsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -3526,7 +3731,12 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -3646,7 +3856,12 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -3741,7 +3956,12 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -3827,7 +4047,10 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def resume_evaluation_job(
@@ -3911,7 +4134,10 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def delete_evaluation_job(
@@ -3992,7 +4218,10 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def list_evaluation_jobs(
@@ -4103,12 +4332,20 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListEvaluationJobsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.

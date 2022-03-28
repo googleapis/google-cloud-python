@@ -134,7 +134,9 @@ class DataLabelingServiceTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.create_dataset: gapic_v1.method.wrap_method(
-                self.create_dataset, default_timeout=30.0, client_info=client_info,
+                self.create_dataset,
+                default_timeout=30.0,
+                client_info=client_info,
             ),
             self.get_dataset: gapic_v1.method.wrap_method(
                 self.get_dataset,
@@ -182,7 +184,9 @@ class DataLabelingServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.import_data: gapic_v1.method.wrap_method(
-                self.import_data, default_timeout=30.0, client_info=client_info,
+                self.import_data,
+                default_timeout=30.0,
+                client_info=client_info,
             ),
             self.export_data: gapic_v1.method.wrap_method(
                 self.export_data,
@@ -265,13 +269,19 @@ class DataLabelingServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.label_image: gapic_v1.method.wrap_method(
-                self.label_image, default_timeout=30.0, client_info=client_info,
+                self.label_image,
+                default_timeout=30.0,
+                client_info=client_info,
             ),
             self.label_video: gapic_v1.method.wrap_method(
-                self.label_video, default_timeout=30.0, client_info=client_info,
+                self.label_video,
+                default_timeout=30.0,
+                client_info=client_info,
             ),
             self.label_text: gapic_v1.method.wrap_method(
-                self.label_text, default_timeout=30.0, client_info=client_info,
+                self.label_text,
+                default_timeout=30.0,
+                client_info=client_info,
             ),
             self.get_example: gapic_v1.method.wrap_method(
                 self.get_example,
@@ -354,7 +364,9 @@ class DataLabelingServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.create_instruction: gapic_v1.method.wrap_method(
-                self.create_instruction, default_timeout=30.0, client_info=client_info,
+                self.create_instruction,
+                default_timeout=30.0,
+                client_info=client_info,
             ),
             self.get_instruction: gapic_v1.method.wrap_method(
                 self.get_instruction,
@@ -506,9 +518,9 @@ class DataLabelingServiceTransport(abc.ABC):
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

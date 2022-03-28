@@ -18,7 +18,10 @@ import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.datalabeling.v1beta1",
-    manifest={"AnnotationSpecSet", "AnnotationSpec",},
+    manifest={
+        "AnnotationSpecSet",
+        "AnnotationSpec",
+    },
 )
 
 
@@ -53,13 +56,27 @@ class AnnotationSpecSet(proto.Message):
             annotation spec set.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    display_name = proto.Field(proto.STRING, number=2,)
-    description = proto.Field(proto.STRING, number=3,)
-    annotation_specs = proto.RepeatedField(
-        proto.MESSAGE, number=4, message="AnnotationSpec",
+    name = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    blocking_resources = proto.RepeatedField(proto.STRING, number=5,)
+    display_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    annotation_specs = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message="AnnotationSpec",
+    )
+    blocking_resources = proto.RepeatedField(
+        proto.STRING,
+        number=5,
+    )
 
 
 class AnnotationSpec(proto.Message):
@@ -78,8 +95,14 @@ class AnnotationSpec(proto.Message):
             up to 10,000 characters long.
     """
 
-    display_name = proto.Field(proto.STRING, number=1,)
-    description = proto.Field(proto.STRING, number=2,)
+    display_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

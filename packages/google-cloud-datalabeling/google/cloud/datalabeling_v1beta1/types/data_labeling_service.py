@@ -87,8 +87,15 @@ class CreateDatasetRequest(proto.Message):
             Required. The dataset to be created.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    dataset = proto.Field(proto.MESSAGE, number=2, message=gcd_dataset.Dataset,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    dataset = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=gcd_dataset.Dataset,
+    )
 
 
 class GetDatasetRequest(proto.Message):
@@ -100,7 +107,10 @@ class GetDatasetRequest(proto.Message):
             projects/{project_id}/datasets/{dataset_id}
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListDatasetsRequest(proto.Message):
@@ -125,10 +135,22 @@ class ListDatasetsRequest(proto.Message):
             Returns the first page if empty.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    filter = proto.Field(proto.STRING, number=2,)
-    page_size = proto.Field(proto.INT32, number=3,)
-    page_token = proto.Field(proto.STRING, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class ListDatasetsResponse(proto.Message):
@@ -146,9 +168,14 @@ class ListDatasetsResponse(proto.Message):
         return self
 
     datasets = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=gcd_dataset.Dataset,
+        proto.MESSAGE,
+        number=1,
+        message=gcd_dataset.Dataset,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class DeleteDatasetRequest(proto.Message):
@@ -160,7 +187,10 @@ class DeleteDatasetRequest(proto.Message):
             projects/{project_id}/datasets/{dataset_id}
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ImportDataRequest(proto.Message):
@@ -179,11 +209,19 @@ class ImportDataRequest(proto.Message):
             notification will be sent.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    input_config = proto.Field(
-        proto.MESSAGE, number=2, message=gcd_dataset.InputConfig,
+    name = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    user_email_address = proto.Field(proto.STRING, number=3,)
+    input_config = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=gcd_dataset.InputConfig,
+    )
+    user_email_address = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ExportDataRequest(proto.Message):
@@ -210,13 +248,27 @@ class ExportDataRequest(proto.Message):
             notification will be sent.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    annotated_dataset = proto.Field(proto.STRING, number=2,)
-    filter = proto.Field(proto.STRING, number=3,)
-    output_config = proto.Field(
-        proto.MESSAGE, number=4, message=gcd_dataset.OutputConfig,
+    name = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    user_email_address = proto.Field(proto.STRING, number=5,)
+    annotated_dataset = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    output_config = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=gcd_dataset.OutputConfig,
+    )
+    user_email_address = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class GetDataItemRequest(proto.Message):
@@ -228,7 +280,10 @@ class GetDataItemRequest(proto.Message):
             projects/{project_id}/datasets/{dataset_id}/dataItems/{data_item_id}
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListDataItemsRequest(proto.Message):
@@ -253,10 +308,22 @@ class ListDataItemsRequest(proto.Message):
             Return first page if empty.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    filter = proto.Field(proto.STRING, number=2,)
-    page_size = proto.Field(proto.INT32, number=3,)
-    page_token = proto.Field(proto.STRING, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class ListDataItemsResponse(proto.Message):
@@ -274,9 +341,14 @@ class ListDataItemsResponse(proto.Message):
         return self
 
     data_items = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=gcd_dataset.DataItem,
+        proto.MESSAGE,
+        number=1,
+        message=gcd_dataset.DataItem,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetAnnotatedDatasetRequest(proto.Message):
@@ -289,7 +361,10 @@ class GetAnnotatedDatasetRequest(proto.Message):
             {annotated_dataset_id}
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListAnnotatedDatasetsRequest(proto.Message):
@@ -314,10 +389,22 @@ class ListAnnotatedDatasetsRequest(proto.Message):
             call. Return first page if empty.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    filter = proto.Field(proto.STRING, number=2,)
-    page_size = proto.Field(proto.INT32, number=3,)
-    page_token = proto.Field(proto.STRING, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class ListAnnotatedDatasetsResponse(proto.Message):
@@ -335,9 +422,14 @@ class ListAnnotatedDatasetsResponse(proto.Message):
         return self
 
     annotated_datasets = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=gcd_dataset.AnnotatedDataset,
+        proto.MESSAGE,
+        number=1,
+        message=gcd_dataset.AnnotatedDataset,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class DeleteAnnotatedDatasetRequest(proto.Message):
@@ -350,7 +442,10 @@ class DeleteAnnotatedDatasetRequest(proto.Message):
             {annotated_dataset_id}
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class LabelImageRequest(proto.Message):
@@ -431,11 +526,20 @@ class LabelImageRequest(proto.Message):
         oneof="request_config",
         message=human_annotation_config.SegmentationConfig,
     )
-    parent = proto.Field(proto.STRING, number=1,)
-    basic_config = proto.Field(
-        proto.MESSAGE, number=2, message=human_annotation_config.HumanAnnotationConfig,
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    feature = proto.Field(proto.ENUM, number=3, enum=Feature,)
+    basic_config = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=human_annotation_config.HumanAnnotationConfig,
+    )
+    feature = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=Feature,
+    )
 
 
 class LabelVideoRequest(proto.Message):
@@ -514,11 +618,20 @@ class LabelVideoRequest(proto.Message):
         oneof="request_config",
         message=human_annotation_config.EventConfig,
     )
-    parent = proto.Field(proto.STRING, number=1,)
-    basic_config = proto.Field(
-        proto.MESSAGE, number=2, message=human_annotation_config.HumanAnnotationConfig,
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    feature = proto.Field(proto.ENUM, number=3, enum=Feature,)
+    basic_config = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=human_annotation_config.HumanAnnotationConfig,
+    )
+    feature = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=Feature,
+    )
 
 
 class LabelTextRequest(proto.Message):
@@ -571,11 +684,20 @@ class LabelTextRequest(proto.Message):
         oneof="request_config",
         message=human_annotation_config.TextEntityExtractionConfig,
     )
-    parent = proto.Field(proto.STRING, number=1,)
-    basic_config = proto.Field(
-        proto.MESSAGE, number=2, message=human_annotation_config.HumanAnnotationConfig,
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    feature = proto.Field(proto.ENUM, number=6, enum=Feature,)
+    basic_config = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=human_annotation_config.HumanAnnotationConfig,
+    )
+    feature = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum=Feature,
+    )
 
 
 class GetExampleRequest(proto.Message):
@@ -592,8 +714,14 @@ class GetExampleRequest(proto.Message):
             "annotation_spec.display_name = {display_name}".
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    filter = proto.Field(proto.STRING, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class ListExamplesRequest(proto.Message):
@@ -619,10 +747,22 @@ class ListExamplesRequest(proto.Message):
             Return first page if empty.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    filter = proto.Field(proto.STRING, number=2,)
-    page_size = proto.Field(proto.INT32, number=3,)
-    page_token = proto.Field(proto.STRING, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class ListExamplesResponse(proto.Message):
@@ -640,9 +780,14 @@ class ListExamplesResponse(proto.Message):
         return self
 
     examples = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=gcd_dataset.Example,
+        proto.MESSAGE,
+        number=1,
+        message=gcd_dataset.Example,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class CreateAnnotationSpecSetRequest(proto.Message):
@@ -658,9 +803,14 @@ class CreateAnnotationSpecSetRequest(proto.Message):
             for annotation specs with same display_name.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     annotation_spec_set = proto.Field(
-        proto.MESSAGE, number=2, message=gcd_annotation_spec_set.AnnotationSpecSet,
+        proto.MESSAGE,
+        number=2,
+        message=gcd_annotation_spec_set.AnnotationSpecSet,
     )
 
 
@@ -673,7 +823,10 @@ class GetAnnotationSpecSetRequest(proto.Message):
             projects/{project_id}/annotationSpecSets/{annotation_spec_set_id}
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListAnnotationSpecSetsRequest(proto.Message):
@@ -698,10 +851,22 @@ class ListAnnotationSpecSetsRequest(proto.Message):
             call. Return first page if empty.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    filter = proto.Field(proto.STRING, number=2,)
-    page_size = proto.Field(proto.INT32, number=3,)
-    page_token = proto.Field(proto.STRING, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class ListAnnotationSpecSetsResponse(proto.Message):
@@ -719,9 +884,14 @@ class ListAnnotationSpecSetsResponse(proto.Message):
         return self
 
     annotation_spec_sets = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=gcd_annotation_spec_set.AnnotationSpecSet,
+        proto.MESSAGE,
+        number=1,
+        message=gcd_annotation_spec_set.AnnotationSpecSet,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class DeleteAnnotationSpecSetRequest(proto.Message):
@@ -733,7 +903,10 @@ class DeleteAnnotationSpecSetRequest(proto.Message):
             ``projects/{project_id}/annotationSpecSets/{annotation_spec_set_id}``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CreateInstructionRequest(proto.Message):
@@ -748,9 +921,14 @@ class CreateInstructionRequest(proto.Message):
             labeling task.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     instruction = proto.Field(
-        proto.MESSAGE, number=2, message=gcd_instruction.Instruction,
+        proto.MESSAGE,
+        number=2,
+        message=gcd_instruction.Instruction,
     )
 
 
@@ -763,7 +941,10 @@ class GetInstructionRequest(proto.Message):
             projects/{project_id}/instructions/{instruction_id}
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class DeleteInstructionRequest(proto.Message):
@@ -775,7 +956,10 @@ class DeleteInstructionRequest(proto.Message):
             projects/{project_id}/instructions/{instruction_id}
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListInstructionsRequest(proto.Message):
@@ -800,10 +984,22 @@ class ListInstructionsRequest(proto.Message):
             Return first page if empty.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    filter = proto.Field(proto.STRING, number=2,)
-    page_size = proto.Field(proto.INT32, number=3,)
-    page_token = proto.Field(proto.STRING, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class ListInstructionsResponse(proto.Message):
@@ -821,9 +1017,14 @@ class ListInstructionsResponse(proto.Message):
         return self
 
     instructions = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=gcd_instruction.Instruction,
+        proto.MESSAGE,
+        number=1,
+        message=gcd_instruction.Instruction,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetEvaluationRequest(proto.Message):
@@ -836,7 +1037,10 @@ class GetEvaluationRequest(proto.Message):
             "projects/{project_id}/datasets/{dataset_id}/evaluations/{evaluation_id}'
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class SearchEvaluationsRequest(proto.Message):
@@ -892,10 +1096,22 @@ class SearchEvaluationsRequest(proto.Message):
             first page of the search.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    filter = proto.Field(proto.STRING, number=2,)
-    page_size = proto.Field(proto.INT32, number=3,)
-    page_token = proto.Field(proto.STRING, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class SearchEvaluationsResponse(proto.Message):
@@ -913,9 +1129,14 @@ class SearchEvaluationsResponse(proto.Message):
         return self
 
     evaluations = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=evaluation.Evaluation,
+        proto.MESSAGE,
+        number=1,
+        message=evaluation.Evaluation,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class SearchExampleComparisonsRequest(proto.Message):
@@ -942,9 +1163,18 @@ class SearchExampleComparisonsRequest(proto.Message):
             first page of the search.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class SearchExampleComparisonsResponse(proto.Message):
@@ -970,10 +1200,14 @@ class SearchExampleComparisonsResponse(proto.Message):
         """
 
         ground_truth_example = proto.Field(
-            proto.MESSAGE, number=1, message=gcd_dataset.Example,
+            proto.MESSAGE,
+            number=1,
+            message=gcd_dataset.Example,
         )
         model_created_examples = proto.RepeatedField(
-            proto.MESSAGE, number=2, message=gcd_dataset.Example,
+            proto.MESSAGE,
+            number=2,
+            message=gcd_dataset.Example,
         )
 
     @property
@@ -981,9 +1215,14 @@ class SearchExampleComparisonsResponse(proto.Message):
         return self
 
     example_comparisons = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=ExampleComparison,
+        proto.MESSAGE,
+        number=1,
+        message=ExampleComparison,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class CreateEvaluationJobRequest(proto.Message):
@@ -997,9 +1236,14 @@ class CreateEvaluationJobRequest(proto.Message):
             Required. The evaluation job to create.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     job = proto.Field(
-        proto.MESSAGE, number=2, message=gcd_evaluation_job.EvaluationJob,
+        proto.MESSAGE,
+        number=2,
+        message=gcd_evaluation_job.EvaluationJob,
     )
 
 
@@ -1023,10 +1267,14 @@ class UpdateEvaluationJobRequest(proto.Message):
     """
 
     evaluation_job = proto.Field(
-        proto.MESSAGE, number=1, message=gcd_evaluation_job.EvaluationJob,
+        proto.MESSAGE,
+        number=1,
+        message=gcd_evaluation_job.EvaluationJob,
     )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -1040,7 +1288,10 @@ class GetEvaluationJobRequest(proto.Message):
             "projects/{project_id}/evaluationJobs/{evaluation_job_id}".
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class PauseEvaluationJobRequest(proto.Message):
@@ -1054,7 +1305,10 @@ class PauseEvaluationJobRequest(proto.Message):
             "projects/{project_id}/evaluationJobs/{evaluation_job_id}".
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ResumeEvaluationJobRequest(proto.Message):
@@ -1068,7 +1322,10 @@ class ResumeEvaluationJobRequest(proto.Message):
             "projects/{project_id}/evaluationJobs/{evaluation_job_id}".
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class DeleteEvaluationJobRequest(proto.Message):
@@ -1082,7 +1339,10 @@ class DeleteEvaluationJobRequest(proto.Message):
             "projects/{project_id}/evaluationJobs/{evaluation_job_id}".
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListEvaluationJobsRequest(proto.Message):
@@ -1115,10 +1375,22 @@ class ListEvaluationJobsRequest(proto.Message):
             the first page if this is empty.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    filter = proto.Field(proto.STRING, number=2,)
-    page_size = proto.Field(proto.INT32, number=3,)
-    page_token = proto.Field(proto.STRING, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class ListEvaluationJobsResponse(proto.Message):
@@ -1136,9 +1408,14 @@ class ListEvaluationJobsResponse(proto.Message):
         return self
 
     evaluation_jobs = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=gcd_evaluation_job.EvaluationJob,
+        proto.MESSAGE,
+        number=1,
+        message=gcd_evaluation_job.EvaluationJob,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
