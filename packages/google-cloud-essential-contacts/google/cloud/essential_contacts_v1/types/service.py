@@ -66,15 +66,32 @@ class Contact(proto.Message):
             its validation state was updated more than 1 year ago.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    email = proto.Field(proto.STRING, number=2,)
-    notification_category_subscriptions = proto.RepeatedField(
-        proto.ENUM, number=3, enum=enums.NotificationCategory,
+    name = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    language_tag = proto.Field(proto.STRING, number=4,)
-    validation_state = proto.Field(proto.ENUM, number=8, enum=enums.ValidationState,)
+    email = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    notification_category_subscriptions = proto.RepeatedField(
+        proto.ENUM,
+        number=3,
+        enum=enums.NotificationCategory,
+    )
+    language_tag = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    validation_state = proto.Field(
+        proto.ENUM,
+        number=8,
+        enum=enums.ValidationState,
+    )
     validate_time = proto.Field(
-        proto.MESSAGE, number=9, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=9,
+        message=timestamp_pb2.Timestamp,
     )
 
 
@@ -100,9 +117,18 @@ class ListContactsRequest(proto.Message):
             identical to those in the previous call.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListContactsResponse(proto.Message):
@@ -123,8 +149,15 @@ class ListContactsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    contacts = proto.RepeatedField(proto.MESSAGE, number=1, message="Contact",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    contacts = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Contact",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetContactRequest(proto.Message):
@@ -138,7 +171,10 @@ class GetContactRequest(proto.Message):
             projects/{project_id}/contacts/{contact_id}
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class DeleteContactRequest(proto.Message):
@@ -152,7 +188,10 @@ class DeleteContactRequest(proto.Message):
             projects/{project_id}/contacts/{contact_id}
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CreateContactRequest(proto.Message):
@@ -168,8 +207,15 @@ class CreateContactRequest(proto.Message):
             an email address and language tag.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    contact = proto.Field(proto.MESSAGE, number=2, message="Contact",)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    contact = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="Contact",
+    )
 
 
 class UpdateContactRequest(proto.Message):
@@ -186,9 +232,15 @@ class UpdateContactRequest(proto.Message):
             https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask
     """
 
-    contact = proto.Field(proto.MESSAGE, number=2, message="Contact",)
+    contact = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="Contact",
+    )
     update_mask = proto.Field(
-        proto.MESSAGE, number=3, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=3,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -219,12 +271,23 @@ class ComputeContactsRequest(proto.Message):
             identical to those in the previous call.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    notification_categories = proto.RepeatedField(
-        proto.ENUM, number=6, enum=enums.NotificationCategory,
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    page_size = proto.Field(proto.INT32, number=3,)
-    page_token = proto.Field(proto.STRING, number=4,)
+    notification_categories = proto.RepeatedField(
+        proto.ENUM,
+        number=6,
+        enum=enums.NotificationCategory,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class ComputeContactsResponse(proto.Message):
@@ -248,8 +311,15 @@ class ComputeContactsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    contacts = proto.RepeatedField(proto.MESSAGE, number=1, message="Contact",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    contacts = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Contact",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class SendTestMessageRequest(proto.Message):
@@ -275,10 +345,18 @@ class SendTestMessageRequest(proto.Message):
             subscribed to this category.
     """
 
-    contacts = proto.RepeatedField(proto.STRING, number=1,)
-    resource = proto.Field(proto.STRING, number=2,)
+    contacts = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
+    resource = proto.Field(
+        proto.STRING,
+        number=2,
+    )
     notification_category = proto.Field(
-        proto.ENUM, number=3, enum=enums.NotificationCategory,
+        proto.ENUM,
+        number=3,
+        enum=enums.NotificationCategory,
     )
 
 
