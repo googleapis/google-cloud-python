@@ -21,7 +21,10 @@ from google.protobuf import timestamp_pb2  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.recommender.v1beta1",
-    manifest={"InsightTypeConfig", "InsightTypeGenerationConfig",},
+    manifest={
+        "InsightTypeConfig",
+        "InsightTypeGenerationConfig",
+    },
 )
 
 
@@ -61,15 +64,37 @@ class InsightTypeConfig(proto.Message):
             interfaces.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    insight_type_generation_config = proto.Field(
-        proto.MESSAGE, number=2, message="InsightTypeGenerationConfig",
+    name = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    etag = proto.Field(proto.STRING, number=3,)
-    update_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
-    revision_id = proto.Field(proto.STRING, number=5,)
-    annotations = proto.MapField(proto.STRING, proto.STRING, number=6,)
-    display_name = proto.Field(proto.STRING, number=7,)
+    insight_type_generation_config = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="InsightTypeGenerationConfig",
+    )
+    etag = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    revision_id = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    annotations = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=6,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=7,
+    )
 
 
 class InsightTypeGenerationConfig(proto.Message):
@@ -84,7 +109,11 @@ class InsightTypeGenerationConfig(proto.Message):
             be used by or are applied to all subtypes.
     """
 
-    params = proto.Field(proto.MESSAGE, number=1, message=struct_pb2.Struct,)
+    params = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=struct_pb2.Struct,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

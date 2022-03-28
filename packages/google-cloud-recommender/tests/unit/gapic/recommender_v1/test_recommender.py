@@ -86,7 +86,13 @@ def test__get_default_mtls_endpoint():
     assert RecommenderClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
 
 
-@pytest.mark.parametrize("client_class", [RecommenderClient, RecommenderAsyncClient,])
+@pytest.mark.parametrize(
+    "client_class",
+    [
+        RecommenderClient,
+        RecommenderAsyncClient,
+    ],
+)
 def test_recommender_client_from_service_account_info(client_class):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
@@ -126,7 +132,13 @@ def test_recommender_client_service_account_always_use_jwt(
         use_jwt.assert_not_called()
 
 
-@pytest.mark.parametrize("client_class", [RecommenderClient, RecommenderAsyncClient,])
+@pytest.mark.parametrize(
+    "client_class",
+    [
+        RecommenderClient,
+        RecommenderAsyncClient,
+    ],
+)
 def test_recommender_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
@@ -481,7 +493,9 @@ def test_recommender_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -610,11 +624,16 @@ def test_recommender_client_create_channel_credentials_file(
 
 
 @pytest.mark.parametrize(
-    "request_type", [recommender_service.ListInsightsRequest, dict,]
+    "request_type",
+    [
+        recommender_service.ListInsightsRequest,
+        dict,
+    ],
 )
 def test_list_insights(request_type, transport: str = "grpc"):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -643,7 +662,8 @@ def test_list_insights_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -660,7 +680,8 @@ async def test_list_insights_async(
     request_type=recommender_service.ListInsightsRequest,
 ):
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -693,7 +714,9 @@ async def test_list_insights_async_from_dict():
 
 
 def test_list_insights_field_headers():
-    client = RecommenderClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -713,12 +736,17 @@ def test_list_insights_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_list_insights_field_headers_async():
-    client = RecommenderAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -740,11 +768,16 @@ async def test_list_insights_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_insights_flattened():
-    client = RecommenderClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_insights), "__call__") as call:
@@ -752,7 +785,9 @@ def test_list_insights_flattened():
         call.return_value = recommender_service.ListInsightsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_insights(parent="parent_value",)
+        client.list_insights(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -764,19 +799,24 @@ def test_list_insights_flattened():
 
 
 def test_list_insights_flattened_error():
-    client = RecommenderClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_insights(
-            recommender_service.ListInsightsRequest(), parent="parent_value",
+            recommender_service.ListInsightsRequest(),
+            parent="parent_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_list_insights_flattened_async():
-    client = RecommenderAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_insights), "__call__") as call:
@@ -788,7 +828,9 @@ async def test_list_insights_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_insights(parent="parent_value",)
+        response = await client.list_insights(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -801,19 +843,23 @@ async def test_list_insights_flattened_async():
 
 @pytest.mark.asyncio
 async def test_list_insights_flattened_error_async():
-    client = RecommenderAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_insights(
-            recommender_service.ListInsightsRequest(), parent="parent_value",
+            recommender_service.ListInsightsRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_insights_pager(transport_name: str = "grpc"):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -821,17 +867,28 @@ def test_list_insights_pager(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             recommender_service.ListInsightsResponse(
-                insights=[insight.Insight(), insight.Insight(), insight.Insight(),],
+                insights=[
+                    insight.Insight(),
+                    insight.Insight(),
+                    insight.Insight(),
+                ],
                 next_page_token="abc",
             ),
             recommender_service.ListInsightsResponse(
-                insights=[], next_page_token="def",
+                insights=[],
+                next_page_token="def",
             ),
             recommender_service.ListInsightsResponse(
-                insights=[insight.Insight(),], next_page_token="ghi",
+                insights=[
+                    insight.Insight(),
+                ],
+                next_page_token="ghi",
             ),
             recommender_service.ListInsightsResponse(
-                insights=[insight.Insight(), insight.Insight(),],
+                insights=[
+                    insight.Insight(),
+                    insight.Insight(),
+                ],
             ),
             RuntimeError,
         )
@@ -851,7 +908,8 @@ def test_list_insights_pager(transport_name: str = "grpc"):
 
 def test_list_insights_pages(transport_name: str = "grpc"):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -859,17 +917,28 @@ def test_list_insights_pages(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             recommender_service.ListInsightsResponse(
-                insights=[insight.Insight(), insight.Insight(), insight.Insight(),],
+                insights=[
+                    insight.Insight(),
+                    insight.Insight(),
+                    insight.Insight(),
+                ],
                 next_page_token="abc",
             ),
             recommender_service.ListInsightsResponse(
-                insights=[], next_page_token="def",
+                insights=[],
+                next_page_token="def",
             ),
             recommender_service.ListInsightsResponse(
-                insights=[insight.Insight(),], next_page_token="ghi",
+                insights=[
+                    insight.Insight(),
+                ],
+                next_page_token="ghi",
             ),
             recommender_service.ListInsightsResponse(
-                insights=[insight.Insight(), insight.Insight(),],
+                insights=[
+                    insight.Insight(),
+                    insight.Insight(),
+                ],
             ),
             RuntimeError,
         )
@@ -880,7 +949,9 @@ def test_list_insights_pages(transport_name: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_list_insights_async_pager():
-    client = RecommenderAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -889,21 +960,34 @@ async def test_list_insights_async_pager():
         # Set the response to a series of pages.
         call.side_effect = (
             recommender_service.ListInsightsResponse(
-                insights=[insight.Insight(), insight.Insight(), insight.Insight(),],
+                insights=[
+                    insight.Insight(),
+                    insight.Insight(),
+                    insight.Insight(),
+                ],
                 next_page_token="abc",
             ),
             recommender_service.ListInsightsResponse(
-                insights=[], next_page_token="def",
+                insights=[],
+                next_page_token="def",
             ),
             recommender_service.ListInsightsResponse(
-                insights=[insight.Insight(),], next_page_token="ghi",
+                insights=[
+                    insight.Insight(),
+                ],
+                next_page_token="ghi",
             ),
             recommender_service.ListInsightsResponse(
-                insights=[insight.Insight(), insight.Insight(),],
+                insights=[
+                    insight.Insight(),
+                    insight.Insight(),
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.list_insights(request={},)
+        async_pager = await client.list_insights(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -915,7 +999,9 @@ async def test_list_insights_async_pager():
 
 @pytest.mark.asyncio
 async def test_list_insights_async_pages():
-    client = RecommenderAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -924,17 +1010,28 @@ async def test_list_insights_async_pages():
         # Set the response to a series of pages.
         call.side_effect = (
             recommender_service.ListInsightsResponse(
-                insights=[insight.Insight(), insight.Insight(), insight.Insight(),],
+                insights=[
+                    insight.Insight(),
+                    insight.Insight(),
+                    insight.Insight(),
+                ],
                 next_page_token="abc",
             ),
             recommender_service.ListInsightsResponse(
-                insights=[], next_page_token="def",
+                insights=[],
+                next_page_token="def",
             ),
             recommender_service.ListInsightsResponse(
-                insights=[insight.Insight(),], next_page_token="ghi",
+                insights=[
+                    insight.Insight(),
+                ],
+                next_page_token="ghi",
             ),
             recommender_service.ListInsightsResponse(
-                insights=[insight.Insight(), insight.Insight(),],
+                insights=[
+                    insight.Insight(),
+                    insight.Insight(),
+                ],
             ),
             RuntimeError,
         )
@@ -945,10 +1042,17 @@ async def test_list_insights_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [recommender_service.GetInsightRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        recommender_service.GetInsightRequest,
+        dict,
+    ],
+)
 def test_get_insight(request_type, transport: str = "grpc"):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -989,7 +1093,8 @@ def test_get_insight_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1005,7 +1110,8 @@ async def test_get_insight_async(
     transport: str = "grpc_asyncio", request_type=recommender_service.GetInsightRequest
 ):
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1050,7 +1156,9 @@ async def test_get_insight_async_from_dict():
 
 
 def test_get_insight_field_headers():
-    client = RecommenderClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1070,12 +1178,17 @@ def test_get_insight_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_get_insight_field_headers_async():
-    client = RecommenderAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1095,11 +1208,16 @@ async def test_get_insight_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_insight_flattened():
-    client = RecommenderClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_insight), "__call__") as call:
@@ -1107,7 +1225,9 @@ def test_get_insight_flattened():
         call.return_value = insight.Insight()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_insight(name="name_value",)
+        client.get_insight(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1119,19 +1239,24 @@ def test_get_insight_flattened():
 
 
 def test_get_insight_flattened_error():
-    client = RecommenderClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_insight(
-            recommender_service.GetInsightRequest(), name="name_value",
+            recommender_service.GetInsightRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_get_insight_flattened_async():
-    client = RecommenderAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_insight), "__call__") as call:
@@ -1141,7 +1266,9 @@ async def test_get_insight_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(insight.Insight())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_insight(name="name_value",)
+        response = await client.get_insight(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1154,22 +1281,30 @@ async def test_get_insight_flattened_async():
 
 @pytest.mark.asyncio
 async def test_get_insight_flattened_error_async():
-    client = RecommenderAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_insight(
-            recommender_service.GetInsightRequest(), name="name_value",
+            recommender_service.GetInsightRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [recommender_service.MarkInsightAcceptedRequest, dict,]
+    "request_type",
+    [
+        recommender_service.MarkInsightAcceptedRequest,
+        dict,
+    ],
 )
 def test_mark_insight_accepted(request_type, transport: str = "grpc"):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1212,7 +1347,8 @@ def test_mark_insight_accepted_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1231,7 +1367,8 @@ async def test_mark_insight_accepted_async(
     request_type=recommender_service.MarkInsightAcceptedRequest,
 ):
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1278,7 +1415,9 @@ async def test_mark_insight_accepted_async_from_dict():
 
 
 def test_mark_insight_accepted_field_headers():
-    client = RecommenderClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1300,12 +1439,17 @@ def test_mark_insight_accepted_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_mark_insight_accepted_field_headers_async():
-    client = RecommenderAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1327,11 +1471,16 @@ async def test_mark_insight_accepted_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_mark_insight_accepted_flattened():
-    client = RecommenderClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1363,7 +1512,9 @@ def test_mark_insight_accepted_flattened():
 
 
 def test_mark_insight_accepted_flattened_error():
-    client = RecommenderClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1378,7 +1529,9 @@ def test_mark_insight_accepted_flattened_error():
 
 @pytest.mark.asyncio
 async def test_mark_insight_accepted_flattened_async():
-    client = RecommenderAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1413,7 +1566,9 @@ async def test_mark_insight_accepted_flattened_async():
 
 @pytest.mark.asyncio
 async def test_mark_insight_accepted_flattened_error_async():
-    client = RecommenderAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1427,11 +1582,16 @@ async def test_mark_insight_accepted_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [recommender_service.ListRecommendationsRequest, dict,]
+    "request_type",
+    [
+        recommender_service.ListRecommendationsRequest,
+        dict,
+    ],
 )
 def test_list_recommendations(request_type, transport: str = "grpc"):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1462,7 +1622,8 @@ def test_list_recommendations_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1481,7 +1642,8 @@ async def test_list_recommendations_async(
     request_type=recommender_service.ListRecommendationsRequest,
 ):
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1516,7 +1678,9 @@ async def test_list_recommendations_async_from_dict():
 
 
 def test_list_recommendations_field_headers():
-    client = RecommenderClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1538,12 +1702,17 @@ def test_list_recommendations_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_list_recommendations_field_headers_async():
-    client = RecommenderAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1567,11 +1736,16 @@ async def test_list_recommendations_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_recommendations_flattened():
-    client = RecommenderClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1582,7 +1756,8 @@ def test_list_recommendations_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.list_recommendations(
-            parent="parent_value", filter="filter_value",
+            parent="parent_value",
+            filter="filter_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -1598,7 +1773,9 @@ def test_list_recommendations_flattened():
 
 
 def test_list_recommendations_flattened_error():
-    client = RecommenderClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1612,7 +1789,9 @@ def test_list_recommendations_flattened_error():
 
 @pytest.mark.asyncio
 async def test_list_recommendations_flattened_async():
-    client = RecommenderAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1627,7 +1806,8 @@ async def test_list_recommendations_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.list_recommendations(
-            parent="parent_value", filter="filter_value",
+            parent="parent_value",
+            filter="filter_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -1644,7 +1824,9 @@ async def test_list_recommendations_flattened_async():
 
 @pytest.mark.asyncio
 async def test_list_recommendations_flattened_error_async():
-    client = RecommenderAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1658,7 +1840,8 @@ async def test_list_recommendations_flattened_error_async():
 
 def test_list_recommendations_pager(transport_name: str = "grpc"):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1676,10 +1859,13 @@ def test_list_recommendations_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             recommender_service.ListRecommendationsResponse(
-                recommendations=[], next_page_token="def",
+                recommendations=[],
+                next_page_token="def",
             ),
             recommender_service.ListRecommendationsResponse(
-                recommendations=[recommendation.Recommendation(),],
+                recommendations=[
+                    recommendation.Recommendation(),
+                ],
                 next_page_token="ghi",
             ),
             recommender_service.ListRecommendationsResponse(
@@ -1706,7 +1892,8 @@ def test_list_recommendations_pager(transport_name: str = "grpc"):
 
 def test_list_recommendations_pages(transport_name: str = "grpc"):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1724,10 +1911,13 @@ def test_list_recommendations_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             recommender_service.ListRecommendationsResponse(
-                recommendations=[], next_page_token="def",
+                recommendations=[],
+                next_page_token="def",
             ),
             recommender_service.ListRecommendationsResponse(
-                recommendations=[recommendation.Recommendation(),],
+                recommendations=[
+                    recommendation.Recommendation(),
+                ],
                 next_page_token="ghi",
             ),
             recommender_service.ListRecommendationsResponse(
@@ -1745,7 +1935,9 @@ def test_list_recommendations_pages(transport_name: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_list_recommendations_async_pager():
-    client = RecommenderAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1764,10 +1956,13 @@ async def test_list_recommendations_async_pager():
                 next_page_token="abc",
             ),
             recommender_service.ListRecommendationsResponse(
-                recommendations=[], next_page_token="def",
+                recommendations=[],
+                next_page_token="def",
             ),
             recommender_service.ListRecommendationsResponse(
-                recommendations=[recommendation.Recommendation(),],
+                recommendations=[
+                    recommendation.Recommendation(),
+                ],
                 next_page_token="ghi",
             ),
             recommender_service.ListRecommendationsResponse(
@@ -1778,7 +1973,9 @@ async def test_list_recommendations_async_pager():
             ),
             RuntimeError,
         )
-        async_pager = await client.list_recommendations(request={},)
+        async_pager = await client.list_recommendations(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -1790,7 +1987,9 @@ async def test_list_recommendations_async_pager():
 
 @pytest.mark.asyncio
 async def test_list_recommendations_async_pages():
-    client = RecommenderAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1809,10 +2008,13 @@ async def test_list_recommendations_async_pages():
                 next_page_token="abc",
             ),
             recommender_service.ListRecommendationsResponse(
-                recommendations=[], next_page_token="def",
+                recommendations=[],
+                next_page_token="def",
             ),
             recommender_service.ListRecommendationsResponse(
-                recommendations=[recommendation.Recommendation(),],
+                recommendations=[
+                    recommendation.Recommendation(),
+                ],
                 next_page_token="ghi",
             ),
             recommender_service.ListRecommendationsResponse(
@@ -1831,11 +2033,16 @@ async def test_list_recommendations_async_pages():
 
 
 @pytest.mark.parametrize(
-    "request_type", [recommender_service.GetRecommendationRequest, dict,]
+    "request_type",
+    [
+        recommender_service.GetRecommendationRequest,
+        dict,
+    ],
 )
 def test_get_recommendation(request_type, transport: str = "grpc"):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1876,7 +2083,8 @@ def test_get_recommendation_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1895,7 +2103,8 @@ async def test_get_recommendation_async(
     request_type=recommender_service.GetRecommendationRequest,
 ):
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1940,7 +2149,9 @@ async def test_get_recommendation_async_from_dict():
 
 
 def test_get_recommendation_field_headers():
-    client = RecommenderClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1962,12 +2173,17 @@ def test_get_recommendation_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_get_recommendation_field_headers_async():
-    client = RecommenderAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1991,11 +2207,16 @@ async def test_get_recommendation_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_recommendation_flattened():
-    client = RecommenderClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2005,7 +2226,9 @@ def test_get_recommendation_flattened():
         call.return_value = recommendation.Recommendation()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_recommendation(name="name_value",)
+        client.get_recommendation(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2017,19 +2240,24 @@ def test_get_recommendation_flattened():
 
 
 def test_get_recommendation_flattened_error():
-    client = RecommenderClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_recommendation(
-            recommender_service.GetRecommendationRequest(), name="name_value",
+            recommender_service.GetRecommendationRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_get_recommendation_flattened_async():
-    client = RecommenderAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2043,7 +2271,9 @@ async def test_get_recommendation_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_recommendation(name="name_value",)
+        response = await client.get_recommendation(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2056,22 +2286,30 @@ async def test_get_recommendation_flattened_async():
 
 @pytest.mark.asyncio
 async def test_get_recommendation_flattened_error_async():
-    client = RecommenderAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_recommendation(
-            recommender_service.GetRecommendationRequest(), name="name_value",
+            recommender_service.GetRecommendationRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [recommender_service.MarkRecommendationClaimedRequest, dict,]
+    "request_type",
+    [
+        recommender_service.MarkRecommendationClaimedRequest,
+        dict,
+    ],
 )
 def test_mark_recommendation_claimed(request_type, transport: str = "grpc"):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2112,7 +2350,8 @@ def test_mark_recommendation_claimed_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2131,7 +2370,8 @@ async def test_mark_recommendation_claimed_async(
     request_type=recommender_service.MarkRecommendationClaimedRequest,
 ):
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2176,7 +2416,9 @@ async def test_mark_recommendation_claimed_async_from_dict():
 
 
 def test_mark_recommendation_claimed_field_headers():
-    client = RecommenderClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2198,12 +2440,17 @@ def test_mark_recommendation_claimed_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_mark_recommendation_claimed_field_headers_async():
-    client = RecommenderAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2227,11 +2474,16 @@ async def test_mark_recommendation_claimed_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_mark_recommendation_claimed_flattened():
-    client = RecommenderClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2263,7 +2515,9 @@ def test_mark_recommendation_claimed_flattened():
 
 
 def test_mark_recommendation_claimed_flattened_error():
-    client = RecommenderClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2278,7 +2532,9 @@ def test_mark_recommendation_claimed_flattened_error():
 
 @pytest.mark.asyncio
 async def test_mark_recommendation_claimed_flattened_async():
-    client = RecommenderAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2315,7 +2571,9 @@ async def test_mark_recommendation_claimed_flattened_async():
 
 @pytest.mark.asyncio
 async def test_mark_recommendation_claimed_flattened_error_async():
-    client = RecommenderAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2329,11 +2587,16 @@ async def test_mark_recommendation_claimed_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [recommender_service.MarkRecommendationSucceededRequest, dict,]
+    "request_type",
+    [
+        recommender_service.MarkRecommendationSucceededRequest,
+        dict,
+    ],
 )
 def test_mark_recommendation_succeeded(request_type, transport: str = "grpc"):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2374,7 +2637,8 @@ def test_mark_recommendation_succeeded_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2393,7 +2657,8 @@ async def test_mark_recommendation_succeeded_async(
     request_type=recommender_service.MarkRecommendationSucceededRequest,
 ):
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2438,7 +2703,9 @@ async def test_mark_recommendation_succeeded_async_from_dict():
 
 
 def test_mark_recommendation_succeeded_field_headers():
-    client = RecommenderClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2460,12 +2727,17 @@ def test_mark_recommendation_succeeded_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_mark_recommendation_succeeded_field_headers_async():
-    client = RecommenderAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2489,11 +2761,16 @@ async def test_mark_recommendation_succeeded_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_mark_recommendation_succeeded_flattened():
-    client = RecommenderClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2525,7 +2802,9 @@ def test_mark_recommendation_succeeded_flattened():
 
 
 def test_mark_recommendation_succeeded_flattened_error():
-    client = RecommenderClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2540,7 +2819,9 @@ def test_mark_recommendation_succeeded_flattened_error():
 
 @pytest.mark.asyncio
 async def test_mark_recommendation_succeeded_flattened_async():
-    client = RecommenderAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2577,7 +2858,9 @@ async def test_mark_recommendation_succeeded_flattened_async():
 
 @pytest.mark.asyncio
 async def test_mark_recommendation_succeeded_flattened_error_async():
-    client = RecommenderAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2591,11 +2874,16 @@ async def test_mark_recommendation_succeeded_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [recommender_service.MarkRecommendationFailedRequest, dict,]
+    "request_type",
+    [
+        recommender_service.MarkRecommendationFailedRequest,
+        dict,
+    ],
 )
 def test_mark_recommendation_failed(request_type, transport: str = "grpc"):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2636,7 +2924,8 @@ def test_mark_recommendation_failed_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2655,7 +2944,8 @@ async def test_mark_recommendation_failed_async(
     request_type=recommender_service.MarkRecommendationFailedRequest,
 ):
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2700,7 +2990,9 @@ async def test_mark_recommendation_failed_async_from_dict():
 
 
 def test_mark_recommendation_failed_field_headers():
-    client = RecommenderClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2722,12 +3014,17 @@ def test_mark_recommendation_failed_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_mark_recommendation_failed_field_headers_async():
-    client = RecommenderAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2751,11 +3048,16 @@ async def test_mark_recommendation_failed_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_mark_recommendation_failed_flattened():
-    client = RecommenderClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2787,7 +3089,9 @@ def test_mark_recommendation_failed_flattened():
 
 
 def test_mark_recommendation_failed_flattened_error():
-    client = RecommenderClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2802,7 +3106,9 @@ def test_mark_recommendation_failed_flattened_error():
 
 @pytest.mark.asyncio
 async def test_mark_recommendation_failed_flattened_async():
-    client = RecommenderAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2839,7 +3145,9 @@ async def test_mark_recommendation_failed_flattened_async():
 
 @pytest.mark.asyncio
 async def test_mark_recommendation_failed_flattened_error_async():
-    client = RecommenderAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2859,7 +3167,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = RecommenderClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -2879,7 +3188,10 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = RecommenderClient(client_options=options, transport=transport,)
+        client = RecommenderClient(
+            client_options=options,
+            transport=transport,
+        )
 
     # It is an error to provide an api_key and a credential.
     options = mock.Mock()
@@ -2895,7 +3207,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = RecommenderClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -2925,7 +3238,10 @@ def test_transport_get_channel():
 
 @pytest.mark.parametrize(
     "transport_class",
-    [transports.RecommenderGrpcTransport, transports.RecommenderGrpcAsyncIOTransport,],
+    [
+        transports.RecommenderGrpcTransport,
+        transports.RecommenderGrpcAsyncIOTransport,
+    ],
 )
 def test_transport_adc(transport_class):
     # Test default credentials are used if not provided.
@@ -2937,8 +3253,13 @@ def test_transport_adc(transport_class):
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
-    client = RecommenderClient(credentials=ga_credentials.AnonymousCredentials(),)
-    assert isinstance(client.transport, transports.RecommenderGrpcTransport,)
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    assert isinstance(
+        client.transport,
+        transports.RecommenderGrpcTransport,
+    )
 
 
 def test_recommender_base_transport_error():
@@ -2990,7 +3311,8 @@ def test_recommender_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.RecommenderTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -3025,7 +3347,10 @@ def test_recommender_auth_adc():
 
 @pytest.mark.parametrize(
     "transport_class",
-    [transports.RecommenderGrpcTransport, transports.RecommenderGrpcAsyncIOTransport,],
+    [
+        transports.RecommenderGrpcTransport,
+        transports.RecommenderGrpcAsyncIOTransport,
+    ],
 )
 def test_recommender_transport_auth_adc(transport_class):
     # If credentials and host are not provided, the transport class should use
@@ -3142,7 +3467,8 @@ def test_recommender_grpc_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.RecommenderGrpcTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -3154,7 +3480,8 @@ def test_recommender_grpc_asyncio_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.RecommenderGrpcAsyncIOTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -3259,7 +3586,10 @@ def test_insight_path():
     insight_type = "whelk"
     insight = "octopus"
     expected = "projects/{project}/locations/{location}/insightTypes/{insight_type}/insights/{insight}".format(
-        project=project, location=location, insight_type=insight_type, insight=insight,
+        project=project,
+        location=location,
+        insight_type=insight_type,
+        insight=insight,
     )
     actual = RecommenderClient.insight_path(project, location, insight_type, insight)
     assert expected == actual
@@ -3283,8 +3613,12 @@ def test_insight_type_path():
     project = "winkle"
     location = "nautilus"
     insight_type = "scallop"
-    expected = "projects/{project}/locations/{location}/insightTypes/{insight_type}".format(
-        project=project, location=location, insight_type=insight_type,
+    expected = (
+        "projects/{project}/locations/{location}/insightTypes/{insight_type}".format(
+            project=project,
+            location=location,
+            insight_type=insight_type,
+        )
     )
     actual = RecommenderClient.insight_type_path(project, location, insight_type)
     assert expected == actual
@@ -3338,8 +3672,12 @@ def test_recommender_path():
     project = "scallop"
     location = "abalone"
     recommender = "squid"
-    expected = "projects/{project}/locations/{location}/recommenders/{recommender}".format(
-        project=project, location=location, recommender=recommender,
+    expected = (
+        "projects/{project}/locations/{location}/recommenders/{recommender}".format(
+            project=project,
+            location=location,
+            recommender=recommender,
+        )
     )
     actual = RecommenderClient.recommender_path(project, location, recommender)
     assert expected == actual
@@ -3380,7 +3718,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "cuttlefish"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = RecommenderClient.common_folder_path(folder)
     assert expected == actual
 
@@ -3398,7 +3738,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "winkle"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = RecommenderClient.common_organization_path(organization)
     assert expected == actual
 
@@ -3416,7 +3758,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "scallop"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = RecommenderClient.common_project_path(project)
     assert expected == actual
 
@@ -3436,7 +3780,8 @@ def test_common_location_path():
     project = "squid"
     location = "clam"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = RecommenderClient.common_location_path(project, location)
     assert expected == actual
@@ -3461,7 +3806,8 @@ def test_client_with_default_client_info():
         transports.RecommenderTransport, "_prep_wrapped_messages"
     ) as prep:
         client = RecommenderClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -3470,7 +3816,8 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = RecommenderClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -3478,7 +3825,8 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     with mock.patch.object(
         type(getattr(client.transport, "grpc_channel")), "close"

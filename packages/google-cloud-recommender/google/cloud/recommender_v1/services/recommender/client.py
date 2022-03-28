@@ -58,7 +58,10 @@ class RecommenderClientMeta(type):
     _transport_registry["grpc"] = RecommenderGrpcTransport
     _transport_registry["grpc_asyncio"] = RecommenderGrpcAsyncIOTransport
 
-    def get_transport_class(cls, label: str = None,) -> Type[RecommenderTransport]:
+    def get_transport_class(
+        cls,
+        label: str = None,
+    ) -> Type[RecommenderTransport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -169,7 +172,10 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
 
     @staticmethod
     def insight_path(
-        project: str, location: str, insight_type: str, insight: str,
+        project: str,
+        location: str,
+        insight_type: str,
+        insight: str,
     ) -> str:
         """Returns a fully-qualified insight string."""
         return "projects/{project}/locations/{location}/insightTypes/{insight_type}/insights/{insight}".format(
@@ -189,10 +195,16 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def insight_type_path(project: str, location: str, insight_type: str,) -> str:
+    def insight_type_path(
+        project: str,
+        location: str,
+        insight_type: str,
+    ) -> str:
         """Returns a fully-qualified insight_type string."""
         return "projects/{project}/locations/{location}/insightTypes/{insight_type}".format(
-            project=project, location=location, insight_type=insight_type,
+            project=project,
+            location=location,
+            insight_type=insight_type,
         )
 
     @staticmethod
@@ -206,7 +218,10 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
 
     @staticmethod
     def recommendation_path(
-        project: str, location: str, recommender: str, recommendation: str,
+        project: str,
+        location: str,
+        recommender: str,
+        recommendation: str,
     ) -> str:
         """Returns a fully-qualified recommendation string."""
         return "projects/{project}/locations/{location}/recommenders/{recommender}/recommendations/{recommendation}".format(
@@ -226,10 +241,18 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def recommender_path(project: str, location: str, recommender: str,) -> str:
+    def recommender_path(
+        project: str,
+        location: str,
+        recommender: str,
+    ) -> str:
         """Returns a fully-qualified recommender string."""
-        return "projects/{project}/locations/{location}/recommenders/{recommender}".format(
-            project=project, location=location, recommender=recommender,
+        return (
+            "projects/{project}/locations/{location}/recommenders/{recommender}".format(
+                project=project,
+                location=location,
+                recommender=recommender,
+            )
         )
 
     @staticmethod
@@ -242,7 +265,9 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_billing_account_path(billing_account: str,) -> str:
+    def common_billing_account_path(
+        billing_account: str,
+    ) -> str:
         """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
@@ -255,9 +280,13 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(folder: str,) -> str:
+    def common_folder_path(
+        folder: str,
+    ) -> str:
         """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(folder=folder,)
+        return "folders/{folder}".format(
+            folder=folder,
+        )
 
     @staticmethod
     def parse_common_folder_path(path: str) -> Dict[str, str]:
@@ -266,9 +295,13 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(organization: str,) -> str:
+    def common_organization_path(
+        organization: str,
+    ) -> str:
         """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(organization=organization,)
+        return "organizations/{organization}".format(
+            organization=organization,
+        )
 
     @staticmethod
     def parse_common_organization_path(path: str) -> Dict[str, str]:
@@ -277,9 +310,13 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(project: str,) -> str:
+    def common_project_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified project string."""
-        return "projects/{project}".format(project=project,)
+        return "projects/{project}".format(
+            project=project,
+        )
 
     @staticmethod
     def parse_common_project_path(path: str) -> Dict[str, str]:
@@ -288,10 +325,14 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(project: str, location: str,) -> str:
+    def common_location_path(
+        project: str,
+        location: str,
+    ) -> str:
         """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
-            project=project, location=location,
+            project=project,
+            location=location,
         )
 
     @staticmethod
@@ -571,12 +612,20 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListInsightsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -668,7 +717,12 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -789,7 +843,12 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -929,12 +988,20 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListRecommendationsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1027,7 +1094,12 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1160,7 +1232,12 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1293,7 +1370,12 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1424,7 +1506,12 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response

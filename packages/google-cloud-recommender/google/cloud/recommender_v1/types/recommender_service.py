@@ -93,10 +93,22 @@ class ListInsightsRequest(proto.Message):
             described at https://google.aip.dev/160)
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    filter = proto.Field(proto.STRING, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class ListInsightsResponse(proto.Message):
@@ -115,8 +127,15 @@ class ListInsightsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    insights = proto.RepeatedField(proto.MESSAGE, number=1, message=insight.Insight,)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    insights = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=insight.Insight,
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetInsightRequest(proto.Message):
@@ -127,7 +146,10 @@ class GetInsightRequest(proto.Message):
             Required. Name of the insight.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class MarkInsightAcceptedRequest(proto.Message):
@@ -144,9 +166,19 @@ class MarkInsightAcceptedRequest(proto.Message):
             Provides optimistic locking.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    state_metadata = proto.MapField(proto.STRING, proto.STRING, number=2,)
-    etag = proto.Field(proto.STRING, number=3,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    state_metadata = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=2,
+    )
+    etag = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListRecommendationsRequest(proto.Message):
@@ -206,10 +238,22 @@ class ListRecommendationsRequest(proto.Message):
             described at https://google.aip.dev/160)
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    filter = proto.Field(proto.STRING, number=5,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class ListRecommendationsResponse(proto.Message):
@@ -229,9 +273,14 @@ class ListRecommendationsResponse(proto.Message):
         return self
 
     recommendations = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=recommendation.Recommendation,
+        proto.MESSAGE,
+        number=1,
+        message=recommendation.Recommendation,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetRecommendationRequest(proto.Message):
@@ -242,7 +291,10 @@ class GetRecommendationRequest(proto.Message):
             Required. Name of the recommendation.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class MarkRecommendationClaimedRequest(proto.Message):
@@ -261,9 +313,19 @@ class MarkRecommendationClaimedRequest(proto.Message):
             Provides optimistic locking.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    state_metadata = proto.MapField(proto.STRING, proto.STRING, number=2,)
-    etag = proto.Field(proto.STRING, number=3,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    state_metadata = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=2,
+    )
+    etag = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class MarkRecommendationSucceededRequest(proto.Message):
@@ -282,9 +344,19 @@ class MarkRecommendationSucceededRequest(proto.Message):
             Provides optimistic locking.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    state_metadata = proto.MapField(proto.STRING, proto.STRING, number=2,)
-    etag = proto.Field(proto.STRING, number=3,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    state_metadata = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=2,
+    )
+    etag = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class MarkRecommendationFailedRequest(proto.Message):
@@ -303,9 +375,19 @@ class MarkRecommendationFailedRequest(proto.Message):
             Provides optimistic locking.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    state_metadata = proto.MapField(proto.STRING, proto.STRING, number=2,)
-    etag = proto.Field(proto.STRING, number=3,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    state_metadata = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=2,
+    )
+    etag = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

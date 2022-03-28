@@ -22,7 +22,10 @@ from google.protobuf import timestamp_pb2  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.recommender.v1beta1",
-    manifest={"Insight", "InsightStateInfo",},
+    manifest={
+        "Insight",
+        "InsightStateInfo",
+    },
 )
 
 
@@ -91,25 +94,65 @@ class Insight(proto.Message):
                 projects/[PROJECT_NUMBER]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]/recommendations/[RECOMMENDATION_ID]
         """
 
-        recommendation = proto.Field(proto.STRING, number=1,)
+        recommendation = proto.Field(
+            proto.STRING,
+            number=1,
+        )
 
-    name = proto.Field(proto.STRING, number=1,)
-    description = proto.Field(proto.STRING, number=2,)
-    target_resources = proto.RepeatedField(proto.STRING, number=9,)
-    insight_subtype = proto.Field(proto.STRING, number=10,)
-    content = proto.Field(proto.MESSAGE, number=3, message=struct_pb2.Struct,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    target_resources = proto.RepeatedField(
+        proto.STRING,
+        number=9,
+    )
+    insight_subtype = proto.Field(
+        proto.STRING,
+        number=10,
+    )
+    content = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=struct_pb2.Struct,
+    )
     last_refresh_time = proto.Field(
-        proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
     )
     observation_period = proto.Field(
-        proto.MESSAGE, number=5, message=duration_pb2.Duration,
+        proto.MESSAGE,
+        number=5,
+        message=duration_pb2.Duration,
     )
-    state_info = proto.Field(proto.MESSAGE, number=6, message="InsightStateInfo",)
-    category = proto.Field(proto.ENUM, number=7, enum=Category,)
-    severity = proto.Field(proto.ENUM, number=15, enum=Severity,)
-    etag = proto.Field(proto.STRING, number=11,)
+    state_info = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message="InsightStateInfo",
+    )
+    category = proto.Field(
+        proto.ENUM,
+        number=7,
+        enum=Category,
+    )
+    severity = proto.Field(
+        proto.ENUM,
+        number=15,
+        enum=Severity,
+    )
+    etag = proto.Field(
+        proto.STRING,
+        number=11,
+    )
     associated_recommendations = proto.RepeatedField(
-        proto.MESSAGE, number=8, message=RecommendationReference,
+        proto.MESSAGE,
+        number=8,
+        message=RecommendationReference,
     )
 
 
@@ -131,8 +174,16 @@ class InsightStateInfo(proto.Message):
         ACCEPTED = 2
         DISMISSED = 3
 
-    state = proto.Field(proto.ENUM, number=1, enum=State,)
-    state_metadata = proto.MapField(proto.STRING, proto.STRING, number=2,)
+    state = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=State,
+    )
+    state_metadata = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=2,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
