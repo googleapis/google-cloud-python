@@ -20,7 +20,9 @@ from google.protobuf import timestamp_pb2  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.binaryauthorization.v1beta1",
-    manifest={"ContinuousValidationEvent",},
+    manifest={
+        "ContinuousValidationEvent",
+    },
 )
 
 
@@ -85,20 +87,33 @@ class ContinuousValidationEvent(proto.Message):
                 ALLOW = 1
                 DENY = 2
 
-            image = proto.Field(proto.STRING, number=1,)
+            image = proto.Field(
+                proto.STRING,
+                number=1,
+            )
             result = proto.Field(
                 proto.ENUM,
                 number=2,
                 enum="ContinuousValidationEvent.ContinuousValidationPodEvent.ImageDetails.AuditResult",
             )
-            description = proto.Field(proto.STRING, number=3,)
+            description = proto.Field(
+                proto.STRING,
+                number=3,
+            )
 
-        pod = proto.Field(proto.STRING, number=1,)
+        pod = proto.Field(
+            proto.STRING,
+            number=1,
+        )
         deploy_time = proto.Field(
-            proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,
+            proto.MESSAGE,
+            number=2,
+            message=timestamp_pb2.Timestamp,
         )
         end_time = proto.Field(
-            proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,
+            proto.MESSAGE,
+            number=3,
+            message=timestamp_pb2.Timestamp,
         )
         verdict = proto.Field(
             proto.ENUM,
@@ -120,7 +135,10 @@ class ContinuousValidationEvent(proto.Message):
                 A description of the unsupported policy.
         """
 
-        description = proto.Field(proto.STRING, number=1,)
+        description = proto.Field(
+            proto.STRING,
+            number=1,
+        )
 
     pod_event = proto.Field(
         proto.MESSAGE,
@@ -129,7 +147,10 @@ class ContinuousValidationEvent(proto.Message):
         message=ContinuousValidationPodEvent,
     )
     unsupported_policy_event = proto.Field(
-        proto.MESSAGE, number=2, oneof="event_type", message=UnsupportedPolicyEvent,
+        proto.MESSAGE,
+        number=2,
+        oneof="event_type",
+        message=UnsupportedPolicyEvent,
     )
 
 

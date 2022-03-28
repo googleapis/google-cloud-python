@@ -99,7 +99,10 @@ def test__get_default_mtls_endpoint():
 
 @pytest.mark.parametrize(
     "client_class",
-    [BinauthzManagementServiceV1Client, BinauthzManagementServiceV1AsyncClient,],
+    [
+        BinauthzManagementServiceV1Client,
+        BinauthzManagementServiceV1AsyncClient,
+    ],
 )
 def test_binauthz_management_service_v1_client_from_service_account_info(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -142,7 +145,10 @@ def test_binauthz_management_service_v1_client_service_account_always_use_jwt(
 
 @pytest.mark.parametrize(
     "client_class",
-    [BinauthzManagementServiceV1Client, BinauthzManagementServiceV1AsyncClient,],
+    [
+        BinauthzManagementServiceV1Client,
+        BinauthzManagementServiceV1AsyncClient,
+    ],
 )
 def test_binauthz_management_service_v1_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -531,7 +537,9 @@ def test_binauthz_management_service_v1_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -671,10 +679,17 @@ def test_binauthz_management_service_v1_client_create_channel_credentials_file(
         )
 
 
-@pytest.mark.parametrize("request_type", [service.GetPolicyRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetPolicyRequest,
+        dict,
+    ],
+)
 def test_get_policy(request_type, transport: str = "grpc"):
     client = BinauthzManagementServiceV1Client(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -710,7 +725,8 @@ def test_get_policy_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = BinauthzManagementServiceV1Client(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -726,7 +742,8 @@ async def test_get_policy_async(
     transport: str = "grpc_asyncio", request_type=service.GetPolicyRequest
 ):
     client = BinauthzManagementServiceV1AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -788,7 +805,10 @@ def test_get_policy_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -815,7 +835,10 @@ async def test_get_policy_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_policy_flattened():
@@ -829,7 +852,9 @@ def test_get_policy_flattened():
         call.return_value = resources.Policy()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_policy(name="name_value",)
+        client.get_policy(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -849,7 +874,8 @@ def test_get_policy_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_policy(
-            service.GetPolicyRequest(), name="name_value",
+            service.GetPolicyRequest(),
+            name="name_value",
         )
 
 
@@ -867,7 +893,9 @@ async def test_get_policy_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(resources.Policy())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_policy(name="name_value",)
+        response = await client.get_policy(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -888,14 +916,22 @@ async def test_get_policy_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_policy(
-            service.GetPolicyRequest(), name="name_value",
+            service.GetPolicyRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [service.UpdatePolicyRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UpdatePolicyRequest,
+        dict,
+    ],
+)
 def test_update_policy(request_type, transport: str = "grpc"):
     client = BinauthzManagementServiceV1Client(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -931,7 +967,8 @@ def test_update_policy_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = BinauthzManagementServiceV1Client(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -947,7 +984,8 @@ async def test_update_policy_async(
     transport: str = "grpc_asyncio", request_type=service.UpdatePolicyRequest
 ):
     client = BinauthzManagementServiceV1AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1009,7 +1047,10 @@ def test_update_policy_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "policy.name=policy.name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "policy.name=policy.name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1036,7 +1077,10 @@ async def test_update_policy_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "policy.name=policy.name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "policy.name=policy.name/value",
+    ) in kw["metadata"]
 
 
 def test_update_policy_flattened():
@@ -1050,7 +1094,9 @@ def test_update_policy_flattened():
         call.return_value = resources.Policy()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.update_policy(policy=resources.Policy(name="name_value"),)
+        client.update_policy(
+            policy=resources.Policy(name="name_value"),
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1070,7 +1116,8 @@ def test_update_policy_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.update_policy(
-            service.UpdatePolicyRequest(), policy=resources.Policy(name="name_value"),
+            service.UpdatePolicyRequest(),
+            policy=resources.Policy(name="name_value"),
         )
 
 
@@ -1111,14 +1158,22 @@ async def test_update_policy_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.update_policy(
-            service.UpdatePolicyRequest(), policy=resources.Policy(name="name_value"),
+            service.UpdatePolicyRequest(),
+            policy=resources.Policy(name="name_value"),
         )
 
 
-@pytest.mark.parametrize("request_type", [service.CreateAttestorRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateAttestorRequest,
+        dict,
+    ],
+)
 def test_create_attestor(request_type, transport: str = "grpc"):
     client = BinauthzManagementServiceV1Client(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1152,7 +1207,8 @@ def test_create_attestor_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = BinauthzManagementServiceV1Client(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1168,7 +1224,8 @@ async def test_create_attestor_async(
     transport: str = "grpc_asyncio", request_type=service.CreateAttestorRequest
 ):
     client = BinauthzManagementServiceV1AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1179,7 +1236,10 @@ async def test_create_attestor_async(
     with mock.patch.object(type(client.transport.create_attestor), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            resources.Attestor(name="name_value", description="description_value",)
+            resources.Attestor(
+                name="name_value",
+                description="description_value",
+            )
         )
         response = await client.create_attestor(request)
 
@@ -1222,7 +1282,10 @@ def test_create_attestor_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1249,7 +1312,10 @@ async def test_create_attestor_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_attestor_flattened():
@@ -1352,10 +1418,17 @@ async def test_create_attestor_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [service.GetAttestorRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetAttestorRequest,
+        dict,
+    ],
+)
 def test_get_attestor(request_type, transport: str = "grpc"):
     client = BinauthzManagementServiceV1Client(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1389,7 +1462,8 @@ def test_get_attestor_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = BinauthzManagementServiceV1Client(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1405,7 +1479,8 @@ async def test_get_attestor_async(
     transport: str = "grpc_asyncio", request_type=service.GetAttestorRequest
 ):
     client = BinauthzManagementServiceV1AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1416,7 +1491,10 @@ async def test_get_attestor_async(
     with mock.patch.object(type(client.transport.get_attestor), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            resources.Attestor(name="name_value", description="description_value",)
+            resources.Attestor(
+                name="name_value",
+                description="description_value",
+            )
         )
         response = await client.get_attestor(request)
 
@@ -1459,7 +1537,10 @@ def test_get_attestor_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1486,7 +1567,10 @@ async def test_get_attestor_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_attestor_flattened():
@@ -1500,7 +1584,9 @@ def test_get_attestor_flattened():
         call.return_value = resources.Attestor()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_attestor(name="name_value",)
+        client.get_attestor(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1520,7 +1606,8 @@ def test_get_attestor_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_attestor(
-            service.GetAttestorRequest(), name="name_value",
+            service.GetAttestorRequest(),
+            name="name_value",
         )
 
 
@@ -1538,7 +1625,9 @@ async def test_get_attestor_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(resources.Attestor())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_attestor(name="name_value",)
+        response = await client.get_attestor(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1559,14 +1648,22 @@ async def test_get_attestor_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_attestor(
-            service.GetAttestorRequest(), name="name_value",
+            service.GetAttestorRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [service.UpdateAttestorRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UpdateAttestorRequest,
+        dict,
+    ],
+)
 def test_update_attestor(request_type, transport: str = "grpc"):
     client = BinauthzManagementServiceV1Client(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1600,7 +1697,8 @@ def test_update_attestor_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = BinauthzManagementServiceV1Client(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1616,7 +1714,8 @@ async def test_update_attestor_async(
     transport: str = "grpc_asyncio", request_type=service.UpdateAttestorRequest
 ):
     client = BinauthzManagementServiceV1AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1627,7 +1726,10 @@ async def test_update_attestor_async(
     with mock.patch.object(type(client.transport.update_attestor), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            resources.Attestor(name="name_value", description="description_value",)
+            resources.Attestor(
+                name="name_value",
+                description="description_value",
+            )
         )
         response = await client.update_attestor(request)
 
@@ -1670,9 +1772,10 @@ def test_update_attestor_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "attestor.name=attestor.name/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "attestor.name=attestor.name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1699,9 +1802,10 @@ async def test_update_attestor_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "attestor.name=attestor.name/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "attestor.name=attestor.name/value",
+    ) in kw["metadata"]
 
 
 def test_update_attestor_flattened():
@@ -1715,7 +1819,9 @@ def test_update_attestor_flattened():
         call.return_value = resources.Attestor()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.update_attestor(attestor=resources.Attestor(name="name_value"),)
+        client.update_attestor(
+            attestor=resources.Attestor(name="name_value"),
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1782,10 +1888,17 @@ async def test_update_attestor_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [service.ListAttestorsRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListAttestorsRequest,
+        dict,
+    ],
+)
 def test_list_attestors(request_type, transport: str = "grpc"):
     client = BinauthzManagementServiceV1Client(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1814,7 +1927,8 @@ def test_list_attestors_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = BinauthzManagementServiceV1Client(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1830,7 +1944,8 @@ async def test_list_attestors_async(
     transport: str = "grpc_asyncio", request_type=service.ListAttestorsRequest
 ):
     client = BinauthzManagementServiceV1AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1841,7 +1956,9 @@ async def test_list_attestors_async(
     with mock.patch.object(type(client.transport.list_attestors), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListAttestorsResponse(next_page_token="next_page_token_value",)
+            service.ListAttestorsResponse(
+                next_page_token="next_page_token_value",
+            )
         )
         response = await client.list_attestors(request)
 
@@ -1883,7 +2000,10 @@ def test_list_attestors_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1912,7 +2032,10 @@ async def test_list_attestors_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_attestors_flattened():
@@ -1926,7 +2049,9 @@ def test_list_attestors_flattened():
         call.return_value = service.ListAttestorsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_attestors(parent="parent_value",)
+        client.list_attestors(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1946,7 +2071,8 @@ def test_list_attestors_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_attestors(
-            service.ListAttestorsRequest(), parent="parent_value",
+            service.ListAttestorsRequest(),
+            parent="parent_value",
         )
 
 
@@ -1966,7 +2092,9 @@ async def test_list_attestors_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_attestors(parent="parent_value",)
+        response = await client.list_attestors(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1987,13 +2115,15 @@ async def test_list_attestors_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_attestors(
-            service.ListAttestorsRequest(), parent="parent_value",
+            service.ListAttestorsRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_attestors_pager(transport_name: str = "grpc"):
     client = BinauthzManagementServiceV1Client(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2008,12 +2138,21 @@ def test_list_attestors_pager(transport_name: str = "grpc"):
                 ],
                 next_page_token="abc",
             ),
-            service.ListAttestorsResponse(attestors=[], next_page_token="def",),
             service.ListAttestorsResponse(
-                attestors=[resources.Attestor(),], next_page_token="ghi",
+                attestors=[],
+                next_page_token="def",
             ),
             service.ListAttestorsResponse(
-                attestors=[resources.Attestor(), resources.Attestor(),],
+                attestors=[
+                    resources.Attestor(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListAttestorsResponse(
+                attestors=[
+                    resources.Attestor(),
+                    resources.Attestor(),
+                ],
             ),
             RuntimeError,
         )
@@ -2033,7 +2172,8 @@ def test_list_attestors_pager(transport_name: str = "grpc"):
 
 def test_list_attestors_pages(transport_name: str = "grpc"):
     client = BinauthzManagementServiceV1Client(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2048,12 +2188,21 @@ def test_list_attestors_pages(transport_name: str = "grpc"):
                 ],
                 next_page_token="abc",
             ),
-            service.ListAttestorsResponse(attestors=[], next_page_token="def",),
             service.ListAttestorsResponse(
-                attestors=[resources.Attestor(),], next_page_token="ghi",
+                attestors=[],
+                next_page_token="def",
             ),
             service.ListAttestorsResponse(
-                attestors=[resources.Attestor(), resources.Attestor(),],
+                attestors=[
+                    resources.Attestor(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListAttestorsResponse(
+                attestors=[
+                    resources.Attestor(),
+                    resources.Attestor(),
+                ],
             ),
             RuntimeError,
         )
@@ -2082,16 +2231,27 @@ async def test_list_attestors_async_pager():
                 ],
                 next_page_token="abc",
             ),
-            service.ListAttestorsResponse(attestors=[], next_page_token="def",),
             service.ListAttestorsResponse(
-                attestors=[resources.Attestor(),], next_page_token="ghi",
+                attestors=[],
+                next_page_token="def",
             ),
             service.ListAttestorsResponse(
-                attestors=[resources.Attestor(), resources.Attestor(),],
+                attestors=[
+                    resources.Attestor(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListAttestorsResponse(
+                attestors=[
+                    resources.Attestor(),
+                    resources.Attestor(),
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.list_attestors(request={},)
+        async_pager = await client.list_attestors(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -2121,12 +2281,21 @@ async def test_list_attestors_async_pages():
                 ],
                 next_page_token="abc",
             ),
-            service.ListAttestorsResponse(attestors=[], next_page_token="def",),
             service.ListAttestorsResponse(
-                attestors=[resources.Attestor(),], next_page_token="ghi",
+                attestors=[],
+                next_page_token="def",
             ),
             service.ListAttestorsResponse(
-                attestors=[resources.Attestor(), resources.Attestor(),],
+                attestors=[
+                    resources.Attestor(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListAttestorsResponse(
+                attestors=[
+                    resources.Attestor(),
+                    resources.Attestor(),
+                ],
             ),
             RuntimeError,
         )
@@ -2137,10 +2306,17 @@ async def test_list_attestors_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [service.DeleteAttestorRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DeleteAttestorRequest,
+        dict,
+    ],
+)
 def test_delete_attestor(request_type, transport: str = "grpc"):
     client = BinauthzManagementServiceV1Client(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2166,7 +2342,8 @@ def test_delete_attestor_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = BinauthzManagementServiceV1Client(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2182,7 +2359,8 @@ async def test_delete_attestor_async(
     transport: str = "grpc_asyncio", request_type=service.DeleteAttestorRequest
 ):
     client = BinauthzManagementServiceV1AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2232,7 +2410,10 @@ def test_delete_attestor_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2259,7 +2440,10 @@ async def test_delete_attestor_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_attestor_flattened():
@@ -2273,7 +2457,9 @@ def test_delete_attestor_flattened():
         call.return_value = None
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_attestor(name="name_value",)
+        client.delete_attestor(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2293,7 +2479,8 @@ def test_delete_attestor_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_attestor(
-            service.DeleteAttestorRequest(), name="name_value",
+            service.DeleteAttestorRequest(),
+            name="name_value",
         )
 
 
@@ -2311,7 +2498,9 @@ async def test_delete_attestor_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_attestor(name="name_value",)
+        response = await client.delete_attestor(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2332,7 +2521,8 @@ async def test_delete_attestor_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_attestor(
-            service.DeleteAttestorRequest(), name="name_value",
+            service.DeleteAttestorRequest(),
+            name="name_value",
         )
 
 
@@ -2343,7 +2533,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = BinauthzManagementServiceV1Client(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -2364,7 +2555,8 @@ def test_credentials_transport_error():
     options.api_key = "api_key"
     with pytest.raises(ValueError):
         client = BinauthzManagementServiceV1Client(
-            client_options=options, transport=transport,
+            client_options=options,
+            transport=transport,
         )
 
     # It is an error to provide an api_key and a credential.
@@ -2381,7 +2573,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = BinauthzManagementServiceV1Client(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -2430,7 +2623,8 @@ def test_transport_grpc_default():
         credentials=ga_credentials.AnonymousCredentials(),
     )
     assert isinstance(
-        client.transport, transports.BinauthzManagementServiceV1GrpcTransport,
+        client.transport,
+        transports.BinauthzManagementServiceV1GrpcTransport,
     )
 
 
@@ -2482,7 +2676,8 @@ def test_binauthz_management_service_v1_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.BinauthzManagementServiceV1Transport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -2647,7 +2842,8 @@ def test_binauthz_management_service_v1_grpc_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.BinauthzManagementServiceV1GrpcTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -2659,7 +2855,8 @@ def test_binauthz_management_service_v1_grpc_asyncio_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.BinauthzManagementServiceV1GrpcAsyncIOTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -2772,7 +2969,8 @@ def test_attestor_path():
     project = "squid"
     attestor = "clam"
     expected = "projects/{project}/attestors/{attestor}".format(
-        project=project, attestor=attestor,
+        project=project,
+        attestor=attestor,
     )
     actual = BinauthzManagementServiceV1Client.attestor_path(project, attestor)
     assert expected == actual
@@ -2792,7 +2990,9 @@ def test_parse_attestor_path():
 
 def test_policy_path():
     project = "oyster"
-    expected = "projects/{project}/policy".format(project=project,)
+    expected = "projects/{project}/policy".format(
+        project=project,
+    )
     actual = BinauthzManagementServiceV1Client.policy_path(project)
     assert expected == actual
 
@@ -2832,7 +3032,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "winkle"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = BinauthzManagementServiceV1Client.common_folder_path(folder)
     assert expected == actual
 
@@ -2850,7 +3052,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "scallop"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = BinauthzManagementServiceV1Client.common_organization_path(organization)
     assert expected == actual
 
@@ -2868,7 +3072,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "squid"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = BinauthzManagementServiceV1Client.common_project_path(project)
     assert expected == actual
 
@@ -2888,7 +3094,8 @@ def test_common_location_path():
     project = "whelk"
     location = "octopus"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = BinauthzManagementServiceV1Client.common_location_path(project, location)
     assert expected == actual
@@ -2913,7 +3120,8 @@ def test_client_with_default_client_info():
         transports.BinauthzManagementServiceV1Transport, "_prep_wrapped_messages"
     ) as prep:
         client = BinauthzManagementServiceV1Client(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -2922,7 +3130,8 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = BinauthzManagementServiceV1Client.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -2930,7 +3139,8 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = BinauthzManagementServiceV1AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     with mock.patch.object(
         type(getattr(client.transport, "grpc_channel")), "close"

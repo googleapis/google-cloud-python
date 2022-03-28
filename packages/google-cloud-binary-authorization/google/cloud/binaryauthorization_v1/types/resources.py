@@ -94,30 +94,58 @@ class Policy(proto.Message):
         ENABLE = 1
         DISABLE = 2
 
-    name = proto.Field(proto.STRING, number=1,)
-    description = proto.Field(proto.STRING, number=6,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=6,
+    )
     global_policy_evaluation_mode = proto.Field(
-        proto.ENUM, number=7, enum=GlobalPolicyEvaluationMode,
+        proto.ENUM,
+        number=7,
+        enum=GlobalPolicyEvaluationMode,
     )
     admission_whitelist_patterns = proto.RepeatedField(
-        proto.MESSAGE, number=2, message="AdmissionWhitelistPattern",
+        proto.MESSAGE,
+        number=2,
+        message="AdmissionWhitelistPattern",
     )
     cluster_admission_rules = proto.MapField(
-        proto.STRING, proto.MESSAGE, number=3, message="AdmissionRule",
+        proto.STRING,
+        proto.MESSAGE,
+        number=3,
+        message="AdmissionRule",
     )
     kubernetes_namespace_admission_rules = proto.MapField(
-        proto.STRING, proto.MESSAGE, number=10, message="AdmissionRule",
+        proto.STRING,
+        proto.MESSAGE,
+        number=10,
+        message="AdmissionRule",
     )
     kubernetes_service_account_admission_rules = proto.MapField(
-        proto.STRING, proto.MESSAGE, number=8, message="AdmissionRule",
+        proto.STRING,
+        proto.MESSAGE,
+        number=8,
+        message="AdmissionRule",
     )
     istio_service_identity_admission_rules = proto.MapField(
-        proto.STRING, proto.MESSAGE, number=9, message="AdmissionRule",
+        proto.STRING,
+        proto.MESSAGE,
+        number=9,
+        message="AdmissionRule",
     )
     default_admission_rule = proto.Field(
-        proto.MESSAGE, number=4, message="AdmissionRule",
+        proto.MESSAGE,
+        number=4,
+        message="AdmissionRule",
     )
-    update_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 class AdmissionWhitelistPattern(proto.Message):
@@ -135,7 +163,10 @@ class AdmissionWhitelistPattern(proto.Message):
             wildcard which matches subdirectories of a given entry.
     """
 
-    name_pattern = proto.Field(proto.STRING, number=1,)
+    name_pattern = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class AdmissionRule(proto.Message):
@@ -187,9 +218,20 @@ class AdmissionRule(proto.Message):
         ENFORCED_BLOCK_AND_AUDIT_LOG = 1
         DRYRUN_AUDIT_LOG_ONLY = 2
 
-    evaluation_mode = proto.Field(proto.ENUM, number=1, enum=EvaluationMode,)
-    require_attestations_by = proto.RepeatedField(proto.STRING, number=2,)
-    enforcement_mode = proto.Field(proto.ENUM, number=3, enum=EnforcementMode,)
+    evaluation_mode = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=EvaluationMode,
+    )
+    require_attestations_by = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+    enforcement_mode = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=EnforcementMode,
+    )
 
 
 class Attestor(proto.Message):
@@ -219,12 +261,25 @@ class Attestor(proto.Message):
             updated.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    description = proto.Field(proto.STRING, number=6,)
-    user_owned_grafeas_note = proto.Field(
-        proto.MESSAGE, number=3, oneof="attestor_type", message="UserOwnedGrafeasNote",
+    name = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    update_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
+    description = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    user_owned_grafeas_note = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="attestor_type",
+        message="UserOwnedGrafeasNote",
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 class UserOwnedGrafeasNote(proto.Message):
@@ -268,11 +323,19 @@ class UserOwnedGrafeasNote(proto.Message):
             email based on a different naming pattern.
     """
 
-    note_reference = proto.Field(proto.STRING, number=1,)
-    public_keys = proto.RepeatedField(
-        proto.MESSAGE, number=2, message="AttestorPublicKey",
+    note_reference = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    delegation_service_account_email = proto.Field(proto.STRING, number=3,)
+    public_keys = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="AttestorPublicKey",
+    )
+    delegation_service_account_email = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class PkixPublicKey(proto.Message):
@@ -319,8 +382,15 @@ class PkixPublicKey(proto.Message):
         ECDSA_P521_SHA512 = 11
         EC_SIGN_P521_SHA512 = 11
 
-    public_key_pem = proto.Field(proto.STRING, number=1,)
-    signature_algorithm = proto.Field(proto.ENUM, number=2, enum=SignatureAlgorithm,)
+    public_key_pem = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    signature_algorithm = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=SignatureAlgorithm,
+    )
 
 
 class AttestorPublicKey(proto.Message):
@@ -370,13 +440,24 @@ class AttestorPublicKey(proto.Message):
             This field is a member of `oneof`_ ``public_key``.
     """
 
-    comment = proto.Field(proto.STRING, number=1,)
-    id = proto.Field(proto.STRING, number=2,)
+    comment = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
     ascii_armored_pgp_public_key = proto.Field(
-        proto.STRING, number=3, oneof="public_key",
+        proto.STRING,
+        number=3,
+        oneof="public_key",
     )
     pkix_public_key = proto.Field(
-        proto.MESSAGE, number=5, oneof="public_key", message="PkixPublicKey",
+        proto.MESSAGE,
+        number=5,
+        oneof="public_key",
+        message="PkixPublicKey",
     )
 
 

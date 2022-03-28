@@ -47,7 +47,10 @@ class GetPolicyRequest(proto.Message):
             retrieve, in the format ``projects/*/policy``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class UpdatePolicyRequest(proto.Message):
@@ -63,7 +66,11 @@ class UpdatePolicyRequest(proto.Message):
             ``projects/*/policy``.
     """
 
-    policy = proto.Field(proto.MESSAGE, number=1, message=resources.Policy,)
+    policy = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=resources.Policy,
+    )
 
 
 class CreateAttestorRequest(proto.Message):
@@ -86,9 +93,19 @@ class CreateAttestorRequest(proto.Message):
             ``projects/*/attestors/*``.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    attestor_id = proto.Field(proto.STRING, number=2,)
-    attestor = proto.Field(proto.MESSAGE, number=3, message=resources.Attestor,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    attestor_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    attestor = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=resources.Attestor,
+    )
 
 
 class GetAttestorRequest(proto.Message):
@@ -101,7 +118,10 @@ class GetAttestorRequest(proto.Message):
             retrieve, in the format ``projects/*/attestors/*``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class UpdateAttestorRequest(proto.Message):
@@ -117,7 +137,11 @@ class UpdateAttestorRequest(proto.Message):
             format ``projects/*/attestors/*``.
     """
 
-    attestor = proto.Field(proto.MESSAGE, number=1, message=resources.Attestor,)
+    attestor = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=resources.Attestor,
+    )
 
 
 class ListAttestorsRequest(proto.Message):
@@ -141,9 +165,18 @@ class ListAttestorsRequest(proto.Message):
             method.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListAttestorsResponse(proto.Message):
@@ -166,9 +199,14 @@ class ListAttestorsResponse(proto.Message):
         return self
 
     attestors = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=resources.Attestor,
+        proto.MESSAGE,
+        number=1,
+        message=resources.Attestor,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class DeleteAttestorRequest(proto.Message):
@@ -181,7 +219,10 @@ class DeleteAttestorRequest(proto.Message):
             delete, in the format ``projects/*/attestors/*``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class GetSystemPolicyRequest(proto.Message):
@@ -194,7 +235,10 @@ class GetSystemPolicyRequest(proto.Message):
             associated with a project.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ValidateAttestationOccurrenceRequest(proto.Message):
@@ -223,12 +267,23 @@ class ValidateAttestationOccurrenceRequest(proto.Message):
             [Occurrence][grafeas.v1.Occurrence].
     """
 
-    attestor = proto.Field(proto.STRING, number=1,)
-    attestation = proto.Field(
-        proto.MESSAGE, number=2, message=attestation.AttestationOccurrence,
+    attestor = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    occurrence_note = proto.Field(proto.STRING, number=3,)
-    occurrence_resource_uri = proto.Field(proto.STRING, number=4,)
+    attestation = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=attestation.AttestationOccurrence,
+    )
+    occurrence_note = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    occurrence_resource_uri = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class ValidateAttestationOccurrenceResponse(proto.Message):
@@ -249,8 +304,15 @@ class ValidateAttestationOccurrenceResponse(proto.Message):
         VERIFIED = 1
         ATTESTATION_NOT_VERIFIABLE = 2
 
-    result = proto.Field(proto.ENUM, number=1, enum=Result,)
-    denial_reason = proto.Field(proto.STRING, number=2,)
+    result = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Result,
+    )
+    denial_reason = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
