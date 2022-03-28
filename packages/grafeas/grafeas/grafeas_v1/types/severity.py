@@ -16,7 +16,12 @@
 import proto  # type: ignore
 
 
-__protobuf__ = proto.module(package="grafeas.v1", manifest={"Severity",},)
+__protobuf__ = proto.module(
+    package="grafeas.v1",
+    manifest={
+        "Severity",
+    },
+)
 
 
 class Severity(proto.Enum):

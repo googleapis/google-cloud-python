@@ -21,7 +21,10 @@ from grafeas.grafeas_v1.types import intoto_statement
 
 __protobuf__ = proto.module(
     package="grafeas.v1",
-    manifest={"DSSEAttestationNote", "DSSEAttestationOccurrence",},
+    manifest={
+        "DSSEAttestationNote",
+        "DSSEAttestationOccurrence",
+    },
 )
 
 
@@ -51,9 +54,16 @@ class DSSEAttestationNote(proto.Message):
                 "cloudbuild-prod".
         """
 
-        human_readable_name = proto.Field(proto.STRING, number=1,)
+        human_readable_name = proto.Field(
+            proto.STRING,
+            number=1,
+        )
 
-    hint = proto.Field(proto.MESSAGE, number=1, message=DSSEHint,)
+    hint = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=DSSEHint,
+    )
 
 
 class DSSEAttestationOccurrence(proto.Message):
@@ -72,7 +82,11 @@ class DSSEAttestationOccurrence(proto.Message):
             This field is a member of `oneof`_ ``decoded_payload``.
     """
 
-    envelope = proto.Field(proto.MESSAGE, number=1, message=common.Envelope,)
+    envelope = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=common.Envelope,
+    )
     statement = proto.Field(
         proto.MESSAGE,
         number=2,

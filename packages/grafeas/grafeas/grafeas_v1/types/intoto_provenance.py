@@ -78,11 +78,28 @@ class Recipe(proto.Message):
             is of form "Any".
     """
 
-    type_ = proto.Field(proto.STRING, number=1,)
-    defined_in_material = proto.Field(proto.INT64, number=2,)
-    entry_point = proto.Field(proto.STRING, number=3,)
-    arguments = proto.RepeatedField(proto.MESSAGE, number=4, message=any_pb2.Any,)
-    environment = proto.RepeatedField(proto.MESSAGE, number=5, message=any_pb2.Any,)
+    type_ = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    defined_in_material = proto.Field(
+        proto.INT64,
+        number=2,
+    )
+    entry_point = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    arguments = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message=any_pb2.Any,
+    )
+    environment = proto.RepeatedField(
+        proto.MESSAGE,
+        number=5,
+        message=any_pb2.Any,
+    )
 
 
 class Completeness(proto.Message):
@@ -105,9 +122,18 @@ class Completeness(proto.Message):
             "hermetic".
     """
 
-    arguments = proto.Field(proto.BOOL, number=1,)
-    environment = proto.Field(proto.BOOL, number=2,)
-    materials = proto.Field(proto.BOOL, number=3,)
+    arguments = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
+    environment = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+    materials = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
 
 
 class Metadata(proto.Message):
@@ -132,15 +158,29 @@ class Metadata(proto.Message):
             identical output.
     """
 
-    build_invocation_id = proto.Field(proto.STRING, number=1,)
+    build_invocation_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     build_started_on = proto.Field(
-        proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
     )
     build_finished_on = proto.Field(
-        proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
     )
-    completeness = proto.Field(proto.MESSAGE, number=4, message="Completeness",)
-    reproducible = proto.Field(proto.BOOL, number=5,)
+    completeness = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="Completeness",
+    )
+    reproducible = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
 
 
 class BuilderConfig(proto.Message):
@@ -151,7 +191,10 @@ class BuilderConfig(proto.Message):
 
     """
 
-    id = proto.Field(proto.STRING, number=1,)
+    id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class InTotoProvenance(proto.Message):
@@ -177,10 +220,25 @@ class InTotoProvenance(proto.Message):
             or null is equivalent to empty.
     """
 
-    builder_config = proto.Field(proto.MESSAGE, number=1, message="BuilderConfig",)
-    recipe = proto.Field(proto.MESSAGE, number=2, message="Recipe",)
-    metadata = proto.Field(proto.MESSAGE, number=3, message="Metadata",)
-    materials = proto.RepeatedField(proto.STRING, number=4,)
+    builder_config = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="BuilderConfig",
+    )
+    recipe = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="Recipe",
+    )
+    metadata = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="Metadata",
+    )
+    materials = proto.RepeatedField(
+        proto.STRING,
+        number=4,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

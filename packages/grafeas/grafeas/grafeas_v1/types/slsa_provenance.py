@@ -19,7 +19,12 @@ from google.protobuf import any_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
 
-__protobuf__ = proto.module(package="grafeas.v1", manifest={"SlsaProvenance",},)
+__protobuf__ = proto.module(
+    package="grafeas.v1",
+    manifest={
+        "SlsaProvenance",
+    },
+)
 
 
 class SlsaProvenance(proto.Message):
@@ -89,11 +94,28 @@ class SlsaProvenance(proto.Message):
                 recipe Type, the structure may be different.
         """
 
-        type_ = proto.Field(proto.STRING, number=1,)
-        defined_in_material = proto.Field(proto.INT64, number=2,)
-        entry_point = proto.Field(proto.STRING, number=3,)
-        arguments = proto.Field(proto.MESSAGE, number=4, message=any_pb2.Any,)
-        environment = proto.Field(proto.MESSAGE, number=5, message=any_pb2.Any,)
+        type_ = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        defined_in_material = proto.Field(
+            proto.INT64,
+            number=2,
+        )
+        entry_point = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+        arguments = proto.Field(
+            proto.MESSAGE,
+            number=4,
+            message=any_pb2.Any,
+        )
+        environment = proto.Field(
+            proto.MESSAGE,
+            number=5,
+            message=any_pb2.Any,
+        )
 
     class SlsaCompleteness(proto.Message):
         r"""Indicates that the builder claims certain fields in this
@@ -115,9 +137,18 @@ class SlsaProvenance(proto.Message):
                 "hermetic".
         """
 
-        arguments = proto.Field(proto.BOOL, number=1,)
-        environment = proto.Field(proto.BOOL, number=2,)
-        materials = proto.Field(proto.BOOL, number=3,)
+        arguments = proto.Field(
+            proto.BOOL,
+            number=1,
+        )
+        environment = proto.Field(
+            proto.BOOL,
+            number=2,
+        )
+        materials = proto.Field(
+            proto.BOOL,
+            number=3,
+        )
 
     class SlsaMetadata(proto.Message):
         r"""Other properties of the build.
@@ -141,17 +172,29 @@ class SlsaProvenance(proto.Message):
                 identical output.
         """
 
-        build_invocation_id = proto.Field(proto.STRING, number=1,)
+        build_invocation_id = proto.Field(
+            proto.STRING,
+            number=1,
+        )
         build_started_on = proto.Field(
-            proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,
+            proto.MESSAGE,
+            number=2,
+            message=timestamp_pb2.Timestamp,
         )
         build_finished_on = proto.Field(
-            proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,
+            proto.MESSAGE,
+            number=3,
+            message=timestamp_pb2.Timestamp,
         )
         completeness = proto.Field(
-            proto.MESSAGE, number=4, message="SlsaProvenance.SlsaCompleteness",
+            proto.MESSAGE,
+            number=4,
+            message="SlsaProvenance.SlsaCompleteness",
         )
-        reproducible = proto.Field(proto.BOOL, number=5,)
+        reproducible = proto.Field(
+            proto.BOOL,
+            number=5,
+        )
 
     class SlsaBuilder(proto.Message):
         r"""
@@ -161,7 +204,10 @@ class SlsaProvenance(proto.Message):
 
         """
 
-        id = proto.Field(proto.STRING, number=1,)
+        id = proto.Field(
+            proto.STRING,
+            number=1,
+        )
 
     class Material(proto.Message):
         r"""
@@ -173,13 +219,36 @@ class SlsaProvenance(proto.Message):
 
         """
 
-        uri = proto.Field(proto.STRING, number=1,)
-        digest = proto.MapField(proto.STRING, proto.STRING, number=2,)
+        uri = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        digest = proto.MapField(
+            proto.STRING,
+            proto.STRING,
+            number=2,
+        )
 
-    builder = proto.Field(proto.MESSAGE, number=1, message=SlsaBuilder,)
-    recipe = proto.Field(proto.MESSAGE, number=2, message=SlsaRecipe,)
-    metadata = proto.Field(proto.MESSAGE, number=3, message=SlsaMetadata,)
-    materials = proto.RepeatedField(proto.MESSAGE, number=4, message=Material,)
+    builder = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=SlsaBuilder,
+    )
+    recipe = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=SlsaRecipe,
+    )
+    metadata = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=SlsaMetadata,
+    )
+    materials = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message=Material,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

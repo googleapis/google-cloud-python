@@ -66,7 +66,10 @@ class GrafeasClientMeta(type):
     _transport_registry["grpc"] = GrafeasGrpcTransport
     _transport_registry["grpc_asyncio"] = GrafeasGrpcAsyncIOTransport
 
-    def get_transport_class(cls, label: str = None,) -> Type[GrafeasTransport]:
+    def get_transport_class(
+        cls,
+        label: str = None,
+    ) -> Type[GrafeasTransport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -162,9 +165,15 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
         return self._transport
 
     @staticmethod
-    def note_path(project: str, note: str,) -> str:
+    def note_path(
+        project: str,
+        note: str,
+    ) -> str:
         """Returns a fully-qualified note string."""
-        return "projects/{project}/notes/{note}".format(project=project, note=note,)
+        return "projects/{project}/notes/{note}".format(
+            project=project,
+            note=note,
+        )
 
     @staticmethod
     def parse_note_path(path: str) -> Dict[str, str]:
@@ -173,10 +182,14 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def occurrence_path(project: str, occurrence: str,) -> str:
+    def occurrence_path(
+        project: str,
+        occurrence: str,
+    ) -> str:
         """Returns a fully-qualified occurrence string."""
         return "projects/{project}/occurrences/{occurrence}".format(
-            project=project, occurrence=occurrence,
+            project=project,
+            occurrence=occurrence,
         )
 
     @staticmethod
@@ -188,9 +201,13 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def project_path(project: str,) -> str:
+    def project_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified project string."""
-        return "projects/{project}".format(project=project,)
+        return "projects/{project}".format(
+            project=project,
+        )
 
     @staticmethod
     def parse_project_path(path: str) -> Dict[str, str]:
@@ -199,7 +216,9 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_billing_account_path(billing_account: str,) -> str:
+    def common_billing_account_path(
+        billing_account: str,
+    ) -> str:
         """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
@@ -212,9 +231,13 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(folder: str,) -> str:
+    def common_folder_path(
+        folder: str,
+    ) -> str:
         """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(folder=folder,)
+        return "folders/{folder}".format(
+            folder=folder,
+        )
 
     @staticmethod
     def parse_common_folder_path(path: str) -> Dict[str, str]:
@@ -223,9 +246,13 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(organization: str,) -> str:
+    def common_organization_path(
+        organization: str,
+    ) -> str:
         """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(organization=organization,)
+        return "organizations/{organization}".format(
+            organization=organization,
+        )
 
     @staticmethod
     def parse_common_organization_path(path: str) -> Dict[str, str]:
@@ -234,9 +261,13 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(project: str,) -> str:
+    def common_project_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified project string."""
-        return "projects/{project}".format(project=project,)
+        return "projects/{project}".format(
+            project=project,
+        )
 
     @staticmethod
     def parse_common_project_path(path: str) -> Dict[str, str]:
@@ -245,10 +276,14 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(project: str, location: str,) -> str:
+    def common_location_path(
+        project: str,
+        location: str,
+    ) -> str:
         """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
-            project=project, location=location,
+            project=project,
+            location=location,
         )
 
     @staticmethod
@@ -257,13 +292,17 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
         m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)$", path)
         return m.groupdict() if m else {}
 
-    def __init__(self, *, transport: Union[str, GrafeasTransport] = None,) -> None:
+    def __init__(
+        self,
+        *,
+        transport: Union[str, GrafeasTransport] = None,
+    ) -> None:
         """Instantiate the grafeas client.
 
         Args:
             transport (Union[str, ~.GrafeasTransport]): The
                 transport to use.
-            
+
 
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
@@ -360,7 +399,12 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -460,12 +504,20 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListOccurrencesPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -550,7 +602,10 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def create_occurrence(
@@ -646,7 +701,12 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -747,7 +807,12 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -852,7 +917,12 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -945,7 +1015,12 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1034,7 +1109,12 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1134,12 +1214,20 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListNotesPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1221,7 +1309,10 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def create_note(
@@ -1326,7 +1417,12 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1424,7 +1520,12 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1529,7 +1630,12 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1635,12 +1741,20 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListNoteOccurrencesPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1662,7 +1776,9 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("grafeas",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "grafeas",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()

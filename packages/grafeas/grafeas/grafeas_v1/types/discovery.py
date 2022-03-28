@@ -21,7 +21,11 @@ from grafeas.grafeas_v1.types import common
 
 
 __protobuf__ = proto.module(
-    package="grafeas.v1", manifest={"DiscoveryNote", "DiscoveryOccurrence",},
+    package="grafeas.v1",
+    manifest={
+        "DiscoveryNote",
+        "DiscoveryOccurrence",
+    },
 )
 
 
@@ -36,7 +40,11 @@ class DiscoveryNote(proto.Message):
             that is handled by this discovery.
     """
 
-    analysis_kind = proto.Field(proto.ENUM, number=1, enum=common.NoteKind,)
+    analysis_kind = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=common.NoteKind,
+    )
 
 
 class DiscoveryOccurrence(proto.Message):
@@ -80,17 +88,34 @@ class DiscoveryOccurrence(proto.Message):
         FINISHED_FAILED = 4
         FINISHED_UNSUPPORTED = 5
 
-    continuous_analysis = proto.Field(proto.ENUM, number=1, enum=ContinuousAnalysis,)
-    analysis_status = proto.Field(proto.ENUM, number=2, enum=AnalysisStatus,)
-    analysis_status_error = proto.Field(
-        proto.MESSAGE, number=3, message=status_pb2.Status,
+    continuous_analysis = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=ContinuousAnalysis,
     )
-    cpe = proto.Field(proto.STRING, number=4,)
+    analysis_status = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=AnalysisStatus,
+    )
+    analysis_status_error = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=status_pb2.Status,
+    )
+    cpe = proto.Field(
+        proto.STRING,
+        number=4,
+    )
     last_scan_time = proto.Field(
-        proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
     )
     archive_time = proto.Field(
-        proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
     )
 
 

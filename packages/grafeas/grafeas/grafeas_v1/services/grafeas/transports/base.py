@@ -30,7 +30,9 @@ from grafeas.grafeas_v1.types import grafeas
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("grafeas",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "grafeas",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
@@ -165,7 +167,9 @@ class GrafeasTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.create_occurrence: gapic_v1.method.wrap_method(
-                self.create_occurrence, default_timeout=30.0, client_info=client_info,
+                self.create_occurrence,
+                default_timeout=30.0,
+                client_info=client_info,
             ),
             self.batch_create_occurrences: gapic_v1.method.wrap_method(
                 self.batch_create_occurrences,
@@ -173,7 +177,9 @@ class GrafeasTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.update_occurrence: gapic_v1.method.wrap_method(
-                self.update_occurrence, default_timeout=30.0, client_info=client_info,
+                self.update_occurrence,
+                default_timeout=30.0,
+                client_info=client_info,
             ),
             self.get_occurrence_note: gapic_v1.method.wrap_method(
                 self.get_occurrence_note,
@@ -236,13 +242,19 @@ class GrafeasTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.create_note: gapic_v1.method.wrap_method(
-                self.create_note, default_timeout=30.0, client_info=client_info,
+                self.create_note,
+                default_timeout=30.0,
+                client_info=client_info,
             ),
             self.batch_create_notes: gapic_v1.method.wrap_method(
-                self.batch_create_notes, default_timeout=30.0, client_info=client_info,
+                self.batch_create_notes,
+                default_timeout=30.0,
+                client_info=client_info,
             ),
             self.update_note: gapic_v1.method.wrap_method(
-                self.update_note, default_timeout=30.0, client_info=client_info,
+                self.update_note,
+                default_timeout=30.0,
+                client_info=client_info,
             ),
             self.list_note_occurrences: gapic_v1.method.wrap_method(
                 self.list_note_occurrences,
@@ -264,9 +276,9 @@ class GrafeasTransport(abc.ABC):
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

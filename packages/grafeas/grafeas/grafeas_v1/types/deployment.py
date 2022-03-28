@@ -19,7 +19,11 @@ from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="grafeas.v1", manifest={"DeploymentNote", "DeploymentOccurrence",},
+    package="grafeas.v1",
+    manifest={
+        "DeploymentNote",
+        "DeploymentOccurrence",
+    },
 )
 
 
@@ -32,7 +36,10 @@ class DeploymentNote(proto.Message):
             deployed.
     """
 
-    resource_uri = proto.RepeatedField(proto.STRING, number=1,)
+    resource_uri = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
 
 
 class DeploymentOccurrence(proto.Message):
@@ -68,15 +75,37 @@ class DeploymentOccurrence(proto.Message):
         FLEX = 2
         CUSTOM = 3
 
-    user_email = proto.Field(proto.STRING, number=1,)
-    deploy_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    undeploy_time = proto.Field(
-        proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,
+    user_email = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    config = proto.Field(proto.STRING, number=4,)
-    address = proto.Field(proto.STRING, number=5,)
-    resource_uri = proto.RepeatedField(proto.STRING, number=6,)
-    platform = proto.Field(proto.ENUM, number=7, enum=Platform,)
+    deploy_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    undeploy_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    config = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    address = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    resource_uri = proto.RepeatedField(
+        proto.STRING,
+        number=6,
+    )
+    platform = proto.Field(
+        proto.ENUM,
+        number=7,
+        enum=Platform,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

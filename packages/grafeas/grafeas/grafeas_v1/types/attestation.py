@@ -19,7 +19,12 @@ from grafeas.grafeas_v1.types import common
 
 
 __protobuf__ = proto.module(
-    package="grafeas.v1", manifest={"AttestationNote", "Jwt", "AttestationOccurrence",},
+    package="grafeas.v1",
+    manifest={
+        "AttestationNote",
+        "Jwt",
+        "AttestationOccurrence",
+    },
 )
 
 
@@ -56,9 +61,16 @@ class AttestationNote(proto.Message):
                 attestation authority, for example "qa".
         """
 
-        human_readable_name = proto.Field(proto.STRING, number=1,)
+        human_readable_name = proto.Field(
+            proto.STRING,
+            number=1,
+        )
 
-    hint = proto.Field(proto.MESSAGE, number=1, message=Hint,)
+    hint = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=Hint,
+    )
 
 
 class Jwt(proto.Message):
@@ -72,7 +84,10 @@ class Jwt(proto.Message):
             https://tools.ietf.org/html/rfc7515.html#section-3.1
     """
 
-    compact_jwt = proto.Field(proto.STRING, number=1,)
+    compact_jwt = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class AttestationOccurrence(proto.Message):
@@ -109,9 +124,20 @@ class AttestationOccurrence(proto.Message):
             Grafeas.
     """
 
-    serialized_payload = proto.Field(proto.BYTES, number=1,)
-    signatures = proto.RepeatedField(proto.MESSAGE, number=2, message=common.Signature,)
-    jwts = proto.RepeatedField(proto.MESSAGE, number=3, message="Jwt",)
+    serialized_payload = proto.Field(
+        proto.BYTES,
+        number=1,
+    )
+    signatures = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=common.Signature,
+    )
+    jwts = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message="Jwt",
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

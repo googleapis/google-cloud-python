@@ -18,7 +18,13 @@ import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="grafeas.v1",
-    manifest={"NoteKind", "RelatedUrl", "Signature", "Envelope", "EnvelopeSignature",},
+    manifest={
+        "NoteKind",
+        "RelatedUrl",
+        "Signature",
+        "Envelope",
+        "EnvelopeSignature",
+    },
 )
 
 
@@ -47,8 +53,14 @@ class RelatedUrl(proto.Message):
             Label to describe usage of the URL.
     """
 
-    url = proto.Field(proto.STRING, number=1,)
-    label = proto.Field(proto.STRING, number=2,)
+    url = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    label = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class Signature(proto.Message):
@@ -114,8 +126,14 @@ class Signature(proto.Message):
             -  "nih:///sha-256;703f68f42aba2c6de30f488a5ea122fef76324679c9bf89791ba95a1271589a5".
     """
 
-    signature = proto.Field(proto.BYTES, number=1,)
-    public_key_id = proto.Field(proto.STRING, number=2,)
+    signature = proto.Field(
+        proto.BYTES,
+        number=1,
+    )
+    public_key_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class Envelope(proto.Message):
@@ -132,10 +150,18 @@ class Envelope(proto.Message):
 
     """
 
-    payload = proto.Field(proto.BYTES, number=1,)
-    payload_type = proto.Field(proto.STRING, number=2,)
+    payload = proto.Field(
+        proto.BYTES,
+        number=1,
+    )
+    payload_type = proto.Field(
+        proto.STRING,
+        number=2,
+    )
     signatures = proto.RepeatedField(
-        proto.MESSAGE, number=3, message="EnvelopeSignature",
+        proto.MESSAGE,
+        number=3,
+        message="EnvelopeSignature",
     )
 
 
@@ -149,8 +175,14 @@ class EnvelopeSignature(proto.Message):
 
     """
 
-    sig = proto.Field(proto.BYTES, number=1,)
-    keyid = proto.Field(proto.STRING, number=2,)
+    sig = proto.Field(
+        proto.BYTES,
+        number=1,
+    )
+    keyid = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

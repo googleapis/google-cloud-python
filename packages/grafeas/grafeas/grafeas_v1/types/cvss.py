@@ -16,7 +16,13 @@
 import proto  # type: ignore
 
 
-__protobuf__ = proto.module(package="grafeas.v1", manifest={"CVSSv3", "CVSS",},)
+__protobuf__ = proto.module(
+    package="grafeas.v1",
+    manifest={
+        "CVSSv3",
+        "CVSS",
+    },
+)
 
 
 class CVSSv3(proto.Message):
@@ -93,17 +99,58 @@ class CVSSv3(proto.Message):
         IMPACT_LOW = 2
         IMPACT_NONE = 3
 
-    base_score = proto.Field(proto.FLOAT, number=1,)
-    exploitability_score = proto.Field(proto.FLOAT, number=2,)
-    impact_score = proto.Field(proto.FLOAT, number=3,)
-    attack_vector = proto.Field(proto.ENUM, number=5, enum=AttackVector,)
-    attack_complexity = proto.Field(proto.ENUM, number=6, enum=AttackComplexity,)
-    privileges_required = proto.Field(proto.ENUM, number=7, enum=PrivilegesRequired,)
-    user_interaction = proto.Field(proto.ENUM, number=8, enum=UserInteraction,)
-    scope = proto.Field(proto.ENUM, number=9, enum=Scope,)
-    confidentiality_impact = proto.Field(proto.ENUM, number=10, enum=Impact,)
-    integrity_impact = proto.Field(proto.ENUM, number=11, enum=Impact,)
-    availability_impact = proto.Field(proto.ENUM, number=12, enum=Impact,)
+    base_score = proto.Field(
+        proto.FLOAT,
+        number=1,
+    )
+    exploitability_score = proto.Field(
+        proto.FLOAT,
+        number=2,
+    )
+    impact_score = proto.Field(
+        proto.FLOAT,
+        number=3,
+    )
+    attack_vector = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum=AttackVector,
+    )
+    attack_complexity = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum=AttackComplexity,
+    )
+    privileges_required = proto.Field(
+        proto.ENUM,
+        number=7,
+        enum=PrivilegesRequired,
+    )
+    user_interaction = proto.Field(
+        proto.ENUM,
+        number=8,
+        enum=UserInteraction,
+    )
+    scope = proto.Field(
+        proto.ENUM,
+        number=9,
+        enum=Scope,
+    )
+    confidentiality_impact = proto.Field(
+        proto.ENUM,
+        number=10,
+        enum=Impact,
+    )
+    integrity_impact = proto.Field(
+        proto.ENUM,
+        number=11,
+        enum=Impact,
+    )
+    availability_impact = proto.Field(
+        proto.ENUM,
+        number=12,
+        enum=Impact,
+    )
 
 
 class CVSS(proto.Message):
@@ -193,18 +240,63 @@ class CVSS(proto.Message):
         IMPACT_LOW = 2
         IMPACT_NONE = 3
 
-    base_score = proto.Field(proto.FLOAT, number=1,)
-    exploitability_score = proto.Field(proto.FLOAT, number=2,)
-    impact_score = proto.Field(proto.FLOAT, number=3,)
-    attack_vector = proto.Field(proto.ENUM, number=4, enum=AttackVector,)
-    attack_complexity = proto.Field(proto.ENUM, number=5, enum=AttackComplexity,)
-    authentication = proto.Field(proto.ENUM, number=6, enum=Authentication,)
-    privileges_required = proto.Field(proto.ENUM, number=7, enum=PrivilegesRequired,)
-    user_interaction = proto.Field(proto.ENUM, number=8, enum=UserInteraction,)
-    scope = proto.Field(proto.ENUM, number=9, enum=Scope,)
-    confidentiality_impact = proto.Field(proto.ENUM, number=10, enum=Impact,)
-    integrity_impact = proto.Field(proto.ENUM, number=11, enum=Impact,)
-    availability_impact = proto.Field(proto.ENUM, number=12, enum=Impact,)
+    base_score = proto.Field(
+        proto.FLOAT,
+        number=1,
+    )
+    exploitability_score = proto.Field(
+        proto.FLOAT,
+        number=2,
+    )
+    impact_score = proto.Field(
+        proto.FLOAT,
+        number=3,
+    )
+    attack_vector = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=AttackVector,
+    )
+    attack_complexity = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum=AttackComplexity,
+    )
+    authentication = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum=Authentication,
+    )
+    privileges_required = proto.Field(
+        proto.ENUM,
+        number=7,
+        enum=PrivilegesRequired,
+    )
+    user_interaction = proto.Field(
+        proto.ENUM,
+        number=8,
+        enum=UserInteraction,
+    )
+    scope = proto.Field(
+        proto.ENUM,
+        number=9,
+        enum=Scope,
+    )
+    confidentiality_impact = proto.Field(
+        proto.ENUM,
+        number=10,
+        enum=Impact,
+    )
+    integrity_impact = proto.Field(
+        proto.ENUM,
+        number=11,
+        enum=Impact,
+    )
+    availability_impact = proto.Field(
+        proto.ENUM,
+        number=12,
+        enum=Impact,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
