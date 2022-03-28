@@ -89,11 +89,29 @@ class Setting(proto.Message):
             for more details.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    metadata = proto.Field(proto.MESSAGE, number=7, message="SettingMetadata",)
-    local_value = proto.Field(proto.MESSAGE, number=8, message="Value",)
-    effective_value = proto.Field(proto.MESSAGE, number=9, message="Value",)
-    etag = proto.Field(proto.STRING, number=10,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    metadata = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message="SettingMetadata",
+    )
+    local_value = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message="Value",
+    )
+    effective_value = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message="Value",
+    )
+    etag = proto.Field(
+        proto.STRING,
+        number=10,
+    )
 
 
 class SettingMetadata(proto.Message):
@@ -131,11 +149,28 @@ class SettingMetadata(proto.Message):
         STRING_SET = 3
         ENUM_VALUE = 4
 
-    display_name = proto.Field(proto.STRING, number=1,)
-    description = proto.Field(proto.STRING, number=2,)
-    read_only = proto.Field(proto.BOOL, number=3,)
-    data_type = proto.Field(proto.ENUM, number=4, enum=DataType,)
-    default_value = proto.Field(proto.MESSAGE, number=5, message="Value",)
+    display_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    read_only = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+    data_type = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=DataType,
+    )
+    default_value = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message="Value",
+    )
 
 
 class Value(proto.Message):
@@ -177,7 +212,10 @@ class Value(proto.Message):
                 The strings in the set
         """
 
-        values = proto.RepeatedField(proto.STRING, number=1,)
+        values = proto.RepeatedField(
+            proto.STRING,
+            number=1,
+        )
 
     class EnumValue(proto.Message):
         r"""A enum value that can hold any enum type setting values.
@@ -189,14 +227,33 @@ class Value(proto.Message):
                 The value of this enum
         """
 
-        value = proto.Field(proto.STRING, number=1,)
+        value = proto.Field(
+            proto.STRING,
+            number=1,
+        )
 
-    boolean_value = proto.Field(proto.BOOL, number=1, oneof="value",)
-    string_value = proto.Field(proto.STRING, number=2, oneof="value",)
-    string_set_value = proto.Field(
-        proto.MESSAGE, number=3, oneof="value", message=StringSet,
+    boolean_value = proto.Field(
+        proto.BOOL,
+        number=1,
+        oneof="value",
     )
-    enum_value = proto.Field(proto.MESSAGE, number=4, oneof="value", message=EnumValue,)
+    string_value = proto.Field(
+        proto.STRING,
+        number=2,
+        oneof="value",
+    )
+    string_set_value = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="value",
+        message=StringSet,
+    )
+    enum_value = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="value",
+        message=EnumValue,
+    )
 
 
 class ListSettingsRequest(proto.Message):
@@ -220,10 +277,23 @@ class ListSettingsRequest(proto.Message):
             The SettingView for this request.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    view = proto.Field(proto.ENUM, number=4, enum="SettingView",)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    view = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum="SettingView",
+    )
 
 
 class ListSettingsResponse(proto.Message):
@@ -242,8 +312,15 @@ class ListSettingsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    settings = proto.RepeatedField(proto.MESSAGE, number=1, message="Setting",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    settings = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Setting",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetSettingRequest(proto.Message):
@@ -258,8 +335,15 @@ class GetSettingRequest(proto.Message):
             The SettingView for this request.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    view = proto.Field(proto.ENUM, number=2, enum="SettingView",)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    view = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum="SettingView",
+    )
 
 
 class UpdateSettingRequest(proto.Message):
@@ -272,7 +356,11 @@ class UpdateSettingRequest(proto.Message):
             field requirements.
     """
 
-    setting = proto.Field(proto.MESSAGE, number=1, message="Setting",)
+    setting = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="Setting",
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
