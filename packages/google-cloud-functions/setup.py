@@ -53,7 +53,9 @@ setuptools.setup(
         "grpc-google-iam-v1 >= 0.12.3, < 0.13dev",
     ),
     python_requires=">=3.6",
-    scripts=["scripts/fixup_functions_v1_keywords.py",],
+    scripts=[
+        "scripts/fixup_functions_v1_keywords.py",
+    ],
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Developers",

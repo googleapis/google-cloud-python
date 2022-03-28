@@ -21,7 +21,10 @@ from google.protobuf import timestamp_pb2  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.functions.v1",
-    manifest={"OperationType", "OperationMetadataV1",},
+    manifest={
+        "OperationType",
+        "OperationMetadataV1",
+    },
 )
 
 
@@ -65,14 +68,41 @@ class OperationMetadataV1(proto.Message):
             ``projects/<project-number>/locations/<region>/builds/<build-id>``.
     """
 
-    target = proto.Field(proto.STRING, number=1,)
-    type_ = proto.Field(proto.ENUM, number=2, enum="OperationType",)
-    request = proto.Field(proto.MESSAGE, number=3, message=any_pb2.Any,)
-    version_id = proto.Field(proto.INT64, number=4,)
-    update_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
-    build_id = proto.Field(proto.STRING, number=6,)
-    source_token = proto.Field(proto.STRING, number=7,)
-    build_name = proto.Field(proto.STRING, number=8,)
+    target = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    type_ = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum="OperationType",
+    )
+    request = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=any_pb2.Any,
+    )
+    version_id = proto.Field(
+        proto.INT64,
+        number=4,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+    build_id = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    source_token = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    build_name = proto.Field(
+        proto.STRING,
+        number=8,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

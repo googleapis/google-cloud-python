@@ -33,7 +33,9 @@ from google.longrunning import operations_pb2  # type: ignore
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-functions",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-functions",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
@@ -153,7 +155,9 @@ class CloudFunctionsServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.create_function: gapic_v1.method.wrap_method(
-                self.create_function, default_timeout=600.0, client_info=client_info,
+                self.create_function,
+                default_timeout=600.0,
+                client_info=client_info,
             ),
             self.update_function: gapic_v1.method.wrap_method(
                 self.update_function,
@@ -186,10 +190,14 @@ class CloudFunctionsServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.call_function: gapic_v1.method.wrap_method(
-                self.call_function, default_timeout=600.0, client_info=client_info,
+                self.call_function,
+                default_timeout=600.0,
+                client_info=client_info,
             ),
             self.generate_upload_url: gapic_v1.method.wrap_method(
-                self.generate_upload_url, default_timeout=None, client_info=client_info,
+                self.generate_upload_url,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.generate_download_url: gapic_v1.method.wrap_method(
                 self.generate_download_url,
@@ -197,10 +205,14 @@ class CloudFunctionsServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.set_iam_policy: gapic_v1.method.wrap_method(
-                self.set_iam_policy, default_timeout=None, client_info=client_info,
+                self.set_iam_policy,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_iam_policy: gapic_v1.method.wrap_method(
-                self.get_iam_policy, default_timeout=None, client_info=client_info,
+                self.get_iam_policy,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.test_iam_permissions: gapic_v1.method.wrap_method(
                 self.test_iam_permissions,
@@ -212,9 +224,9 @@ class CloudFunctionsServiceTransport(abc.ABC):
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 
