@@ -89,7 +89,11 @@ def test__get_default_mtls_endpoint():
 
 
 @pytest.mark.parametrize(
-    "client_class", [AccessApprovalClient, AccessApprovalAsyncClient,]
+    "client_class",
+    [
+        AccessApprovalClient,
+        AccessApprovalAsyncClient,
+    ],
 )
 def test_access_approval_client_from_service_account_info(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -131,7 +135,11 @@ def test_access_approval_client_service_account_always_use_jwt(
 
 
 @pytest.mark.parametrize(
-    "client_class", [AccessApprovalClient, AccessApprovalAsyncClient,]
+    "client_class",
+    [
+        AccessApprovalClient,
+        AccessApprovalAsyncClient,
+    ],
 )
 def test_access_approval_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -495,7 +503,9 @@ def test_access_approval_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -636,11 +646,16 @@ def test_access_approval_client_create_channel_credentials_file(
 
 
 @pytest.mark.parametrize(
-    "request_type", [accessapproval.ListApprovalRequestsMessage, dict,]
+    "request_type",
+    [
+        accessapproval.ListApprovalRequestsMessage,
+        dict,
+    ],
 )
 def test_list_approval_requests(request_type, transport: str = "grpc"):
     client = AccessApprovalClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -671,7 +686,8 @@ def test_list_approval_requests_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AccessApprovalClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -690,7 +706,8 @@ async def test_list_approval_requests_async(
     request_type=accessapproval.ListApprovalRequestsMessage,
 ):
     client = AccessApprovalAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -725,7 +742,9 @@ async def test_list_approval_requests_async_from_dict():
 
 
 def test_list_approval_requests_field_headers():
-    client = AccessApprovalClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AccessApprovalClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -747,7 +766,10 @@ def test_list_approval_requests_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -778,11 +800,16 @@ async def test_list_approval_requests_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_approval_requests_flattened():
-    client = AccessApprovalClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AccessApprovalClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -792,7 +819,9 @@ def test_list_approval_requests_flattened():
         call.return_value = accessapproval.ListApprovalRequestsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_approval_requests(parent="parent_value",)
+        client.list_approval_requests(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -804,13 +833,16 @@ def test_list_approval_requests_flattened():
 
 
 def test_list_approval_requests_flattened_error():
-    client = AccessApprovalClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AccessApprovalClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_approval_requests(
-            accessapproval.ListApprovalRequestsMessage(), parent="parent_value",
+            accessapproval.ListApprovalRequestsMessage(),
+            parent="parent_value",
         )
 
 
@@ -832,7 +864,9 @@ async def test_list_approval_requests_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_approval_requests(parent="parent_value",)
+        response = await client.list_approval_requests(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -853,13 +887,15 @@ async def test_list_approval_requests_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_approval_requests(
-            accessapproval.ListApprovalRequestsMessage(), parent="parent_value",
+            accessapproval.ListApprovalRequestsMessage(),
+            parent="parent_value",
         )
 
 
 def test_list_approval_requests_pager(transport_name: str = "grpc"):
     client = AccessApprovalClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -877,10 +913,13 @@ def test_list_approval_requests_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             accessapproval.ListApprovalRequestsResponse(
-                approval_requests=[], next_page_token="def",
+                approval_requests=[],
+                next_page_token="def",
             ),
             accessapproval.ListApprovalRequestsResponse(
-                approval_requests=[accessapproval.ApprovalRequest(),],
+                approval_requests=[
+                    accessapproval.ApprovalRequest(),
+                ],
                 next_page_token="ghi",
             ),
             accessapproval.ListApprovalRequestsResponse(
@@ -907,7 +946,8 @@ def test_list_approval_requests_pager(transport_name: str = "grpc"):
 
 def test_list_approval_requests_pages(transport_name: str = "grpc"):
     client = AccessApprovalClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -925,10 +965,13 @@ def test_list_approval_requests_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             accessapproval.ListApprovalRequestsResponse(
-                approval_requests=[], next_page_token="def",
+                approval_requests=[],
+                next_page_token="def",
             ),
             accessapproval.ListApprovalRequestsResponse(
-                approval_requests=[accessapproval.ApprovalRequest(),],
+                approval_requests=[
+                    accessapproval.ApprovalRequest(),
+                ],
                 next_page_token="ghi",
             ),
             accessapproval.ListApprovalRequestsResponse(
@@ -946,7 +989,9 @@ def test_list_approval_requests_pages(transport_name: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_list_approval_requests_async_pager():
-    client = AccessApprovalAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = AccessApprovalAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -965,10 +1010,13 @@ async def test_list_approval_requests_async_pager():
                 next_page_token="abc",
             ),
             accessapproval.ListApprovalRequestsResponse(
-                approval_requests=[], next_page_token="def",
+                approval_requests=[],
+                next_page_token="def",
             ),
             accessapproval.ListApprovalRequestsResponse(
-                approval_requests=[accessapproval.ApprovalRequest(),],
+                approval_requests=[
+                    accessapproval.ApprovalRequest(),
+                ],
                 next_page_token="ghi",
             ),
             accessapproval.ListApprovalRequestsResponse(
@@ -979,7 +1027,9 @@ async def test_list_approval_requests_async_pager():
             ),
             RuntimeError,
         )
-        async_pager = await client.list_approval_requests(request={},)
+        async_pager = await client.list_approval_requests(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -991,7 +1041,9 @@ async def test_list_approval_requests_async_pager():
 
 @pytest.mark.asyncio
 async def test_list_approval_requests_async_pages():
-    client = AccessApprovalAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = AccessApprovalAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1010,10 +1062,13 @@ async def test_list_approval_requests_async_pages():
                 next_page_token="abc",
             ),
             accessapproval.ListApprovalRequestsResponse(
-                approval_requests=[], next_page_token="def",
+                approval_requests=[],
+                next_page_token="def",
             ),
             accessapproval.ListApprovalRequestsResponse(
-                approval_requests=[accessapproval.ApprovalRequest(),],
+                approval_requests=[
+                    accessapproval.ApprovalRequest(),
+                ],
                 next_page_token="ghi",
             ),
             accessapproval.ListApprovalRequestsResponse(
@@ -1032,11 +1087,16 @@ async def test_list_approval_requests_async_pages():
 
 
 @pytest.mark.parametrize(
-    "request_type", [accessapproval.GetApprovalRequestMessage, dict,]
+    "request_type",
+    [
+        accessapproval.GetApprovalRequestMessage,
+        dict,
+    ],
 )
 def test_get_approval_request(request_type, transport: str = "grpc"):
     client = AccessApprovalClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1072,7 +1132,8 @@ def test_get_approval_request_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AccessApprovalClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1091,7 +1152,8 @@ async def test_get_approval_request_async(
     request_type=accessapproval.GetApprovalRequestMessage,
 ):
     client = AccessApprovalAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1128,7 +1190,9 @@ async def test_get_approval_request_async_from_dict():
 
 
 def test_get_approval_request_field_headers():
-    client = AccessApprovalClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AccessApprovalClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1150,7 +1214,10 @@ def test_get_approval_request_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1181,11 +1248,16 @@ async def test_get_approval_request_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_approval_request_flattened():
-    client = AccessApprovalClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AccessApprovalClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1195,7 +1267,9 @@ def test_get_approval_request_flattened():
         call.return_value = accessapproval.ApprovalRequest()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_approval_request(name="name_value",)
+        client.get_approval_request(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1207,13 +1281,16 @@ def test_get_approval_request_flattened():
 
 
 def test_get_approval_request_flattened_error():
-    client = AccessApprovalClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AccessApprovalClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_approval_request(
-            accessapproval.GetApprovalRequestMessage(), name="name_value",
+            accessapproval.GetApprovalRequestMessage(),
+            name="name_value",
         )
 
 
@@ -1235,7 +1312,9 @@ async def test_get_approval_request_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_approval_request(name="name_value",)
+        response = await client.get_approval_request(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1256,16 +1335,22 @@ async def test_get_approval_request_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_approval_request(
-            accessapproval.GetApprovalRequestMessage(), name="name_value",
+            accessapproval.GetApprovalRequestMessage(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [accessapproval.ApproveApprovalRequestMessage, dict,]
+    "request_type",
+    [
+        accessapproval.ApproveApprovalRequestMessage,
+        dict,
+    ],
 )
 def test_approve_approval_request(request_type, transport: str = "grpc"):
     client = AccessApprovalClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1301,7 +1386,8 @@ def test_approve_approval_request_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AccessApprovalClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1320,7 +1406,8 @@ async def test_approve_approval_request_async(
     request_type=accessapproval.ApproveApprovalRequestMessage,
 ):
     client = AccessApprovalAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1357,7 +1444,9 @@ async def test_approve_approval_request_async_from_dict():
 
 
 def test_approve_approval_request_field_headers():
-    client = AccessApprovalClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AccessApprovalClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1379,7 +1468,10 @@ def test_approve_approval_request_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1410,15 +1502,23 @@ async def test_approve_approval_request_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.parametrize(
-    "request_type", [accessapproval.DismissApprovalRequestMessage, dict,]
+    "request_type",
+    [
+        accessapproval.DismissApprovalRequestMessage,
+        dict,
+    ],
 )
 def test_dismiss_approval_request(request_type, transport: str = "grpc"):
     client = AccessApprovalClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1454,7 +1554,8 @@ def test_dismiss_approval_request_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AccessApprovalClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1473,7 +1574,8 @@ async def test_dismiss_approval_request_async(
     request_type=accessapproval.DismissApprovalRequestMessage,
 ):
     client = AccessApprovalAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1510,7 +1612,9 @@ async def test_dismiss_approval_request_async_from_dict():
 
 
 def test_dismiss_approval_request_field_headers():
-    client = AccessApprovalClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AccessApprovalClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1532,7 +1636,10 @@ def test_dismiss_approval_request_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1563,15 +1670,23 @@ async def test_dismiss_approval_request_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.parametrize(
-    "request_type", [accessapproval.GetAccessApprovalSettingsMessage, dict,]
+    "request_type",
+    [
+        accessapproval.GetAccessApprovalSettingsMessage,
+        dict,
+    ],
 )
 def test_get_access_approval_settings(request_type, transport: str = "grpc"):
     client = AccessApprovalClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1606,7 +1721,8 @@ def test_get_access_approval_settings_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AccessApprovalClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1625,7 +1741,8 @@ async def test_get_access_approval_settings_async(
     request_type=accessapproval.GetAccessApprovalSettingsMessage,
 ):
     client = AccessApprovalAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1664,7 +1781,9 @@ async def test_get_access_approval_settings_async_from_dict():
 
 
 def test_get_access_approval_settings_field_headers():
-    client = AccessApprovalClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AccessApprovalClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1686,7 +1805,10 @@ def test_get_access_approval_settings_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1717,11 +1839,16 @@ async def test_get_access_approval_settings_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_access_approval_settings_flattened():
-    client = AccessApprovalClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AccessApprovalClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1731,7 +1858,9 @@ def test_get_access_approval_settings_flattened():
         call.return_value = accessapproval.AccessApprovalSettings()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_access_approval_settings(name="name_value",)
+        client.get_access_approval_settings(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1743,13 +1872,16 @@ def test_get_access_approval_settings_flattened():
 
 
 def test_get_access_approval_settings_flattened_error():
-    client = AccessApprovalClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AccessApprovalClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_access_approval_settings(
-            accessapproval.GetAccessApprovalSettingsMessage(), name="name_value",
+            accessapproval.GetAccessApprovalSettingsMessage(),
+            name="name_value",
         )
 
 
@@ -1771,7 +1903,9 @@ async def test_get_access_approval_settings_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_access_approval_settings(name="name_value",)
+        response = await client.get_access_approval_settings(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1792,16 +1926,22 @@ async def test_get_access_approval_settings_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_access_approval_settings(
-            accessapproval.GetAccessApprovalSettingsMessage(), name="name_value",
+            accessapproval.GetAccessApprovalSettingsMessage(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [accessapproval.UpdateAccessApprovalSettingsMessage, dict,]
+    "request_type",
+    [
+        accessapproval.UpdateAccessApprovalSettingsMessage,
+        dict,
+    ],
 )
 def test_update_access_approval_settings(request_type, transport: str = "grpc"):
     client = AccessApprovalClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1836,7 +1976,8 @@ def test_update_access_approval_settings_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AccessApprovalClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1855,7 +1996,8 @@ async def test_update_access_approval_settings_async(
     request_type=accessapproval.UpdateAccessApprovalSettingsMessage,
 ):
     client = AccessApprovalAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1894,7 +2036,9 @@ async def test_update_access_approval_settings_async_from_dict():
 
 
 def test_update_access_approval_settings_field_headers():
-    client = AccessApprovalClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AccessApprovalClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1916,9 +2060,10 @@ def test_update_access_approval_settings_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "settings.name=settings.name/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "settings.name=settings.name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1949,13 +2094,16 @@ async def test_update_access_approval_settings_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "settings.name=settings.name/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "settings.name=settings.name/value",
+    ) in kw["metadata"]
 
 
 def test_update_access_approval_settings_flattened():
-    client = AccessApprovalClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AccessApprovalClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1983,7 +2131,9 @@ def test_update_access_approval_settings_flattened():
 
 
 def test_update_access_approval_settings_flattened_error():
-    client = AccessApprovalClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AccessApprovalClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2047,11 +2197,16 @@ async def test_update_access_approval_settings_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [accessapproval.DeleteAccessApprovalSettingsMessage, dict,]
+    "request_type",
+    [
+        accessapproval.DeleteAccessApprovalSettingsMessage,
+        dict,
+    ],
 )
 def test_delete_access_approval_settings(request_type, transport: str = "grpc"):
     client = AccessApprovalClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2079,7 +2234,8 @@ def test_delete_access_approval_settings_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AccessApprovalClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2098,7 +2254,8 @@ async def test_delete_access_approval_settings_async(
     request_type=accessapproval.DeleteAccessApprovalSettingsMessage,
 ):
     client = AccessApprovalAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2128,7 +2285,9 @@ async def test_delete_access_approval_settings_async_from_dict():
 
 
 def test_delete_access_approval_settings_field_headers():
-    client = AccessApprovalClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AccessApprovalClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2150,7 +2309,10 @@ def test_delete_access_approval_settings_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2179,11 +2341,16 @@ async def test_delete_access_approval_settings_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_access_approval_settings_flattened():
-    client = AccessApprovalClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AccessApprovalClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2193,7 +2360,9 @@ def test_delete_access_approval_settings_flattened():
         call.return_value = None
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_access_approval_settings(name="name_value",)
+        client.delete_access_approval_settings(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2205,13 +2374,16 @@ def test_delete_access_approval_settings_flattened():
 
 
 def test_delete_access_approval_settings_flattened_error():
-    client = AccessApprovalClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AccessApprovalClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_access_approval_settings(
-            accessapproval.DeleteAccessApprovalSettingsMessage(), name="name_value",
+            accessapproval.DeleteAccessApprovalSettingsMessage(),
+            name="name_value",
         )
 
 
@@ -2231,7 +2403,9 @@ async def test_delete_access_approval_settings_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_access_approval_settings(name="name_value",)
+        response = await client.delete_access_approval_settings(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2252,7 +2426,8 @@ async def test_delete_access_approval_settings_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_access_approval_settings(
-            accessapproval.DeleteAccessApprovalSettingsMessage(), name="name_value",
+            accessapproval.DeleteAccessApprovalSettingsMessage(),
+            name="name_value",
         )
 
 
@@ -2263,7 +2438,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = AccessApprovalClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -2283,7 +2459,10 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = AccessApprovalClient(client_options=options, transport=transport,)
+        client = AccessApprovalClient(
+            client_options=options,
+            transport=transport,
+        )
 
     # It is an error to provide an api_key and a credential.
     options = mock.Mock()
@@ -2299,7 +2478,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = AccessApprovalClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -2344,8 +2524,13 @@ def test_transport_adc(transport_class):
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
-    client = AccessApprovalClient(credentials=ga_credentials.AnonymousCredentials(),)
-    assert isinstance(client.transport, transports.AccessApprovalGrpcTransport,)
+    client = AccessApprovalClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    assert isinstance(
+        client.transport,
+        transports.AccessApprovalGrpcTransport,
+    )
 
 
 def test_access_approval_base_transport_error():
@@ -2396,7 +2581,8 @@ def test_access_approval_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.AccessApprovalTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -2554,7 +2740,8 @@ def test_access_approval_grpc_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.AccessApprovalGrpcTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -2566,7 +2753,8 @@ def test_access_approval_grpc_asyncio_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.AccessApprovalGrpcAsyncIOTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -2675,7 +2863,9 @@ def test_access_approval_transport_channel_mtls_with_adc(transport_class):
 
 def test_access_approval_settings_path():
     project = "squid"
-    expected = "projects/{project}/accessApprovalSettings".format(project=project,)
+    expected = "projects/{project}/accessApprovalSettings".format(
+        project=project,
+    )
     actual = AccessApprovalClient.access_approval_settings_path(project)
     assert expected == actual
 
@@ -2695,7 +2885,8 @@ def test_approval_request_path():
     project = "whelk"
     approval_request = "octopus"
     expected = "projects/{project}/approvalRequests/{approval_request}".format(
-        project=project, approval_request=approval_request,
+        project=project,
+        approval_request=approval_request,
     )
     actual = AccessApprovalClient.approval_request_path(project, approval_request)
     assert expected == actual
@@ -2735,7 +2926,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "winkle"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = AccessApprovalClient.common_folder_path(folder)
     assert expected == actual
 
@@ -2753,7 +2946,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "scallop"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = AccessApprovalClient.common_organization_path(organization)
     assert expected == actual
 
@@ -2771,7 +2966,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "squid"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = AccessApprovalClient.common_project_path(project)
     assert expected == actual
 
@@ -2791,7 +2988,8 @@ def test_common_location_path():
     project = "whelk"
     location = "octopus"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = AccessApprovalClient.common_location_path(project, location)
     assert expected == actual
@@ -2816,7 +3014,8 @@ def test_client_with_default_client_info():
         transports.AccessApprovalTransport, "_prep_wrapped_messages"
     ) as prep:
         client = AccessApprovalClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -2825,7 +3024,8 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = AccessApprovalClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -2833,7 +3033,8 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = AccessApprovalAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     with mock.patch.object(
         type(getattr(client.transport, "grpc_channel")), "close"

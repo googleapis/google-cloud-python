@@ -87,8 +87,14 @@ class AccessLocations(proto.Message):
             -  ANY: Any location
     """
 
-    principal_office_country = proto.Field(proto.STRING, number=1,)
-    principal_physical_location_country = proto.Field(proto.STRING, number=2,)
+    principal_office_country = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    principal_physical_location_country = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class AccessReason(proto.Message):
@@ -109,8 +115,15 @@ class AccessReason(proto.Message):
         GOOGLE_INITIATED_SERVICE = 2
         GOOGLE_INITIATED_REVIEW = 3
 
-    type_ = proto.Field(proto.ENUM, number=1, enum=Type,)
-    detail = proto.Field(proto.STRING, number=2,)
+    type_ = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Type,
+    )
+    detail = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class ApproveDecision(proto.Message):
@@ -125,9 +138,15 @@ class ApproveDecision(proto.Message):
     """
 
     approve_time = proto.Field(
-        proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
     )
-    expire_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
+    expire_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 class DismissDecision(proto.Message):
@@ -146,9 +165,14 @@ class DismissDecision(proto.Message):
     """
 
     dismiss_time = proto.Field(
-        proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
     )
-    implicit = proto.Field(proto.BOOL, number=2,)
+    implicit = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
 
 
 class ResourceProperties(proto.Message):
@@ -160,7 +184,10 @@ class ResourceProperties(proto.Message):
             descendants of the resource being requested.
     """
 
-    excludes_descendants = proto.Field(proto.BOOL, number=1,)
+    excludes_descendants = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
 
 
 class ApprovalRequest(proto.Message):
@@ -212,26 +239,50 @@ class ApprovalRequest(proto.Message):
             This field is a member of `oneof`_ ``decision``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    requested_resource_name = proto.Field(proto.STRING, number=2,)
-    requested_resource_properties = proto.Field(
-        proto.MESSAGE, number=9, message="ResourceProperties",
+    name = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    requested_reason = proto.Field(proto.MESSAGE, number=3, message="AccessReason",)
+    requested_resource_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    requested_resource_properties = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message="ResourceProperties",
+    )
+    requested_reason = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="AccessReason",
+    )
     requested_locations = proto.Field(
-        proto.MESSAGE, number=4, message="AccessLocations",
+        proto.MESSAGE,
+        number=4,
+        message="AccessLocations",
     )
     request_time = proto.Field(
-        proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
     )
     requested_expiration = proto.Field(
-        proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
     )
     approve = proto.Field(
-        proto.MESSAGE, number=7, oneof="decision", message="ApproveDecision",
+        proto.MESSAGE,
+        number=7,
+        oneof="decision",
+        message="ApproveDecision",
     )
     dismiss = proto.Field(
-        proto.MESSAGE, number=8, oneof="decision", message="DismissDecision",
+        proto.MESSAGE,
+        number=8,
+        oneof="decision",
+        message="DismissDecision",
     )
 
 
@@ -303,8 +354,15 @@ class EnrolledService(proto.Message):
             The enrollment level of the service.
     """
 
-    cloud_product = proto.Field(proto.STRING, number=1,)
-    enrollment_level = proto.Field(proto.ENUM, number=2, enum="EnrollmentLevel",)
+    cloud_product = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    enrollment_level = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum="EnrollmentLevel",
+    )
 
 
 class AccessApprovalSettings(proto.Message):
@@ -350,12 +408,23 @@ class AccessApprovalSettings(proto.Message):
             ancestors).
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    notification_emails = proto.RepeatedField(proto.STRING, number=2,)
-    enrolled_services = proto.RepeatedField(
-        proto.MESSAGE, number=3, message="EnrolledService",
+    name = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    enrolled_ancestor = proto.Field(proto.BOOL, number=4,)
+    notification_emails = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+    enrolled_services = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message="EnrolledService",
+    )
+    enrolled_ancestor = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
 
 
 class ListApprovalRequestsMessage(proto.Message):
@@ -387,10 +456,22 @@ class ListApprovalRequestsMessage(proto.Message):
             return.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    filter = proto.Field(proto.STRING, number=2,)
-    page_size = proto.Field(proto.INT32, number=3,)
-    page_token = proto.Field(proto.STRING, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class ListApprovalRequestsResponse(proto.Message):
@@ -409,9 +490,14 @@ class ListApprovalRequestsResponse(proto.Message):
         return self
 
     approval_requests = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="ApprovalRequest",
+        proto.MESSAGE,
+        number=1,
+        message="ApprovalRequest",
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetApprovalRequestMessage(proto.Message):
@@ -423,7 +509,10 @@ class GetApprovalRequestMessage(proto.Message):
             "{projects|folders|organizations}/{id}/approvalRequests/{approval_request}".
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ApproveApprovalRequestMessage(proto.Message):
@@ -436,8 +525,15 @@ class ApproveApprovalRequestMessage(proto.Message):
             The expiration time of this approval.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    expire_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    expire_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 class DismissApprovalRequestMessage(proto.Message):
@@ -448,7 +544,10 @@ class DismissApprovalRequestMessage(proto.Message):
             Name of the ApprovalRequest to dismiss.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class GetAccessApprovalSettingsMessage(proto.Message):
@@ -460,7 +559,10 @@ class GetAccessApprovalSettingsMessage(proto.Message):
             "{projects|folders|organizations}/{id}/accessApprovalSettings".
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class UpdateAccessApprovalSettingsMessage(proto.Message):
@@ -483,9 +585,15 @@ class UpdateAccessApprovalSettingsMessage(proto.Message):
             field will be updated.
     """
 
-    settings = proto.Field(proto.MESSAGE, number=1, message="AccessApprovalSettings",)
+    settings = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="AccessApprovalSettings",
+    )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -497,7 +605,10 @@ class DeleteAccessApprovalSettingsMessage(proto.Message):
             Name of the AccessApprovalSettings to delete.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
