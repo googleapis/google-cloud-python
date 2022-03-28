@@ -123,37 +123,53 @@ class TranscoderServiceTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.create_job: gapic_v1.method.wrap_method(
-                self.create_job, default_timeout=60.0, client_info=client_info,
+                self.create_job,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.list_jobs: gapic_v1.method.wrap_method(
-                self.list_jobs, default_timeout=60.0, client_info=client_info,
+                self.list_jobs,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.get_job: gapic_v1.method.wrap_method(
-                self.get_job, default_timeout=60.0, client_info=client_info,
+                self.get_job,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.delete_job: gapic_v1.method.wrap_method(
-                self.delete_job, default_timeout=60.0, client_info=client_info,
+                self.delete_job,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.create_job_template: gapic_v1.method.wrap_method(
-                self.create_job_template, default_timeout=60.0, client_info=client_info,
+                self.create_job_template,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.list_job_templates: gapic_v1.method.wrap_method(
-                self.list_job_templates, default_timeout=60.0, client_info=client_info,
+                self.list_job_templates,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.get_job_template: gapic_v1.method.wrap_method(
-                self.get_job_template, default_timeout=60.0, client_info=client_info,
+                self.get_job_template,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.delete_job_template: gapic_v1.method.wrap_method(
-                self.delete_job_template, default_timeout=60.0, client_info=client_info,
+                self.delete_job_template,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
         }
 
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

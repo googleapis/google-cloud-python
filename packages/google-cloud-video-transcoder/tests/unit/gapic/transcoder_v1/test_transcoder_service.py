@@ -95,7 +95,11 @@ def test__get_default_mtls_endpoint():
 
 
 @pytest.mark.parametrize(
-    "client_class", [TranscoderServiceClient, TranscoderServiceAsyncClient,]
+    "client_class",
+    [
+        TranscoderServiceClient,
+        TranscoderServiceAsyncClient,
+    ],
 )
 def test_transcoder_service_client_from_service_account_info(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -137,7 +141,11 @@ def test_transcoder_service_client_service_account_always_use_jwt(
 
 
 @pytest.mark.parametrize(
-    "client_class", [TranscoderServiceClient, TranscoderServiceAsyncClient,]
+    "client_class",
+    [
+        TranscoderServiceClient,
+        TranscoderServiceAsyncClient,
+    ],
 )
 def test_transcoder_service_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -511,7 +519,9 @@ def test_transcoder_service_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -651,10 +661,17 @@ def test_transcoder_service_client_create_channel_credentials_file(
         )
 
 
-@pytest.mark.parametrize("request_type", [services.CreateJobRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        services.CreateJobRequest,
+        dict,
+    ],
+)
 def test_create_job(request_type, transport: str = "grpc"):
     client = TranscoderServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -692,7 +709,8 @@ def test_create_job_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TranscoderServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -708,7 +726,8 @@ async def test_create_job_async(
     transport: str = "grpc_asyncio", request_type=services.CreateJobRequest
 ):
     client = TranscoderServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -749,7 +768,9 @@ async def test_create_job_async_from_dict():
 
 
 def test_create_job_field_headers():
-    client = TranscoderServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -769,7 +790,10 @@ def test_create_job_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -796,11 +820,16 @@ async def test_create_job_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_job_flattened():
-    client = TranscoderServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_job), "__call__") as call:
@@ -809,7 +838,8 @@ def test_create_job_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.create_job(
-            parent="parent_value", job=resources.Job(name="name_value"),
+            parent="parent_value",
+            job=resources.Job(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -825,7 +855,9 @@ def test_create_job_flattened():
 
 
 def test_create_job_flattened_error():
-    client = TranscoderServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -852,7 +884,8 @@ async def test_create_job_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.create_job(
-            parent="parent_value", job=resources.Job(name="name_value"),
+            parent="parent_value",
+            job=resources.Job(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -883,10 +916,17 @@ async def test_create_job_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [services.ListJobsRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        services.ListJobsRequest,
+        dict,
+    ],
+)
 def test_list_jobs(request_type, transport: str = "grpc"):
     client = TranscoderServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -897,7 +937,8 @@ def test_list_jobs(request_type, transport: str = "grpc"):
     with mock.patch.object(type(client.transport.list_jobs), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = services.ListJobsResponse(
-            next_page_token="next_page_token_value", unreachable=["unreachable_value"],
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
         )
         response = client.list_jobs(request)
 
@@ -916,7 +957,8 @@ def test_list_jobs_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TranscoderServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -932,7 +974,8 @@ async def test_list_jobs_async(
     transport: str = "grpc_asyncio", request_type=services.ListJobsRequest
 ):
     client = TranscoderServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -967,7 +1010,9 @@ async def test_list_jobs_async_from_dict():
 
 
 def test_list_jobs_field_headers():
-    client = TranscoderServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -987,7 +1032,10 @@ def test_list_jobs_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1016,11 +1064,16 @@ async def test_list_jobs_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_jobs_flattened():
-    client = TranscoderServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_jobs), "__call__") as call:
@@ -1028,7 +1081,9 @@ def test_list_jobs_flattened():
         call.return_value = services.ListJobsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_jobs(parent="parent_value",)
+        client.list_jobs(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1040,13 +1095,16 @@ def test_list_jobs_flattened():
 
 
 def test_list_jobs_flattened_error():
-    client = TranscoderServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_jobs(
-            services.ListJobsRequest(), parent="parent_value",
+            services.ListJobsRequest(),
+            parent="parent_value",
         )
 
 
@@ -1066,7 +1124,9 @@ async def test_list_jobs_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_jobs(parent="parent_value",)
+        response = await client.list_jobs(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1087,13 +1147,15 @@ async def test_list_jobs_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_jobs(
-            services.ListJobsRequest(), parent="parent_value",
+            services.ListJobsRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_jobs_pager(transport_name: str = "grpc"):
     client = TranscoderServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1101,12 +1163,29 @@ def test_list_jobs_pager(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             services.ListJobsResponse(
-                jobs=[resources.Job(), resources.Job(), resources.Job(),],
+                jobs=[
+                    resources.Job(),
+                    resources.Job(),
+                    resources.Job(),
+                ],
                 next_page_token="abc",
             ),
-            services.ListJobsResponse(jobs=[], next_page_token="def",),
-            services.ListJobsResponse(jobs=[resources.Job(),], next_page_token="ghi",),
-            services.ListJobsResponse(jobs=[resources.Job(), resources.Job(),],),
+            services.ListJobsResponse(
+                jobs=[],
+                next_page_token="def",
+            ),
+            services.ListJobsResponse(
+                jobs=[
+                    resources.Job(),
+                ],
+                next_page_token="ghi",
+            ),
+            services.ListJobsResponse(
+                jobs=[
+                    resources.Job(),
+                    resources.Job(),
+                ],
+            ),
             RuntimeError,
         )
 
@@ -1125,7 +1204,8 @@ def test_list_jobs_pager(transport_name: str = "grpc"):
 
 def test_list_jobs_pages(transport_name: str = "grpc"):
     client = TranscoderServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1133,12 +1213,29 @@ def test_list_jobs_pages(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             services.ListJobsResponse(
-                jobs=[resources.Job(), resources.Job(), resources.Job(),],
+                jobs=[
+                    resources.Job(),
+                    resources.Job(),
+                    resources.Job(),
+                ],
                 next_page_token="abc",
             ),
-            services.ListJobsResponse(jobs=[], next_page_token="def",),
-            services.ListJobsResponse(jobs=[resources.Job(),], next_page_token="ghi",),
-            services.ListJobsResponse(jobs=[resources.Job(), resources.Job(),],),
+            services.ListJobsResponse(
+                jobs=[],
+                next_page_token="def",
+            ),
+            services.ListJobsResponse(
+                jobs=[
+                    resources.Job(),
+                ],
+                next_page_token="ghi",
+            ),
+            services.ListJobsResponse(
+                jobs=[
+                    resources.Job(),
+                    resources.Job(),
+                ],
+            ),
             RuntimeError,
         )
         pages = list(client.list_jobs(request={}).pages)
@@ -1159,15 +1256,34 @@ async def test_list_jobs_async_pager():
         # Set the response to a series of pages.
         call.side_effect = (
             services.ListJobsResponse(
-                jobs=[resources.Job(), resources.Job(), resources.Job(),],
+                jobs=[
+                    resources.Job(),
+                    resources.Job(),
+                    resources.Job(),
+                ],
                 next_page_token="abc",
             ),
-            services.ListJobsResponse(jobs=[], next_page_token="def",),
-            services.ListJobsResponse(jobs=[resources.Job(),], next_page_token="ghi",),
-            services.ListJobsResponse(jobs=[resources.Job(), resources.Job(),],),
+            services.ListJobsResponse(
+                jobs=[],
+                next_page_token="def",
+            ),
+            services.ListJobsResponse(
+                jobs=[
+                    resources.Job(),
+                ],
+                next_page_token="ghi",
+            ),
+            services.ListJobsResponse(
+                jobs=[
+                    resources.Job(),
+                    resources.Job(),
+                ],
+            ),
             RuntimeError,
         )
-        async_pager = await client.list_jobs(request={},)
+        async_pager = await client.list_jobs(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -1190,12 +1306,29 @@ async def test_list_jobs_async_pages():
         # Set the response to a series of pages.
         call.side_effect = (
             services.ListJobsResponse(
-                jobs=[resources.Job(), resources.Job(), resources.Job(),],
+                jobs=[
+                    resources.Job(),
+                    resources.Job(),
+                    resources.Job(),
+                ],
                 next_page_token="abc",
             ),
-            services.ListJobsResponse(jobs=[], next_page_token="def",),
-            services.ListJobsResponse(jobs=[resources.Job(),], next_page_token="ghi",),
-            services.ListJobsResponse(jobs=[resources.Job(), resources.Job(),],),
+            services.ListJobsResponse(
+                jobs=[],
+                next_page_token="def",
+            ),
+            services.ListJobsResponse(
+                jobs=[
+                    resources.Job(),
+                ],
+                next_page_token="ghi",
+            ),
+            services.ListJobsResponse(
+                jobs=[
+                    resources.Job(),
+                    resources.Job(),
+                ],
+            ),
             RuntimeError,
         )
         pages = []
@@ -1205,10 +1338,17 @@ async def test_list_jobs_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [services.GetJobRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        services.GetJobRequest,
+        dict,
+    ],
+)
 def test_get_job(request_type, transport: str = "grpc"):
     client = TranscoderServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1246,7 +1386,8 @@ def test_get_job_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TranscoderServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1262,7 +1403,8 @@ async def test_get_job_async(
     transport: str = "grpc_asyncio", request_type=services.GetJobRequest
 ):
     client = TranscoderServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1303,7 +1445,9 @@ async def test_get_job_async_from_dict():
 
 
 def test_get_job_field_headers():
-    client = TranscoderServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1323,7 +1467,10 @@ def test_get_job_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1350,11 +1497,16 @@ async def test_get_job_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_job_flattened():
-    client = TranscoderServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_job), "__call__") as call:
@@ -1362,7 +1514,9 @@ def test_get_job_flattened():
         call.return_value = resources.Job()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_job(name="name_value",)
+        client.get_job(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1374,13 +1528,16 @@ def test_get_job_flattened():
 
 
 def test_get_job_flattened_error():
-    client = TranscoderServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_job(
-            services.GetJobRequest(), name="name_value",
+            services.GetJobRequest(),
+            name="name_value",
         )
 
 
@@ -1398,7 +1555,9 @@ async def test_get_job_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(resources.Job())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_job(name="name_value",)
+        response = await client.get_job(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1419,14 +1578,22 @@ async def test_get_job_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_job(
-            services.GetJobRequest(), name="name_value",
+            services.GetJobRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [services.DeleteJobRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        services.DeleteJobRequest,
+        dict,
+    ],
+)
 def test_delete_job(request_type, transport: str = "grpc"):
     client = TranscoderServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1452,7 +1619,8 @@ def test_delete_job_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TranscoderServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1468,7 +1636,8 @@ async def test_delete_job_async(
     transport: str = "grpc_asyncio", request_type=services.DeleteJobRequest
 ):
     client = TranscoderServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1496,7 +1665,9 @@ async def test_delete_job_async_from_dict():
 
 
 def test_delete_job_field_headers():
-    client = TranscoderServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1516,7 +1687,10 @@ def test_delete_job_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1543,11 +1717,16 @@ async def test_delete_job_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_job_flattened():
-    client = TranscoderServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_job), "__call__") as call:
@@ -1555,7 +1734,9 @@ def test_delete_job_flattened():
         call.return_value = None
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_job(name="name_value",)
+        client.delete_job(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1567,13 +1748,16 @@ def test_delete_job_flattened():
 
 
 def test_delete_job_flattened_error():
-    client = TranscoderServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_job(
-            services.DeleteJobRequest(), name="name_value",
+            services.DeleteJobRequest(),
+            name="name_value",
         )
 
 
@@ -1591,7 +1775,9 @@ async def test_delete_job_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_job(name="name_value",)
+        response = await client.delete_job(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1612,14 +1798,22 @@ async def test_delete_job_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_job(
-            services.DeleteJobRequest(), name="name_value",
+            services.DeleteJobRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [services.CreateJobTemplateRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        services.CreateJobTemplateRequest,
+        dict,
+    ],
+)
 def test_create_job_template(request_type, transport: str = "grpc"):
     client = TranscoderServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1631,7 +1825,9 @@ def test_create_job_template(request_type, transport: str = "grpc"):
         type(client.transport.create_job_template), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = resources.JobTemplate(name="name_value",)
+        call.return_value = resources.JobTemplate(
+            name="name_value",
+        )
         response = client.create_job_template(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1648,7 +1844,8 @@ def test_create_job_template_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TranscoderServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1666,7 +1863,8 @@ async def test_create_job_template_async(
     transport: str = "grpc_asyncio", request_type=services.CreateJobTemplateRequest
 ):
     client = TranscoderServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1679,7 +1877,9 @@ async def test_create_job_template_async(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            resources.JobTemplate(name="name_value",)
+            resources.JobTemplate(
+                name="name_value",
+            )
         )
         response = await client.create_job_template(request)
 
@@ -1699,7 +1899,9 @@ async def test_create_job_template_async_from_dict():
 
 
 def test_create_job_template_field_headers():
-    client = TranscoderServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1721,7 +1923,10 @@ def test_create_job_template_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1752,11 +1957,16 @@ async def test_create_job_template_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_job_template_flattened():
-    client = TranscoderServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1788,7 +1998,9 @@ def test_create_job_template_flattened():
 
 
 def test_create_job_template_flattened_error():
-    client = TranscoderServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1857,10 +2069,17 @@ async def test_create_job_template_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [services.ListJobTemplatesRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        services.ListJobTemplatesRequest,
+        dict,
+    ],
+)
 def test_list_job_templates(request_type, transport: str = "grpc"):
     client = TranscoderServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1873,7 +2092,8 @@ def test_list_job_templates(request_type, transport: str = "grpc"):
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = services.ListJobTemplatesResponse(
-            next_page_token="next_page_token_value", unreachable=["unreachable_value"],
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
         )
         response = client.list_job_templates(request)
 
@@ -1892,7 +2112,8 @@ def test_list_job_templates_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TranscoderServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1910,7 +2131,8 @@ async def test_list_job_templates_async(
     transport: str = "grpc_asyncio", request_type=services.ListJobTemplatesRequest
 ):
     client = TranscoderServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1947,7 +2169,9 @@ async def test_list_job_templates_async_from_dict():
 
 
 def test_list_job_templates_field_headers():
-    client = TranscoderServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1969,7 +2193,10 @@ def test_list_job_templates_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2000,11 +2227,16 @@ async def test_list_job_templates_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_job_templates_flattened():
-    client = TranscoderServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2014,7 +2246,9 @@ def test_list_job_templates_flattened():
         call.return_value = services.ListJobTemplatesResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_job_templates(parent="parent_value",)
+        client.list_job_templates(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2026,13 +2260,16 @@ def test_list_job_templates_flattened():
 
 
 def test_list_job_templates_flattened_error():
-    client = TranscoderServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_job_templates(
-            services.ListJobTemplatesRequest(), parent="parent_value",
+            services.ListJobTemplatesRequest(),
+            parent="parent_value",
         )
 
 
@@ -2054,7 +2291,9 @@ async def test_list_job_templates_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_job_templates(parent="parent_value",)
+        response = await client.list_job_templates(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2075,13 +2314,15 @@ async def test_list_job_templates_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_job_templates(
-            services.ListJobTemplatesRequest(), parent="parent_value",
+            services.ListJobTemplatesRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_job_templates_pager(transport_name: str = "grpc"):
     client = TranscoderServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2098,12 +2339,21 @@ def test_list_job_templates_pager(transport_name: str = "grpc"):
                 ],
                 next_page_token="abc",
             ),
-            services.ListJobTemplatesResponse(job_templates=[], next_page_token="def",),
             services.ListJobTemplatesResponse(
-                job_templates=[resources.JobTemplate(),], next_page_token="ghi",
+                job_templates=[],
+                next_page_token="def",
             ),
             services.ListJobTemplatesResponse(
-                job_templates=[resources.JobTemplate(), resources.JobTemplate(),],
+                job_templates=[
+                    resources.JobTemplate(),
+                ],
+                next_page_token="ghi",
+            ),
+            services.ListJobTemplatesResponse(
+                job_templates=[
+                    resources.JobTemplate(),
+                    resources.JobTemplate(),
+                ],
             ),
             RuntimeError,
         )
@@ -2123,7 +2373,8 @@ def test_list_job_templates_pager(transport_name: str = "grpc"):
 
 def test_list_job_templates_pages(transport_name: str = "grpc"):
     client = TranscoderServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2140,12 +2391,21 @@ def test_list_job_templates_pages(transport_name: str = "grpc"):
                 ],
                 next_page_token="abc",
             ),
-            services.ListJobTemplatesResponse(job_templates=[], next_page_token="def",),
             services.ListJobTemplatesResponse(
-                job_templates=[resources.JobTemplate(),], next_page_token="ghi",
+                job_templates=[],
+                next_page_token="def",
             ),
             services.ListJobTemplatesResponse(
-                job_templates=[resources.JobTemplate(), resources.JobTemplate(),],
+                job_templates=[
+                    resources.JobTemplate(),
+                ],
+                next_page_token="ghi",
+            ),
+            services.ListJobTemplatesResponse(
+                job_templates=[
+                    resources.JobTemplate(),
+                    resources.JobTemplate(),
+                ],
             ),
             RuntimeError,
         )
@@ -2176,16 +2436,27 @@ async def test_list_job_templates_async_pager():
                 ],
                 next_page_token="abc",
             ),
-            services.ListJobTemplatesResponse(job_templates=[], next_page_token="def",),
             services.ListJobTemplatesResponse(
-                job_templates=[resources.JobTemplate(),], next_page_token="ghi",
+                job_templates=[],
+                next_page_token="def",
             ),
             services.ListJobTemplatesResponse(
-                job_templates=[resources.JobTemplate(), resources.JobTemplate(),],
+                job_templates=[
+                    resources.JobTemplate(),
+                ],
+                next_page_token="ghi",
+            ),
+            services.ListJobTemplatesResponse(
+                job_templates=[
+                    resources.JobTemplate(),
+                    resources.JobTemplate(),
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.list_job_templates(request={},)
+        async_pager = await client.list_job_templates(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -2217,12 +2488,21 @@ async def test_list_job_templates_async_pages():
                 ],
                 next_page_token="abc",
             ),
-            services.ListJobTemplatesResponse(job_templates=[], next_page_token="def",),
             services.ListJobTemplatesResponse(
-                job_templates=[resources.JobTemplate(),], next_page_token="ghi",
+                job_templates=[],
+                next_page_token="def",
             ),
             services.ListJobTemplatesResponse(
-                job_templates=[resources.JobTemplate(), resources.JobTemplate(),],
+                job_templates=[
+                    resources.JobTemplate(),
+                ],
+                next_page_token="ghi",
+            ),
+            services.ListJobTemplatesResponse(
+                job_templates=[
+                    resources.JobTemplate(),
+                    resources.JobTemplate(),
+                ],
             ),
             RuntimeError,
         )
@@ -2233,10 +2513,17 @@ async def test_list_job_templates_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [services.GetJobTemplateRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        services.GetJobTemplateRequest,
+        dict,
+    ],
+)
 def test_get_job_template(request_type, transport: str = "grpc"):
     client = TranscoderServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2246,7 +2533,9 @@ def test_get_job_template(request_type, transport: str = "grpc"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_job_template), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = resources.JobTemplate(name="name_value",)
+        call.return_value = resources.JobTemplate(
+            name="name_value",
+        )
         response = client.get_job_template(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2263,7 +2552,8 @@ def test_get_job_template_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TranscoderServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2279,7 +2569,8 @@ async def test_get_job_template_async(
     transport: str = "grpc_asyncio", request_type=services.GetJobTemplateRequest
 ):
     client = TranscoderServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2290,7 +2581,9 @@ async def test_get_job_template_async(
     with mock.patch.object(type(client.transport.get_job_template), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            resources.JobTemplate(name="name_value",)
+            resources.JobTemplate(
+                name="name_value",
+            )
         )
         response = await client.get_job_template(request)
 
@@ -2310,7 +2603,9 @@ async def test_get_job_template_async_from_dict():
 
 
 def test_get_job_template_field_headers():
-    client = TranscoderServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2330,7 +2625,10 @@ def test_get_job_template_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2359,11 +2657,16 @@ async def test_get_job_template_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_job_template_flattened():
-    client = TranscoderServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_job_template), "__call__") as call:
@@ -2371,7 +2674,9 @@ def test_get_job_template_flattened():
         call.return_value = resources.JobTemplate()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_job_template(name="name_value",)
+        client.get_job_template(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2383,13 +2688,16 @@ def test_get_job_template_flattened():
 
 
 def test_get_job_template_flattened_error():
-    client = TranscoderServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_job_template(
-            services.GetJobTemplateRequest(), name="name_value",
+            services.GetJobTemplateRequest(),
+            name="name_value",
         )
 
 
@@ -2409,7 +2717,9 @@ async def test_get_job_template_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_job_template(name="name_value",)
+        response = await client.get_job_template(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2430,14 +2740,22 @@ async def test_get_job_template_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_job_template(
-            services.GetJobTemplateRequest(), name="name_value",
+            services.GetJobTemplateRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [services.DeleteJobTemplateRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        services.DeleteJobTemplateRequest,
+        dict,
+    ],
+)
 def test_delete_job_template(request_type, transport: str = "grpc"):
     client = TranscoderServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2465,7 +2783,8 @@ def test_delete_job_template_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TranscoderServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2483,7 +2802,8 @@ async def test_delete_job_template_async(
     transport: str = "grpc_asyncio", request_type=services.DeleteJobTemplateRequest
 ):
     client = TranscoderServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2513,7 +2833,9 @@ async def test_delete_job_template_async_from_dict():
 
 
 def test_delete_job_template_field_headers():
-    client = TranscoderServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2535,7 +2857,10 @@ def test_delete_job_template_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2564,11 +2889,16 @@ async def test_delete_job_template_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_job_template_flattened():
-    client = TranscoderServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2578,7 +2908,9 @@ def test_delete_job_template_flattened():
         call.return_value = None
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_job_template(name="name_value",)
+        client.delete_job_template(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2590,13 +2922,16 @@ def test_delete_job_template_flattened():
 
 
 def test_delete_job_template_flattened_error():
-    client = TranscoderServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_job_template(
-            services.DeleteJobTemplateRequest(), name="name_value",
+            services.DeleteJobTemplateRequest(),
+            name="name_value",
         )
 
 
@@ -2616,7 +2951,9 @@ async def test_delete_job_template_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_job_template(name="name_value",)
+        response = await client.delete_job_template(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2637,7 +2974,8 @@ async def test_delete_job_template_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_job_template(
-            services.DeleteJobTemplateRequest(), name="name_value",
+            services.DeleteJobTemplateRequest(),
+            name="name_value",
         )
 
 
@@ -2648,7 +2986,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = TranscoderServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -2668,7 +3007,10 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = TranscoderServiceClient(client_options=options, transport=transport,)
+        client = TranscoderServiceClient(
+            client_options=options,
+            transport=transport,
+        )
 
     # It is an error to provide an api_key and a credential.
     options = mock.Mock()
@@ -2684,7 +3026,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = TranscoderServiceClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -2729,8 +3072,13 @@ def test_transport_adc(transport_class):
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
-    client = TranscoderServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
-    assert isinstance(client.transport, transports.TranscoderServiceGrpcTransport,)
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    assert isinstance(
+        client.transport,
+        transports.TranscoderServiceGrpcTransport,
+    )
 
 
 def test_transcoder_service_base_transport_error():
@@ -2782,7 +3130,8 @@ def test_transcoder_service_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.TranscoderServiceTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -2940,7 +3289,8 @@ def test_transcoder_service_grpc_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.TranscoderServiceGrpcTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -2952,7 +3302,8 @@ def test_transcoder_service_grpc_asyncio_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.TranscoderServiceGrpcAsyncIOTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -3064,7 +3415,9 @@ def test_job_path():
     location = "clam"
     job = "whelk"
     expected = "projects/{project}/locations/{location}/jobs/{job}".format(
-        project=project, location=location, job=job,
+        project=project,
+        location=location,
+        job=job,
     )
     actual = TranscoderServiceClient.job_path(project, location, job)
     assert expected == actual
@@ -3087,8 +3440,12 @@ def test_job_template_path():
     project = "cuttlefish"
     location = "mussel"
     job_template = "winkle"
-    expected = "projects/{project}/locations/{location}/jobTemplates/{job_template}".format(
-        project=project, location=location, job_template=job_template,
+    expected = (
+        "projects/{project}/locations/{location}/jobTemplates/{job_template}".format(
+            project=project,
+            location=location,
+            job_template=job_template,
+        )
     )
     actual = TranscoderServiceClient.job_template_path(project, location, job_template)
     assert expected == actual
@@ -3129,7 +3486,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "whelk"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = TranscoderServiceClient.common_folder_path(folder)
     assert expected == actual
 
@@ -3147,7 +3506,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "oyster"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = TranscoderServiceClient.common_organization_path(organization)
     assert expected == actual
 
@@ -3165,7 +3526,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "cuttlefish"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = TranscoderServiceClient.common_project_path(project)
     assert expected == actual
 
@@ -3185,7 +3548,8 @@ def test_common_location_path():
     project = "winkle"
     location = "nautilus"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = TranscoderServiceClient.common_location_path(project, location)
     assert expected == actual
@@ -3210,7 +3574,8 @@ def test_client_with_default_client_info():
         transports.TranscoderServiceTransport, "_prep_wrapped_messages"
     ) as prep:
         client = TranscoderServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -3219,7 +3584,8 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = TranscoderServiceClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -3227,7 +3593,8 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = TranscoderServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     with mock.patch.object(
         type(getattr(client.transport, "grpc_channel")), "close"

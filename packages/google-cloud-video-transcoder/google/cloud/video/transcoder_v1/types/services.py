@@ -47,8 +47,15 @@ class CreateJobRequest(proto.Message):
             job.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    job = proto.Field(proto.MESSAGE, number=2, message=resources.Job,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    job = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=resources.Job,
+    )
 
 
 class ListJobsRequest(proto.Message):
@@ -73,11 +80,26 @@ class ListJobsRequest(proto.Message):
             https://google.aip.dev/132#ordering.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    filter = proto.Field(proto.STRING, number=4,)
-    order_by = proto.Field(proto.STRING, number=5,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class GetJobRequest(proto.Message):
@@ -89,7 +111,10 @@ class GetJobRequest(proto.Message):
             ``projects/{project}/locations/{location}/jobs/{job}``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class DeleteJobRequest(proto.Message):
@@ -105,8 +130,14 @@ class DeleteJobRequest(proto.Message):
             on the server.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    allow_missing = proto.Field(proto.BOOL, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    allow_missing = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
 
 
 class ListJobsResponse(proto.Message):
@@ -125,9 +156,19 @@ class ListJobsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    jobs = proto.RepeatedField(proto.MESSAGE, number=1, message=resources.Job,)
-    next_page_token = proto.Field(proto.STRING, number=2,)
-    unreachable = proto.RepeatedField(proto.STRING, number=3,)
+    jobs = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=resources.Job,
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 class CreateJobTemplateRequest(proto.Message):
@@ -150,9 +191,19 @@ class CreateJobTemplateRequest(proto.Message):
             ``[a-zA-Z][a-zA-Z0-9_-]*``.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    job_template = proto.Field(proto.MESSAGE, number=2, message=resources.JobTemplate,)
-    job_template_id = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    job_template = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=resources.JobTemplate,
+    )
+    job_template_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListJobTemplatesRequest(proto.Message):
@@ -177,11 +228,26 @@ class ListJobTemplatesRequest(proto.Message):
             https://google.aip.dev/132#ordering.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    filter = proto.Field(proto.STRING, number=4,)
-    order_by = proto.Field(proto.STRING, number=5,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class GetJobTemplateRequest(proto.Message):
@@ -193,7 +259,10 @@ class GetJobTemplateRequest(proto.Message):
             ``projects/{project}/locations/{location}/jobTemplates/{job_template}``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class DeleteJobTemplateRequest(proto.Message):
@@ -209,8 +278,14 @@ class DeleteJobTemplateRequest(proto.Message):
             will be taken on the server.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    allow_missing = proto.Field(proto.BOOL, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    allow_missing = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
 
 
 class ListJobTemplatesResponse(proto.Message):
@@ -231,10 +306,18 @@ class ListJobTemplatesResponse(proto.Message):
         return self
 
     job_templates = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=resources.JobTemplate,
+        proto.MESSAGE,
+        number=1,
+        message=resources.JobTemplate,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
-    unreachable = proto.RepeatedField(proto.STRING, number=3,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

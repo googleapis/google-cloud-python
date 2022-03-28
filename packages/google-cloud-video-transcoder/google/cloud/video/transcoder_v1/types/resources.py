@@ -116,21 +116,58 @@ class Job(proto.Message):
         SUCCEEDED = 3
         FAILED = 4
 
-    name = proto.Field(proto.STRING, number=1,)
-    input_uri = proto.Field(proto.STRING, number=2,)
-    output_uri = proto.Field(proto.STRING, number=3,)
-    template_id = proto.Field(proto.STRING, number=4, oneof="job_config",)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    input_uri = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    output_uri = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    template_id = proto.Field(
+        proto.STRING,
+        number=4,
+        oneof="job_config",
+    )
     config = proto.Field(
-        proto.MESSAGE, number=5, oneof="job_config", message="JobConfig",
+        proto.MESSAGE,
+        number=5,
+        oneof="job_config",
+        message="JobConfig",
     )
-    state = proto.Field(proto.ENUM, number=8, enum=ProcessingState,)
+    state = proto.Field(
+        proto.ENUM,
+        number=8,
+        enum=ProcessingState,
+    )
     create_time = proto.Field(
-        proto.MESSAGE, number=12, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=12,
+        message=timestamp_pb2.Timestamp,
     )
-    start_time = proto.Field(proto.MESSAGE, number=13, message=timestamp_pb2.Timestamp,)
-    end_time = proto.Field(proto.MESSAGE, number=14, message=timestamp_pb2.Timestamp,)
-    ttl_after_completion_days = proto.Field(proto.INT32, number=15,)
-    error = proto.Field(proto.MESSAGE, number=17, message=status_pb2.Status,)
+    start_time = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time = proto.Field(
+        proto.MESSAGE,
+        number=14,
+        message=timestamp_pb2.Timestamp,
+    )
+    ttl_after_completion_days = proto.Field(
+        proto.INT32,
+        number=15,
+    )
+    error = proto.Field(
+        proto.MESSAGE,
+        number=17,
+        message=status_pb2.Status,
+    )
 
 
 class JobTemplate(proto.Message):
@@ -144,8 +181,15 @@ class JobTemplate(proto.Message):
             The configuration for this template.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    config = proto.Field(proto.MESSAGE, number=2, message="JobConfig",)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    config = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="JobConfig",
+    )
 
 
 class JobConfig(proto.Message):
@@ -178,20 +222,56 @@ class JobConfig(proto.Message):
             descending Z-order.
     """
 
-    inputs = proto.RepeatedField(proto.MESSAGE, number=1, message="Input",)
-    edit_list = proto.RepeatedField(proto.MESSAGE, number=2, message="EditAtom",)
+    inputs = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Input",
+    )
+    edit_list = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="EditAtom",
+    )
     elementary_streams = proto.RepeatedField(
-        proto.MESSAGE, number=3, message="ElementaryStream",
+        proto.MESSAGE,
+        number=3,
+        message="ElementaryStream",
     )
-    mux_streams = proto.RepeatedField(proto.MESSAGE, number=4, message="MuxStream",)
-    manifests = proto.RepeatedField(proto.MESSAGE, number=5, message="Manifest",)
-    output = proto.Field(proto.MESSAGE, number=6, message="Output",)
-    ad_breaks = proto.RepeatedField(proto.MESSAGE, number=7, message="AdBreak",)
+    mux_streams = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message="MuxStream",
+    )
+    manifests = proto.RepeatedField(
+        proto.MESSAGE,
+        number=5,
+        message="Manifest",
+    )
+    output = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message="Output",
+    )
+    ad_breaks = proto.RepeatedField(
+        proto.MESSAGE,
+        number=7,
+        message="AdBreak",
+    )
     pubsub_destination = proto.Field(
-        proto.MESSAGE, number=8, message="PubsubDestination",
+        proto.MESSAGE,
+        number=8,
+        message="PubsubDestination",
     )
-    sprite_sheets = proto.RepeatedField(proto.MESSAGE, number=9, message="SpriteSheet",)
-    overlays = proto.RepeatedField(proto.MESSAGE, number=10, message="Overlay",)
+    sprite_sheets = proto.RepeatedField(
+        proto.MESSAGE,
+        number=9,
+        message="SpriteSheet",
+    )
+    overlays = proto.RepeatedField(
+        proto.MESSAGE,
+        number=10,
+        message="Overlay",
+    )
 
 
 class Input(proto.Message):
@@ -211,10 +291,18 @@ class Input(proto.Message):
             Preprocessing configurations.
     """
 
-    key = proto.Field(proto.STRING, number=1,)
-    uri = proto.Field(proto.STRING, number=2,)
+    key = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    uri = proto.Field(
+        proto.STRING,
+        number=2,
+    )
     preprocessing_config = proto.Field(
-        proto.MESSAGE, number=3, message="PreprocessingConfig",
+        proto.MESSAGE,
+        number=3,
+        message="PreprocessingConfig",
     )
 
 
@@ -228,7 +316,10 @@ class Output(proto.Message):
             from ``Job.output_uri``.
     """
 
-    uri = proto.Field(proto.STRING, number=1,)
+    uri = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class EditAtom(proto.Message):
@@ -251,13 +342,23 @@ class EditAtom(proto.Message):
             file timeline. The default is ``0s``.
     """
 
-    key = proto.Field(proto.STRING, number=1,)
-    inputs = proto.RepeatedField(proto.STRING, number=2,)
+    key = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    inputs = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
     end_time_offset = proto.Field(
-        proto.MESSAGE, number=3, message=duration_pb2.Duration,
+        proto.MESSAGE,
+        number=3,
+        message=duration_pb2.Duration,
     )
     start_time_offset = proto.Field(
-        proto.MESSAGE, number=4, message=duration_pb2.Duration,
+        proto.MESSAGE,
+        number=4,
+        message=duration_pb2.Duration,
     )
 
 
@@ -271,7 +372,9 @@ class AdBreak(proto.Message):
     """
 
     start_time_offset = proto.Field(
-        proto.MESSAGE, number=1, message=duration_pb2.Duration,
+        proto.MESSAGE,
+        number=1,
+        message=duration_pb2.Duration,
     )
 
 
@@ -305,15 +408,27 @@ class ElementaryStream(proto.Message):
             This field is a member of `oneof`_ ``elementary_stream``.
     """
 
-    key = proto.Field(proto.STRING, number=4,)
+    key = proto.Field(
+        proto.STRING,
+        number=4,
+    )
     video_stream = proto.Field(
-        proto.MESSAGE, number=1, oneof="elementary_stream", message="VideoStream",
+        proto.MESSAGE,
+        number=1,
+        oneof="elementary_stream",
+        message="VideoStream",
     )
     audio_stream = proto.Field(
-        proto.MESSAGE, number=2, oneof="elementary_stream", message="AudioStream",
+        proto.MESSAGE,
+        number=2,
+        oneof="elementary_stream",
+        message="AudioStream",
     )
     text_stream = proto.Field(
-        proto.MESSAGE, number=3, oneof="elementary_stream", message="TextStream",
+        proto.MESSAGE,
+        number=3,
+        oneof="elementary_stream",
+        message="TextStream",
     )
 
 
@@ -349,11 +464,27 @@ class MuxStream(proto.Message):
             Segment settings for ``ts``, ``fmp4`` and ``vtt``.
     """
 
-    key = proto.Field(proto.STRING, number=1,)
-    file_name = proto.Field(proto.STRING, number=2,)
-    container = proto.Field(proto.STRING, number=3,)
-    elementary_streams = proto.RepeatedField(proto.STRING, number=4,)
-    segment_settings = proto.Field(proto.MESSAGE, number=5, message="SegmentSettings",)
+    key = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    file_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    container = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    elementary_streams = proto.RepeatedField(
+        proto.STRING,
+        number=4,
+    )
+    segment_settings = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message="SegmentSettings",
+    )
 
 
 class Manifest(proto.Message):
@@ -381,9 +512,19 @@ class Manifest(proto.Message):
         HLS = 1
         DASH = 2
 
-    file_name = proto.Field(proto.STRING, number=1,)
-    type_ = proto.Field(proto.ENUM, number=2, enum=ManifestType,)
-    mux_streams = proto.RepeatedField(proto.STRING, number=3,)
+    file_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    type_ = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=ManifestType,
+    )
+    mux_streams = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 class PubsubDestination(proto.Message):
@@ -396,7 +537,10 @@ class PubsubDestination(proto.Message):
             ``projects/{project}/topics/{topic}``.
     """
 
-    topic = proto.Field(proto.STRING, number=1,)
+    topic = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class SpriteSheet(proto.Message):
@@ -475,26 +619,55 @@ class SpriteSheet(proto.Message):
             ratio.
     """
 
-    format_ = proto.Field(proto.STRING, number=1,)
-    file_prefix = proto.Field(proto.STRING, number=2,)
-    sprite_width_pixels = proto.Field(proto.INT32, number=3,)
-    sprite_height_pixels = proto.Field(proto.INT32, number=4,)
-    column_count = proto.Field(proto.INT32, number=5,)
-    row_count = proto.Field(proto.INT32, number=6,)
+    format_ = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    file_prefix = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    sprite_width_pixels = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    sprite_height_pixels = proto.Field(
+        proto.INT32,
+        number=4,
+    )
+    column_count = proto.Field(
+        proto.INT32,
+        number=5,
+    )
+    row_count = proto.Field(
+        proto.INT32,
+        number=6,
+    )
     start_time_offset = proto.Field(
-        proto.MESSAGE, number=7, message=duration_pb2.Duration,
+        proto.MESSAGE,
+        number=7,
+        message=duration_pb2.Duration,
     )
     end_time_offset = proto.Field(
-        proto.MESSAGE, number=8, message=duration_pb2.Duration,
+        proto.MESSAGE,
+        number=8,
+        message=duration_pb2.Duration,
     )
-    total_count = proto.Field(proto.INT32, number=9, oneof="extraction_strategy",)
+    total_count = proto.Field(
+        proto.INT32,
+        number=9,
+        oneof="extraction_strategy",
+    )
     interval = proto.Field(
         proto.MESSAGE,
         number=10,
         oneof="extraction_strategy",
         message=duration_pb2.Duration,
     )
-    quality = proto.Field(proto.INT32, number=11,)
+    quality = proto.Field(
+        proto.INT32,
+        number=11,
+    )
 
 
 class Overlay(proto.Message):
@@ -524,8 +697,14 @@ class Overlay(proto.Message):
                 Normalized y coordinate.
         """
 
-        x = proto.Field(proto.DOUBLE, number=1,)
-        y = proto.Field(proto.DOUBLE, number=2,)
+        x = proto.Field(
+            proto.DOUBLE,
+            number=1,
+        )
+        y = proto.Field(
+            proto.DOUBLE,
+            number=2,
+        )
 
     class Image(proto.Message):
         r"""Overlaid jpeg image.
@@ -547,11 +726,19 @@ class Overlay(proto.Message):
                 value greater than ``0.0``.
         """
 
-        uri = proto.Field(proto.STRING, number=1,)
-        resolution = proto.Field(
-            proto.MESSAGE, number=2, message="Overlay.NormalizedCoordinate",
+        uri = proto.Field(
+            proto.STRING,
+            number=1,
         )
-        alpha = proto.Field(proto.DOUBLE, number=3,)
+        resolution = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message="Overlay.NormalizedCoordinate",
+        )
+        alpha = proto.Field(
+            proto.DOUBLE,
+            number=3,
+        )
 
     class AnimationStatic(proto.Message):
         r"""Display static overlay object.
@@ -570,10 +757,14 @@ class Overlay(proto.Message):
         """
 
         xy = proto.Field(
-            proto.MESSAGE, number=1, message="Overlay.NormalizedCoordinate",
+            proto.MESSAGE,
+            number=1,
+            message="Overlay.NormalizedCoordinate",
         )
         start_time_offset = proto.Field(
-            proto.MESSAGE, number=2, message=duration_pb2.Duration,
+            proto.MESSAGE,
+            number=2,
+            message=duration_pb2.Duration,
         )
 
     class AnimationFade(proto.Message):
@@ -598,15 +789,25 @@ class Overlay(proto.Message):
                 ``start_time_offset`` + 1s
         """
 
-        fade_type = proto.Field(proto.ENUM, number=1, enum="Overlay.FadeType",)
+        fade_type = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="Overlay.FadeType",
+        )
         xy = proto.Field(
-            proto.MESSAGE, number=2, message="Overlay.NormalizedCoordinate",
+            proto.MESSAGE,
+            number=2,
+            message="Overlay.NormalizedCoordinate",
         )
         start_time_offset = proto.Field(
-            proto.MESSAGE, number=3, message=duration_pb2.Duration,
+            proto.MESSAGE,
+            number=3,
+            message=duration_pb2.Duration,
         )
         end_time_offset = proto.Field(
-            proto.MESSAGE, number=4, message=duration_pb2.Duration,
+            proto.MESSAGE,
+            number=4,
+            message=duration_pb2.Duration,
         )
 
     class AnimationEnd(proto.Message):
@@ -621,7 +822,9 @@ class Overlay(proto.Message):
         """
 
         start_time_offset = proto.Field(
-            proto.MESSAGE, number=1, message=duration_pb2.Duration,
+            proto.MESSAGE,
+            number=1,
+            message=duration_pb2.Duration,
         )
 
     class Animation(proto.Message):
@@ -668,8 +871,16 @@ class Overlay(proto.Message):
             message="Overlay.AnimationEnd",
         )
 
-    image = proto.Field(proto.MESSAGE, number=1, message=Image,)
-    animations = proto.RepeatedField(proto.MESSAGE, number=2, message=Animation,)
+    image = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=Image,
+    )
+    animations = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=Animation,
+    )
 
 
 class PreprocessingConfig(proto.Message):
@@ -711,9 +922,18 @@ class PreprocessingConfig(proto.Message):
                 change. The default is 0.
         """
 
-        saturation = proto.Field(proto.DOUBLE, number=1,)
-        contrast = proto.Field(proto.DOUBLE, number=2,)
-        brightness = proto.Field(proto.DOUBLE, number=3,)
+        saturation = proto.Field(
+            proto.DOUBLE,
+            number=1,
+        )
+        contrast = proto.Field(
+            proto.DOUBLE,
+            number=2,
+        )
+        brightness = proto.Field(
+            proto.DOUBLE,
+            number=3,
+        )
 
     class Denoise(proto.Message):
         r"""Denoise preprocessing configuration.
@@ -733,8 +953,14 @@ class PreprocessingConfig(proto.Message):
                 -  ``grain``
         """
 
-        strength = proto.Field(proto.DOUBLE, number=1,)
-        tune = proto.Field(proto.STRING, number=2,)
+        strength = proto.Field(
+            proto.DOUBLE,
+            number=1,
+        )
+        tune = proto.Field(
+            proto.STRING,
+            number=2,
+        )
 
     class Deblock(proto.Message):
         r"""Deblock preprocessing configuration.
@@ -749,8 +975,14 @@ class PreprocessingConfig(proto.Message):
                 Enable deblocker. The default is ``false``.
         """
 
-        strength = proto.Field(proto.DOUBLE, number=1,)
-        enabled = proto.Field(proto.BOOL, number=2,)
+        strength = proto.Field(
+            proto.DOUBLE,
+            number=1,
+        )
+        enabled = proto.Field(
+            proto.BOOL,
+            number=2,
+        )
 
     class Audio(proto.Message):
         r"""Audio preprocessing configuration.
@@ -778,9 +1010,18 @@ class PreprocessingConfig(proto.Message):
                 ``false``.
         """
 
-        lufs = proto.Field(proto.DOUBLE, number=1,)
-        high_boost = proto.Field(proto.BOOL, number=2,)
-        low_boost = proto.Field(proto.BOOL, number=3,)
+        lufs = proto.Field(
+            proto.DOUBLE,
+            number=1,
+        )
+        high_boost = proto.Field(
+            proto.BOOL,
+            number=2,
+        )
+        low_boost = proto.Field(
+            proto.BOOL,
+            number=3,
+        )
 
     class Crop(proto.Message):
         r"""Video cropping configuration for the input video. The cropped
@@ -801,10 +1042,22 @@ class PreprocessingConfig(proto.Message):
                 The default is 0.
         """
 
-        top_pixels = proto.Field(proto.INT32, number=1,)
-        bottom_pixels = proto.Field(proto.INT32, number=2,)
-        left_pixels = proto.Field(proto.INT32, number=3,)
-        right_pixels = proto.Field(proto.INT32, number=4,)
+        top_pixels = proto.Field(
+            proto.INT32,
+            number=1,
+        )
+        bottom_pixels = proto.Field(
+            proto.INT32,
+            number=2,
+        )
+        left_pixels = proto.Field(
+            proto.INT32,
+            number=3,
+        )
+        right_pixels = proto.Field(
+            proto.INT32,
+            number=4,
+        )
 
     class Pad(proto.Message):
         r"""Pad filter configuration for the input video. The padded
@@ -826,17 +1079,53 @@ class PreprocessingConfig(proto.Message):
                 default is 0.
         """
 
-        top_pixels = proto.Field(proto.INT32, number=1,)
-        bottom_pixels = proto.Field(proto.INT32, number=2,)
-        left_pixels = proto.Field(proto.INT32, number=3,)
-        right_pixels = proto.Field(proto.INT32, number=4,)
+        top_pixels = proto.Field(
+            proto.INT32,
+            number=1,
+        )
+        bottom_pixels = proto.Field(
+            proto.INT32,
+            number=2,
+        )
+        left_pixels = proto.Field(
+            proto.INT32,
+            number=3,
+        )
+        right_pixels = proto.Field(
+            proto.INT32,
+            number=4,
+        )
 
-    color = proto.Field(proto.MESSAGE, number=1, message=Color,)
-    denoise = proto.Field(proto.MESSAGE, number=2, message=Denoise,)
-    deblock = proto.Field(proto.MESSAGE, number=3, message=Deblock,)
-    audio = proto.Field(proto.MESSAGE, number=4, message=Audio,)
-    crop = proto.Field(proto.MESSAGE, number=5, message=Crop,)
-    pad = proto.Field(proto.MESSAGE, number=6, message=Pad,)
+    color = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=Color,
+    )
+    denoise = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=Denoise,
+    )
+    deblock = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=Deblock,
+    )
+    audio = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=Audio,
+    )
+    crop = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=Crop,
+    )
+    pad = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=Pad,
+    )
 
 
 class VideoStream(proto.Message):
@@ -1001,28 +1290,89 @@ class VideoStream(proto.Message):
                 ``H264CodecSettings`` message.
         """
 
-        width_pixels = proto.Field(proto.INT32, number=1,)
-        height_pixels = proto.Field(proto.INT32, number=2,)
-        frame_rate = proto.Field(proto.DOUBLE, number=3,)
-        bitrate_bps = proto.Field(proto.INT32, number=4,)
-        pixel_format = proto.Field(proto.STRING, number=5,)
-        rate_control_mode = proto.Field(proto.STRING, number=6,)
-        crf_level = proto.Field(proto.INT32, number=7,)
-        allow_open_gop = proto.Field(proto.BOOL, number=8,)
-        gop_frame_count = proto.Field(proto.INT32, number=9, oneof="gop_mode",)
-        gop_duration = proto.Field(
-            proto.MESSAGE, number=10, oneof="gop_mode", message=duration_pb2.Duration,
+        width_pixels = proto.Field(
+            proto.INT32,
+            number=1,
         )
-        enable_two_pass = proto.Field(proto.BOOL, number=11,)
-        vbv_size_bits = proto.Field(proto.INT32, number=12,)
-        vbv_fullness_bits = proto.Field(proto.INT32, number=13,)
-        entropy_coder = proto.Field(proto.STRING, number=14,)
-        b_pyramid = proto.Field(proto.BOOL, number=15,)
-        b_frame_count = proto.Field(proto.INT32, number=16,)
-        aq_strength = proto.Field(proto.DOUBLE, number=17,)
-        profile = proto.Field(proto.STRING, number=18,)
-        tune = proto.Field(proto.STRING, number=19,)
-        preset = proto.Field(proto.STRING, number=20,)
+        height_pixels = proto.Field(
+            proto.INT32,
+            number=2,
+        )
+        frame_rate = proto.Field(
+            proto.DOUBLE,
+            number=3,
+        )
+        bitrate_bps = proto.Field(
+            proto.INT32,
+            number=4,
+        )
+        pixel_format = proto.Field(
+            proto.STRING,
+            number=5,
+        )
+        rate_control_mode = proto.Field(
+            proto.STRING,
+            number=6,
+        )
+        crf_level = proto.Field(
+            proto.INT32,
+            number=7,
+        )
+        allow_open_gop = proto.Field(
+            proto.BOOL,
+            number=8,
+        )
+        gop_frame_count = proto.Field(
+            proto.INT32,
+            number=9,
+            oneof="gop_mode",
+        )
+        gop_duration = proto.Field(
+            proto.MESSAGE,
+            number=10,
+            oneof="gop_mode",
+            message=duration_pb2.Duration,
+        )
+        enable_two_pass = proto.Field(
+            proto.BOOL,
+            number=11,
+        )
+        vbv_size_bits = proto.Field(
+            proto.INT32,
+            number=12,
+        )
+        vbv_fullness_bits = proto.Field(
+            proto.INT32,
+            number=13,
+        )
+        entropy_coder = proto.Field(
+            proto.STRING,
+            number=14,
+        )
+        b_pyramid = proto.Field(
+            proto.BOOL,
+            number=15,
+        )
+        b_frame_count = proto.Field(
+            proto.INT32,
+            number=16,
+        )
+        aq_strength = proto.Field(
+            proto.DOUBLE,
+            number=17,
+        )
+        profile = proto.Field(
+            proto.STRING,
+            number=18,
+        )
+        tune = proto.Field(
+            proto.STRING,
+            number=19,
+        )
+        preset = proto.Field(
+            proto.STRING,
+            number=20,
+        )
 
     class H265CodecSettings(proto.Message):
         r"""H265 codec settings.
@@ -1174,27 +1524,85 @@ class VideoStream(proto.Message):
                 ``H265CodecSettings`` message.
         """
 
-        width_pixels = proto.Field(proto.INT32, number=1,)
-        height_pixels = proto.Field(proto.INT32, number=2,)
-        frame_rate = proto.Field(proto.DOUBLE, number=3,)
-        bitrate_bps = proto.Field(proto.INT32, number=4,)
-        pixel_format = proto.Field(proto.STRING, number=5,)
-        rate_control_mode = proto.Field(proto.STRING, number=6,)
-        crf_level = proto.Field(proto.INT32, number=7,)
-        allow_open_gop = proto.Field(proto.BOOL, number=8,)
-        gop_frame_count = proto.Field(proto.INT32, number=9, oneof="gop_mode",)
-        gop_duration = proto.Field(
-            proto.MESSAGE, number=10, oneof="gop_mode", message=duration_pb2.Duration,
+        width_pixels = proto.Field(
+            proto.INT32,
+            number=1,
         )
-        enable_two_pass = proto.Field(proto.BOOL, number=11,)
-        vbv_size_bits = proto.Field(proto.INT32, number=12,)
-        vbv_fullness_bits = proto.Field(proto.INT32, number=13,)
-        b_pyramid = proto.Field(proto.BOOL, number=14,)
-        b_frame_count = proto.Field(proto.INT32, number=15,)
-        aq_strength = proto.Field(proto.DOUBLE, number=16,)
-        profile = proto.Field(proto.STRING, number=17,)
-        tune = proto.Field(proto.STRING, number=18,)
-        preset = proto.Field(proto.STRING, number=19,)
+        height_pixels = proto.Field(
+            proto.INT32,
+            number=2,
+        )
+        frame_rate = proto.Field(
+            proto.DOUBLE,
+            number=3,
+        )
+        bitrate_bps = proto.Field(
+            proto.INT32,
+            number=4,
+        )
+        pixel_format = proto.Field(
+            proto.STRING,
+            number=5,
+        )
+        rate_control_mode = proto.Field(
+            proto.STRING,
+            number=6,
+        )
+        crf_level = proto.Field(
+            proto.INT32,
+            number=7,
+        )
+        allow_open_gop = proto.Field(
+            proto.BOOL,
+            number=8,
+        )
+        gop_frame_count = proto.Field(
+            proto.INT32,
+            number=9,
+            oneof="gop_mode",
+        )
+        gop_duration = proto.Field(
+            proto.MESSAGE,
+            number=10,
+            oneof="gop_mode",
+            message=duration_pb2.Duration,
+        )
+        enable_two_pass = proto.Field(
+            proto.BOOL,
+            number=11,
+        )
+        vbv_size_bits = proto.Field(
+            proto.INT32,
+            number=12,
+        )
+        vbv_fullness_bits = proto.Field(
+            proto.INT32,
+            number=13,
+        )
+        b_pyramid = proto.Field(
+            proto.BOOL,
+            number=14,
+        )
+        b_frame_count = proto.Field(
+            proto.INT32,
+            number=15,
+        )
+        aq_strength = proto.Field(
+            proto.DOUBLE,
+            number=16,
+        )
+        profile = proto.Field(
+            proto.STRING,
+            number=17,
+        )
+        tune = proto.Field(
+            proto.STRING,
+            number=18,
+        )
+        preset = proto.Field(
+            proto.STRING,
+            number=19,
+        )
 
     class Vp9CodecSettings(proto.Message):
         r"""VP9 codec settings.
@@ -1286,27 +1694,67 @@ class VideoStream(proto.Message):
                 ``Vp9CodecSettings`` message.
         """
 
-        width_pixels = proto.Field(proto.INT32, number=1,)
-        height_pixels = proto.Field(proto.INT32, number=2,)
-        frame_rate = proto.Field(proto.DOUBLE, number=3,)
-        bitrate_bps = proto.Field(proto.INT32, number=4,)
-        pixel_format = proto.Field(proto.STRING, number=5,)
-        rate_control_mode = proto.Field(proto.STRING, number=6,)
-        crf_level = proto.Field(proto.INT32, number=7,)
-        gop_frame_count = proto.Field(proto.INT32, number=8, oneof="gop_mode",)
-        gop_duration = proto.Field(
-            proto.MESSAGE, number=9, oneof="gop_mode", message=duration_pb2.Duration,
+        width_pixels = proto.Field(
+            proto.INT32,
+            number=1,
         )
-        profile = proto.Field(proto.STRING, number=10,)
+        height_pixels = proto.Field(
+            proto.INT32,
+            number=2,
+        )
+        frame_rate = proto.Field(
+            proto.DOUBLE,
+            number=3,
+        )
+        bitrate_bps = proto.Field(
+            proto.INT32,
+            number=4,
+        )
+        pixel_format = proto.Field(
+            proto.STRING,
+            number=5,
+        )
+        rate_control_mode = proto.Field(
+            proto.STRING,
+            number=6,
+        )
+        crf_level = proto.Field(
+            proto.INT32,
+            number=7,
+        )
+        gop_frame_count = proto.Field(
+            proto.INT32,
+            number=8,
+            oneof="gop_mode",
+        )
+        gop_duration = proto.Field(
+            proto.MESSAGE,
+            number=9,
+            oneof="gop_mode",
+            message=duration_pb2.Duration,
+        )
+        profile = proto.Field(
+            proto.STRING,
+            number=10,
+        )
 
     h264 = proto.Field(
-        proto.MESSAGE, number=1, oneof="codec_settings", message=H264CodecSettings,
+        proto.MESSAGE,
+        number=1,
+        oneof="codec_settings",
+        message=H264CodecSettings,
     )
     h265 = proto.Field(
-        proto.MESSAGE, number=2, oneof="codec_settings", message=H265CodecSettings,
+        proto.MESSAGE,
+        number=2,
+        oneof="codec_settings",
+        message=H265CodecSettings,
     )
     vp9 = proto.Field(
-        proto.MESSAGE, number=3, oneof="codec_settings", message=Vp9CodecSettings,
+        proto.MESSAGE,
+        number=3,
+        oneof="codec_settings",
+        message=Vp9CodecSettings,
     )
 
 
@@ -1378,19 +1826,56 @@ class AudioStream(proto.Message):
                 default is 0.
         """
 
-        atom_key = proto.Field(proto.STRING, number=1,)
-        input_key = proto.Field(proto.STRING, number=2,)
-        input_track = proto.Field(proto.INT32, number=3,)
-        input_channel = proto.Field(proto.INT32, number=4,)
-        output_channel = proto.Field(proto.INT32, number=5,)
-        gain_db = proto.Field(proto.DOUBLE, number=6,)
+        atom_key = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        input_key = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        input_track = proto.Field(
+            proto.INT32,
+            number=3,
+        )
+        input_channel = proto.Field(
+            proto.INT32,
+            number=4,
+        )
+        output_channel = proto.Field(
+            proto.INT32,
+            number=5,
+        )
+        gain_db = proto.Field(
+            proto.DOUBLE,
+            number=6,
+        )
 
-    codec = proto.Field(proto.STRING, number=1,)
-    bitrate_bps = proto.Field(proto.INT32, number=2,)
-    channel_count = proto.Field(proto.INT32, number=3,)
-    channel_layout = proto.RepeatedField(proto.STRING, number=4,)
-    mapping_ = proto.RepeatedField(proto.MESSAGE, number=5, message=AudioMapping,)
-    sample_rate_hertz = proto.Field(proto.INT32, number=6,)
+    codec = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    bitrate_bps = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    channel_count = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    channel_layout = proto.RepeatedField(
+        proto.STRING,
+        number=4,
+    )
+    mapping_ = proto.RepeatedField(
+        proto.MESSAGE,
+        number=5,
+        message=AudioMapping,
+    )
+    sample_rate_hertz = proto.Field(
+        proto.INT32,
+        number=6,
+    )
 
 
 class TextStream(proto.Message):
@@ -1428,12 +1913,28 @@ class TextStream(proto.Message):
                 in the input file.
         """
 
-        atom_key = proto.Field(proto.STRING, number=1,)
-        input_key = proto.Field(proto.STRING, number=2,)
-        input_track = proto.Field(proto.INT32, number=3,)
+        atom_key = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        input_key = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        input_track = proto.Field(
+            proto.INT32,
+            number=3,
+        )
 
-    codec = proto.Field(proto.STRING, number=1,)
-    mapping_ = proto.RepeatedField(proto.MESSAGE, number=3, message=TextMapping,)
+    codec = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    mapping_ = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=TextMapping,
+    )
 
 
 class SegmentSettings(proto.Message):
@@ -1452,9 +1953,14 @@ class SegmentSettings(proto.Message):
     """
 
     segment_duration = proto.Field(
-        proto.MESSAGE, number=1, message=duration_pb2.Duration,
+        proto.MESSAGE,
+        number=1,
+        message=duration_pb2.Duration,
     )
-    individual_segments = proto.Field(proto.BOOL, number=3,)
+    individual_segments = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
