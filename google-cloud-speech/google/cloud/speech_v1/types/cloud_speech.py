@@ -60,8 +60,16 @@ class RecognizeRequest(proto.Message):
             Required. The audio data to be recognized.
     """
 
-    config = proto.Field(proto.MESSAGE, number=1, message="RecognitionConfig",)
-    audio = proto.Field(proto.MESSAGE, number=2, message="RecognitionAudio",)
+    config = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="RecognitionConfig",
+    )
+    audio = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="RecognitionAudio",
+    )
 
 
 class LongRunningRecognizeRequest(proto.Message):
@@ -80,10 +88,20 @@ class LongRunningRecognizeRequest(proto.Message):
             for the recognition results.
     """
 
-    config = proto.Field(proto.MESSAGE, number=1, message="RecognitionConfig",)
-    audio = proto.Field(proto.MESSAGE, number=2, message="RecognitionAudio",)
+    config = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="RecognitionConfig",
+    )
+    audio = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="RecognitionAudio",
+    )
     output_config = proto.Field(
-        proto.MESSAGE, number=4, message="TranscriptOutputConfig",
+        proto.MESSAGE,
+        number=4,
+        message="TranscriptOutputConfig",
     )
 
 
@@ -104,7 +122,11 @@ class TranscriptOutputConfig(proto.Message):
             This field is a member of `oneof`_ ``output_type``.
     """
 
-    gcs_uri = proto.Field(proto.STRING, number=1, oneof="output_type",)
+    gcs_uri = proto.Field(
+        proto.STRING,
+        number=1,
+        oneof="output_type",
+    )
 
 
 class StreamingRecognizeRequest(proto.Message):
@@ -151,7 +173,11 @@ class StreamingRecognizeRequest(proto.Message):
         oneof="streaming_request",
         message="StreamingRecognitionConfig",
     )
-    audio_content = proto.Field(proto.BYTES, number=2, oneof="streaming_request",)
+    audio_content = proto.Field(
+        proto.BYTES,
+        number=2,
+        oneof="streaming_request",
+    )
 
 
 class StreamingRecognitionConfig(proto.Message):
@@ -196,9 +222,19 @@ class StreamingRecognitionConfig(proto.Message):
             omitted, only ``is_final=true`` result(s) are returned.
     """
 
-    config = proto.Field(proto.MESSAGE, number=1, message="RecognitionConfig",)
-    single_utterance = proto.Field(proto.BOOL, number=2,)
-    interim_results = proto.Field(proto.BOOL, number=3,)
+    config = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="RecognitionConfig",
+    )
+    single_utterance = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+    interim_results = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
 
 
 class RecognitionConfig(proto.Message):
@@ -420,35 +456,89 @@ class RecognitionConfig(proto.Message):
         SPEEX_WITH_HEADER_BYTE = 7
         WEBM_OPUS = 9
 
-    encoding = proto.Field(proto.ENUM, number=1, enum=AudioEncoding,)
-    sample_rate_hertz = proto.Field(proto.INT32, number=2,)
-    audio_channel_count = proto.Field(proto.INT32, number=7,)
-    enable_separate_recognition_per_channel = proto.Field(proto.BOOL, number=12,)
-    language_code = proto.Field(proto.STRING, number=3,)
-    alternative_language_codes = proto.RepeatedField(proto.STRING, number=18,)
-    max_alternatives = proto.Field(proto.INT32, number=4,)
-    profanity_filter = proto.Field(proto.BOOL, number=5,)
+    encoding = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=AudioEncoding,
+    )
+    sample_rate_hertz = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    audio_channel_count = proto.Field(
+        proto.INT32,
+        number=7,
+    )
+    enable_separate_recognition_per_channel = proto.Field(
+        proto.BOOL,
+        number=12,
+    )
+    language_code = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    alternative_language_codes = proto.RepeatedField(
+        proto.STRING,
+        number=18,
+    )
+    max_alternatives = proto.Field(
+        proto.INT32,
+        number=4,
+    )
+    profanity_filter = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
     adaptation = proto.Field(
-        proto.MESSAGE, number=20, message=resource.SpeechAdaptation,
+        proto.MESSAGE,
+        number=20,
+        message=resource.SpeechAdaptation,
     )
     speech_contexts = proto.RepeatedField(
-        proto.MESSAGE, number=6, message="SpeechContext",
+        proto.MESSAGE,
+        number=6,
+        message="SpeechContext",
     )
-    enable_word_time_offsets = proto.Field(proto.BOOL, number=8,)
-    enable_word_confidence = proto.Field(proto.BOOL, number=15,)
-    enable_automatic_punctuation = proto.Field(proto.BOOL, number=11,)
+    enable_word_time_offsets = proto.Field(
+        proto.BOOL,
+        number=8,
+    )
+    enable_word_confidence = proto.Field(
+        proto.BOOL,
+        number=15,
+    )
+    enable_automatic_punctuation = proto.Field(
+        proto.BOOL,
+        number=11,
+    )
     enable_spoken_punctuation = proto.Field(
-        proto.MESSAGE, number=22, message=wrappers_pb2.BoolValue,
+        proto.MESSAGE,
+        number=22,
+        message=wrappers_pb2.BoolValue,
     )
     enable_spoken_emojis = proto.Field(
-        proto.MESSAGE, number=23, message=wrappers_pb2.BoolValue,
+        proto.MESSAGE,
+        number=23,
+        message=wrappers_pb2.BoolValue,
     )
     diarization_config = proto.Field(
-        proto.MESSAGE, number=19, message="SpeakerDiarizationConfig",
+        proto.MESSAGE,
+        number=19,
+        message="SpeakerDiarizationConfig",
     )
-    metadata = proto.Field(proto.MESSAGE, number=9, message="RecognitionMetadata",)
-    model = proto.Field(proto.STRING, number=13,)
-    use_enhanced = proto.Field(proto.BOOL, number=14,)
+    metadata = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message="RecognitionMetadata",
+    )
+    model = proto.Field(
+        proto.STRING,
+        number=13,
+    )
+    use_enhanced = proto.Field(
+        proto.BOOL,
+        number=14,
+    )
 
 
 class SpeakerDiarizationConfig(proto.Message):
@@ -475,10 +565,22 @@ class SpeakerDiarizationConfig(proto.Message):
             Output only. Unused.
     """
 
-    enable_speaker_diarization = proto.Field(proto.BOOL, number=1,)
-    min_speaker_count = proto.Field(proto.INT32, number=2,)
-    max_speaker_count = proto.Field(proto.INT32, number=3,)
-    speaker_tag = proto.Field(proto.INT32, number=5,)
+    enable_speaker_diarization = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
+    min_speaker_count = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    max_speaker_count = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    speaker_tag = proto.Field(
+        proto.INT32,
+        number=5,
+    )
 
 
 class RecognitionMetadata(proto.Message):
@@ -559,14 +661,42 @@ class RecognitionMetadata(proto.Message):
         OTHER_OUTDOOR_DEVICE = 5
         OTHER_INDOOR_DEVICE = 6
 
-    interaction_type = proto.Field(proto.ENUM, number=1, enum=InteractionType,)
-    industry_naics_code_of_audio = proto.Field(proto.UINT32, number=3,)
-    microphone_distance = proto.Field(proto.ENUM, number=4, enum=MicrophoneDistance,)
-    original_media_type = proto.Field(proto.ENUM, number=5, enum=OriginalMediaType,)
-    recording_device_type = proto.Field(proto.ENUM, number=6, enum=RecordingDeviceType,)
-    recording_device_name = proto.Field(proto.STRING, number=7,)
-    original_mime_type = proto.Field(proto.STRING, number=8,)
-    audio_topic = proto.Field(proto.STRING, number=10,)
+    interaction_type = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=InteractionType,
+    )
+    industry_naics_code_of_audio = proto.Field(
+        proto.UINT32,
+        number=3,
+    )
+    microphone_distance = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=MicrophoneDistance,
+    )
+    original_media_type = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum=OriginalMediaType,
+    )
+    recording_device_type = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum=RecordingDeviceType,
+    )
+    recording_device_name = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    original_mime_type = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    audio_topic = proto.Field(
+        proto.STRING,
+        number=10,
+    )
 
 
 class SpeechContext(proto.Message):
@@ -603,8 +733,14 @@ class SpeechContext(proto.Message):
             optimal value for your use case.
     """
 
-    phrases = proto.RepeatedField(proto.STRING, number=1,)
-    boost = proto.Field(proto.FLOAT, number=4,)
+    phrases = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
+    boost = proto.Field(
+        proto.FLOAT,
+        number=4,
+    )
 
 
 class RecognitionAudio(proto.Message):
@@ -644,8 +780,16 @@ class RecognitionAudio(proto.Message):
             This field is a member of `oneof`_ ``audio_source``.
     """
 
-    content = proto.Field(proto.BYTES, number=1, oneof="audio_source",)
-    uri = proto.Field(proto.STRING, number=2, oneof="audio_source",)
+    content = proto.Field(
+        proto.BYTES,
+        number=1,
+        oneof="audio_source",
+    )
+    uri = proto.Field(
+        proto.STRING,
+        number=2,
+        oneof="audio_source",
+    )
 
 
 class RecognizeResponse(proto.Message):
@@ -663,10 +807,14 @@ class RecognizeResponse(proto.Message):
     """
 
     results = proto.RepeatedField(
-        proto.MESSAGE, number=2, message="SpeechRecognitionResult",
+        proto.MESSAGE,
+        number=2,
+        message="SpeechRecognitionResult",
     )
     total_billed_time = proto.Field(
-        proto.MESSAGE, number=3, message=duration_pb2.Duration,
+        proto.MESSAGE,
+        number=3,
+        message=duration_pb2.Duration,
     )
 
 
@@ -694,15 +842,25 @@ class LongRunningRecognizeResponse(proto.Message):
     """
 
     results = proto.RepeatedField(
-        proto.MESSAGE, number=2, message="SpeechRecognitionResult",
+        proto.MESSAGE,
+        number=2,
+        message="SpeechRecognitionResult",
     )
     total_billed_time = proto.Field(
-        proto.MESSAGE, number=3, message=duration_pb2.Duration,
+        proto.MESSAGE,
+        number=3,
+        message=duration_pb2.Duration,
     )
     output_config = proto.Field(
-        proto.MESSAGE, number=6, message="TranscriptOutputConfig",
+        proto.MESSAGE,
+        number=6,
+        message="TranscriptOutputConfig",
     )
-    output_error = proto.Field(proto.MESSAGE, number=7, message=status_pb2.Status,)
+    output_error = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=status_pb2.Status,
+    )
 
 
 class LongRunningRecognizeMetadata(proto.Message):
@@ -726,12 +884,24 @@ class LongRunningRecognizeMetadata(proto.Message):
             content.
     """
 
-    progress_percent = proto.Field(proto.INT32, number=1,)
-    start_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    last_update_time = proto.Field(
-        proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,
+    progress_percent = proto.Field(
+        proto.INT32,
+        number=1,
     )
-    uri = proto.Field(proto.STRING, number=4,)
+    start_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    last_update_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    uri = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class StreamingRecognizeResponse(proto.Message):
@@ -811,13 +981,25 @@ class StreamingRecognizeResponse(proto.Message):
         SPEECH_EVENT_UNSPECIFIED = 0
         END_OF_SINGLE_UTTERANCE = 1
 
-    error = proto.Field(proto.MESSAGE, number=1, message=status_pb2.Status,)
-    results = proto.RepeatedField(
-        proto.MESSAGE, number=2, message="StreamingRecognitionResult",
+    error = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=status_pb2.Status,
     )
-    speech_event_type = proto.Field(proto.ENUM, number=4, enum=SpeechEventType,)
+    results = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="StreamingRecognitionResult",
+    )
+    speech_event_type = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=SpeechEventType,
+    )
     total_billed_time = proto.Field(
-        proto.MESSAGE, number=5, message=duration_pb2.Duration,
+        proto.MESSAGE,
+        number=5,
+        message=duration_pb2.Duration,
     )
 
 
@@ -863,15 +1045,31 @@ class StreamingRecognitionResult(proto.Message):
     """
 
     alternatives = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="SpeechRecognitionAlternative",
+        proto.MESSAGE,
+        number=1,
+        message="SpeechRecognitionAlternative",
     )
-    is_final = proto.Field(proto.BOOL, number=2,)
-    stability = proto.Field(proto.FLOAT, number=3,)
+    is_final = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+    stability = proto.Field(
+        proto.FLOAT,
+        number=3,
+    )
     result_end_time = proto.Field(
-        proto.MESSAGE, number=4, message=duration_pb2.Duration,
+        proto.MESSAGE,
+        number=4,
+        message=duration_pb2.Duration,
     )
-    channel_tag = proto.Field(proto.INT32, number=5,)
-    language_code = proto.Field(proto.STRING, number=6,)
+    channel_tag = proto.Field(
+        proto.INT32,
+        number=5,
+    )
+    language_code = proto.Field(
+        proto.STRING,
+        number=6,
+    )
 
 
 class SpeechRecognitionResult(proto.Message):
@@ -902,13 +1100,23 @@ class SpeechRecognitionResult(proto.Message):
     """
 
     alternatives = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="SpeechRecognitionAlternative",
+        proto.MESSAGE,
+        number=1,
+        message="SpeechRecognitionAlternative",
     )
-    channel_tag = proto.Field(proto.INT32, number=2,)
+    channel_tag = proto.Field(
+        proto.INT32,
+        number=2,
+    )
     result_end_time = proto.Field(
-        proto.MESSAGE, number=4, message=duration_pb2.Duration,
+        proto.MESSAGE,
+        number=4,
+        message=duration_pb2.Duration,
     )
-    language_code = proto.Field(proto.STRING, number=5,)
+    language_code = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class SpeechRecognitionAlternative(proto.Message):
@@ -933,9 +1141,19 @@ class SpeechRecognitionAlternative(proto.Message):
             will see all the words from the beginning of the audio.
     """
 
-    transcript = proto.Field(proto.STRING, number=1,)
-    confidence = proto.Field(proto.FLOAT, number=2,)
-    words = proto.RepeatedField(proto.MESSAGE, number=3, message="WordInfo",)
+    transcript = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    confidence = proto.Field(
+        proto.FLOAT,
+        number=2,
+    )
+    words = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message="WordInfo",
+    )
 
 
 class WordInfo(proto.Message):
@@ -975,11 +1193,28 @@ class WordInfo(proto.Message):
             top alternative.
     """
 
-    start_time = proto.Field(proto.MESSAGE, number=1, message=duration_pb2.Duration,)
-    end_time = proto.Field(proto.MESSAGE, number=2, message=duration_pb2.Duration,)
-    word = proto.Field(proto.STRING, number=3,)
-    confidence = proto.Field(proto.FLOAT, number=4,)
-    speaker_tag = proto.Field(proto.INT32, number=5,)
+    start_time = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=duration_pb2.Duration,
+    )
+    end_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=duration_pb2.Duration,
+    )
+    word = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    confidence = proto.Field(
+        proto.FLOAT,
+        number=4,
+    )
+    speaker_tag = proto.Field(
+        proto.INT32,
+        number=5,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
