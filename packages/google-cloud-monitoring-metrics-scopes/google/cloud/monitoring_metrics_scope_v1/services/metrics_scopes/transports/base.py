@@ -129,7 +129,9 @@ class MetricsScopesTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.get_metrics_scope: gapic_v1.method.wrap_method(
-                self.get_metrics_scope, default_timeout=None, client_info=client_info,
+                self.get_metrics_scope,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_metrics_scopes_by_monitored_project: gapic_v1.method.wrap_method(
                 self.list_metrics_scopes_by_monitored_project,
@@ -151,9 +153,9 @@ class MetricsScopesTransport(abc.ABC):
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

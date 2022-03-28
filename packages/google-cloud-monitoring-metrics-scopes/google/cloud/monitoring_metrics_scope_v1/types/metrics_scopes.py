@@ -42,7 +42,10 @@ class GetMetricsScopeRequest(proto.Message):
             ``locations/global/metricsScopes/{SCOPING_PROJECT_ID_OR_NUMBER}``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListMetricsScopesByMonitoredProjectRequest(proto.Message):
@@ -55,7 +58,10 @@ class ListMetricsScopesByMonitoredProjectRequest(proto.Message):
             ``projects/{MONITORED_PROJECT_ID_OR_NUMBER}``
     """
 
-    monitored_resource_container = proto.Field(proto.STRING, number=1,)
+    monitored_resource_container = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListMetricsScopesByMonitoredProjectResponse(proto.Message):
@@ -68,7 +74,9 @@ class ListMetricsScopesByMonitoredProjectResponse(proto.Message):
     """
 
     metrics_scopes = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=metrics_scope.MetricsScope,
+        proto.MESSAGE,
+        number=1,
+        message=metrics_scope.MetricsScope,
     )
 
 
@@ -88,9 +96,14 @@ class CreateMonitoredProjectRequest(proto.Message):
             ``locations/global/metricsScopes/{SCOPING_PROJECT_ID_OR_NUMBER}/projects/{MONITORED_PROJECT_ID_OR_NUMBER}``
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     monitored_project = proto.Field(
-        proto.MESSAGE, number=2, message=metrics_scope.MonitoredProject,
+        proto.MESSAGE,
+        number=2,
+        message=metrics_scope.MonitoredProject,
     )
 
 
@@ -109,7 +122,10 @@ class DeleteMonitoredProjectRequest(proto.Message):
             ``monitoring.metricsScopes.link``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class OperationMetadata(proto.Message):
@@ -134,9 +150,21 @@ class OperationMetadata(proto.Message):
         DONE = 3
         CANCELLED = 4
 
-    state = proto.Field(proto.ENUM, number=1, enum=State,)
-    create_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,)
+    state = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=State,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

@@ -20,7 +20,10 @@ from google.protobuf import timestamp_pb2  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.monitoring.metricsscope.v1",
-    manifest={"MetricsScope", "MonitoredProject",},
+    manifest={
+        "MetricsScope",
+        "MonitoredProject",
+    },
 )
 
 
@@ -48,11 +51,24 @@ class MetricsScope(proto.Message):
             ``Metrics Scope``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    create_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
     monitored_projects = proto.RepeatedField(
-        proto.MESSAGE, number=4, message="MonitoredProject",
+        proto.MESSAGE,
+        number=4,
+        message="MonitoredProject",
     )
 
 
@@ -73,8 +89,15 @@ class MonitoredProject(proto.Message):
             created.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    create_time = proto.Field(proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
