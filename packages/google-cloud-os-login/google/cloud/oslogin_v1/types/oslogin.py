@@ -49,12 +49,20 @@ class LoginProfile(proto.Message):
             associated key object.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     posix_accounts = proto.RepeatedField(
-        proto.MESSAGE, number=2, message=common.PosixAccount,
+        proto.MESSAGE,
+        number=2,
+        message=common.PosixAccount,
     )
     ssh_public_keys = proto.MapField(
-        proto.STRING, proto.MESSAGE, number=3, message=common.SshPublicKey,
+        proto.STRING,
+        proto.MESSAGE,
+        number=3,
+        message=common.SshPublicKey,
     )
 
 
@@ -69,7 +77,10 @@ class DeletePosixAccountRequest(proto.Message):
             format ``users/{user}/projects/{project}``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class DeleteSshPublicKeyRequest(proto.Message):
@@ -83,7 +94,10 @@ class DeleteSshPublicKeyRequest(proto.Message):
             ``users/{user}/sshPublicKeys/{fingerprint}``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class GetLoginProfileRequest(proto.Message):
@@ -102,9 +116,18 @@ class GetLoginProfileRequest(proto.Message):
             request.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    project_id = proto.Field(proto.STRING, number=2,)
-    system_id = proto.Field(proto.STRING, number=3,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    project_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    system_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class GetSshPublicKeyRequest(proto.Message):
@@ -118,7 +141,10 @@ class GetSshPublicKeyRequest(proto.Message):
             ``users/{user}/sshPublicKeys/{fingerprint}``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ImportSshPublicKeyRequest(proto.Message):
@@ -136,9 +162,19 @@ class ImportSshPublicKeyRequest(proto.Message):
             project.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    ssh_public_key = proto.Field(proto.MESSAGE, number=2, message=common.SshPublicKey,)
-    project_id = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    ssh_public_key = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=common.SshPublicKey,
+    )
+    project_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ImportSshPublicKeyResponse(proto.Message):
@@ -149,7 +185,11 @@ class ImportSshPublicKeyResponse(proto.Message):
             The login profile information for the user.
     """
 
-    login_profile = proto.Field(proto.MESSAGE, number=1, message="LoginProfile",)
+    login_profile = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="LoginProfile",
+    )
 
 
 class UpdateSshPublicKeyRequest(proto.Message):
@@ -169,10 +209,19 @@ class UpdateSshPublicKeyRequest(proto.Message):
             Updates all if not present.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    ssh_public_key = proto.Field(proto.MESSAGE, number=2, message=common.SshPublicKey,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    ssh_public_key = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=common.SshPublicKey,
+    )
     update_mask = proto.Field(
-        proto.MESSAGE, number=3, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=3,
+        message=field_mask_pb2.FieldMask,
     )
 
 

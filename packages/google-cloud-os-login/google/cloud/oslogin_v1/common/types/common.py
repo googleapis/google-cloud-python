@@ -18,7 +18,11 @@ import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.oslogin.v1",
-    manifest={"OperatingSystemType", "PosixAccount", "SshPublicKey",},
+    manifest={
+        "OperatingSystemType",
+        "PosixAccount",
+        "SshPublicKey",
+    },
 )
 
 
@@ -64,19 +68,51 @@ class PosixAccount(proto.Message):
             Output only. The canonical resource name.
     """
 
-    primary = proto.Field(proto.BOOL, number=1,)
-    username = proto.Field(proto.STRING, number=2,)
-    uid = proto.Field(proto.INT64, number=3,)
-    gid = proto.Field(proto.INT64, number=4,)
-    home_directory = proto.Field(proto.STRING, number=5,)
-    shell = proto.Field(proto.STRING, number=6,)
-    gecos = proto.Field(proto.STRING, number=7,)
-    system_id = proto.Field(proto.STRING, number=8,)
-    account_id = proto.Field(proto.STRING, number=9,)
-    operating_system_type = proto.Field(
-        proto.ENUM, number=10, enum="OperatingSystemType",
+    primary = proto.Field(
+        proto.BOOL,
+        number=1,
     )
-    name = proto.Field(proto.STRING, number=11,)
+    username = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    uid = proto.Field(
+        proto.INT64,
+        number=3,
+    )
+    gid = proto.Field(
+        proto.INT64,
+        number=4,
+    )
+    home_directory = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    shell = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    gecos = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    system_id = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    account_id = proto.Field(
+        proto.STRING,
+        number=9,
+    )
+    operating_system_type = proto.Field(
+        proto.ENUM,
+        number=10,
+        enum="OperatingSystemType",
+    )
+    name = proto.Field(
+        proto.STRING,
+        number=11,
+    )
 
 
 class SshPublicKey(proto.Message):
@@ -97,10 +133,22 @@ class SshPublicKey(proto.Message):
             Output only. The canonical resource name.
     """
 
-    key = proto.Field(proto.STRING, number=1,)
-    expiration_time_usec = proto.Field(proto.INT64, number=2,)
-    fingerprint = proto.Field(proto.STRING, number=3,)
-    name = proto.Field(proto.STRING, number=4,)
+    key = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    expiration_time_usec = proto.Field(
+        proto.INT64,
+        number=2,
+    )
+    fingerprint = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    name = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
