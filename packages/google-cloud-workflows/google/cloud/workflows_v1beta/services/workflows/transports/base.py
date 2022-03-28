@@ -31,7 +31,9 @@ from google.longrunning import operations_pb2  # type: ignore
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-workflows",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-workflows",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
@@ -121,28 +123,38 @@ class WorkflowsTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.list_workflows: gapic_v1.method.wrap_method(
-                self.list_workflows, default_timeout=None, client_info=client_info,
+                self.list_workflows,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_workflow: gapic_v1.method.wrap_method(
-                self.get_workflow, default_timeout=None, client_info=client_info,
+                self.get_workflow,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.create_workflow: gapic_v1.method.wrap_method(
-                self.create_workflow, default_timeout=None, client_info=client_info,
+                self.create_workflow,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.delete_workflow: gapic_v1.method.wrap_method(
-                self.delete_workflow, default_timeout=None, client_info=client_info,
+                self.delete_workflow,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.update_workflow: gapic_v1.method.wrap_method(
-                self.update_workflow, default_timeout=None, client_info=client_info,
+                self.update_workflow,
+                default_timeout=None,
+                client_info=client_info,
             ),
         }
 
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

@@ -128,14 +128,31 @@ class Execution(proto.Message):
                     this stack trace element.
             """
 
-            line = proto.Field(proto.INT64, number=1,)
-            column = proto.Field(proto.INT64, number=2,)
-            length = proto.Field(proto.INT64, number=3,)
+            line = proto.Field(
+                proto.INT64,
+                number=1,
+            )
+            column = proto.Field(
+                proto.INT64,
+                number=2,
+            )
+            length = proto.Field(
+                proto.INT64,
+                number=3,
+            )
 
-        step = proto.Field(proto.STRING, number=1,)
-        routine = proto.Field(proto.STRING, number=2,)
+        step = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        routine = proto.Field(
+            proto.STRING,
+            number=2,
+        )
         position = proto.Field(
-            proto.MESSAGE, number=3, message="Execution.StackTraceElement.Position",
+            proto.MESSAGE,
+            number=3,
+            message="Execution.StackTraceElement.Position",
         )
 
     class StackTrace(proto.Message):
@@ -148,7 +165,9 @@ class Execution(proto.Message):
         """
 
         elements = proto.RepeatedField(
-            proto.MESSAGE, number=1, message="Execution.StackTraceElement",
+            proto.MESSAGE,
+            number=1,
+            message="Execution.StackTraceElement",
         )
 
     class Error(proto.Message):
@@ -165,21 +184,61 @@ class Execution(proto.Message):
                 where error was generated.
         """
 
-        payload = proto.Field(proto.STRING, number=1,)
-        context = proto.Field(proto.STRING, number=2,)
+        payload = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        context = proto.Field(
+            proto.STRING,
+            number=2,
+        )
         stack_trace = proto.Field(
-            proto.MESSAGE, number=3, message="Execution.StackTrace",
+            proto.MESSAGE,
+            number=3,
+            message="Execution.StackTrace",
         )
 
-    name = proto.Field(proto.STRING, number=1,)
-    start_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    end_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
-    state = proto.Field(proto.ENUM, number=4, enum=State,)
-    argument = proto.Field(proto.STRING, number=5,)
-    result = proto.Field(proto.STRING, number=6,)
-    error = proto.Field(proto.MESSAGE, number=7, message=Error,)
-    workflow_revision_id = proto.Field(proto.STRING, number=8,)
-    call_log_level = proto.Field(proto.ENUM, number=9, enum=CallLogLevel,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    start_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=State,
+    )
+    argument = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    result = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    error = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=Error,
+    )
+    workflow_revision_id = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    call_log_level = proto.Field(
+        proto.ENUM,
+        number=9,
+        enum=CallLogLevel,
+    )
 
 
 class ListExecutionsRequest(proto.Message):
@@ -211,10 +270,23 @@ class ListExecutionsRequest(proto.Message):
             will default to the BASIC view.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    view = proto.Field(proto.ENUM, number=4, enum="ExecutionView",)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    view = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum="ExecutionView",
+    )
 
 
 class ListExecutionsResponse(proto.Message):
@@ -235,8 +307,15 @@ class ListExecutionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    executions = proto.RepeatedField(proto.MESSAGE, number=1, message="Execution",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    executions = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Execution",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class CreateExecutionRequest(proto.Message):
@@ -255,8 +334,15 @@ class CreateExecutionRequest(proto.Message):
             Required. Execution to be created.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    execution = proto.Field(proto.MESSAGE, number=2, message="Execution",)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    execution = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="Execution",
+    )
 
 
 class GetExecutionRequest(proto.Message):
@@ -275,8 +361,15 @@ class GetExecutionRequest(proto.Message):
             will default to the FULL view.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    view = proto.Field(proto.ENUM, number=2, enum="ExecutionView",)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    view = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum="ExecutionView",
+    )
 
 
 class CancelExecutionRequest(proto.Message):
@@ -291,7 +384,10 @@ class CancelExecutionRequest(proto.Message):
             projects/{project}/locations/{location}/workflows/{workflow}/executions/{execution}
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

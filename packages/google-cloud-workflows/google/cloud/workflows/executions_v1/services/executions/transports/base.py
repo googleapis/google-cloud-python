@@ -29,7 +29,9 @@ from google.cloud.workflows.executions_v1.types import executions
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-workflow",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-workflow",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
@@ -119,25 +121,33 @@ class ExecutionsTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.list_executions: gapic_v1.method.wrap_method(
-                self.list_executions, default_timeout=None, client_info=client_info,
+                self.list_executions,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.create_execution: gapic_v1.method.wrap_method(
-                self.create_execution, default_timeout=None, client_info=client_info,
+                self.create_execution,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_execution: gapic_v1.method.wrap_method(
-                self.get_execution, default_timeout=None, client_info=client_info,
+                self.get_execution,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.cancel_execution: gapic_v1.method.wrap_method(
-                self.cancel_execution, default_timeout=None, client_info=client_info,
+                self.cancel_execution,
+                default_timeout=None,
+                client_info=client_info,
             ),
         }
 
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 
