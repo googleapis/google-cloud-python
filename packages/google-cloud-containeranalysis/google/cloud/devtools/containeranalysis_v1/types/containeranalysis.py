@@ -39,8 +39,14 @@ class GetVulnerabilityOccurrencesSummaryRequest(proto.Message):
             The filter expression.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    filter = proto.Field(proto.STRING, number=2,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class VulnerabilityOccurrencesSummary(proto.Message):
@@ -71,12 +77,29 @@ class VulnerabilityOccurrencesSummary(proto.Message):
                 associated with this resource.
         """
 
-        resource_uri = proto.Field(proto.STRING, number=1,)
-        severity = proto.Field(proto.ENUM, number=2, enum=severity.Severity,)
-        fixable_count = proto.Field(proto.INT64, number=3,)
-        total_count = proto.Field(proto.INT64, number=4,)
+        resource_uri = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        severity = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum=severity.Severity,
+        )
+        fixable_count = proto.Field(
+            proto.INT64,
+            number=3,
+        )
+        total_count = proto.Field(
+            proto.INT64,
+            number=4,
+        )
 
-    counts = proto.RepeatedField(proto.MESSAGE, number=1, message=FixableTotalByDigest,)
+    counts = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=FixableTotalByDigest,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
