@@ -1501,8 +1501,8 @@ class ListDisplayVideo360AdvertiserLinkProposalsPager:
                 sent along with the request as metadata.
         """
         self._method = method
-        self._request = analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsRequest(
-            request
+        self._request = (
+            analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsRequest(request)
         )
         self._response = response
         self._metadata = metadata
@@ -1572,8 +1572,8 @@ class ListDisplayVideo360AdvertiserLinkProposalsAsyncPager:
                 sent along with the request as metadata.
         """
         self._method = method
-        self._request = analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsRequest(
-            request
+        self._request = (
+            analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsRequest(request)
         )
         self._response = response
         self._metadata = metadata

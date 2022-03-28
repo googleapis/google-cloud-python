@@ -46,7 +46,7 @@ def run_sample():
 
 def search_change_history_events(account_id: str, property_id: str):
     """Lists the change history events for the Google Analytics 4 property
-  within the specified date range."""
+    within the specified date range."""
     client = AnalyticsAdminServiceClient()
     # Create a timestamp object and subtract 7 days from the current date/time.
     earliest_change_time = Timestamp()

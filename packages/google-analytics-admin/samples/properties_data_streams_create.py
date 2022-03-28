@@ -48,7 +48,8 @@ def create_data_stream(property_id):
     )
     data_stream.type_ = "WEB_DATA_STREAM"
     result = client.create_data_stream(
-        parent=f"properties/{property_id}", data_stream=data_stream,
+        parent=f"properties/{property_id}",
+        data_stream=data_stream,
     )
 
     print("Result:")

@@ -129,7 +129,10 @@ class GetAccountRequest(proto.Message):
             Example: "accounts/100".
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListAccountsRequest(proto.Message):
@@ -156,9 +159,18 @@ class ListAccountsRequest(proto.Message):
             deleted or not.
     """
 
-    page_size = proto.Field(proto.INT32, number=1,)
-    page_token = proto.Field(proto.STRING, number=2,)
-    show_deleted = proto.Field(proto.BOOL, number=3,)
+    page_size = proto.Field(
+        proto.INT32,
+        number=1,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    show_deleted = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
 
 
 class ListAccountsResponse(proto.Message):
@@ -177,8 +189,15 @@ class ListAccountsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    accounts = proto.RepeatedField(proto.MESSAGE, number=1, message=resources.Account,)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    accounts = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=resources.Account,
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class DeleteAccountRequest(proto.Message):
@@ -191,7 +210,10 @@ class DeleteAccountRequest(proto.Message):
             Example: "accounts/100".
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class UpdateAccountRequest(proto.Message):
@@ -208,9 +230,15 @@ class UpdateAccountRequest(proto.Message):
             path with the string "*" to match all fields.
     """
 
-    account = proto.Field(proto.MESSAGE, number=1, message=resources.Account,)
+    account = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=resources.Account,
+    )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -227,8 +255,15 @@ class ProvisionAccountTicketRequest(proto.Message):
             URI
     """
 
-    account = proto.Field(proto.MESSAGE, number=1, message=resources.Account,)
-    redirect_uri = proto.Field(proto.STRING, number=2,)
+    account = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=resources.Account,
+    )
+    redirect_uri = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class ProvisionAccountTicketResponse(proto.Message):
@@ -239,7 +274,10 @@ class ProvisionAccountTicketResponse(proto.Message):
             The param to be passed in the ToS link.
     """
 
-    account_ticket_id = proto.Field(proto.STRING, number=1,)
+    account_ticket_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class GetPropertyRequest(proto.Message):
@@ -251,7 +289,10 @@ class GetPropertyRequest(proto.Message):
             properties/{property_id} Example: "properties/1000".
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListPropertiesRequest(proto.Message):
@@ -296,10 +337,22 @@ class ListPropertiesRequest(proto.Message):
             deleted or not.
     """
 
-    filter = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    show_deleted = proto.Field(proto.BOOL, number=4,)
+    filter = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    show_deleted = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
 
 
 class ListPropertiesResponse(proto.Message):
@@ -320,9 +373,14 @@ class ListPropertiesResponse(proto.Message):
         return self
 
     properties = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=resources.Property,
+        proto.MESSAGE,
+        number=1,
+        message=resources.Property,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class UpdatePropertyRequest(proto.Message):
@@ -339,9 +397,15 @@ class UpdatePropertyRequest(proto.Message):
             path with the string "*" to match all fields.
     """
 
-    property = proto.Field(proto.MESSAGE, number=1, message=resources.Property,)
+    property = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=resources.Property,
+    )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -355,7 +419,11 @@ class CreatePropertyRequest(proto.Message):
             parent.
     """
 
-    property = proto.Field(proto.MESSAGE, number=1, message=resources.Property,)
+    property = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=resources.Property,
+    )
 
 
 class DeletePropertyRequest(proto.Message):
@@ -367,7 +435,10 @@ class DeletePropertyRequest(proto.Message):
             properties/{property_id} Example: "properties/1000".
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class GetUserLinkRequest(proto.Message):
@@ -379,7 +450,10 @@ class GetUserLinkRequest(proto.Message):
             accounts/1234/userLinks/5678
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class BatchGetUserLinksRequest(proto.Message):
@@ -399,8 +473,14 @@ class BatchGetUserLinksRequest(proto.Message):
             accounts/{accountId}/userLinks/{userLinkId}
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    names = proto.RepeatedField(proto.STRING, number=2,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    names = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
 
 
 class BatchGetUserLinksResponse(proto.Message):
@@ -412,7 +492,9 @@ class BatchGetUserLinksResponse(proto.Message):
     """
 
     user_links = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=resources.UserLink,
+        proto.MESSAGE,
+        number=1,
+        message=resources.UserLink,
     )
 
 
@@ -436,9 +518,18 @@ class ListUserLinksRequest(proto.Message):
             token.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListUserLinksResponse(proto.Message):
@@ -459,9 +550,14 @@ class ListUserLinksResponse(proto.Message):
         return self
 
     user_links = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=resources.UserLink,
+        proto.MESSAGE,
+        number=1,
+        message=resources.UserLink,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class AuditUserLinksRequest(proto.Message):
@@ -484,9 +580,18 @@ class AuditUserLinksRequest(proto.Message):
             page token.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class AuditUserLinksResponse(proto.Message):
@@ -507,9 +612,14 @@ class AuditUserLinksResponse(proto.Message):
         return self
 
     user_links = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=resources.AuditUserLink,
+        proto.MESSAGE,
+        number=1,
+        message=resources.AuditUserLink,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class CreateUserLinkRequest(proto.Message):
@@ -533,9 +643,19 @@ class CreateUserLinkRequest(proto.Message):
             Required. The user link to create.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    notify_new_user = proto.Field(proto.BOOL, number=2,)
-    user_link = proto.Field(proto.MESSAGE, number=3, message=resources.UserLink,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    notify_new_user = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+    user_link = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=resources.UserLink,
+    )
 
 
 class BatchCreateUserLinksRequest(proto.Message):
@@ -560,10 +680,18 @@ class BatchCreateUserLinksRequest(proto.Message):
             can be created in a batch.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    notify_new_users = proto.Field(proto.BOOL, number=2,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    notify_new_users = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
     requests = proto.RepeatedField(
-        proto.MESSAGE, number=3, message="CreateUserLinkRequest",
+        proto.MESSAGE,
+        number=3,
+        message="CreateUserLinkRequest",
     )
 
 
@@ -576,7 +704,9 @@ class BatchCreateUserLinksResponse(proto.Message):
     """
 
     user_links = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=resources.UserLink,
+        proto.MESSAGE,
+        number=1,
+        message=resources.UserLink,
     )
 
 
@@ -588,7 +718,11 @@ class UpdateUserLinkRequest(proto.Message):
             Required. The user link to update.
     """
 
-    user_link = proto.Field(proto.MESSAGE, number=1, message=resources.UserLink,)
+    user_link = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=resources.UserLink,
+    )
 
 
 class BatchUpdateUserLinksRequest(proto.Message):
@@ -607,9 +741,14 @@ class BatchUpdateUserLinksRequest(proto.Message):
             can be updated in a batch.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     requests = proto.RepeatedField(
-        proto.MESSAGE, number=2, message="UpdateUserLinkRequest",
+        proto.MESSAGE,
+        number=2,
+        message="UpdateUserLinkRequest",
     )
 
 
@@ -622,7 +761,9 @@ class BatchUpdateUserLinksResponse(proto.Message):
     """
 
     user_links = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=resources.UserLink,
+        proto.MESSAGE,
+        number=1,
+        message=resources.UserLink,
     )
 
 
@@ -635,7 +776,10 @@ class DeleteUserLinkRequest(proto.Message):
             accounts/1234/userLinks/5678
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class BatchDeleteUserLinksRequest(proto.Message):
@@ -654,9 +798,14 @@ class BatchDeleteUserLinksRequest(proto.Message):
             can be updated in a batch.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     requests = proto.RepeatedField(
-        proto.MESSAGE, number=2, message="DeleteUserLinkRequest",
+        proto.MESSAGE,
+        number=2,
+        message="DeleteUserLinkRequest",
     )
 
 
@@ -671,9 +820,14 @@ class CreateFirebaseLinkRequest(proto.Message):
             Required. The Firebase link to create.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     firebase_link = proto.Field(
-        proto.MESSAGE, number=2, message=resources.FirebaseLink,
+        proto.MESSAGE,
+        number=2,
+        message=resources.FirebaseLink,
     )
 
 
@@ -687,7 +841,10 @@ class DeleteFirebaseLinkRequest(proto.Message):
             Example: properties/1234/firebaseLinks/5678
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListFirebaseLinksRequest(proto.Message):
@@ -712,9 +869,18 @@ class ListFirebaseLinksRequest(proto.Message):
             page token.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListFirebaseLinksResponse(proto.Message):
@@ -736,9 +902,14 @@ class ListFirebaseLinksResponse(proto.Message):
         return self
 
     firebase_links = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=resources.FirebaseLink,
+        proto.MESSAGE,
+        number=1,
+        message=resources.FirebaseLink,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetGlobalSiteTagRequest(proto.Message):
@@ -752,7 +923,10 @@ class GetGlobalSiteTagRequest(proto.Message):
             Example: "properties/123/dataStreams/456/globalSiteTag".
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CreateGoogleAdsLinkRequest(proto.Message):
@@ -765,9 +939,14 @@ class CreateGoogleAdsLinkRequest(proto.Message):
             Required. The GoogleAdsLink to create.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     google_ads_link = proto.Field(
-        proto.MESSAGE, number=2, message=resources.GoogleAdsLink,
+        proto.MESSAGE,
+        number=2,
+        message=resources.GoogleAdsLink,
     )
 
 
@@ -785,10 +964,14 @@ class UpdateGoogleAdsLinkRequest(proto.Message):
     """
 
     google_ads_link = proto.Field(
-        proto.MESSAGE, number=1, message=resources.GoogleAdsLink,
+        proto.MESSAGE,
+        number=1,
+        message=resources.GoogleAdsLink,
     )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -801,7 +984,10 @@ class DeleteGoogleAdsLinkRequest(proto.Message):
             properties/1234/googleAdsLinks/5678
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListGoogleAdsLinksRequest(proto.Message):
@@ -825,9 +1011,18 @@ class ListGoogleAdsLinksRequest(proto.Message):
             page token.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListGoogleAdsLinksResponse(proto.Message):
@@ -847,9 +1042,14 @@ class ListGoogleAdsLinksResponse(proto.Message):
         return self
 
     google_ads_links = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=resources.GoogleAdsLink,
+        proto.MESSAGE,
+        number=1,
+        message=resources.GoogleAdsLink,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetDataSharingSettingsRequest(proto.Message):
@@ -862,7 +1062,10 @@ class GetDataSharingSettingsRequest(proto.Message):
             Example: "accounts/1000/dataSharingSettings".
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListAccountSummariesRequest(proto.Message):
@@ -885,8 +1088,14 @@ class ListAccountSummariesRequest(proto.Message):
             that provided the page token.
     """
 
-    page_size = proto.Field(proto.INT32, number=1,)
-    page_token = proto.Field(proto.STRING, number=2,)
+    page_size = proto.Field(
+        proto.INT32,
+        number=1,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class ListAccountSummariesResponse(proto.Message):
@@ -907,9 +1116,14 @@ class ListAccountSummariesResponse(proto.Message):
         return self
 
     account_summaries = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=resources.AccountSummary,
+        proto.MESSAGE,
+        number=1,
+        message=resources.AccountSummary,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class AcknowledgeUserDataCollectionRequest(proto.Message):
@@ -932,13 +1146,18 @@ class AcknowledgeUserDataCollectionRequest(proto.Message):
             from my site and/or app property.".
     """
 
-    property = proto.Field(proto.STRING, number=1,)
-    acknowledgement = proto.Field(proto.STRING, number=2,)
+    property = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    acknowledgement = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class AcknowledgeUserDataCollectionResponse(proto.Message):
-    r"""Response message for AcknowledgeUserDataCollection RPC.
-    """
+    r"""Response message for AcknowledgeUserDataCollection RPC."""
 
 
 class SearchChangeHistoryEventsRequest(proto.Message):
@@ -983,21 +1202,46 @@ class SearchChangeHistoryEventsRequest(proto.Message):
             call that provided the page token.
     """
 
-    account = proto.Field(proto.STRING, number=1,)
-    property = proto.Field(proto.STRING, number=2,)
-    resource_type = proto.RepeatedField(
-        proto.ENUM, number=3, enum=resources.ChangeHistoryResourceType,
+    account = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    action = proto.RepeatedField(proto.ENUM, number=4, enum=resources.ActionType,)
-    actor_email = proto.RepeatedField(proto.STRING, number=5,)
+    property = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    resource_type = proto.RepeatedField(
+        proto.ENUM,
+        number=3,
+        enum=resources.ChangeHistoryResourceType,
+    )
+    action = proto.RepeatedField(
+        proto.ENUM,
+        number=4,
+        enum=resources.ActionType,
+    )
+    actor_email = proto.RepeatedField(
+        proto.STRING,
+        number=5,
+    )
     earliest_change_time = proto.Field(
-        proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
     )
     latest_change_time = proto.Field(
-        proto.MESSAGE, number=7, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=7,
+        message=timestamp_pb2.Timestamp,
     )
-    page_size = proto.Field(proto.INT32, number=8,)
-    page_token = proto.Field(proto.STRING, number=9,)
+    page_size = proto.Field(
+        proto.INT32,
+        number=8,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=9,
+    )
 
 
 class SearchChangeHistoryEventsResponse(proto.Message):
@@ -1017,9 +1261,14 @@ class SearchChangeHistoryEventsResponse(proto.Message):
         return self
 
     change_history_events = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=resources.ChangeHistoryEvent,
+        proto.MESSAGE,
+        number=1,
+        message=resources.ChangeHistoryEvent,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetMeasurementProtocolSecretRequest(proto.Message):
@@ -1032,7 +1281,10 @@ class GetMeasurementProtocolSecretRequest(proto.Message):
             properties/{property}/dataStreams/{dataStream}/measurementProtocolSecrets/{measurementProtocolSecret}
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CreateMeasurementProtocolSecretRequest(proto.Message):
@@ -1048,9 +1300,14 @@ class CreateMeasurementProtocolSecretRequest(proto.Message):
             create.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     measurement_protocol_secret = proto.Field(
-        proto.MESSAGE, number=2, message=resources.MeasurementProtocolSecret,
+        proto.MESSAGE,
+        number=2,
+        message=resources.MeasurementProtocolSecret,
     )
 
 
@@ -1064,7 +1321,10 @@ class DeleteMeasurementProtocolSecretRequest(proto.Message):
             properties/{property}/dataStreams/{dataStream}/measurementProtocolSecrets/{measurementProtocolSecret}
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class UpdateMeasurementProtocolSecretRequest(proto.Message):
@@ -1080,10 +1340,14 @@ class UpdateMeasurementProtocolSecretRequest(proto.Message):
     """
 
     measurement_protocol_secret = proto.Field(
-        proto.MESSAGE, number=1, message=resources.MeasurementProtocolSecret,
+        proto.MESSAGE,
+        number=1,
+        message=resources.MeasurementProtocolSecret,
     )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -1108,9 +1372,18 @@ class ListMeasurementProtocolSecretsRequest(proto.Message):
             must match the call that provided the page token.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListMeasurementProtocolSecretsResponse(proto.Message):
@@ -1131,9 +1404,14 @@ class ListMeasurementProtocolSecretsResponse(proto.Message):
         return self
 
     measurement_protocol_secrets = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=resources.MeasurementProtocolSecret,
+        proto.MESSAGE,
+        number=1,
+        message=resources.MeasurementProtocolSecret,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetGoogleSignalsSettingsRequest(proto.Message):
@@ -1146,7 +1424,10 @@ class GetGoogleSignalsSettingsRequest(proto.Message):
             properties/{property}/googleSignalsSettings
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class UpdateGoogleSignalsSettingsRequest(proto.Message):
@@ -1164,10 +1445,14 @@ class UpdateGoogleSignalsSettingsRequest(proto.Message):
     """
 
     google_signals_settings = proto.Field(
-        proto.MESSAGE, number=1, message=resources.GoogleSignalsSettings,
+        proto.MESSAGE,
+        number=1,
+        message=resources.GoogleSignalsSettings,
     )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -1184,9 +1469,14 @@ class CreateConversionEventRequest(proto.Message):
     """
 
     conversion_event = proto.Field(
-        proto.MESSAGE, number=1, message=resources.ConversionEvent,
+        proto.MESSAGE,
+        number=1,
+        message=resources.ConversionEvent,
     )
-    parent = proto.Field(proto.STRING, number=2,)
+    parent = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetConversionEventRequest(proto.Message):
@@ -1200,7 +1490,10 @@ class GetConversionEventRequest(proto.Message):
             Example: "properties/123/conversionEvents/456".
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class DeleteConversionEventRequest(proto.Message):
@@ -1214,7 +1507,10 @@ class DeleteConversionEventRequest(proto.Message):
             Example: "properties/123/conversionEvents/456".
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListConversionEventsRequest(proto.Message):
@@ -1237,9 +1533,18 @@ class ListConversionEventsRequest(proto.Message):
             that provided the page token.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListConversionEventsResponse(proto.Message):
@@ -1259,9 +1564,14 @@ class ListConversionEventsResponse(proto.Message):
         return self
 
     conversion_events = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=resources.ConversionEvent,
+        proto.MESSAGE,
+        number=1,
+        message=resources.ConversionEvent,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetDisplayVideo360AdvertiserLinkRequest(proto.Message):
@@ -1275,7 +1585,10 @@ class GetDisplayVideo360AdvertiserLinkRequest(proto.Message):
             properties/1234/displayVideo360AdvertiserLink/5678
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListDisplayVideo360AdvertiserLinksRequest(proto.Message):
@@ -1299,9 +1612,18 @@ class ListDisplayVideo360AdvertiserLinksRequest(proto.Message):
             that provided the page token.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListDisplayVideo360AdvertiserLinksResponse(proto.Message):
@@ -1321,9 +1643,14 @@ class ListDisplayVideo360AdvertiserLinksResponse(proto.Message):
         return self
 
     display_video_360_advertiser_links = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=resources.DisplayVideo360AdvertiserLink,
+        proto.MESSAGE,
+        number=1,
+        message=resources.DisplayVideo360AdvertiserLink,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class CreateDisplayVideo360AdvertiserLinkRequest(proto.Message):
@@ -1337,9 +1664,14 @@ class CreateDisplayVideo360AdvertiserLinkRequest(proto.Message):
             to create.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     display_video_360_advertiser_link = proto.Field(
-        proto.MESSAGE, number=2, message=resources.DisplayVideo360AdvertiserLink,
+        proto.MESSAGE,
+        number=2,
+        message=resources.DisplayVideo360AdvertiserLink,
     )
 
 
@@ -1354,7 +1686,10 @@ class DeleteDisplayVideo360AdvertiserLinkRequest(proto.Message):
             properties/1234/displayVideo360AdvertiserLinks/5678
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class UpdateDisplayVideo360AdvertiserLinkRequest(proto.Message):
@@ -1370,10 +1705,14 @@ class UpdateDisplayVideo360AdvertiserLinkRequest(proto.Message):
     """
 
     display_video_360_advertiser_link = proto.Field(
-        proto.MESSAGE, number=1, message=resources.DisplayVideo360AdvertiserLink,
+        proto.MESSAGE,
+        number=1,
+        message=resources.DisplayVideo360AdvertiserLink,
     )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -1389,7 +1728,10 @@ class GetDisplayVideo360AdvertiserLinkProposalRequest(proto.Message):
             properties/1234/displayVideo360AdvertiserLinkProposals/5678
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListDisplayVideo360AdvertiserLinkProposalsRequest(proto.Message):
@@ -1414,9 +1756,18 @@ class ListDisplayVideo360AdvertiserLinkProposalsRequest(proto.Message):
             the call that provided the page token.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListDisplayVideo360AdvertiserLinkProposalsResponse(proto.Message):
@@ -1442,7 +1793,10 @@ class ListDisplayVideo360AdvertiserLinkProposalsResponse(proto.Message):
         number=1,
         message=resources.DisplayVideo360AdvertiserLinkProposal,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class CreateDisplayVideo360AdvertiserLinkProposalRequest(proto.Message):
@@ -1457,7 +1811,10 @@ class CreateDisplayVideo360AdvertiserLinkProposalRequest(proto.Message):
             DisplayVideo360AdvertiserLinkProposal to create.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     display_video_360_advertiser_link_proposal = proto.Field(
         proto.MESSAGE,
         number=2,
@@ -1477,7 +1834,10 @@ class DeleteDisplayVideo360AdvertiserLinkProposalRequest(proto.Message):
             properties/1234/displayVideo360AdvertiserLinkProposals/5678
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ApproveDisplayVideo360AdvertiserLinkProposalRequest(proto.Message):
@@ -1492,7 +1852,10 @@ class ApproveDisplayVideo360AdvertiserLinkProposalRequest(proto.Message):
             properties/1234/displayVideo360AdvertiserLinkProposals/5678
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ApproveDisplayVideo360AdvertiserLinkProposalResponse(proto.Message):
@@ -1506,7 +1869,9 @@ class ApproveDisplayVideo360AdvertiserLinkProposalResponse(proto.Message):
     """
 
     display_video_360_advertiser_link = proto.Field(
-        proto.MESSAGE, number=1, message=resources.DisplayVideo360AdvertiserLink,
+        proto.MESSAGE,
+        number=1,
+        message=resources.DisplayVideo360AdvertiserLink,
     )
 
 
@@ -1522,7 +1887,10 @@ class CancelDisplayVideo360AdvertiserLinkProposalRequest(proto.Message):
             properties/1234/displayVideo360AdvertiserLinkProposals/5678
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CreateCustomDimensionRequest(proto.Message):
@@ -1535,9 +1903,14 @@ class CreateCustomDimensionRequest(proto.Message):
             Required. The CustomDimension to create.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     custom_dimension = proto.Field(
-        proto.MESSAGE, number=2, message=resources.CustomDimension,
+        proto.MESSAGE,
+        number=2,
+        message=resources.CustomDimension,
     )
 
 
@@ -1554,10 +1927,14 @@ class UpdateCustomDimensionRequest(proto.Message):
     """
 
     custom_dimension = proto.Field(
-        proto.MESSAGE, number=1, message=resources.CustomDimension,
+        proto.MESSAGE,
+        number=1,
+        message=resources.CustomDimension,
     )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -1582,9 +1959,18 @@ class ListCustomDimensionsRequest(proto.Message):
             the page token.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListCustomDimensionsResponse(proto.Message):
@@ -1604,9 +1990,14 @@ class ListCustomDimensionsResponse(proto.Message):
         return self
 
     custom_dimensions = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=resources.CustomDimension,
+        proto.MESSAGE,
+        number=1,
+        message=resources.CustomDimension,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class ArchiveCustomDimensionRequest(proto.Message):
@@ -1619,7 +2010,10 @@ class ArchiveCustomDimensionRequest(proto.Message):
             properties/1234/customDimensions/5678
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class GetCustomDimensionRequest(proto.Message):
@@ -1632,7 +2026,10 @@ class GetCustomDimensionRequest(proto.Message):
             properties/1234/customDimensions/5678
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CreateCustomMetricRequest(proto.Message):
@@ -1645,9 +2042,14 @@ class CreateCustomMetricRequest(proto.Message):
             Required. The CustomMetric to create.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     custom_metric = proto.Field(
-        proto.MESSAGE, number=2, message=resources.CustomMetric,
+        proto.MESSAGE,
+        number=2,
+        message=resources.CustomMetric,
     )
 
 
@@ -1664,10 +2066,14 @@ class UpdateCustomMetricRequest(proto.Message):
     """
 
     custom_metric = proto.Field(
-        proto.MESSAGE, number=1, message=resources.CustomMetric,
+        proto.MESSAGE,
+        number=1,
+        message=resources.CustomMetric,
     )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -1691,9 +2097,18 @@ class ListCustomMetricsRequest(proto.Message):
             page token.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListCustomMetricsResponse(proto.Message):
@@ -1713,9 +2128,14 @@ class ListCustomMetricsResponse(proto.Message):
         return self
 
     custom_metrics = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=resources.CustomMetric,
+        proto.MESSAGE,
+        number=1,
+        message=resources.CustomMetric,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class ArchiveCustomMetricRequest(proto.Message):
@@ -1728,7 +2148,10 @@ class ArchiveCustomMetricRequest(proto.Message):
             properties/1234/customMetrics/5678
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class GetCustomMetricRequest(proto.Message):
@@ -1741,7 +2164,10 @@ class GetCustomMetricRequest(proto.Message):
             properties/1234/customMetrics/5678
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class GetDataRetentionSettingsRequest(proto.Message):
@@ -1755,7 +2181,10 @@ class GetDataRetentionSettingsRequest(proto.Message):
             Example: "properties/1000/dataRetentionSettings".
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class UpdateDataRetentionSettingsRequest(proto.Message):
@@ -1773,10 +2202,14 @@ class UpdateDataRetentionSettingsRequest(proto.Message):
     """
 
     data_retention_settings = proto.Field(
-        proto.MESSAGE, number=1, message=resources.DataRetentionSettings,
+        proto.MESSAGE,
+        number=1,
+        message=resources.DataRetentionSettings,
     )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -1790,8 +2223,15 @@ class CreateDataStreamRequest(proto.Message):
             Required. The DataStream to create.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    data_stream = proto.Field(proto.MESSAGE, number=2, message=resources.DataStream,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    data_stream = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=resources.DataStream,
+    )
 
 
 class DeleteDataStreamRequest(proto.Message):
@@ -1804,7 +2244,10 @@ class DeleteDataStreamRequest(proto.Message):
             properties/1234/dataStreams/5678
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class UpdateDataStreamRequest(proto.Message):
@@ -1819,9 +2262,15 @@ class UpdateDataStreamRequest(proto.Message):
             path with the string "*" to match all fields.
     """
 
-    data_stream = proto.Field(proto.MESSAGE, number=1, message=resources.DataStream,)
+    data_stream = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=resources.DataStream,
+    )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -1845,9 +2294,18 @@ class ListDataStreamsRequest(proto.Message):
             page token.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListDataStreamsResponse(proto.Message):
@@ -1867,9 +2325,14 @@ class ListDataStreamsResponse(proto.Message):
         return self
 
     data_streams = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=resources.DataStream,
+        proto.MESSAGE,
+        number=1,
+        message=resources.DataStream,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetDataStreamRequest(proto.Message):
@@ -1881,7 +2344,10 @@ class GetDataStreamRequest(proto.Message):
             Example format: properties/1234/dataStreams/5678
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

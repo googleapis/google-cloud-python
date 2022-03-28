@@ -94,7 +94,11 @@ def test__get_default_mtls_endpoint():
 
 
 @pytest.mark.parametrize(
-    "client_class", [AnalyticsAdminServiceClient, AnalyticsAdminServiceAsyncClient,]
+    "client_class",
+    [
+        AnalyticsAdminServiceClient,
+        AnalyticsAdminServiceAsyncClient,
+    ],
 )
 def test_analytics_admin_service_client_from_service_account_info(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -136,7 +140,11 @@ def test_analytics_admin_service_client_service_account_always_use_jwt(
 
 
 @pytest.mark.parametrize(
-    "client_class", [AnalyticsAdminServiceClient, AnalyticsAdminServiceAsyncClient,]
+    "client_class",
+    [
+        AnalyticsAdminServiceClient,
+        AnalyticsAdminServiceAsyncClient,
+    ],
 )
 def test_analytics_admin_service_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -518,7 +526,9 @@ def test_analytics_admin_service_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -663,10 +673,17 @@ def test_analytics_admin_service_client_create_channel_credentials_file(
         )
 
 
-@pytest.mark.parametrize("request_type", [analytics_admin.GetAccountRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.GetAccountRequest,
+        dict,
+    ],
+)
 def test_get_account(request_type, transport: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -701,7 +718,8 @@ def test_get_account_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -717,7 +735,8 @@ async def test_get_account_async(
     transport: str = "grpc_asyncio", request_type=analytics_admin.GetAccountRequest
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -778,7 +797,10 @@ def test_get_account_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -805,7 +827,10 @@ async def test_get_account_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_account_flattened():
@@ -819,7 +844,9 @@ def test_get_account_flattened():
         call.return_value = resources.Account()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_account(name="name_value",)
+        client.get_account(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -839,7 +866,8 @@ def test_get_account_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_account(
-            analytics_admin.GetAccountRequest(), name="name_value",
+            analytics_admin.GetAccountRequest(),
+            name="name_value",
         )
 
 
@@ -857,7 +885,9 @@ async def test_get_account_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(resources.Account())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_account(name="name_value",)
+        response = await client.get_account(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -878,14 +908,22 @@ async def test_get_account_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_account(
-            analytics_admin.GetAccountRequest(), name="name_value",
+            analytics_admin.GetAccountRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [analytics_admin.ListAccountsRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.ListAccountsRequest,
+        dict,
+    ],
+)
 def test_list_accounts(request_type, transport: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -914,7 +952,8 @@ def test_list_accounts_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -930,7 +969,8 @@ async def test_list_accounts_async(
     transport: str = "grpc_asyncio", request_type=analytics_admin.ListAccountsRequest
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -964,7 +1004,8 @@ async def test_list_accounts_async_from_dict():
 
 def test_list_accounts_pager(transport_name: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -979,12 +1020,21 @@ def test_list_accounts_pager(transport_name: str = "grpc"):
                 ],
                 next_page_token="abc",
             ),
-            analytics_admin.ListAccountsResponse(accounts=[], next_page_token="def",),
             analytics_admin.ListAccountsResponse(
-                accounts=[resources.Account(),], next_page_token="ghi",
+                accounts=[],
+                next_page_token="def",
             ),
             analytics_admin.ListAccountsResponse(
-                accounts=[resources.Account(), resources.Account(),],
+                accounts=[
+                    resources.Account(),
+                ],
+                next_page_token="ghi",
+            ),
+            analytics_admin.ListAccountsResponse(
+                accounts=[
+                    resources.Account(),
+                    resources.Account(),
+                ],
             ),
             RuntimeError,
         )
@@ -1001,7 +1051,8 @@ def test_list_accounts_pager(transport_name: str = "grpc"):
 
 def test_list_accounts_pages(transport_name: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1016,12 +1067,21 @@ def test_list_accounts_pages(transport_name: str = "grpc"):
                 ],
                 next_page_token="abc",
             ),
-            analytics_admin.ListAccountsResponse(accounts=[], next_page_token="def",),
             analytics_admin.ListAccountsResponse(
-                accounts=[resources.Account(),], next_page_token="ghi",
+                accounts=[],
+                next_page_token="def",
             ),
             analytics_admin.ListAccountsResponse(
-                accounts=[resources.Account(), resources.Account(),],
+                accounts=[
+                    resources.Account(),
+                ],
+                next_page_token="ghi",
+            ),
+            analytics_admin.ListAccountsResponse(
+                accounts=[
+                    resources.Account(),
+                    resources.Account(),
+                ],
             ),
             RuntimeError,
         )
@@ -1050,16 +1110,27 @@ async def test_list_accounts_async_pager():
                 ],
                 next_page_token="abc",
             ),
-            analytics_admin.ListAccountsResponse(accounts=[], next_page_token="def",),
             analytics_admin.ListAccountsResponse(
-                accounts=[resources.Account(),], next_page_token="ghi",
+                accounts=[],
+                next_page_token="def",
             ),
             analytics_admin.ListAccountsResponse(
-                accounts=[resources.Account(), resources.Account(),],
+                accounts=[
+                    resources.Account(),
+                ],
+                next_page_token="ghi",
+            ),
+            analytics_admin.ListAccountsResponse(
+                accounts=[
+                    resources.Account(),
+                    resources.Account(),
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.list_accounts(request={},)
+        async_pager = await client.list_accounts(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -1089,12 +1160,21 @@ async def test_list_accounts_async_pages():
                 ],
                 next_page_token="abc",
             ),
-            analytics_admin.ListAccountsResponse(accounts=[], next_page_token="def",),
             analytics_admin.ListAccountsResponse(
-                accounts=[resources.Account(),], next_page_token="ghi",
+                accounts=[],
+                next_page_token="def",
             ),
             analytics_admin.ListAccountsResponse(
-                accounts=[resources.Account(), resources.Account(),],
+                accounts=[
+                    resources.Account(),
+                ],
+                next_page_token="ghi",
+            ),
+            analytics_admin.ListAccountsResponse(
+                accounts=[
+                    resources.Account(),
+                    resources.Account(),
+                ],
             ),
             RuntimeError,
         )
@@ -1105,10 +1185,17 @@ async def test_list_accounts_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [analytics_admin.DeleteAccountRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.DeleteAccountRequest,
+        dict,
+    ],
+)
 def test_delete_account(request_type, transport: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1134,7 +1221,8 @@ def test_delete_account_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1150,7 +1238,8 @@ async def test_delete_account_async(
     transport: str = "grpc_asyncio", request_type=analytics_admin.DeleteAccountRequest
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1200,7 +1289,10 @@ def test_delete_account_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1227,7 +1319,10 @@ async def test_delete_account_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_account_flattened():
@@ -1241,7 +1336,9 @@ def test_delete_account_flattened():
         call.return_value = None
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_account(name="name_value",)
+        client.delete_account(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1261,7 +1358,8 @@ def test_delete_account_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_account(
-            analytics_admin.DeleteAccountRequest(), name="name_value",
+            analytics_admin.DeleteAccountRequest(),
+            name="name_value",
         )
 
 
@@ -1279,7 +1377,9 @@ async def test_delete_account_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_account(name="name_value",)
+        response = await client.delete_account(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1300,14 +1400,22 @@ async def test_delete_account_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_account(
-            analytics_admin.DeleteAccountRequest(), name="name_value",
+            analytics_admin.DeleteAccountRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [analytics_admin.UpdateAccountRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.UpdateAccountRequest,
+        dict,
+    ],
+)
 def test_update_account(request_type, transport: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1342,7 +1450,8 @@ def test_update_account_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1358,7 +1467,8 @@ async def test_update_account_async(
     transport: str = "grpc_asyncio", request_type=analytics_admin.UpdateAccountRequest
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1419,9 +1529,10 @@ def test_update_account_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "account.name=account.name/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "account.name=account.name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1448,9 +1559,10 @@ async def test_update_account_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "account.name=account.name/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "account.name=account.name/value",
+    ) in kw["metadata"]
 
 
 def test_update_account_flattened():
@@ -1544,11 +1656,16 @@ async def test_update_account_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [analytics_admin.ProvisionAccountTicketRequest, dict,]
+    "request_type",
+    [
+        analytics_admin.ProvisionAccountTicketRequest,
+        dict,
+    ],
 )
 def test_provision_account_ticket(request_type, transport: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1579,7 +1696,8 @@ def test_provision_account_ticket_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1598,7 +1716,8 @@ async def test_provision_account_ticket_async(
     request_type=analytics_admin.ProvisionAccountTicketRequest,
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1633,11 +1752,16 @@ async def test_provision_account_ticket_async_from_dict():
 
 
 @pytest.mark.parametrize(
-    "request_type", [analytics_admin.ListAccountSummariesRequest, dict,]
+    "request_type",
+    [
+        analytics_admin.ListAccountSummariesRequest,
+        dict,
+    ],
 )
 def test_list_account_summaries(request_type, transport: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1668,7 +1792,8 @@ def test_list_account_summaries_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1687,7 +1812,8 @@ async def test_list_account_summaries_async(
     request_type=analytics_admin.ListAccountSummariesRequest,
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1723,7 +1849,8 @@ async def test_list_account_summaries_async_from_dict():
 
 def test_list_account_summaries_pager(transport_name: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1741,10 +1868,14 @@ def test_list_account_summaries_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             analytics_admin.ListAccountSummariesResponse(
-                account_summaries=[], next_page_token="def",
+                account_summaries=[],
+                next_page_token="def",
             ),
             analytics_admin.ListAccountSummariesResponse(
-                account_summaries=[resources.AccountSummary(),], next_page_token="ghi",
+                account_summaries=[
+                    resources.AccountSummary(),
+                ],
+                next_page_token="ghi",
             ),
             analytics_admin.ListAccountSummariesResponse(
                 account_summaries=[
@@ -1767,7 +1898,8 @@ def test_list_account_summaries_pager(transport_name: str = "grpc"):
 
 def test_list_account_summaries_pages(transport_name: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1785,10 +1917,14 @@ def test_list_account_summaries_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             analytics_admin.ListAccountSummariesResponse(
-                account_summaries=[], next_page_token="def",
+                account_summaries=[],
+                next_page_token="def",
             ),
             analytics_admin.ListAccountSummariesResponse(
-                account_summaries=[resources.AccountSummary(),], next_page_token="ghi",
+                account_summaries=[
+                    resources.AccountSummary(),
+                ],
+                next_page_token="ghi",
             ),
             analytics_admin.ListAccountSummariesResponse(
                 account_summaries=[
@@ -1826,10 +1962,14 @@ async def test_list_account_summaries_async_pager():
                 next_page_token="abc",
             ),
             analytics_admin.ListAccountSummariesResponse(
-                account_summaries=[], next_page_token="def",
+                account_summaries=[],
+                next_page_token="def",
             ),
             analytics_admin.ListAccountSummariesResponse(
-                account_summaries=[resources.AccountSummary(),], next_page_token="ghi",
+                account_summaries=[
+                    resources.AccountSummary(),
+                ],
+                next_page_token="ghi",
             ),
             analytics_admin.ListAccountSummariesResponse(
                 account_summaries=[
@@ -1839,7 +1979,9 @@ async def test_list_account_summaries_async_pager():
             ),
             RuntimeError,
         )
-        async_pager = await client.list_account_summaries(request={},)
+        async_pager = await client.list_account_summaries(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -1872,10 +2014,14 @@ async def test_list_account_summaries_async_pages():
                 next_page_token="abc",
             ),
             analytics_admin.ListAccountSummariesResponse(
-                account_summaries=[], next_page_token="def",
+                account_summaries=[],
+                next_page_token="def",
             ),
             analytics_admin.ListAccountSummariesResponse(
-                account_summaries=[resources.AccountSummary(),], next_page_token="ghi",
+                account_summaries=[
+                    resources.AccountSummary(),
+                ],
+                next_page_token="ghi",
             ),
             analytics_admin.ListAccountSummariesResponse(
                 account_summaries=[
@@ -1892,10 +2038,17 @@ async def test_list_account_summaries_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [analytics_admin.GetPropertyRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.GetPropertyRequest,
+        dict,
+    ],
+)
 def test_get_property(request_type, transport: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1938,7 +2091,8 @@ def test_get_property_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1954,7 +2108,8 @@ async def test_get_property_async(
     transport: str = "grpc_asyncio", request_type=analytics_admin.GetPropertyRequest
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2023,7 +2178,10 @@ def test_get_property_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2050,7 +2208,10 @@ async def test_get_property_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_property_flattened():
@@ -2064,7 +2225,9 @@ def test_get_property_flattened():
         call.return_value = resources.Property()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_property(name="name_value",)
+        client.get_property(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2084,7 +2247,8 @@ def test_get_property_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_property(
-            analytics_admin.GetPropertyRequest(), name="name_value",
+            analytics_admin.GetPropertyRequest(),
+            name="name_value",
         )
 
 
@@ -2102,7 +2266,9 @@ async def test_get_property_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(resources.Property())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_property(name="name_value",)
+        response = await client.get_property(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2123,14 +2289,22 @@ async def test_get_property_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_property(
-            analytics_admin.GetPropertyRequest(), name="name_value",
+            analytics_admin.GetPropertyRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [analytics_admin.ListPropertiesRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.ListPropertiesRequest,
+        dict,
+    ],
+)
 def test_list_properties(request_type, transport: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2159,7 +2333,8 @@ def test_list_properties_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2175,7 +2350,8 @@ async def test_list_properties_async(
     transport: str = "grpc_asyncio", request_type=analytics_admin.ListPropertiesRequest
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2209,7 +2385,8 @@ async def test_list_properties_async_from_dict():
 
 def test_list_properties_pager(transport_name: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2225,13 +2402,20 @@ def test_list_properties_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             analytics_admin.ListPropertiesResponse(
-                properties=[], next_page_token="def",
+                properties=[],
+                next_page_token="def",
             ),
             analytics_admin.ListPropertiesResponse(
-                properties=[resources.Property(),], next_page_token="ghi",
+                properties=[
+                    resources.Property(),
+                ],
+                next_page_token="ghi",
             ),
             analytics_admin.ListPropertiesResponse(
-                properties=[resources.Property(), resources.Property(),],
+                properties=[
+                    resources.Property(),
+                    resources.Property(),
+                ],
             ),
             RuntimeError,
         )
@@ -2248,7 +2432,8 @@ def test_list_properties_pager(transport_name: str = "grpc"):
 
 def test_list_properties_pages(transport_name: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2264,13 +2449,20 @@ def test_list_properties_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             analytics_admin.ListPropertiesResponse(
-                properties=[], next_page_token="def",
+                properties=[],
+                next_page_token="def",
             ),
             analytics_admin.ListPropertiesResponse(
-                properties=[resources.Property(),], next_page_token="ghi",
+                properties=[
+                    resources.Property(),
+                ],
+                next_page_token="ghi",
             ),
             analytics_admin.ListPropertiesResponse(
-                properties=[resources.Property(), resources.Property(),],
+                properties=[
+                    resources.Property(),
+                    resources.Property(),
+                ],
             ),
             RuntimeError,
         )
@@ -2300,17 +2492,26 @@ async def test_list_properties_async_pager():
                 next_page_token="abc",
             ),
             analytics_admin.ListPropertiesResponse(
-                properties=[], next_page_token="def",
+                properties=[],
+                next_page_token="def",
             ),
             analytics_admin.ListPropertiesResponse(
-                properties=[resources.Property(),], next_page_token="ghi",
+                properties=[
+                    resources.Property(),
+                ],
+                next_page_token="ghi",
             ),
             analytics_admin.ListPropertiesResponse(
-                properties=[resources.Property(), resources.Property(),],
+                properties=[
+                    resources.Property(),
+                    resources.Property(),
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.list_properties(request={},)
+        async_pager = await client.list_properties(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -2341,13 +2542,20 @@ async def test_list_properties_async_pages():
                 next_page_token="abc",
             ),
             analytics_admin.ListPropertiesResponse(
-                properties=[], next_page_token="def",
+                properties=[],
+                next_page_token="def",
             ),
             analytics_admin.ListPropertiesResponse(
-                properties=[resources.Property(),], next_page_token="ghi",
+                properties=[
+                    resources.Property(),
+                ],
+                next_page_token="ghi",
             ),
             analytics_admin.ListPropertiesResponse(
-                properties=[resources.Property(), resources.Property(),],
+                properties=[
+                    resources.Property(),
+                    resources.Property(),
+                ],
             ),
             RuntimeError,
         )
@@ -2358,10 +2566,17 @@ async def test_list_properties_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [analytics_admin.CreatePropertyRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.CreatePropertyRequest,
+        dict,
+    ],
+)
 def test_create_property(request_type, transport: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2404,7 +2619,8 @@ def test_create_property_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2420,7 +2636,8 @@ async def test_create_property_async(
     transport: str = "grpc_asyncio", request_type=analytics_admin.CreatePropertyRequest
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2477,7 +2694,9 @@ def test_create_property_flattened():
         call.return_value = resources.Property()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.create_property(property=resources.Property(name="name_value"),)
+        client.create_property(
+            property=resources.Property(name="name_value"),
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2544,10 +2763,17 @@ async def test_create_property_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [analytics_admin.DeletePropertyRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.DeletePropertyRequest,
+        dict,
+    ],
+)
 def test_delete_property(request_type, transport: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2590,7 +2816,8 @@ def test_delete_property_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2606,7 +2833,8 @@ async def test_delete_property_async(
     transport: str = "grpc_asyncio", request_type=analytics_admin.DeletePropertyRequest
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2675,7 +2903,10 @@ def test_delete_property_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2702,7 +2933,10 @@ async def test_delete_property_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_property_flattened():
@@ -2716,7 +2950,9 @@ def test_delete_property_flattened():
         call.return_value = resources.Property()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_property(name="name_value",)
+        client.delete_property(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2736,7 +2972,8 @@ def test_delete_property_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_property(
-            analytics_admin.DeletePropertyRequest(), name="name_value",
+            analytics_admin.DeletePropertyRequest(),
+            name="name_value",
         )
 
 
@@ -2754,7 +2991,9 @@ async def test_delete_property_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(resources.Property())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_property(name="name_value",)
+        response = await client.delete_property(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2775,14 +3014,22 @@ async def test_delete_property_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_property(
-            analytics_admin.DeletePropertyRequest(), name="name_value",
+            analytics_admin.DeletePropertyRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [analytics_admin.UpdatePropertyRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.UpdatePropertyRequest,
+        dict,
+    ],
+)
 def test_update_property(request_type, transport: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2825,7 +3072,8 @@ def test_update_property_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2841,7 +3089,8 @@ async def test_update_property_async(
     transport: str = "grpc_asyncio", request_type=analytics_admin.UpdatePropertyRequest
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2910,9 +3159,10 @@ def test_update_property_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "property.name=property.name/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "property.name=property.name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2939,9 +3189,10 @@ async def test_update_property_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "property.name=property.name/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "property.name=property.name/value",
+    ) in kw["metadata"]
 
 
 def test_update_property_flattened():
@@ -3034,10 +3285,17 @@ async def test_update_property_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [analytics_admin.GetUserLinkRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.GetUserLinkRequest,
+        dict,
+    ],
+)
 def test_get_user_link(request_type, transport: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3070,7 +3328,8 @@ def test_get_user_link_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3086,7 +3345,8 @@ async def test_get_user_link_async(
     transport: str = "grpc_asyncio", request_type=analytics_admin.GetUserLinkRequest
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3145,7 +3405,10 @@ def test_get_user_link_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -3172,7 +3435,10 @@ async def test_get_user_link_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_user_link_flattened():
@@ -3186,7 +3452,9 @@ def test_get_user_link_flattened():
         call.return_value = resources.UserLink()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_user_link(name="name_value",)
+        client.get_user_link(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3206,7 +3474,8 @@ def test_get_user_link_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_user_link(
-            analytics_admin.GetUserLinkRequest(), name="name_value",
+            analytics_admin.GetUserLinkRequest(),
+            name="name_value",
         )
 
 
@@ -3224,7 +3493,9 @@ async def test_get_user_link_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(resources.UserLink())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_user_link(name="name_value",)
+        response = await client.get_user_link(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3245,16 +3516,22 @@ async def test_get_user_link_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_user_link(
-            analytics_admin.GetUserLinkRequest(), name="name_value",
+            analytics_admin.GetUserLinkRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [analytics_admin.BatchGetUserLinksRequest, dict,]
+    "request_type",
+    [
+        analytics_admin.BatchGetUserLinksRequest,
+        dict,
+    ],
 )
 def test_batch_get_user_links(request_type, transport: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3282,7 +3559,8 @@ def test_batch_get_user_links_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3301,7 +3579,8 @@ async def test_batch_get_user_links_async(
     request_type=analytics_admin.BatchGetUserLinksRequest,
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3357,7 +3636,10 @@ def test_batch_get_user_links_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -3388,13 +3670,23 @@ async def test_batch_get_user_links_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
-@pytest.mark.parametrize("request_type", [analytics_admin.ListUserLinksRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.ListUserLinksRequest,
+        dict,
+    ],
+)
 def test_list_user_links(request_type, transport: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3423,7 +3715,8 @@ def test_list_user_links_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3439,7 +3732,8 @@ async def test_list_user_links_async(
     transport: str = "grpc_asyncio", request_type=analytics_admin.ListUserLinksRequest
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3494,7 +3788,10 @@ def test_list_user_links_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -3523,7 +3820,10 @@ async def test_list_user_links_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_user_links_flattened():
@@ -3537,7 +3837,9 @@ def test_list_user_links_flattened():
         call.return_value = analytics_admin.ListUserLinksResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_user_links(parent="parent_value",)
+        client.list_user_links(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3557,7 +3859,8 @@ def test_list_user_links_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_user_links(
-            analytics_admin.ListUserLinksRequest(), parent="parent_value",
+            analytics_admin.ListUserLinksRequest(),
+            parent="parent_value",
         )
 
 
@@ -3577,7 +3880,9 @@ async def test_list_user_links_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_user_links(parent="parent_value",)
+        response = await client.list_user_links(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3598,13 +3903,15 @@ async def test_list_user_links_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_user_links(
-            analytics_admin.ListUserLinksRequest(), parent="parent_value",
+            analytics_admin.ListUserLinksRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_user_links_pager(transport_name: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3620,13 +3927,20 @@ def test_list_user_links_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             analytics_admin.ListUserLinksResponse(
-                user_links=[], next_page_token="def",
+                user_links=[],
+                next_page_token="def",
             ),
             analytics_admin.ListUserLinksResponse(
-                user_links=[resources.UserLink(),], next_page_token="ghi",
+                user_links=[
+                    resources.UserLink(),
+                ],
+                next_page_token="ghi",
             ),
             analytics_admin.ListUserLinksResponse(
-                user_links=[resources.UserLink(), resources.UserLink(),],
+                user_links=[
+                    resources.UserLink(),
+                    resources.UserLink(),
+                ],
             ),
             RuntimeError,
         )
@@ -3646,7 +3960,8 @@ def test_list_user_links_pager(transport_name: str = "grpc"):
 
 def test_list_user_links_pages(transport_name: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3662,13 +3977,20 @@ def test_list_user_links_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             analytics_admin.ListUserLinksResponse(
-                user_links=[], next_page_token="def",
+                user_links=[],
+                next_page_token="def",
             ),
             analytics_admin.ListUserLinksResponse(
-                user_links=[resources.UserLink(),], next_page_token="ghi",
+                user_links=[
+                    resources.UserLink(),
+                ],
+                next_page_token="ghi",
             ),
             analytics_admin.ListUserLinksResponse(
-                user_links=[resources.UserLink(), resources.UserLink(),],
+                user_links=[
+                    resources.UserLink(),
+                    resources.UserLink(),
+                ],
             ),
             RuntimeError,
         )
@@ -3698,17 +4020,26 @@ async def test_list_user_links_async_pager():
                 next_page_token="abc",
             ),
             analytics_admin.ListUserLinksResponse(
-                user_links=[], next_page_token="def",
+                user_links=[],
+                next_page_token="def",
             ),
             analytics_admin.ListUserLinksResponse(
-                user_links=[resources.UserLink(),], next_page_token="ghi",
+                user_links=[
+                    resources.UserLink(),
+                ],
+                next_page_token="ghi",
             ),
             analytics_admin.ListUserLinksResponse(
-                user_links=[resources.UserLink(), resources.UserLink(),],
+                user_links=[
+                    resources.UserLink(),
+                    resources.UserLink(),
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.list_user_links(request={},)
+        async_pager = await client.list_user_links(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -3739,13 +4070,20 @@ async def test_list_user_links_async_pages():
                 next_page_token="abc",
             ),
             analytics_admin.ListUserLinksResponse(
-                user_links=[], next_page_token="def",
+                user_links=[],
+                next_page_token="def",
             ),
             analytics_admin.ListUserLinksResponse(
-                user_links=[resources.UserLink(),], next_page_token="ghi",
+                user_links=[
+                    resources.UserLink(),
+                ],
+                next_page_token="ghi",
             ),
             analytics_admin.ListUserLinksResponse(
-                user_links=[resources.UserLink(), resources.UserLink(),],
+                user_links=[
+                    resources.UserLink(),
+                    resources.UserLink(),
+                ],
             ),
             RuntimeError,
         )
@@ -3756,10 +4094,17 @@ async def test_list_user_links_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [analytics_admin.AuditUserLinksRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.AuditUserLinksRequest,
+        dict,
+    ],
+)
 def test_audit_user_links(request_type, transport: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3788,7 +4133,8 @@ def test_audit_user_links_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3804,7 +4150,8 @@ async def test_audit_user_links_async(
     transport: str = "grpc_asyncio", request_type=analytics_admin.AuditUserLinksRequest
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3859,7 +4206,10 @@ def test_audit_user_links_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -3888,12 +4238,16 @@ async def test_audit_user_links_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_audit_user_links_pager(transport_name: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3909,13 +4263,20 @@ def test_audit_user_links_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             analytics_admin.AuditUserLinksResponse(
-                user_links=[], next_page_token="def",
+                user_links=[],
+                next_page_token="def",
             ),
             analytics_admin.AuditUserLinksResponse(
-                user_links=[resources.AuditUserLink(),], next_page_token="ghi",
+                user_links=[
+                    resources.AuditUserLink(),
+                ],
+                next_page_token="ghi",
             ),
             analytics_admin.AuditUserLinksResponse(
-                user_links=[resources.AuditUserLink(), resources.AuditUserLink(),],
+                user_links=[
+                    resources.AuditUserLink(),
+                    resources.AuditUserLink(),
+                ],
             ),
             RuntimeError,
         )
@@ -3935,7 +4296,8 @@ def test_audit_user_links_pager(transport_name: str = "grpc"):
 
 def test_audit_user_links_pages(transport_name: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3951,13 +4313,20 @@ def test_audit_user_links_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             analytics_admin.AuditUserLinksResponse(
-                user_links=[], next_page_token="def",
+                user_links=[],
+                next_page_token="def",
             ),
             analytics_admin.AuditUserLinksResponse(
-                user_links=[resources.AuditUserLink(),], next_page_token="ghi",
+                user_links=[
+                    resources.AuditUserLink(),
+                ],
+                next_page_token="ghi",
             ),
             analytics_admin.AuditUserLinksResponse(
-                user_links=[resources.AuditUserLink(), resources.AuditUserLink(),],
+                user_links=[
+                    resources.AuditUserLink(),
+                    resources.AuditUserLink(),
+                ],
             ),
             RuntimeError,
         )
@@ -3987,17 +4356,26 @@ async def test_audit_user_links_async_pager():
                 next_page_token="abc",
             ),
             analytics_admin.AuditUserLinksResponse(
-                user_links=[], next_page_token="def",
+                user_links=[],
+                next_page_token="def",
             ),
             analytics_admin.AuditUserLinksResponse(
-                user_links=[resources.AuditUserLink(),], next_page_token="ghi",
+                user_links=[
+                    resources.AuditUserLink(),
+                ],
+                next_page_token="ghi",
             ),
             analytics_admin.AuditUserLinksResponse(
-                user_links=[resources.AuditUserLink(), resources.AuditUserLink(),],
+                user_links=[
+                    resources.AuditUserLink(),
+                    resources.AuditUserLink(),
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.audit_user_links(request={},)
+        async_pager = await client.audit_user_links(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -4028,13 +4406,20 @@ async def test_audit_user_links_async_pages():
                 next_page_token="abc",
             ),
             analytics_admin.AuditUserLinksResponse(
-                user_links=[], next_page_token="def",
+                user_links=[],
+                next_page_token="def",
             ),
             analytics_admin.AuditUserLinksResponse(
-                user_links=[resources.AuditUserLink(),], next_page_token="ghi",
+                user_links=[
+                    resources.AuditUserLink(),
+                ],
+                next_page_token="ghi",
             ),
             analytics_admin.AuditUserLinksResponse(
-                user_links=[resources.AuditUserLink(), resources.AuditUserLink(),],
+                user_links=[
+                    resources.AuditUserLink(),
+                    resources.AuditUserLink(),
+                ],
             ),
             RuntimeError,
         )
@@ -4045,10 +4430,17 @@ async def test_audit_user_links_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [analytics_admin.CreateUserLinkRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.CreateUserLinkRequest,
+        dict,
+    ],
+)
 def test_create_user_link(request_type, transport: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4081,7 +4473,8 @@ def test_create_user_link_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4097,7 +4490,8 @@ async def test_create_user_link_async(
     transport: str = "grpc_asyncio", request_type=analytics_admin.CreateUserLinkRequest
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4156,7 +4550,10 @@ def test_create_user_link_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -4183,7 +4580,10 @@ async def test_create_user_link_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_user_link_flattened():
@@ -4198,7 +4598,8 @@ def test_create_user_link_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.create_user_link(
-            parent="parent_value", user_link=resources.UserLink(name="name_value"),
+            parent="parent_value",
+            user_link=resources.UserLink(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -4243,7 +4644,8 @@ async def test_create_user_link_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.create_user_link(
-            parent="parent_value", user_link=resources.UserLink(name="name_value"),
+            parent="parent_value",
+            user_link=resources.UserLink(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -4275,11 +4677,16 @@ async def test_create_user_link_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [analytics_admin.BatchCreateUserLinksRequest, dict,]
+    "request_type",
+    [
+        analytics_admin.BatchCreateUserLinksRequest,
+        dict,
+    ],
 )
 def test_batch_create_user_links(request_type, transport: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4307,7 +4714,8 @@ def test_batch_create_user_links_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4326,7 +4734,8 @@ async def test_batch_create_user_links_async(
     request_type=analytics_admin.BatchCreateUserLinksRequest,
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4382,7 +4791,10 @@ def test_batch_create_user_links_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -4413,13 +4825,23 @@ async def test_batch_create_user_links_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
-@pytest.mark.parametrize("request_type", [analytics_admin.UpdateUserLinkRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.UpdateUserLinkRequest,
+        dict,
+    ],
+)
 def test_update_user_link(request_type, transport: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4452,7 +4874,8 @@ def test_update_user_link_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4468,7 +4891,8 @@ async def test_update_user_link_async(
     transport: str = "grpc_asyncio", request_type=analytics_admin.UpdateUserLinkRequest
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4527,9 +4951,10 @@ def test_update_user_link_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "user_link.name=user_link.name/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "user_link.name=user_link.name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -4556,9 +4981,10 @@ async def test_update_user_link_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "user_link.name=user_link.name/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "user_link.name=user_link.name/value",
+    ) in kw["metadata"]
 
 
 def test_update_user_link_flattened():
@@ -4572,7 +4998,9 @@ def test_update_user_link_flattened():
         call.return_value = resources.UserLink()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.update_user_link(user_link=resources.UserLink(name="name_value"),)
+        client.update_user_link(
+            user_link=resources.UserLink(name="name_value"),
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -4640,11 +5068,16 @@ async def test_update_user_link_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [analytics_admin.BatchUpdateUserLinksRequest, dict,]
+    "request_type",
+    [
+        analytics_admin.BatchUpdateUserLinksRequest,
+        dict,
+    ],
 )
 def test_batch_update_user_links(request_type, transport: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4672,7 +5105,8 @@ def test_batch_update_user_links_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4691,7 +5125,8 @@ async def test_batch_update_user_links_async(
     request_type=analytics_admin.BatchUpdateUserLinksRequest,
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4747,7 +5182,10 @@ def test_batch_update_user_links_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -4778,13 +5216,23 @@ async def test_batch_update_user_links_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
-@pytest.mark.parametrize("request_type", [analytics_admin.DeleteUserLinkRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.DeleteUserLinkRequest,
+        dict,
+    ],
+)
 def test_delete_user_link(request_type, transport: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4810,7 +5258,8 @@ def test_delete_user_link_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4826,7 +5275,8 @@ async def test_delete_user_link_async(
     transport: str = "grpc_asyncio", request_type=analytics_admin.DeleteUserLinkRequest
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4876,7 +5326,10 @@ def test_delete_user_link_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -4903,7 +5356,10 @@ async def test_delete_user_link_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_user_link_flattened():
@@ -4917,7 +5373,9 @@ def test_delete_user_link_flattened():
         call.return_value = None
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_user_link(name="name_value",)
+        client.delete_user_link(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -4937,7 +5395,8 @@ def test_delete_user_link_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_user_link(
-            analytics_admin.DeleteUserLinkRequest(), name="name_value",
+            analytics_admin.DeleteUserLinkRequest(),
+            name="name_value",
         )
 
 
@@ -4955,7 +5414,9 @@ async def test_delete_user_link_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_user_link(name="name_value",)
+        response = await client.delete_user_link(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -4976,16 +5437,22 @@ async def test_delete_user_link_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_user_link(
-            analytics_admin.DeleteUserLinkRequest(), name="name_value",
+            analytics_admin.DeleteUserLinkRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [analytics_admin.BatchDeleteUserLinksRequest, dict,]
+    "request_type",
+    [
+        analytics_admin.BatchDeleteUserLinksRequest,
+        dict,
+    ],
 )
 def test_batch_delete_user_links(request_type, transport: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5013,7 +5480,8 @@ def test_batch_delete_user_links_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5032,7 +5500,8 @@ async def test_batch_delete_user_links_async(
     request_type=analytics_admin.BatchDeleteUserLinksRequest,
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5086,7 +5555,10 @@ def test_batch_delete_user_links_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -5115,15 +5587,23 @@ async def test_batch_delete_user_links_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.parametrize(
-    "request_type", [analytics_admin.CreateFirebaseLinkRequest, dict,]
+    "request_type",
+    [
+        analytics_admin.CreateFirebaseLinkRequest,
+        dict,
+    ],
 )
 def test_create_firebase_link(request_type, transport: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5136,7 +5616,8 @@ def test_create_firebase_link(request_type, transport: str = "grpc"):
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = resources.FirebaseLink(
-            name="name_value", project="project_value",
+            name="name_value",
+            project="project_value",
         )
         response = client.create_firebase_link(request)
 
@@ -5155,7 +5636,8 @@ def test_create_firebase_link_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5174,7 +5656,8 @@ async def test_create_firebase_link_async(
     request_type=analytics_admin.CreateFirebaseLinkRequest,
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5187,7 +5670,10 @@ async def test_create_firebase_link_async(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            resources.FirebaseLink(name="name_value", project="project_value",)
+            resources.FirebaseLink(
+                name="name_value",
+                project="project_value",
+            )
         )
         response = await client.create_firebase_link(request)
 
@@ -5232,7 +5718,10 @@ def test_create_firebase_link_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -5263,7 +5752,10 @@ async def test_create_firebase_link_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_firebase_link_flattened():
@@ -5363,11 +5855,16 @@ async def test_create_firebase_link_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [analytics_admin.DeleteFirebaseLinkRequest, dict,]
+    "request_type",
+    [
+        analytics_admin.DeleteFirebaseLinkRequest,
+        dict,
+    ],
 )
 def test_delete_firebase_link(request_type, transport: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5395,7 +5892,8 @@ def test_delete_firebase_link_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5414,7 +5912,8 @@ async def test_delete_firebase_link_async(
     request_type=analytics_admin.DeleteFirebaseLinkRequest,
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5468,7 +5967,10 @@ def test_delete_firebase_link_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -5497,7 +5999,10 @@ async def test_delete_firebase_link_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_firebase_link_flattened():
@@ -5513,7 +6018,9 @@ def test_delete_firebase_link_flattened():
         call.return_value = None
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_firebase_link(name="name_value",)
+        client.delete_firebase_link(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -5533,7 +6040,8 @@ def test_delete_firebase_link_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_firebase_link(
-            analytics_admin.DeleteFirebaseLinkRequest(), name="name_value",
+            analytics_admin.DeleteFirebaseLinkRequest(),
+            name="name_value",
         )
 
 
@@ -5553,7 +6061,9 @@ async def test_delete_firebase_link_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_firebase_link(name="name_value",)
+        response = await client.delete_firebase_link(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -5574,16 +6084,22 @@ async def test_delete_firebase_link_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_firebase_link(
-            analytics_admin.DeleteFirebaseLinkRequest(), name="name_value",
+            analytics_admin.DeleteFirebaseLinkRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [analytics_admin.ListFirebaseLinksRequest, dict,]
+    "request_type",
+    [
+        analytics_admin.ListFirebaseLinksRequest,
+        dict,
+    ],
 )
 def test_list_firebase_links(request_type, transport: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5614,7 +6130,8 @@ def test_list_firebase_links_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5633,7 +6150,8 @@ async def test_list_firebase_links_async(
     request_type=analytics_admin.ListFirebaseLinksRequest,
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5692,7 +6210,10 @@ def test_list_firebase_links_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -5723,7 +6244,10 @@ async def test_list_firebase_links_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_firebase_links_flattened():
@@ -5739,7 +6263,9 @@ def test_list_firebase_links_flattened():
         call.return_value = analytics_admin.ListFirebaseLinksResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_firebase_links(parent="parent_value",)
+        client.list_firebase_links(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -5759,7 +6285,8 @@ def test_list_firebase_links_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_firebase_links(
-            analytics_admin.ListFirebaseLinksRequest(), parent="parent_value",
+            analytics_admin.ListFirebaseLinksRequest(),
+            parent="parent_value",
         )
 
 
@@ -5781,7 +6308,9 @@ async def test_list_firebase_links_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_firebase_links(parent="parent_value",)
+        response = await client.list_firebase_links(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -5802,13 +6331,15 @@ async def test_list_firebase_links_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_firebase_links(
-            analytics_admin.ListFirebaseLinksRequest(), parent="parent_value",
+            analytics_admin.ListFirebaseLinksRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_firebase_links_pager(transport_name: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5826,13 +6357,20 @@ def test_list_firebase_links_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             analytics_admin.ListFirebaseLinksResponse(
-                firebase_links=[], next_page_token="def",
+                firebase_links=[],
+                next_page_token="def",
             ),
             analytics_admin.ListFirebaseLinksResponse(
-                firebase_links=[resources.FirebaseLink(),], next_page_token="ghi",
+                firebase_links=[
+                    resources.FirebaseLink(),
+                ],
+                next_page_token="ghi",
             ),
             analytics_admin.ListFirebaseLinksResponse(
-                firebase_links=[resources.FirebaseLink(), resources.FirebaseLink(),],
+                firebase_links=[
+                    resources.FirebaseLink(),
+                    resources.FirebaseLink(),
+                ],
             ),
             RuntimeError,
         )
@@ -5852,7 +6390,8 @@ def test_list_firebase_links_pager(transport_name: str = "grpc"):
 
 def test_list_firebase_links_pages(transport_name: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5870,13 +6409,20 @@ def test_list_firebase_links_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             analytics_admin.ListFirebaseLinksResponse(
-                firebase_links=[], next_page_token="def",
+                firebase_links=[],
+                next_page_token="def",
             ),
             analytics_admin.ListFirebaseLinksResponse(
-                firebase_links=[resources.FirebaseLink(),], next_page_token="ghi",
+                firebase_links=[
+                    resources.FirebaseLink(),
+                ],
+                next_page_token="ghi",
             ),
             analytics_admin.ListFirebaseLinksResponse(
-                firebase_links=[resources.FirebaseLink(), resources.FirebaseLink(),],
+                firebase_links=[
+                    resources.FirebaseLink(),
+                    resources.FirebaseLink(),
+                ],
             ),
             RuntimeError,
         )
@@ -5908,17 +6454,26 @@ async def test_list_firebase_links_async_pager():
                 next_page_token="abc",
             ),
             analytics_admin.ListFirebaseLinksResponse(
-                firebase_links=[], next_page_token="def",
+                firebase_links=[],
+                next_page_token="def",
             ),
             analytics_admin.ListFirebaseLinksResponse(
-                firebase_links=[resources.FirebaseLink(),], next_page_token="ghi",
+                firebase_links=[
+                    resources.FirebaseLink(),
+                ],
+                next_page_token="ghi",
             ),
             analytics_admin.ListFirebaseLinksResponse(
-                firebase_links=[resources.FirebaseLink(), resources.FirebaseLink(),],
+                firebase_links=[
+                    resources.FirebaseLink(),
+                    resources.FirebaseLink(),
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.list_firebase_links(request={},)
+        async_pager = await client.list_firebase_links(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -5951,13 +6506,20 @@ async def test_list_firebase_links_async_pages():
                 next_page_token="abc",
             ),
             analytics_admin.ListFirebaseLinksResponse(
-                firebase_links=[], next_page_token="def",
+                firebase_links=[],
+                next_page_token="def",
             ),
             analytics_admin.ListFirebaseLinksResponse(
-                firebase_links=[resources.FirebaseLink(),], next_page_token="ghi",
+                firebase_links=[
+                    resources.FirebaseLink(),
+                ],
+                next_page_token="ghi",
             ),
             analytics_admin.ListFirebaseLinksResponse(
-                firebase_links=[resources.FirebaseLink(), resources.FirebaseLink(),],
+                firebase_links=[
+                    resources.FirebaseLink(),
+                    resources.FirebaseLink(),
+                ],
             ),
             RuntimeError,
         )
@@ -5969,11 +6531,16 @@ async def test_list_firebase_links_async_pages():
 
 
 @pytest.mark.parametrize(
-    "request_type", [analytics_admin.GetGlobalSiteTagRequest, dict,]
+    "request_type",
+    [
+        analytics_admin.GetGlobalSiteTagRequest,
+        dict,
+    ],
 )
 def test_get_global_site_tag(request_type, transport: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5986,7 +6553,8 @@ def test_get_global_site_tag(request_type, transport: str = "grpc"):
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = resources.GlobalSiteTag(
-            name="name_value", snippet="snippet_value",
+            name="name_value",
+            snippet="snippet_value",
         )
         response = client.get_global_site_tag(request)
 
@@ -6005,7 +6573,8 @@ def test_get_global_site_tag_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6024,7 +6593,8 @@ async def test_get_global_site_tag_async(
     request_type=analytics_admin.GetGlobalSiteTagRequest,
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -6037,7 +6607,10 @@ async def test_get_global_site_tag_async(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            resources.GlobalSiteTag(name="name_value", snippet="snippet_value",)
+            resources.GlobalSiteTag(
+                name="name_value",
+                snippet="snippet_value",
+            )
         )
         response = await client.get_global_site_tag(request)
 
@@ -6082,7 +6655,10 @@ def test_get_global_site_tag_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -6113,7 +6689,10 @@ async def test_get_global_site_tag_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_global_site_tag_flattened():
@@ -6129,7 +6708,9 @@ def test_get_global_site_tag_flattened():
         call.return_value = resources.GlobalSiteTag()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_global_site_tag(name="name_value",)
+        client.get_global_site_tag(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -6149,7 +6730,8 @@ def test_get_global_site_tag_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_global_site_tag(
-            analytics_admin.GetGlobalSiteTagRequest(), name="name_value",
+            analytics_admin.GetGlobalSiteTagRequest(),
+            name="name_value",
         )
 
 
@@ -6171,7 +6753,9 @@ async def test_get_global_site_tag_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_global_site_tag(name="name_value",)
+        response = await client.get_global_site_tag(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -6192,16 +6776,22 @@ async def test_get_global_site_tag_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_global_site_tag(
-            analytics_admin.GetGlobalSiteTagRequest(), name="name_value",
+            analytics_admin.GetGlobalSiteTagRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [analytics_admin.CreateGoogleAdsLinkRequest, dict,]
+    "request_type",
+    [
+        analytics_admin.CreateGoogleAdsLinkRequest,
+        dict,
+    ],
 )
 def test_create_google_ads_link(request_type, transport: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -6238,7 +6828,8 @@ def test_create_google_ads_link_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6257,7 +6848,8 @@ async def test_create_google_ads_link_async(
     request_type=analytics_admin.CreateGoogleAdsLinkRequest,
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -6322,7 +6914,10 @@ def test_create_google_ads_link_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -6353,7 +6948,10 @@ async def test_create_google_ads_link_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_google_ads_link_flattened():
@@ -6453,11 +7051,16 @@ async def test_create_google_ads_link_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [analytics_admin.UpdateGoogleAdsLinkRequest, dict,]
+    "request_type",
+    [
+        analytics_admin.UpdateGoogleAdsLinkRequest,
+        dict,
+    ],
 )
 def test_update_google_ads_link(request_type, transport: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -6494,7 +7097,8 @@ def test_update_google_ads_link_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6513,7 +7117,8 @@ async def test_update_google_ads_link_async(
     request_type=analytics_admin.UpdateGoogleAdsLinkRequest,
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -6715,11 +7320,16 @@ async def test_update_google_ads_link_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [analytics_admin.DeleteGoogleAdsLinkRequest, dict,]
+    "request_type",
+    [
+        analytics_admin.DeleteGoogleAdsLinkRequest,
+        dict,
+    ],
 )
 def test_delete_google_ads_link(request_type, transport: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -6747,7 +7357,8 @@ def test_delete_google_ads_link_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6766,7 +7377,8 @@ async def test_delete_google_ads_link_async(
     request_type=analytics_admin.DeleteGoogleAdsLinkRequest,
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -6820,7 +7432,10 @@ def test_delete_google_ads_link_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -6849,7 +7464,10 @@ async def test_delete_google_ads_link_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_google_ads_link_flattened():
@@ -6865,7 +7483,9 @@ def test_delete_google_ads_link_flattened():
         call.return_value = None
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_google_ads_link(name="name_value",)
+        client.delete_google_ads_link(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -6885,7 +7505,8 @@ def test_delete_google_ads_link_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_google_ads_link(
-            analytics_admin.DeleteGoogleAdsLinkRequest(), name="name_value",
+            analytics_admin.DeleteGoogleAdsLinkRequest(),
+            name="name_value",
         )
 
 
@@ -6905,7 +7526,9 @@ async def test_delete_google_ads_link_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_google_ads_link(name="name_value",)
+        response = await client.delete_google_ads_link(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -6926,16 +7549,22 @@ async def test_delete_google_ads_link_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_google_ads_link(
-            analytics_admin.DeleteGoogleAdsLinkRequest(), name="name_value",
+            analytics_admin.DeleteGoogleAdsLinkRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [analytics_admin.ListGoogleAdsLinksRequest, dict,]
+    "request_type",
+    [
+        analytics_admin.ListGoogleAdsLinksRequest,
+        dict,
+    ],
 )
 def test_list_google_ads_links(request_type, transport: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -6966,7 +7595,8 @@ def test_list_google_ads_links_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6985,7 +7615,8 @@ async def test_list_google_ads_links_async(
     request_type=analytics_admin.ListGoogleAdsLinksRequest,
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -7044,7 +7675,10 @@ def test_list_google_ads_links_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -7075,7 +7709,10 @@ async def test_list_google_ads_links_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_google_ads_links_flattened():
@@ -7091,7 +7728,9 @@ def test_list_google_ads_links_flattened():
         call.return_value = analytics_admin.ListGoogleAdsLinksResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_google_ads_links(parent="parent_value",)
+        client.list_google_ads_links(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -7111,7 +7750,8 @@ def test_list_google_ads_links_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_google_ads_links(
-            analytics_admin.ListGoogleAdsLinksRequest(), parent="parent_value",
+            analytics_admin.ListGoogleAdsLinksRequest(),
+            parent="parent_value",
         )
 
 
@@ -7133,7 +7773,9 @@ async def test_list_google_ads_links_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_google_ads_links(parent="parent_value",)
+        response = await client.list_google_ads_links(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -7154,13 +7796,15 @@ async def test_list_google_ads_links_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_google_ads_links(
-            analytics_admin.ListGoogleAdsLinksRequest(), parent="parent_value",
+            analytics_admin.ListGoogleAdsLinksRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_google_ads_links_pager(transport_name: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7178,10 +7822,14 @@ def test_list_google_ads_links_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             analytics_admin.ListGoogleAdsLinksResponse(
-                google_ads_links=[], next_page_token="def",
+                google_ads_links=[],
+                next_page_token="def",
             ),
             analytics_admin.ListGoogleAdsLinksResponse(
-                google_ads_links=[resources.GoogleAdsLink(),], next_page_token="ghi",
+                google_ads_links=[
+                    resources.GoogleAdsLink(),
+                ],
+                next_page_token="ghi",
             ),
             analytics_admin.ListGoogleAdsLinksResponse(
                 google_ads_links=[
@@ -7207,7 +7855,8 @@ def test_list_google_ads_links_pager(transport_name: str = "grpc"):
 
 def test_list_google_ads_links_pages(transport_name: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7225,10 +7874,14 @@ def test_list_google_ads_links_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             analytics_admin.ListGoogleAdsLinksResponse(
-                google_ads_links=[], next_page_token="def",
+                google_ads_links=[],
+                next_page_token="def",
             ),
             analytics_admin.ListGoogleAdsLinksResponse(
-                google_ads_links=[resources.GoogleAdsLink(),], next_page_token="ghi",
+                google_ads_links=[
+                    resources.GoogleAdsLink(),
+                ],
+                next_page_token="ghi",
             ),
             analytics_admin.ListGoogleAdsLinksResponse(
                 google_ads_links=[
@@ -7266,10 +7919,14 @@ async def test_list_google_ads_links_async_pager():
                 next_page_token="abc",
             ),
             analytics_admin.ListGoogleAdsLinksResponse(
-                google_ads_links=[], next_page_token="def",
+                google_ads_links=[],
+                next_page_token="def",
             ),
             analytics_admin.ListGoogleAdsLinksResponse(
-                google_ads_links=[resources.GoogleAdsLink(),], next_page_token="ghi",
+                google_ads_links=[
+                    resources.GoogleAdsLink(),
+                ],
+                next_page_token="ghi",
             ),
             analytics_admin.ListGoogleAdsLinksResponse(
                 google_ads_links=[
@@ -7279,7 +7936,9 @@ async def test_list_google_ads_links_async_pager():
             ),
             RuntimeError,
         )
-        async_pager = await client.list_google_ads_links(request={},)
+        async_pager = await client.list_google_ads_links(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -7312,10 +7971,14 @@ async def test_list_google_ads_links_async_pages():
                 next_page_token="abc",
             ),
             analytics_admin.ListGoogleAdsLinksResponse(
-                google_ads_links=[], next_page_token="def",
+                google_ads_links=[],
+                next_page_token="def",
             ),
             analytics_admin.ListGoogleAdsLinksResponse(
-                google_ads_links=[resources.GoogleAdsLink(),], next_page_token="ghi",
+                google_ads_links=[
+                    resources.GoogleAdsLink(),
+                ],
+                next_page_token="ghi",
             ),
             analytics_admin.ListGoogleAdsLinksResponse(
                 google_ads_links=[
@@ -7333,11 +7996,16 @@ async def test_list_google_ads_links_async_pages():
 
 
 @pytest.mark.parametrize(
-    "request_type", [analytics_admin.GetDataSharingSettingsRequest, dict,]
+    "request_type",
+    [
+        analytics_admin.GetDataSharingSettingsRequest,
+        dict,
+    ],
 )
 def test_get_data_sharing_settings(request_type, transport: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -7378,7 +8046,8 @@ def test_get_data_sharing_settings_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7397,7 +8066,8 @@ async def test_get_data_sharing_settings_async(
     request_type=analytics_admin.GetDataSharingSettingsRequest,
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -7466,7 +8136,10 @@ def test_get_data_sharing_settings_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -7497,7 +8170,10 @@ async def test_get_data_sharing_settings_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_data_sharing_settings_flattened():
@@ -7513,7 +8189,9 @@ def test_get_data_sharing_settings_flattened():
         call.return_value = resources.DataSharingSettings()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_data_sharing_settings(name="name_value",)
+        client.get_data_sharing_settings(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -7533,7 +8211,8 @@ def test_get_data_sharing_settings_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_data_sharing_settings(
-            analytics_admin.GetDataSharingSettingsRequest(), name="name_value",
+            analytics_admin.GetDataSharingSettingsRequest(),
+            name="name_value",
         )
 
 
@@ -7555,7 +8234,9 @@ async def test_get_data_sharing_settings_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_data_sharing_settings(name="name_value",)
+        response = await client.get_data_sharing_settings(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -7576,16 +8257,22 @@ async def test_get_data_sharing_settings_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_data_sharing_settings(
-            analytics_admin.GetDataSharingSettingsRequest(), name="name_value",
+            analytics_admin.GetDataSharingSettingsRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [analytics_admin.GetMeasurementProtocolSecretRequest, dict,]
+    "request_type",
+    [
+        analytics_admin.GetMeasurementProtocolSecretRequest,
+        dict,
+    ],
 )
 def test_get_measurement_protocol_secret(request_type, transport: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -7620,7 +8307,8 @@ def test_get_measurement_protocol_secret_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7639,7 +8327,8 @@ async def test_get_measurement_protocol_secret_async(
     request_type=analytics_admin.GetMeasurementProtocolSecretRequest,
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -7702,7 +8391,10 @@ def test_get_measurement_protocol_secret_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -7733,7 +8425,10 @@ async def test_get_measurement_protocol_secret_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_measurement_protocol_secret_flattened():
@@ -7749,7 +8444,9 @@ def test_get_measurement_protocol_secret_flattened():
         call.return_value = resources.MeasurementProtocolSecret()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_measurement_protocol_secret(name="name_value",)
+        client.get_measurement_protocol_secret(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -7769,7 +8466,8 @@ def test_get_measurement_protocol_secret_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_measurement_protocol_secret(
-            analytics_admin.GetMeasurementProtocolSecretRequest(), name="name_value",
+            analytics_admin.GetMeasurementProtocolSecretRequest(),
+            name="name_value",
         )
 
 
@@ -7791,7 +8489,9 @@ async def test_get_measurement_protocol_secret_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_measurement_protocol_secret(name="name_value",)
+        response = await client.get_measurement_protocol_secret(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -7812,16 +8512,22 @@ async def test_get_measurement_protocol_secret_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_measurement_protocol_secret(
-            analytics_admin.GetMeasurementProtocolSecretRequest(), name="name_value",
+            analytics_admin.GetMeasurementProtocolSecretRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [analytics_admin.ListMeasurementProtocolSecretsRequest, dict,]
+    "request_type",
+    [
+        analytics_admin.ListMeasurementProtocolSecretsRequest,
+        dict,
+    ],
 )
 def test_list_measurement_protocol_secrets(request_type, transport: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -7852,7 +8558,8 @@ def test_list_measurement_protocol_secrets_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7871,7 +8578,8 @@ async def test_list_measurement_protocol_secrets_async(
     request_type=analytics_admin.ListMeasurementProtocolSecretsRequest,
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -7930,7 +8638,10 @@ def test_list_measurement_protocol_secrets_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -7961,7 +8672,10 @@ async def test_list_measurement_protocol_secrets_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_measurement_protocol_secrets_flattened():
@@ -7977,7 +8691,9 @@ def test_list_measurement_protocol_secrets_flattened():
         call.return_value = analytics_admin.ListMeasurementProtocolSecretsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_measurement_protocol_secrets(parent="parent_value",)
+        client.list_measurement_protocol_secrets(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -8050,7 +8766,8 @@ async def test_list_measurement_protocol_secrets_flattened_error_async():
 
 def test_list_measurement_protocol_secrets_pager(transport_name: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8068,10 +8785,13 @@ def test_list_measurement_protocol_secrets_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             analytics_admin.ListMeasurementProtocolSecretsResponse(
-                measurement_protocol_secrets=[], next_page_token="def",
+                measurement_protocol_secrets=[],
+                next_page_token="def",
             ),
             analytics_admin.ListMeasurementProtocolSecretsResponse(
-                measurement_protocol_secrets=[resources.MeasurementProtocolSecret(),],
+                measurement_protocol_secrets=[
+                    resources.MeasurementProtocolSecret(),
+                ],
                 next_page_token="ghi",
             ),
             analytics_admin.ListMeasurementProtocolSecretsResponse(
@@ -8098,7 +8818,8 @@ def test_list_measurement_protocol_secrets_pager(transport_name: str = "grpc"):
 
 def test_list_measurement_protocol_secrets_pages(transport_name: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8116,10 +8837,13 @@ def test_list_measurement_protocol_secrets_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             analytics_admin.ListMeasurementProtocolSecretsResponse(
-                measurement_protocol_secrets=[], next_page_token="def",
+                measurement_protocol_secrets=[],
+                next_page_token="def",
             ),
             analytics_admin.ListMeasurementProtocolSecretsResponse(
-                measurement_protocol_secrets=[resources.MeasurementProtocolSecret(),],
+                measurement_protocol_secrets=[
+                    resources.MeasurementProtocolSecret(),
+                ],
                 next_page_token="ghi",
             ),
             analytics_admin.ListMeasurementProtocolSecretsResponse(
@@ -8158,10 +8882,13 @@ async def test_list_measurement_protocol_secrets_async_pager():
                 next_page_token="abc",
             ),
             analytics_admin.ListMeasurementProtocolSecretsResponse(
-                measurement_protocol_secrets=[], next_page_token="def",
+                measurement_protocol_secrets=[],
+                next_page_token="def",
             ),
             analytics_admin.ListMeasurementProtocolSecretsResponse(
-                measurement_protocol_secrets=[resources.MeasurementProtocolSecret(),],
+                measurement_protocol_secrets=[
+                    resources.MeasurementProtocolSecret(),
+                ],
                 next_page_token="ghi",
             ),
             analytics_admin.ListMeasurementProtocolSecretsResponse(
@@ -8172,7 +8899,9 @@ async def test_list_measurement_protocol_secrets_async_pager():
             ),
             RuntimeError,
         )
-        async_pager = await client.list_measurement_protocol_secrets(request={},)
+        async_pager = await client.list_measurement_protocol_secrets(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -8207,10 +8936,13 @@ async def test_list_measurement_protocol_secrets_async_pages():
                 next_page_token="abc",
             ),
             analytics_admin.ListMeasurementProtocolSecretsResponse(
-                measurement_protocol_secrets=[], next_page_token="def",
+                measurement_protocol_secrets=[],
+                next_page_token="def",
             ),
             analytics_admin.ListMeasurementProtocolSecretsResponse(
-                measurement_protocol_secrets=[resources.MeasurementProtocolSecret(),],
+                measurement_protocol_secrets=[
+                    resources.MeasurementProtocolSecret(),
+                ],
                 next_page_token="ghi",
             ),
             analytics_admin.ListMeasurementProtocolSecretsResponse(
@@ -8231,11 +8963,16 @@ async def test_list_measurement_protocol_secrets_async_pages():
 
 
 @pytest.mark.parametrize(
-    "request_type", [analytics_admin.CreateMeasurementProtocolSecretRequest, dict,]
+    "request_type",
+    [
+        analytics_admin.CreateMeasurementProtocolSecretRequest,
+        dict,
+    ],
 )
 def test_create_measurement_protocol_secret(request_type, transport: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -8270,7 +9007,8 @@ def test_create_measurement_protocol_secret_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8289,7 +9027,8 @@ async def test_create_measurement_protocol_secret_async(
     request_type=analytics_admin.CreateMeasurementProtocolSecretRequest,
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -8352,7 +9091,10 @@ def test_create_measurement_protocol_secret_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -8383,7 +9125,10 @@ async def test_create_measurement_protocol_secret_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_measurement_protocol_secret_flattened():
@@ -8491,11 +9236,16 @@ async def test_create_measurement_protocol_secret_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [analytics_admin.DeleteMeasurementProtocolSecretRequest, dict,]
+    "request_type",
+    [
+        analytics_admin.DeleteMeasurementProtocolSecretRequest,
+        dict,
+    ],
 )
 def test_delete_measurement_protocol_secret(request_type, transport: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -8523,7 +9273,8 @@ def test_delete_measurement_protocol_secret_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8542,7 +9293,8 @@ async def test_delete_measurement_protocol_secret_async(
     request_type=analytics_admin.DeleteMeasurementProtocolSecretRequest,
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -8596,7 +9348,10 @@ def test_delete_measurement_protocol_secret_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -8625,7 +9380,10 @@ async def test_delete_measurement_protocol_secret_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_measurement_protocol_secret_flattened():
@@ -8641,7 +9399,9 @@ def test_delete_measurement_protocol_secret_flattened():
         call.return_value = None
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_measurement_protocol_secret(name="name_value",)
+        client.delete_measurement_protocol_secret(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -8661,7 +9421,8 @@ def test_delete_measurement_protocol_secret_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_measurement_protocol_secret(
-            analytics_admin.DeleteMeasurementProtocolSecretRequest(), name="name_value",
+            analytics_admin.DeleteMeasurementProtocolSecretRequest(),
+            name="name_value",
         )
 
 
@@ -8681,7 +9442,9 @@ async def test_delete_measurement_protocol_secret_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_measurement_protocol_secret(name="name_value",)
+        response = await client.delete_measurement_protocol_secret(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -8702,16 +9465,22 @@ async def test_delete_measurement_protocol_secret_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_measurement_protocol_secret(
-            analytics_admin.DeleteMeasurementProtocolSecretRequest(), name="name_value",
+            analytics_admin.DeleteMeasurementProtocolSecretRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [analytics_admin.UpdateMeasurementProtocolSecretRequest, dict,]
+    "request_type",
+    [
+        analytics_admin.UpdateMeasurementProtocolSecretRequest,
+        dict,
+    ],
 )
 def test_update_measurement_protocol_secret(request_type, transport: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -8746,7 +9515,8 @@ def test_update_measurement_protocol_secret_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8765,7 +9535,8 @@ async def test_update_measurement_protocol_secret_async(
     request_type=analytics_admin.UpdateMeasurementProtocolSecretRequest,
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -8973,11 +9744,16 @@ async def test_update_measurement_protocol_secret_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [analytics_admin.AcknowledgeUserDataCollectionRequest, dict,]
+    "request_type",
+    [
+        analytics_admin.AcknowledgeUserDataCollectionRequest,
+        dict,
+    ],
 )
 def test_acknowledge_user_data_collection(request_type, transport: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -9005,7 +9781,8 @@ def test_acknowledge_user_data_collection_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9024,7 +9801,8 @@ async def test_acknowledge_user_data_collection_async(
     request_type=analytics_admin.AcknowledgeUserDataCollectionRequest,
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -9080,7 +9858,10 @@ def test_acknowledge_user_data_collection_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "property=property/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "property=property/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -9111,15 +9892,23 @@ async def test_acknowledge_user_data_collection_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "property=property/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "property=property/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.parametrize(
-    "request_type", [analytics_admin.SearchChangeHistoryEventsRequest, dict,]
+    "request_type",
+    [
+        analytics_admin.SearchChangeHistoryEventsRequest,
+        dict,
+    ],
 )
 def test_search_change_history_events(request_type, transport: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -9150,7 +9939,8 @@ def test_search_change_history_events_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9169,7 +9959,8 @@ async def test_search_change_history_events_async(
     request_type=analytics_admin.SearchChangeHistoryEventsRequest,
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -9228,7 +10019,10 @@ def test_search_change_history_events_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "account=account/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "account=account/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -9259,12 +10053,16 @@ async def test_search_change_history_events_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "account=account/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "account=account/value",
+    ) in kw["metadata"]
 
 
 def test_search_change_history_events_pager(transport_name: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9282,10 +10080,13 @@ def test_search_change_history_events_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             analytics_admin.SearchChangeHistoryEventsResponse(
-                change_history_events=[], next_page_token="def",
+                change_history_events=[],
+                next_page_token="def",
             ),
             analytics_admin.SearchChangeHistoryEventsResponse(
-                change_history_events=[resources.ChangeHistoryEvent(),],
+                change_history_events=[
+                    resources.ChangeHistoryEvent(),
+                ],
                 next_page_token="ghi",
             ),
             analytics_admin.SearchChangeHistoryEventsResponse(
@@ -9312,7 +10113,8 @@ def test_search_change_history_events_pager(transport_name: str = "grpc"):
 
 def test_search_change_history_events_pages(transport_name: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9330,10 +10132,13 @@ def test_search_change_history_events_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             analytics_admin.SearchChangeHistoryEventsResponse(
-                change_history_events=[], next_page_token="def",
+                change_history_events=[],
+                next_page_token="def",
             ),
             analytics_admin.SearchChangeHistoryEventsResponse(
-                change_history_events=[resources.ChangeHistoryEvent(),],
+                change_history_events=[
+                    resources.ChangeHistoryEvent(),
+                ],
                 next_page_token="ghi",
             ),
             analytics_admin.SearchChangeHistoryEventsResponse(
@@ -9372,10 +10177,13 @@ async def test_search_change_history_events_async_pager():
                 next_page_token="abc",
             ),
             analytics_admin.SearchChangeHistoryEventsResponse(
-                change_history_events=[], next_page_token="def",
+                change_history_events=[],
+                next_page_token="def",
             ),
             analytics_admin.SearchChangeHistoryEventsResponse(
-                change_history_events=[resources.ChangeHistoryEvent(),],
+                change_history_events=[
+                    resources.ChangeHistoryEvent(),
+                ],
                 next_page_token="ghi",
             ),
             analytics_admin.SearchChangeHistoryEventsResponse(
@@ -9386,7 +10194,9 @@ async def test_search_change_history_events_async_pager():
             ),
             RuntimeError,
         )
-        async_pager = await client.search_change_history_events(request={},)
+        async_pager = await client.search_change_history_events(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -9419,10 +10229,13 @@ async def test_search_change_history_events_async_pages():
                 next_page_token="abc",
             ),
             analytics_admin.SearchChangeHistoryEventsResponse(
-                change_history_events=[], next_page_token="def",
+                change_history_events=[],
+                next_page_token="def",
             ),
             analytics_admin.SearchChangeHistoryEventsResponse(
-                change_history_events=[resources.ChangeHistoryEvent(),],
+                change_history_events=[
+                    resources.ChangeHistoryEvent(),
+                ],
                 next_page_token="ghi",
             ),
             analytics_admin.SearchChangeHistoryEventsResponse(
@@ -9443,11 +10256,16 @@ async def test_search_change_history_events_async_pages():
 
 
 @pytest.mark.parametrize(
-    "request_type", [analytics_admin.GetGoogleSignalsSettingsRequest, dict,]
+    "request_type",
+    [
+        analytics_admin.GetGoogleSignalsSettingsRequest,
+        dict,
+    ],
 )
 def test_get_google_signals_settings(request_type, transport: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -9485,7 +10303,8 @@ def test_get_google_signals_settings_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9504,7 +10323,8 @@ async def test_get_google_signals_settings_async(
     request_type=analytics_admin.GetGoogleSignalsSettingsRequest,
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -9570,7 +10390,10 @@ def test_get_google_signals_settings_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -9601,7 +10424,10 @@ async def test_get_google_signals_settings_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_google_signals_settings_flattened():
@@ -9617,7 +10443,9 @@ def test_get_google_signals_settings_flattened():
         call.return_value = resources.GoogleSignalsSettings()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_google_signals_settings(name="name_value",)
+        client.get_google_signals_settings(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -9637,7 +10465,8 @@ def test_get_google_signals_settings_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_google_signals_settings(
-            analytics_admin.GetGoogleSignalsSettingsRequest(), name="name_value",
+            analytics_admin.GetGoogleSignalsSettingsRequest(),
+            name="name_value",
         )
 
 
@@ -9659,7 +10488,9 @@ async def test_get_google_signals_settings_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_google_signals_settings(name="name_value",)
+        response = await client.get_google_signals_settings(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -9680,16 +10511,22 @@ async def test_get_google_signals_settings_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_google_signals_settings(
-            analytics_admin.GetGoogleSignalsSettingsRequest(), name="name_value",
+            analytics_admin.GetGoogleSignalsSettingsRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [analytics_admin.UpdateGoogleSignalsSettingsRequest, dict,]
+    "request_type",
+    [
+        analytics_admin.UpdateGoogleSignalsSettingsRequest,
+        dict,
+    ],
 )
 def test_update_google_signals_settings(request_type, transport: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -9727,7 +10564,8 @@ def test_update_google_signals_settings_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9746,7 +10584,8 @@ async def test_update_google_signals_settings_async(
     request_type=analytics_admin.UpdateGoogleSignalsSettingsRequest,
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -9949,11 +10788,16 @@ async def test_update_google_signals_settings_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [analytics_admin.CreateConversionEventRequest, dict,]
+    "request_type",
+    [
+        analytics_admin.CreateConversionEventRequest,
+        dict,
+    ],
 )
 def test_create_conversion_event(request_type, transport: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -9990,7 +10834,8 @@ def test_create_conversion_event_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10009,7 +10854,8 @@ async def test_create_conversion_event_async(
     request_type=analytics_admin.CreateConversionEventRequest,
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -10074,7 +10920,10 @@ def test_create_conversion_event_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -10105,7 +10954,10 @@ async def test_create_conversion_event_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_conversion_event_flattened():
@@ -10205,11 +11057,16 @@ async def test_create_conversion_event_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [analytics_admin.GetConversionEventRequest, dict,]
+    "request_type",
+    [
+        analytics_admin.GetConversionEventRequest,
+        dict,
+    ],
 )
 def test_get_conversion_event(request_type, transport: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -10246,7 +11103,8 @@ def test_get_conversion_event_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10265,7 +11123,8 @@ async def test_get_conversion_event_async(
     request_type=analytics_admin.GetConversionEventRequest,
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -10330,7 +11189,10 @@ def test_get_conversion_event_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -10361,7 +11223,10 @@ async def test_get_conversion_event_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_conversion_event_flattened():
@@ -10377,7 +11242,9 @@ def test_get_conversion_event_flattened():
         call.return_value = resources.ConversionEvent()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_conversion_event(name="name_value",)
+        client.get_conversion_event(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -10397,7 +11264,8 @@ def test_get_conversion_event_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_conversion_event(
-            analytics_admin.GetConversionEventRequest(), name="name_value",
+            analytics_admin.GetConversionEventRequest(),
+            name="name_value",
         )
 
 
@@ -10419,7 +11287,9 @@ async def test_get_conversion_event_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_conversion_event(name="name_value",)
+        response = await client.get_conversion_event(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -10440,16 +11310,22 @@ async def test_get_conversion_event_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_conversion_event(
-            analytics_admin.GetConversionEventRequest(), name="name_value",
+            analytics_admin.GetConversionEventRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [analytics_admin.DeleteConversionEventRequest, dict,]
+    "request_type",
+    [
+        analytics_admin.DeleteConversionEventRequest,
+        dict,
+    ],
 )
 def test_delete_conversion_event(request_type, transport: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -10477,7 +11353,8 @@ def test_delete_conversion_event_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10496,7 +11373,8 @@ async def test_delete_conversion_event_async(
     request_type=analytics_admin.DeleteConversionEventRequest,
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -10550,7 +11428,10 @@ def test_delete_conversion_event_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -10579,7 +11460,10 @@ async def test_delete_conversion_event_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_conversion_event_flattened():
@@ -10595,7 +11479,9 @@ def test_delete_conversion_event_flattened():
         call.return_value = None
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_conversion_event(name="name_value",)
+        client.delete_conversion_event(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -10615,7 +11501,8 @@ def test_delete_conversion_event_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_conversion_event(
-            analytics_admin.DeleteConversionEventRequest(), name="name_value",
+            analytics_admin.DeleteConversionEventRequest(),
+            name="name_value",
         )
 
 
@@ -10635,7 +11522,9 @@ async def test_delete_conversion_event_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_conversion_event(name="name_value",)
+        response = await client.delete_conversion_event(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -10656,16 +11545,22 @@ async def test_delete_conversion_event_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_conversion_event(
-            analytics_admin.DeleteConversionEventRequest(), name="name_value",
+            analytics_admin.DeleteConversionEventRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [analytics_admin.ListConversionEventsRequest, dict,]
+    "request_type",
+    [
+        analytics_admin.ListConversionEventsRequest,
+        dict,
+    ],
 )
 def test_list_conversion_events(request_type, transport: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -10696,7 +11591,8 @@ def test_list_conversion_events_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10715,7 +11611,8 @@ async def test_list_conversion_events_async(
     request_type=analytics_admin.ListConversionEventsRequest,
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -10774,7 +11671,10 @@ def test_list_conversion_events_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -10805,7 +11705,10 @@ async def test_list_conversion_events_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_conversion_events_flattened():
@@ -10821,7 +11724,9 @@ def test_list_conversion_events_flattened():
         call.return_value = analytics_admin.ListConversionEventsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_conversion_events(parent="parent_value",)
+        client.list_conversion_events(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -10841,7 +11746,8 @@ def test_list_conversion_events_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_conversion_events(
-            analytics_admin.ListConversionEventsRequest(), parent="parent_value",
+            analytics_admin.ListConversionEventsRequest(),
+            parent="parent_value",
         )
 
 
@@ -10863,7 +11769,9 @@ async def test_list_conversion_events_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_conversion_events(parent="parent_value",)
+        response = await client.list_conversion_events(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -10884,13 +11792,15 @@ async def test_list_conversion_events_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_conversion_events(
-            analytics_admin.ListConversionEventsRequest(), parent="parent_value",
+            analytics_admin.ListConversionEventsRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_conversion_events_pager(transport_name: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10908,10 +11818,14 @@ def test_list_conversion_events_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             analytics_admin.ListConversionEventsResponse(
-                conversion_events=[], next_page_token="def",
+                conversion_events=[],
+                next_page_token="def",
             ),
             analytics_admin.ListConversionEventsResponse(
-                conversion_events=[resources.ConversionEvent(),], next_page_token="ghi",
+                conversion_events=[
+                    resources.ConversionEvent(),
+                ],
+                next_page_token="ghi",
             ),
             analytics_admin.ListConversionEventsResponse(
                 conversion_events=[
@@ -10937,7 +11851,8 @@ def test_list_conversion_events_pager(transport_name: str = "grpc"):
 
 def test_list_conversion_events_pages(transport_name: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10955,10 +11870,14 @@ def test_list_conversion_events_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             analytics_admin.ListConversionEventsResponse(
-                conversion_events=[], next_page_token="def",
+                conversion_events=[],
+                next_page_token="def",
             ),
             analytics_admin.ListConversionEventsResponse(
-                conversion_events=[resources.ConversionEvent(),], next_page_token="ghi",
+                conversion_events=[
+                    resources.ConversionEvent(),
+                ],
+                next_page_token="ghi",
             ),
             analytics_admin.ListConversionEventsResponse(
                 conversion_events=[
@@ -10996,10 +11915,14 @@ async def test_list_conversion_events_async_pager():
                 next_page_token="abc",
             ),
             analytics_admin.ListConversionEventsResponse(
-                conversion_events=[], next_page_token="def",
+                conversion_events=[],
+                next_page_token="def",
             ),
             analytics_admin.ListConversionEventsResponse(
-                conversion_events=[resources.ConversionEvent(),], next_page_token="ghi",
+                conversion_events=[
+                    resources.ConversionEvent(),
+                ],
+                next_page_token="ghi",
             ),
             analytics_admin.ListConversionEventsResponse(
                 conversion_events=[
@@ -11009,7 +11932,9 @@ async def test_list_conversion_events_async_pager():
             ),
             RuntimeError,
         )
-        async_pager = await client.list_conversion_events(request={},)
+        async_pager = await client.list_conversion_events(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -11042,10 +11967,14 @@ async def test_list_conversion_events_async_pages():
                 next_page_token="abc",
             ),
             analytics_admin.ListConversionEventsResponse(
-                conversion_events=[], next_page_token="def",
+                conversion_events=[],
+                next_page_token="def",
             ),
             analytics_admin.ListConversionEventsResponse(
-                conversion_events=[resources.ConversionEvent(),], next_page_token="ghi",
+                conversion_events=[
+                    resources.ConversionEvent(),
+                ],
+                next_page_token="ghi",
             ),
             analytics_admin.ListConversionEventsResponse(
                 conversion_events=[
@@ -11063,11 +11992,16 @@ async def test_list_conversion_events_async_pages():
 
 
 @pytest.mark.parametrize(
-    "request_type", [analytics_admin.GetDisplayVideo360AdvertiserLinkRequest, dict,]
+    "request_type",
+    [
+        analytics_admin.GetDisplayVideo360AdvertiserLinkRequest,
+        dict,
+    ],
 )
 def test_get_display_video360_advertiser_link(request_type, transport: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -11102,7 +12036,8 @@ def test_get_display_video360_advertiser_link_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -11121,7 +12056,8 @@ async def test_get_display_video360_advertiser_link_async(
     request_type=analytics_admin.GetDisplayVideo360AdvertiserLinkRequest,
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -11184,7 +12120,10 @@ def test_get_display_video360_advertiser_link_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -11215,7 +12154,10 @@ async def test_get_display_video360_advertiser_link_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_display_video360_advertiser_link_flattened():
@@ -11231,7 +12173,9 @@ def test_get_display_video360_advertiser_link_flattened():
         call.return_value = resources.DisplayVideo360AdvertiserLink()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_display_video360_advertiser_link(name="name_value",)
+        client.get_display_video360_advertiser_link(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -11274,7 +12218,9 @@ async def test_get_display_video360_advertiser_link_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_display_video360_advertiser_link(name="name_value",)
+        response = await client.get_display_video360_advertiser_link(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -11301,11 +12247,16 @@ async def test_get_display_video360_advertiser_link_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [analytics_admin.ListDisplayVideo360AdvertiserLinksRequest, dict,]
+    "request_type",
+    [
+        analytics_admin.ListDisplayVideo360AdvertiserLinksRequest,
+        dict,
+    ],
 )
 def test_list_display_video360_advertiser_links(request_type, transport: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -11336,7 +12287,8 @@ def test_list_display_video360_advertiser_links_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -11355,7 +12307,8 @@ async def test_list_display_video360_advertiser_links_async(
     request_type=analytics_admin.ListDisplayVideo360AdvertiserLinksRequest,
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -11414,7 +12367,10 @@ def test_list_display_video360_advertiser_links_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -11445,7 +12401,10 @@ async def test_list_display_video360_advertiser_links_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_display_video360_advertiser_links_flattened():
@@ -11461,7 +12420,9 @@ def test_list_display_video360_advertiser_links_flattened():
         call.return_value = analytics_admin.ListDisplayVideo360AdvertiserLinksResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_display_video360_advertiser_links(parent="parent_value",)
+        client.list_display_video360_advertiser_links(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -11534,7 +12495,8 @@ async def test_list_display_video360_advertiser_links_flattened_error_async():
 
 def test_list_display_video360_advertiser_links_pager(transport_name: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -11552,7 +12514,8 @@ def test_list_display_video360_advertiser_links_pager(transport_name: str = "grp
                 next_page_token="abc",
             ),
             analytics_admin.ListDisplayVideo360AdvertiserLinksResponse(
-                display_video_360_advertiser_links=[], next_page_token="def",
+                display_video_360_advertiser_links=[],
+                next_page_token="def",
             ),
             analytics_admin.ListDisplayVideo360AdvertiserLinksResponse(
                 display_video_360_advertiser_links=[
@@ -11586,7 +12549,8 @@ def test_list_display_video360_advertiser_links_pager(transport_name: str = "grp
 
 def test_list_display_video360_advertiser_links_pages(transport_name: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -11604,7 +12568,8 @@ def test_list_display_video360_advertiser_links_pages(transport_name: str = "grp
                 next_page_token="abc",
             ),
             analytics_admin.ListDisplayVideo360AdvertiserLinksResponse(
-                display_video_360_advertiser_links=[], next_page_token="def",
+                display_video_360_advertiser_links=[],
+                next_page_token="def",
             ),
             analytics_admin.ListDisplayVideo360AdvertiserLinksResponse(
                 display_video_360_advertiser_links=[
@@ -11648,7 +12613,8 @@ async def test_list_display_video360_advertiser_links_async_pager():
                 next_page_token="abc",
             ),
             analytics_admin.ListDisplayVideo360AdvertiserLinksResponse(
-                display_video_360_advertiser_links=[], next_page_token="def",
+                display_video_360_advertiser_links=[],
+                next_page_token="def",
             ),
             analytics_admin.ListDisplayVideo360AdvertiserLinksResponse(
                 display_video_360_advertiser_links=[
@@ -11664,7 +12630,9 @@ async def test_list_display_video360_advertiser_links_async_pager():
             ),
             RuntimeError,
         )
-        async_pager = await client.list_display_video360_advertiser_links(request={},)
+        async_pager = await client.list_display_video360_advertiser_links(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -11699,7 +12667,8 @@ async def test_list_display_video360_advertiser_links_async_pages():
                 next_page_token="abc",
             ),
             analytics_admin.ListDisplayVideo360AdvertiserLinksResponse(
-                display_video_360_advertiser_links=[], next_page_token="def",
+                display_video_360_advertiser_links=[],
+                next_page_token="def",
             ),
             analytics_admin.ListDisplayVideo360AdvertiserLinksResponse(
                 display_video_360_advertiser_links=[
@@ -11725,11 +12694,16 @@ async def test_list_display_video360_advertiser_links_async_pages():
 
 
 @pytest.mark.parametrize(
-    "request_type", [analytics_admin.CreateDisplayVideo360AdvertiserLinkRequest, dict,]
+    "request_type",
+    [
+        analytics_admin.CreateDisplayVideo360AdvertiserLinkRequest,
+        dict,
+    ],
 )
 def test_create_display_video360_advertiser_link(request_type, transport: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -11764,7 +12738,8 @@ def test_create_display_video360_advertiser_link_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -11783,7 +12758,8 @@ async def test_create_display_video360_advertiser_link_async(
     request_type=analytics_admin.CreateDisplayVideo360AdvertiserLinkRequest,
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -11846,7 +12822,10 @@ def test_create_display_video360_advertiser_link_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -11877,7 +12856,10 @@ async def test_create_display_video360_advertiser_link_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_display_video360_advertiser_link_flattened():
@@ -11985,11 +12967,16 @@ async def test_create_display_video360_advertiser_link_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [analytics_admin.DeleteDisplayVideo360AdvertiserLinkRequest, dict,]
+    "request_type",
+    [
+        analytics_admin.DeleteDisplayVideo360AdvertiserLinkRequest,
+        dict,
+    ],
 )
 def test_delete_display_video360_advertiser_link(request_type, transport: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -12017,7 +13004,8 @@ def test_delete_display_video360_advertiser_link_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -12036,7 +13024,8 @@ async def test_delete_display_video360_advertiser_link_async(
     request_type=analytics_admin.DeleteDisplayVideo360AdvertiserLinkRequest,
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -12090,7 +13079,10 @@ def test_delete_display_video360_advertiser_link_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -12119,7 +13111,10 @@ async def test_delete_display_video360_advertiser_link_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_display_video360_advertiser_link_flattened():
@@ -12135,7 +13130,9 @@ def test_delete_display_video360_advertiser_link_flattened():
         call.return_value = None
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_display_video360_advertiser_link(name="name_value",)
+        client.delete_display_video360_advertiser_link(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -12205,11 +13202,16 @@ async def test_delete_display_video360_advertiser_link_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [analytics_admin.UpdateDisplayVideo360AdvertiserLinkRequest, dict,]
+    "request_type",
+    [
+        analytics_admin.UpdateDisplayVideo360AdvertiserLinkRequest,
+        dict,
+    ],
 )
 def test_update_display_video360_advertiser_link(request_type, transport: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -12244,7 +13246,8 @@ def test_update_display_video360_advertiser_link_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -12263,7 +13266,8 @@ async def test_update_display_video360_advertiser_link_async(
     request_type=analytics_admin.UpdateDisplayVideo360AdvertiserLinkRequest,
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -12476,13 +13480,17 @@ async def test_update_display_video360_advertiser_link_flattened_error_async():
 
 @pytest.mark.parametrize(
     "request_type",
-    [analytics_admin.GetDisplayVideo360AdvertiserLinkProposalRequest, dict,],
+    [
+        analytics_admin.GetDisplayVideo360AdvertiserLinkProposalRequest,
+        dict,
+    ],
 )
 def test_get_display_video360_advertiser_link_proposal(
     request_type, transport: str = "grpc"
 ):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -12521,7 +13529,8 @@ def test_get_display_video360_advertiser_link_proposal_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -12542,7 +13551,8 @@ async def test_get_display_video360_advertiser_link_proposal_async(
     request_type=analytics_admin.GetDisplayVideo360AdvertiserLinkProposalRequest,
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -12609,7 +13619,10 @@ def test_get_display_video360_advertiser_link_proposal_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -12640,7 +13653,10 @@ async def test_get_display_video360_advertiser_link_proposal_field_headers_async
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_display_video360_advertiser_link_proposal_flattened():
@@ -12656,7 +13672,9 @@ def test_get_display_video360_advertiser_link_proposal_flattened():
         call.return_value = resources.DisplayVideo360AdvertiserLinkProposal()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_display_video360_advertiser_link_proposal(name="name_value",)
+        client.get_display_video360_advertiser_link_proposal(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -12729,13 +13747,17 @@ async def test_get_display_video360_advertiser_link_proposal_flattened_error_asy
 
 @pytest.mark.parametrize(
     "request_type",
-    [analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsRequest, dict,],
+    [
+        analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsRequest,
+        dict,
+    ],
 )
 def test_list_display_video360_advertiser_link_proposals(
     request_type, transport: str = "grpc"
 ):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -12748,8 +13770,10 @@ def test_list_display_video360_advertiser_link_proposals(
         "__call__",
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsResponse(
-            next_page_token="next_page_token_value",
+        call.return_value = (
+            analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsResponse(
+                next_page_token="next_page_token_value",
+            )
         )
         response = client.list_display_video360_advertiser_link_proposals(request)
 
@@ -12770,7 +13794,8 @@ def test_list_display_video360_advertiser_link_proposals_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -12793,7 +13818,8 @@ async def test_list_display_video360_advertiser_link_proposals_async(
     request_type=analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsRequest,
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -12861,7 +13887,10 @@ def test_list_display_video360_advertiser_link_proposals_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -12893,7 +13922,10 @@ async def test_list_display_video360_advertiser_link_proposals_field_headers_asy
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_display_video360_advertiser_link_proposals_flattened():
@@ -12912,7 +13944,9 @@ def test_list_display_video360_advertiser_link_proposals_flattened():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_display_video360_advertiser_link_proposals(parent="parent_value",)
+        client.list_display_video360_advertiser_link_proposals(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -12990,7 +14024,8 @@ def test_list_display_video360_advertiser_link_proposals_pager(
     transport_name: str = "grpc",
 ):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -13009,7 +14044,8 @@ def test_list_display_video360_advertiser_link_proposals_pager(
                 next_page_token="abc",
             ),
             analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsResponse(
-                display_video_360_advertiser_link_proposals=[], next_page_token="def",
+                display_video_360_advertiser_link_proposals=[],
+                next_page_token="def",
             ),
             analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsResponse(
                 display_video_360_advertiser_link_proposals=[
@@ -13046,7 +14082,8 @@ def test_list_display_video360_advertiser_link_proposals_pages(
     transport_name: str = "grpc",
 ):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -13065,7 +14102,8 @@ def test_list_display_video360_advertiser_link_proposals_pages(
                 next_page_token="abc",
             ),
             analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsResponse(
-                display_video_360_advertiser_link_proposals=[], next_page_token="def",
+                display_video_360_advertiser_link_proposals=[],
+                next_page_token="def",
             ),
             analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsResponse(
                 display_video_360_advertiser_link_proposals=[
@@ -13111,7 +14149,8 @@ async def test_list_display_video360_advertiser_link_proposals_async_pager():
                 next_page_token="abc",
             ),
             analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsResponse(
-                display_video_360_advertiser_link_proposals=[], next_page_token="def",
+                display_video_360_advertiser_link_proposals=[],
+                next_page_token="def",
             ),
             analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsResponse(
                 display_video_360_advertiser_link_proposals=[
@@ -13165,7 +14204,8 @@ async def test_list_display_video360_advertiser_link_proposals_async_pages():
                 next_page_token="abc",
             ),
             analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsResponse(
-                display_video_360_advertiser_link_proposals=[], next_page_token="def",
+                display_video_360_advertiser_link_proposals=[],
+                next_page_token="def",
             ),
             analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsResponse(
                 display_video_360_advertiser_link_proposals=[
@@ -13192,13 +14232,17 @@ async def test_list_display_video360_advertiser_link_proposals_async_pages():
 
 @pytest.mark.parametrize(
     "request_type",
-    [analytics_admin.CreateDisplayVideo360AdvertiserLinkProposalRequest, dict,],
+    [
+        analytics_admin.CreateDisplayVideo360AdvertiserLinkProposalRequest,
+        dict,
+    ],
 )
 def test_create_display_video360_advertiser_link_proposal(
     request_type, transport: str = "grpc"
 ):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -13239,7 +14283,8 @@ def test_create_display_video360_advertiser_link_proposal_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -13262,7 +14307,8 @@ async def test_create_display_video360_advertiser_link_proposal_async(
     request_type=analytics_admin.CreateDisplayVideo360AdvertiserLinkProposalRequest,
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -13334,7 +14380,10 @@ def test_create_display_video360_advertiser_link_proposal_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -13366,7 +14415,10 @@ async def test_create_display_video360_advertiser_link_proposal_field_headers_as
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_display_video360_advertiser_link_proposal_flattened():
@@ -13477,13 +14529,17 @@ async def test_create_display_video360_advertiser_link_proposal_flattened_error_
 
 @pytest.mark.parametrize(
     "request_type",
-    [analytics_admin.DeleteDisplayVideo360AdvertiserLinkProposalRequest, dict,],
+    [
+        analytics_admin.DeleteDisplayVideo360AdvertiserLinkProposalRequest,
+        dict,
+    ],
 )
 def test_delete_display_video360_advertiser_link_proposal(
     request_type, transport: str = "grpc"
 ):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -13515,7 +14571,8 @@ def test_delete_display_video360_advertiser_link_proposal_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -13538,7 +14595,8 @@ async def test_delete_display_video360_advertiser_link_proposal_async(
     request_type=analytics_admin.DeleteDisplayVideo360AdvertiserLinkProposalRequest,
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -13599,7 +14657,10 @@ def test_delete_display_video360_advertiser_link_proposal_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -13629,7 +14690,10 @@ async def test_delete_display_video360_advertiser_link_proposal_field_headers_as
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_display_video360_advertiser_link_proposal_flattened():
@@ -13646,7 +14710,9 @@ def test_delete_display_video360_advertiser_link_proposal_flattened():
         call.return_value = None
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_display_video360_advertiser_link_proposal(name="name_value",)
+        client.delete_display_video360_advertiser_link_proposal(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -13718,13 +14784,17 @@ async def test_delete_display_video360_advertiser_link_proposal_flattened_error_
 
 @pytest.mark.parametrize(
     "request_type",
-    [analytics_admin.ApproveDisplayVideo360AdvertiserLinkProposalRequest, dict,],
+    [
+        analytics_admin.ApproveDisplayVideo360AdvertiserLinkProposalRequest,
+        dict,
+    ],
 )
 def test_approve_display_video360_advertiser_link_proposal(
     request_type, transport: str = "grpc"
 ):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -13760,7 +14830,8 @@ def test_approve_display_video360_advertiser_link_proposal_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -13783,7 +14854,8 @@ async def test_approve_display_video360_advertiser_link_proposal_async(
     request_type=analytics_admin.ApproveDisplayVideo360AdvertiserLinkProposalRequest,
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -13852,7 +14924,10 @@ def test_approve_display_video360_advertiser_link_proposal_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -13884,18 +14959,25 @@ async def test_approve_display_video360_advertiser_link_proposal_field_headers_a
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.parametrize(
     "request_type",
-    [analytics_admin.CancelDisplayVideo360AdvertiserLinkProposalRequest, dict,],
+    [
+        analytics_admin.CancelDisplayVideo360AdvertiserLinkProposalRequest,
+        dict,
+    ],
 )
 def test_cancel_display_video360_advertiser_link_proposal(
     request_type, transport: str = "grpc"
 ):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -13936,7 +15018,8 @@ def test_cancel_display_video360_advertiser_link_proposal_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -13959,7 +15042,8 @@ async def test_cancel_display_video360_advertiser_link_proposal_async(
     request_type=analytics_admin.CancelDisplayVideo360AdvertiserLinkProposalRequest,
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -14031,7 +15115,10 @@ def test_cancel_display_video360_advertiser_link_proposal_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -14063,15 +15150,23 @@ async def test_cancel_display_video360_advertiser_link_proposal_field_headers_as
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.parametrize(
-    "request_type", [analytics_admin.CreateCustomDimensionRequest, dict,]
+    "request_type",
+    [
+        analytics_admin.CreateCustomDimensionRequest,
+        dict,
+    ],
 )
 def test_create_custom_dimension(request_type, transport: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -14112,7 +15207,8 @@ def test_create_custom_dimension_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -14131,7 +15227,8 @@ async def test_create_custom_dimension_async(
     request_type=analytics_admin.CreateCustomDimensionRequest,
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -14200,7 +15297,10 @@ def test_create_custom_dimension_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -14231,7 +15331,10 @@ async def test_create_custom_dimension_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_custom_dimension_flattened():
@@ -14331,11 +15434,16 @@ async def test_create_custom_dimension_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [analytics_admin.UpdateCustomDimensionRequest, dict,]
+    "request_type",
+    [
+        analytics_admin.UpdateCustomDimensionRequest,
+        dict,
+    ],
 )
 def test_update_custom_dimension(request_type, transport: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -14376,7 +15484,8 @@ def test_update_custom_dimension_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -14395,7 +15504,8 @@ async def test_update_custom_dimension_async(
     request_type=analytics_admin.UpdateCustomDimensionRequest,
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -14601,11 +15711,16 @@ async def test_update_custom_dimension_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [analytics_admin.ListCustomDimensionsRequest, dict,]
+    "request_type",
+    [
+        analytics_admin.ListCustomDimensionsRequest,
+        dict,
+    ],
 )
 def test_list_custom_dimensions(request_type, transport: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -14636,7 +15751,8 @@ def test_list_custom_dimensions_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -14655,7 +15771,8 @@ async def test_list_custom_dimensions_async(
     request_type=analytics_admin.ListCustomDimensionsRequest,
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -14714,7 +15831,10 @@ def test_list_custom_dimensions_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -14745,7 +15865,10 @@ async def test_list_custom_dimensions_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_custom_dimensions_flattened():
@@ -14761,7 +15884,9 @@ def test_list_custom_dimensions_flattened():
         call.return_value = analytics_admin.ListCustomDimensionsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_custom_dimensions(parent="parent_value",)
+        client.list_custom_dimensions(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -14781,7 +15906,8 @@ def test_list_custom_dimensions_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_custom_dimensions(
-            analytics_admin.ListCustomDimensionsRequest(), parent="parent_value",
+            analytics_admin.ListCustomDimensionsRequest(),
+            parent="parent_value",
         )
 
 
@@ -14803,7 +15929,9 @@ async def test_list_custom_dimensions_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_custom_dimensions(parent="parent_value",)
+        response = await client.list_custom_dimensions(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -14824,13 +15952,15 @@ async def test_list_custom_dimensions_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_custom_dimensions(
-            analytics_admin.ListCustomDimensionsRequest(), parent="parent_value",
+            analytics_admin.ListCustomDimensionsRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_custom_dimensions_pager(transport_name: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -14848,10 +15978,14 @@ def test_list_custom_dimensions_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             analytics_admin.ListCustomDimensionsResponse(
-                custom_dimensions=[], next_page_token="def",
+                custom_dimensions=[],
+                next_page_token="def",
             ),
             analytics_admin.ListCustomDimensionsResponse(
-                custom_dimensions=[resources.CustomDimension(),], next_page_token="ghi",
+                custom_dimensions=[
+                    resources.CustomDimension(),
+                ],
+                next_page_token="ghi",
             ),
             analytics_admin.ListCustomDimensionsResponse(
                 custom_dimensions=[
@@ -14877,7 +16011,8 @@ def test_list_custom_dimensions_pager(transport_name: str = "grpc"):
 
 def test_list_custom_dimensions_pages(transport_name: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -14895,10 +16030,14 @@ def test_list_custom_dimensions_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             analytics_admin.ListCustomDimensionsResponse(
-                custom_dimensions=[], next_page_token="def",
+                custom_dimensions=[],
+                next_page_token="def",
             ),
             analytics_admin.ListCustomDimensionsResponse(
-                custom_dimensions=[resources.CustomDimension(),], next_page_token="ghi",
+                custom_dimensions=[
+                    resources.CustomDimension(),
+                ],
+                next_page_token="ghi",
             ),
             analytics_admin.ListCustomDimensionsResponse(
                 custom_dimensions=[
@@ -14936,10 +16075,14 @@ async def test_list_custom_dimensions_async_pager():
                 next_page_token="abc",
             ),
             analytics_admin.ListCustomDimensionsResponse(
-                custom_dimensions=[], next_page_token="def",
+                custom_dimensions=[],
+                next_page_token="def",
             ),
             analytics_admin.ListCustomDimensionsResponse(
-                custom_dimensions=[resources.CustomDimension(),], next_page_token="ghi",
+                custom_dimensions=[
+                    resources.CustomDimension(),
+                ],
+                next_page_token="ghi",
             ),
             analytics_admin.ListCustomDimensionsResponse(
                 custom_dimensions=[
@@ -14949,7 +16092,9 @@ async def test_list_custom_dimensions_async_pager():
             ),
             RuntimeError,
         )
-        async_pager = await client.list_custom_dimensions(request={},)
+        async_pager = await client.list_custom_dimensions(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -14982,10 +16127,14 @@ async def test_list_custom_dimensions_async_pages():
                 next_page_token="abc",
             ),
             analytics_admin.ListCustomDimensionsResponse(
-                custom_dimensions=[], next_page_token="def",
+                custom_dimensions=[],
+                next_page_token="def",
             ),
             analytics_admin.ListCustomDimensionsResponse(
-                custom_dimensions=[resources.CustomDimension(),], next_page_token="ghi",
+                custom_dimensions=[
+                    resources.CustomDimension(),
+                ],
+                next_page_token="ghi",
             ),
             analytics_admin.ListCustomDimensionsResponse(
                 custom_dimensions=[
@@ -15003,11 +16152,16 @@ async def test_list_custom_dimensions_async_pages():
 
 
 @pytest.mark.parametrize(
-    "request_type", [analytics_admin.ArchiveCustomDimensionRequest, dict,]
+    "request_type",
+    [
+        analytics_admin.ArchiveCustomDimensionRequest,
+        dict,
+    ],
 )
 def test_archive_custom_dimension(request_type, transport: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -15035,7 +16189,8 @@ def test_archive_custom_dimension_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -15054,7 +16209,8 @@ async def test_archive_custom_dimension_async(
     request_type=analytics_admin.ArchiveCustomDimensionRequest,
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -15108,7 +16264,10 @@ def test_archive_custom_dimension_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -15137,7 +16296,10 @@ async def test_archive_custom_dimension_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_archive_custom_dimension_flattened():
@@ -15153,7 +16315,9 @@ def test_archive_custom_dimension_flattened():
         call.return_value = None
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.archive_custom_dimension(name="name_value",)
+        client.archive_custom_dimension(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -15173,7 +16337,8 @@ def test_archive_custom_dimension_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.archive_custom_dimension(
-            analytics_admin.ArchiveCustomDimensionRequest(), name="name_value",
+            analytics_admin.ArchiveCustomDimensionRequest(),
+            name="name_value",
         )
 
 
@@ -15193,7 +16358,9 @@ async def test_archive_custom_dimension_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.archive_custom_dimension(name="name_value",)
+        response = await client.archive_custom_dimension(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -15214,16 +16381,22 @@ async def test_archive_custom_dimension_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.archive_custom_dimension(
-            analytics_admin.ArchiveCustomDimensionRequest(), name="name_value",
+            analytics_admin.ArchiveCustomDimensionRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [analytics_admin.GetCustomDimensionRequest, dict,]
+    "request_type",
+    [
+        analytics_admin.GetCustomDimensionRequest,
+        dict,
+    ],
 )
 def test_get_custom_dimension(request_type, transport: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -15264,7 +16437,8 @@ def test_get_custom_dimension_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -15283,7 +16457,8 @@ async def test_get_custom_dimension_async(
     request_type=analytics_admin.GetCustomDimensionRequest,
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -15352,7 +16527,10 @@ def test_get_custom_dimension_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -15383,7 +16561,10 @@ async def test_get_custom_dimension_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_custom_dimension_flattened():
@@ -15399,7 +16580,9 @@ def test_get_custom_dimension_flattened():
         call.return_value = resources.CustomDimension()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_custom_dimension(name="name_value",)
+        client.get_custom_dimension(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -15419,7 +16602,8 @@ def test_get_custom_dimension_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_custom_dimension(
-            analytics_admin.GetCustomDimensionRequest(), name="name_value",
+            analytics_admin.GetCustomDimensionRequest(),
+            name="name_value",
         )
 
 
@@ -15441,7 +16625,9 @@ async def test_get_custom_dimension_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_custom_dimension(name="name_value",)
+        response = await client.get_custom_dimension(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -15462,16 +16648,22 @@ async def test_get_custom_dimension_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_custom_dimension(
-            analytics_admin.GetCustomDimensionRequest(), name="name_value",
+            analytics_admin.GetCustomDimensionRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [analytics_admin.CreateCustomMetricRequest, dict,]
+    "request_type",
+    [
+        analytics_admin.CreateCustomMetricRequest,
+        dict,
+    ],
 )
 def test_create_custom_metric(request_type, transport: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -15518,7 +16710,8 @@ def test_create_custom_metric_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -15537,7 +16730,8 @@ async def test_create_custom_metric_async(
     request_type=analytics_admin.CreateCustomMetricRequest,
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -15612,7 +16806,10 @@ def test_create_custom_metric_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -15643,7 +16840,10 @@ async def test_create_custom_metric_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_custom_metric_flattened():
@@ -15743,11 +16943,16 @@ async def test_create_custom_metric_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [analytics_admin.UpdateCustomMetricRequest, dict,]
+    "request_type",
+    [
+        analytics_admin.UpdateCustomMetricRequest,
+        dict,
+    ],
 )
 def test_update_custom_metric(request_type, transport: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -15794,7 +16999,8 @@ def test_update_custom_metric_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -15813,7 +17019,8 @@ async def test_update_custom_metric_async(
     request_type=analytics_admin.UpdateCustomMetricRequest,
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -16025,11 +17232,16 @@ async def test_update_custom_metric_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [analytics_admin.ListCustomMetricsRequest, dict,]
+    "request_type",
+    [
+        analytics_admin.ListCustomMetricsRequest,
+        dict,
+    ],
 )
 def test_list_custom_metrics(request_type, transport: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -16060,7 +17272,8 @@ def test_list_custom_metrics_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -16079,7 +17292,8 @@ async def test_list_custom_metrics_async(
     request_type=analytics_admin.ListCustomMetricsRequest,
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -16138,7 +17352,10 @@ def test_list_custom_metrics_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -16169,7 +17386,10 @@ async def test_list_custom_metrics_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_custom_metrics_flattened():
@@ -16185,7 +17405,9 @@ def test_list_custom_metrics_flattened():
         call.return_value = analytics_admin.ListCustomMetricsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_custom_metrics(parent="parent_value",)
+        client.list_custom_metrics(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -16205,7 +17427,8 @@ def test_list_custom_metrics_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_custom_metrics(
-            analytics_admin.ListCustomMetricsRequest(), parent="parent_value",
+            analytics_admin.ListCustomMetricsRequest(),
+            parent="parent_value",
         )
 
 
@@ -16227,7 +17450,9 @@ async def test_list_custom_metrics_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_custom_metrics(parent="parent_value",)
+        response = await client.list_custom_metrics(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -16248,13 +17473,15 @@ async def test_list_custom_metrics_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_custom_metrics(
-            analytics_admin.ListCustomMetricsRequest(), parent="parent_value",
+            analytics_admin.ListCustomMetricsRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_custom_metrics_pager(transport_name: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -16272,13 +17499,20 @@ def test_list_custom_metrics_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             analytics_admin.ListCustomMetricsResponse(
-                custom_metrics=[], next_page_token="def",
+                custom_metrics=[],
+                next_page_token="def",
             ),
             analytics_admin.ListCustomMetricsResponse(
-                custom_metrics=[resources.CustomMetric(),], next_page_token="ghi",
+                custom_metrics=[
+                    resources.CustomMetric(),
+                ],
+                next_page_token="ghi",
             ),
             analytics_admin.ListCustomMetricsResponse(
-                custom_metrics=[resources.CustomMetric(), resources.CustomMetric(),],
+                custom_metrics=[
+                    resources.CustomMetric(),
+                    resources.CustomMetric(),
+                ],
             ),
             RuntimeError,
         )
@@ -16298,7 +17532,8 @@ def test_list_custom_metrics_pager(transport_name: str = "grpc"):
 
 def test_list_custom_metrics_pages(transport_name: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -16316,13 +17551,20 @@ def test_list_custom_metrics_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             analytics_admin.ListCustomMetricsResponse(
-                custom_metrics=[], next_page_token="def",
+                custom_metrics=[],
+                next_page_token="def",
             ),
             analytics_admin.ListCustomMetricsResponse(
-                custom_metrics=[resources.CustomMetric(),], next_page_token="ghi",
+                custom_metrics=[
+                    resources.CustomMetric(),
+                ],
+                next_page_token="ghi",
             ),
             analytics_admin.ListCustomMetricsResponse(
-                custom_metrics=[resources.CustomMetric(), resources.CustomMetric(),],
+                custom_metrics=[
+                    resources.CustomMetric(),
+                    resources.CustomMetric(),
+                ],
             ),
             RuntimeError,
         )
@@ -16354,17 +17596,26 @@ async def test_list_custom_metrics_async_pager():
                 next_page_token="abc",
             ),
             analytics_admin.ListCustomMetricsResponse(
-                custom_metrics=[], next_page_token="def",
+                custom_metrics=[],
+                next_page_token="def",
             ),
             analytics_admin.ListCustomMetricsResponse(
-                custom_metrics=[resources.CustomMetric(),], next_page_token="ghi",
+                custom_metrics=[
+                    resources.CustomMetric(),
+                ],
+                next_page_token="ghi",
             ),
             analytics_admin.ListCustomMetricsResponse(
-                custom_metrics=[resources.CustomMetric(), resources.CustomMetric(),],
+                custom_metrics=[
+                    resources.CustomMetric(),
+                    resources.CustomMetric(),
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.list_custom_metrics(request={},)
+        async_pager = await client.list_custom_metrics(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -16397,13 +17648,20 @@ async def test_list_custom_metrics_async_pages():
                 next_page_token="abc",
             ),
             analytics_admin.ListCustomMetricsResponse(
-                custom_metrics=[], next_page_token="def",
+                custom_metrics=[],
+                next_page_token="def",
             ),
             analytics_admin.ListCustomMetricsResponse(
-                custom_metrics=[resources.CustomMetric(),], next_page_token="ghi",
+                custom_metrics=[
+                    resources.CustomMetric(),
+                ],
+                next_page_token="ghi",
             ),
             analytics_admin.ListCustomMetricsResponse(
-                custom_metrics=[resources.CustomMetric(), resources.CustomMetric(),],
+                custom_metrics=[
+                    resources.CustomMetric(),
+                    resources.CustomMetric(),
+                ],
             ),
             RuntimeError,
         )
@@ -16415,11 +17673,16 @@ async def test_list_custom_metrics_async_pages():
 
 
 @pytest.mark.parametrize(
-    "request_type", [analytics_admin.ArchiveCustomMetricRequest, dict,]
+    "request_type",
+    [
+        analytics_admin.ArchiveCustomMetricRequest,
+        dict,
+    ],
 )
 def test_archive_custom_metric(request_type, transport: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -16447,7 +17710,8 @@ def test_archive_custom_metric_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -16466,7 +17730,8 @@ async def test_archive_custom_metric_async(
     request_type=analytics_admin.ArchiveCustomMetricRequest,
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -16520,7 +17785,10 @@ def test_archive_custom_metric_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -16549,7 +17817,10 @@ async def test_archive_custom_metric_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_archive_custom_metric_flattened():
@@ -16565,7 +17836,9 @@ def test_archive_custom_metric_flattened():
         call.return_value = None
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.archive_custom_metric(name="name_value",)
+        client.archive_custom_metric(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -16585,7 +17858,8 @@ def test_archive_custom_metric_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.archive_custom_metric(
-            analytics_admin.ArchiveCustomMetricRequest(), name="name_value",
+            analytics_admin.ArchiveCustomMetricRequest(),
+            name="name_value",
         )
 
 
@@ -16605,7 +17879,9 @@ async def test_archive_custom_metric_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.archive_custom_metric(name="name_value",)
+        response = await client.archive_custom_metric(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -16626,16 +17902,22 @@ async def test_archive_custom_metric_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.archive_custom_metric(
-            analytics_admin.ArchiveCustomMetricRequest(), name="name_value",
+            analytics_admin.ArchiveCustomMetricRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [analytics_admin.GetCustomMetricRequest, dict,]
+    "request_type",
+    [
+        analytics_admin.GetCustomMetricRequest,
+        dict,
+    ],
 )
 def test_get_custom_metric(request_type, transport: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -16682,7 +17964,8 @@ def test_get_custom_metric_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -16700,7 +17983,8 @@ async def test_get_custom_metric_async(
     transport: str = "grpc_asyncio", request_type=analytics_admin.GetCustomMetricRequest
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -16775,7 +18059,10 @@ def test_get_custom_metric_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -16806,7 +18093,10 @@ async def test_get_custom_metric_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_custom_metric_flattened():
@@ -16822,7 +18112,9 @@ def test_get_custom_metric_flattened():
         call.return_value = resources.CustomMetric()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_custom_metric(name="name_value",)
+        client.get_custom_metric(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -16842,7 +18134,8 @@ def test_get_custom_metric_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_custom_metric(
-            analytics_admin.GetCustomMetricRequest(), name="name_value",
+            analytics_admin.GetCustomMetricRequest(),
+            name="name_value",
         )
 
 
@@ -16864,7 +18157,9 @@ async def test_get_custom_metric_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_custom_metric(name="name_value",)
+        response = await client.get_custom_metric(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -16885,16 +18180,22 @@ async def test_get_custom_metric_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_custom_metric(
-            analytics_admin.GetCustomMetricRequest(), name="name_value",
+            analytics_admin.GetCustomMetricRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [analytics_admin.GetDataRetentionSettingsRequest, dict,]
+    "request_type",
+    [
+        analytics_admin.GetDataRetentionSettingsRequest,
+        dict,
+    ],
 )
 def test_get_data_retention_settings(request_type, transport: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -16932,7 +18233,8 @@ def test_get_data_retention_settings_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -16951,7 +18253,8 @@ async def test_get_data_retention_settings_async(
     request_type=analytics_admin.GetDataRetentionSettingsRequest,
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -17017,7 +18320,10 @@ def test_get_data_retention_settings_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -17048,7 +18354,10 @@ async def test_get_data_retention_settings_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_data_retention_settings_flattened():
@@ -17064,7 +18373,9 @@ def test_get_data_retention_settings_flattened():
         call.return_value = resources.DataRetentionSettings()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_data_retention_settings(name="name_value",)
+        client.get_data_retention_settings(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -17084,7 +18395,8 @@ def test_get_data_retention_settings_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_data_retention_settings(
-            analytics_admin.GetDataRetentionSettingsRequest(), name="name_value",
+            analytics_admin.GetDataRetentionSettingsRequest(),
+            name="name_value",
         )
 
 
@@ -17106,7 +18418,9 @@ async def test_get_data_retention_settings_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_data_retention_settings(name="name_value",)
+        response = await client.get_data_retention_settings(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -17127,16 +18441,22 @@ async def test_get_data_retention_settings_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_data_retention_settings(
-            analytics_admin.GetDataRetentionSettingsRequest(), name="name_value",
+            analytics_admin.GetDataRetentionSettingsRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [analytics_admin.UpdateDataRetentionSettingsRequest, dict,]
+    "request_type",
+    [
+        analytics_admin.UpdateDataRetentionSettingsRequest,
+        dict,
+    ],
 )
 def test_update_data_retention_settings(request_type, transport: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -17174,7 +18494,8 @@ def test_update_data_retention_settings_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -17193,7 +18514,8 @@ async def test_update_data_retention_settings_async(
     request_type=analytics_admin.UpdateDataRetentionSettingsRequest,
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -17396,11 +18718,16 @@ async def test_update_data_retention_settings_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [analytics_admin.CreateDataStreamRequest, dict,]
+    "request_type",
+    [
+        analytics_admin.CreateDataStreamRequest,
+        dict,
+    ],
 )
 def test_create_data_stream(request_type, transport: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -17438,7 +18765,8 @@ def test_create_data_stream_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -17457,7 +18785,8 @@ async def test_create_data_stream_async(
     request_type=analytics_admin.CreateDataStreamRequest,
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -17520,7 +18849,10 @@ def test_create_data_stream_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -17551,7 +18883,10 @@ async def test_create_data_stream_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_data_stream_flattened():
@@ -17675,11 +19010,16 @@ async def test_create_data_stream_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [analytics_admin.DeleteDataStreamRequest, dict,]
+    "request_type",
+    [
+        analytics_admin.DeleteDataStreamRequest,
+        dict,
+    ],
 )
 def test_delete_data_stream(request_type, transport: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -17707,7 +19047,8 @@ def test_delete_data_stream_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -17726,7 +19067,8 @@ async def test_delete_data_stream_async(
     request_type=analytics_admin.DeleteDataStreamRequest,
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -17780,7 +19122,10 @@ def test_delete_data_stream_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -17809,7 +19154,10 @@ async def test_delete_data_stream_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_data_stream_flattened():
@@ -17825,7 +19173,9 @@ def test_delete_data_stream_flattened():
         call.return_value = None
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_data_stream(name="name_value",)
+        client.delete_data_stream(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -17845,7 +19195,8 @@ def test_delete_data_stream_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_data_stream(
-            analytics_admin.DeleteDataStreamRequest(), name="name_value",
+            analytics_admin.DeleteDataStreamRequest(),
+            name="name_value",
         )
 
 
@@ -17865,7 +19216,9 @@ async def test_delete_data_stream_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_data_stream(name="name_value",)
+        response = await client.delete_data_stream(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -17886,16 +19239,22 @@ async def test_delete_data_stream_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_data_stream(
-            analytics_admin.DeleteDataStreamRequest(), name="name_value",
+            analytics_admin.DeleteDataStreamRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [analytics_admin.UpdateDataStreamRequest, dict,]
+    "request_type",
+    [
+        analytics_admin.UpdateDataStreamRequest,
+        dict,
+    ],
 )
 def test_update_data_stream(request_type, transport: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -17933,7 +19292,8 @@ def test_update_data_stream_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -17952,7 +19312,8 @@ async def test_update_data_stream_async(
     request_type=analytics_admin.UpdateDataStreamRequest,
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -18015,9 +19376,10 @@ def test_update_data_stream_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "data_stream.name=data_stream.name/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "data_stream.name=data_stream.name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -18048,9 +19410,10 @@ async def test_update_data_stream_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "data_stream.name=data_stream.name/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "data_stream.name=data_stream.name/value",
+    ) in kw["metadata"]
 
 
 def test_update_data_stream_flattened():
@@ -18174,11 +19537,16 @@ async def test_update_data_stream_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [analytics_admin.ListDataStreamsRequest, dict,]
+    "request_type",
+    [
+        analytics_admin.ListDataStreamsRequest,
+        dict,
+    ],
 )
 def test_list_data_streams(request_type, transport: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -18209,7 +19577,8 @@ def test_list_data_streams_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -18227,7 +19596,8 @@ async def test_list_data_streams_async(
     transport: str = "grpc_asyncio", request_type=analytics_admin.ListDataStreamsRequest
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -18286,7 +19656,10 @@ def test_list_data_streams_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -18317,7 +19690,10 @@ async def test_list_data_streams_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_data_streams_flattened():
@@ -18333,7 +19709,9 @@ def test_list_data_streams_flattened():
         call.return_value = analytics_admin.ListDataStreamsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_data_streams(parent="parent_value",)
+        client.list_data_streams(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -18353,7 +19731,8 @@ def test_list_data_streams_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_data_streams(
-            analytics_admin.ListDataStreamsRequest(), parent="parent_value",
+            analytics_admin.ListDataStreamsRequest(),
+            parent="parent_value",
         )
 
 
@@ -18375,7 +19754,9 @@ async def test_list_data_streams_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_data_streams(parent="parent_value",)
+        response = await client.list_data_streams(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -18396,13 +19777,15 @@ async def test_list_data_streams_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_data_streams(
-            analytics_admin.ListDataStreamsRequest(), parent="parent_value",
+            analytics_admin.ListDataStreamsRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_data_streams_pager(transport_name: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -18420,13 +19803,20 @@ def test_list_data_streams_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             analytics_admin.ListDataStreamsResponse(
-                data_streams=[], next_page_token="def",
+                data_streams=[],
+                next_page_token="def",
             ),
             analytics_admin.ListDataStreamsResponse(
-                data_streams=[resources.DataStream(),], next_page_token="ghi",
+                data_streams=[
+                    resources.DataStream(),
+                ],
+                next_page_token="ghi",
             ),
             analytics_admin.ListDataStreamsResponse(
-                data_streams=[resources.DataStream(), resources.DataStream(),],
+                data_streams=[
+                    resources.DataStream(),
+                    resources.DataStream(),
+                ],
             ),
             RuntimeError,
         )
@@ -18446,7 +19836,8 @@ def test_list_data_streams_pager(transport_name: str = "grpc"):
 
 def test_list_data_streams_pages(transport_name: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -18464,13 +19855,20 @@ def test_list_data_streams_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             analytics_admin.ListDataStreamsResponse(
-                data_streams=[], next_page_token="def",
+                data_streams=[],
+                next_page_token="def",
             ),
             analytics_admin.ListDataStreamsResponse(
-                data_streams=[resources.DataStream(),], next_page_token="ghi",
+                data_streams=[
+                    resources.DataStream(),
+                ],
+                next_page_token="ghi",
             ),
             analytics_admin.ListDataStreamsResponse(
-                data_streams=[resources.DataStream(), resources.DataStream(),],
+                data_streams=[
+                    resources.DataStream(),
+                    resources.DataStream(),
+                ],
             ),
             RuntimeError,
         )
@@ -18502,17 +19900,26 @@ async def test_list_data_streams_async_pager():
                 next_page_token="abc",
             ),
             analytics_admin.ListDataStreamsResponse(
-                data_streams=[], next_page_token="def",
+                data_streams=[],
+                next_page_token="def",
             ),
             analytics_admin.ListDataStreamsResponse(
-                data_streams=[resources.DataStream(),], next_page_token="ghi",
+                data_streams=[
+                    resources.DataStream(),
+                ],
+                next_page_token="ghi",
             ),
             analytics_admin.ListDataStreamsResponse(
-                data_streams=[resources.DataStream(), resources.DataStream(),],
+                data_streams=[
+                    resources.DataStream(),
+                    resources.DataStream(),
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.list_data_streams(request={},)
+        async_pager = await client.list_data_streams(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -18545,13 +19952,20 @@ async def test_list_data_streams_async_pages():
                 next_page_token="abc",
             ),
             analytics_admin.ListDataStreamsResponse(
-                data_streams=[], next_page_token="def",
+                data_streams=[],
+                next_page_token="def",
             ),
             analytics_admin.ListDataStreamsResponse(
-                data_streams=[resources.DataStream(),], next_page_token="ghi",
+                data_streams=[
+                    resources.DataStream(),
+                ],
+                next_page_token="ghi",
             ),
             analytics_admin.ListDataStreamsResponse(
-                data_streams=[resources.DataStream(), resources.DataStream(),],
+                data_streams=[
+                    resources.DataStream(),
+                    resources.DataStream(),
+                ],
             ),
             RuntimeError,
         )
@@ -18562,10 +19976,17 @@ async def test_list_data_streams_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [analytics_admin.GetDataStreamRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.GetDataStreamRequest,
+        dict,
+    ],
+)
 def test_get_data_stream(request_type, transport: str = "grpc"):
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -18601,7 +20022,8 @@ def test_get_data_stream_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -18617,7 +20039,8 @@ async def test_get_data_stream_async(
     transport: str = "grpc_asyncio", request_type=analytics_admin.GetDataStreamRequest
 ):
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -18676,7 +20099,10 @@ def test_get_data_stream_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -18705,7 +20131,10 @@ async def test_get_data_stream_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_data_stream_flattened():
@@ -18719,7 +20148,9 @@ def test_get_data_stream_flattened():
         call.return_value = resources.DataStream()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_data_stream(name="name_value",)
+        client.get_data_stream(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -18739,7 +20170,8 @@ def test_get_data_stream_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_data_stream(
-            analytics_admin.GetDataStreamRequest(), name="name_value",
+            analytics_admin.GetDataStreamRequest(),
+            name="name_value",
         )
 
 
@@ -18759,7 +20191,9 @@ async def test_get_data_stream_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_data_stream(name="name_value",)
+        response = await client.get_data_stream(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -18780,7 +20214,8 @@ async def test_get_data_stream_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_data_stream(
-            analytics_admin.GetDataStreamRequest(), name="name_value",
+            analytics_admin.GetDataStreamRequest(),
+            name="name_value",
         )
 
 
@@ -18791,7 +20226,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = AnalyticsAdminServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -18812,7 +20248,8 @@ def test_credentials_transport_error():
     options.api_key = "api_key"
     with pytest.raises(ValueError):
         client = AnalyticsAdminServiceClient(
-            client_options=options, transport=transport,
+            client_options=options,
+            transport=transport,
         )
 
     # It is an error to provide an api_key and a credential.
@@ -18829,7 +20266,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = AnalyticsAdminServiceClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -18877,7 +20315,10 @@ def test_transport_grpc_default():
     client = AnalyticsAdminServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
-    assert isinstance(client.transport, transports.AnalyticsAdminServiceGrpcTransport,)
+    assert isinstance(
+        client.transport,
+        transports.AnalyticsAdminServiceGrpcTransport,
+    )
 
 
 def test_analytics_admin_service_base_transport_error():
@@ -18992,7 +20433,8 @@ def test_analytics_admin_service_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.AnalyticsAdminServiceTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -19174,7 +20616,8 @@ def test_analytics_admin_service_grpc_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.AnalyticsAdminServiceGrpcTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -19186,7 +20629,8 @@ def test_analytics_admin_service_grpc_asyncio_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.AnalyticsAdminServiceGrpcAsyncIOTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -19295,7 +20739,9 @@ def test_analytics_admin_service_transport_channel_mtls_with_adc(transport_class
 
 def test_account_path():
     account = "squid"
-    expected = "accounts/{account}".format(account=account,)
+    expected = "accounts/{account}".format(
+        account=account,
+    )
     actual = AnalyticsAdminServiceClient.account_path(account)
     assert expected == actual
 
@@ -19335,7 +20781,8 @@ def test_conversion_event_path():
     property = "oyster"
     conversion_event = "nudibranch"
     expected = "properties/{property}/conversionEvents/{conversion_event}".format(
-        property=property, conversion_event=conversion_event,
+        property=property,
+        conversion_event=conversion_event,
     )
     actual = AnalyticsAdminServiceClient.conversion_event_path(
         property, conversion_event
@@ -19357,7 +20804,9 @@ def test_parse_conversion_event_path():
 
 def test_custom_dimension_path():
     property = "winkle"
-    expected = "properties/{property}/customDimensions".format(property=property,)
+    expected = "properties/{property}/customDimensions".format(
+        property=property,
+    )
     actual = AnalyticsAdminServiceClient.custom_dimension_path(property)
     assert expected == actual
 
@@ -19375,7 +20824,9 @@ def test_parse_custom_dimension_path():
 
 def test_custom_metric_path():
     property = "scallop"
-    expected = "properties/{property}/customMetrics".format(property=property,)
+    expected = "properties/{property}/customMetrics".format(
+        property=property,
+    )
     actual = AnalyticsAdminServiceClient.custom_metric_path(property)
     assert expected == actual
 
@@ -19393,7 +20844,9 @@ def test_parse_custom_metric_path():
 
 def test_data_retention_settings_path():
     property = "squid"
-    expected = "properties/{property}/dataRetentionSettings".format(property=property,)
+    expected = "properties/{property}/dataRetentionSettings".format(
+        property=property,
+    )
     actual = AnalyticsAdminServiceClient.data_retention_settings_path(property)
     assert expected == actual
 
@@ -19411,7 +20864,9 @@ def test_parse_data_retention_settings_path():
 
 def test_data_sharing_settings_path():
     account = "whelk"
-    expected = "accounts/{account}/dataSharingSettings".format(account=account,)
+    expected = "accounts/{account}/dataSharingSettings".format(
+        account=account,
+    )
     actual = AnalyticsAdminServiceClient.data_sharing_settings_path(account)
     assert expected == actual
 
@@ -19431,7 +20886,8 @@ def test_data_stream_path():
     property = "oyster"
     data_stream = "nudibranch"
     expected = "properties/{property}/dataStreams/{data_stream}".format(
-        property=property, data_stream=data_stream,
+        property=property,
+        data_stream=data_stream,
     )
     actual = AnalyticsAdminServiceClient.data_stream_path(property, data_stream)
     assert expected == actual
@@ -19509,7 +20965,8 @@ def test_firebase_link_path():
     property = "oyster"
     firebase_link = "nudibranch"
     expected = "properties/{property}/firebaseLinks/{firebase_link}".format(
-        property=property, firebase_link=firebase_link,
+        property=property,
+        firebase_link=firebase_link,
     )
     actual = AnalyticsAdminServiceClient.firebase_link_path(property, firebase_link)
     assert expected == actual
@@ -19531,7 +20988,8 @@ def test_global_site_tag_path():
     property = "winkle"
     data_stream = "nautilus"
     expected = "properties/{property}/dataStreams/{data_stream}/globalSiteTag".format(
-        property=property, data_stream=data_stream,
+        property=property,
+        data_stream=data_stream,
     )
     actual = AnalyticsAdminServiceClient.global_site_tag_path(property, data_stream)
     assert expected == actual
@@ -19553,7 +21011,8 @@ def test_google_ads_link_path():
     property = "squid"
     google_ads_link = "clam"
     expected = "properties/{property}/googleAdsLinks/{google_ads_link}".format(
-        property=property, google_ads_link=google_ads_link,
+        property=property,
+        google_ads_link=google_ads_link,
     )
     actual = AnalyticsAdminServiceClient.google_ads_link_path(property, google_ads_link)
     assert expected == actual
@@ -19573,7 +21032,9 @@ def test_parse_google_ads_link_path():
 
 def test_google_signals_settings_path():
     property = "oyster"
-    expected = "properties/{property}/googleSignalsSettings".format(property=property,)
+    expected = "properties/{property}/googleSignalsSettings".format(
+        property=property,
+    )
     actual = AnalyticsAdminServiceClient.google_signals_settings_path(property)
     assert expected == actual
 
@@ -19619,7 +21080,9 @@ def test_parse_measurement_protocol_secret_path():
 
 def test_property_path():
     property = "squid"
-    expected = "properties/{property}".format(property=property,)
+    expected = "properties/{property}".format(
+        property=property,
+    )
     actual = AnalyticsAdminServiceClient.property_path(property)
     assert expected == actual
 
@@ -19639,7 +21102,8 @@ def test_user_link_path():
     account = "whelk"
     user_link = "octopus"
     expected = "accounts/{account}/userLinks/{user_link}".format(
-        account=account, user_link=user_link,
+        account=account,
+        user_link=user_link,
     )
     actual = AnalyticsAdminServiceClient.user_link_path(account, user_link)
     assert expected == actual
@@ -19679,7 +21143,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "winkle"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = AnalyticsAdminServiceClient.common_folder_path(folder)
     assert expected == actual
 
@@ -19697,7 +21163,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "scallop"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = AnalyticsAdminServiceClient.common_organization_path(organization)
     assert expected == actual
 
@@ -19715,7 +21183,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "squid"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = AnalyticsAdminServiceClient.common_project_path(project)
     assert expected == actual
 
@@ -19735,7 +21205,8 @@ def test_common_location_path():
     project = "whelk"
     location = "octopus"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = AnalyticsAdminServiceClient.common_location_path(project, location)
     assert expected == actual
@@ -19760,7 +21231,8 @@ def test_client_with_default_client_info():
         transports.AnalyticsAdminServiceTransport, "_prep_wrapped_messages"
     ) as prep:
         client = AnalyticsAdminServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -19769,7 +21241,8 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = AnalyticsAdminServiceClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -19777,7 +21250,8 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     with mock.patch.object(
         type(getattr(client.transport, "grpc_channel")), "close"

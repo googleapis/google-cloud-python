@@ -31,7 +31,9 @@ from google.protobuf import empty_pb2  # type: ignore
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-analytics-admin",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-analytics-admin",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
@@ -126,16 +128,24 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.get_account: gapic_v1.method.wrap_method(
-                self.get_account, default_timeout=None, client_info=client_info,
+                self.get_account,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_accounts: gapic_v1.method.wrap_method(
-                self.list_accounts, default_timeout=None, client_info=client_info,
+                self.list_accounts,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.delete_account: gapic_v1.method.wrap_method(
-                self.delete_account, default_timeout=None, client_info=client_info,
+                self.delete_account,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.update_account: gapic_v1.method.wrap_method(
-                self.update_account, default_timeout=None, client_info=client_info,
+                self.update_account,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.provision_account_ticket: gapic_v1.method.wrap_method(
                 self.provision_account_ticket,
@@ -148,22 +158,34 @@ class AnalyticsAdminServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.get_property: gapic_v1.method.wrap_method(
-                self.get_property, default_timeout=None, client_info=client_info,
+                self.get_property,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_properties: gapic_v1.method.wrap_method(
-                self.list_properties, default_timeout=None, client_info=client_info,
+                self.list_properties,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.create_property: gapic_v1.method.wrap_method(
-                self.create_property, default_timeout=None, client_info=client_info,
+                self.create_property,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.delete_property: gapic_v1.method.wrap_method(
-                self.delete_property, default_timeout=None, client_info=client_info,
+                self.delete_property,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.update_property: gapic_v1.method.wrap_method(
-                self.update_property, default_timeout=None, client_info=client_info,
+                self.update_property,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_user_link: gapic_v1.method.wrap_method(
-                self.get_user_link, default_timeout=None, client_info=client_info,
+                self.get_user_link,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.batch_get_user_links: gapic_v1.method.wrap_method(
                 self.batch_get_user_links,
@@ -171,13 +193,19 @@ class AnalyticsAdminServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.list_user_links: gapic_v1.method.wrap_method(
-                self.list_user_links, default_timeout=None, client_info=client_info,
+                self.list_user_links,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.audit_user_links: gapic_v1.method.wrap_method(
-                self.audit_user_links, default_timeout=None, client_info=client_info,
+                self.audit_user_links,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.create_user_link: gapic_v1.method.wrap_method(
-                self.create_user_link, default_timeout=None, client_info=client_info,
+                self.create_user_link,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.batch_create_user_links: gapic_v1.method.wrap_method(
                 self.batch_create_user_links,
@@ -185,7 +213,9 @@ class AnalyticsAdminServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.update_user_link: gapic_v1.method.wrap_method(
-                self.update_user_link, default_timeout=None, client_info=client_info,
+                self.update_user_link,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.batch_update_user_links: gapic_v1.method.wrap_method(
                 self.batch_update_user_links,
@@ -193,7 +223,9 @@ class AnalyticsAdminServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.delete_user_link: gapic_v1.method.wrap_method(
-                self.delete_user_link, default_timeout=None, client_info=client_info,
+                self.delete_user_link,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.batch_delete_user_links: gapic_v1.method.wrap_method(
                 self.batch_delete_user_links,
@@ -211,10 +243,14 @@ class AnalyticsAdminServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.list_firebase_links: gapic_v1.method.wrap_method(
-                self.list_firebase_links, default_timeout=None, client_info=client_info,
+                self.list_firebase_links,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_global_site_tag: gapic_v1.method.wrap_method(
-                self.get_global_site_tag, default_timeout=None, client_info=client_info,
+                self.get_global_site_tag,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.create_google_ads_link: gapic_v1.method.wrap_method(
                 self.create_google_ads_link,
@@ -397,7 +433,9 @@ class AnalyticsAdminServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.list_custom_metrics: gapic_v1.method.wrap_method(
-                self.list_custom_metrics, default_timeout=None, client_info=client_info,
+                self.list_custom_metrics,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.archive_custom_metric: gapic_v1.method.wrap_method(
                 self.archive_custom_metric,
@@ -405,7 +443,9 @@ class AnalyticsAdminServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.get_custom_metric: gapic_v1.method.wrap_method(
-                self.get_custom_metric, default_timeout=None, client_info=client_info,
+                self.get_custom_metric,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_data_retention_settings: gapic_v1.method.wrap_method(
                 self.get_data_retention_settings,
@@ -418,28 +458,38 @@ class AnalyticsAdminServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.create_data_stream: gapic_v1.method.wrap_method(
-                self.create_data_stream, default_timeout=None, client_info=client_info,
+                self.create_data_stream,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.delete_data_stream: gapic_v1.method.wrap_method(
-                self.delete_data_stream, default_timeout=None, client_info=client_info,
+                self.delete_data_stream,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.update_data_stream: gapic_v1.method.wrap_method(
-                self.update_data_stream, default_timeout=None, client_info=client_info,
+                self.update_data_stream,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_data_streams: gapic_v1.method.wrap_method(
-                self.list_data_streams, default_timeout=None, client_info=client_info,
+                self.list_data_streams,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_data_stream: gapic_v1.method.wrap_method(
-                self.get_data_stream, default_timeout=None, client_info=client_info,
+                self.get_data_stream,
+                default_timeout=None,
+                client_info=client_info,
             ),
         }
 
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 
