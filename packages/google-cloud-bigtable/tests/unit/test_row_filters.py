@@ -92,7 +92,7 @@ def test_regex_filterconstructor():
 def test_regex_filterconstructor_non_bytes():
     from google.cloud.bigtable.row_filters import _RegexFilter
 
-    regex = u"abc"
+    regex = "abc"
     row_filter = _RegexFilter(regex)
     assert row_filter.regex == b"abc"
 
@@ -183,7 +183,7 @@ def test_row_sample_filter_to_pb():
 def test_family_name_regex_filter_to_pb():
     from google.cloud.bigtable.row_filters import FamilyNameRegexFilter
 
-    regex = u"family-regex"
+    regex = "family-regex"
     row_filter = FamilyNameRegexFilter(regex)
     pb_val = row_filter.to_pb()
     expected_pb = _RowFilterPB(family_name_regex_filter=regex)
@@ -450,7 +450,7 @@ def test_column_range_filter___ne__():
 def test_column_range_filter_to_pb():
     from google.cloud.bigtable.row_filters import ColumnRangeFilter
 
-    column_family_id = u"column-family-id"
+    column_family_id = "column-family-id"
     row_filter = ColumnRangeFilter(column_family_id)
     col_range_pb = _ColumnRangePB(family_name=column_family_id)
     expected_pb = _RowFilterPB(column_range_filter=col_range_pb)
@@ -460,7 +460,7 @@ def test_column_range_filter_to_pb():
 def test_column_range_filter_to_pb_inclusive_start():
     from google.cloud.bigtable.row_filters import ColumnRangeFilter
 
-    column_family_id = u"column-family-id"
+    column_family_id = "column-family-id"
     column = b"column"
     row_filter = ColumnRangeFilter(column_family_id, start_column=column)
     col_range_pb = _ColumnRangePB(
@@ -473,7 +473,7 @@ def test_column_range_filter_to_pb_inclusive_start():
 def test_column_range_filter_to_pb_exclusive_start():
     from google.cloud.bigtable.row_filters import ColumnRangeFilter
 
-    column_family_id = u"column-family-id"
+    column_family_id = "column-family-id"
     column = b"column"
     row_filter = ColumnRangeFilter(
         column_family_id, start_column=column, inclusive_start=False
@@ -488,7 +488,7 @@ def test_column_range_filter_to_pb_exclusive_start():
 def test_column_range_filter_to_pb_inclusive_end():
     from google.cloud.bigtable.row_filters import ColumnRangeFilter
 
-    column_family_id = u"column-family-id"
+    column_family_id = "column-family-id"
     column = b"column"
     row_filter = ColumnRangeFilter(column_family_id, end_column=column)
     col_range_pb = _ColumnRangePB(
@@ -501,7 +501,7 @@ def test_column_range_filter_to_pb_inclusive_end():
 def test_column_range_filter_to_pb_exclusive_end():
     from google.cloud.bigtable.row_filters import ColumnRangeFilter
 
-    column_family_id = u"column-family-id"
+    column_family_id = "column-family-id"
     column = b"column"
     row_filter = ColumnRangeFilter(
         column_family_id, end_column=column, inclusive_end=False
@@ -526,7 +526,7 @@ def test_value_regex_filter_to_pb_w_bytes():
 def test_value_regex_filter_to_pb_w_str():
     from google.cloud.bigtable.row_filters import ValueRegexFilter
 
-    value = u"value-regex"
+    value = "value-regex"
     regex = value.encode("ascii")
     row_filter = ValueRegexFilter(value)
     pb_val = row_filter.to_pb()
@@ -547,7 +547,7 @@ def test_exact_value_filter_to_pb_w_bytes():
 def test_exact_value_filter_to_pb_w_str():
     from google.cloud.bigtable.row_filters import ExactValueFilter
 
-    value = u"value-regex"
+    value = "value-regex"
     regex = value.encode("ascii")
     row_filter = ExactValueFilter(value)
     pb_val = row_filter.to_pb()
@@ -846,7 +846,7 @@ def test_apply_label_filter___ne__():
 def test_apply_label_filter_to_pb():
     from google.cloud.bigtable.row_filters import ApplyLabelFilter
 
-    label = u"label"
+    label = "label"
     row_filter = ApplyLabelFilter(label)
     pb_val = row_filter.to_pb()
     expected_pb = _RowFilterPB(apply_label_transformer=label)

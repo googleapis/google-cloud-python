@@ -57,9 +57,16 @@ class RestoreInfo(proto.Message):
             This field is a member of `oneof`_ ``source_info``.
     """
 
-    source_type = proto.Field(proto.ENUM, number=1, enum="RestoreSourceType",)
+    source_type = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum="RestoreSourceType",
+    )
     backup_info = proto.Field(
-        proto.MESSAGE, number=2, oneof="source_info", message="BackupInfo",
+        proto.MESSAGE,
+        number=2,
+        oneof="source_info",
+        message="BackupInfo",
     )
 
 
@@ -142,21 +149,42 @@ class Table(proto.Message):
             READY_OPTIMIZING = 5
 
         replication_state = proto.Field(
-            proto.ENUM, number=1, enum="Table.ClusterState.ReplicationState",
+            proto.ENUM,
+            number=1,
+            enum="Table.ClusterState.ReplicationState",
         )
         encryption_info = proto.RepeatedField(
-            proto.MESSAGE, number=2, message="EncryptionInfo",
+            proto.MESSAGE,
+            number=2,
+            message="EncryptionInfo",
         )
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     cluster_states = proto.MapField(
-        proto.STRING, proto.MESSAGE, number=2, message=ClusterState,
+        proto.STRING,
+        proto.MESSAGE,
+        number=2,
+        message=ClusterState,
     )
     column_families = proto.MapField(
-        proto.STRING, proto.MESSAGE, number=3, message="ColumnFamily",
+        proto.STRING,
+        proto.MESSAGE,
+        number=3,
+        message="ColumnFamily",
     )
-    granularity = proto.Field(proto.ENUM, number=4, enum=TimestampGranularity,)
-    restore_info = proto.Field(proto.MESSAGE, number=6, message="RestoreInfo",)
+    granularity = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=TimestampGranularity,
+    )
+    restore_info = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message="RestoreInfo",
+    )
 
 
 class ColumnFamily(proto.Message):
@@ -173,7 +201,11 @@ class ColumnFamily(proto.Message):
             matches the active GC expression for its family.
     """
 
-    gc_rule = proto.Field(proto.MESSAGE, number=1, message="GcRule",)
+    gc_rule = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="GcRule",
+    )
 
 
 class GcRule(proto.Message):
@@ -221,7 +253,11 @@ class GcRule(proto.Message):
                 ``rules``.
         """
 
-        rules = proto.RepeatedField(proto.MESSAGE, number=1, message="GcRule",)
+        rules = proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="GcRule",
+        )
 
     class Union(proto.Message):
         r"""A GcRule which deletes cells matching any of the given rules.
@@ -232,16 +268,35 @@ class GcRule(proto.Message):
                 ``rules``.
         """
 
-        rules = proto.RepeatedField(proto.MESSAGE, number=1, message="GcRule",)
+        rules = proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="GcRule",
+        )
 
-    max_num_versions = proto.Field(proto.INT32, number=1, oneof="rule",)
+    max_num_versions = proto.Field(
+        proto.INT32,
+        number=1,
+        oneof="rule",
+    )
     max_age = proto.Field(
-        proto.MESSAGE, number=2, oneof="rule", message=duration_pb2.Duration,
+        proto.MESSAGE,
+        number=2,
+        oneof="rule",
+        message=duration_pb2.Duration,
     )
     intersection = proto.Field(
-        proto.MESSAGE, number=3, oneof="rule", message=Intersection,
+        proto.MESSAGE,
+        number=3,
+        oneof="rule",
+        message=Intersection,
     )
-    union = proto.Field(proto.MESSAGE, number=4, oneof="rule", message=Union,)
+    union = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="rule",
+        message=Union,
+    )
 
 
 class EncryptionInfo(proto.Message):
@@ -271,9 +326,20 @@ class EncryptionInfo(proto.Message):
         GOOGLE_DEFAULT_ENCRYPTION = 1
         CUSTOMER_MANAGED_ENCRYPTION = 2
 
-    encryption_type = proto.Field(proto.ENUM, number=3, enum=EncryptionType,)
-    encryption_status = proto.Field(proto.MESSAGE, number=4, message=status_pb2.Status,)
-    kms_key_version = proto.Field(proto.STRING, number=2,)
+    encryption_type = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=EncryptionType,
+    )
+    encryption_status = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=status_pb2.Status,
+    )
+    kms_key_version = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class Snapshot(proto.Message):
@@ -322,13 +388,38 @@ class Snapshot(proto.Message):
         READY = 1
         CREATING = 2
 
-    name = proto.Field(proto.STRING, number=1,)
-    source_table = proto.Field(proto.MESSAGE, number=2, message="Table",)
-    data_size_bytes = proto.Field(proto.INT64, number=3,)
-    create_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
-    delete_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
-    state = proto.Field(proto.ENUM, number=6, enum=State,)
-    description = proto.Field(proto.STRING, number=7,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    source_table = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="Table",
+    )
+    data_size_bytes = proto.Field(
+        proto.INT64,
+        number=3,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    delete_time = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum=State,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=7,
+    )
 
 
 class Backup(proto.Message):
@@ -381,14 +472,43 @@ class Backup(proto.Message):
         CREATING = 1
         READY = 2
 
-    name = proto.Field(proto.STRING, number=1,)
-    source_table = proto.Field(proto.STRING, number=2,)
-    expire_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
-    start_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
-    end_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
-    size_bytes = proto.Field(proto.INT64, number=6,)
-    state = proto.Field(proto.ENUM, number=7, enum=State,)
-    encryption_info = proto.Field(proto.MESSAGE, number=9, message="EncryptionInfo",)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    source_table = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    expire_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    start_time = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+    size_bytes = proto.Field(
+        proto.INT64,
+        number=6,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=7,
+        enum=State,
+    )
+    encryption_info = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message="EncryptionInfo",
+    )
 
 
 class BackupInfo(proto.Message):
@@ -410,10 +530,24 @@ class BackupInfo(proto.Message):
             created from.
     """
 
-    backup = proto.Field(proto.STRING, number=1,)
-    start_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    end_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
-    source_table = proto.Field(proto.STRING, number=4,)
+    backup = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    start_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    source_table = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

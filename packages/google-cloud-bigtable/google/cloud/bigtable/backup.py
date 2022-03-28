@@ -382,7 +382,8 @@ class Backup(object):
         :param new_expire_time: the new expiration time timestamp
         """
         backup_update = table.Backup(
-            name=self.name, expire_time=_datetime_to_pb_timestamp(new_expire_time),
+            name=self.name,
+            expire_time=_datetime_to_pb_timestamp(new_expire_time),
         )
         update_mask = field_mask_pb2.FieldMask(paths=["expire_time"])
         api = self._instance._client.table_admin_client
@@ -426,7 +427,8 @@ class Backup(object):
         api = self._instance._client.table_admin_client
         if instance_id:
             parent = BigtableTableAdminClient.instance_path(
-                project=self._instance._client.project, instance=instance_id,
+                project=self._instance._client.project,
+                instance=instance_id,
             )
         else:
             parent = self._instance.name

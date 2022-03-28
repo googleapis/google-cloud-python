@@ -70,7 +70,10 @@ def test_app_profile_constructor_explicit():
     instance = _Instance(INSTANCE_ID, client)
 
     app_profile1 = _make_app_profile(
-        APP_PROFILE_ID, instance, routing_policy_type=ANY, description=DESCRIPTION_1,
+        APP_PROFILE_ID,
+        instance,
+        routing_policy_type=ANY,
+        description=DESCRIPTION_1,
     )
     app_profile2 = _make_app_profile(
         APP_PROFILE_ID_2,
@@ -176,7 +179,8 @@ def test_app_profile_from_pb_success_w_routing_single():
     allow_transactional_writes = True
     routing = RoutingPolicyType.SINGLE
     single_cluster_routing = data_v2_pb2.AppProfile.SingleClusterRouting(
-        cluster_id=CLUSTER_ID, allow_transactional_writes=allow_transactional_writes,
+        cluster_id=CLUSTER_ID,
+        allow_transactional_writes=allow_transactional_writes,
     )
 
     app_profile_pb = data_v2_pb2.AppProfile(
@@ -253,7 +257,10 @@ def test_app_profile_reload_w_routing_any():
     description = "routing policy any"
 
     app_profile = _make_app_profile(
-        APP_PROFILE_ID, instance, routing_policy_type=routing, description=description,
+        APP_PROFILE_ID,
+        instance,
+        routing_policy_type=routing,
+        description=description,
     )
 
     # Create response_pb
@@ -345,7 +352,10 @@ def test_app_profile_create_w_routing_any():
     ignore_warnings = True
 
     app_profile = _make_app_profile(
-        APP_PROFILE_ID, instance, routing_policy_type=routing, description=description,
+        APP_PROFILE_ID,
+        instance,
+        routing_policy_type=routing,
+        description=description,
     )
 
     expected_request_app_profile = app_profile._to_pb()

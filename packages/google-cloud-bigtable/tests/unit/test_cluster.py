@@ -217,7 +217,8 @@ def test_cluster_from_pb_w_autoscaling():
     cluster_config = data_v2_pb2.Cluster.ClusterConfig(
         cluster_autoscaling_config=data_v2_pb2.Cluster.ClusterAutoscalingConfig(
             autoscaling_limits=data_v2_pb2.AutoscalingLimits(
-                min_serve_nodes=MIN_SERVE_NODES, max_serve_nodes=MAX_SERVE_NODES,
+                min_serve_nodes=MIN_SERVE_NODES,
+                max_serve_nodes=MAX_SERVE_NODES,
             ),
             autoscaling_targets=data_v2_pb2.AutoscalingTargets(
                 cpu_utilization_percent=CPU_UTILIZATION_PERCENT
@@ -569,7 +570,8 @@ def test_cluster_create_w_autoscaling():
     cluster_config = instance_v2_pb2.Cluster.ClusterConfig(
         cluster_autoscaling_config=instance_v2_pb2.Cluster.ClusterAutoscalingConfig(
             autoscaling_limits=instance_v2_pb2.AutoscalingLimits(
-                min_serve_nodes=MIN_SERVE_NODES, max_serve_nodes=MAX_SERVE_NODES,
+                min_serve_nodes=MIN_SERVE_NODES,
+                max_serve_nodes=MAX_SERVE_NODES,
             ),
             autoscaling_targets=instance_v2_pb2.AutoscalingTargets(
                 cpu_utilization_percent=CPU_UTILIZATION_PERCENT

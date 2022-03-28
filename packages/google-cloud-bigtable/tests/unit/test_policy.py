@@ -150,7 +150,11 @@ def test_policy_from_pb_w_condition():
             },
         }
     ]
-    message = policy_pb2.Policy(etag=ETAG, version=VERSION, bindings=BINDINGS,)
+    message = policy_pb2.Policy(
+        etag=ETAG,
+        version=VERSION,
+        bindings=BINDINGS,
+    )
     policy = Policy.from_pb(message)
     assert policy.etag == ETAG
     assert policy.version == VERSION
@@ -219,7 +223,9 @@ def test_policy_to_pb_w_condition():
         version=VERSION,
         bindings=[
             policy_pb2.Binding(
-                role=BIGTABLE_ADMIN_ROLE, members=sorted(members), condition=condition,
+                role=BIGTABLE_ADMIN_ROLE,
+                members=sorted(members),
+                condition=condition,
             )
         ],
     )

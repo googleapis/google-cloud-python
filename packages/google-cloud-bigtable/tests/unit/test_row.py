@@ -70,7 +70,7 @@ def test_direct_row_constructor():
 
 
 def test_direct_row_constructor_with_unicode():
-    row_key = u"row_key"
+    row_key = "row_key"
     row_key_bytes = b"row_key"
     table = object()
 
@@ -97,8 +97,8 @@ def test_direct_row_get_mutations_size():
     row_key = b"row_key"
     row = _make_direct_row(row_key, None)
 
-    column_family_id1 = u"column_family_id1"
-    column_family_id2 = u"column_family_id2"
+    column_family_id1 = "column_family_id1"
+    column_family_id2 = "column_family_id2"
     column1 = b"column1"
     column2 = b"column2"
     number_of_bytes = 1 * 1024 * 1024
@@ -124,7 +124,7 @@ def _set_cell_helper(
     import struct
 
     row_key = b"row_key"
-    column_family_id = u"column_family_id"
+    column_family_id = "column_family_id"
     if column is None:
         column = b"column"
     table = object()
@@ -151,7 +151,7 @@ def test_direct_row_set_cell():
 
 def test_direct_row_set_cell_with_string_column():
     column_bytes = b"column"
-    column_non_bytes = u"column"
+    column_non_bytes = "column"
     _set_cell_helper(column=column_non_bytes, column_bytes=column_bytes)
 
 
@@ -163,7 +163,7 @@ def test_direct_row_set_cell_with_integer_value():
 def test_direct_row_set_cell_with_non_bytes_value():
     row_key = b"row_key"
     column = b"column"
-    column_family_id = u"column_family_id"
+    column_family_id = "column_family_id"
     table = object()
 
     row = _make_direct_row(row_key, table)
@@ -208,7 +208,7 @@ def test_direct_row_delete_cell():
 
     row_key = b"row_key"
     column = b"column"
-    column_family_id = u"column_family_id"
+    column_family_id = "column_family_id"
     table = object()
 
     mock_row = MockRow(row_key, table)
@@ -227,7 +227,7 @@ def test_direct_row_delete_cell():
 
 def test_direct_row_delete_cells_non_iterable():
     row_key = b"row_key"
-    column_family_id = u"column_family_id"
+    column_family_id = "column_family_id"
     table = object()
 
     row = _make_direct_row(row_key, table)
@@ -240,7 +240,7 @@ def test_direct_row_delete_cells_all_columns():
     from google.cloud.bigtable.row import DirectRow
 
     row_key = b"row_key"
-    column_family_id = u"column_family_id"
+    column_family_id = "column_family_id"
     table = object()
 
     row = _make_direct_row(row_key, table)
@@ -255,7 +255,7 @@ def test_direct_row_delete_cells_all_columns():
 
 def test_direct_row_delete_cells_no_columns():
     row_key = b"row_key"
-    column_family_id = u"column_family_id"
+    column_family_id = "column_family_id"
     table = object()
 
     row = _make_direct_row(row_key, table)
@@ -268,7 +268,7 @@ def test_direct_row_delete_cells_no_columns():
 def _delete_cells_helper(time_range=None):
     row_key = b"row_key"
     column = b"column"
-    column_family_id = u"column_family_id"
+    column_family_id = "column_family_id"
     table = object()
 
     row = _make_direct_row(row_key, table)
@@ -306,7 +306,7 @@ def test_direct_row_delete_cells_with_bad_column():
     # the row's mutations in a bad state.
     row_key = b"row_key"
     column = b"column"
-    column_family_id = u"column_family_id"
+    column_family_id = "column_family_id"
     table = object()
 
     row = _make_direct_row(row_key, table)
@@ -319,10 +319,10 @@ def test_direct_row_delete_cells_with_bad_column():
 
 def test_direct_row_delete_cells_with_string_columns():
     row_key = b"row_key"
-    column_family_id = u"column_family_id"
-    column1 = u"column1"
+    column_family_id = "column_family_id"
+    column1 = "column1"
     column1_bytes = b"column1"
-    column2 = u"column2"
+    column2 = "column2"
     column2_bytes = b"column2"
     table = object()
 
@@ -348,7 +348,7 @@ def test_direct_row_commit():
     project_id = "project-id"
     row_key = b"row_key"
     table_name = "projects/more-stuff"
-    column_family_id = u"column_family_id"
+    column_family_id = "column_family_id"
     column = b"column"
 
     credentials = _make_credentials()
@@ -369,7 +369,7 @@ def test_direct_row_commit_with_exception():
     project_id = "project-id"
     row_key = b"row_key"
     table_name = "projects/more-stuff"
-    column_family_id = u"column_family_id"
+    column_family_id = "column_family_id"
     column = b"column"
 
     credentials = _make_credentials()
@@ -424,9 +424,9 @@ def test_conditional_row_commit():
     row_key = b"row_key"
     table_name = "projects/more-stuff"
     app_profile_id = "app_profile_id"
-    column_family_id1 = u"column_family_id1"
-    column_family_id2 = u"column_family_id2"
-    column_family_id3 = u"column_family_id3"
+    column_family_id1 = "column_family_id1"
+    column_family_id2 = "column_family_id2"
+    column_family_id3 = "column_family_id3"
     column1 = b"column1"
     column2 = b"column2"
 
@@ -535,7 +535,7 @@ def test_append_row_append_cell_value():
     assert row._rule_pb_list == []
 
     column = b"column"
-    column_family_id = u"column_family_id"
+    column_family_id = "column_family_id"
     value = b"bytes-val"
     row.append_cell_value(column_family_id, column, value)
     expected_pb = _ReadModifyWriteRulePB(
@@ -551,7 +551,7 @@ def test_append_row_increment_cell_value():
     assert row._rule_pb_list == []
 
     column = b"column"
-    column_family_id = u"column_family_id"
+    column_family_id = "column_family_id"
     int_value = 281330
     row.increment_cell_value(column_family_id, column, int_value)
     expected_pb = _ReadModifyWriteRulePB(
@@ -571,7 +571,7 @@ def test_append_row_commit():
     row_key = b"row_key"
     table_name = "projects/more-stuff"
     app_profile_id = "app_profile_id"
-    column_family_id = u"column_family_id"
+    column_family_id = "column_family_id"
     column = b"column"
 
     api = mock.create_autospec(BigtableClient)
@@ -646,8 +646,8 @@ def test__parse_rmw_row_response():
     from google.cloud._helpers import _datetime_from_microseconds
     from google.cloud.bigtable.row import _parse_rmw_row_response
 
-    col_fam1 = u"col-fam-id"
-    col_fam2 = u"col-fam-id2"
+    col_fam1 = "col-fam-id"
+    col_fam2 = "col-fam-id2"
     col_name1 = b"col-name1"
     col_name2 = b"col-name2"
     col_name3 = b"col-name3-but-other-fam"
@@ -702,7 +702,7 @@ def test__parse_family_pb():
     from google.cloud._helpers import _datetime_from_microseconds
     from google.cloud.bigtable.row import _parse_family_pb
 
-    col_fam1 = u"col-fam-id"
+    col_fam1 = "col-fam-id"
     col_name1 = b"col-name1"
     col_name2 = b"col-name2"
     cell_val1 = b"cell-val"

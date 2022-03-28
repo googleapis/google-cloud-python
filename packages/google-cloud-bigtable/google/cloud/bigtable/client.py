@@ -193,7 +193,9 @@ class Client(ClientWithProject):
         self._channel = channel
         self.SCOPE = self._get_scopes()
         super(Client, self).__init__(
-            project=project, credentials=credentials, client_options=client_options,
+            project=project,
+            credentials=credentials,
+            client_options=client_options,
         )
 
     def _get_scopes(self):
@@ -276,7 +278,8 @@ class Client(ClientWithProject):
 
         if self._emulator_host is not None:
             channel = self._emulator_channel(
-                transport=grpc_transport, options=_GRPC_CHANNEL_OPTIONS,
+                transport=grpc_transport,
+                options=_GRPC_CHANNEL_OPTIONS,
             )
         else:
             channel = grpc_transport.create_channel(
@@ -327,7 +330,8 @@ class Client(ClientWithProject):
         """
         if self._table_data_client is None:
             transport = self._create_gapic_client_channel(
-                bigtable_v2.BigtableClient, BigtableGrpcTransport,
+                bigtable_v2.BigtableClient,
+                BigtableGrpcTransport,
             )
             klass = _create_gapic_client(
                 bigtable_v2.BigtableClient,

@@ -649,7 +649,7 @@ class _ReadRowsRequestManager(object):
         return resume_request
 
     def _filter_rows_keys(self):
-        """ Helper for :meth:`build_updated_request`"""
+        """Helper for :meth:`build_updated_request`"""
         return [
             row_key
             for row_key in self.message.rows.row_keys
@@ -657,7 +657,7 @@ class _ReadRowsRequestManager(object):
         ]
 
     def _filter_row_ranges(self):
-        """ Helper for :meth:`build_updated_request`"""
+        """Helper for :meth:`build_updated_request`"""
         new_row_ranges = []
 
         for row_range in self.message.rows.row_ranges:
@@ -688,17 +688,17 @@ class _ReadRowsRequestManager(object):
         return new_row_ranges
 
     def _key_already_read(self, key):
-        """ Helper for :meth:`_filter_row_ranges`"""
+        """Helper for :meth:`_filter_row_ranges`"""
         return key <= self.last_scanned_key
 
     @staticmethod
     def _start_key_set(row_range):
-        """ Helper for :meth:`_filter_row_ranges`"""
+        """Helper for :meth:`_filter_row_ranges`"""
         return row_range.start_key_open or row_range.start_key_closed
 
     @staticmethod
     def _end_key_set(row_range):
-        """ Helper for :meth:`_filter_row_ranges`"""
+        """Helper for :meth:`_filter_row_ranges`"""
         return row_range.end_key_open or row_range.end_key_closed
 
 

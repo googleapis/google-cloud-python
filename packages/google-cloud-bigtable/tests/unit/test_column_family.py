@@ -265,7 +265,7 @@ def _make_client(*args, **kwargs):
 
 
 def test_column_family_constructor():
-    column_family_id = u"column-family-id"
+    column_family_id = "column-family-id"
     table = object()
     gc_rule = object()
     column_family = _make_column_family(column_family_id, table, gc_rule=gc_rule)
@@ -276,7 +276,7 @@ def test_column_family_constructor():
 
 
 def test_column_family_name_property():
-    column_family_id = u"column-family-id"
+    column_family_id = "column-family-id"
     table_name = "table_name"
     table = _Table(table_name)
     column_family = _make_column_family(column_family_id, table)

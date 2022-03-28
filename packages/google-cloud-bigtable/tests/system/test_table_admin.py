@@ -94,7 +94,8 @@ def test_table_create(data_instance_populated, shared_table, tables_to_delete):
 
 
 def test_table_create_w_families(
-    data_instance_populated, tables_to_delete,
+    data_instance_populated,
+    tables_to_delete,
 ):
     from google.cloud.bigtable.column_family import MaxVersionsGCRule
 
@@ -236,7 +237,9 @@ def test_table_set_iam_policy(
 
 
 def test_table_test_iam_permissions(
-    data_instance_populated, tables_to_delete, skip_on_emulator,
+    data_instance_populated,
+    tables_to_delete,
+    skip_on_emulator,
 ):
     temp_table_id = "test-test-iam-policy-table"
     temp_table = data_instance_populated.table(temp_table_id)
@@ -337,7 +340,9 @@ def test_table_backup(
     alt_cluster_id = f"{alt_instance_id}-cluster"
     alt_instance = admin_client.instance(alt_instance_id, labels=instance_labels)
     alt_cluster = alt_instance.cluster(
-        cluster_id=alt_cluster_id, location_id=location_id, serve_nodes=1,
+        cluster_id=alt_cluster_id,
+        location_id=location_id,
+        serve_nodes=1,
     )
     create_op = alt_instance.create(clusters=[alt_cluster])
     instances_to_delete.append(alt_instance)

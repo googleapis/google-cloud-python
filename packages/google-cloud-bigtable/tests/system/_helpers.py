@@ -33,7 +33,9 @@ def _retry_on_unavailable(exc):
 
 
 retry_grpc_unavailable = retry.RetryErrors(
-    core_exceptions.GrpcRendezvous, error_predicate=_retry_on_unavailable, max_tries=9,
+    core_exceptions.GrpcRendezvous,
+    error_predicate=_retry_on_unavailable,
+    max_tries=9,
 )
 
 

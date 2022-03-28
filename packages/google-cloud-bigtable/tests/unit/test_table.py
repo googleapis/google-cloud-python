@@ -197,7 +197,9 @@ def test_table_name():
         spec=["project", "table_data_client"],
     )
     instance = mock.Mock(
-        _client=client, instance_id=INSTANCE_ID, spec=["_client", "instance_id"],
+        _client=client,
+        instance_id=INSTANCE_ID,
+        spec=["_client", "instance_id"],
     )
 
     table = _make_table(TABLE_ID, instance)
@@ -964,7 +966,9 @@ def test_table_read_retry_rows():
     assert result.row_key == ROW_KEY_2
 
     expected_request = _create_row_request(
-        table.name, start_key=ROW_KEY_1, end_key=ROW_KEY_2,
+        table.name,
+        start_key=ROW_KEY_1,
+        end_key=ROW_KEY_2,
     )
     data_api.read_rows.mock_calls = [expected_request] * 3
 
@@ -1024,7 +1028,9 @@ def test_table_yield_retry_rows():
     assert result.row_key == ROW_KEY_2
 
     expected_request = _create_row_request(
-        table.name, start_key=ROW_KEY_1, end_key=ROW_KEY_2,
+        table.name,
+        start_key=ROW_KEY_1,
+        end_key=ROW_KEY_2,
     )
     data_api.read_rows.mock_calls = [expected_request] * 3
 
@@ -1095,7 +1101,9 @@ def test_table_yield_rows_with_row_set():
     assert rows[2].row_key == ROW_KEY_3
 
     expected_request = _create_row_request(
-        table.name, start_key=ROW_KEY_1, end_key=ROW_KEY_2,
+        table.name,
+        start_key=ROW_KEY_1,
+        end_key=ROW_KEY_2,
     )
     expected_request.rows.row_keys.append(ROW_KEY_3)
     data_api.read_rows.assert_called_once_with(expected_request, timeout=61.0)
@@ -1146,7 +1154,8 @@ def test_table_truncate_w_timeout():
     assert result is None
 
     table_api.drop_row_range.assert_called_once_with(
-        request={"name": TABLE_NAME, "delete_all_data_from_table": True}, timeout=120,
+        request={"name": TABLE_NAME, "delete_all_data_from_table": True},
+        timeout=120,
     )
 
 
@@ -1183,7 +1192,8 @@ def test_table_drop_by_prefix_w_timeout():
     assert result is None
 
     table_api.drop_row_range.assert_called_once_with(
-        request={"name": TABLE_NAME, "row_key_prefix": row_key_prefix}, timeout=120,
+        request={"name": TABLE_NAME, "row_key_prefix": row_key_prefix},
+        timeout=120,
     )
 
 
@@ -1326,7 +1336,11 @@ def test_table_backup_factory_non_defaults():
     instance = Instance(INSTANCE_ID, None)
     table = _make_table(TABLE_ID, instance)
     timestamp = datetime.datetime.utcnow().replace(tzinfo=UTC)
-    backup = table.backup(BACKUP_ID, cluster_id=CLUSTER_ID, expire_time=timestamp,)
+    backup = table.backup(
+        BACKUP_ID,
+        cluster_id=CLUSTER_ID,
+        expire_time=timestamp,
+    )
 
     assert isinstance(backup, Backup)
     assert backup.backup_id == BACKUP_ID
@@ -1624,7 +1638,8 @@ def _do_mutate_retryable_rows_helper(
         if prior_status is None or prior_status.code in RETRYABLES:
             mutations = row._get_mutations().copy()  # row clears on success
             entry = data_messages_v2_pb2.MutateRowsRequest.Entry(
-                row_key=row.row_key, mutations=mutations,
+                row_key=row.row_key,
+                mutations=mutations,
             )
             expected_entries.append(entry)
 
@@ -1698,7 +1713,9 @@ def test_rmrw_do_mutate_retryable_rows_w_timeout():
     timeout = 5  # seconds
 
     _do_mutate_retryable_rows_helper(
-        row_cells, responses, timeout=timeout,
+        row_cells,
+        responses,
+        timeout=timeout,
     )
 
 
@@ -1720,7 +1737,9 @@ def test_rmrw_do_mutate_retryable_rows_w_retryable_error():
     responses = ()
 
     _do_mutate_retryable_rows_helper(
-        row_cells, responses, retryable_error=True,
+        row_cells,
+        responses,
+        retryable_error=True,
     )
 
 
@@ -1744,7 +1763,9 @@ def test_rmrw_do_mutate_retryable_rows_retry():
     responses = [SUCCESS, RETRYABLE_1, NON_RETRYABLE]
 
     _do_mutate_retryable_rows_helper(
-        row_cells, responses, raising_retry=True,
+        row_cells,
+        responses,
+        raising_retry=True,
     )
 
 

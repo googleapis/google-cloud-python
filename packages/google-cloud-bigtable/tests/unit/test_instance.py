@@ -110,7 +110,10 @@ def test_instance__update_from_pb_success():
     state = enums.Instance.State.READY
     # todo type to type_?
     instance_pb = data_v2_pb2.Instance(
-        display_name=DISPLAY_NAME, type_=instance_type, labels=LABELS, state=state,
+        display_name=DISPLAY_NAME,
+        type_=instance_type,
+        labels=LABELS,
+        state=state,
     )
 
     instance = _make_instance(None, None)
@@ -309,7 +312,11 @@ def test_instance_create():
     credentials = _make_credentials()
     client = _make_client(project=PROJECT, credentials=credentials, admin=True)
     instance = _make_instance(
-        INSTANCE_ID, client, DISPLAY_NAME, enums.Instance.Type.PRODUCTION, LABELS,
+        INSTANCE_ID,
+        client,
+        DISPLAY_NAME,
+        enums.Instance.Type.PRODUCTION,
+        LABELS,
     )
     api, response = _instance_api_response_for_create()
     client._instance_admin_client = api
@@ -327,7 +334,9 @@ def test_instance_create():
         default_storage_type=enums.StorageType.UNSPECIFIED,
     )
     instance_pb = Instance(
-        display_name=DISPLAY_NAME, type_=enums.Instance.Type.PRODUCTION, labels=LABELS,
+        display_name=DISPLAY_NAME,
+        type_=enums.Instance.Type.PRODUCTION,
+        labels=LABELS,
     )
     cluster_id = "{}-cluster".format(INSTANCE_ID)
     api.create_instance.assert_called_once_with(
@@ -352,7 +361,11 @@ def test_instance_create_w_clusters():
     credentials = _make_credentials()
     client = _make_client(project=PROJECT, credentials=credentials, admin=True)
     instance = _make_instance(
-        INSTANCE_ID, client, DISPLAY_NAME, enums.Instance.Type.PRODUCTION, LABELS,
+        INSTANCE_ID,
+        client,
+        DISPLAY_NAME,
+        enums.Instance.Type.PRODUCTION,
+        LABELS,
     )
     api, response = _instance_api_response_for_create()
     client._instance_admin_client = api
@@ -393,7 +406,9 @@ def test_instance_create_w_clusters():
         default_storage_type=enums.StorageType.UNSPECIFIED,
     )
     instance_pb = instance_pb(
-        display_name=DISPLAY_NAME, type_=enums.Instance.Type.PRODUCTION, labels=LABELS,
+        display_name=DISPLAY_NAME,
+        type_=enums.Instance.Type.PRODUCTION,
+        labels=LABELS,
     )
     api.create_instance.assert_called_once_with(
         request={
@@ -460,7 +475,7 @@ def test_instance_reload():
     from google.cloud.bigtable_admin_v2.types import instance as data_v2_pb2
     from google.cloud.bigtable import enums
 
-    DISPLAY_NAME = u"hey-hi-hello"
+    DISPLAY_NAME = "hey-hi-hello"
     credentials = _make_credentials()
     client = _make_client(project=PROJECT, credentials=credentials, admin=True)
     instance = _make_instance(INSTANCE_ID, client)

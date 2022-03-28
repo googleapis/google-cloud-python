@@ -103,7 +103,9 @@ def admin_instance(admin_client, admin_instance_id, instance_labels):
 @pytest.fixture(scope="session")
 def admin_cluster(admin_instance, admin_cluster_id, location_id, serve_nodes):
     return admin_instance.cluster(
-        admin_cluster_id, location_id=location_id, serve_nodes=serve_nodes,
+        admin_cluster_id,
+        location_id=location_id,
+        serve_nodes=serve_nodes,
     )
 
 
@@ -169,7 +171,9 @@ def data_instance_populated(
     # See: https://cloud.google.com/bigtable/docs/emulator
     if not in_emulator:
         cluster = instance.cluster(
-            data_cluster_id, location_id=location_id, serve_nodes=serve_nodes,
+            data_cluster_id,
+            location_id=location_id,
+            serve_nodes=serve_nodes,
         )
         operation = instance.create(clusters=[cluster])
         operation.result(timeout=30)

@@ -162,7 +162,10 @@ def test_client_constructor_w_both_admin_and_read_only():
     credentials = _make_credentials()
     with pytest.raises(ValueError):
         _make_client(
-            project=PROJECT, credentials=credentials, admin=True, read_only=True,
+            project=PROJECT,
+            credentials=credentials,
+            admin=True,
+            read_only=True,
         )
 
 
@@ -275,7 +278,9 @@ def test_client__emulator_channel_w_sync():
 
     assert channel is patched.return_value
     patched.assert_called_once_with(
-        emulator_host, lcc.return_value, options=options,
+        emulator_host,
+        lcc.return_value,
+        options=options,
     )
 
 
@@ -295,7 +300,9 @@ def test_client__emulator_channel_w_async():
 
     assert channel is patched.return_value
     patched.assert_called_once_with(
-        emulator_host, lcc.return_value, options=options,
+        emulator_host,
+        lcc.return_value,
+        options=options,
     )
 
 
@@ -328,7 +335,8 @@ def test_client__local_composite_credentials():
     wsir_patched.assert_called_once_with(client._credentials, None)
     request_patched.assert_called_once_with()
     amp_patched.assert_called_once_with(
-        wsir_patched.return_value, request_patched.return_value,
+        wsir_patched.return_value,
+        request_patched.return_value,
     )
     grpc_mcc.assert_called_once_with(amp_patched.return_value)
     grpc_lcc.assert_called_once_with()
@@ -344,7 +352,8 @@ def _create_gapic_client_channel_helper(endpoint=None, emulator_host=None):
 
     if endpoint is not None:
         client._client_options = mock.Mock(
-            spec=["api_endpoint"], api_endpoint=endpoint,
+            spec=["api_endpoint"],
+            api_endpoint=endpoint,
         )
         expected_host = endpoint
     else:
@@ -363,10 +372,12 @@ def _create_gapic_client_channel_helper(endpoint=None, emulator_host=None):
 
     if emulator_host is not None:
         client._emulator_channel.assert_called_once_with(
-            transport=grpc_transport, options=_GRPC_CHANNEL_OPTIONS,
+            transport=grpc_transport,
+            options=_GRPC_CHANNEL_OPTIONS,
         )
         grpc_transport.assert_called_once_with(
-            channel=client._emulator_channel.return_value, host=expected_host,
+            channel=client._emulator_channel.return_value,
+            host=expected_host,
         )
     else:
         grpc_transport.create_channel.assert_called_once_with(
@@ -375,7 +386,8 @@ def _create_gapic_client_channel_helper(endpoint=None, emulator_host=None):
             options=_GRPC_CHANNEL_OPTIONS,
         )
         grpc_transport.assert_called_once_with(
-            channel=grpc_transport.create_channel.return_value, host=expected_host,
+            channel=grpc_transport.create_channel.return_value,
+            host=expected_host,
         )
 
 
@@ -490,7 +502,10 @@ def test_client_table_admin_client_not_initialized_w_client_info():
     credentials = _make_credentials()
     client_info = mock.Mock()
     client = _make_client(
-        project=PROJECT, credentials=credentials, admin=True, client_info=client_info,
+        project=PROJECT,
+        credentials=credentials,
+        admin=True,
+        client_info=client_info,
     )
 
     table_admin_client = client.table_admin_client
@@ -557,7 +572,10 @@ def test_client_instance_admin_client_not_initialized_w_client_info():
     credentials = _make_credentials()
     client_info = mock.Mock()
     client = _make_client(
-        project=PROJECT, credentials=credentials, admin=True, client_info=client_info,
+        project=PROJECT,
+        credentials=credentials,
+        admin=True,
+        client_info=client_info,
     )
 
     instance_admin_client = client.instance_admin_client

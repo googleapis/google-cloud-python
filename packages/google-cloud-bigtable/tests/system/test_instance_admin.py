@@ -150,7 +150,9 @@ def test_instance_create_prod(
     alt_cluster_id = f"{alt_instance_id}-cluster"
     serve_nodes = 1
     cluster = instance.cluster(
-        alt_cluster_id, location_id=location_id, serve_nodes=serve_nodes,
+        alt_cluster_id,
+        location_id=location_id,
+        serve_nodes=serve_nodes,
     )
 
     operation = instance.create(clusters=[cluster])
@@ -532,7 +534,10 @@ def test_instance_update_w_type(
         labels=instance_labels,
     )
     alt_cluster_id = f"{alt_instance_id}-cluster"
-    cluster = instance.cluster(alt_cluster_id, location_id=location_id,)
+    cluster = instance.cluster(
+        alt_cluster_id,
+        location_id=location_id,
+    )
 
     operation = instance.create(clusters=[cluster])
     instances_to_delete.append(instance)
@@ -560,7 +565,9 @@ def test_cluster_exists_miss(admin_instance_populated, skip_on_emulator):
 
 
 def test_cluster_create(
-    admin_instance_populated, admin_instance_id, skip_on_emulator,
+    admin_instance_populated,
+    admin_instance_id,
+    skip_on_emulator,
 ):
     alt_cluster_id = f"{admin_instance_id}-c2"
     alt_location_id = "us-central1-f"
@@ -592,7 +599,9 @@ def test_cluster_create(
 
 
 def test_cluster_create_w_autoscaling(
-    admin_instance_populated, admin_instance_id, skip_on_emulator,
+    admin_instance_populated,
+    admin_instance_id,
+    skip_on_emulator,
 ):
     alt_cluster_id = f"{admin_instance_id}-c2"
     alt_location_id = "us-central1-f"

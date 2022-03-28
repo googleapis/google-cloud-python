@@ -29,7 +29,9 @@ from google.cloud.bigtable_v2.types import bigtable
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-bigtable",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-bigtable",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
@@ -126,10 +128,14 @@ class BigtableTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.read_rows: gapic_v1.method.wrap_method(
-                self.read_rows, default_timeout=43200.0, client_info=client_info,
+                self.read_rows,
+                default_timeout=43200.0,
+                client_info=client_info,
             ),
             self.sample_row_keys: gapic_v1.method.wrap_method(
-                self.sample_row_keys, default_timeout=60.0, client_info=client_info,
+                self.sample_row_keys,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.mutate_row: gapic_v1.method.wrap_method(
                 self.mutate_row,
@@ -147,7 +153,9 @@ class BigtableTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.mutate_rows: gapic_v1.method.wrap_method(
-                self.mutate_rows, default_timeout=600.0, client_info=client_info,
+                self.mutate_rows,
+                default_timeout=600.0,
+                client_info=client_info,
             ),
             self.check_and_mutate_row: gapic_v1.method.wrap_method(
                 self.check_and_mutate_row,
@@ -155,7 +163,9 @@ class BigtableTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.ping_and_warm: gapic_v1.method.wrap_method(
-                self.ping_and_warm, default_timeout=None, client_info=client_info,
+                self.ping_and_warm,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.read_modify_write_row: gapic_v1.method.wrap_method(
                 self.read_modify_write_row,
@@ -167,9 +177,9 @@ class BigtableTransport(abc.ABC):
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

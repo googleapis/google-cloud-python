@@ -55,7 +55,7 @@ ALT_LOCATION_ID = "us-central1-a"
 PRODUCTION = enums.Instance.Type.PRODUCTION
 SERVER_NODES = 3
 STORAGE_TYPE = enums.StorageType.SSD
-LABEL_KEY = u"python-snippet"
+LABEL_KEY = "python-snippet"
 LABEL_STAMP = (
     datetime.datetime.utcnow()
     .replace(microsecond=0, tzinfo=UTC)

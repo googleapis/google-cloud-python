@@ -22,7 +22,7 @@ from ._testing import _make_credentials
 
 TIMESTAMP_MICROS = 18738724000  # Make sure millis granularity
 ROW_KEY = b"row-key"
-FAMILY_NAME = u"family"
+FAMILY_NAME = "family"
 QUALIFIER = b"qualifier"
 TIMESTAMP_MICROS = 100
 VALUE = b"value"
@@ -64,7 +64,7 @@ def test_cell_from_pb():
 
 
 def test_cell_from_pb_with_labels():
-    labels = [u"label1", u"label2"]
+    labels = ["label1", "label2"]
     _cell_from_pb_test_helper(labels)
 
 
@@ -156,8 +156,8 @@ def test_partial_row_data_to_dict():
     cell2 = object()
     cell3 = object()
 
-    family_name1 = u"name1"
-    family_name2 = u"name2"
+    family_name1 = "name1"
+    family_name2 = "name2"
     qual1 = b"col1"
     qual2 = b"col2"
     qual3 = b"col3"
@@ -178,7 +178,7 @@ def test_partial_row_data_to_dict():
 
 
 def test_partial_row_data_cell_value():
-    family_name = u"name1"
+    family_name = "name1"
     qualifier = b"col1"
     cell = _make_cell_pb(b"value-bytes")
 
@@ -190,7 +190,7 @@ def test_partial_row_data_cell_value():
 
 
 def test_partial_row_data_cell_value_invalid_index():
-    family_name = u"name1"
+    family_name = "name1"
     qualifier = b"col1"
     cell = _make_cell_pb(b"")
 
@@ -202,7 +202,7 @@ def test_partial_row_data_cell_value_invalid_index():
 
 
 def test_partial_row_data_cell_value_invalid_column_family_key():
-    family_name = u"name1"
+    family_name = "name1"
     qualifier = b"col1"
 
     partial_row_data = _make_partial_row_data(None)
@@ -212,7 +212,7 @@ def test_partial_row_data_cell_value_invalid_column_family_key():
 
 
 def test_partial_row_data_cell_value_invalid_column_key():
-    family_name = u"name1"
+    family_name = "name1"
     qualifier = b"col1"
 
     partial_row_data = _make_partial_row_data(None)
@@ -223,7 +223,7 @@ def test_partial_row_data_cell_value_invalid_column_key():
 
 
 def test_partial_row_data_cell_values():
-    family_name = u"name1"
+    family_name = "name1"
     qualifier = b"col1"
     cell = _make_cell_pb(b"value-bytes")
 
@@ -238,7 +238,7 @@ def test_partial_row_data_cell_values():
 
 
 def test_partial_row_data_cell_values_with_max_count():
-    family_name = u"name1"
+    family_name = "name1"
     qualifier = b"col1"
     cell_1 = _make_cell_pb(b"value-bytes-1")
     cell_2 = _make_cell_pb(b"value-bytes-2")
@@ -574,7 +574,7 @@ def test_partial_rows_data__copy_from_previous_unset():
     cell = _PartialCellData()
     yrd._copy_from_previous(cell)
     assert cell.row_key == b""
-    assert cell.family_name == u""
+    assert cell.family_name == ""
     assert cell.qualifier is None
     assert cell.timestamp_micros == 0
     assert cell.labels == []
@@ -582,7 +582,7 @@ def test_partial_rows_data__copy_from_previous_unset():
 
 def test_partial_rows_data__copy_from_previous_blank():
     ROW_KEY = "RK"
-    FAMILY_NAME = u"A"
+    FAMILY_NAME = "A"
     QUALIFIER = b"C"
     TIMESTAMP_MICROS = 100
     LABELS = ["L1", "L2"]
@@ -610,7 +610,7 @@ def test_partial_rows_data__copy_from_previous_filled():
     from google.cloud.bigtable_v2.services.bigtable import BigtableClient
 
     ROW_KEY = "RK"
-    FAMILY_NAME = u"A"
+    FAMILY_NAME = "A"
     QUALIFIER = b"C"
     TIMESTAMP_MICROS = 100
     LABELS = ["L1", "L2"]
@@ -1324,13 +1324,13 @@ def _flatten_cells(prd):
             for qualifier, column in family.items():
                 for cell in column:
                     yield {
-                        u"rk": _bytes_to_unicode(row_key),
-                        u"fm": family_name,
-                        u"qual": _bytes_to_unicode(qualifier),
-                        u"ts": _microseconds_from_datetime(cell.timestamp),
-                        u"value": _bytes_to_unicode(cell.value),
-                        u"label": u" ".join(cell.labels),
-                        u"error": False,
+                        "rk": _bytes_to_unicode(row_key),
+                        "fm": family_name,
+                        "qual": _bytes_to_unicode(qualifier),
+                        "ts": _microseconds_from_datetime(cell.timestamp),
+                        "value": _bytes_to_unicode(cell.value),
+                        "label": " ".join(cell.labels),
+                        "error": False,
                     }
 
 
@@ -1363,7 +1363,7 @@ class _MockFailureIterator_1(object):
 class _PartialCellData(object):
 
     row_key = b""
-    family_name = u""
+    family_name = ""
     qualifier = None
     timestamp_micros = 0
     last_scanned_row_key = ""

@@ -217,7 +217,10 @@ def test_backup_cluster_setter():
 
 
 def test_backup_parent_none():
-    backup = _make_backup(BACKUP_ID, _Instance(INSTANCE_NAME),)
+    backup = _make_backup(
+        BACKUP_ID,
+        _Instance(INSTANCE_NAME),
+    )
     assert backup.parent is None
 
 
@@ -361,7 +364,8 @@ def test_backup_create_w_grpc_error():
     )
 
     backup_pb = table.Backup(
-        source_table=TABLE_NAME, expire_time=_datetime_to_pb_timestamp(timestamp),
+        source_table=TABLE_NAME,
+        expire_time=_datetime_to_pb_timestamp(timestamp),
     )
 
     with pytest.raises(GoogleAPICallError):
@@ -390,7 +394,8 @@ def test_backup_create_w_already_exists():
     )
 
     backup_pb = table.Backup(
-        source_table=TABLE_NAME, expire_time=_datetime_to_pb_timestamp(timestamp),
+        source_table=TABLE_NAME,
+        expire_time=_datetime_to_pb_timestamp(timestamp),
     )
 
     with pytest.raises(Conflict):
@@ -419,7 +424,8 @@ def test_backup_create_w_instance_not_found():
     )
 
     backup_pb = table.Backup(
-        source_table=TABLE_NAME, expire_time=_datetime_to_pb_timestamp(timestamp),
+        source_table=TABLE_NAME,
+        expire_time=_datetime_to_pb_timestamp(timestamp),
     )
 
     with pytest.raises(NotFound):
@@ -444,7 +450,9 @@ def test_backup_create_w_cluster_not_set():
 
 def test_backup_create_w_table_not_set():
     backup = _make_backup(
-        BACKUP_ID, _Instance(INSTANCE_NAME), expire_time=_make_timestamp(),
+        BACKUP_ID,
+        _Instance(INSTANCE_NAME),
+        expire_time=_make_timestamp(),
     )
 
     with pytest.raises(ValueError):
@@ -452,7 +460,11 @@ def test_backup_create_w_table_not_set():
 
 
 def test_backup_create_w_expire_time_not_set():
-    backup = _make_backup(BACKUP_ID, _Instance(INSTANCE_NAME), table_id=TABLE_ID,)
+    backup = _make_backup(
+        BACKUP_ID,
+        _Instance(INSTANCE_NAME),
+        table_id=TABLE_ID,
+    )
 
     with pytest.raises(ValueError):
         backup.create(CLUSTER_ID)
@@ -478,7 +490,8 @@ def test_backup_create_success():
     )
 
     backup_pb = table.Backup(
-        source_table=TABLE_NAME, expire_time=_datetime_to_pb_timestamp(timestamp),
+        source_table=TABLE_NAME,
+        expire_time=_datetime_to_pb_timestamp(timestamp),
     )
 
     future = backup.create(CLUSTER_ID)
@@ -657,7 +670,8 @@ def test_backup_update_expire_time_w_grpc_error():
         backup.update_expire_time(expire_time)
 
     backup_update = table.Backup(
-        name=BACKUP_NAME, expire_time=_datetime_to_pb_timestamp(expire_time),
+        name=BACKUP_NAME,
+        expire_time=_datetime_to_pb_timestamp(expire_time),
     )
     update_mask = field_mask_pb2.FieldMask(paths=["expire_time"])
     api.update_backup.assert_called_once_with(
@@ -682,7 +696,8 @@ def test_backup_update_expire_time_w_not_found():
         backup.update_expire_time(expire_time)
 
     backup_update = table.Backup(
-        name=BACKUP_NAME, expire_time=_datetime_to_pb_timestamp(expire_time),
+        name=BACKUP_NAME,
+        expire_time=_datetime_to_pb_timestamp(expire_time),
     )
     update_mask = field_mask_pb2.FieldMask(paths=["expire_time"])
     api.update_backup.assert_called_once_with(
@@ -705,7 +720,8 @@ def test_backup_update_expire_time_success():
     backup.update_expire_time(expire_time)
 
     backup_update = table.Backup(
-        name=BACKUP_NAME, expire_time=_datetime_to_pb_timestamp(expire_time),
+        name=BACKUP_NAME,
+        expire_time=_datetime_to_pb_timestamp(expire_time),
     )
     update_mask = field_mask_pb2.FieldMask(paths=["expire_time"])
     api.update_backup.assert_called_once_with(

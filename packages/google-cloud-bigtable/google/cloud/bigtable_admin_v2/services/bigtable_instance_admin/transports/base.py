@@ -135,7 +135,9 @@ class BigtableInstanceAdminTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.create_instance: gapic_v1.method.wrap_method(
-                self.create_instance, default_timeout=300.0, client_info=client_info,
+                self.create_instance,
+                default_timeout=300.0,
+                client_info=client_info,
             ),
             self.get_instance: gapic_v1.method.wrap_method(
                 self.get_instance,
@@ -198,10 +200,14 @@ class BigtableInstanceAdminTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.delete_instance: gapic_v1.method.wrap_method(
-                self.delete_instance, default_timeout=60.0, client_info=client_info,
+                self.delete_instance,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.create_cluster: gapic_v1.method.wrap_method(
-                self.create_cluster, default_timeout=60.0, client_info=client_info,
+                self.create_cluster,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.get_cluster: gapic_v1.method.wrap_method(
                 self.get_cluster,
@@ -264,10 +270,14 @@ class BigtableInstanceAdminTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.delete_cluster: gapic_v1.method.wrap_method(
-                self.delete_cluster, default_timeout=60.0, client_info=client_info,
+                self.delete_cluster,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.create_app_profile: gapic_v1.method.wrap_method(
-                self.create_app_profile, default_timeout=60.0, client_info=client_info,
+                self.create_app_profile,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.get_app_profile: gapic_v1.method.wrap_method(
                 self.get_app_profile,
@@ -315,7 +325,9 @@ class BigtableInstanceAdminTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.delete_app_profile: gapic_v1.method.wrap_method(
-                self.delete_app_profile, default_timeout=60.0, client_info=client_info,
+                self.delete_app_profile,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.get_iam_policy: gapic_v1.method.wrap_method(
                 self.get_iam_policy,
@@ -333,7 +345,9 @@ class BigtableInstanceAdminTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.set_iam_policy: gapic_v1.method.wrap_method(
-                self.set_iam_policy, default_timeout=60.0, client_info=client_info,
+                self.set_iam_policy,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.test_iam_permissions: gapic_v1.method.wrap_method(
                 self.test_iam_permissions,
@@ -370,9 +384,9 @@ class BigtableInstanceAdminTransport(abc.ABC):
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

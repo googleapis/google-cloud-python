@@ -65,7 +65,8 @@ class BigtableInstanceAdminClientMeta(type):
     _transport_registry["grpc_asyncio"] = BigtableInstanceAdminGrpcAsyncIOTransport
 
     def get_transport_class(
-        cls, label: str = None,
+        cls,
+        label: str = None,
     ) -> Type[BigtableInstanceAdminTransport]:
         """Returns an appropriate transport class.
 
@@ -175,10 +176,18 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         return self._transport
 
     @staticmethod
-    def app_profile_path(project: str, instance: str, app_profile: str,) -> str:
+    def app_profile_path(
+        project: str,
+        instance: str,
+        app_profile: str,
+    ) -> str:
         """Returns a fully-qualified app_profile string."""
-        return "projects/{project}/instances/{instance}/appProfiles/{app_profile}".format(
-            project=project, instance=instance, app_profile=app_profile,
+        return (
+            "projects/{project}/instances/{instance}/appProfiles/{app_profile}".format(
+                project=project,
+                instance=instance,
+                app_profile=app_profile,
+            )
         )
 
     @staticmethod
@@ -191,10 +200,16 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def cluster_path(project: str, instance: str, cluster: str,) -> str:
+    def cluster_path(
+        project: str,
+        instance: str,
+        cluster: str,
+    ) -> str:
         """Returns a fully-qualified cluster string."""
         return "projects/{project}/instances/{instance}/clusters/{cluster}".format(
-            project=project, instance=instance, cluster=cluster,
+            project=project,
+            instance=instance,
+            cluster=cluster,
         )
 
     @staticmethod
@@ -208,7 +223,10 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
 
     @staticmethod
     def crypto_key_path(
-        project: str, location: str, key_ring: str, crypto_key: str,
+        project: str,
+        location: str,
+        key_ring: str,
+        crypto_key: str,
     ) -> str:
         """Returns a fully-qualified crypto_key string."""
         return "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}".format(
@@ -229,11 +247,17 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
 
     @staticmethod
     def hot_tablet_path(
-        project: str, instance: str, cluster: str, hot_tablet: str,
+        project: str,
+        instance: str,
+        cluster: str,
+        hot_tablet: str,
     ) -> str:
         """Returns a fully-qualified hot_tablet string."""
         return "projects/{project}/instances/{instance}/clusters/{cluster}/hotTablets/{hot_tablet}".format(
-            project=project, instance=instance, cluster=cluster, hot_tablet=hot_tablet,
+            project=project,
+            instance=instance,
+            cluster=cluster,
+            hot_tablet=hot_tablet,
         )
 
     @staticmethod
@@ -246,10 +270,14 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def instance_path(project: str, instance: str,) -> str:
+    def instance_path(
+        project: str,
+        instance: str,
+    ) -> str:
         """Returns a fully-qualified instance string."""
         return "projects/{project}/instances/{instance}".format(
-            project=project, instance=instance,
+            project=project,
+            instance=instance,
         )
 
     @staticmethod
@@ -259,10 +287,16 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def table_path(project: str, instance: str, table: str,) -> str:
+    def table_path(
+        project: str,
+        instance: str,
+        table: str,
+    ) -> str:
         """Returns a fully-qualified table string."""
         return "projects/{project}/instances/{instance}/tables/{table}".format(
-            project=project, instance=instance, table=table,
+            project=project,
+            instance=instance,
+            table=table,
         )
 
     @staticmethod
@@ -275,7 +309,9 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_billing_account_path(billing_account: str,) -> str:
+    def common_billing_account_path(
+        billing_account: str,
+    ) -> str:
         """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
@@ -288,9 +324,13 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(folder: str,) -> str:
+    def common_folder_path(
+        folder: str,
+    ) -> str:
         """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(folder=folder,)
+        return "folders/{folder}".format(
+            folder=folder,
+        )
 
     @staticmethod
     def parse_common_folder_path(path: str) -> Dict[str, str]:
@@ -299,9 +339,13 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(organization: str,) -> str:
+    def common_organization_path(
+        organization: str,
+    ) -> str:
         """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(organization=organization,)
+        return "organizations/{organization}".format(
+            organization=organization,
+        )
 
     @staticmethod
     def parse_common_organization_path(path: str) -> Dict[str, str]:
@@ -310,9 +354,13 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(project: str,) -> str:
+    def common_project_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified project string."""
-        return "projects/{project}".format(project=project,)
+        return "projects/{project}".format(
+            project=project,
+        )
 
     @staticmethod
     def parse_common_project_path(path: str) -> Dict[str, str]:
@@ -321,10 +369,14 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(project: str, location: str,) -> str:
+    def common_location_path(
+        project: str,
+        location: str,
+    ) -> str:
         """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
-            project=project, location=location,
+            project=project,
+            location=location,
         )
 
     @staticmethod
@@ -611,7 +663,12 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -694,7 +751,12 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -766,7 +828,12 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -826,7 +893,12 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -921,7 +993,12 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -996,7 +1073,10 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def create_cluster(
@@ -1098,7 +1178,12 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1180,7 +1265,12 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1254,7 +1344,12 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1314,7 +1409,12 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1424,7 +1524,12 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1499,7 +1604,10 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def create_app_profile(
@@ -1592,7 +1700,12 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1665,7 +1778,12 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1743,12 +1861,20 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListAppProfilesPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1835,7 +1961,12 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1910,7 +2041,10 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def get_iam_policy(
@@ -2035,7 +2169,12 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2161,7 +2300,12 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2244,7 +2388,12 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2320,12 +2469,20 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListHotTabletsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
