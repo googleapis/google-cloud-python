@@ -31,7 +31,9 @@ from google.longrunning import operations_pb2  # type: ignore
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-metastore",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-metastore",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
@@ -121,19 +123,29 @@ class DataprocMetastoreTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.list_services: gapic_v1.method.wrap_method(
-                self.list_services, default_timeout=None, client_info=client_info,
+                self.list_services,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_service: gapic_v1.method.wrap_method(
-                self.get_service, default_timeout=None, client_info=client_info,
+                self.get_service,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.create_service: gapic_v1.method.wrap_method(
-                self.create_service, default_timeout=60.0, client_info=client_info,
+                self.create_service,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.update_service: gapic_v1.method.wrap_method(
-                self.update_service, default_timeout=60.0, client_info=client_info,
+                self.update_service,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.delete_service: gapic_v1.method.wrap_method(
-                self.delete_service, default_timeout=60.0, client_info=client_info,
+                self.delete_service,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.list_metadata_imports: gapic_v1.method.wrap_method(
                 self.list_metadata_imports,
@@ -141,7 +153,9 @@ class DataprocMetastoreTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.get_metadata_import: gapic_v1.method.wrap_method(
-                self.get_metadata_import, default_timeout=None, client_info=client_info,
+                self.get_metadata_import,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.create_metadata_import: gapic_v1.method.wrap_method(
                 self.create_metadata_import,
@@ -154,31 +168,43 @@ class DataprocMetastoreTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.export_metadata: gapic_v1.method.wrap_method(
-                self.export_metadata, default_timeout=60.0, client_info=client_info,
+                self.export_metadata,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.restore_service: gapic_v1.method.wrap_method(
-                self.restore_service, default_timeout=60.0, client_info=client_info,
+                self.restore_service,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.list_backups: gapic_v1.method.wrap_method(
-                self.list_backups, default_timeout=None, client_info=client_info,
+                self.list_backups,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_backup: gapic_v1.method.wrap_method(
-                self.get_backup, default_timeout=None, client_info=client_info,
+                self.get_backup,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.create_backup: gapic_v1.method.wrap_method(
-                self.create_backup, default_timeout=60.0, client_info=client_info,
+                self.create_backup,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.delete_backup: gapic_v1.method.wrap_method(
-                self.delete_backup, default_timeout=60.0, client_info=client_info,
+                self.delete_backup,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
         }
 
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 
