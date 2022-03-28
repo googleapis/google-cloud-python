@@ -31,7 +31,9 @@ from google.longrunning import operations_pb2  # type: ignore
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-shell",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-shell",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
@@ -127,7 +129,8 @@ class CloudShellServiceTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        core_exceptions.ServiceUnavailable, core_exceptions.Unknown,
+                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.Unknown,
                     ),
                     deadline=60.0,
                 ),
@@ -135,7 +138,9 @@ class CloudShellServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.start_environment: gapic_v1.method.wrap_method(
-                self.start_environment, default_timeout=60.0, client_info=client_info,
+                self.start_environment,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.authorize_environment: gapic_v1.method.wrap_method(
                 self.authorize_environment,
@@ -143,19 +148,23 @@ class CloudShellServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.add_public_key: gapic_v1.method.wrap_method(
-                self.add_public_key, default_timeout=60.0, client_info=client_info,
+                self.add_public_key,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.remove_public_key: gapic_v1.method.wrap_method(
-                self.remove_public_key, default_timeout=60.0, client_info=client_info,
+                self.remove_public_key,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
         }
 
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

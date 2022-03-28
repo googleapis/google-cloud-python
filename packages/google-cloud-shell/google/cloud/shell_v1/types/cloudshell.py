@@ -101,15 +101,43 @@ class Environment(proto.Message):
         RUNNING = 3
         DELETING = 4
 
-    name = proto.Field(proto.STRING, number=1,)
-    id = proto.Field(proto.STRING, number=2,)
-    docker_image = proto.Field(proto.STRING, number=3,)
-    state = proto.Field(proto.ENUM, number=4, enum=State,)
-    web_host = proto.Field(proto.STRING, number=12,)
-    ssh_username = proto.Field(proto.STRING, number=5,)
-    ssh_host = proto.Field(proto.STRING, number=6,)
-    ssh_port = proto.Field(proto.INT32, number=7,)
-    public_keys = proto.RepeatedField(proto.STRING, number=8,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    docker_image = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=State,
+    )
+    web_host = proto.Field(
+        proto.STRING,
+        number=12,
+    )
+    ssh_username = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    ssh_host = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    ssh_port = proto.Field(
+        proto.INT32,
+        number=7,
+    )
+    public_keys = proto.RepeatedField(
+        proto.STRING,
+        number=8,
+    )
 
 
 class GetEnvironmentRequest(proto.Message):
@@ -123,7 +151,10 @@ class GetEnvironmentRequest(proto.Message):
             ``users/someone@example.com/environments/default``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CreateEnvironmentMetadata(proto.Message):
@@ -162,9 +193,18 @@ class StartEnvironmentRequest(proto.Message):
             environment before it is started.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    access_token = proto.Field(proto.STRING, number=2,)
-    public_keys = proto.RepeatedField(proto.STRING, number=3,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    access_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    public_keys = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 class AuthorizeEnvironmentRequest(proto.Message):
@@ -188,10 +228,23 @@ class AuthorizeEnvironmentRequest(proto.Message):
             received the request.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    access_token = proto.Field(proto.STRING, number=2,)
-    id_token = proto.Field(proto.STRING, number=4,)
-    expire_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    access_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    id_token = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    expire_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 class AuthorizeEnvironmentResponse(proto.Message):
@@ -231,7 +284,11 @@ class StartEnvironmentMetadata(proto.Message):
         AWAITING_COMPUTE_RESOURCES = 4
         FINISHED = 3
 
-    state = proto.Field(proto.ENUM, number=1, enum=State,)
+    state = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=State,
+    )
 
 
 class StartEnvironmentResponse(proto.Message):
@@ -244,7 +301,11 @@ class StartEnvironmentResponse(proto.Message):
             Environment that was started.
     """
 
-    environment = proto.Field(proto.MESSAGE, number=1, message="Environment",)
+    environment = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="Environment",
+    )
 
 
 class AddPublicKeyRequest(proto.Message):
@@ -265,8 +326,14 @@ class AddPublicKeyRequest(proto.Message):
             encoded with Base64.
     """
 
-    environment = proto.Field(proto.STRING, number=1,)
-    key = proto.Field(proto.STRING, number=2,)
+    environment = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    key = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class AddPublicKeyResponse(proto.Message):
@@ -278,7 +345,10 @@ class AddPublicKeyResponse(proto.Message):
             Key that was added to the environment.
     """
 
-    key = proto.Field(proto.STRING, number=1,)
+    key = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class AddPublicKeyMetadata(proto.Message):
@@ -301,8 +371,14 @@ class RemovePublicKeyRequest(proto.Message):
             environment.
     """
 
-    environment = proto.Field(proto.STRING, number=1,)
-    key = proto.Field(proto.STRING, number=2,)
+    environment = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    key = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class RemovePublicKeyResponse(proto.Message):
@@ -337,7 +413,11 @@ class CloudShellErrorDetails(proto.Message):
         TOS_VIOLATION = 4
         QUOTA_EXCEEDED = 5
 
-    code = proto.Field(proto.ENUM, number=1, enum=CloudShellErrorCode,)
+    code = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=CloudShellErrorCode,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
