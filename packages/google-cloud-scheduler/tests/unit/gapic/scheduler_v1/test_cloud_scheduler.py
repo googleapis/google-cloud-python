@@ -93,7 +93,11 @@ def test__get_default_mtls_endpoint():
 
 
 @pytest.mark.parametrize(
-    "client_class", [CloudSchedulerClient, CloudSchedulerAsyncClient,]
+    "client_class",
+    [
+        CloudSchedulerClient,
+        CloudSchedulerAsyncClient,
+    ],
 )
 def test_cloud_scheduler_client_from_service_account_info(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -135,7 +139,11 @@ def test_cloud_scheduler_client_service_account_always_use_jwt(
 
 
 @pytest.mark.parametrize(
-    "client_class", [CloudSchedulerClient, CloudSchedulerAsyncClient,]
+    "client_class",
+    [
+        CloudSchedulerClient,
+        CloudSchedulerAsyncClient,
+    ],
 )
 def test_cloud_scheduler_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -499,7 +507,9 @@ def test_cloud_scheduler_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -639,10 +649,17 @@ def test_cloud_scheduler_client_create_channel_credentials_file(
         )
 
 
-@pytest.mark.parametrize("request_type", [cloudscheduler.ListJobsRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudscheduler.ListJobsRequest,
+        dict,
+    ],
+)
 def test_list_jobs(request_type, transport: str = "grpc"):
     client = CloudSchedulerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -671,7 +688,8 @@ def test_list_jobs_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudSchedulerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -687,7 +705,8 @@ async def test_list_jobs_async(
     transport: str = "grpc_asyncio", request_type=cloudscheduler.ListJobsRequest
 ):
     client = CloudSchedulerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -698,7 +717,9 @@ async def test_list_jobs_async(
     with mock.patch.object(type(client.transport.list_jobs), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            cloudscheduler.ListJobsResponse(next_page_token="next_page_token_value",)
+            cloudscheduler.ListJobsResponse(
+                next_page_token="next_page_token_value",
+            )
         )
         response = await client.list_jobs(request)
 
@@ -718,7 +739,9 @@ async def test_list_jobs_async_from_dict():
 
 
 def test_list_jobs_field_headers():
-    client = CloudSchedulerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -738,7 +761,10 @@ def test_list_jobs_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -767,11 +793,16 @@ async def test_list_jobs_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_jobs_flattened():
-    client = CloudSchedulerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_jobs), "__call__") as call:
@@ -779,7 +810,9 @@ def test_list_jobs_flattened():
         call.return_value = cloudscheduler.ListJobsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_jobs(parent="parent_value",)
+        client.list_jobs(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -791,13 +824,16 @@ def test_list_jobs_flattened():
 
 
 def test_list_jobs_flattened_error():
-    client = CloudSchedulerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_jobs(
-            cloudscheduler.ListJobsRequest(), parent="parent_value",
+            cloudscheduler.ListJobsRequest(),
+            parent="parent_value",
         )
 
 
@@ -817,7 +853,9 @@ async def test_list_jobs_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_jobs(parent="parent_value",)
+        response = await client.list_jobs(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -838,13 +876,15 @@ async def test_list_jobs_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_jobs(
-            cloudscheduler.ListJobsRequest(), parent="parent_value",
+            cloudscheduler.ListJobsRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_jobs_pager(transport_name: str = "grpc"):
     client = CloudSchedulerClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -852,11 +892,29 @@ def test_list_jobs_pager(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             cloudscheduler.ListJobsResponse(
-                jobs=[job.Job(), job.Job(), job.Job(),], next_page_token="abc",
+                jobs=[
+                    job.Job(),
+                    job.Job(),
+                    job.Job(),
+                ],
+                next_page_token="abc",
             ),
-            cloudscheduler.ListJobsResponse(jobs=[], next_page_token="def",),
-            cloudscheduler.ListJobsResponse(jobs=[job.Job(),], next_page_token="ghi",),
-            cloudscheduler.ListJobsResponse(jobs=[job.Job(), job.Job(),],),
+            cloudscheduler.ListJobsResponse(
+                jobs=[],
+                next_page_token="def",
+            ),
+            cloudscheduler.ListJobsResponse(
+                jobs=[
+                    job.Job(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloudscheduler.ListJobsResponse(
+                jobs=[
+                    job.Job(),
+                    job.Job(),
+                ],
+            ),
             RuntimeError,
         )
 
@@ -875,7 +933,8 @@ def test_list_jobs_pager(transport_name: str = "grpc"):
 
 def test_list_jobs_pages(transport_name: str = "grpc"):
     client = CloudSchedulerClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -883,11 +942,29 @@ def test_list_jobs_pages(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             cloudscheduler.ListJobsResponse(
-                jobs=[job.Job(), job.Job(), job.Job(),], next_page_token="abc",
+                jobs=[
+                    job.Job(),
+                    job.Job(),
+                    job.Job(),
+                ],
+                next_page_token="abc",
             ),
-            cloudscheduler.ListJobsResponse(jobs=[], next_page_token="def",),
-            cloudscheduler.ListJobsResponse(jobs=[job.Job(),], next_page_token="ghi",),
-            cloudscheduler.ListJobsResponse(jobs=[job.Job(), job.Job(),],),
+            cloudscheduler.ListJobsResponse(
+                jobs=[],
+                next_page_token="def",
+            ),
+            cloudscheduler.ListJobsResponse(
+                jobs=[
+                    job.Job(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloudscheduler.ListJobsResponse(
+                jobs=[
+                    job.Job(),
+                    job.Job(),
+                ],
+            ),
             RuntimeError,
         )
         pages = list(client.list_jobs(request={}).pages)
@@ -897,7 +974,9 @@ def test_list_jobs_pages(transport_name: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_list_jobs_async_pager():
-    client = CloudSchedulerAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = CloudSchedulerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -906,14 +985,34 @@ async def test_list_jobs_async_pager():
         # Set the response to a series of pages.
         call.side_effect = (
             cloudscheduler.ListJobsResponse(
-                jobs=[job.Job(), job.Job(), job.Job(),], next_page_token="abc",
+                jobs=[
+                    job.Job(),
+                    job.Job(),
+                    job.Job(),
+                ],
+                next_page_token="abc",
             ),
-            cloudscheduler.ListJobsResponse(jobs=[], next_page_token="def",),
-            cloudscheduler.ListJobsResponse(jobs=[job.Job(),], next_page_token="ghi",),
-            cloudscheduler.ListJobsResponse(jobs=[job.Job(), job.Job(),],),
+            cloudscheduler.ListJobsResponse(
+                jobs=[],
+                next_page_token="def",
+            ),
+            cloudscheduler.ListJobsResponse(
+                jobs=[
+                    job.Job(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloudscheduler.ListJobsResponse(
+                jobs=[
+                    job.Job(),
+                    job.Job(),
+                ],
+            ),
             RuntimeError,
         )
-        async_pager = await client.list_jobs(request={},)
+        async_pager = await client.list_jobs(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -925,7 +1024,9 @@ async def test_list_jobs_async_pager():
 
 @pytest.mark.asyncio
 async def test_list_jobs_async_pages():
-    client = CloudSchedulerAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = CloudSchedulerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -934,11 +1035,29 @@ async def test_list_jobs_async_pages():
         # Set the response to a series of pages.
         call.side_effect = (
             cloudscheduler.ListJobsResponse(
-                jobs=[job.Job(), job.Job(), job.Job(),], next_page_token="abc",
+                jobs=[
+                    job.Job(),
+                    job.Job(),
+                    job.Job(),
+                ],
+                next_page_token="abc",
             ),
-            cloudscheduler.ListJobsResponse(jobs=[], next_page_token="def",),
-            cloudscheduler.ListJobsResponse(jobs=[job.Job(),], next_page_token="ghi",),
-            cloudscheduler.ListJobsResponse(jobs=[job.Job(), job.Job(),],),
+            cloudscheduler.ListJobsResponse(
+                jobs=[],
+                next_page_token="def",
+            ),
+            cloudscheduler.ListJobsResponse(
+                jobs=[
+                    job.Job(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloudscheduler.ListJobsResponse(
+                jobs=[
+                    job.Job(),
+                    job.Job(),
+                ],
+            ),
             RuntimeError,
         )
         pages = []
@@ -948,10 +1067,17 @@ async def test_list_jobs_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [cloudscheduler.GetJobRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudscheduler.GetJobRequest,
+        dict,
+    ],
+)
 def test_get_job(request_type, transport: str = "grpc"):
     client = CloudSchedulerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -989,7 +1115,8 @@ def test_get_job_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudSchedulerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1005,7 +1132,8 @@ async def test_get_job_async(
     transport: str = "grpc_asyncio", request_type=cloudscheduler.GetJobRequest
 ):
     client = CloudSchedulerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1046,7 +1174,9 @@ async def test_get_job_async_from_dict():
 
 
 def test_get_job_field_headers():
-    client = CloudSchedulerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1066,7 +1196,10 @@ def test_get_job_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1093,11 +1226,16 @@ async def test_get_job_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_job_flattened():
-    client = CloudSchedulerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_job), "__call__") as call:
@@ -1105,7 +1243,9 @@ def test_get_job_flattened():
         call.return_value = job.Job()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_job(name="name_value",)
+        client.get_job(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1117,13 +1257,16 @@ def test_get_job_flattened():
 
 
 def test_get_job_flattened_error():
-    client = CloudSchedulerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_job(
-            cloudscheduler.GetJobRequest(), name="name_value",
+            cloudscheduler.GetJobRequest(),
+            name="name_value",
         )
 
 
@@ -1141,7 +1284,9 @@ async def test_get_job_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(job.Job())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_job(name="name_value",)
+        response = await client.get_job(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1162,14 +1307,22 @@ async def test_get_job_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_job(
-            cloudscheduler.GetJobRequest(), name="name_value",
+            cloudscheduler.GetJobRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [cloudscheduler.CreateJobRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudscheduler.CreateJobRequest,
+        dict,
+    ],
+)
 def test_create_job(request_type, transport: str = "grpc"):
     client = CloudSchedulerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1207,7 +1360,8 @@ def test_create_job_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudSchedulerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1223,7 +1377,8 @@ async def test_create_job_async(
     transport: str = "grpc_asyncio", request_type=cloudscheduler.CreateJobRequest
 ):
     client = CloudSchedulerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1264,7 +1419,9 @@ async def test_create_job_async_from_dict():
 
 
 def test_create_job_field_headers():
-    client = CloudSchedulerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1284,7 +1441,10 @@ def test_create_job_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1311,11 +1471,16 @@ async def test_create_job_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_job_flattened():
-    client = CloudSchedulerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_job), "__call__") as call:
@@ -1324,7 +1489,8 @@ def test_create_job_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.create_job(
-            parent="parent_value", job=gcs_job.Job(name="name_value"),
+            parent="parent_value",
+            job=gcs_job.Job(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -1340,7 +1506,9 @@ def test_create_job_flattened():
 
 
 def test_create_job_flattened_error():
-    client = CloudSchedulerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1367,7 +1535,8 @@ async def test_create_job_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.create_job(
-            parent="parent_value", job=gcs_job.Job(name="name_value"),
+            parent="parent_value",
+            job=gcs_job.Job(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -1398,10 +1567,17 @@ async def test_create_job_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [cloudscheduler.UpdateJobRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudscheduler.UpdateJobRequest,
+        dict,
+    ],
+)
 def test_update_job(request_type, transport: str = "grpc"):
     client = CloudSchedulerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1439,7 +1615,8 @@ def test_update_job_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudSchedulerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1455,7 +1632,8 @@ async def test_update_job_async(
     transport: str = "grpc_asyncio", request_type=cloudscheduler.UpdateJobRequest
 ):
     client = CloudSchedulerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1496,7 +1674,9 @@ async def test_update_job_async_from_dict():
 
 
 def test_update_job_field_headers():
-    client = CloudSchedulerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1516,7 +1696,10 @@ def test_update_job_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "job.name=job.name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "job.name=job.name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1543,11 +1726,16 @@ async def test_update_job_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "job.name=job.name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "job.name=job.name/value",
+    ) in kw["metadata"]
 
 
 def test_update_job_flattened():
-    client = CloudSchedulerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_job), "__call__") as call:
@@ -1573,7 +1761,9 @@ def test_update_job_flattened():
 
 
 def test_update_job_flattened_error():
-    client = CloudSchedulerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1632,10 +1822,17 @@ async def test_update_job_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [cloudscheduler.DeleteJobRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudscheduler.DeleteJobRequest,
+        dict,
+    ],
+)
 def test_delete_job(request_type, transport: str = "grpc"):
     client = CloudSchedulerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1661,7 +1858,8 @@ def test_delete_job_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudSchedulerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1677,7 +1875,8 @@ async def test_delete_job_async(
     transport: str = "grpc_asyncio", request_type=cloudscheduler.DeleteJobRequest
 ):
     client = CloudSchedulerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1705,7 +1904,9 @@ async def test_delete_job_async_from_dict():
 
 
 def test_delete_job_field_headers():
-    client = CloudSchedulerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1725,7 +1926,10 @@ def test_delete_job_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1752,11 +1956,16 @@ async def test_delete_job_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_job_flattened():
-    client = CloudSchedulerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_job), "__call__") as call:
@@ -1764,7 +1973,9 @@ def test_delete_job_flattened():
         call.return_value = None
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_job(name="name_value",)
+        client.delete_job(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1776,13 +1987,16 @@ def test_delete_job_flattened():
 
 
 def test_delete_job_flattened_error():
-    client = CloudSchedulerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_job(
-            cloudscheduler.DeleteJobRequest(), name="name_value",
+            cloudscheduler.DeleteJobRequest(),
+            name="name_value",
         )
 
 
@@ -1800,7 +2014,9 @@ async def test_delete_job_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_job(name="name_value",)
+        response = await client.delete_job(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1821,14 +2037,22 @@ async def test_delete_job_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_job(
-            cloudscheduler.DeleteJobRequest(), name="name_value",
+            cloudscheduler.DeleteJobRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [cloudscheduler.PauseJobRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudscheduler.PauseJobRequest,
+        dict,
+    ],
+)
 def test_pause_job(request_type, transport: str = "grpc"):
     client = CloudSchedulerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1866,7 +2090,8 @@ def test_pause_job_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudSchedulerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1882,7 +2107,8 @@ async def test_pause_job_async(
     transport: str = "grpc_asyncio", request_type=cloudscheduler.PauseJobRequest
 ):
     client = CloudSchedulerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1923,7 +2149,9 @@ async def test_pause_job_async_from_dict():
 
 
 def test_pause_job_field_headers():
-    client = CloudSchedulerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1943,7 +2171,10 @@ def test_pause_job_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1970,11 +2201,16 @@ async def test_pause_job_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_pause_job_flattened():
-    client = CloudSchedulerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.pause_job), "__call__") as call:
@@ -1982,7 +2218,9 @@ def test_pause_job_flattened():
         call.return_value = job.Job()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.pause_job(name="name_value",)
+        client.pause_job(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1994,13 +2232,16 @@ def test_pause_job_flattened():
 
 
 def test_pause_job_flattened_error():
-    client = CloudSchedulerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.pause_job(
-            cloudscheduler.PauseJobRequest(), name="name_value",
+            cloudscheduler.PauseJobRequest(),
+            name="name_value",
         )
 
 
@@ -2018,7 +2259,9 @@ async def test_pause_job_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(job.Job())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.pause_job(name="name_value",)
+        response = await client.pause_job(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2039,14 +2282,22 @@ async def test_pause_job_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.pause_job(
-            cloudscheduler.PauseJobRequest(), name="name_value",
+            cloudscheduler.PauseJobRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [cloudscheduler.ResumeJobRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudscheduler.ResumeJobRequest,
+        dict,
+    ],
+)
 def test_resume_job(request_type, transport: str = "grpc"):
     client = CloudSchedulerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2084,7 +2335,8 @@ def test_resume_job_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudSchedulerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2100,7 +2352,8 @@ async def test_resume_job_async(
     transport: str = "grpc_asyncio", request_type=cloudscheduler.ResumeJobRequest
 ):
     client = CloudSchedulerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2141,7 +2394,9 @@ async def test_resume_job_async_from_dict():
 
 
 def test_resume_job_field_headers():
-    client = CloudSchedulerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2161,7 +2416,10 @@ def test_resume_job_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2188,11 +2446,16 @@ async def test_resume_job_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_resume_job_flattened():
-    client = CloudSchedulerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.resume_job), "__call__") as call:
@@ -2200,7 +2463,9 @@ def test_resume_job_flattened():
         call.return_value = job.Job()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.resume_job(name="name_value",)
+        client.resume_job(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2212,13 +2477,16 @@ def test_resume_job_flattened():
 
 
 def test_resume_job_flattened_error():
-    client = CloudSchedulerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.resume_job(
-            cloudscheduler.ResumeJobRequest(), name="name_value",
+            cloudscheduler.ResumeJobRequest(),
+            name="name_value",
         )
 
 
@@ -2236,7 +2504,9 @@ async def test_resume_job_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(job.Job())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.resume_job(name="name_value",)
+        response = await client.resume_job(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2257,14 +2527,22 @@ async def test_resume_job_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.resume_job(
-            cloudscheduler.ResumeJobRequest(), name="name_value",
+            cloudscheduler.ResumeJobRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [cloudscheduler.RunJobRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudscheduler.RunJobRequest,
+        dict,
+    ],
+)
 def test_run_job(request_type, transport: str = "grpc"):
     client = CloudSchedulerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2302,7 +2580,8 @@ def test_run_job_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudSchedulerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2318,7 +2597,8 @@ async def test_run_job_async(
     transport: str = "grpc_asyncio", request_type=cloudscheduler.RunJobRequest
 ):
     client = CloudSchedulerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2359,7 +2639,9 @@ async def test_run_job_async_from_dict():
 
 
 def test_run_job_field_headers():
-    client = CloudSchedulerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2379,7 +2661,10 @@ def test_run_job_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2406,11 +2691,16 @@ async def test_run_job_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_run_job_flattened():
-    client = CloudSchedulerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.run_job), "__call__") as call:
@@ -2418,7 +2708,9 @@ def test_run_job_flattened():
         call.return_value = job.Job()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.run_job(name="name_value",)
+        client.run_job(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2430,13 +2722,16 @@ def test_run_job_flattened():
 
 
 def test_run_job_flattened_error():
-    client = CloudSchedulerClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.run_job(
-            cloudscheduler.RunJobRequest(), name="name_value",
+            cloudscheduler.RunJobRequest(),
+            name="name_value",
         )
 
 
@@ -2454,7 +2749,9 @@ async def test_run_job_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(job.Job())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.run_job(name="name_value",)
+        response = await client.run_job(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2475,7 +2772,8 @@ async def test_run_job_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.run_job(
-            cloudscheduler.RunJobRequest(), name="name_value",
+            cloudscheduler.RunJobRequest(),
+            name="name_value",
         )
 
 
@@ -2486,7 +2784,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = CloudSchedulerClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -2506,7 +2805,10 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = CloudSchedulerClient(client_options=options, transport=transport,)
+        client = CloudSchedulerClient(
+            client_options=options,
+            transport=transport,
+        )
 
     # It is an error to provide an api_key and a credential.
     options = mock.Mock()
@@ -2522,7 +2824,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = CloudSchedulerClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -2567,8 +2870,13 @@ def test_transport_adc(transport_class):
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
-    client = CloudSchedulerClient(credentials=ga_credentials.AnonymousCredentials(),)
-    assert isinstance(client.transport, transports.CloudSchedulerGrpcTransport,)
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    assert isinstance(
+        client.transport,
+        transports.CloudSchedulerGrpcTransport,
+    )
 
 
 def test_cloud_scheduler_base_transport_error():
@@ -2620,7 +2928,8 @@ def test_cloud_scheduler_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.CloudSchedulerTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -2778,7 +3087,8 @@ def test_cloud_scheduler_grpc_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.CloudSchedulerGrpcTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -2790,7 +3100,8 @@ def test_cloud_scheduler_grpc_asyncio_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.CloudSchedulerGrpcAsyncIOTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -2902,7 +3213,9 @@ def test_job_path():
     location = "clam"
     job = "whelk"
     expected = "projects/{project}/locations/{location}/jobs/{job}".format(
-        project=project, location=location, job=job,
+        project=project,
+        location=location,
+        job=job,
     )
     actual = CloudSchedulerClient.job_path(project, location, job)
     assert expected == actual
@@ -2924,7 +3237,10 @@ def test_parse_job_path():
 def test_topic_path():
     project = "cuttlefish"
     topic = "mussel"
-    expected = "projects/{project}/topics/{topic}".format(project=project, topic=topic,)
+    expected = "projects/{project}/topics/{topic}".format(
+        project=project,
+        topic=topic,
+    )
     actual = CloudSchedulerClient.topic_path(project, topic)
     assert expected == actual
 
@@ -2963,7 +3279,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "squid"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = CloudSchedulerClient.common_folder_path(folder)
     assert expected == actual
 
@@ -2981,7 +3299,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "whelk"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = CloudSchedulerClient.common_organization_path(organization)
     assert expected == actual
 
@@ -2999,7 +3319,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "oyster"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = CloudSchedulerClient.common_project_path(project)
     assert expected == actual
 
@@ -3019,7 +3341,8 @@ def test_common_location_path():
     project = "cuttlefish"
     location = "mussel"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = CloudSchedulerClient.common_location_path(project, location)
     assert expected == actual
@@ -3044,7 +3367,8 @@ def test_client_with_default_client_info():
         transports.CloudSchedulerTransport, "_prep_wrapped_messages"
     ) as prep:
         client = CloudSchedulerClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -3053,7 +3377,8 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = CloudSchedulerClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -3061,7 +3386,8 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = CloudSchedulerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     with mock.patch.object(
         type(getattr(client.transport, "grpc_channel")), "close"

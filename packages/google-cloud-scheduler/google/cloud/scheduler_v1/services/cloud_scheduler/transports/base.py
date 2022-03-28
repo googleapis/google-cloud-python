@@ -32,7 +32,9 @@ from google.protobuf import empty_pb2  # type: ignore
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-scheduler",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-scheduler",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
@@ -152,10 +154,14 @@ class CloudSchedulerTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.create_job: gapic_v1.method.wrap_method(
-                self.create_job, default_timeout=600.0, client_info=client_info,
+                self.create_job,
+                default_timeout=600.0,
+                client_info=client_info,
             ),
             self.update_job: gapic_v1.method.wrap_method(
-                self.update_job, default_timeout=600.0, client_info=client_info,
+                self.update_job,
+                default_timeout=600.0,
+                client_info=client_info,
             ),
             self.delete_job: gapic_v1.method.wrap_method(
                 self.delete_job,
@@ -173,22 +179,28 @@ class CloudSchedulerTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.pause_job: gapic_v1.method.wrap_method(
-                self.pause_job, default_timeout=600.0, client_info=client_info,
+                self.pause_job,
+                default_timeout=600.0,
+                client_info=client_info,
             ),
             self.resume_job: gapic_v1.method.wrap_method(
-                self.resume_job, default_timeout=600.0, client_info=client_info,
+                self.resume_job,
+                default_timeout=600.0,
+                client_info=client_info,
             ),
             self.run_job: gapic_v1.method.wrap_method(
-                self.run_job, default_timeout=600.0, client_info=client_info,
+                self.run_job,
+                default_timeout=600.0,
+                client_info=client_info,
             ),
         }
 
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

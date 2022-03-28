@@ -22,7 +22,11 @@ from google.rpc import status_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.scheduler.v1beta1", manifest={"Job", "RetryConfig",},
+    package="google.cloud.scheduler.v1beta1",
+    manifest={
+        "Job",
+        "RetryConfig",
+    },
 )
 
 
@@ -165,33 +169,74 @@ class Job(proto.Message):
         DISABLED = 3
         UPDATE_FAILED = 4
 
-    name = proto.Field(proto.STRING, number=1,)
-    description = proto.Field(proto.STRING, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=2,
+    )
     pubsub_target = proto.Field(
-        proto.MESSAGE, number=4, oneof="target", message=target.PubsubTarget,
+        proto.MESSAGE,
+        number=4,
+        oneof="target",
+        message=target.PubsubTarget,
     )
     app_engine_http_target = proto.Field(
-        proto.MESSAGE, number=5, oneof="target", message=target.AppEngineHttpTarget,
+        proto.MESSAGE,
+        number=5,
+        oneof="target",
+        message=target.AppEngineHttpTarget,
     )
     http_target = proto.Field(
-        proto.MESSAGE, number=6, oneof="target", message=target.HttpTarget,
+        proto.MESSAGE,
+        number=6,
+        oneof="target",
+        message=target.HttpTarget,
     )
-    schedule = proto.Field(proto.STRING, number=20,)
-    time_zone = proto.Field(proto.STRING, number=21,)
+    schedule = proto.Field(
+        proto.STRING,
+        number=20,
+    )
+    time_zone = proto.Field(
+        proto.STRING,
+        number=21,
+    )
     user_update_time = proto.Field(
-        proto.MESSAGE, number=9, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=9,
+        message=timestamp_pb2.Timestamp,
     )
-    state = proto.Field(proto.ENUM, number=10, enum=State,)
-    status = proto.Field(proto.MESSAGE, number=11, message=status_pb2.Status,)
+    state = proto.Field(
+        proto.ENUM,
+        number=10,
+        enum=State,
+    )
+    status = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message=status_pb2.Status,
+    )
     schedule_time = proto.Field(
-        proto.MESSAGE, number=17, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=17,
+        message=timestamp_pb2.Timestamp,
     )
     last_attempt_time = proto.Field(
-        proto.MESSAGE, number=18, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=18,
+        message=timestamp_pb2.Timestamp,
     )
-    retry_config = proto.Field(proto.MESSAGE, number=19, message="RetryConfig",)
+    retry_config = proto.Field(
+        proto.MESSAGE,
+        number=19,
+        message="RetryConfig",
+    )
     attempt_deadline = proto.Field(
-        proto.MESSAGE, number=22, message=duration_pb2.Duration,
+        proto.MESSAGE,
+        number=22,
+        message=duration_pb2.Duration,
     )
 
 
@@ -269,17 +314,29 @@ class RetryConfig(proto.Message):
             The default value of this field is 5.
     """
 
-    retry_count = proto.Field(proto.INT32, number=1,)
+    retry_count = proto.Field(
+        proto.INT32,
+        number=1,
+    )
     max_retry_duration = proto.Field(
-        proto.MESSAGE, number=2, message=duration_pb2.Duration,
+        proto.MESSAGE,
+        number=2,
+        message=duration_pb2.Duration,
     )
     min_backoff_duration = proto.Field(
-        proto.MESSAGE, number=3, message=duration_pb2.Duration,
+        proto.MESSAGE,
+        number=3,
+        message=duration_pb2.Duration,
     )
     max_backoff_duration = proto.Field(
-        proto.MESSAGE, number=4, message=duration_pb2.Duration,
+        proto.MESSAGE,
+        number=4,
+        message=duration_pb2.Duration,
     )
-    max_doublings = proto.Field(proto.INT32, number=5,)
+    max_doublings = proto.Field(
+        proto.INT32,
+        number=5,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
