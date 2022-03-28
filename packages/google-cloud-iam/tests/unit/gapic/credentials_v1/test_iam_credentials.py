@@ -90,7 +90,11 @@ def test__get_default_mtls_endpoint():
 
 
 @pytest.mark.parametrize(
-    "client_class", [IAMCredentialsClient, IAMCredentialsAsyncClient,]
+    "client_class",
+    [
+        IAMCredentialsClient,
+        IAMCredentialsAsyncClient,
+    ],
 )
 def test_iam_credentials_client_from_service_account_info(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -132,7 +136,11 @@ def test_iam_credentials_client_service_account_always_use_jwt(
 
 
 @pytest.mark.parametrize(
-    "client_class", [IAMCredentialsClient, IAMCredentialsAsyncClient,]
+    "client_class",
+    [
+        IAMCredentialsClient,
+        IAMCredentialsAsyncClient,
+    ],
 )
 def test_iam_credentials_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -415,7 +423,9 @@ def test_iam_credentials_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(transport=transport_name, client_options=options)
@@ -486,7 +496,8 @@ def test_generate_access_token(
     transport: str = "grpc", request_type=common.GenerateAccessTokenRequest
 ):
     client = IAMCredentialsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -521,7 +532,8 @@ def test_generate_access_token_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = IAMCredentialsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -539,7 +551,8 @@ async def test_generate_access_token_async(
     transport: str = "grpc_asyncio", request_type=common.GenerateAccessTokenRequest
 ):
     client = IAMCredentialsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -552,7 +565,9 @@ async def test_generate_access_token_async(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            common.GenerateAccessTokenResponse(access_token="access_token_value",)
+            common.GenerateAccessTokenResponse(
+                access_token="access_token_value",
+            )
         )
         response = await client.generate_access_token(request)
 
@@ -572,7 +587,9 @@ async def test_generate_access_token_async_from_dict():
 
 
 def test_generate_access_token_field_headers():
-    client = IAMCredentialsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -594,7 +611,10 @@ def test_generate_access_token_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -625,11 +645,16 @@ async def test_generate_access_token_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_generate_access_token_flattened():
-    client = IAMCredentialsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -659,7 +684,9 @@ def test_generate_access_token_flattened():
 
 
 def test_generate_access_token_flattened_error():
-    client = IAMCredentialsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -732,7 +759,8 @@ def test_generate_id_token(
     transport: str = "grpc", request_type=common.GenerateIdTokenRequest
 ):
     client = IAMCredentialsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -744,7 +772,9 @@ def test_generate_id_token(
         type(client.transport.generate_id_token), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = common.GenerateIdTokenResponse(token="token_value",)
+        call.return_value = common.GenerateIdTokenResponse(
+            token="token_value",
+        )
         response = client.generate_id_token(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -765,7 +795,8 @@ def test_generate_id_token_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = IAMCredentialsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -783,7 +814,8 @@ async def test_generate_id_token_async(
     transport: str = "grpc_asyncio", request_type=common.GenerateIdTokenRequest
 ):
     client = IAMCredentialsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -796,7 +828,9 @@ async def test_generate_id_token_async(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            common.GenerateIdTokenResponse(token="token_value",)
+            common.GenerateIdTokenResponse(
+                token="token_value",
+            )
         )
         response = await client.generate_id_token(request)
 
@@ -816,7 +850,9 @@ async def test_generate_id_token_async_from_dict():
 
 
 def test_generate_id_token_field_headers():
-    client = IAMCredentialsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -838,7 +874,10 @@ def test_generate_id_token_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -869,11 +908,16 @@ async def test_generate_id_token_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_generate_id_token_flattened():
-    client = IAMCredentialsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -901,7 +945,9 @@ def test_generate_id_token_flattened():
 
 
 def test_generate_id_token_flattened_error():
-    client = IAMCredentialsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -970,7 +1016,8 @@ async def test_generate_id_token_flattened_error_async():
 
 def test_sign_blob(transport: str = "grpc", request_type=common.SignBlobRequest):
     client = IAMCredentialsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -981,7 +1028,8 @@ def test_sign_blob(transport: str = "grpc", request_type=common.SignBlobRequest)
     with mock.patch.object(type(client.transport.sign_blob), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = common.SignBlobResponse(
-            key_id="key_id_value", signed_blob=b"signed_blob_blob",
+            key_id="key_id_value",
+            signed_blob=b"signed_blob_blob",
         )
         response = client.sign_blob(request)
 
@@ -1004,7 +1052,8 @@ def test_sign_blob_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = IAMCredentialsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1020,7 +1069,8 @@ async def test_sign_blob_async(
     transport: str = "grpc_asyncio", request_type=common.SignBlobRequest
 ):
     client = IAMCredentialsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1032,7 +1082,8 @@ async def test_sign_blob_async(
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             common.SignBlobResponse(
-                key_id="key_id_value", signed_blob=b"signed_blob_blob",
+                key_id="key_id_value",
+                signed_blob=b"signed_blob_blob",
             )
         )
         response = await client.sign_blob(request)
@@ -1054,7 +1105,9 @@ async def test_sign_blob_async_from_dict():
 
 
 def test_sign_blob_field_headers():
-    client = IAMCredentialsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1074,7 +1127,10 @@ def test_sign_blob_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1103,11 +1159,16 @@ async def test_sign_blob_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_sign_blob_flattened():
-    client = IAMCredentialsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.sign_blob), "__call__") as call:
@@ -1116,7 +1177,9 @@ def test_sign_blob_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.sign_blob(
-            name="name_value", delegates=["delegates_value"], payload=b"payload_blob",
+            name="name_value",
+            delegates=["delegates_value"],
+            payload=b"payload_blob",
         )
 
         # Establish that the underlying call was made with the expected
@@ -1129,7 +1192,9 @@ def test_sign_blob_flattened():
 
 
 def test_sign_blob_flattened_error():
-    client = IAMCredentialsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1159,7 +1224,9 @@ async def test_sign_blob_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.sign_blob(
-            name="name_value", delegates=["delegates_value"], payload=b"payload_blob",
+            name="name_value",
+            delegates=["delegates_value"],
+            payload=b"payload_blob",
         )
 
         # Establish that the underlying call was made with the expected
@@ -1190,7 +1257,8 @@ async def test_sign_blob_flattened_error_async():
 
 def test_sign_jwt(transport: str = "grpc", request_type=common.SignJwtRequest):
     client = IAMCredentialsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1201,7 +1269,8 @@ def test_sign_jwt(transport: str = "grpc", request_type=common.SignJwtRequest):
     with mock.patch.object(type(client.transport.sign_jwt), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = common.SignJwtResponse(
-            key_id="key_id_value", signed_jwt="signed_jwt_value",
+            key_id="key_id_value",
+            signed_jwt="signed_jwt_value",
         )
         response = client.sign_jwt(request)
 
@@ -1224,7 +1293,8 @@ def test_sign_jwt_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = IAMCredentialsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1240,7 +1310,8 @@ async def test_sign_jwt_async(
     transport: str = "grpc_asyncio", request_type=common.SignJwtRequest
 ):
     client = IAMCredentialsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1252,7 +1323,8 @@ async def test_sign_jwt_async(
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             common.SignJwtResponse(
-                key_id="key_id_value", signed_jwt="signed_jwt_value",
+                key_id="key_id_value",
+                signed_jwt="signed_jwt_value",
             )
         )
         response = await client.sign_jwt(request)
@@ -1274,7 +1346,9 @@ async def test_sign_jwt_async_from_dict():
 
 
 def test_sign_jwt_field_headers():
-    client = IAMCredentialsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1294,7 +1368,10 @@ def test_sign_jwt_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1323,11 +1400,16 @@ async def test_sign_jwt_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_sign_jwt_flattened():
-    client = IAMCredentialsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.sign_jwt), "__call__") as call:
@@ -1336,7 +1418,9 @@ def test_sign_jwt_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.sign_jwt(
-            name="name_value", delegates=["delegates_value"], payload="payload_value",
+            name="name_value",
+            delegates=["delegates_value"],
+            payload="payload_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -1349,7 +1433,9 @@ def test_sign_jwt_flattened():
 
 
 def test_sign_jwt_flattened_error():
-    client = IAMCredentialsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1379,7 +1465,9 @@ async def test_sign_jwt_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.sign_jwt(
-            name="name_value", delegates=["delegates_value"], payload="payload_value",
+            name="name_value",
+            delegates=["delegates_value"],
+            payload="payload_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -1415,7 +1503,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = IAMCredentialsClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -1434,7 +1523,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = IAMCredentialsClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -1479,8 +1569,13 @@ def test_transport_adc(transport_class):
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
-    client = IAMCredentialsClient(credentials=ga_credentials.AnonymousCredentials(),)
-    assert isinstance(client.transport, transports.IAMCredentialsGrpcTransport,)
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    assert isinstance(
+        client.transport,
+        transports.IAMCredentialsGrpcTransport,
+    )
 
 
 def test_iam_credentials_base_transport_error():
@@ -1528,7 +1623,8 @@ def test_iam_credentials_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.IAMCredentialsTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -1686,7 +1782,8 @@ def test_iam_credentials_grpc_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.IAMCredentialsGrpcTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -1698,7 +1795,8 @@ def test_iam_credentials_grpc_asyncio_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.IAMCredentialsGrpcAsyncIOTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -1809,7 +1907,8 @@ def test_service_account_path():
     project = "squid"
     service_account = "clam"
     expected = "projects/{project}/serviceAccounts/{service_account}".format(
-        project=project, service_account=service_account,
+        project=project,
+        service_account=service_account,
     )
     actual = IAMCredentialsClient.service_account_path(project, service_account)
     assert expected == actual
@@ -1849,7 +1948,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "cuttlefish"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = IAMCredentialsClient.common_folder_path(folder)
     assert expected == actual
 
@@ -1867,7 +1968,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "winkle"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = IAMCredentialsClient.common_organization_path(organization)
     assert expected == actual
 
@@ -1885,7 +1988,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "scallop"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = IAMCredentialsClient.common_project_path(project)
     assert expected == actual
 
@@ -1905,7 +2010,8 @@ def test_common_location_path():
     project = "squid"
     location = "clam"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = IAMCredentialsClient.common_location_path(project, location)
     assert expected == actual
@@ -1930,7 +2036,8 @@ def test_client_withDEFAULT_CLIENT_INFO():
         transports.IAMCredentialsTransport, "_prep_wrapped_messages"
     ) as prep:
         client = IAMCredentialsClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -1939,7 +2046,8 @@ def test_client_withDEFAULT_CLIENT_INFO():
     ) as prep:
         transport_class = IAMCredentialsClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -1947,7 +2055,8 @@ def test_client_withDEFAULT_CLIENT_INFO():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = IAMCredentialsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     with mock.patch.object(
         type(getattr(client.transport, "grpc_channel")), "close"

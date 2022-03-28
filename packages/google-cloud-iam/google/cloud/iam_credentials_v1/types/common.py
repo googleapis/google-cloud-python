@@ -72,10 +72,23 @@ class GenerateAccessTokenRequest(proto.Message):
             to a default value of one hour.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    delegates = proto.RepeatedField(proto.STRING, number=2,)
-    scope = proto.RepeatedField(proto.STRING, number=4,)
-    lifetime = proto.Field(proto.MESSAGE, number=7, message=duration_pb2.Duration,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    delegates = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+    scope = proto.RepeatedField(
+        proto.STRING,
+        number=4,
+    )
+    lifetime = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=duration_pb2.Duration,
+    )
 
 
 class GenerateAccessTokenResponse(proto.Message):
@@ -89,8 +102,15 @@ class GenerateAccessTokenResponse(proto.Message):
             The expiration time is always set.
     """
 
-    access_token = proto.Field(proto.STRING, number=1,)
-    expire_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
+    access_token = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    expire_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 class SignBlobRequest(proto.Message):
@@ -121,9 +141,18 @@ class SignBlobRequest(proto.Message):
             Required. The bytes to sign.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    delegates = proto.RepeatedField(proto.STRING, number=3,)
-    payload = proto.Field(proto.BYTES, number=5,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    delegates = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+    payload = proto.Field(
+        proto.BYTES,
+        number=5,
+    )
 
 
 class SignBlobResponse(proto.Message):
@@ -136,8 +165,14 @@ class SignBlobResponse(proto.Message):
             The signed blob.
     """
 
-    key_id = proto.Field(proto.STRING, number=1,)
-    signed_blob = proto.Field(proto.BYTES, number=4,)
+    key_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    signed_blob = proto.Field(
+        proto.BYTES,
+        number=4,
+    )
 
 
 class SignJwtRequest(proto.Message):
@@ -169,9 +204,18 @@ class SignJwtRequest(proto.Message):
             object that contains a JWT Claims Set.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    delegates = proto.RepeatedField(proto.STRING, number=3,)
-    payload = proto.Field(proto.STRING, number=5,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    delegates = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+    payload = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class SignJwtResponse(proto.Message):
@@ -184,8 +228,14 @@ class SignJwtResponse(proto.Message):
             The signed JWT.
     """
 
-    key_id = proto.Field(proto.STRING, number=1,)
-    signed_jwt = proto.Field(proto.STRING, number=2,)
+    key_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    signed_jwt = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GenerateIdTokenRequest(proto.Message):
@@ -222,10 +272,22 @@ class GenerateIdTokenRequest(proto.Message):
             ``email_verified`` claims.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    delegates = proto.RepeatedField(proto.STRING, number=2,)
-    audience = proto.Field(proto.STRING, number=3,)
-    include_email = proto.Field(proto.BOOL, number=4,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    delegates = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+    audience = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    include_email = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
 
 
 class GenerateIdTokenResponse(proto.Message):
@@ -236,7 +298,10 @@ class GenerateIdTokenResponse(proto.Message):
             The OpenId Connect ID token.
     """
 
-    token = proto.Field(proto.STRING, number=1,)
+    token = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
