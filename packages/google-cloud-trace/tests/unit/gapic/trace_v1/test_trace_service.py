@@ -82,7 +82,13 @@ def test__get_default_mtls_endpoint():
     assert TraceServiceClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
 
 
-@pytest.mark.parametrize("client_class", [TraceServiceClient, TraceServiceAsyncClient,])
+@pytest.mark.parametrize(
+    "client_class",
+    [
+        TraceServiceClient,
+        TraceServiceAsyncClient,
+    ],
+)
 def test_trace_service_client_from_service_account_info(client_class):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
@@ -122,7 +128,13 @@ def test_trace_service_client_service_account_always_use_jwt(
         use_jwt.assert_not_called()
 
 
-@pytest.mark.parametrize("client_class", [TraceServiceClient, TraceServiceAsyncClient,])
+@pytest.mark.parametrize(
+    "client_class",
+    [
+        TraceServiceClient,
+        TraceServiceAsyncClient,
+    ],
+)
 def test_trace_service_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
@@ -477,7 +489,9 @@ def test_trace_service_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -619,10 +633,17 @@ def test_trace_service_client_create_channel_credentials_file(
         )
 
 
-@pytest.mark.parametrize("request_type", [trace.ListTracesRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        trace.ListTracesRequest,
+        dict,
+    ],
+)
 def test_list_traces(request_type, transport: str = "grpc"):
     client = TraceServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -651,7 +672,8 @@ def test_list_traces_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TraceServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -667,7 +689,8 @@ async def test_list_traces_async(
     transport: str = "grpc_asyncio", request_type=trace.ListTracesRequest
 ):
     client = TraceServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -678,7 +701,9 @@ async def test_list_traces_async(
     with mock.patch.object(type(client.transport.list_traces), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            trace.ListTracesResponse(next_page_token="next_page_token_value",)
+            trace.ListTracesResponse(
+                next_page_token="next_page_token_value",
+            )
         )
         response = await client.list_traces(request)
 
@@ -698,7 +723,9 @@ async def test_list_traces_async_from_dict():
 
 
 def test_list_traces_flattened():
-    client = TraceServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TraceServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_traces), "__call__") as call:
@@ -706,7 +733,9 @@ def test_list_traces_flattened():
         call.return_value = trace.ListTracesResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_traces(project_id="project_id_value",)
+        client.list_traces(
+            project_id="project_id_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -718,19 +747,24 @@ def test_list_traces_flattened():
 
 
 def test_list_traces_flattened_error():
-    client = TraceServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TraceServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_traces(
-            trace.ListTracesRequest(), project_id="project_id_value",
+            trace.ListTracesRequest(),
+            project_id="project_id_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_list_traces_flattened_async():
-    client = TraceServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TraceServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_traces), "__call__") as call:
@@ -742,7 +776,9 @@ async def test_list_traces_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_traces(project_id="project_id_value",)
+        response = await client.list_traces(
+            project_id="project_id_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -755,19 +791,23 @@ async def test_list_traces_flattened_async():
 
 @pytest.mark.asyncio
 async def test_list_traces_flattened_error_async():
-    client = TraceServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TraceServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_traces(
-            trace.ListTracesRequest(), project_id="project_id_value",
+            trace.ListTracesRequest(),
+            project_id="project_id_value",
         )
 
 
 def test_list_traces_pager(transport_name: str = "grpc"):
     client = TraceServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -775,12 +815,29 @@ def test_list_traces_pager(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             trace.ListTracesResponse(
-                traces=[trace.Trace(), trace.Trace(), trace.Trace(),],
+                traces=[
+                    trace.Trace(),
+                    trace.Trace(),
+                    trace.Trace(),
+                ],
                 next_page_token="abc",
             ),
-            trace.ListTracesResponse(traces=[], next_page_token="def",),
-            trace.ListTracesResponse(traces=[trace.Trace(),], next_page_token="ghi",),
-            trace.ListTracesResponse(traces=[trace.Trace(), trace.Trace(),],),
+            trace.ListTracesResponse(
+                traces=[],
+                next_page_token="def",
+            ),
+            trace.ListTracesResponse(
+                traces=[
+                    trace.Trace(),
+                ],
+                next_page_token="ghi",
+            ),
+            trace.ListTracesResponse(
+                traces=[
+                    trace.Trace(),
+                    trace.Trace(),
+                ],
+            ),
             RuntimeError,
         )
 
@@ -796,7 +853,8 @@ def test_list_traces_pager(transport_name: str = "grpc"):
 
 def test_list_traces_pages(transport_name: str = "grpc"):
     client = TraceServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -804,12 +862,29 @@ def test_list_traces_pages(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             trace.ListTracesResponse(
-                traces=[trace.Trace(), trace.Trace(), trace.Trace(),],
+                traces=[
+                    trace.Trace(),
+                    trace.Trace(),
+                    trace.Trace(),
+                ],
                 next_page_token="abc",
             ),
-            trace.ListTracesResponse(traces=[], next_page_token="def",),
-            trace.ListTracesResponse(traces=[trace.Trace(),], next_page_token="ghi",),
-            trace.ListTracesResponse(traces=[trace.Trace(), trace.Trace(),],),
+            trace.ListTracesResponse(
+                traces=[],
+                next_page_token="def",
+            ),
+            trace.ListTracesResponse(
+                traces=[
+                    trace.Trace(),
+                ],
+                next_page_token="ghi",
+            ),
+            trace.ListTracesResponse(
+                traces=[
+                    trace.Trace(),
+                    trace.Trace(),
+                ],
+            ),
             RuntimeError,
         )
         pages = list(client.list_traces(request={}).pages)
@@ -819,7 +894,9 @@ def test_list_traces_pages(transport_name: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_list_traces_async_pager():
-    client = TraceServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = TraceServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -828,15 +905,34 @@ async def test_list_traces_async_pager():
         # Set the response to a series of pages.
         call.side_effect = (
             trace.ListTracesResponse(
-                traces=[trace.Trace(), trace.Trace(), trace.Trace(),],
+                traces=[
+                    trace.Trace(),
+                    trace.Trace(),
+                    trace.Trace(),
+                ],
                 next_page_token="abc",
             ),
-            trace.ListTracesResponse(traces=[], next_page_token="def",),
-            trace.ListTracesResponse(traces=[trace.Trace(),], next_page_token="ghi",),
-            trace.ListTracesResponse(traces=[trace.Trace(), trace.Trace(),],),
+            trace.ListTracesResponse(
+                traces=[],
+                next_page_token="def",
+            ),
+            trace.ListTracesResponse(
+                traces=[
+                    trace.Trace(),
+                ],
+                next_page_token="ghi",
+            ),
+            trace.ListTracesResponse(
+                traces=[
+                    trace.Trace(),
+                    trace.Trace(),
+                ],
+            ),
             RuntimeError,
         )
-        async_pager = await client.list_traces(request={},)
+        async_pager = await client.list_traces(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -848,7 +944,9 @@ async def test_list_traces_async_pager():
 
 @pytest.mark.asyncio
 async def test_list_traces_async_pages():
-    client = TraceServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = TraceServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -857,12 +955,29 @@ async def test_list_traces_async_pages():
         # Set the response to a series of pages.
         call.side_effect = (
             trace.ListTracesResponse(
-                traces=[trace.Trace(), trace.Trace(), trace.Trace(),],
+                traces=[
+                    trace.Trace(),
+                    trace.Trace(),
+                    trace.Trace(),
+                ],
                 next_page_token="abc",
             ),
-            trace.ListTracesResponse(traces=[], next_page_token="def",),
-            trace.ListTracesResponse(traces=[trace.Trace(),], next_page_token="ghi",),
-            trace.ListTracesResponse(traces=[trace.Trace(), trace.Trace(),],),
+            trace.ListTracesResponse(
+                traces=[],
+                next_page_token="def",
+            ),
+            trace.ListTracesResponse(
+                traces=[
+                    trace.Trace(),
+                ],
+                next_page_token="ghi",
+            ),
+            trace.ListTracesResponse(
+                traces=[
+                    trace.Trace(),
+                    trace.Trace(),
+                ],
+            ),
             RuntimeError,
         )
         pages = []
@@ -872,10 +987,17 @@ async def test_list_traces_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [trace.GetTraceRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        trace.GetTraceRequest,
+        dict,
+    ],
+)
 def test_get_trace(request_type, transport: str = "grpc"):
     client = TraceServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -886,7 +1008,8 @@ def test_get_trace(request_type, transport: str = "grpc"):
     with mock.patch.object(type(client.transport.get_trace), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = trace.Trace(
-            project_id="project_id_value", trace_id="trace_id_value",
+            project_id="project_id_value",
+            trace_id="trace_id_value",
         )
         response = client.get_trace(request)
 
@@ -905,7 +1028,8 @@ def test_get_trace_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TraceServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -921,7 +1045,8 @@ async def test_get_trace_async(
     transport: str = "grpc_asyncio", request_type=trace.GetTraceRequest
 ):
     client = TraceServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -932,7 +1057,10 @@ async def test_get_trace_async(
     with mock.patch.object(type(client.transport.get_trace), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            trace.Trace(project_id="project_id_value", trace_id="trace_id_value",)
+            trace.Trace(
+                project_id="project_id_value",
+                trace_id="trace_id_value",
+            )
         )
         response = await client.get_trace(request)
 
@@ -953,7 +1081,9 @@ async def test_get_trace_async_from_dict():
 
 
 def test_get_trace_flattened():
-    client = TraceServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TraceServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_trace), "__call__") as call:
@@ -962,7 +1092,8 @@ def test_get_trace_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.get_trace(
-            project_id="project_id_value", trace_id="trace_id_value",
+            project_id="project_id_value",
+            trace_id="trace_id_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -978,7 +1109,9 @@ def test_get_trace_flattened():
 
 
 def test_get_trace_flattened_error():
-    client = TraceServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TraceServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -992,7 +1125,9 @@ def test_get_trace_flattened_error():
 
 @pytest.mark.asyncio
 async def test_get_trace_flattened_async():
-    client = TraceServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TraceServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_trace), "__call__") as call:
@@ -1003,7 +1138,8 @@ async def test_get_trace_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.get_trace(
-            project_id="project_id_value", trace_id="trace_id_value",
+            project_id="project_id_value",
+            trace_id="trace_id_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -1020,7 +1156,9 @@ async def test_get_trace_flattened_async():
 
 @pytest.mark.asyncio
 async def test_get_trace_flattened_error_async():
-    client = TraceServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TraceServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1032,10 +1170,17 @@ async def test_get_trace_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [trace.PatchTracesRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        trace.PatchTracesRequest,
+        dict,
+    ],
+)
 def test_patch_traces(request_type, transport: str = "grpc"):
     client = TraceServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1061,7 +1206,8 @@ def test_patch_traces_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TraceServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1077,7 +1223,8 @@ async def test_patch_traces_async(
     transport: str = "grpc_asyncio", request_type=trace.PatchTracesRequest
 ):
     client = TraceServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1105,7 +1252,9 @@ async def test_patch_traces_async_from_dict():
 
 
 def test_patch_traces_flattened():
-    client = TraceServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TraceServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.patch_traces), "__call__") as call:
@@ -1131,7 +1280,9 @@ def test_patch_traces_flattened():
 
 
 def test_patch_traces_flattened_error():
-    client = TraceServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TraceServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1145,7 +1296,9 @@ def test_patch_traces_flattened_error():
 
 @pytest.mark.asyncio
 async def test_patch_traces_flattened_async():
-    client = TraceServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TraceServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.patch_traces), "__call__") as call:
@@ -1174,7 +1327,9 @@ async def test_patch_traces_flattened_async():
 
 @pytest.mark.asyncio
 async def test_patch_traces_flattened_error_async():
-    client = TraceServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TraceServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1193,7 +1348,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = TraceServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -1213,7 +1369,10 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = TraceServiceClient(client_options=options, transport=transport,)
+        client = TraceServiceClient(
+            client_options=options,
+            transport=transport,
+        )
 
     # It is an error to provide an api_key and a credential.
     options = mock.Mock()
@@ -1229,7 +1388,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = TraceServiceClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -1274,8 +1434,13 @@ def test_transport_adc(transport_class):
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
-    client = TraceServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
-    assert isinstance(client.transport, transports.TraceServiceGrpcTransport,)
+    client = TraceServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    assert isinstance(
+        client.transport,
+        transports.TraceServiceGrpcTransport,
+    )
 
 
 def test_trace_service_base_transport_error():
@@ -1322,7 +1487,8 @@ def test_trace_service_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.TraceServiceTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -1493,7 +1659,8 @@ def test_trace_service_grpc_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.TraceServiceGrpcTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -1505,7 +1672,8 @@ def test_trace_service_grpc_asyncio_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.TraceServiceGrpcAsyncIOTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -1626,7 +1794,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "whelk"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = TraceServiceClient.common_folder_path(folder)
     assert expected == actual
 
@@ -1644,7 +1814,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "oyster"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = TraceServiceClient.common_organization_path(organization)
     assert expected == actual
 
@@ -1662,7 +1834,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "cuttlefish"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = TraceServiceClient.common_project_path(project)
     assert expected == actual
 
@@ -1682,7 +1856,8 @@ def test_common_location_path():
     project = "winkle"
     location = "nautilus"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = TraceServiceClient.common_location_path(project, location)
     assert expected == actual
@@ -1707,7 +1882,8 @@ def test_client_with_default_client_info():
         transports.TraceServiceTransport, "_prep_wrapped_messages"
     ) as prep:
         client = TraceServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -1716,7 +1892,8 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = TraceServiceClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -1724,7 +1901,8 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = TraceServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     with mock.patch.object(
         type(getattr(client.transport, "grpc_channel")), "close"

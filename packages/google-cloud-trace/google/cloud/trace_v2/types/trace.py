@@ -22,7 +22,13 @@ from google.rpc import status_pb2  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.devtools.cloudtrace.v2",
-    manifest={"Span", "AttributeValue", "StackTrace", "Module", "TruncatableString",},
+    manifest={
+        "Span",
+        "AttributeValue",
+        "StackTrace",
+        "Module",
+        "TruncatableString",
+    },
 )
 
 
@@ -147,9 +153,15 @@ class Span(proto.Message):
         """
 
         attribute_map = proto.MapField(
-            proto.STRING, proto.MESSAGE, number=1, message="AttributeValue",
+            proto.STRING,
+            proto.MESSAGE,
+            number=1,
+            message="AttributeValue",
         )
-        dropped_attributes_count = proto.Field(proto.INT32, number=2,)
+        dropped_attributes_count = proto.Field(
+            proto.INT32,
+            number=2,
+        )
 
     class TimeEvent(proto.Message):
         r"""A time-stamped annotation or message event in the Span.
@@ -190,10 +202,14 @@ class Span(proto.Message):
             """
 
             description = proto.Field(
-                proto.MESSAGE, number=1, message="TruncatableString",
+                proto.MESSAGE,
+                number=1,
+                message="TruncatableString",
             )
             attributes = proto.Field(
-                proto.MESSAGE, number=2, message="Span.Attributes",
+                proto.MESSAGE,
+                number=2,
+                message="Span.Attributes",
             )
 
         class MessageEvent(proto.Message):
@@ -224,15 +240,33 @@ class Span(proto.Message):
                 RECEIVED = 2
 
             type = proto.Field(
-                proto.ENUM, number=1, enum="Span.TimeEvent.MessageEvent.Type",
+                proto.ENUM,
+                number=1,
+                enum="Span.TimeEvent.MessageEvent.Type",
             )
-            id = proto.Field(proto.INT64, number=2,)
-            uncompressed_size_bytes = proto.Field(proto.INT64, number=3,)
-            compressed_size_bytes = proto.Field(proto.INT64, number=4,)
+            id = proto.Field(
+                proto.INT64,
+                number=2,
+            )
+            uncompressed_size_bytes = proto.Field(
+                proto.INT64,
+                number=3,
+            )
+            compressed_size_bytes = proto.Field(
+                proto.INT64,
+                number=4,
+            )
 
-        time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
+        time = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=timestamp_pb2.Timestamp,
+        )
         annotation = proto.Field(
-            proto.MESSAGE, number=2, oneof="value", message="Span.TimeEvent.Annotation",
+            proto.MESSAGE,
+            number=2,
+            oneof="value",
+            message="Span.TimeEvent.Annotation",
         )
         message_event = proto.Field(
             proto.MESSAGE,
@@ -260,10 +294,18 @@ class Span(proto.Message):
         """
 
         time_event = proto.RepeatedField(
-            proto.MESSAGE, number=1, message="Span.TimeEvent",
+            proto.MESSAGE,
+            number=1,
+            message="Span.TimeEvent",
         )
-        dropped_annotations_count = proto.Field(proto.INT32, number=2,)
-        dropped_message_events_count = proto.Field(proto.INT32, number=3,)
+        dropped_annotations_count = proto.Field(
+            proto.INT32,
+            number=2,
+        )
+        dropped_message_events_count = proto.Field(
+            proto.INT32,
+            number=3,
+        )
 
     class Link(proto.Message):
         r"""A pointer from the current span to another span in the same
@@ -293,10 +335,24 @@ class Span(proto.Message):
             CHILD_LINKED_SPAN = 1
             PARENT_LINKED_SPAN = 2
 
-        trace_id = proto.Field(proto.STRING, number=1,)
-        span_id = proto.Field(proto.STRING, number=2,)
-        type = proto.Field(proto.ENUM, number=3, enum="Span.Link.Type",)
-        attributes = proto.Field(proto.MESSAGE, number=4, message="Span.Attributes",)
+        trace_id = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        span_id = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        type = proto.Field(
+            proto.ENUM,
+            number=3,
+            enum="Span.Link.Type",
+        )
+        attributes = proto.Field(
+            proto.MESSAGE,
+            number=4,
+            message="Span.Attributes",
+        )
 
     class Links(proto.Message):
         r"""A collection of links, which are references from this span to
@@ -311,27 +367,83 @@ class Span(proto.Message):
                 links were dropped.
         """
 
-        link = proto.RepeatedField(proto.MESSAGE, number=1, message="Span.Link",)
-        dropped_links_count = proto.Field(proto.INT32, number=2,)
+        link = proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="Span.Link",
+        )
+        dropped_links_count = proto.Field(
+            proto.INT32,
+            number=2,
+        )
 
-    name = proto.Field(proto.STRING, number=1,)
-    span_id = proto.Field(proto.STRING, number=2,)
-    parent_span_id = proto.Field(proto.STRING, number=3,)
-    display_name = proto.Field(proto.MESSAGE, number=4, message="TruncatableString",)
-    start_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
-    end_time = proto.Field(proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,)
-    attributes = proto.Field(proto.MESSAGE, number=7, message=Attributes,)
-    stack_trace = proto.Field(proto.MESSAGE, number=8, message="StackTrace",)
-    time_events = proto.Field(proto.MESSAGE, number=9, message=TimeEvents,)
-    links = proto.Field(proto.MESSAGE, number=10, message=Links,)
-    status = proto.Field(proto.MESSAGE, number=11, message=status_pb2.Status,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    span_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    parent_span_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    display_name = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="TruncatableString",
+    )
+    start_time = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
+    )
+    attributes = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=Attributes,
+    )
+    stack_trace = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message="StackTrace",
+    )
+    time_events = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message=TimeEvents,
+    )
+    links = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message=Links,
+    )
+    status = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message=status_pb2.Status,
+    )
     same_process_as_parent_span = proto.Field(
-        proto.MESSAGE, number=12, message=wrappers_pb2.BoolValue,
+        proto.MESSAGE,
+        number=12,
+        message=wrappers_pb2.BoolValue,
     )
     child_span_count = proto.Field(
-        proto.MESSAGE, number=13, message=wrappers_pb2.Int32Value,
+        proto.MESSAGE,
+        number=13,
+        message=wrappers_pb2.Int32Value,
     )
-    span_kind = proto.Field(proto.ENUM, number=14, enum=SpanKind,)
+    span_kind = proto.Field(
+        proto.ENUM,
+        number=14,
+        enum=SpanKind,
+    )
 
 
 class AttributeValue(proto.Message):
@@ -360,10 +472,21 @@ class AttributeValue(proto.Message):
     """
 
     string_value = proto.Field(
-        proto.MESSAGE, number=1, oneof="value", message="TruncatableString",
+        proto.MESSAGE,
+        number=1,
+        oneof="value",
+        message="TruncatableString",
     )
-    int_value = proto.Field(proto.INT64, number=2, oneof="value",)
-    bool_value = proto.Field(proto.BOOL, number=3, oneof="value",)
+    int_value = proto.Field(
+        proto.INT64,
+        number=2,
+        oneof="value",
+    )
+    bool_value = proto.Field(
+        proto.BOOL,
+        number=3,
+        oneof="value",
+    )
 
 
 class StackTrace(proto.Message):
@@ -416,17 +539,37 @@ class StackTrace(proto.Message):
         """
 
         function_name = proto.Field(
-            proto.MESSAGE, number=1, message="TruncatableString",
+            proto.MESSAGE,
+            number=1,
+            message="TruncatableString",
         )
         original_function_name = proto.Field(
-            proto.MESSAGE, number=2, message="TruncatableString",
+            proto.MESSAGE,
+            number=2,
+            message="TruncatableString",
         )
-        file_name = proto.Field(proto.MESSAGE, number=3, message="TruncatableString",)
-        line_number = proto.Field(proto.INT64, number=4,)
-        column_number = proto.Field(proto.INT64, number=5,)
-        load_module = proto.Field(proto.MESSAGE, number=6, message="Module",)
+        file_name = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message="TruncatableString",
+        )
+        line_number = proto.Field(
+            proto.INT64,
+            number=4,
+        )
+        column_number = proto.Field(
+            proto.INT64,
+            number=5,
+        )
+        load_module = proto.Field(
+            proto.MESSAGE,
+            number=6,
+            message="Module",
+        )
         source_version = proto.Field(
-            proto.MESSAGE, number=7, message="TruncatableString",
+            proto.MESSAGE,
+            number=7,
+            message="TruncatableString",
         )
 
     class StackFrames(proto.Message):
@@ -443,12 +586,24 @@ class StackTrace(proto.Message):
         """
 
         frame = proto.RepeatedField(
-            proto.MESSAGE, number=1, message="StackTrace.StackFrame",
+            proto.MESSAGE,
+            number=1,
+            message="StackTrace.StackFrame",
         )
-        dropped_frames_count = proto.Field(proto.INT32, number=2,)
+        dropped_frames_count = proto.Field(
+            proto.INT32,
+            number=2,
+        )
 
-    stack_frames = proto.Field(proto.MESSAGE, number=1, message=StackFrames,)
-    stack_trace_hash_id = proto.Field(proto.INT64, number=2,)
+    stack_frames = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=StackFrames,
+    )
+    stack_trace_hash_id = proto.Field(
+        proto.INT64,
+        number=2,
+    )
 
 
 class Module(proto.Message):
@@ -464,8 +619,16 @@ class Module(proto.Message):
             hash of its contents (up to 128 bytes).
     """
 
-    module = proto.Field(proto.MESSAGE, number=1, message="TruncatableString",)
-    build_id = proto.Field(proto.MESSAGE, number=2, message="TruncatableString",)
+    module = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="TruncatableString",
+    )
+    build_id = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="TruncatableString",
+    )
 
 
 class TruncatableString(proto.Message):
@@ -489,8 +652,14 @@ class TruncatableString(proto.Message):
             not shortened.
     """
 
-    value = proto.Field(proto.STRING, number=1,)
-    truncated_byte_count = proto.Field(proto.INT32, number=2,)
+    value = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    truncated_byte_count = proto.Field(
+        proto.INT32,
+        number=2,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

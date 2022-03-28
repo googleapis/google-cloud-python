@@ -19,7 +19,10 @@ from google.cloud.trace_v2.types import trace
 
 
 __protobuf__ = proto.module(
-    package="google.devtools.cloudtrace.v2", manifest={"BatchWriteSpansRequest",},
+    package="google.devtools.cloudtrace.v2",
+    manifest={
+        "BatchWriteSpansRequest",
+    },
 )
 
 
@@ -36,8 +39,15 @@ class BatchWriteSpansRequest(proto.Message):
             are undefined.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    spans = proto.RepeatedField(proto.MESSAGE, number=2, message=trace.Span,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    spans = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=trace.Span,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

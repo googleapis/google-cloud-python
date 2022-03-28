@@ -49,9 +49,19 @@ class Trace(proto.Message):
             Collection of spans in the trace.
     """
 
-    project_id = proto.Field(proto.STRING, number=1,)
-    trace_id = proto.Field(proto.STRING, number=2,)
-    spans = proto.RepeatedField(proto.MESSAGE, number=3, message="TraceSpan",)
+    project_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    trace_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    spans = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message="TraceSpan",
+    )
 
 
 class Traces(proto.Message):
@@ -62,7 +72,11 @@ class Traces(proto.Message):
             List of traces.
     """
 
-    traces = proto.RepeatedField(proto.MESSAGE, number=1, message="Trace",)
+    traces = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Trace",
+    )
 
 
 class TraceSpan(proto.Message):
@@ -148,13 +162,38 @@ class TraceSpan(proto.Message):
         RPC_SERVER = 1
         RPC_CLIENT = 2
 
-    span_id = proto.Field(proto.FIXED64, number=1,)
-    kind = proto.Field(proto.ENUM, number=2, enum=SpanKind,)
-    name = proto.Field(proto.STRING, number=3,)
-    start_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
-    end_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
-    parent_span_id = proto.Field(proto.FIXED64, number=6,)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=7,)
+    span_id = proto.Field(
+        proto.FIXED64,
+        number=1,
+    )
+    kind = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=SpanKind,
+    )
+    name = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    start_time = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+    parent_span_id = proto.Field(
+        proto.FIXED64,
+        number=6,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=7,
+    )
 
 
 class ListTracesRequest(proto.Message):
@@ -243,14 +282,41 @@ class ListTracesRequest(proto.Message):
         ROOTSPAN = 2
         COMPLETE = 3
 
-    project_id = proto.Field(proto.STRING, number=1,)
-    view = proto.Field(proto.ENUM, number=2, enum=ViewType,)
-    page_size = proto.Field(proto.INT32, number=3,)
-    page_token = proto.Field(proto.STRING, number=4,)
-    start_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
-    end_time = proto.Field(proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,)
-    filter = proto.Field(proto.STRING, number=7,)
-    order_by = proto.Field(proto.STRING, number=8,)
+    project_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    view = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=ViewType,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    start_time = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    order_by = proto.Field(
+        proto.STRING,
+        number=8,
+    )
 
 
 class ListTracesResponse(proto.Message):
@@ -271,8 +337,15 @@ class ListTracesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    traces = proto.RepeatedField(proto.MESSAGE, number=1, message="Trace",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    traces = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Trace",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetTraceRequest(proto.Message):
@@ -286,8 +359,14 @@ class GetTraceRequest(proto.Message):
             Required. ID of the trace to return.
     """
 
-    project_id = proto.Field(proto.STRING, number=1,)
-    trace_id = proto.Field(proto.STRING, number=2,)
+    project_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    trace_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class PatchTracesRequest(proto.Message):
@@ -301,8 +380,15 @@ class PatchTracesRequest(proto.Message):
             Required. The body of the message.
     """
 
-    project_id = proto.Field(proto.STRING, number=1,)
-    traces = proto.Field(proto.MESSAGE, number=2, message="Traces",)
+    project_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    traces = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="Traces",
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
