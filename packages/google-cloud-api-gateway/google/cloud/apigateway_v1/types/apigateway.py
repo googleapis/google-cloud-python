@@ -87,13 +87,38 @@ class Api(proto.Message):
         DELETING = 4
         UPDATING = 5
 
-    name = proto.Field(proto.STRING, number=1,)
-    create_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=4,)
-    display_name = proto.Field(proto.STRING, number=5,)
-    managed_service = proto.Field(proto.STRING, number=7,)
-    state = proto.Field(proto.ENUM, number=12, enum=State,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=4,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    managed_service = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=12,
+        enum=State,
+    )
 
 
 class ApiConfig(proto.Message):
@@ -175,8 +200,14 @@ class ApiConfig(proto.Message):
                 The bytes that constitute the file.
         """
 
-        path = proto.Field(proto.STRING, number=1,)
-        contents = proto.Field(proto.BYTES, number=2,)
+        path = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        contents = proto.Field(
+            proto.BYTES,
+            number=2,
+        )
 
     class OpenApiDocument(proto.Message):
         r"""An OpenAPI Specification Document describing an API.
@@ -186,7 +217,11 @@ class ApiConfig(proto.Message):
                 The OpenAPI Specification document file.
         """
 
-        document = proto.Field(proto.MESSAGE, number=1, message="ApiConfig.File",)
+        document = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message="ApiConfig.File",
+        )
 
     class GrpcServiceDefinition(proto.Message):
         r"""A gRPC service definition.
@@ -209,26 +244,66 @@ class ApiConfig(proto.Message):
         """
 
         file_descriptor_set = proto.Field(
-            proto.MESSAGE, number=1, message="ApiConfig.File",
+            proto.MESSAGE,
+            number=1,
+            message="ApiConfig.File",
         )
-        source = proto.RepeatedField(proto.MESSAGE, number=2, message="ApiConfig.File",)
+        source = proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="ApiConfig.File",
+        )
 
-    name = proto.Field(proto.STRING, number=1,)
-    create_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=4,)
-    display_name = proto.Field(proto.STRING, number=5,)
-    gateway_service_account = proto.Field(proto.STRING, number=14,)
-    service_config_id = proto.Field(proto.STRING, number=12,)
-    state = proto.Field(proto.ENUM, number=8, enum=State,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=4,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    gateway_service_account = proto.Field(
+        proto.STRING,
+        number=14,
+    )
+    service_config_id = proto.Field(
+        proto.STRING,
+        number=12,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=8,
+        enum=State,
+    )
     openapi_documents = proto.RepeatedField(
-        proto.MESSAGE, number=9, message=OpenApiDocument,
+        proto.MESSAGE,
+        number=9,
+        message=OpenApiDocument,
     )
     grpc_services = proto.RepeatedField(
-        proto.MESSAGE, number=10, message=GrpcServiceDefinition,
+        proto.MESSAGE,
+        number=10,
+        message=GrpcServiceDefinition,
     )
     managed_service_configs = proto.RepeatedField(
-        proto.MESSAGE, number=11, message=File,
+        proto.MESSAGE,
+        number=11,
+        message=File,
     )
 
 
@@ -274,14 +349,42 @@ class Gateway(proto.Message):
         DELETING = 4
         UPDATING = 5
 
-    name = proto.Field(proto.STRING, number=1,)
-    create_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=4,)
-    display_name = proto.Field(proto.STRING, number=5,)
-    api_config = proto.Field(proto.STRING, number=6,)
-    state = proto.Field(proto.ENUM, number=7, enum=State,)
-    default_hostname = proto.Field(proto.STRING, number=9,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=4,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    api_config = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=7,
+        enum=State,
+    )
+    default_hostname = proto.Field(
+        proto.STRING,
+        number=9,
+    )
 
 
 class ListGatewaysRequest(proto.Message):
@@ -301,11 +404,26 @@ class ListGatewaysRequest(proto.Message):
             Order by parameters.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    filter = proto.Field(proto.STRING, number=4,)
-    order_by = proto.Field(proto.STRING, number=5,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class ListGatewaysResponse(proto.Message):
@@ -324,9 +442,19 @@ class ListGatewaysResponse(proto.Message):
     def raw_page(self):
         return self
 
-    gateways = proto.RepeatedField(proto.MESSAGE, number=1, message="Gateway",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
-    unreachable_locations = proto.RepeatedField(proto.STRING, number=3,)
+    gateways = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Gateway",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable_locations = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 class GetGatewayRequest(proto.Message):
@@ -338,7 +466,10 @@ class GetGatewayRequest(proto.Message):
             ``projects/*/locations/*/gateways/*``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CreateGatewayRequest(proto.Message):
@@ -356,9 +487,19 @@ class CreateGatewayRequest(proto.Message):
             Required. Gateway resource.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    gateway_id = proto.Field(proto.STRING, number=2,)
-    gateway = proto.Field(proto.MESSAGE, number=3, message="Gateway",)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    gateway_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    gateway = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="Gateway",
+    )
 
 
 class UpdateGatewayRequest(proto.Message):
@@ -377,9 +518,15 @@ class UpdateGatewayRequest(proto.Message):
     """
 
     update_mask = proto.Field(
-        proto.MESSAGE, number=1, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=1,
+        message=field_mask_pb2.FieldMask,
     )
-    gateway = proto.Field(proto.MESSAGE, number=2, message="Gateway",)
+    gateway = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="Gateway",
+    )
 
 
 class DeleteGatewayRequest(proto.Message):
@@ -391,7 +538,10 @@ class DeleteGatewayRequest(proto.Message):
             ``projects/*/locations/*/gateways/*``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListApisRequest(proto.Message):
@@ -411,11 +561,26 @@ class ListApisRequest(proto.Message):
             Order by parameters.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    filter = proto.Field(proto.STRING, number=4,)
-    order_by = proto.Field(proto.STRING, number=5,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class ListApisResponse(proto.Message):
@@ -434,9 +599,19 @@ class ListApisResponse(proto.Message):
     def raw_page(self):
         return self
 
-    apis = proto.RepeatedField(proto.MESSAGE, number=1, message="Api",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
-    unreachable_locations = proto.RepeatedField(proto.STRING, number=3,)
+    apis = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Api",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable_locations = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 class GetApiRequest(proto.Message):
@@ -448,7 +623,10 @@ class GetApiRequest(proto.Message):
             ``projects/*/locations/global/apis/*``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CreateApiRequest(proto.Message):
@@ -466,9 +644,19 @@ class CreateApiRequest(proto.Message):
             Required. API resource.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    api_id = proto.Field(proto.STRING, number=2,)
-    api = proto.Field(proto.MESSAGE, number=3, message="Api",)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    api_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    api = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="Api",
+    )
 
 
 class UpdateApiRequest(proto.Message):
@@ -487,9 +675,15 @@ class UpdateApiRequest(proto.Message):
     """
 
     update_mask = proto.Field(
-        proto.MESSAGE, number=1, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=1,
+        message=field_mask_pb2.FieldMask,
     )
-    api = proto.Field(proto.MESSAGE, number=2, message="Api",)
+    api = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="Api",
+    )
 
 
 class DeleteApiRequest(proto.Message):
@@ -501,7 +695,10 @@ class DeleteApiRequest(proto.Message):
             ``projects/*/locations/global/apis/*``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListApiConfigsRequest(proto.Message):
@@ -521,11 +718,26 @@ class ListApiConfigsRequest(proto.Message):
             Order by parameters.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    filter = proto.Field(proto.STRING, number=4,)
-    order_by = proto.Field(proto.STRING, number=5,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class ListApiConfigsResponse(proto.Message):
@@ -544,9 +756,19 @@ class ListApiConfigsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    api_configs = proto.RepeatedField(proto.MESSAGE, number=1, message="ApiConfig",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
-    unreachable_locations = proto.RepeatedField(proto.STRING, number=3,)
+    api_configs = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="ApiConfig",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable_locations = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 class GetApiConfigRequest(proto.Message):
@@ -569,8 +791,15 @@ class GetApiConfigRequest(proto.Message):
         BASIC = 1
         FULL = 2
 
-    name = proto.Field(proto.STRING, number=1,)
-    view = proto.Field(proto.ENUM, number=3, enum=ConfigView,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    view = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=ConfigView,
+    )
 
 
 class CreateApiConfigRequest(proto.Message):
@@ -588,9 +817,19 @@ class CreateApiConfigRequest(proto.Message):
             Required. API resource.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    api_config_id = proto.Field(proto.STRING, number=2,)
-    api_config = proto.Field(proto.MESSAGE, number=3, message="ApiConfig",)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    api_config_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    api_config = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="ApiConfig",
+    )
 
 
 class UpdateApiConfigRequest(proto.Message):
@@ -609,9 +848,15 @@ class UpdateApiConfigRequest(proto.Message):
     """
 
     update_mask = proto.Field(
-        proto.MESSAGE, number=1, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=1,
+        message=field_mask_pb2.FieldMask,
     )
-    api_config = proto.Field(proto.MESSAGE, number=2, message="ApiConfig",)
+    api_config = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="ApiConfig",
+    )
 
 
 class DeleteApiConfigRequest(proto.Message):
@@ -623,7 +868,10 @@ class DeleteApiConfigRequest(proto.Message):
             ``projects/*/locations/global/apis/*/configs/*``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class OperationMetadata(proto.Message):
@@ -669,17 +917,50 @@ class OperationMetadata(proto.Message):
                 The diagnostic message.
         """
 
-        location = proto.Field(proto.STRING, number=1,)
-        message = proto.Field(proto.STRING, number=2,)
+        location = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        message = proto.Field(
+            proto.STRING,
+            number=2,
+        )
 
-    create_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
-    end_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    target = proto.Field(proto.STRING, number=3,)
-    verb = proto.Field(proto.STRING, number=4,)
-    status_message = proto.Field(proto.STRING, number=5,)
-    requested_cancellation = proto.Field(proto.BOOL, number=6,)
-    api_version = proto.Field(proto.STRING, number=7,)
-    diagnostics = proto.RepeatedField(proto.MESSAGE, number=8, message=Diagnostic,)
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    target = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    verb = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    status_message = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    requested_cancellation = proto.Field(
+        proto.BOOL,
+        number=6,
+    )
+    api_version = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    diagnostics = proto.RepeatedField(
+        proto.MESSAGE,
+        number=8,
+        message=Diagnostic,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

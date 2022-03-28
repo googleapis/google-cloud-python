@@ -97,7 +97,11 @@ def test__get_default_mtls_endpoint():
 
 
 @pytest.mark.parametrize(
-    "client_class", [ApiGatewayServiceClient, ApiGatewayServiceAsyncClient,]
+    "client_class",
+    [
+        ApiGatewayServiceClient,
+        ApiGatewayServiceAsyncClient,
+    ],
 )
 def test_api_gateway_service_client_from_service_account_info(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -139,7 +143,11 @@ def test_api_gateway_service_client_service_account_always_use_jwt(
 
 
 @pytest.mark.parametrize(
-    "client_class", [ApiGatewayServiceClient, ApiGatewayServiceAsyncClient,]
+    "client_class",
+    [
+        ApiGatewayServiceClient,
+        ApiGatewayServiceAsyncClient,
+    ],
 )
 def test_api_gateway_service_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -513,7 +521,9 @@ def test_api_gateway_service_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -653,10 +663,17 @@ def test_api_gateway_service_client_create_channel_credentials_file(
         )
 
 
-@pytest.mark.parametrize("request_type", [apigateway.ListGatewaysRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apigateway.ListGatewaysRequest,
+        dict,
+    ],
+)
 def test_list_gateways(request_type, transport: str = "grpc"):
     client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -687,7 +704,8 @@ def test_list_gateways_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -703,7 +721,8 @@ async def test_list_gateways_async(
     transport: str = "grpc_asyncio", request_type=apigateway.ListGatewaysRequest
 ):
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -738,7 +757,9 @@ async def test_list_gateways_async_from_dict():
 
 
 def test_list_gateways_field_headers():
-    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -758,7 +779,10 @@ def test_list_gateways_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -787,11 +811,16 @@ async def test_list_gateways_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_gateways_flattened():
-    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_gateways), "__call__") as call:
@@ -799,7 +828,9 @@ def test_list_gateways_flattened():
         call.return_value = apigateway.ListGatewaysResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_gateways(parent="parent_value",)
+        client.list_gateways(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -811,13 +842,16 @@ def test_list_gateways_flattened():
 
 
 def test_list_gateways_flattened_error():
-    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_gateways(
-            apigateway.ListGatewaysRequest(), parent="parent_value",
+            apigateway.ListGatewaysRequest(),
+            parent="parent_value",
         )
 
 
@@ -837,7 +871,9 @@ async def test_list_gateways_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_gateways(parent="parent_value",)
+        response = await client.list_gateways(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -858,13 +894,15 @@ async def test_list_gateways_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_gateways(
-            apigateway.ListGatewaysRequest(), parent="parent_value",
+            apigateway.ListGatewaysRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_gateways_pager(transport_name: str = "grpc"):
     client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -879,12 +917,21 @@ def test_list_gateways_pager(transport_name: str = "grpc"):
                 ],
                 next_page_token="abc",
             ),
-            apigateway.ListGatewaysResponse(gateways=[], next_page_token="def",),
             apigateway.ListGatewaysResponse(
-                gateways=[apigateway.Gateway(),], next_page_token="ghi",
+                gateways=[],
+                next_page_token="def",
             ),
             apigateway.ListGatewaysResponse(
-                gateways=[apigateway.Gateway(), apigateway.Gateway(),],
+                gateways=[
+                    apigateway.Gateway(),
+                ],
+                next_page_token="ghi",
+            ),
+            apigateway.ListGatewaysResponse(
+                gateways=[
+                    apigateway.Gateway(),
+                    apigateway.Gateway(),
+                ],
             ),
             RuntimeError,
         )
@@ -904,7 +951,8 @@ def test_list_gateways_pager(transport_name: str = "grpc"):
 
 def test_list_gateways_pages(transport_name: str = "grpc"):
     client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -919,12 +967,21 @@ def test_list_gateways_pages(transport_name: str = "grpc"):
                 ],
                 next_page_token="abc",
             ),
-            apigateway.ListGatewaysResponse(gateways=[], next_page_token="def",),
             apigateway.ListGatewaysResponse(
-                gateways=[apigateway.Gateway(),], next_page_token="ghi",
+                gateways=[],
+                next_page_token="def",
             ),
             apigateway.ListGatewaysResponse(
-                gateways=[apigateway.Gateway(), apigateway.Gateway(),],
+                gateways=[
+                    apigateway.Gateway(),
+                ],
+                next_page_token="ghi",
+            ),
+            apigateway.ListGatewaysResponse(
+                gateways=[
+                    apigateway.Gateway(),
+                    apigateway.Gateway(),
+                ],
             ),
             RuntimeError,
         )
@@ -953,16 +1010,27 @@ async def test_list_gateways_async_pager():
                 ],
                 next_page_token="abc",
             ),
-            apigateway.ListGatewaysResponse(gateways=[], next_page_token="def",),
             apigateway.ListGatewaysResponse(
-                gateways=[apigateway.Gateway(),], next_page_token="ghi",
+                gateways=[],
+                next_page_token="def",
             ),
             apigateway.ListGatewaysResponse(
-                gateways=[apigateway.Gateway(), apigateway.Gateway(),],
+                gateways=[
+                    apigateway.Gateway(),
+                ],
+                next_page_token="ghi",
+            ),
+            apigateway.ListGatewaysResponse(
+                gateways=[
+                    apigateway.Gateway(),
+                    apigateway.Gateway(),
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.list_gateways(request={},)
+        async_pager = await client.list_gateways(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -992,12 +1060,21 @@ async def test_list_gateways_async_pages():
                 ],
                 next_page_token="abc",
             ),
-            apigateway.ListGatewaysResponse(gateways=[], next_page_token="def",),
             apigateway.ListGatewaysResponse(
-                gateways=[apigateway.Gateway(),], next_page_token="ghi",
+                gateways=[],
+                next_page_token="def",
             ),
             apigateway.ListGatewaysResponse(
-                gateways=[apigateway.Gateway(), apigateway.Gateway(),],
+                gateways=[
+                    apigateway.Gateway(),
+                ],
+                next_page_token="ghi",
+            ),
+            apigateway.ListGatewaysResponse(
+                gateways=[
+                    apigateway.Gateway(),
+                    apigateway.Gateway(),
+                ],
             ),
             RuntimeError,
         )
@@ -1008,10 +1085,17 @@ async def test_list_gateways_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [apigateway.GetGatewayRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apigateway.GetGatewayRequest,
+        dict,
+    ],
+)
 def test_get_gateway(request_type, transport: str = "grpc"):
     client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1048,7 +1132,8 @@ def test_get_gateway_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1064,7 +1149,8 @@ async def test_get_gateway_async(
     transport: str = "grpc_asyncio", request_type=apigateway.GetGatewayRequest
 ):
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1105,7 +1191,9 @@ async def test_get_gateway_async_from_dict():
 
 
 def test_get_gateway_field_headers():
-    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1125,7 +1213,10 @@ def test_get_gateway_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1152,11 +1243,16 @@ async def test_get_gateway_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_gateway_flattened():
-    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_gateway), "__call__") as call:
@@ -1164,7 +1260,9 @@ def test_get_gateway_flattened():
         call.return_value = apigateway.Gateway()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_gateway(name="name_value",)
+        client.get_gateway(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1176,13 +1274,16 @@ def test_get_gateway_flattened():
 
 
 def test_get_gateway_flattened_error():
-    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_gateway(
-            apigateway.GetGatewayRequest(), name="name_value",
+            apigateway.GetGatewayRequest(),
+            name="name_value",
         )
 
 
@@ -1200,7 +1301,9 @@ async def test_get_gateway_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(apigateway.Gateway())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_gateway(name="name_value",)
+        response = await client.get_gateway(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1221,14 +1324,22 @@ async def test_get_gateway_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_gateway(
-            apigateway.GetGatewayRequest(), name="name_value",
+            apigateway.GetGatewayRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [apigateway.CreateGatewayRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apigateway.CreateGatewayRequest,
+        dict,
+    ],
+)
 def test_create_gateway(request_type, transport: str = "grpc"):
     client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1254,7 +1365,8 @@ def test_create_gateway_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1270,7 +1382,8 @@ async def test_create_gateway_async(
     transport: str = "grpc_asyncio", request_type=apigateway.CreateGatewayRequest
 ):
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1300,7 +1413,9 @@ async def test_create_gateway_async_from_dict():
 
 
 def test_create_gateway_field_headers():
-    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1320,7 +1435,10 @@ def test_create_gateway_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1349,11 +1467,16 @@ async def test_create_gateway_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_gateway_flattened():
-    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_gateway), "__call__") as call:
@@ -1383,7 +1506,9 @@ def test_create_gateway_flattened():
 
 
 def test_create_gateway_flattened_error():
-    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1450,10 +1575,17 @@ async def test_create_gateway_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [apigateway.UpdateGatewayRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apigateway.UpdateGatewayRequest,
+        dict,
+    ],
+)
 def test_update_gateway(request_type, transport: str = "grpc"):
     client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1479,7 +1611,8 @@ def test_update_gateway_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1495,7 +1628,8 @@ async def test_update_gateway_async(
     transport: str = "grpc_asyncio", request_type=apigateway.UpdateGatewayRequest
 ):
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1525,7 +1659,9 @@ async def test_update_gateway_async_from_dict():
 
 
 def test_update_gateway_field_headers():
-    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1545,9 +1681,10 @@ def test_update_gateway_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "gateway.name=gateway.name/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "gateway.name=gateway.name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1576,13 +1713,16 @@ async def test_update_gateway_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "gateway.name=gateway.name/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "gateway.name=gateway.name/value",
+    ) in kw["metadata"]
 
 
 def test_update_gateway_flattened():
-    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_gateway), "__call__") as call:
@@ -1608,7 +1748,9 @@ def test_update_gateway_flattened():
 
 
 def test_update_gateway_flattened_error():
-    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1669,10 +1811,17 @@ async def test_update_gateway_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [apigateway.DeleteGatewayRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apigateway.DeleteGatewayRequest,
+        dict,
+    ],
+)
 def test_delete_gateway(request_type, transport: str = "grpc"):
     client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1698,7 +1847,8 @@ def test_delete_gateway_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1714,7 +1864,8 @@ async def test_delete_gateway_async(
     transport: str = "grpc_asyncio", request_type=apigateway.DeleteGatewayRequest
 ):
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1744,7 +1895,9 @@ async def test_delete_gateway_async_from_dict():
 
 
 def test_delete_gateway_field_headers():
-    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1764,7 +1917,10 @@ def test_delete_gateway_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1793,11 +1949,16 @@ async def test_delete_gateway_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_gateway_flattened():
-    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_gateway), "__call__") as call:
@@ -1805,7 +1966,9 @@ def test_delete_gateway_flattened():
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_gateway(name="name_value",)
+        client.delete_gateway(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1817,13 +1980,16 @@ def test_delete_gateway_flattened():
 
 
 def test_delete_gateway_flattened_error():
-    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_gateway(
-            apigateway.DeleteGatewayRequest(), name="name_value",
+            apigateway.DeleteGatewayRequest(),
+            name="name_value",
         )
 
 
@@ -1843,7 +2009,9 @@ async def test_delete_gateway_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_gateway(name="name_value",)
+        response = await client.delete_gateway(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1864,14 +2032,22 @@ async def test_delete_gateway_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_gateway(
-            apigateway.DeleteGatewayRequest(), name="name_value",
+            apigateway.DeleteGatewayRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [apigateway.ListApisRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apigateway.ListApisRequest,
+        dict,
+    ],
+)
 def test_list_apis(request_type, transport: str = "grpc"):
     client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1902,7 +2078,8 @@ def test_list_apis_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1918,7 +2095,8 @@ async def test_list_apis_async(
     transport: str = "grpc_asyncio", request_type=apigateway.ListApisRequest
 ):
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1953,7 +2131,9 @@ async def test_list_apis_async_from_dict():
 
 
 def test_list_apis_field_headers():
-    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1973,7 +2153,10 @@ def test_list_apis_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2002,11 +2185,16 @@ async def test_list_apis_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_apis_flattened():
-    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_apis), "__call__") as call:
@@ -2014,7 +2202,9 @@ def test_list_apis_flattened():
         call.return_value = apigateway.ListApisResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_apis(parent="parent_value",)
+        client.list_apis(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2026,13 +2216,16 @@ def test_list_apis_flattened():
 
 
 def test_list_apis_flattened_error():
-    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_apis(
-            apigateway.ListApisRequest(), parent="parent_value",
+            apigateway.ListApisRequest(),
+            parent="parent_value",
         )
 
 
@@ -2052,7 +2245,9 @@ async def test_list_apis_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_apis(parent="parent_value",)
+        response = await client.list_apis(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2073,13 +2268,15 @@ async def test_list_apis_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_apis(
-            apigateway.ListApisRequest(), parent="parent_value",
+            apigateway.ListApisRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_apis_pager(transport_name: str = "grpc"):
     client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2087,14 +2284,29 @@ def test_list_apis_pager(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             apigateway.ListApisResponse(
-                apis=[apigateway.Api(), apigateway.Api(), apigateway.Api(),],
+                apis=[
+                    apigateway.Api(),
+                    apigateway.Api(),
+                    apigateway.Api(),
+                ],
                 next_page_token="abc",
             ),
-            apigateway.ListApisResponse(apis=[], next_page_token="def",),
             apigateway.ListApisResponse(
-                apis=[apigateway.Api(),], next_page_token="ghi",
+                apis=[],
+                next_page_token="def",
             ),
-            apigateway.ListApisResponse(apis=[apigateway.Api(), apigateway.Api(),],),
+            apigateway.ListApisResponse(
+                apis=[
+                    apigateway.Api(),
+                ],
+                next_page_token="ghi",
+            ),
+            apigateway.ListApisResponse(
+                apis=[
+                    apigateway.Api(),
+                    apigateway.Api(),
+                ],
+            ),
             RuntimeError,
         )
 
@@ -2113,7 +2325,8 @@ def test_list_apis_pager(transport_name: str = "grpc"):
 
 def test_list_apis_pages(transport_name: str = "grpc"):
     client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2121,14 +2334,29 @@ def test_list_apis_pages(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             apigateway.ListApisResponse(
-                apis=[apigateway.Api(), apigateway.Api(), apigateway.Api(),],
+                apis=[
+                    apigateway.Api(),
+                    apigateway.Api(),
+                    apigateway.Api(),
+                ],
                 next_page_token="abc",
             ),
-            apigateway.ListApisResponse(apis=[], next_page_token="def",),
             apigateway.ListApisResponse(
-                apis=[apigateway.Api(),], next_page_token="ghi",
+                apis=[],
+                next_page_token="def",
             ),
-            apigateway.ListApisResponse(apis=[apigateway.Api(), apigateway.Api(),],),
+            apigateway.ListApisResponse(
+                apis=[
+                    apigateway.Api(),
+                ],
+                next_page_token="ghi",
+            ),
+            apigateway.ListApisResponse(
+                apis=[
+                    apigateway.Api(),
+                    apigateway.Api(),
+                ],
+            ),
             RuntimeError,
         )
         pages = list(client.list_apis(request={}).pages)
@@ -2149,17 +2377,34 @@ async def test_list_apis_async_pager():
         # Set the response to a series of pages.
         call.side_effect = (
             apigateway.ListApisResponse(
-                apis=[apigateway.Api(), apigateway.Api(), apigateway.Api(),],
+                apis=[
+                    apigateway.Api(),
+                    apigateway.Api(),
+                    apigateway.Api(),
+                ],
                 next_page_token="abc",
             ),
-            apigateway.ListApisResponse(apis=[], next_page_token="def",),
             apigateway.ListApisResponse(
-                apis=[apigateway.Api(),], next_page_token="ghi",
+                apis=[],
+                next_page_token="def",
             ),
-            apigateway.ListApisResponse(apis=[apigateway.Api(), apigateway.Api(),],),
+            apigateway.ListApisResponse(
+                apis=[
+                    apigateway.Api(),
+                ],
+                next_page_token="ghi",
+            ),
+            apigateway.ListApisResponse(
+                apis=[
+                    apigateway.Api(),
+                    apigateway.Api(),
+                ],
+            ),
             RuntimeError,
         )
-        async_pager = await client.list_apis(request={},)
+        async_pager = await client.list_apis(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -2182,14 +2427,29 @@ async def test_list_apis_async_pages():
         # Set the response to a series of pages.
         call.side_effect = (
             apigateway.ListApisResponse(
-                apis=[apigateway.Api(), apigateway.Api(), apigateway.Api(),],
+                apis=[
+                    apigateway.Api(),
+                    apigateway.Api(),
+                    apigateway.Api(),
+                ],
                 next_page_token="abc",
             ),
-            apigateway.ListApisResponse(apis=[], next_page_token="def",),
             apigateway.ListApisResponse(
-                apis=[apigateway.Api(),], next_page_token="ghi",
+                apis=[],
+                next_page_token="def",
             ),
-            apigateway.ListApisResponse(apis=[apigateway.Api(), apigateway.Api(),],),
+            apigateway.ListApisResponse(
+                apis=[
+                    apigateway.Api(),
+                ],
+                next_page_token="ghi",
+            ),
+            apigateway.ListApisResponse(
+                apis=[
+                    apigateway.Api(),
+                    apigateway.Api(),
+                ],
+            ),
             RuntimeError,
         )
         pages = []
@@ -2199,10 +2459,17 @@ async def test_list_apis_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [apigateway.GetApiRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apigateway.GetApiRequest,
+        dict,
+    ],
+)
 def test_get_api(request_type, transport: str = "grpc"):
     client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2237,7 +2504,8 @@ def test_get_api_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2253,7 +2521,8 @@ async def test_get_api_async(
     transport: str = "grpc_asyncio", request_type=apigateway.GetApiRequest
 ):
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2292,7 +2561,9 @@ async def test_get_api_async_from_dict():
 
 
 def test_get_api_field_headers():
-    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2312,7 +2583,10 @@ def test_get_api_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2339,11 +2613,16 @@ async def test_get_api_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_api_flattened():
-    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_api), "__call__") as call:
@@ -2351,7 +2630,9 @@ def test_get_api_flattened():
         call.return_value = apigateway.Api()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_api(name="name_value",)
+        client.get_api(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2363,13 +2644,16 @@ def test_get_api_flattened():
 
 
 def test_get_api_flattened_error():
-    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_api(
-            apigateway.GetApiRequest(), name="name_value",
+            apigateway.GetApiRequest(),
+            name="name_value",
         )
 
 
@@ -2387,7 +2671,9 @@ async def test_get_api_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(apigateway.Api())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_api(name="name_value",)
+        response = await client.get_api(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2408,14 +2694,22 @@ async def test_get_api_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_api(
-            apigateway.GetApiRequest(), name="name_value",
+            apigateway.GetApiRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [apigateway.CreateApiRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apigateway.CreateApiRequest,
+        dict,
+    ],
+)
 def test_create_api(request_type, transport: str = "grpc"):
     client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2441,7 +2735,8 @@ def test_create_api_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2457,7 +2752,8 @@ async def test_create_api_async(
     transport: str = "grpc_asyncio", request_type=apigateway.CreateApiRequest
 ):
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2487,7 +2783,9 @@ async def test_create_api_async_from_dict():
 
 
 def test_create_api_field_headers():
-    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2507,7 +2805,10 @@ def test_create_api_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2536,11 +2837,16 @@ async def test_create_api_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_api_flattened():
-    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_api), "__call__") as call:
@@ -2570,7 +2876,9 @@ def test_create_api_flattened():
 
 
 def test_create_api_flattened_error():
-    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2637,10 +2945,17 @@ async def test_create_api_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [apigateway.UpdateApiRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apigateway.UpdateApiRequest,
+        dict,
+    ],
+)
 def test_update_api(request_type, transport: str = "grpc"):
     client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2666,7 +2981,8 @@ def test_update_api_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2682,7 +2998,8 @@ async def test_update_api_async(
     transport: str = "grpc_asyncio", request_type=apigateway.UpdateApiRequest
 ):
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2712,7 +3029,9 @@ async def test_update_api_async_from_dict():
 
 
 def test_update_api_field_headers():
-    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2732,7 +3051,10 @@ def test_update_api_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "api.name=api.name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "api.name=api.name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2761,11 +3083,16 @@ async def test_update_api_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "api.name=api.name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "api.name=api.name/value",
+    ) in kw["metadata"]
 
 
 def test_update_api_flattened():
-    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_api), "__call__") as call:
@@ -2791,7 +3118,9 @@ def test_update_api_flattened():
 
 
 def test_update_api_flattened_error():
-    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2852,10 +3181,17 @@ async def test_update_api_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [apigateway.DeleteApiRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apigateway.DeleteApiRequest,
+        dict,
+    ],
+)
 def test_delete_api(request_type, transport: str = "grpc"):
     client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2881,7 +3217,8 @@ def test_delete_api_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2897,7 +3234,8 @@ async def test_delete_api_async(
     transport: str = "grpc_asyncio", request_type=apigateway.DeleteApiRequest
 ):
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2927,7 +3265,9 @@ async def test_delete_api_async_from_dict():
 
 
 def test_delete_api_field_headers():
-    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2947,7 +3287,10 @@ def test_delete_api_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2976,11 +3319,16 @@ async def test_delete_api_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_api_flattened():
-    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_api), "__call__") as call:
@@ -2988,7 +3336,9 @@ def test_delete_api_flattened():
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_api(name="name_value",)
+        client.delete_api(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3000,13 +3350,16 @@ def test_delete_api_flattened():
 
 
 def test_delete_api_flattened_error():
-    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_api(
-            apigateway.DeleteApiRequest(), name="name_value",
+            apigateway.DeleteApiRequest(),
+            name="name_value",
         )
 
 
@@ -3026,7 +3379,9 @@ async def test_delete_api_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_api(name="name_value",)
+        response = await client.delete_api(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3047,14 +3402,22 @@ async def test_delete_api_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_api(
-            apigateway.DeleteApiRequest(), name="name_value",
+            apigateway.DeleteApiRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [apigateway.ListApiConfigsRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apigateway.ListApiConfigsRequest,
+        dict,
+    ],
+)
 def test_list_api_configs(request_type, transport: str = "grpc"):
     client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3085,7 +3448,8 @@ def test_list_api_configs_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3101,7 +3465,8 @@ async def test_list_api_configs_async(
     transport: str = "grpc_asyncio", request_type=apigateway.ListApiConfigsRequest
 ):
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3136,7 +3501,9 @@ async def test_list_api_configs_async_from_dict():
 
 
 def test_list_api_configs_field_headers():
-    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3156,7 +3523,10 @@ def test_list_api_configs_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -3185,11 +3555,16 @@ async def test_list_api_configs_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_api_configs_flattened():
-    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_api_configs), "__call__") as call:
@@ -3197,7 +3572,9 @@ def test_list_api_configs_flattened():
         call.return_value = apigateway.ListApiConfigsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_api_configs(parent="parent_value",)
+        client.list_api_configs(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3209,13 +3586,16 @@ def test_list_api_configs_flattened():
 
 
 def test_list_api_configs_flattened_error():
-    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_api_configs(
-            apigateway.ListApiConfigsRequest(), parent="parent_value",
+            apigateway.ListApiConfigsRequest(),
+            parent="parent_value",
         )
 
 
@@ -3235,7 +3615,9 @@ async def test_list_api_configs_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_api_configs(parent="parent_value",)
+        response = await client.list_api_configs(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3256,13 +3638,15 @@ async def test_list_api_configs_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_api_configs(
-            apigateway.ListApiConfigsRequest(), parent="parent_value",
+            apigateway.ListApiConfigsRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_api_configs_pager(transport_name: str = "grpc"):
     client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3277,12 +3661,21 @@ def test_list_api_configs_pager(transport_name: str = "grpc"):
                 ],
                 next_page_token="abc",
             ),
-            apigateway.ListApiConfigsResponse(api_configs=[], next_page_token="def",),
             apigateway.ListApiConfigsResponse(
-                api_configs=[apigateway.ApiConfig(),], next_page_token="ghi",
+                api_configs=[],
+                next_page_token="def",
             ),
             apigateway.ListApiConfigsResponse(
-                api_configs=[apigateway.ApiConfig(), apigateway.ApiConfig(),],
+                api_configs=[
+                    apigateway.ApiConfig(),
+                ],
+                next_page_token="ghi",
+            ),
+            apigateway.ListApiConfigsResponse(
+                api_configs=[
+                    apigateway.ApiConfig(),
+                    apigateway.ApiConfig(),
+                ],
             ),
             RuntimeError,
         )
@@ -3302,7 +3695,8 @@ def test_list_api_configs_pager(transport_name: str = "grpc"):
 
 def test_list_api_configs_pages(transport_name: str = "grpc"):
     client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3317,12 +3711,21 @@ def test_list_api_configs_pages(transport_name: str = "grpc"):
                 ],
                 next_page_token="abc",
             ),
-            apigateway.ListApiConfigsResponse(api_configs=[], next_page_token="def",),
             apigateway.ListApiConfigsResponse(
-                api_configs=[apigateway.ApiConfig(),], next_page_token="ghi",
+                api_configs=[],
+                next_page_token="def",
             ),
             apigateway.ListApiConfigsResponse(
-                api_configs=[apigateway.ApiConfig(), apigateway.ApiConfig(),],
+                api_configs=[
+                    apigateway.ApiConfig(),
+                ],
+                next_page_token="ghi",
+            ),
+            apigateway.ListApiConfigsResponse(
+                api_configs=[
+                    apigateway.ApiConfig(),
+                    apigateway.ApiConfig(),
+                ],
             ),
             RuntimeError,
         )
@@ -3351,16 +3754,27 @@ async def test_list_api_configs_async_pager():
                 ],
                 next_page_token="abc",
             ),
-            apigateway.ListApiConfigsResponse(api_configs=[], next_page_token="def",),
             apigateway.ListApiConfigsResponse(
-                api_configs=[apigateway.ApiConfig(),], next_page_token="ghi",
+                api_configs=[],
+                next_page_token="def",
             ),
             apigateway.ListApiConfigsResponse(
-                api_configs=[apigateway.ApiConfig(), apigateway.ApiConfig(),],
+                api_configs=[
+                    apigateway.ApiConfig(),
+                ],
+                next_page_token="ghi",
+            ),
+            apigateway.ListApiConfigsResponse(
+                api_configs=[
+                    apigateway.ApiConfig(),
+                    apigateway.ApiConfig(),
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.list_api_configs(request={},)
+        async_pager = await client.list_api_configs(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -3390,12 +3804,21 @@ async def test_list_api_configs_async_pages():
                 ],
                 next_page_token="abc",
             ),
-            apigateway.ListApiConfigsResponse(api_configs=[], next_page_token="def",),
             apigateway.ListApiConfigsResponse(
-                api_configs=[apigateway.ApiConfig(),], next_page_token="ghi",
+                api_configs=[],
+                next_page_token="def",
             ),
             apigateway.ListApiConfigsResponse(
-                api_configs=[apigateway.ApiConfig(), apigateway.ApiConfig(),],
+                api_configs=[
+                    apigateway.ApiConfig(),
+                ],
+                next_page_token="ghi",
+            ),
+            apigateway.ListApiConfigsResponse(
+                api_configs=[
+                    apigateway.ApiConfig(),
+                    apigateway.ApiConfig(),
+                ],
             ),
             RuntimeError,
         )
@@ -3406,10 +3829,17 @@ async def test_list_api_configs_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [apigateway.GetApiConfigRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apigateway.GetApiConfigRequest,
+        dict,
+    ],
+)
 def test_get_api_config(request_type, transport: str = "grpc"):
     client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3446,7 +3876,8 @@ def test_get_api_config_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3462,7 +3893,8 @@ async def test_get_api_config_async(
     transport: str = "grpc_asyncio", request_type=apigateway.GetApiConfigRequest
 ):
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3503,7 +3935,9 @@ async def test_get_api_config_async_from_dict():
 
 
 def test_get_api_config_field_headers():
-    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3523,7 +3957,10 @@ def test_get_api_config_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -3552,11 +3989,16 @@ async def test_get_api_config_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_api_config_flattened():
-    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_api_config), "__call__") as call:
@@ -3564,7 +4006,9 @@ def test_get_api_config_flattened():
         call.return_value = apigateway.ApiConfig()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_api_config(name="name_value",)
+        client.get_api_config(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3576,13 +4020,16 @@ def test_get_api_config_flattened():
 
 
 def test_get_api_config_flattened_error():
-    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_api_config(
-            apigateway.GetApiConfigRequest(), name="name_value",
+            apigateway.GetApiConfigRequest(),
+            name="name_value",
         )
 
 
@@ -3602,7 +4049,9 @@ async def test_get_api_config_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_api_config(name="name_value",)
+        response = await client.get_api_config(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3623,14 +4072,22 @@ async def test_get_api_config_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_api_config(
-            apigateway.GetApiConfigRequest(), name="name_value",
+            apigateway.GetApiConfigRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [apigateway.CreateApiConfigRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apigateway.CreateApiConfigRequest,
+        dict,
+    ],
+)
 def test_create_api_config(request_type, transport: str = "grpc"):
     client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3658,7 +4115,8 @@ def test_create_api_config_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3676,7 +4134,8 @@ async def test_create_api_config_async(
     transport: str = "grpc_asyncio", request_type=apigateway.CreateApiConfigRequest
 ):
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3708,7 +4167,9 @@ async def test_create_api_config_async_from_dict():
 
 
 def test_create_api_config_field_headers():
-    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3730,7 +4191,10 @@ def test_create_api_config_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -3761,11 +4225,16 @@ async def test_create_api_config_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_api_config_flattened():
-    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3797,7 +4266,9 @@ def test_create_api_config_flattened():
 
 
 def test_create_api_config_flattened_error():
-    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -3866,10 +4337,17 @@ async def test_create_api_config_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [apigateway.UpdateApiConfigRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apigateway.UpdateApiConfigRequest,
+        dict,
+    ],
+)
 def test_update_api_config(request_type, transport: str = "grpc"):
     client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3897,7 +4375,8 @@ def test_update_api_config_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3915,7 +4394,8 @@ async def test_update_api_config_async(
     transport: str = "grpc_asyncio", request_type=apigateway.UpdateApiConfigRequest
 ):
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3947,7 +4427,9 @@ async def test_update_api_config_async_from_dict():
 
 
 def test_update_api_config_field_headers():
-    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3969,9 +4451,10 @@ def test_update_api_config_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "api_config.name=api_config.name/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "api_config.name=api_config.name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -4002,13 +4485,16 @@ async def test_update_api_config_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "api_config.name=api_config.name/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "api_config.name=api_config.name/value",
+    ) in kw["metadata"]
 
 
 def test_update_api_config_flattened():
-    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4036,7 +4522,9 @@ def test_update_api_config_flattened():
 
 
 def test_update_api_config_flattened_error():
-    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -4099,10 +4587,17 @@ async def test_update_api_config_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [apigateway.DeleteApiConfigRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apigateway.DeleteApiConfigRequest,
+        dict,
+    ],
+)
 def test_delete_api_config(request_type, transport: str = "grpc"):
     client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4130,7 +4625,8 @@ def test_delete_api_config_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4148,7 +4644,8 @@ async def test_delete_api_config_async(
     transport: str = "grpc_asyncio", request_type=apigateway.DeleteApiConfigRequest
 ):
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4180,7 +4677,9 @@ async def test_delete_api_config_async_from_dict():
 
 
 def test_delete_api_config_field_headers():
-    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -4202,7 +4701,10 @@ def test_delete_api_config_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -4233,11 +4735,16 @@ async def test_delete_api_config_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_api_config_flattened():
-    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4247,7 +4754,9 @@ def test_delete_api_config_flattened():
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_api_config(name="name_value",)
+        client.delete_api_config(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -4259,13 +4768,16 @@ def test_delete_api_config_flattened():
 
 
 def test_delete_api_config_flattened_error():
-    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_api_config(
-            apigateway.DeleteApiConfigRequest(), name="name_value",
+            apigateway.DeleteApiConfigRequest(),
+            name="name_value",
         )
 
 
@@ -4287,7 +4799,9 @@ async def test_delete_api_config_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_api_config(name="name_value",)
+        response = await client.delete_api_config(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -4308,7 +4822,8 @@ async def test_delete_api_config_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_api_config(
-            apigateway.DeleteApiConfigRequest(), name="name_value",
+            apigateway.DeleteApiConfigRequest(),
+            name="name_value",
         )
 
 
@@ -4319,7 +4834,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = ApiGatewayServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -4339,7 +4855,10 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = ApiGatewayServiceClient(client_options=options, transport=transport,)
+        client = ApiGatewayServiceClient(
+            client_options=options,
+            transport=transport,
+        )
 
     # It is an error to provide an api_key and a credential.
     options = mock.Mock()
@@ -4355,7 +4874,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = ApiGatewayServiceClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -4400,8 +4920,13 @@ def test_transport_adc(transport_class):
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
-    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
-    assert isinstance(client.transport, transports.ApiGatewayServiceGrpcTransport,)
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    assert isinstance(
+        client.transport,
+        transports.ApiGatewayServiceGrpcTransport,
+    )
 
 
 def test_api_gateway_service_base_transport_error():
@@ -4465,7 +4990,8 @@ def test_api_gateway_service_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.ApiGatewayServiceTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -4625,7 +5151,8 @@ def test_api_gateway_service_grpc_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.ApiGatewayServiceGrpcTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -4637,7 +5164,8 @@ def test_api_gateway_service_grpc_asyncio_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.ApiGatewayServiceGrpcAsyncIOTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -4746,12 +5274,16 @@ def test_api_gateway_service_transport_channel_mtls_with_adc(transport_class):
 
 def test_api_gateway_service_grpc_lro_client():
     client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
     transport = client.transport
 
     # Ensure that we have a api-core operations client.
-    assert isinstance(transport.operations_client, operations_v1.OperationsClient,)
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsClient,
+    )
 
     # Ensure that subsequent calls to the property send the exact same object.
     assert transport.operations_client is transport.operations_client
@@ -4759,12 +5291,16 @@ def test_api_gateway_service_grpc_lro_client():
 
 def test_api_gateway_service_grpc_lro_async_client():
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     transport = client.transport
 
     # Ensure that we have a api-core operations client.
-    assert isinstance(transport.operations_client, operations_v1.OperationsAsyncClient,)
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsAsyncClient,
+    )
 
     # Ensure that subsequent calls to the property send the exact same object.
     assert transport.operations_client is transport.operations_client
@@ -4774,7 +5310,8 @@ def test_api_path():
     project = "squid"
     api = "clam"
     expected = "projects/{project}/locations/global/apis/{api}".format(
-        project=project, api=api,
+        project=project,
+        api=api,
     )
     actual = ApiGatewayServiceClient.api_path(project, api)
     assert expected == actual
@@ -4796,8 +5333,12 @@ def test_api_config_path():
     project = "oyster"
     api = "nudibranch"
     api_config = "cuttlefish"
-    expected = "projects/{project}/locations/global/apis/{api}/configs/{api_config}".format(
-        project=project, api=api, api_config=api_config,
+    expected = (
+        "projects/{project}/locations/global/apis/{api}/configs/{api_config}".format(
+            project=project,
+            api=api,
+            api_config=api_config,
+        )
     )
     actual = ApiGatewayServiceClient.api_config_path(project, api, api_config)
     assert expected == actual
@@ -4821,7 +5362,9 @@ def test_gateway_path():
     location = "abalone"
     gateway = "squid"
     expected = "projects/{project}/locations/{location}/gateways/{gateway}".format(
-        project=project, location=location, gateway=gateway,
+        project=project,
+        location=location,
+        gateway=gateway,
     )
     actual = ApiGatewayServiceClient.gateway_path(project, location, gateway)
     assert expected == actual
@@ -4842,7 +5385,9 @@ def test_parse_gateway_path():
 
 def test_managed_service_path():
     service = "oyster"
-    expected = "services/{service}".format(service=service,)
+    expected = "services/{service}".format(
+        service=service,
+    )
     actual = ApiGatewayServiceClient.managed_service_path(service)
     assert expected == actual
 
@@ -4862,7 +5407,8 @@ def test_service_path():
     service = "cuttlefish"
     config = "mussel"
     expected = "services/{service}/configs/{config}".format(
-        service=service, config=config,
+        service=service,
+        config=config,
     )
     actual = ApiGatewayServiceClient.service_path(service, config)
     assert expected == actual
@@ -4884,7 +5430,8 @@ def test_service_account_path():
     project = "scallop"
     service_account = "abalone"
     expected = "projects/{project}/serviceAccounts/{service_account}".format(
-        project=project, service_account=service_account,
+        project=project,
+        service_account=service_account,
     )
     actual = ApiGatewayServiceClient.service_account_path(project, service_account)
     assert expected == actual
@@ -4924,7 +5471,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "oyster"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = ApiGatewayServiceClient.common_folder_path(folder)
     assert expected == actual
 
@@ -4942,7 +5491,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "cuttlefish"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = ApiGatewayServiceClient.common_organization_path(organization)
     assert expected == actual
 
@@ -4960,7 +5511,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "winkle"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = ApiGatewayServiceClient.common_project_path(project)
     assert expected == actual
 
@@ -4980,7 +5533,8 @@ def test_common_location_path():
     project = "scallop"
     location = "abalone"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = ApiGatewayServiceClient.common_location_path(project, location)
     assert expected == actual
@@ -5005,7 +5559,8 @@ def test_client_with_default_client_info():
         transports.ApiGatewayServiceTransport, "_prep_wrapped_messages"
     ) as prep:
         client = ApiGatewayServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -5014,7 +5569,8 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = ApiGatewayServiceClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -5022,7 +5578,8 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     with mock.patch.object(
         type(getattr(client.transport, "grpc_channel")), "close"

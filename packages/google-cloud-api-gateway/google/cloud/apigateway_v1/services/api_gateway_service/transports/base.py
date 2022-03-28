@@ -123,10 +123,14 @@ class ApiGatewayServiceTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.list_gateways: gapic_v1.method.wrap_method(
-                self.list_gateways, default_timeout=None, client_info=client_info,
+                self.list_gateways,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_gateway: gapic_v1.method.wrap_method(
-                self.get_gateway, default_timeout=None, client_info=client_info,
+                self.get_gateway,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.create_gateway: gapic_v1.method.wrap_method(
                 self.create_gateway,
@@ -135,7 +139,8 @@ class ApiGatewayServiceTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=2,
                     predicate=retries.if_exception_type(
-                        core_exceptions.ServiceUnavailable, core_exceptions.Unknown,
+                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.Unknown,
                     ),
                     deadline=60.0,
                 ),
@@ -149,7 +154,8 @@ class ApiGatewayServiceTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=2,
                     predicate=retries.if_exception_type(
-                        core_exceptions.ServiceUnavailable, core_exceptions.Unknown,
+                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.Unknown,
                     ),
                     deadline=60.0,
                 ),
@@ -163,7 +169,8 @@ class ApiGatewayServiceTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=2,
                     predicate=retries.if_exception_type(
-                        core_exceptions.ServiceUnavailable, core_exceptions.Unknown,
+                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.Unknown,
                     ),
                     deadline=60.0,
                 ),
@@ -171,10 +178,14 @@ class ApiGatewayServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.list_apis: gapic_v1.method.wrap_method(
-                self.list_apis, default_timeout=None, client_info=client_info,
+                self.list_apis,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_api: gapic_v1.method.wrap_method(
-                self.get_api, default_timeout=None, client_info=client_info,
+                self.get_api,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.create_api: gapic_v1.method.wrap_method(
                 self.create_api,
@@ -183,7 +194,8 @@ class ApiGatewayServiceTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=2,
                     predicate=retries.if_exception_type(
-                        core_exceptions.ServiceUnavailable, core_exceptions.Unknown,
+                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.Unknown,
                     ),
                     deadline=60.0,
                 ),
@@ -197,7 +209,8 @@ class ApiGatewayServiceTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=2,
                     predicate=retries.if_exception_type(
-                        core_exceptions.ServiceUnavailable, core_exceptions.Unknown,
+                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.Unknown,
                     ),
                     deadline=60.0,
                 ),
@@ -211,7 +224,8 @@ class ApiGatewayServiceTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=2,
                     predicate=retries.if_exception_type(
-                        core_exceptions.ServiceUnavailable, core_exceptions.Unknown,
+                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.Unknown,
                     ),
                     deadline=60.0,
                 ),
@@ -219,10 +233,14 @@ class ApiGatewayServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.list_api_configs: gapic_v1.method.wrap_method(
-                self.list_api_configs, default_timeout=None, client_info=client_info,
+                self.list_api_configs,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_api_config: gapic_v1.method.wrap_method(
-                self.get_api_config, default_timeout=None, client_info=client_info,
+                self.get_api_config,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.create_api_config: gapic_v1.method.wrap_method(
                 self.create_api_config,
@@ -231,7 +249,8 @@ class ApiGatewayServiceTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=2,
                     predicate=retries.if_exception_type(
-                        core_exceptions.ServiceUnavailable, core_exceptions.Unknown,
+                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.Unknown,
                     ),
                     deadline=60.0,
                 ),
@@ -245,7 +264,8 @@ class ApiGatewayServiceTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=2,
                     predicate=retries.if_exception_type(
-                        core_exceptions.ServiceUnavailable, core_exceptions.Unknown,
+                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.Unknown,
                     ),
                     deadline=60.0,
                 ),
@@ -259,7 +279,8 @@ class ApiGatewayServiceTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=2,
                     predicate=retries.if_exception_type(
-                        core_exceptions.ServiceUnavailable, core_exceptions.Unknown,
+                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.Unknown,
                     ),
                     deadline=60.0,
                 ),
@@ -271,9 +292,9 @@ class ApiGatewayServiceTransport(abc.ABC):
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

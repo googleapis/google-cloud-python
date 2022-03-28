@@ -61,7 +61,8 @@ class ApiGatewayServiceClientMeta(type):
     _transport_registry["grpc_asyncio"] = ApiGatewayServiceGrpcAsyncIOTransport
 
     def get_transport_class(
-        cls, label: str = None,
+        cls,
+        label: str = None,
     ) -> Type[ApiGatewayServiceTransport]:
         """Returns an appropriate transport class.
 
@@ -169,10 +170,14 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         return self._transport
 
     @staticmethod
-    def api_path(project: str, api: str,) -> str:
+    def api_path(
+        project: str,
+        api: str,
+    ) -> str:
         """Returns a fully-qualified api string."""
         return "projects/{project}/locations/global/apis/{api}".format(
-            project=project, api=api,
+            project=project,
+            api=api,
         )
 
     @staticmethod
@@ -184,10 +189,16 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def api_config_path(project: str, api: str, api_config: str,) -> str:
+    def api_config_path(
+        project: str,
+        api: str,
+        api_config: str,
+    ) -> str:
         """Returns a fully-qualified api_config string."""
         return "projects/{project}/locations/global/apis/{api}/configs/{api_config}".format(
-            project=project, api=api, api_config=api_config,
+            project=project,
+            api=api,
+            api_config=api_config,
         )
 
     @staticmethod
@@ -200,10 +211,16 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def gateway_path(project: str, location: str, gateway: str,) -> str:
+    def gateway_path(
+        project: str,
+        location: str,
+        gateway: str,
+    ) -> str:
         """Returns a fully-qualified gateway string."""
         return "projects/{project}/locations/{location}/gateways/{gateway}".format(
-            project=project, location=location, gateway=gateway,
+            project=project,
+            location=location,
+            gateway=gateway,
         )
 
     @staticmethod
@@ -216,9 +233,13 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def managed_service_path(service: str,) -> str:
+    def managed_service_path(
+        service: str,
+    ) -> str:
         """Returns a fully-qualified managed_service string."""
-        return "services/{service}".format(service=service,)
+        return "services/{service}".format(
+            service=service,
+        )
 
     @staticmethod
     def parse_managed_service_path(path: str) -> Dict[str, str]:
@@ -227,10 +248,14 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def service_path(service: str, config: str,) -> str:
+    def service_path(
+        service: str,
+        config: str,
+    ) -> str:
         """Returns a fully-qualified service string."""
         return "services/{service}/configs/{config}".format(
-            service=service, config=config,
+            service=service,
+            config=config,
         )
 
     @staticmethod
@@ -240,10 +265,14 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def service_account_path(project: str, service_account: str,) -> str:
+    def service_account_path(
+        project: str,
+        service_account: str,
+    ) -> str:
         """Returns a fully-qualified service_account string."""
         return "projects/{project}/serviceAccounts/{service_account}".format(
-            project=project, service_account=service_account,
+            project=project,
+            service_account=service_account,
         )
 
     @staticmethod
@@ -256,7 +285,9 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_billing_account_path(billing_account: str,) -> str:
+    def common_billing_account_path(
+        billing_account: str,
+    ) -> str:
         """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
@@ -269,9 +300,13 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(folder: str,) -> str:
+    def common_folder_path(
+        folder: str,
+    ) -> str:
         """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(folder=folder,)
+        return "folders/{folder}".format(
+            folder=folder,
+        )
 
     @staticmethod
     def parse_common_folder_path(path: str) -> Dict[str, str]:
@@ -280,9 +315,13 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(organization: str,) -> str:
+    def common_organization_path(
+        organization: str,
+    ) -> str:
         """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(organization=organization,)
+        return "organizations/{organization}".format(
+            organization=organization,
+        )
 
     @staticmethod
     def parse_common_organization_path(path: str) -> Dict[str, str]:
@@ -291,9 +330,13 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(project: str,) -> str:
+    def common_project_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified project string."""
-        return "projects/{project}".format(project=project,)
+        return "projects/{project}".format(
+            project=project,
+        )
 
     @staticmethod
     def parse_common_project_path(path: str) -> Dict[str, str]:
@@ -302,10 +345,14 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(project: str, location: str,) -> str:
+    def common_location_path(
+        project: str,
+        location: str,
+    ) -> str:
         """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
-            project=project, location=location,
+            project=project,
+            location=location,
         )
 
     @staticmethod
@@ -568,12 +615,20 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListGatewaysPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -668,7 +723,12 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -792,7 +852,12 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -915,7 +980,12 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1030,7 +1100,12 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1132,12 +1207,20 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListApisPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1228,7 +1311,12 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1345,7 +1433,12 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1461,7 +1554,12 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1576,7 +1674,12 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1678,12 +1781,20 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListApiConfigsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1775,7 +1886,12 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1893,7 +2009,12 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -2010,7 +2131,12 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -2125,7 +2251,12 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
