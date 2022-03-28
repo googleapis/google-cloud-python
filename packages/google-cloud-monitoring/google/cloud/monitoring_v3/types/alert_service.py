@@ -59,8 +59,15 @@ class CreateAlertPolicyRequest(proto.Message):
             the new policy, including a new ``[ALERT_POLICY_ID]`` value.
     """
 
-    name = proto.Field(proto.STRING, number=3,)
-    alert_policy = proto.Field(proto.MESSAGE, number=2, message=alert.AlertPolicy,)
+    name = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    alert_policy = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=alert.AlertPolicy,
+    )
 
 
 class GetAlertPolicyRequest(proto.Message):
@@ -75,7 +82,10 @@ class GetAlertPolicyRequest(proto.Message):
                 projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]
     """
 
-    name = proto.Field(proto.STRING, number=3,)
+    name = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListAlertPoliciesRequest(proto.Message):
@@ -120,11 +130,26 @@ class ListAlertPoliciesRequest(proto.Message):
             results from the previous method call.
     """
 
-    name = proto.Field(proto.STRING, number=4,)
-    filter = proto.Field(proto.STRING, number=5,)
-    order_by = proto.Field(proto.STRING, number=6,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    name = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    order_by = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListAlertPoliciesResponse(proto.Message):
@@ -149,10 +174,18 @@ class ListAlertPoliciesResponse(proto.Message):
         return self
 
     alert_policies = proto.RepeatedField(
-        proto.MESSAGE, number=3, message=alert.AlertPolicy,
+        proto.MESSAGE,
+        number=3,
+        message=alert.AlertPolicy,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
-    total_size = proto.Field(proto.INT32, number=4,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    total_size = proto.Field(
+        proto.INT32,
+        number=4,
+    )
 
 
 class UpdateAlertPolicyRequest(proto.Message):
@@ -195,9 +228,15 @@ class UpdateAlertPolicyRequest(proto.Message):
     """
 
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
-    alert_policy = proto.Field(proto.MESSAGE, number=3, message=alert.AlertPolicy,)
+    alert_policy = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=alert.AlertPolicy,
+    )
 
 
 class DeleteAlertPolicyRequest(proto.Message):
@@ -215,7 +254,10 @@ class DeleteAlertPolicyRequest(proto.Message):
             [AlertPolicy][google.monitoring.v3.AlertPolicy].
     """
 
-    name = proto.Field(proto.STRING, number=3,)
+    name = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

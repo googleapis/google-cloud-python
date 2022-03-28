@@ -96,7 +96,10 @@ def test__get_default_mtls_endpoint():
 
 @pytest.mark.parametrize(
     "client_class",
-    [ServiceMonitoringServiceClient, ServiceMonitoringServiceAsyncClient,],
+    [
+        ServiceMonitoringServiceClient,
+        ServiceMonitoringServiceAsyncClient,
+    ],
 )
 def test_service_monitoring_service_client_from_service_account_info(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -139,7 +142,10 @@ def test_service_monitoring_service_client_service_account_always_use_jwt(
 
 @pytest.mark.parametrize(
     "client_class",
-    [ServiceMonitoringServiceClient, ServiceMonitoringServiceAsyncClient,],
+    [
+        ServiceMonitoringServiceClient,
+        ServiceMonitoringServiceAsyncClient,
+    ],
 )
 def test_service_monitoring_service_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -528,7 +534,9 @@ def test_service_monitoring_service_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -672,10 +680,17 @@ def test_service_monitoring_service_client_create_channel_credentials_file(
         )
 
 
-@pytest.mark.parametrize("request_type", [service_service.CreateServiceRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service_service.CreateServiceRequest,
+        dict,
+    ],
+)
 def test_create_service(request_type, transport: str = "grpc"):
     client = ServiceMonitoringServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -686,7 +701,9 @@ def test_create_service(request_type, transport: str = "grpc"):
     with mock.patch.object(type(client.transport.create_service), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = gm_service.Service(
-            name="name_value", display_name="display_name_value", custom=None,
+            name="name_value",
+            display_name="display_name_value",
+            custom=None,
         )
         response = client.create_service(request)
 
@@ -705,7 +722,8 @@ def test_create_service_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ServiceMonitoringServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -721,7 +739,8 @@ async def test_create_service_async(
     transport: str = "grpc_asyncio", request_type=service_service.CreateServiceRequest
 ):
     client = ServiceMonitoringServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -732,7 +751,10 @@ async def test_create_service_async(
     with mock.patch.object(type(client.transport.create_service), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gm_service.Service(name="name_value", display_name="display_name_value",)
+            gm_service.Service(
+                name="name_value",
+                display_name="display_name_value",
+            )
         )
         response = await client.create_service(request)
 
@@ -775,7 +797,10 @@ def test_create_service_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -802,7 +827,10 @@ async def test_create_service_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_service_flattened():
@@ -817,7 +845,8 @@ def test_create_service_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.create_service(
-            parent="parent_value", service=gm_service.Service(name="name_value"),
+            parent="parent_value",
+            service=gm_service.Service(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -862,7 +891,8 @@ async def test_create_service_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.create_service(
-            parent="parent_value", service=gm_service.Service(name="name_value"),
+            parent="parent_value",
+            service=gm_service.Service(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -893,10 +923,17 @@ async def test_create_service_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [service_service.GetServiceRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service_service.GetServiceRequest,
+        dict,
+    ],
+)
 def test_get_service(request_type, transport: str = "grpc"):
     client = ServiceMonitoringServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -907,7 +944,9 @@ def test_get_service(request_type, transport: str = "grpc"):
     with mock.patch.object(type(client.transport.get_service), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = service.Service(
-            name="name_value", display_name="display_name_value", custom=None,
+            name="name_value",
+            display_name="display_name_value",
+            custom=None,
         )
         response = client.get_service(request)
 
@@ -926,7 +965,8 @@ def test_get_service_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ServiceMonitoringServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -942,7 +982,8 @@ async def test_get_service_async(
     transport: str = "grpc_asyncio", request_type=service_service.GetServiceRequest
 ):
     client = ServiceMonitoringServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -953,7 +994,10 @@ async def test_get_service_async(
     with mock.patch.object(type(client.transport.get_service), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.Service(name="name_value", display_name="display_name_value",)
+            service.Service(
+                name="name_value",
+                display_name="display_name_value",
+            )
         )
         response = await client.get_service(request)
 
@@ -996,7 +1040,10 @@ def test_get_service_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1023,7 +1070,10 @@ async def test_get_service_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_service_flattened():
@@ -1037,7 +1087,9 @@ def test_get_service_flattened():
         call.return_value = service.Service()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_service(name="name_value",)
+        client.get_service(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1057,7 +1109,8 @@ def test_get_service_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_service(
-            service_service.GetServiceRequest(), name="name_value",
+            service_service.GetServiceRequest(),
+            name="name_value",
         )
 
 
@@ -1075,7 +1128,9 @@ async def test_get_service_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(service.Service())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_service(name="name_value",)
+        response = await client.get_service(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1096,14 +1151,22 @@ async def test_get_service_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_service(
-            service_service.GetServiceRequest(), name="name_value",
+            service_service.GetServiceRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [service_service.ListServicesRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service_service.ListServicesRequest,
+        dict,
+    ],
+)
 def test_list_services(request_type, transport: str = "grpc"):
     client = ServiceMonitoringServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1132,7 +1195,8 @@ def test_list_services_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ServiceMonitoringServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1148,7 +1212,8 @@ async def test_list_services_async(
     transport: str = "grpc_asyncio", request_type=service_service.ListServicesRequest
 ):
     client = ServiceMonitoringServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1203,7 +1268,10 @@ def test_list_services_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1232,7 +1300,10 @@ async def test_list_services_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_services_flattened():
@@ -1246,7 +1317,9 @@ def test_list_services_flattened():
         call.return_value = service_service.ListServicesResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_services(parent="parent_value",)
+        client.list_services(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1266,7 +1339,8 @@ def test_list_services_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_services(
-            service_service.ListServicesRequest(), parent="parent_value",
+            service_service.ListServicesRequest(),
+            parent="parent_value",
         )
 
 
@@ -1286,7 +1360,9 @@ async def test_list_services_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_services(parent="parent_value",)
+        response = await client.list_services(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1307,13 +1383,15 @@ async def test_list_services_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_services(
-            service_service.ListServicesRequest(), parent="parent_value",
+            service_service.ListServicesRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_services_pager(transport_name: str = "grpc"):
     client = ServiceMonitoringServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1321,15 +1399,28 @@ def test_list_services_pager(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             service_service.ListServicesResponse(
-                services=[service.Service(), service.Service(), service.Service(),],
+                services=[
+                    service.Service(),
+                    service.Service(),
+                    service.Service(),
+                ],
                 next_page_token="abc",
             ),
-            service_service.ListServicesResponse(services=[], next_page_token="def",),
             service_service.ListServicesResponse(
-                services=[service.Service(),], next_page_token="ghi",
+                services=[],
+                next_page_token="def",
             ),
             service_service.ListServicesResponse(
-                services=[service.Service(), service.Service(),],
+                services=[
+                    service.Service(),
+                ],
+                next_page_token="ghi",
+            ),
+            service_service.ListServicesResponse(
+                services=[
+                    service.Service(),
+                    service.Service(),
+                ],
             ),
             RuntimeError,
         )
@@ -1349,7 +1440,8 @@ def test_list_services_pager(transport_name: str = "grpc"):
 
 def test_list_services_pages(transport_name: str = "grpc"):
     client = ServiceMonitoringServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1357,15 +1449,28 @@ def test_list_services_pages(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             service_service.ListServicesResponse(
-                services=[service.Service(), service.Service(), service.Service(),],
+                services=[
+                    service.Service(),
+                    service.Service(),
+                    service.Service(),
+                ],
                 next_page_token="abc",
             ),
-            service_service.ListServicesResponse(services=[], next_page_token="def",),
             service_service.ListServicesResponse(
-                services=[service.Service(),], next_page_token="ghi",
+                services=[],
+                next_page_token="def",
             ),
             service_service.ListServicesResponse(
-                services=[service.Service(), service.Service(),],
+                services=[
+                    service.Service(),
+                ],
+                next_page_token="ghi",
+            ),
+            service_service.ListServicesResponse(
+                services=[
+                    service.Service(),
+                    service.Service(),
+                ],
             ),
             RuntimeError,
         )
@@ -1387,19 +1492,34 @@ async def test_list_services_async_pager():
         # Set the response to a series of pages.
         call.side_effect = (
             service_service.ListServicesResponse(
-                services=[service.Service(), service.Service(), service.Service(),],
+                services=[
+                    service.Service(),
+                    service.Service(),
+                    service.Service(),
+                ],
                 next_page_token="abc",
             ),
-            service_service.ListServicesResponse(services=[], next_page_token="def",),
             service_service.ListServicesResponse(
-                services=[service.Service(),], next_page_token="ghi",
+                services=[],
+                next_page_token="def",
             ),
             service_service.ListServicesResponse(
-                services=[service.Service(), service.Service(),],
+                services=[
+                    service.Service(),
+                ],
+                next_page_token="ghi",
+            ),
+            service_service.ListServicesResponse(
+                services=[
+                    service.Service(),
+                    service.Service(),
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.list_services(request={},)
+        async_pager = await client.list_services(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -1422,15 +1542,28 @@ async def test_list_services_async_pages():
         # Set the response to a series of pages.
         call.side_effect = (
             service_service.ListServicesResponse(
-                services=[service.Service(), service.Service(), service.Service(),],
+                services=[
+                    service.Service(),
+                    service.Service(),
+                    service.Service(),
+                ],
                 next_page_token="abc",
             ),
-            service_service.ListServicesResponse(services=[], next_page_token="def",),
             service_service.ListServicesResponse(
-                services=[service.Service(),], next_page_token="ghi",
+                services=[],
+                next_page_token="def",
             ),
             service_service.ListServicesResponse(
-                services=[service.Service(), service.Service(),],
+                services=[
+                    service.Service(),
+                ],
+                next_page_token="ghi",
+            ),
+            service_service.ListServicesResponse(
+                services=[
+                    service.Service(),
+                    service.Service(),
+                ],
             ),
             RuntimeError,
         )
@@ -1441,10 +1574,17 @@ async def test_list_services_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [service_service.UpdateServiceRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service_service.UpdateServiceRequest,
+        dict,
+    ],
+)
 def test_update_service(request_type, transport: str = "grpc"):
     client = ServiceMonitoringServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1455,7 +1595,9 @@ def test_update_service(request_type, transport: str = "grpc"):
     with mock.patch.object(type(client.transport.update_service), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = gm_service.Service(
-            name="name_value", display_name="display_name_value", custom=None,
+            name="name_value",
+            display_name="display_name_value",
+            custom=None,
         )
         response = client.update_service(request)
 
@@ -1474,7 +1616,8 @@ def test_update_service_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ServiceMonitoringServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1490,7 +1633,8 @@ async def test_update_service_async(
     transport: str = "grpc_asyncio", request_type=service_service.UpdateServiceRequest
 ):
     client = ServiceMonitoringServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1501,7 +1645,10 @@ async def test_update_service_async(
     with mock.patch.object(type(client.transport.update_service), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gm_service.Service(name="name_value", display_name="display_name_value",)
+            gm_service.Service(
+                name="name_value",
+                display_name="display_name_value",
+            )
         )
         response = await client.update_service(request)
 
@@ -1544,9 +1691,10 @@ def test_update_service_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "service.name=service.name/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "service.name=service.name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1573,9 +1721,10 @@ async def test_update_service_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "service.name=service.name/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "service.name=service.name/value",
+    ) in kw["metadata"]
 
 
 def test_update_service_flattened():
@@ -1589,7 +1738,9 @@ def test_update_service_flattened():
         call.return_value = gm_service.Service()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.update_service(service=gm_service.Service(name="name_value"),)
+        client.update_service(
+            service=gm_service.Service(name="name_value"),
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1656,10 +1807,17 @@ async def test_update_service_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [service_service.DeleteServiceRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service_service.DeleteServiceRequest,
+        dict,
+    ],
+)
 def test_delete_service(request_type, transport: str = "grpc"):
     client = ServiceMonitoringServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1685,7 +1843,8 @@ def test_delete_service_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ServiceMonitoringServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1701,7 +1860,8 @@ async def test_delete_service_async(
     transport: str = "grpc_asyncio", request_type=service_service.DeleteServiceRequest
 ):
     client = ServiceMonitoringServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1751,7 +1911,10 @@ def test_delete_service_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1778,7 +1941,10 @@ async def test_delete_service_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_service_flattened():
@@ -1792,7 +1958,9 @@ def test_delete_service_flattened():
         call.return_value = None
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_service(name="name_value",)
+        client.delete_service(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1812,7 +1980,8 @@ def test_delete_service_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_service(
-            service_service.DeleteServiceRequest(), name="name_value",
+            service_service.DeleteServiceRequest(),
+            name="name_value",
         )
 
 
@@ -1830,7 +1999,9 @@ async def test_delete_service_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_service(name="name_value",)
+        response = await client.delete_service(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1851,16 +2022,22 @@ async def test_delete_service_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_service(
-            service_service.DeleteServiceRequest(), name="name_value",
+            service_service.DeleteServiceRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [service_service.CreateServiceLevelObjectiveRequest, dict,]
+    "request_type",
+    [
+        service_service.CreateServiceLevelObjectiveRequest,
+        dict,
+    ],
 )
 def test_create_service_level_objective(request_type, transport: str = "grpc"):
     client = ServiceMonitoringServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1896,7 +2073,8 @@ def test_create_service_level_objective_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ServiceMonitoringServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1915,7 +2093,8 @@ async def test_create_service_level_objective_async(
     request_type=service_service.CreateServiceLevelObjectiveRequest,
 ):
     client = ServiceMonitoringServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1929,7 +2108,9 @@ async def test_create_service_level_objective_async(
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             service.ServiceLevelObjective(
-                name="name_value", display_name="display_name_value", goal=0.419,
+                name="name_value",
+                display_name="display_name_value",
+                goal=0.419,
             )
         )
         response = await client.create_service_level_objective(request)
@@ -1976,7 +2157,10 @@ def test_create_service_level_objective_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2007,7 +2191,10 @@ async def test_create_service_level_objective_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_service_level_objective_flattened():
@@ -2107,11 +2294,16 @@ async def test_create_service_level_objective_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [service_service.GetServiceLevelObjectiveRequest, dict,]
+    "request_type",
+    [
+        service_service.GetServiceLevelObjectiveRequest,
+        dict,
+    ],
 )
 def test_get_service_level_objective(request_type, transport: str = "grpc"):
     client = ServiceMonitoringServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2147,7 +2339,8 @@ def test_get_service_level_objective_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ServiceMonitoringServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2166,7 +2359,8 @@ async def test_get_service_level_objective_async(
     request_type=service_service.GetServiceLevelObjectiveRequest,
 ):
     client = ServiceMonitoringServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2180,7 +2374,9 @@ async def test_get_service_level_objective_async(
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             service.ServiceLevelObjective(
-                name="name_value", display_name="display_name_value", goal=0.419,
+                name="name_value",
+                display_name="display_name_value",
+                goal=0.419,
             )
         )
         response = await client.get_service_level_objective(request)
@@ -2227,7 +2423,10 @@ def test_get_service_level_objective_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2258,7 +2457,10 @@ async def test_get_service_level_objective_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_service_level_objective_flattened():
@@ -2274,7 +2476,9 @@ def test_get_service_level_objective_flattened():
         call.return_value = service.ServiceLevelObjective()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_service_level_objective(name="name_value",)
+        client.get_service_level_objective(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2294,7 +2498,8 @@ def test_get_service_level_objective_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_service_level_objective(
-            service_service.GetServiceLevelObjectiveRequest(), name="name_value",
+            service_service.GetServiceLevelObjectiveRequest(),
+            name="name_value",
         )
 
 
@@ -2316,7 +2521,9 @@ async def test_get_service_level_objective_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_service_level_objective(name="name_value",)
+        response = await client.get_service_level_objective(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2337,16 +2544,22 @@ async def test_get_service_level_objective_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_service_level_objective(
-            service_service.GetServiceLevelObjectiveRequest(), name="name_value",
+            service_service.GetServiceLevelObjectiveRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [service_service.ListServiceLevelObjectivesRequest, dict,]
+    "request_type",
+    [
+        service_service.ListServiceLevelObjectivesRequest,
+        dict,
+    ],
 )
 def test_list_service_level_objectives(request_type, transport: str = "grpc"):
     client = ServiceMonitoringServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2377,7 +2590,8 @@ def test_list_service_level_objectives_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ServiceMonitoringServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2396,7 +2610,8 @@ async def test_list_service_level_objectives_async(
     request_type=service_service.ListServiceLevelObjectivesRequest,
 ):
     client = ServiceMonitoringServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2455,7 +2670,10 @@ def test_list_service_level_objectives_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2486,7 +2704,10 @@ async def test_list_service_level_objectives_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_service_level_objectives_flattened():
@@ -2502,7 +2723,9 @@ def test_list_service_level_objectives_flattened():
         call.return_value = service_service.ListServiceLevelObjectivesResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_service_level_objectives(parent="parent_value",)
+        client.list_service_level_objectives(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2522,7 +2745,8 @@ def test_list_service_level_objectives_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_service_level_objectives(
-            service_service.ListServiceLevelObjectivesRequest(), parent="parent_value",
+            service_service.ListServiceLevelObjectivesRequest(),
+            parent="parent_value",
         )
 
 
@@ -2544,7 +2768,9 @@ async def test_list_service_level_objectives_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_service_level_objectives(parent="parent_value",)
+        response = await client.list_service_level_objectives(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2565,13 +2791,15 @@ async def test_list_service_level_objectives_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_service_level_objectives(
-            service_service.ListServiceLevelObjectivesRequest(), parent="parent_value",
+            service_service.ListServiceLevelObjectivesRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_service_level_objectives_pager(transport_name: str = "grpc"):
     client = ServiceMonitoringServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2589,10 +2817,13 @@ def test_list_service_level_objectives_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             service_service.ListServiceLevelObjectivesResponse(
-                service_level_objectives=[], next_page_token="def",
+                service_level_objectives=[],
+                next_page_token="def",
             ),
             service_service.ListServiceLevelObjectivesResponse(
-                service_level_objectives=[service.ServiceLevelObjective(),],
+                service_level_objectives=[
+                    service.ServiceLevelObjective(),
+                ],
                 next_page_token="ghi",
             ),
             service_service.ListServiceLevelObjectivesResponse(
@@ -2619,7 +2850,8 @@ def test_list_service_level_objectives_pager(transport_name: str = "grpc"):
 
 def test_list_service_level_objectives_pages(transport_name: str = "grpc"):
     client = ServiceMonitoringServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2637,10 +2869,13 @@ def test_list_service_level_objectives_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             service_service.ListServiceLevelObjectivesResponse(
-                service_level_objectives=[], next_page_token="def",
+                service_level_objectives=[],
+                next_page_token="def",
             ),
             service_service.ListServiceLevelObjectivesResponse(
-                service_level_objectives=[service.ServiceLevelObjective(),],
+                service_level_objectives=[
+                    service.ServiceLevelObjective(),
+                ],
                 next_page_token="ghi",
             ),
             service_service.ListServiceLevelObjectivesResponse(
@@ -2679,10 +2914,13 @@ async def test_list_service_level_objectives_async_pager():
                 next_page_token="abc",
             ),
             service_service.ListServiceLevelObjectivesResponse(
-                service_level_objectives=[], next_page_token="def",
+                service_level_objectives=[],
+                next_page_token="def",
             ),
             service_service.ListServiceLevelObjectivesResponse(
-                service_level_objectives=[service.ServiceLevelObjective(),],
+                service_level_objectives=[
+                    service.ServiceLevelObjective(),
+                ],
                 next_page_token="ghi",
             ),
             service_service.ListServiceLevelObjectivesResponse(
@@ -2693,7 +2931,9 @@ async def test_list_service_level_objectives_async_pager():
             ),
             RuntimeError,
         )
-        async_pager = await client.list_service_level_objectives(request={},)
+        async_pager = await client.list_service_level_objectives(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -2726,10 +2966,13 @@ async def test_list_service_level_objectives_async_pages():
                 next_page_token="abc",
             ),
             service_service.ListServiceLevelObjectivesResponse(
-                service_level_objectives=[], next_page_token="def",
+                service_level_objectives=[],
+                next_page_token="def",
             ),
             service_service.ListServiceLevelObjectivesResponse(
-                service_level_objectives=[service.ServiceLevelObjective(),],
+                service_level_objectives=[
+                    service.ServiceLevelObjective(),
+                ],
                 next_page_token="ghi",
             ),
             service_service.ListServiceLevelObjectivesResponse(
@@ -2750,11 +2993,16 @@ async def test_list_service_level_objectives_async_pages():
 
 
 @pytest.mark.parametrize(
-    "request_type", [service_service.UpdateServiceLevelObjectiveRequest, dict,]
+    "request_type",
+    [
+        service_service.UpdateServiceLevelObjectiveRequest,
+        dict,
+    ],
 )
 def test_update_service_level_objective(request_type, transport: str = "grpc"):
     client = ServiceMonitoringServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2790,7 +3038,8 @@ def test_update_service_level_objective_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ServiceMonitoringServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2809,7 +3058,8 @@ async def test_update_service_level_objective_async(
     request_type=service_service.UpdateServiceLevelObjectiveRequest,
 ):
     client = ServiceMonitoringServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2823,7 +3073,9 @@ async def test_update_service_level_objective_async(
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             service.ServiceLevelObjective(
-                name="name_value", display_name="display_name_value", goal=0.419,
+                name="name_value",
+                display_name="display_name_value",
+                goal=0.419,
             )
         )
         response = await client.update_service_level_objective(request)
@@ -2997,11 +3249,16 @@ async def test_update_service_level_objective_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [service_service.DeleteServiceLevelObjectiveRequest, dict,]
+    "request_type",
+    [
+        service_service.DeleteServiceLevelObjectiveRequest,
+        dict,
+    ],
 )
 def test_delete_service_level_objective(request_type, transport: str = "grpc"):
     client = ServiceMonitoringServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3029,7 +3286,8 @@ def test_delete_service_level_objective_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ServiceMonitoringServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3048,7 +3306,8 @@ async def test_delete_service_level_objective_async(
     request_type=service_service.DeleteServiceLevelObjectiveRequest,
 ):
     client = ServiceMonitoringServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3102,7 +3361,10 @@ def test_delete_service_level_objective_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -3131,7 +3393,10 @@ async def test_delete_service_level_objective_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_service_level_objective_flattened():
@@ -3147,7 +3412,9 @@ def test_delete_service_level_objective_flattened():
         call.return_value = None
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_service_level_objective(name="name_value",)
+        client.delete_service_level_objective(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3167,7 +3434,8 @@ def test_delete_service_level_objective_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_service_level_objective(
-            service_service.DeleteServiceLevelObjectiveRequest(), name="name_value",
+            service_service.DeleteServiceLevelObjectiveRequest(),
+            name="name_value",
         )
 
 
@@ -3187,7 +3455,9 @@ async def test_delete_service_level_objective_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_service_level_objective(name="name_value",)
+        response = await client.delete_service_level_objective(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3208,7 +3478,8 @@ async def test_delete_service_level_objective_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_service_level_objective(
-            service_service.DeleteServiceLevelObjectiveRequest(), name="name_value",
+            service_service.DeleteServiceLevelObjectiveRequest(),
+            name="name_value",
         )
 
 
@@ -3219,7 +3490,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = ServiceMonitoringServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -3240,7 +3512,8 @@ def test_credentials_transport_error():
     options.api_key = "api_key"
     with pytest.raises(ValueError):
         client = ServiceMonitoringServiceClient(
-            client_options=options, transport=transport,
+            client_options=options,
+            transport=transport,
         )
 
     # It is an error to provide an api_key and a credential.
@@ -3257,7 +3530,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = ServiceMonitoringServiceClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -3306,7 +3580,8 @@ def test_transport_grpc_default():
         credentials=ga_credentials.AnonymousCredentials(),
     )
     assert isinstance(
-        client.transport, transports.ServiceMonitoringServiceGrpcTransport,
+        client.transport,
+        transports.ServiceMonitoringServiceGrpcTransport,
     )
 
 
@@ -3361,7 +3636,8 @@ def test_service_monitoring_service_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.ServiceMonitoringServiceTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -3539,7 +3815,8 @@ def test_service_monitoring_service_grpc_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.ServiceMonitoringServiceGrpcTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -3551,7 +3828,8 @@ def test_service_monitoring_service_grpc_asyncio_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.ServiceMonitoringServiceGrpcAsyncIOTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -3662,7 +3940,8 @@ def test_service_path():
     project = "squid"
     service = "clam"
     expected = "projects/{project}/services/{service}".format(
-        project=project, service=service,
+        project=project,
+        service=service,
     )
     actual = ServiceMonitoringServiceClient.service_path(project, service)
     assert expected == actual
@@ -3730,7 +4009,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "squid"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = ServiceMonitoringServiceClient.common_folder_path(folder)
     assert expected == actual
 
@@ -3748,7 +4029,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "whelk"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = ServiceMonitoringServiceClient.common_organization_path(organization)
     assert expected == actual
 
@@ -3766,7 +4049,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "oyster"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = ServiceMonitoringServiceClient.common_project_path(project)
     assert expected == actual
 
@@ -3786,7 +4071,8 @@ def test_common_location_path():
     project = "cuttlefish"
     location = "mussel"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = ServiceMonitoringServiceClient.common_location_path(project, location)
     assert expected == actual
@@ -3811,7 +4097,8 @@ def test_client_with_default_client_info():
         transports.ServiceMonitoringServiceTransport, "_prep_wrapped_messages"
     ) as prep:
         client = ServiceMonitoringServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -3820,7 +4107,8 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = ServiceMonitoringServiceClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -3828,7 +4116,8 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = ServiceMonitoringServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     with mock.patch.object(
         type(getattr(client.transport, "grpc_channel")), "close"

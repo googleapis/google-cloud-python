@@ -96,7 +96,11 @@ def test__get_default_mtls_endpoint():
 
 
 @pytest.mark.parametrize(
-    "client_class", [MetricServiceClient, MetricServiceAsyncClient,]
+    "client_class",
+    [
+        MetricServiceClient,
+        MetricServiceAsyncClient,
+    ],
 )
 def test_metric_service_client_from_service_account_info(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -138,7 +142,11 @@ def test_metric_service_client_service_account_always_use_jwt(
 
 
 @pytest.mark.parametrize(
-    "client_class", [MetricServiceClient, MetricServiceAsyncClient,]
+    "client_class",
+    [
+        MetricServiceClient,
+        MetricServiceAsyncClient,
+    ],
 )
 def test_metric_service_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -502,7 +510,9 @@ def test_metric_service_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -648,11 +658,16 @@ def test_metric_service_client_create_channel_credentials_file(
 
 
 @pytest.mark.parametrize(
-    "request_type", [metric_service.ListMonitoredResourceDescriptorsRequest, dict,]
+    "request_type",
+    [
+        metric_service.ListMonitoredResourceDescriptorsRequest,
+        dict,
+    ],
 )
 def test_list_monitored_resource_descriptors(request_type, transport: str = "grpc"):
     client = MetricServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -683,7 +698,8 @@ def test_list_monitored_resource_descriptors_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = MetricServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -702,7 +718,8 @@ async def test_list_monitored_resource_descriptors_async(
     request_type=metric_service.ListMonitoredResourceDescriptorsRequest,
 ):
     client = MetricServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -737,7 +754,9 @@ async def test_list_monitored_resource_descriptors_async_from_dict():
 
 
 def test_list_monitored_resource_descriptors_field_headers():
-    client = MetricServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = MetricServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -759,7 +778,10 @@ def test_list_monitored_resource_descriptors_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -790,11 +812,16 @@ async def test_list_monitored_resource_descriptors_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_list_monitored_resource_descriptors_flattened():
-    client = MetricServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = MetricServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -804,7 +831,9 @@ def test_list_monitored_resource_descriptors_flattened():
         call.return_value = metric_service.ListMonitoredResourceDescriptorsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_monitored_resource_descriptors(name="name_value",)
+        client.list_monitored_resource_descriptors(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -816,13 +845,16 @@ def test_list_monitored_resource_descriptors_flattened():
 
 
 def test_list_monitored_resource_descriptors_flattened_error():
-    client = MetricServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = MetricServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_monitored_resource_descriptors(
-            metric_service.ListMonitoredResourceDescriptorsRequest(), name="name_value",
+            metric_service.ListMonitoredResourceDescriptorsRequest(),
+            name="name_value",
         )
 
 
@@ -844,7 +876,9 @@ async def test_list_monitored_resource_descriptors_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_monitored_resource_descriptors(name="name_value",)
+        response = await client.list_monitored_resource_descriptors(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -865,13 +899,15 @@ async def test_list_monitored_resource_descriptors_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_monitored_resource_descriptors(
-            metric_service.ListMonitoredResourceDescriptorsRequest(), name="name_value",
+            metric_service.ListMonitoredResourceDescriptorsRequest(),
+            name="name_value",
         )
 
 
 def test_list_monitored_resource_descriptors_pager(transport_name: str = "grpc"):
     client = MetricServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -889,7 +925,8 @@ def test_list_monitored_resource_descriptors_pager(transport_name: str = "grpc")
                 next_page_token="abc",
             ),
             metric_service.ListMonitoredResourceDescriptorsResponse(
-                resource_descriptors=[], next_page_token="def",
+                resource_descriptors=[],
+                next_page_token="def",
             ),
             metric_service.ListMonitoredResourceDescriptorsResponse(
                 resource_descriptors=[
@@ -924,7 +961,8 @@ def test_list_monitored_resource_descriptors_pager(transport_name: str = "grpc")
 
 def test_list_monitored_resource_descriptors_pages(transport_name: str = "grpc"):
     client = MetricServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -942,7 +980,8 @@ def test_list_monitored_resource_descriptors_pages(transport_name: str = "grpc")
                 next_page_token="abc",
             ),
             metric_service.ListMonitoredResourceDescriptorsResponse(
-                resource_descriptors=[], next_page_token="def",
+                resource_descriptors=[],
+                next_page_token="def",
             ),
             metric_service.ListMonitoredResourceDescriptorsResponse(
                 resource_descriptors=[
@@ -965,7 +1004,9 @@ def test_list_monitored_resource_descriptors_pages(transport_name: str = "grpc")
 
 @pytest.mark.asyncio
 async def test_list_monitored_resource_descriptors_async_pager():
-    client = MetricServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = MetricServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -984,7 +1025,8 @@ async def test_list_monitored_resource_descriptors_async_pager():
                 next_page_token="abc",
             ),
             metric_service.ListMonitoredResourceDescriptorsResponse(
-                resource_descriptors=[], next_page_token="def",
+                resource_descriptors=[],
+                next_page_token="def",
             ),
             metric_service.ListMonitoredResourceDescriptorsResponse(
                 resource_descriptors=[
@@ -1000,7 +1042,9 @@ async def test_list_monitored_resource_descriptors_async_pager():
             ),
             RuntimeError,
         )
-        async_pager = await client.list_monitored_resource_descriptors(request={},)
+        async_pager = await client.list_monitored_resource_descriptors(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -1015,7 +1059,9 @@ async def test_list_monitored_resource_descriptors_async_pager():
 
 @pytest.mark.asyncio
 async def test_list_monitored_resource_descriptors_async_pages():
-    client = MetricServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = MetricServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1034,7 +1080,8 @@ async def test_list_monitored_resource_descriptors_async_pages():
                 next_page_token="abc",
             ),
             metric_service.ListMonitoredResourceDescriptorsResponse(
-                resource_descriptors=[], next_page_token="def",
+                resource_descriptors=[],
+                next_page_token="def",
             ),
             metric_service.ListMonitoredResourceDescriptorsResponse(
                 resource_descriptors=[
@@ -1060,11 +1107,16 @@ async def test_list_monitored_resource_descriptors_async_pages():
 
 
 @pytest.mark.parametrize(
-    "request_type", [metric_service.GetMonitoredResourceDescriptorRequest, dict,]
+    "request_type",
+    [
+        metric_service.GetMonitoredResourceDescriptorRequest,
+        dict,
+    ],
 )
 def test_get_monitored_resource_descriptor(request_type, transport: str = "grpc"):
     client = MetricServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1101,7 +1153,8 @@ def test_get_monitored_resource_descriptor_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = MetricServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1120,7 +1173,8 @@ async def test_get_monitored_resource_descriptor_async(
     request_type=metric_service.GetMonitoredResourceDescriptorRequest,
 ):
     client = MetricServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1161,7 +1215,9 @@ async def test_get_monitored_resource_descriptor_async_from_dict():
 
 
 def test_get_monitored_resource_descriptor_field_headers():
-    client = MetricServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = MetricServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1183,7 +1239,10 @@ def test_get_monitored_resource_descriptor_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1214,11 +1273,16 @@ async def test_get_monitored_resource_descriptor_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_monitored_resource_descriptor_flattened():
-    client = MetricServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = MetricServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1228,7 +1292,9 @@ def test_get_monitored_resource_descriptor_flattened():
         call.return_value = monitored_resource_pb2.MonitoredResourceDescriptor()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_monitored_resource_descriptor(name="name_value",)
+        client.get_monitored_resource_descriptor(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1240,13 +1306,16 @@ def test_get_monitored_resource_descriptor_flattened():
 
 
 def test_get_monitored_resource_descriptor_flattened_error():
-    client = MetricServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = MetricServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_monitored_resource_descriptor(
-            metric_service.GetMonitoredResourceDescriptorRequest(), name="name_value",
+            metric_service.GetMonitoredResourceDescriptorRequest(),
+            name="name_value",
         )
 
 
@@ -1268,7 +1337,9 @@ async def test_get_monitored_resource_descriptor_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_monitored_resource_descriptor(name="name_value",)
+        response = await client.get_monitored_resource_descriptor(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1289,16 +1360,22 @@ async def test_get_monitored_resource_descriptor_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_monitored_resource_descriptor(
-            metric_service.GetMonitoredResourceDescriptorRequest(), name="name_value",
+            metric_service.GetMonitoredResourceDescriptorRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [metric_service.ListMetricDescriptorsRequest, dict,]
+    "request_type",
+    [
+        metric_service.ListMetricDescriptorsRequest,
+        dict,
+    ],
 )
 def test_list_metric_descriptors(request_type, transport: str = "grpc"):
     client = MetricServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1329,7 +1406,8 @@ def test_list_metric_descriptors_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = MetricServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1348,7 +1426,8 @@ async def test_list_metric_descriptors_async(
     request_type=metric_service.ListMetricDescriptorsRequest,
 ):
     client = MetricServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1383,7 +1462,9 @@ async def test_list_metric_descriptors_async_from_dict():
 
 
 def test_list_metric_descriptors_field_headers():
-    client = MetricServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = MetricServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1405,7 +1486,10 @@ def test_list_metric_descriptors_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1436,11 +1520,16 @@ async def test_list_metric_descriptors_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_list_metric_descriptors_flattened():
-    client = MetricServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = MetricServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1450,7 +1539,9 @@ def test_list_metric_descriptors_flattened():
         call.return_value = metric_service.ListMetricDescriptorsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_metric_descriptors(name="name_value",)
+        client.list_metric_descriptors(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1462,13 +1553,16 @@ def test_list_metric_descriptors_flattened():
 
 
 def test_list_metric_descriptors_flattened_error():
-    client = MetricServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = MetricServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_metric_descriptors(
-            metric_service.ListMetricDescriptorsRequest(), name="name_value",
+            metric_service.ListMetricDescriptorsRequest(),
+            name="name_value",
         )
 
 
@@ -1490,7 +1584,9 @@ async def test_list_metric_descriptors_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_metric_descriptors(name="name_value",)
+        response = await client.list_metric_descriptors(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1511,13 +1607,15 @@ async def test_list_metric_descriptors_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_metric_descriptors(
-            metric_service.ListMetricDescriptorsRequest(), name="name_value",
+            metric_service.ListMetricDescriptorsRequest(),
+            name="name_value",
         )
 
 
 def test_list_metric_descriptors_pager(transport_name: str = "grpc"):
     client = MetricServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1535,10 +1633,13 @@ def test_list_metric_descriptors_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             metric_service.ListMetricDescriptorsResponse(
-                metric_descriptors=[], next_page_token="def",
+                metric_descriptors=[],
+                next_page_token="def",
             ),
             metric_service.ListMetricDescriptorsResponse(
-                metric_descriptors=[metric_pb2.MetricDescriptor(),],
+                metric_descriptors=[
+                    metric_pb2.MetricDescriptor(),
+                ],
                 next_page_token="ghi",
             ),
             metric_service.ListMetricDescriptorsResponse(
@@ -1565,7 +1666,8 @@ def test_list_metric_descriptors_pager(transport_name: str = "grpc"):
 
 def test_list_metric_descriptors_pages(transport_name: str = "grpc"):
     client = MetricServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1583,10 +1685,13 @@ def test_list_metric_descriptors_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             metric_service.ListMetricDescriptorsResponse(
-                metric_descriptors=[], next_page_token="def",
+                metric_descriptors=[],
+                next_page_token="def",
             ),
             metric_service.ListMetricDescriptorsResponse(
-                metric_descriptors=[metric_pb2.MetricDescriptor(),],
+                metric_descriptors=[
+                    metric_pb2.MetricDescriptor(),
+                ],
                 next_page_token="ghi",
             ),
             metric_service.ListMetricDescriptorsResponse(
@@ -1604,7 +1709,9 @@ def test_list_metric_descriptors_pages(transport_name: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_list_metric_descriptors_async_pager():
-    client = MetricServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = MetricServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1623,10 +1730,13 @@ async def test_list_metric_descriptors_async_pager():
                 next_page_token="abc",
             ),
             metric_service.ListMetricDescriptorsResponse(
-                metric_descriptors=[], next_page_token="def",
+                metric_descriptors=[],
+                next_page_token="def",
             ),
             metric_service.ListMetricDescriptorsResponse(
-                metric_descriptors=[metric_pb2.MetricDescriptor(),],
+                metric_descriptors=[
+                    metric_pb2.MetricDescriptor(),
+                ],
                 next_page_token="ghi",
             ),
             metric_service.ListMetricDescriptorsResponse(
@@ -1637,7 +1747,9 @@ async def test_list_metric_descriptors_async_pager():
             ),
             RuntimeError,
         )
-        async_pager = await client.list_metric_descriptors(request={},)
+        async_pager = await client.list_metric_descriptors(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -1649,7 +1761,9 @@ async def test_list_metric_descriptors_async_pager():
 
 @pytest.mark.asyncio
 async def test_list_metric_descriptors_async_pages():
-    client = MetricServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = MetricServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1668,10 +1782,13 @@ async def test_list_metric_descriptors_async_pages():
                 next_page_token="abc",
             ),
             metric_service.ListMetricDescriptorsResponse(
-                metric_descriptors=[], next_page_token="def",
+                metric_descriptors=[],
+                next_page_token="def",
             ),
             metric_service.ListMetricDescriptorsResponse(
-                metric_descriptors=[metric_pb2.MetricDescriptor(),],
+                metric_descriptors=[
+                    metric_pb2.MetricDescriptor(),
+                ],
                 next_page_token="ghi",
             ),
             metric_service.ListMetricDescriptorsResponse(
@@ -1690,11 +1807,16 @@ async def test_list_metric_descriptors_async_pages():
 
 
 @pytest.mark.parametrize(
-    "request_type", [metric_service.GetMetricDescriptorRequest, dict,]
+    "request_type",
+    [
+        metric_service.GetMetricDescriptorRequest,
+        dict,
+    ],
 )
 def test_get_metric_descriptor(request_type, transport: str = "grpc"):
     client = MetricServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1737,7 +1859,8 @@ def test_get_metric_descriptor_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = MetricServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1756,7 +1879,8 @@ async def test_get_metric_descriptor_async(
     request_type=metric_service.GetMetricDescriptorRequest,
 ):
     client = MetricServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1803,7 +1927,9 @@ async def test_get_metric_descriptor_async_from_dict():
 
 
 def test_get_metric_descriptor_field_headers():
-    client = MetricServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = MetricServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1825,7 +1951,10 @@ def test_get_metric_descriptor_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1856,11 +1985,16 @@ async def test_get_metric_descriptor_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_metric_descriptor_flattened():
-    client = MetricServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = MetricServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1870,7 +2004,9 @@ def test_get_metric_descriptor_flattened():
         call.return_value = metric_pb2.MetricDescriptor()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_metric_descriptor(name="name_value",)
+        client.get_metric_descriptor(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1882,13 +2018,16 @@ def test_get_metric_descriptor_flattened():
 
 
 def test_get_metric_descriptor_flattened_error():
-    client = MetricServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = MetricServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_metric_descriptor(
-            metric_service.GetMetricDescriptorRequest(), name="name_value",
+            metric_service.GetMetricDescriptorRequest(),
+            name="name_value",
         )
 
 
@@ -1910,7 +2049,9 @@ async def test_get_metric_descriptor_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_metric_descriptor(name="name_value",)
+        response = await client.get_metric_descriptor(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1931,16 +2072,22 @@ async def test_get_metric_descriptor_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_metric_descriptor(
-            metric_service.GetMetricDescriptorRequest(), name="name_value",
+            metric_service.GetMetricDescriptorRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [metric_service.CreateMetricDescriptorRequest, dict,]
+    "request_type",
+    [
+        metric_service.CreateMetricDescriptorRequest,
+        dict,
+    ],
 )
 def test_create_metric_descriptor(request_type, transport: str = "grpc"):
     client = MetricServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1983,7 +2130,8 @@ def test_create_metric_descriptor_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = MetricServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2002,7 +2150,8 @@ async def test_create_metric_descriptor_async(
     request_type=metric_service.CreateMetricDescriptorRequest,
 ):
     client = MetricServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2049,7 +2198,9 @@ async def test_create_metric_descriptor_async_from_dict():
 
 
 def test_create_metric_descriptor_field_headers():
-    client = MetricServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = MetricServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2071,7 +2222,10 @@ def test_create_metric_descriptor_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2102,11 +2256,16 @@ async def test_create_metric_descriptor_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_create_metric_descriptor_flattened():
-    client = MetricServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = MetricServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2134,7 +2293,9 @@ def test_create_metric_descriptor_flattened():
 
 
 def test_create_metric_descriptor_flattened_error():
-    client = MetricServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = MetricServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2198,11 +2359,16 @@ async def test_create_metric_descriptor_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [metric_service.DeleteMetricDescriptorRequest, dict,]
+    "request_type",
+    [
+        metric_service.DeleteMetricDescriptorRequest,
+        dict,
+    ],
 )
 def test_delete_metric_descriptor(request_type, transport: str = "grpc"):
     client = MetricServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2230,7 +2396,8 @@ def test_delete_metric_descriptor_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = MetricServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2249,7 +2416,8 @@ async def test_delete_metric_descriptor_async(
     request_type=metric_service.DeleteMetricDescriptorRequest,
 ):
     client = MetricServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2279,7 +2447,9 @@ async def test_delete_metric_descriptor_async_from_dict():
 
 
 def test_delete_metric_descriptor_field_headers():
-    client = MetricServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = MetricServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2301,7 +2471,10 @@ def test_delete_metric_descriptor_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2330,11 +2503,16 @@ async def test_delete_metric_descriptor_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_metric_descriptor_flattened():
-    client = MetricServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = MetricServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2344,7 +2522,9 @@ def test_delete_metric_descriptor_flattened():
         call.return_value = None
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_metric_descriptor(name="name_value",)
+        client.delete_metric_descriptor(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2356,13 +2536,16 @@ def test_delete_metric_descriptor_flattened():
 
 
 def test_delete_metric_descriptor_flattened_error():
-    client = MetricServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = MetricServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_metric_descriptor(
-            metric_service.DeleteMetricDescriptorRequest(), name="name_value",
+            metric_service.DeleteMetricDescriptorRequest(),
+            name="name_value",
         )
 
 
@@ -2382,7 +2565,9 @@ async def test_delete_metric_descriptor_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_metric_descriptor(name="name_value",)
+        response = await client.delete_metric_descriptor(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2403,14 +2588,22 @@ async def test_delete_metric_descriptor_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_metric_descriptor(
-            metric_service.DeleteMetricDescriptorRequest(), name="name_value",
+            metric_service.DeleteMetricDescriptorRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [metric_service.ListTimeSeriesRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metric_service.ListTimeSeriesRequest,
+        dict,
+    ],
+)
 def test_list_time_series(request_type, transport: str = "grpc"):
     client = MetricServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2421,7 +2614,8 @@ def test_list_time_series(request_type, transport: str = "grpc"):
     with mock.patch.object(type(client.transport.list_time_series), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = metric_service.ListTimeSeriesResponse(
-            next_page_token="next_page_token_value", unit="unit_value",
+            next_page_token="next_page_token_value",
+            unit="unit_value",
         )
         response = client.list_time_series(request)
 
@@ -2440,7 +2634,8 @@ def test_list_time_series_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = MetricServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2456,7 +2651,8 @@ async def test_list_time_series_async(
     transport: str = "grpc_asyncio", request_type=metric_service.ListTimeSeriesRequest
 ):
     client = MetricServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2468,7 +2664,8 @@ async def test_list_time_series_async(
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             metric_service.ListTimeSeriesResponse(
-                next_page_token="next_page_token_value", unit="unit_value",
+                next_page_token="next_page_token_value",
+                unit="unit_value",
             )
         )
         response = await client.list_time_series(request)
@@ -2490,7 +2687,9 @@ async def test_list_time_series_async_from_dict():
 
 
 def test_list_time_series_field_headers():
-    client = MetricServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = MetricServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2510,7 +2709,10 @@ def test_list_time_series_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2539,11 +2741,16 @@ async def test_list_time_series_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_list_time_series_flattened():
-    client = MetricServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = MetricServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_time_series), "__call__") as call:
@@ -2577,7 +2784,9 @@ def test_list_time_series_flattened():
 
 
 def test_list_time_series_flattened_error():
-    client = MetricServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = MetricServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2652,7 +2861,8 @@ async def test_list_time_series_flattened_error_async():
 
 def test_list_time_series_pager(transport_name: str = "grpc"):
     client = MetricServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2668,13 +2878,20 @@ def test_list_time_series_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             metric_service.ListTimeSeriesResponse(
-                time_series=[], next_page_token="def",
+                time_series=[],
+                next_page_token="def",
             ),
             metric_service.ListTimeSeriesResponse(
-                time_series=[gm_metric.TimeSeries(),], next_page_token="ghi",
+                time_series=[
+                    gm_metric.TimeSeries(),
+                ],
+                next_page_token="ghi",
             ),
             metric_service.ListTimeSeriesResponse(
-                time_series=[gm_metric.TimeSeries(), gm_metric.TimeSeries(),],
+                time_series=[
+                    gm_metric.TimeSeries(),
+                    gm_metric.TimeSeries(),
+                ],
             ),
             RuntimeError,
         )
@@ -2694,7 +2911,8 @@ def test_list_time_series_pager(transport_name: str = "grpc"):
 
 def test_list_time_series_pages(transport_name: str = "grpc"):
     client = MetricServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2710,13 +2928,20 @@ def test_list_time_series_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             metric_service.ListTimeSeriesResponse(
-                time_series=[], next_page_token="def",
+                time_series=[],
+                next_page_token="def",
             ),
             metric_service.ListTimeSeriesResponse(
-                time_series=[gm_metric.TimeSeries(),], next_page_token="ghi",
+                time_series=[
+                    gm_metric.TimeSeries(),
+                ],
+                next_page_token="ghi",
             ),
             metric_service.ListTimeSeriesResponse(
-                time_series=[gm_metric.TimeSeries(), gm_metric.TimeSeries(),],
+                time_series=[
+                    gm_metric.TimeSeries(),
+                    gm_metric.TimeSeries(),
+                ],
             ),
             RuntimeError,
         )
@@ -2727,7 +2952,9 @@ def test_list_time_series_pages(transport_name: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_list_time_series_async_pager():
-    client = MetricServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = MetricServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2744,17 +2971,26 @@ async def test_list_time_series_async_pager():
                 next_page_token="abc",
             ),
             metric_service.ListTimeSeriesResponse(
-                time_series=[], next_page_token="def",
+                time_series=[],
+                next_page_token="def",
             ),
             metric_service.ListTimeSeriesResponse(
-                time_series=[gm_metric.TimeSeries(),], next_page_token="ghi",
+                time_series=[
+                    gm_metric.TimeSeries(),
+                ],
+                next_page_token="ghi",
             ),
             metric_service.ListTimeSeriesResponse(
-                time_series=[gm_metric.TimeSeries(), gm_metric.TimeSeries(),],
+                time_series=[
+                    gm_metric.TimeSeries(),
+                    gm_metric.TimeSeries(),
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.list_time_series(request={},)
+        async_pager = await client.list_time_series(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -2766,7 +3002,9 @@ async def test_list_time_series_async_pager():
 
 @pytest.mark.asyncio
 async def test_list_time_series_async_pages():
-    client = MetricServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = MetricServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2783,13 +3021,20 @@ async def test_list_time_series_async_pages():
                 next_page_token="abc",
             ),
             metric_service.ListTimeSeriesResponse(
-                time_series=[], next_page_token="def",
+                time_series=[],
+                next_page_token="def",
             ),
             metric_service.ListTimeSeriesResponse(
-                time_series=[gm_metric.TimeSeries(),], next_page_token="ghi",
+                time_series=[
+                    gm_metric.TimeSeries(),
+                ],
+                next_page_token="ghi",
             ),
             metric_service.ListTimeSeriesResponse(
-                time_series=[gm_metric.TimeSeries(), gm_metric.TimeSeries(),],
+                time_series=[
+                    gm_metric.TimeSeries(),
+                    gm_metric.TimeSeries(),
+                ],
             ),
             RuntimeError,
         )
@@ -2801,11 +3046,16 @@ async def test_list_time_series_async_pages():
 
 
 @pytest.mark.parametrize(
-    "request_type", [metric_service.CreateTimeSeriesRequest, dict,]
+    "request_type",
+    [
+        metric_service.CreateTimeSeriesRequest,
+        dict,
+    ],
 )
 def test_create_time_series(request_type, transport: str = "grpc"):
     client = MetricServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2833,7 +3083,8 @@ def test_create_time_series_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = MetricServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2851,7 +3102,8 @@ async def test_create_time_series_async(
     transport: str = "grpc_asyncio", request_type=metric_service.CreateTimeSeriesRequest
 ):
     client = MetricServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2881,7 +3133,9 @@ async def test_create_time_series_async_from_dict():
 
 
 def test_create_time_series_field_headers():
-    client = MetricServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = MetricServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2903,7 +3157,10 @@ def test_create_time_series_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2932,11 +3189,16 @@ async def test_create_time_series_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_create_time_series_flattened():
-    client = MetricServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = MetricServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2966,7 +3228,9 @@ def test_create_time_series_flattened():
 
 
 def test_create_time_series_flattened_error():
-    client = MetricServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = MetricServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -3034,11 +3298,16 @@ async def test_create_time_series_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [metric_service.CreateTimeSeriesRequest, dict,]
+    "request_type",
+    [
+        metric_service.CreateTimeSeriesRequest,
+        dict,
+    ],
 )
 def test_create_service_time_series(request_type, transport: str = "grpc"):
     client = MetricServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3066,7 +3335,8 @@ def test_create_service_time_series_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = MetricServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3084,7 +3354,8 @@ async def test_create_service_time_series_async(
     transport: str = "grpc_asyncio", request_type=metric_service.CreateTimeSeriesRequest
 ):
     client = MetricServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3114,7 +3385,9 @@ async def test_create_service_time_series_async_from_dict():
 
 
 def test_create_service_time_series_field_headers():
-    client = MetricServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = MetricServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3136,7 +3409,10 @@ def test_create_service_time_series_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -3165,11 +3441,16 @@ async def test_create_service_time_series_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_create_service_time_series_flattened():
-    client = MetricServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = MetricServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3199,7 +3480,9 @@ def test_create_service_time_series_flattened():
 
 
 def test_create_service_time_series_flattened_error():
-    client = MetricServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = MetricServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -3273,7 +3556,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = MetricServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -3293,7 +3577,10 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = MetricServiceClient(client_options=options, transport=transport,)
+        client = MetricServiceClient(
+            client_options=options,
+            transport=transport,
+        )
 
     # It is an error to provide an api_key and a credential.
     options = mock.Mock()
@@ -3309,7 +3596,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = MetricServiceClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -3354,8 +3642,13 @@ def test_transport_adc(transport_class):
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
-    client = MetricServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
-    assert isinstance(client.transport, transports.MetricServiceGrpcTransport,)
+    client = MetricServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    assert isinstance(
+        client.transport,
+        transports.MetricServiceGrpcTransport,
+    )
 
 
 def test_metric_service_base_transport_error():
@@ -3408,7 +3701,8 @@ def test_metric_service_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.MetricServiceTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -3586,7 +3880,8 @@ def test_metric_service_grpc_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.MetricServiceGrpcTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -3598,7 +3893,8 @@ def test_metric_service_grpc_asyncio_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.MetricServiceGrpcAsyncIOTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -3729,7 +4025,8 @@ def test_monitored_resource_descriptor_path():
     project = "oyster"
     monitored_resource_descriptor = "nudibranch"
     expected = "projects/{project}/monitoredResourceDescriptors/{monitored_resource_descriptor}".format(
-        project=project, monitored_resource_descriptor=monitored_resource_descriptor,
+        project=project,
+        monitored_resource_descriptor=monitored_resource_descriptor,
     )
     actual = MetricServiceClient.monitored_resource_descriptor_path(
         project, monitored_resource_descriptor
@@ -3753,7 +4050,8 @@ def test_time_series_path():
     project = "winkle"
     time_series = "nautilus"
     expected = "projects/{project}/timeSeries/{time_series}".format(
-        project=project, time_series=time_series,
+        project=project,
+        time_series=time_series,
     )
     actual = MetricServiceClient.time_series_path(project, time_series)
     assert expected == actual
@@ -3793,7 +4091,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "whelk"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = MetricServiceClient.common_folder_path(folder)
     assert expected == actual
 
@@ -3811,7 +4111,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "oyster"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = MetricServiceClient.common_organization_path(organization)
     assert expected == actual
 
@@ -3829,7 +4131,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "cuttlefish"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = MetricServiceClient.common_project_path(project)
     assert expected == actual
 
@@ -3849,7 +4153,8 @@ def test_common_location_path():
     project = "winkle"
     location = "nautilus"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = MetricServiceClient.common_location_path(project, location)
     assert expected == actual
@@ -3874,7 +4179,8 @@ def test_client_with_default_client_info():
         transports.MetricServiceTransport, "_prep_wrapped_messages"
     ) as prep:
         client = MetricServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -3883,7 +4189,8 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = MetricServiceClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -3891,7 +4198,8 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = MetricServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     with mock.patch.object(
         type(getattr(client.transport, "grpc_channel")), "close"

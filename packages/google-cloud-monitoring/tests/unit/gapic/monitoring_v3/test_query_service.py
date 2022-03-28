@@ -82,7 +82,13 @@ def test__get_default_mtls_endpoint():
     assert QueryServiceClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
 
 
-@pytest.mark.parametrize("client_class", [QueryServiceClient, QueryServiceAsyncClient,])
+@pytest.mark.parametrize(
+    "client_class",
+    [
+        QueryServiceClient,
+        QueryServiceAsyncClient,
+    ],
+)
 def test_query_service_client_from_service_account_info(client_class):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
@@ -122,7 +128,13 @@ def test_query_service_client_service_account_always_use_jwt(
         use_jwt.assert_not_called()
 
 
-@pytest.mark.parametrize("client_class", [QueryServiceClient, QueryServiceAsyncClient,])
+@pytest.mark.parametrize(
+    "client_class",
+    [
+        QueryServiceClient,
+        QueryServiceAsyncClient,
+    ],
+)
 def test_query_service_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
@@ -477,7 +489,9 @@ def test_query_service_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -619,10 +633,17 @@ def test_query_service_client_create_channel_credentials_file(
         )
 
 
-@pytest.mark.parametrize("request_type", [metric_service.QueryTimeSeriesRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metric_service.QueryTimeSeriesRequest,
+        dict,
+    ],
+)
 def test_query_time_series(request_type, transport: str = "grpc"):
     client = QueryServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -653,7 +674,8 @@ def test_query_time_series_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = QueryServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -671,7 +693,8 @@ async def test_query_time_series_async(
     transport: str = "grpc_asyncio", request_type=metric_service.QueryTimeSeriesRequest
 ):
     client = QueryServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -706,7 +729,9 @@ async def test_query_time_series_async_from_dict():
 
 
 def test_query_time_series_field_headers():
-    client = QueryServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = QueryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -728,12 +753,17 @@ def test_query_time_series_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_query_time_series_field_headers_async():
-    client = QueryServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = QueryServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -757,12 +787,16 @@ async def test_query_time_series_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_query_time_series_pager(transport_name: str = "grpc"):
     client = QueryServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -780,13 +814,20 @@ def test_query_time_series_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             metric_service.QueryTimeSeriesResponse(
-                time_series_data=[], next_page_token="def",
+                time_series_data=[],
+                next_page_token="def",
             ),
             metric_service.QueryTimeSeriesResponse(
-                time_series_data=[metric.TimeSeriesData(),], next_page_token="ghi",
+                time_series_data=[
+                    metric.TimeSeriesData(),
+                ],
+                next_page_token="ghi",
             ),
             metric_service.QueryTimeSeriesResponse(
-                time_series_data=[metric.TimeSeriesData(), metric.TimeSeriesData(),],
+                time_series_data=[
+                    metric.TimeSeriesData(),
+                    metric.TimeSeriesData(),
+                ],
             ),
             RuntimeError,
         )
@@ -806,7 +847,8 @@ def test_query_time_series_pager(transport_name: str = "grpc"):
 
 def test_query_time_series_pages(transport_name: str = "grpc"):
     client = QueryServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -824,13 +866,20 @@ def test_query_time_series_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             metric_service.QueryTimeSeriesResponse(
-                time_series_data=[], next_page_token="def",
+                time_series_data=[],
+                next_page_token="def",
             ),
             metric_service.QueryTimeSeriesResponse(
-                time_series_data=[metric.TimeSeriesData(),], next_page_token="ghi",
+                time_series_data=[
+                    metric.TimeSeriesData(),
+                ],
+                next_page_token="ghi",
             ),
             metric_service.QueryTimeSeriesResponse(
-                time_series_data=[metric.TimeSeriesData(), metric.TimeSeriesData(),],
+                time_series_data=[
+                    metric.TimeSeriesData(),
+                    metric.TimeSeriesData(),
+                ],
             ),
             RuntimeError,
         )
@@ -841,7 +890,9 @@ def test_query_time_series_pages(transport_name: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_query_time_series_async_pager():
-    client = QueryServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = QueryServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -860,17 +911,26 @@ async def test_query_time_series_async_pager():
                 next_page_token="abc",
             ),
             metric_service.QueryTimeSeriesResponse(
-                time_series_data=[], next_page_token="def",
+                time_series_data=[],
+                next_page_token="def",
             ),
             metric_service.QueryTimeSeriesResponse(
-                time_series_data=[metric.TimeSeriesData(),], next_page_token="ghi",
+                time_series_data=[
+                    metric.TimeSeriesData(),
+                ],
+                next_page_token="ghi",
             ),
             metric_service.QueryTimeSeriesResponse(
-                time_series_data=[metric.TimeSeriesData(), metric.TimeSeriesData(),],
+                time_series_data=[
+                    metric.TimeSeriesData(),
+                    metric.TimeSeriesData(),
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.query_time_series(request={},)
+        async_pager = await client.query_time_series(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -882,7 +942,9 @@ async def test_query_time_series_async_pager():
 
 @pytest.mark.asyncio
 async def test_query_time_series_async_pages():
-    client = QueryServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = QueryServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -901,13 +963,20 @@ async def test_query_time_series_async_pages():
                 next_page_token="abc",
             ),
             metric_service.QueryTimeSeriesResponse(
-                time_series_data=[], next_page_token="def",
+                time_series_data=[],
+                next_page_token="def",
             ),
             metric_service.QueryTimeSeriesResponse(
-                time_series_data=[metric.TimeSeriesData(),], next_page_token="ghi",
+                time_series_data=[
+                    metric.TimeSeriesData(),
+                ],
+                next_page_token="ghi",
             ),
             metric_service.QueryTimeSeriesResponse(
-                time_series_data=[metric.TimeSeriesData(), metric.TimeSeriesData(),],
+                time_series_data=[
+                    metric.TimeSeriesData(),
+                    metric.TimeSeriesData(),
+                ],
             ),
             RuntimeError,
         )
@@ -925,7 +994,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = QueryServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -945,7 +1015,10 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = QueryServiceClient(client_options=options, transport=transport,)
+        client = QueryServiceClient(
+            client_options=options,
+            transport=transport,
+        )
 
     # It is an error to provide an api_key and a credential.
     options = mock.Mock()
@@ -961,7 +1034,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = QueryServiceClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -1006,8 +1080,13 @@ def test_transport_adc(transport_class):
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
-    client = QueryServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
-    assert isinstance(client.transport, transports.QueryServiceGrpcTransport,)
+    client = QueryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    assert isinstance(
+        client.transport,
+        transports.QueryServiceGrpcTransport,
+    )
 
 
 def test_query_service_base_transport_error():
@@ -1050,7 +1129,8 @@ def test_query_service_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.QueryServiceTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -1221,7 +1301,8 @@ def test_query_service_grpc_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.QueryServiceGrpcTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -1233,7 +1314,8 @@ def test_query_service_grpc_asyncio_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.QueryServiceGrpcAsyncIOTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -1354,7 +1436,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "whelk"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = QueryServiceClient.common_folder_path(folder)
     assert expected == actual
 
@@ -1372,7 +1456,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "oyster"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = QueryServiceClient.common_organization_path(organization)
     assert expected == actual
 
@@ -1390,7 +1476,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "cuttlefish"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = QueryServiceClient.common_project_path(project)
     assert expected == actual
 
@@ -1410,7 +1498,8 @@ def test_common_location_path():
     project = "winkle"
     location = "nautilus"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = QueryServiceClient.common_location_path(project, location)
     assert expected == actual
@@ -1435,7 +1524,8 @@ def test_client_with_default_client_info():
         transports.QueryServiceTransport, "_prep_wrapped_messages"
     ) as prep:
         client = QueryServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -1444,7 +1534,8 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = QueryServiceClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -1452,7 +1543,8 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = QueryServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     with mock.patch.object(
         type(getattr(client.transport, "grpc_channel")), "close"

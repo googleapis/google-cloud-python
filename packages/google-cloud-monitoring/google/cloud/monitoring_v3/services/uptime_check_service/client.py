@@ -59,7 +59,8 @@ class UptimeCheckServiceClientMeta(type):
     _transport_registry["grpc_asyncio"] = UptimeCheckServiceGrpcAsyncIOTransport
 
     def get_transport_class(
-        cls, label: str = None,
+        cls,
+        label: str = None,
     ) -> Type[UptimeCheckServiceTransport]:
         """Returns an appropriate transport class.
 
@@ -173,10 +174,14 @@ class UptimeCheckServiceClient(metaclass=UptimeCheckServiceClientMeta):
         return self._transport
 
     @staticmethod
-    def uptime_check_config_path(project: str, uptime_check_config: str,) -> str:
+    def uptime_check_config_path(
+        project: str,
+        uptime_check_config: str,
+    ) -> str:
         """Returns a fully-qualified uptime_check_config string."""
         return "projects/{project}/uptimeCheckConfigs/{uptime_check_config}".format(
-            project=project, uptime_check_config=uptime_check_config,
+            project=project,
+            uptime_check_config=uptime_check_config,
         )
 
     @staticmethod
@@ -189,7 +194,9 @@ class UptimeCheckServiceClient(metaclass=UptimeCheckServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_billing_account_path(billing_account: str,) -> str:
+    def common_billing_account_path(
+        billing_account: str,
+    ) -> str:
         """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
@@ -202,9 +209,13 @@ class UptimeCheckServiceClient(metaclass=UptimeCheckServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(folder: str,) -> str:
+    def common_folder_path(
+        folder: str,
+    ) -> str:
         """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(folder=folder,)
+        return "folders/{folder}".format(
+            folder=folder,
+        )
 
     @staticmethod
     def parse_common_folder_path(path: str) -> Dict[str, str]:
@@ -213,9 +224,13 @@ class UptimeCheckServiceClient(metaclass=UptimeCheckServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(organization: str,) -> str:
+    def common_organization_path(
+        organization: str,
+    ) -> str:
         """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(organization=organization,)
+        return "organizations/{organization}".format(
+            organization=organization,
+        )
 
     @staticmethod
     def parse_common_organization_path(path: str) -> Dict[str, str]:
@@ -224,9 +239,13 @@ class UptimeCheckServiceClient(metaclass=UptimeCheckServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(project: str,) -> str:
+    def common_project_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified project string."""
-        return "projects/{project}".format(project=project,)
+        return "projects/{project}".format(
+            project=project,
+        )
 
     @staticmethod
     def parse_common_project_path(path: str) -> Dict[str, str]:
@@ -235,10 +254,14 @@ class UptimeCheckServiceClient(metaclass=UptimeCheckServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(project: str, location: str,) -> str:
+    def common_location_path(
+        project: str,
+        location: str,
+    ) -> str:
         """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
-            project=project, location=location,
+            project=project,
+            location=location,
         )
 
     @staticmethod
@@ -511,12 +534,20 @@ class UptimeCheckServiceClient(metaclass=UptimeCheckServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListUptimeCheckConfigsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -612,7 +643,12 @@ class UptimeCheckServiceClient(metaclass=UptimeCheckServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -720,7 +756,12 @@ class UptimeCheckServiceClient(metaclass=UptimeCheckServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -830,7 +871,12 @@ class UptimeCheckServiceClient(metaclass=UptimeCheckServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -922,7 +968,10 @@ class UptimeCheckServiceClient(metaclass=UptimeCheckServiceClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def list_uptime_check_ips(
@@ -987,12 +1036,20 @@ class UptimeCheckServiceClient(metaclass=UptimeCheckServiceClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.list_uptime_check_ips]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListUptimeCheckIpsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.

@@ -155,7 +155,9 @@ class AlertPolicyServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.create_alert_policy: gapic_v1.method.wrap_method(
-                self.create_alert_policy, default_timeout=30.0, client_info=client_info,
+                self.create_alert_policy,
+                default_timeout=30.0,
+                client_info=client_info,
             ),
             self.delete_alert_policy: gapic_v1.method.wrap_method(
                 self.delete_alert_policy,
@@ -172,16 +174,18 @@ class AlertPolicyServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.update_alert_policy: gapic_v1.method.wrap_method(
-                self.update_alert_policy, default_timeout=30.0, client_info=client_info,
+                self.update_alert_policy,
+                default_timeout=30.0,
+                client_info=client_info,
             ),
         }
 
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

@@ -17,7 +17,10 @@ import proto  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.monitoring.v3", manifest={"DroppedLabels",},
+    package="google.monitoring.v3",
+    manifest={
+        "DroppedLabels",
+    },
 )
 
 
@@ -46,7 +49,11 @@ class DroppedLabels(proto.Message):
             dropped in any aggregation.
     """
 
-    label = proto.MapField(proto.STRING, proto.STRING, number=1,)
+    label = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=1,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

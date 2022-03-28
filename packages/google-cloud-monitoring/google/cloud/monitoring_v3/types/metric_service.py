@@ -78,10 +78,22 @@ class ListMonitoredResourceDescriptorsRequest(proto.Message):
             additional results from the previous method call.
     """
 
-    name = proto.Field(proto.STRING, number=5,)
-    filter = proto.Field(proto.STRING, number=2,)
-    page_size = proto.Field(proto.INT32, number=3,)
-    page_token = proto.Field(proto.STRING, number=4,)
+    name = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class ListMonitoredResourceDescriptorsResponse(proto.Message):
@@ -107,7 +119,10 @@ class ListMonitoredResourceDescriptorsResponse(proto.Message):
         number=1,
         message=monitored_resource_pb2.MonitoredResourceDescriptor,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetMonitoredResourceDescriptorRequest(proto.Message):
@@ -126,7 +141,10 @@ class GetMonitoredResourceDescriptorRequest(proto.Message):
             ``cloudsql_database``.
     """
 
-    name = proto.Field(proto.STRING, number=3,)
+    name = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListMetricDescriptorsRequest(proto.Message):
@@ -162,10 +180,22 @@ class ListMetricDescriptorsRequest(proto.Message):
             additional results from the previous method call.
     """
 
-    name = proto.Field(proto.STRING, number=5,)
-    filter = proto.Field(proto.STRING, number=2,)
-    page_size = proto.Field(proto.INT32, number=3,)
-    page_token = proto.Field(proto.STRING, number=4,)
+    name = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class ListMetricDescriptorsResponse(proto.Message):
@@ -187,9 +217,14 @@ class ListMetricDescriptorsResponse(proto.Message):
         return self
 
     metric_descriptors = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=metric_pb2.MetricDescriptor,
+        proto.MESSAGE,
+        number=1,
+        message=metric_pb2.MetricDescriptor,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetMetricDescriptorRequest(proto.Message):
@@ -208,7 +243,10 @@ class GetMetricDescriptorRequest(proto.Message):
             ``"compute.googleapis.com/instance/disk/read_bytes_count"``.
     """
 
-    name = proto.Field(proto.STRING, number=3,)
+    name = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class CreateMetricDescriptorRequest(proto.Message):
@@ -226,9 +264,14 @@ class CreateMetricDescriptorRequest(proto.Message):
             descriptor.
     """
 
-    name = proto.Field(proto.STRING, number=3,)
+    name = proto.Field(
+        proto.STRING,
+        number=3,
+    )
     metric_descriptor = proto.Field(
-        proto.MESSAGE, number=2, message=metric_pb2.MetricDescriptor,
+        proto.MESSAGE,
+        number=2,
+        message=metric_pb2.MetricDescriptor,
     )
 
 
@@ -248,7 +291,10 @@ class DeleteMetricDescriptorRequest(proto.Message):
             ``"custom.googleapis.com/my_test_metric"``.
     """
 
-    name = proto.Field(proto.STRING, number=3,)
+    name = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListTimeSeriesRequest(proto.Message):
@@ -319,17 +365,46 @@ class ListTimeSeriesRequest(proto.Message):
         FULL = 0
         HEADERS = 1
 
-    name = proto.Field(proto.STRING, number=10,)
-    filter = proto.Field(proto.STRING, number=2,)
-    interval = proto.Field(proto.MESSAGE, number=4, message=common.TimeInterval,)
-    aggregation = proto.Field(proto.MESSAGE, number=5, message=common.Aggregation,)
-    secondary_aggregation = proto.Field(
-        proto.MESSAGE, number=11, message=common.Aggregation,
+    name = proto.Field(
+        proto.STRING,
+        number=10,
     )
-    order_by = proto.Field(proto.STRING, number=6,)
-    view = proto.Field(proto.ENUM, number=7, enum=TimeSeriesView,)
-    page_size = proto.Field(proto.INT32, number=8,)
-    page_token = proto.Field(proto.STRING, number=9,)
+    filter = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    interval = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=common.TimeInterval,
+    )
+    aggregation = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=common.Aggregation,
+    )
+    secondary_aggregation = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message=common.Aggregation,
+    )
+    order_by = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    view = proto.Field(
+        proto.ENUM,
+        number=7,
+        enum=TimeSeriesView,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=8,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=9,
+    )
 
 
 class ListTimeSeriesResponse(proto.Message):
@@ -361,13 +436,23 @@ class ListTimeSeriesResponse(proto.Message):
         return self
 
     time_series = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=gm_metric.TimeSeries,
+        proto.MESSAGE,
+        number=1,
+        message=gm_metric.TimeSeries,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
     execution_errors = proto.RepeatedField(
-        proto.MESSAGE, number=3, message=status_pb2.Status,
+        proto.MESSAGE,
+        number=3,
+        message=status_pb2.Status,
     )
-    unit = proto.Field(proto.STRING, number=5,)
+    unit = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class CreateTimeSeriesRequest(proto.Message):
@@ -394,9 +479,14 @@ class CreateTimeSeriesRequest(proto.Message):
             request is 200.
     """
 
-    name = proto.Field(proto.STRING, number=3,)
+    name = proto.Field(
+        proto.STRING,
+        number=3,
+    )
     time_series = proto.RepeatedField(
-        proto.MESSAGE, number=2, message=gm_metric.TimeSeries,
+        proto.MESSAGE,
+        number=2,
+        message=gm_metric.TimeSeries,
     )
 
 
@@ -412,8 +502,16 @@ class CreateTimeSeriesError(proto.Message):
             ``time_series``.
     """
 
-    time_series = proto.Field(proto.MESSAGE, number=1, message=gm_metric.TimeSeries,)
-    status = proto.Field(proto.MESSAGE, number=2, message=status_pb2.Status,)
+    time_series = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=gm_metric.TimeSeries,
+    )
+    status = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=status_pb2.Status,
+    )
 
 
 class CreateTimeSeriesSummary(proto.Message):
@@ -442,12 +540,29 @@ class CreateTimeSeriesSummary(proto.Message):
                 ``status``.
         """
 
-        status = proto.Field(proto.MESSAGE, number=1, message=status_pb2.Status,)
-        point_count = proto.Field(proto.INT32, number=2,)
+        status = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=status_pb2.Status,
+        )
+        point_count = proto.Field(
+            proto.INT32,
+            number=2,
+        )
 
-    total_point_count = proto.Field(proto.INT32, number=1,)
-    success_point_count = proto.Field(proto.INT32, number=2,)
-    errors = proto.RepeatedField(proto.MESSAGE, number=3, message=Error,)
+    total_point_count = proto.Field(
+        proto.INT32,
+        number=1,
+    )
+    success_point_count = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    errors = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=Error,
+    )
 
 
 class QueryTimeSeriesRequest(proto.Message):
@@ -476,10 +591,22 @@ class QueryTimeSeriesRequest(proto.Message):
             additional results from the previous method call.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    query = proto.Field(proto.STRING, number=7,)
-    page_size = proto.Field(proto.INT32, number=9,)
-    page_token = proto.Field(proto.STRING, number=10,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    query = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=9,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=10,
+    )
 
 
 class QueryTimeSeriesResponse(proto.Message):
@@ -507,14 +634,23 @@ class QueryTimeSeriesResponse(proto.Message):
         return self
 
     time_series_descriptor = proto.Field(
-        proto.MESSAGE, number=8, message=gm_metric.TimeSeriesDescriptor,
+        proto.MESSAGE,
+        number=8,
+        message=gm_metric.TimeSeriesDescriptor,
     )
     time_series_data = proto.RepeatedField(
-        proto.MESSAGE, number=9, message=gm_metric.TimeSeriesData,
+        proto.MESSAGE,
+        number=9,
+        message=gm_metric.TimeSeriesData,
     )
-    next_page_token = proto.Field(proto.STRING, number=10,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=10,
+    )
     partial_errors = proto.RepeatedField(
-        proto.MESSAGE, number=11, message=status_pb2.Status,
+        proto.MESSAGE,
+        number=11,
+        message=status_pb2.Status,
     )
 
 
@@ -531,8 +667,15 @@ class QueryErrorList(proto.Message):
             A summary of all the errors.
     """
 
-    errors = proto.RepeatedField(proto.MESSAGE, number=1, message=gm_metric.QueryError,)
-    error_summary = proto.Field(proto.STRING, number=2,)
+    errors = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=gm_metric.QueryError,
+    )
+    error_summary = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

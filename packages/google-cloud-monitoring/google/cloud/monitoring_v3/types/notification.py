@@ -24,7 +24,10 @@ from google.protobuf import wrappers_pb2  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.monitoring.v3",
-    manifest={"NotificationChannelDescriptor", "NotificationChannel",},
+    manifest={
+        "NotificationChannelDescriptor",
+        "NotificationChannel",
+    },
 )
 
 
@@ -72,17 +75,37 @@ class NotificationChannelDescriptor(proto.Message):
             type.
     """
 
-    name = proto.Field(proto.STRING, number=6,)
-    type_ = proto.Field(proto.STRING, number=1,)
-    display_name = proto.Field(proto.STRING, number=2,)
-    description = proto.Field(proto.STRING, number=3,)
+    name = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    type_ = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=3,
+    )
     labels = proto.RepeatedField(
-        proto.MESSAGE, number=4, message=label_pb2.LabelDescriptor,
+        proto.MESSAGE,
+        number=4,
+        message=label_pb2.LabelDescriptor,
     )
     supported_tiers = proto.RepeatedField(
-        proto.ENUM, number=5, enum=common.ServiceTier,
+        proto.ENUM,
+        number=5,
+        enum=common.ServiceTier,
     )
-    launch_stage = proto.Field(proto.ENUM, number=7, enum=launch_stage_pb2.LaunchStage,)
+    launch_stage = proto.Field(
+        proto.ENUM,
+        number=7,
+        enum=launch_stage_pb2.LaunchStage,
+    )
 
 
 class NotificationChannel(proto.Message):
@@ -192,19 +215,51 @@ class NotificationChannel(proto.Message):
         UNVERIFIED = 1
         VERIFIED = 2
 
-    type_ = proto.Field(proto.STRING, number=1,)
-    name = proto.Field(proto.STRING, number=6,)
-    display_name = proto.Field(proto.STRING, number=3,)
-    description = proto.Field(proto.STRING, number=4,)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=5,)
-    user_labels = proto.MapField(proto.STRING, proto.STRING, number=8,)
-    verification_status = proto.Field(proto.ENUM, number=9, enum=VerificationStatus,)
-    enabled = proto.Field(proto.MESSAGE, number=11, message=wrappers_pb2.BoolValue,)
+    type_ = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    name = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=5,
+    )
+    user_labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=8,
+    )
+    verification_status = proto.Field(
+        proto.ENUM,
+        number=9,
+        enum=VerificationStatus,
+    )
+    enabled = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message=wrappers_pb2.BoolValue,
+    )
     creation_record = proto.Field(
-        proto.MESSAGE, number=12, message=mutation_record.MutationRecord,
+        proto.MESSAGE,
+        number=12,
+        message=mutation_record.MutationRecord,
     )
     mutation_records = proto.RepeatedField(
-        proto.MESSAGE, number=13, message=mutation_record.MutationRecord,
+        proto.MESSAGE,
+        number=13,
+        message=mutation_record.MutationRecord,
     )
 
 

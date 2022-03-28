@@ -16,7 +16,12 @@
 import proto  # type: ignore
 
 
-__protobuf__ = proto.module(package="google.monitoring.v3", manifest={"Group",},)
+__protobuf__ = proto.module(
+    package="google.monitoring.v3",
+    manifest={
+        "Group",
+    },
+)
 
 
 class Group(proto.Message):
@@ -82,11 +87,26 @@ class Group(proto.Message):
             clusters.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    display_name = proto.Field(proto.STRING, number=2,)
-    parent_name = proto.Field(proto.STRING, number=3,)
-    filter = proto.Field(proto.STRING, number=5,)
-    is_cluster = proto.Field(proto.BOOL, number=6,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    parent_name = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    is_cluster = proto.Field(
+        proto.BOOL,
+        number=6,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

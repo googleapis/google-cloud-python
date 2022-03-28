@@ -70,9 +70,18 @@ class ListNotificationChannelDescriptorsRequest(proto.Message):
             the next set of results.
     """
 
-    name = proto.Field(proto.STRING, number=4,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    name = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListNotificationChannelDescriptorsResponse(proto.Message):
@@ -94,9 +103,14 @@ class ListNotificationChannelDescriptorsResponse(proto.Message):
         return self
 
     channel_descriptors = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=notification.NotificationChannelDescriptor,
+        proto.MESSAGE,
+        number=1,
+        message=notification.NotificationChannelDescriptor,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetNotificationChannelDescriptorRequest(proto.Message):
@@ -112,7 +126,10 @@ class GetNotificationChannelDescriptorRequest(proto.Message):
                 projects/[PROJECT_ID_OR_NUMBER]/notificationChannelDescriptors/[CHANNEL_TYPE]
     """
 
-    name = proto.Field(proto.STRING, number=3,)
+    name = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class CreateNotificationChannelRequest(proto.Message):
@@ -139,9 +156,14 @@ class CreateNotificationChannelRequest(proto.Message):
             create.
     """
 
-    name = proto.Field(proto.STRING, number=3,)
+    name = proto.Field(
+        proto.STRING,
+        number=3,
+    )
     notification_channel = proto.Field(
-        proto.MESSAGE, number=2, message=notification.NotificationChannel,
+        proto.MESSAGE,
+        number=2,
+        message=notification.NotificationChannel,
     )
 
 
@@ -188,11 +210,26 @@ class ListNotificationChannelsRequest(proto.Message):
             the next set of results.
     """
 
-    name = proto.Field(proto.STRING, number=5,)
-    filter = proto.Field(proto.STRING, number=6,)
-    order_by = proto.Field(proto.STRING, number=7,)
-    page_size = proto.Field(proto.INT32, number=3,)
-    page_token = proto.Field(proto.STRING, number=4,)
+    name = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    order_by = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class ListNotificationChannelsResponse(proto.Message):
@@ -219,10 +256,18 @@ class ListNotificationChannelsResponse(proto.Message):
         return self
 
     notification_channels = proto.RepeatedField(
-        proto.MESSAGE, number=3, message=notification.NotificationChannel,
+        proto.MESSAGE,
+        number=3,
+        message=notification.NotificationChannel,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
-    total_size = proto.Field(proto.INT32, number=4,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    total_size = proto.Field(
+        proto.INT32,
+        number=4,
+    )
 
 
 class GetNotificationChannelRequest(proto.Message):
@@ -238,7 +283,10 @@ class GetNotificationChannelRequest(proto.Message):
                 projects/[PROJECT_ID_OR_NUMBER]/notificationChannels/[CHANNEL_ID]
     """
 
-    name = proto.Field(proto.STRING, number=3,)
+    name = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class UpdateNotificationChannelRequest(proto.Message):
@@ -255,10 +303,14 @@ class UpdateNotificationChannelRequest(proto.Message):
     """
 
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
     notification_channel = proto.Field(
-        proto.MESSAGE, number=3, message=notification.NotificationChannel,
+        proto.MESSAGE,
+        number=3,
+        message=notification.NotificationChannel,
     )
 
 
@@ -282,8 +334,14 @@ class DeleteNotificationChannelRequest(proto.Message):
             fail to be deleted in a delete operation.
     """
 
-    name = proto.Field(proto.STRING, number=3,)
-    force = proto.Field(proto.BOOL, number=5,)
+    name = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    force = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
 
 
 class SendNotificationChannelVerificationCodeRequest(proto.Message):
@@ -295,7 +353,10 @@ class SendNotificationChannelVerificationCodeRequest(proto.Message):
             to send a verification code.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class GetNotificationChannelVerificationCodeRequest(proto.Message):
@@ -325,8 +386,15 @@ class GetNotificationChannelVerificationCodeRequest(proto.Message):
             that is permitted).
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    expire_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    expire_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 class GetNotificationChannelVerificationCodeResponse(proto.Message):
@@ -348,8 +416,15 @@ class GetNotificationChannelVerificationCodeResponse(proto.Message):
             permitted expiration.
     """
 
-    code = proto.Field(proto.STRING, number=1,)
-    expire_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
+    code = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    expire_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 class VerifyNotificationChannelRequest(proto.Message):
@@ -370,8 +445,14 @@ class VerifyNotificationChannelRequest(proto.Message):
             structure or format of the code).
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    code = proto.Field(proto.STRING, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    code = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

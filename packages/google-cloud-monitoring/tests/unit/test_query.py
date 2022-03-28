@@ -238,7 +238,7 @@ class TestQuery(unittest.TestCase):
         query = query.select_interval(end_time=T1)
         actual = query._build_query_params()
         expected = {
-            "name": u"projects/{}".format(PROJECT),
+            "name": "projects/{}".format(PROJECT),
             "filter": 'metric.type = "{type}"'.format(type=METRIC_TYPE),
             "interval": self._make_interval(T1),
             "view": monitoring_v3.ListTimeSeriesRequest.TimeSeriesView.FULL,

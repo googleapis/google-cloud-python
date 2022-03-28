@@ -59,9 +59,18 @@ class ListUptimeCheckConfigsRequest(proto.Message):
             results from the previous method call.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=3,)
-    page_token = proto.Field(proto.STRING, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class ListUptimeCheckConfigsResponse(proto.Message):
@@ -88,10 +97,18 @@ class ListUptimeCheckConfigsResponse(proto.Message):
         return self
 
     uptime_check_configs = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=uptime.UptimeCheckConfig,
+        proto.MESSAGE,
+        number=1,
+        message=uptime.UptimeCheckConfig,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
-    total_size = proto.Field(proto.INT32, number=3,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    total_size = proto.Field(
+        proto.INT32,
+        number=3,
+    )
 
 
 class GetUptimeCheckConfigRequest(proto.Message):
@@ -107,7 +124,10 @@ class GetUptimeCheckConfigRequest(proto.Message):
                 projects/[PROJECT_ID_OR_NUMBER]/uptimeCheckConfigs/[UPTIME_CHECK_ID]
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CreateUptimeCheckConfigRequest(proto.Message):
@@ -126,9 +146,14 @@ class CreateUptimeCheckConfigRequest(proto.Message):
             Required. The new Uptime check configuration.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     uptime_check_config = proto.Field(
-        proto.MESSAGE, number=2, message=uptime.UptimeCheckConfig,
+        proto.MESSAGE,
+        number=2,
+        message=uptime.UptimeCheckConfig,
     )
 
 
@@ -159,10 +184,14 @@ class UpdateUptimeCheckConfigRequest(proto.Message):
     """
 
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
     uptime_check_config = proto.Field(
-        proto.MESSAGE, number=3, message=uptime.UptimeCheckConfig,
+        proto.MESSAGE,
+        number=3,
+        message=uptime.UptimeCheckConfig,
     )
 
 
@@ -179,7 +208,10 @@ class DeleteUptimeCheckConfigRequest(proto.Message):
                 projects/[PROJECT_ID_OR_NUMBER]/uptimeCheckConfigs/[UPTIME_CHECK_ID]
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListUptimeCheckIpsRequest(proto.Message):
@@ -201,8 +233,14 @@ class ListUptimeCheckIpsRequest(proto.Message):
             not yet implemented
     """
 
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListUptimeCheckIpsResponse(proto.Message):
@@ -226,9 +264,14 @@ class ListUptimeCheckIpsResponse(proto.Message):
         return self
 
     uptime_check_ips = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=uptime.UptimeCheckIp,
+        proto.MESSAGE,
+        number=1,
+        message=uptime.UptimeCheckIp,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

@@ -22,7 +22,12 @@ from google.protobuf import wrappers_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 
 
-__protobuf__ = proto.module(package="google.monitoring.v3", manifest={"AlertPolicy",},)
+__protobuf__ = proto.module(
+    package="google.monitoring.v3",
+    manifest={
+        "AlertPolicy",
+    },
+)
 
 
 class AlertPolicy(proto.Message):
@@ -149,8 +154,14 @@ class AlertPolicy(proto.Message):
                 more information.
         """
 
-        content = proto.Field(proto.STRING, number=1,)
-        mime_type = proto.Field(proto.STRING, number=2,)
+        content = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        mime_type = proto.Field(
+            proto.STRING,
+            number=2,
+        )
 
     class Condition(proto.Message):
         r"""A condition is a true/false test that determines when an
@@ -249,8 +260,16 @@ class AlertPolicy(proto.Message):
                     This field is a member of `oneof`_ ``type``.
             """
 
-            count = proto.Field(proto.INT32, number=1, oneof="type",)
-            percent = proto.Field(proto.DOUBLE, number=2, oneof="type",)
+            count = proto.Field(
+                proto.INT32,
+                number=1,
+                oneof="type",
+            )
+            percent = proto.Field(
+                proto.DOUBLE,
+                number=2,
+                oneof="type",
+            )
 
         class MetricThreshold(proto.Message):
             r"""A condition type that compares a collection of time series
@@ -343,21 +362,42 @@ class AlertPolicy(proto.Message):
                     ``denominator_aggregations`` are specified.
             """
 
-            filter = proto.Field(proto.STRING, number=2,)
+            filter = proto.Field(
+                proto.STRING,
+                number=2,
+            )
             aggregations = proto.RepeatedField(
-                proto.MESSAGE, number=8, message=common.Aggregation,
+                proto.MESSAGE,
+                number=8,
+                message=common.Aggregation,
             )
-            denominator_filter = proto.Field(proto.STRING, number=9,)
+            denominator_filter = proto.Field(
+                proto.STRING,
+                number=9,
+            )
             denominator_aggregations = proto.RepeatedField(
-                proto.MESSAGE, number=10, message=common.Aggregation,
+                proto.MESSAGE,
+                number=10,
+                message=common.Aggregation,
             )
-            comparison = proto.Field(proto.ENUM, number=4, enum=common.ComparisonType,)
-            threshold_value = proto.Field(proto.DOUBLE, number=5,)
+            comparison = proto.Field(
+                proto.ENUM,
+                number=4,
+                enum=common.ComparisonType,
+            )
+            threshold_value = proto.Field(
+                proto.DOUBLE,
+                number=5,
+            )
             duration = proto.Field(
-                proto.MESSAGE, number=6, message=duration_pb2.Duration,
+                proto.MESSAGE,
+                number=6,
+                message=duration_pb2.Duration,
             )
             trigger = proto.Field(
-                proto.MESSAGE, number=7, message="AlertPolicy.Condition.Trigger",
+                proto.MESSAGE,
+                number=7,
+                message="AlertPolicy.Condition.Trigger",
             )
 
         class MetricAbsence(proto.Message):
@@ -410,15 +450,24 @@ class AlertPolicy(proto.Message):
                     identified by ``filter`` and ``aggregations``.
             """
 
-            filter = proto.Field(proto.STRING, number=1,)
+            filter = proto.Field(
+                proto.STRING,
+                number=1,
+            )
             aggregations = proto.RepeatedField(
-                proto.MESSAGE, number=5, message=common.Aggregation,
+                proto.MESSAGE,
+                number=5,
+                message=common.Aggregation,
             )
             duration = proto.Field(
-                proto.MESSAGE, number=2, message=duration_pb2.Duration,
+                proto.MESSAGE,
+                number=2,
+                message=duration_pb2.Duration,
             )
             trigger = proto.Field(
-                proto.MESSAGE, number=3, message="AlertPolicy.Condition.Trigger",
+                proto.MESSAGE,
+                number=3,
+                message="AlertPolicy.Condition.Trigger",
             )
 
         class LogMatch(proto.Message):
@@ -447,8 +496,15 @@ class AlertPolicy(proto.Message):
                     for syntax and examples.
             """
 
-            filter = proto.Field(proto.STRING, number=1,)
-            label_extractors = proto.MapField(proto.STRING, proto.STRING, number=2,)
+            filter = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            label_extractors = proto.MapField(
+                proto.STRING,
+                proto.STRING,
+                number=2,
+            )
 
         class MonitoringQueryLanguageCondition(proto.Message):
             r"""A condition type that allows alert policies to be defined using
@@ -482,16 +538,29 @@ class AlertPolicy(proto.Message):
                     ``denominator_aggregations`` are specified.
             """
 
-            query = proto.Field(proto.STRING, number=1,)
+            query = proto.Field(
+                proto.STRING,
+                number=1,
+            )
             duration = proto.Field(
-                proto.MESSAGE, number=2, message=duration_pb2.Duration,
+                proto.MESSAGE,
+                number=2,
+                message=duration_pb2.Duration,
             )
             trigger = proto.Field(
-                proto.MESSAGE, number=3, message="AlertPolicy.Condition.Trigger",
+                proto.MESSAGE,
+                number=3,
+                message="AlertPolicy.Condition.Trigger",
             )
 
-        name = proto.Field(proto.STRING, number=12,)
-        display_name = proto.Field(proto.STRING, number=6,)
+        name = proto.Field(
+            proto.STRING,
+            number=12,
+        )
+        display_name = proto.Field(
+            proto.STRING,
+            number=6,
+        )
         condition_threshold = proto.Field(
             proto.MESSAGE,
             number=1,
@@ -543,7 +612,9 @@ class AlertPolicy(proto.Message):
             """
 
             period = proto.Field(
-                proto.MESSAGE, number=1, message=duration_pb2.Duration,
+                proto.MESSAGE,
+                number=1,
+                message=duration_pb2.Duration,
             )
 
         notification_rate_limit = proto.Field(
@@ -552,25 +623,68 @@ class AlertPolicy(proto.Message):
             message="AlertPolicy.AlertStrategy.NotificationRateLimit",
         )
         auto_close = proto.Field(
-            proto.MESSAGE, number=3, message=duration_pb2.Duration,
+            proto.MESSAGE,
+            number=3,
+            message=duration_pb2.Duration,
         )
 
-    name = proto.Field(proto.STRING, number=1,)
-    display_name = proto.Field(proto.STRING, number=2,)
-    documentation = proto.Field(proto.MESSAGE, number=13, message=Documentation,)
-    user_labels = proto.MapField(proto.STRING, proto.STRING, number=16,)
-    conditions = proto.RepeatedField(proto.MESSAGE, number=12, message=Condition,)
-    combiner = proto.Field(proto.ENUM, number=6, enum=ConditionCombinerType,)
-    enabled = proto.Field(proto.MESSAGE, number=17, message=wrappers_pb2.BoolValue,)
-    validity = proto.Field(proto.MESSAGE, number=18, message=status_pb2.Status,)
-    notification_channels = proto.RepeatedField(proto.STRING, number=14,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    documentation = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        message=Documentation,
+    )
+    user_labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=16,
+    )
+    conditions = proto.RepeatedField(
+        proto.MESSAGE,
+        number=12,
+        message=Condition,
+    )
+    combiner = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum=ConditionCombinerType,
+    )
+    enabled = proto.Field(
+        proto.MESSAGE,
+        number=17,
+        message=wrappers_pb2.BoolValue,
+    )
+    validity = proto.Field(
+        proto.MESSAGE,
+        number=18,
+        message=status_pb2.Status,
+    )
+    notification_channels = proto.RepeatedField(
+        proto.STRING,
+        number=14,
+    )
     creation_record = proto.Field(
-        proto.MESSAGE, number=10, message=gm_mutation_record.MutationRecord,
+        proto.MESSAGE,
+        number=10,
+        message=gm_mutation_record.MutationRecord,
     )
     mutation_record = proto.Field(
-        proto.MESSAGE, number=11, message=gm_mutation_record.MutationRecord,
+        proto.MESSAGE,
+        number=11,
+        message=gm_mutation_record.MutationRecord,
     )
-    alert_strategy = proto.Field(proto.MESSAGE, number=21, message=AlertStrategy,)
+    alert_strategy = proto.Field(
+        proto.MESSAGE,
+        number=21,
+        message=AlertStrategy,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

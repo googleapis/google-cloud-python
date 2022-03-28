@@ -55,8 +55,16 @@ class Point(proto.Message):
             The value of the data point.
     """
 
-    interval = proto.Field(proto.MESSAGE, number=1, message=common.TimeInterval,)
-    value = proto.Field(proto.MESSAGE, number=2, message=common.TypedValue,)
+    interval = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=common.TimeInterval,
+    )
+    value = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=common.TypedValue,
+    )
 
 
 class TimeSeries(proto.Message):
@@ -120,9 +128,15 @@ class TimeSeries(proto.Message):
             of the stored metric values.
     """
 
-    metric = proto.Field(proto.MESSAGE, number=1, message=metric_pb2.Metric,)
+    metric = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=metric_pb2.Metric,
+    )
     resource = proto.Field(
-        proto.MESSAGE, number=2, message=monitored_resource_pb2.MonitoredResource,
+        proto.MESSAGE,
+        number=2,
+        message=monitored_resource_pb2.MonitoredResource,
     )
     metadata = proto.Field(
         proto.MESSAGE,
@@ -130,13 +144,24 @@ class TimeSeries(proto.Message):
         message=monitored_resource_pb2.MonitoredResourceMetadata,
     )
     metric_kind = proto.Field(
-        proto.ENUM, number=3, enum=metric_pb2.MetricDescriptor.MetricKind,
+        proto.ENUM,
+        number=3,
+        enum=metric_pb2.MetricDescriptor.MetricKind,
     )
     value_type = proto.Field(
-        proto.ENUM, number=4, enum=metric_pb2.MetricDescriptor.ValueType,
+        proto.ENUM,
+        number=4,
+        enum=metric_pb2.MetricDescriptor.ValueType,
     )
-    points = proto.RepeatedField(proto.MESSAGE, number=5, message="Point",)
-    unit = proto.Field(proto.STRING, number=8,)
+    points = proto.RepeatedField(
+        proto.MESSAGE,
+        number=5,
+        message="Point",
+    )
+    unit = proto.Field(
+        proto.STRING,
+        number=8,
+    )
 
 
 class TimeSeriesDescriptor(proto.Message):
@@ -166,20 +191,34 @@ class TimeSeriesDescriptor(proto.Message):
                 if ``value_type`` is INTEGER, DOUBLE, DISTRIBUTION.
         """
 
-        key = proto.Field(proto.STRING, number=1,)
+        key = proto.Field(
+            proto.STRING,
+            number=1,
+        )
         value_type = proto.Field(
-            proto.ENUM, number=2, enum=metric_pb2.MetricDescriptor.ValueType,
+            proto.ENUM,
+            number=2,
+            enum=metric_pb2.MetricDescriptor.ValueType,
         )
         metric_kind = proto.Field(
-            proto.ENUM, number=3, enum=metric_pb2.MetricDescriptor.MetricKind,
+            proto.ENUM,
+            number=3,
+            enum=metric_pb2.MetricDescriptor.MetricKind,
         )
-        unit = proto.Field(proto.STRING, number=4,)
+        unit = proto.Field(
+            proto.STRING,
+            number=4,
+        )
 
     label_descriptors = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=label_pb2.LabelDescriptor,
+        proto.MESSAGE,
+        number=1,
+        message=label_pb2.LabelDescriptor,
     )
     point_descriptors = proto.RepeatedField(
-        proto.MESSAGE, number=5, message=ValueDescriptor,
+        proto.MESSAGE,
+        number=5,
+        message=ValueDescriptor,
     )
 
 
@@ -212,14 +251,26 @@ class TimeSeriesData(proto.Message):
         """
 
         values = proto.RepeatedField(
-            proto.MESSAGE, number=1, message=common.TypedValue,
+            proto.MESSAGE,
+            number=1,
+            message=common.TypedValue,
         )
         time_interval = proto.Field(
-            proto.MESSAGE, number=2, message=common.TimeInterval,
+            proto.MESSAGE,
+            number=2,
+            message=common.TimeInterval,
         )
 
-    label_values = proto.RepeatedField(proto.MESSAGE, number=1, message="LabelValue",)
-    point_data = proto.RepeatedField(proto.MESSAGE, number=2, message=PointData,)
+    label_values = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="LabelValue",
+    )
+    point_data = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=PointData,
+    )
 
 
 class LabelValue(proto.Message):
@@ -247,9 +298,21 @@ class LabelValue(proto.Message):
             This field is a member of `oneof`_ ``value``.
     """
 
-    bool_value = proto.Field(proto.BOOL, number=1, oneof="value",)
-    int64_value = proto.Field(proto.INT64, number=2, oneof="value",)
-    string_value = proto.Field(proto.STRING, number=3, oneof="value",)
+    bool_value = proto.Field(
+        proto.BOOL,
+        number=1,
+        oneof="value",
+    )
+    int64_value = proto.Field(
+        proto.INT64,
+        number=2,
+        oneof="value",
+    )
+    string_value = proto.Field(
+        proto.STRING,
+        number=3,
+        oneof="value",
+    )
 
 
 class QueryError(proto.Message):
@@ -264,8 +327,15 @@ class QueryError(proto.Message):
             The error message.
     """
 
-    locator = proto.Field(proto.MESSAGE, number=1, message="TextLocator",)
-    message = proto.Field(proto.STRING, number=2,)
+    locator = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="TextLocator",
+    )
+    message = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class TextLocator(proto.Message):
@@ -328,14 +398,38 @@ class TextLocator(proto.Message):
                 index even though the text is UTF-8.
         """
 
-        line = proto.Field(proto.INT32, number=1,)
-        column = proto.Field(proto.INT32, number=2,)
+        line = proto.Field(
+            proto.INT32,
+            number=1,
+        )
+        column = proto.Field(
+            proto.INT32,
+            number=2,
+        )
 
-    source = proto.Field(proto.STRING, number=1,)
-    start_position = proto.Field(proto.MESSAGE, number=2, message=Position,)
-    end_position = proto.Field(proto.MESSAGE, number=3, message=Position,)
-    nested_locator = proto.Field(proto.MESSAGE, number=4, message="TextLocator",)
-    nesting_reason = proto.Field(proto.STRING, number=5,)
+    source = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    start_position = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=Position,
+    )
+    end_position = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=Position,
+    )
+    nested_locator = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="TextLocator",
+    )
+    nesting_reason = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

@@ -97,12 +97,31 @@ class InternalChecker(proto.Message):
         CREATING = 1
         RUNNING = 2
 
-    name = proto.Field(proto.STRING, number=1,)
-    display_name = proto.Field(proto.STRING, number=2,)
-    network = proto.Field(proto.STRING, number=3,)
-    gcp_zone = proto.Field(proto.STRING, number=4,)
-    peer_project_id = proto.Field(proto.STRING, number=6,)
-    state = proto.Field(proto.ENUM, number=7, enum=State,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    network = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    gcp_zone = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    peer_project_id = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=7,
+        enum=State,
+    )
 
 
 class UptimeCheckConfig(proto.Message):
@@ -213,8 +232,15 @@ class UptimeCheckConfig(proto.Message):
                 The resource type of the group members.
         """
 
-        group_id = proto.Field(proto.STRING, number=1,)
-        resource_type = proto.Field(proto.ENUM, number=2, enum="GroupResourceType",)
+        group_id = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        resource_type = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum="GroupResourceType",
+        )
 
     class HttpCheck(proto.Message):
         r"""Information involved in an HTTP/HTTPS Uptime check request.
@@ -321,27 +347,59 @@ class UptimeCheckConfig(proto.Message):
                     the HTTP server.
             """
 
-            username = proto.Field(proto.STRING, number=1,)
-            password = proto.Field(proto.STRING, number=2,)
+            username = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            password = proto.Field(
+                proto.STRING,
+                number=2,
+            )
 
         request_method = proto.Field(
-            proto.ENUM, number=8, enum="UptimeCheckConfig.HttpCheck.RequestMethod",
+            proto.ENUM,
+            number=8,
+            enum="UptimeCheckConfig.HttpCheck.RequestMethod",
         )
-        use_ssl = proto.Field(proto.BOOL, number=1,)
-        path = proto.Field(proto.STRING, number=2,)
-        port = proto.Field(proto.INT32, number=3,)
+        use_ssl = proto.Field(
+            proto.BOOL,
+            number=1,
+        )
+        path = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        port = proto.Field(
+            proto.INT32,
+            number=3,
+        )
         auth_info = proto.Field(
             proto.MESSAGE,
             number=4,
             message="UptimeCheckConfig.HttpCheck.BasicAuthentication",
         )
-        mask_headers = proto.Field(proto.BOOL, number=5,)
-        headers = proto.MapField(proto.STRING, proto.STRING, number=6,)
-        content_type = proto.Field(
-            proto.ENUM, number=9, enum="UptimeCheckConfig.HttpCheck.ContentType",
+        mask_headers = proto.Field(
+            proto.BOOL,
+            number=5,
         )
-        validate_ssl = proto.Field(proto.BOOL, number=7,)
-        body = proto.Field(proto.BYTES, number=10,)
+        headers = proto.MapField(
+            proto.STRING,
+            proto.STRING,
+            number=6,
+        )
+        content_type = proto.Field(
+            proto.ENUM,
+            number=9,
+            enum="UptimeCheckConfig.HttpCheck.ContentType",
+        )
+        validate_ssl = proto.Field(
+            proto.BOOL,
+            number=7,
+        )
+        body = proto.Field(
+            proto.BYTES,
+            number=10,
+        )
 
     class TcpCheck(proto.Message):
         r"""Information required for a TCP Uptime check request.
@@ -353,7 +411,10 @@ class UptimeCheckConfig(proto.Message):
                 ``monitored_resource``) to construct the full URL. Required.
         """
 
-        port = proto.Field(proto.INT32, number=1,)
+        port = proto.Field(
+            proto.INT32,
+            number=1,
+        )
 
     class ContentMatcher(proto.Message):
         r"""Optional. Used to perform content matching. This allows
@@ -381,15 +442,24 @@ class UptimeCheckConfig(proto.Message):
             MATCHES_REGEX = 3
             NOT_MATCHES_REGEX = 4
 
-        content = proto.Field(proto.STRING, number=1,)
+        content = proto.Field(
+            proto.STRING,
+            number=1,
+        )
         matcher = proto.Field(
             proto.ENUM,
             number=2,
             enum="UptimeCheckConfig.ContentMatcher.ContentMatcherOption",
         )
 
-    name = proto.Field(proto.STRING, number=1,)
-    display_name = proto.Field(proto.STRING, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
     monitored_resource = proto.Field(
         proto.MESSAGE,
         number=3,
@@ -397,25 +467,51 @@ class UptimeCheckConfig(proto.Message):
         message=monitored_resource_pb2.MonitoredResource,
     )
     resource_group = proto.Field(
-        proto.MESSAGE, number=4, oneof="resource", message=ResourceGroup,
+        proto.MESSAGE,
+        number=4,
+        oneof="resource",
+        message=ResourceGroup,
     )
     http_check = proto.Field(
-        proto.MESSAGE, number=5, oneof="check_request_type", message=HttpCheck,
+        proto.MESSAGE,
+        number=5,
+        oneof="check_request_type",
+        message=HttpCheck,
     )
     tcp_check = proto.Field(
-        proto.MESSAGE, number=6, oneof="check_request_type", message=TcpCheck,
+        proto.MESSAGE,
+        number=6,
+        oneof="check_request_type",
+        message=TcpCheck,
     )
-    period = proto.Field(proto.MESSAGE, number=7, message=duration_pb2.Duration,)
-    timeout = proto.Field(proto.MESSAGE, number=8, message=duration_pb2.Duration,)
+    period = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=duration_pb2.Duration,
+    )
+    timeout = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=duration_pb2.Duration,
+    )
     content_matchers = proto.RepeatedField(
-        proto.MESSAGE, number=9, message=ContentMatcher,
+        proto.MESSAGE,
+        number=9,
+        message=ContentMatcher,
     )
     selected_regions = proto.RepeatedField(
-        proto.ENUM, number=10, enum="UptimeCheckRegion",
+        proto.ENUM,
+        number=10,
+        enum="UptimeCheckRegion",
     )
-    is_internal = proto.Field(proto.BOOL, number=15,)
+    is_internal = proto.Field(
+        proto.BOOL,
+        number=15,
+    )
     internal_checkers = proto.RepeatedField(
-        proto.MESSAGE, number=14, message="InternalChecker",
+        proto.MESSAGE,
+        number=14,
+        message="InternalChecker",
     )
 
 
@@ -444,9 +540,19 @@ class UptimeCheckIp(proto.Message):
             or IPv6 format.
     """
 
-    region = proto.Field(proto.ENUM, number=1, enum="UptimeCheckRegion",)
-    location = proto.Field(proto.STRING, number=2,)
-    ip_address = proto.Field(proto.STRING, number=3,)
+    region = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum="UptimeCheckRegion",
+    )
+    location = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    ip_address = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

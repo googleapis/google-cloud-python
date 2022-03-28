@@ -58,9 +58,19 @@ class CreateServiceRequest(proto.Message):
             Required. The ``Service`` to create.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    service_id = proto.Field(proto.STRING, number=3,)
-    service = proto.Field(proto.MESSAGE, number=2, message=gm_service.Service,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    service_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    service = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=gm_service.Service,
+    )
 
 
 class GetServiceRequest(proto.Message):
@@ -75,7 +85,10 @@ class GetServiceRequest(proto.Message):
                 projects/[PROJECT_ID_OR_NUMBER]/services/[SERVICE_ID]
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListServicesRequest(proto.Message):
@@ -127,10 +140,22 @@ class ListServicesRequest(proto.Message):
             additional results from the previous method call.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    filter = proto.Field(proto.STRING, number=2,)
-    page_size = proto.Field(proto.INT32, number=3,)
-    page_token = proto.Field(proto.STRING, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class ListServicesResponse(proto.Message):
@@ -150,8 +175,15 @@ class ListServicesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    services = proto.RepeatedField(proto.MESSAGE, number=1, message=gm_service.Service,)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    services = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=gm_service.Service,
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class UpdateServiceRequest(proto.Message):
@@ -166,9 +198,15 @@ class UpdateServiceRequest(proto.Message):
             use for the update.
     """
 
-    service = proto.Field(proto.MESSAGE, number=1, message=gm_service.Service,)
+    service = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=gm_service.Service,
+    )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -185,7 +223,10 @@ class DeleteServiceRequest(proto.Message):
                 projects/[PROJECT_ID_OR_NUMBER]/services/[SERVICE_ID]
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CreateServiceLevelObjectiveRequest(proto.Message):
@@ -209,10 +250,18 @@ class CreateServiceLevelObjectiveRequest(proto.Message):
             ``ServiceLevelObjective`` exists with this name.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    service_level_objective_id = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    service_level_objective_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
     service_level_objective = proto.Field(
-        proto.MESSAGE, number=2, message=gm_service.ServiceLevelObjective,
+        proto.MESSAGE,
+        number=2,
+        message=gm_service.ServiceLevelObjective,
     )
 
 
@@ -236,9 +285,14 @@ class GetServiceLevelObjectiveRequest(proto.Message):
             ``RequestBasedSli`` spelling out how the SLI is computed.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     view = proto.Field(
-        proto.ENUM, number=2, enum=gm_service.ServiceLevelObjective.View,
+        proto.ENUM,
+        number=2,
+        enum=gm_service.ServiceLevelObjective.View,
     )
 
 
@@ -276,12 +330,26 @@ class ListServiceLevelObjectivesRequest(proto.Message):
             ``RequestBasedSli`` spelling out how the SLI is computed.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    filter = proto.Field(proto.STRING, number=2,)
-    page_size = proto.Field(proto.INT32, number=3,)
-    page_token = proto.Field(proto.STRING, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=4,
+    )
     view = proto.Field(
-        proto.ENUM, number=5, enum=gm_service.ServiceLevelObjective.View,
+        proto.ENUM,
+        number=5,
+        enum=gm_service.ServiceLevelObjective.View,
     )
 
 
@@ -304,9 +372,14 @@ class ListServiceLevelObjectivesResponse(proto.Message):
         return self
 
     service_level_objectives = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=gm_service.ServiceLevelObjective,
+        proto.MESSAGE,
+        number=1,
+        message=gm_service.ServiceLevelObjective,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class UpdateServiceLevelObjectiveRequest(proto.Message):
@@ -322,10 +395,14 @@ class UpdateServiceLevelObjectiveRequest(proto.Message):
     """
 
     service_level_objective = proto.Field(
-        proto.MESSAGE, number=1, message=gm_service.ServiceLevelObjective,
+        proto.MESSAGE,
+        number=1,
+        message=gm_service.ServiceLevelObjective,
     )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -342,7 +419,10 @@ class DeleteServiceLevelObjectiveRequest(proto.Message):
                 projects/[PROJECT_ID_OR_NUMBER]/services/[SERVICE_ID]/serviceLevelObjectives/[SLO_NAME]
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

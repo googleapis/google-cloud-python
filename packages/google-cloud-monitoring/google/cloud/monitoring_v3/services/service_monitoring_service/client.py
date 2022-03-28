@@ -60,7 +60,8 @@ class ServiceMonitoringServiceClientMeta(type):
     _transport_registry["grpc_asyncio"] = ServiceMonitoringServiceGrpcAsyncIOTransport
 
     def get_transport_class(
-        cls, label: str = None,
+        cls,
+        label: str = None,
     ) -> Type[ServiceMonitoringServiceTransport]:
         """Returns an appropriate transport class.
 
@@ -170,10 +171,14 @@ class ServiceMonitoringServiceClient(metaclass=ServiceMonitoringServiceClientMet
         return self._transport
 
     @staticmethod
-    def service_path(project: str, service: str,) -> str:
+    def service_path(
+        project: str,
+        service: str,
+    ) -> str:
         """Returns a fully-qualified service string."""
         return "projects/{project}/services/{service}".format(
-            project=project, service=service,
+            project=project,
+            service=service,
         )
 
     @staticmethod
@@ -184,7 +189,9 @@ class ServiceMonitoringServiceClient(metaclass=ServiceMonitoringServiceClientMet
 
     @staticmethod
     def service_level_objective_path(
-        project: str, service: str, service_level_objective: str,
+        project: str,
+        service: str,
+        service_level_objective: str,
     ) -> str:
         """Returns a fully-qualified service_level_objective string."""
         return "projects/{project}/services/{service}/serviceLevelObjectives/{service_level_objective}".format(
@@ -203,7 +210,9 @@ class ServiceMonitoringServiceClient(metaclass=ServiceMonitoringServiceClientMet
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_billing_account_path(billing_account: str,) -> str:
+    def common_billing_account_path(
+        billing_account: str,
+    ) -> str:
         """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
@@ -216,9 +225,13 @@ class ServiceMonitoringServiceClient(metaclass=ServiceMonitoringServiceClientMet
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(folder: str,) -> str:
+    def common_folder_path(
+        folder: str,
+    ) -> str:
         """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(folder=folder,)
+        return "folders/{folder}".format(
+            folder=folder,
+        )
 
     @staticmethod
     def parse_common_folder_path(path: str) -> Dict[str, str]:
@@ -227,9 +240,13 @@ class ServiceMonitoringServiceClient(metaclass=ServiceMonitoringServiceClientMet
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(organization: str,) -> str:
+    def common_organization_path(
+        organization: str,
+    ) -> str:
         """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(organization=organization,)
+        return "organizations/{organization}".format(
+            organization=organization,
+        )
 
     @staticmethod
     def parse_common_organization_path(path: str) -> Dict[str, str]:
@@ -238,9 +255,13 @@ class ServiceMonitoringServiceClient(metaclass=ServiceMonitoringServiceClientMet
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(project: str,) -> str:
+    def common_project_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified project string."""
-        return "projects/{project}".format(project=project,)
+        return "projects/{project}".format(
+            project=project,
+        )
 
     @staticmethod
     def parse_common_project_path(path: str) -> Dict[str, str]:
@@ -249,10 +270,14 @@ class ServiceMonitoringServiceClient(metaclass=ServiceMonitoringServiceClientMet
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(project: str, location: str,) -> str:
+    def common_location_path(
+        project: str,
+        location: str,
+    ) -> str:
         """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
-            project=project, location=location,
+            project=project,
+            location=location,
         )
 
     @staticmethod
@@ -527,7 +552,12 @@ class ServiceMonitoringServiceClient(metaclass=ServiceMonitoringServiceClientMet
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -624,7 +654,12 @@ class ServiceMonitoringServiceClient(metaclass=ServiceMonitoringServiceClientMet
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -723,12 +758,20 @@ class ServiceMonitoringServiceClient(metaclass=ServiceMonitoringServiceClientMet
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListServicesPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -823,7 +866,12 @@ class ServiceMonitoringServiceClient(metaclass=ServiceMonitoringServiceClientMet
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -908,7 +956,10 @@ class ServiceMonitoringServiceClient(metaclass=ServiceMonitoringServiceClientMet
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def create_service_level_objective(
@@ -1024,7 +1075,12 @@ class ServiceMonitoringServiceClient(metaclass=ServiceMonitoringServiceClientMet
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1131,7 +1187,12 @@ class ServiceMonitoringServiceClient(metaclass=ServiceMonitoringServiceClientMet
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1232,12 +1293,20 @@ class ServiceMonitoringServiceClient(metaclass=ServiceMonitoringServiceClientMet
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListServiceLevelObjectivesPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1348,7 +1417,12 @@ class ServiceMonitoringServiceClient(metaclass=ServiceMonitoringServiceClientMet
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1436,7 +1510,10 @@ class ServiceMonitoringServiceClient(metaclass=ServiceMonitoringServiceClientMet
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def __enter__(self):

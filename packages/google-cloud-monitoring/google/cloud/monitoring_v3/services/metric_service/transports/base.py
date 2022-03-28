@@ -218,7 +218,9 @@ class MetricServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.create_time_series: gapic_v1.method.wrap_method(
-                self.create_time_series, default_timeout=12.0, client_info=client_info,
+                self.create_time_series,
+                default_timeout=12.0,
+                client_info=client_info,
             ),
             self.create_service_time_series: gapic_v1.method.wrap_method(
                 self.create_service_time_series,
@@ -230,9 +232,9 @@ class MetricServiceTransport(abc.ABC):
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

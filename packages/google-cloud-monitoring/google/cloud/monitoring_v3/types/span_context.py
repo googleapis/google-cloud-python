@@ -16,7 +16,12 @@
 import proto  # type: ignore
 
 
-__protobuf__ = proto.module(package="google.monitoring.v3", manifest={"SpanContext",},)
+__protobuf__ = proto.module(
+    package="google.monitoring.v3",
+    manifest={
+        "SpanContext",
+    },
+)
 
 
 class SpanContext(proto.Message):
@@ -47,7 +52,10 @@ class SpanContext(proto.Message):
             8-byte array.
     """
 
-    span_name = proto.Field(proto.STRING, number=1,)
+    span_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

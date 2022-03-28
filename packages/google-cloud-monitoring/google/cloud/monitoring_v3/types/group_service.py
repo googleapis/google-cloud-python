@@ -103,12 +103,33 @@ class ListGroupsRequest(proto.Message):
             additional results from the previous method call.
     """
 
-    name = proto.Field(proto.STRING, number=7,)
-    children_of_group = proto.Field(proto.STRING, number=2, oneof="filter",)
-    ancestors_of_group = proto.Field(proto.STRING, number=3, oneof="filter",)
-    descendants_of_group = proto.Field(proto.STRING, number=4, oneof="filter",)
-    page_size = proto.Field(proto.INT32, number=5,)
-    page_token = proto.Field(proto.STRING, number=6,)
+    name = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    children_of_group = proto.Field(
+        proto.STRING,
+        number=2,
+        oneof="filter",
+    )
+    ancestors_of_group = proto.Field(
+        proto.STRING,
+        number=3,
+        oneof="filter",
+    )
+    descendants_of_group = proto.Field(
+        proto.STRING,
+        number=4,
+        oneof="filter",
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=5,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=6,
+    )
 
 
 class ListGroupsResponse(proto.Message):
@@ -128,8 +149,15 @@ class ListGroupsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    group = proto.RepeatedField(proto.MESSAGE, number=1, message=gm_group.Group,)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    group = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=gm_group.Group,
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetGroupRequest(proto.Message):
@@ -144,7 +172,10 @@ class GetGroupRequest(proto.Message):
                 projects/[PROJECT_ID_OR_NUMBER]/groups/[GROUP_ID]
     """
 
-    name = proto.Field(proto.STRING, number=3,)
+    name = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class CreateGroupRequest(proto.Message):
@@ -167,9 +198,19 @@ class CreateGroupRequest(proto.Message):
             create the group.
     """
 
-    name = proto.Field(proto.STRING, number=4,)
-    group = proto.Field(proto.MESSAGE, number=2, message=gm_group.Group,)
-    validate_only = proto.Field(proto.BOOL, number=3,)
+    name = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    group = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=gm_group.Group,
+    )
+    validate_only = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
 
 
 class UpdateGroupRequest(proto.Message):
@@ -185,8 +226,15 @@ class UpdateGroupRequest(proto.Message):
             update the existing group.
     """
 
-    group = proto.Field(proto.MESSAGE, number=2, message=gm_group.Group,)
-    validate_only = proto.Field(proto.BOOL, number=3,)
+    group = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=gm_group.Group,
+    )
+    validate_only = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
 
 
 class DeleteGroupRequest(proto.Message):
@@ -208,8 +256,14 @@ class DeleteGroupRequest(proto.Message):
             value is false.
     """
 
-    name = proto.Field(proto.STRING, number=3,)
-    recursive = proto.Field(proto.BOOL, number=4,)
+    name = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    recursive = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
 
 
 class ListGroupMembersRequest(proto.Message):
@@ -251,11 +305,27 @@ class ListGroupMembersRequest(proto.Message):
             minute is returned.
     """
 
-    name = proto.Field(proto.STRING, number=7,)
-    page_size = proto.Field(proto.INT32, number=3,)
-    page_token = proto.Field(proto.STRING, number=4,)
-    filter = proto.Field(proto.STRING, number=5,)
-    interval = proto.Field(proto.MESSAGE, number=6, message=common.TimeInterval,)
+    name = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    interval = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=common.TimeInterval,
+    )
 
 
 class ListGroupMembersResponse(proto.Message):
@@ -279,10 +349,18 @@ class ListGroupMembersResponse(proto.Message):
         return self
 
     members = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=monitored_resource_pb2.MonitoredResource,
+        proto.MESSAGE,
+        number=1,
+        message=monitored_resource_pb2.MonitoredResource,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
-    total_size = proto.Field(proto.INT32, number=3,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    total_size = proto.Field(
+        proto.INT32,
+        number=3,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

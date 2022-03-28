@@ -19,7 +19,10 @@ from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.monitoring.v3", manifest={"MutationRecord",},
+    package="google.monitoring.v3",
+    manifest={
+        "MutationRecord",
+    },
 )
 
 
@@ -34,8 +37,15 @@ class MutationRecord(proto.Message):
             change.
     """
 
-    mutate_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
-    mutated_by = proto.Field(proto.STRING, number=2,)
+    mutate_time = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    mutated_by = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

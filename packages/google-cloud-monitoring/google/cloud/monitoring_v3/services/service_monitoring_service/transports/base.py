@@ -128,7 +128,9 @@ class ServiceMonitoringServiceTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.create_service: gapic_v1.method.wrap_method(
-                self.create_service, default_timeout=30.0, client_info=client_info,
+                self.create_service,
+                default_timeout=30.0,
+                client_info=client_info,
             ),
             self.get_service: gapic_v1.method.wrap_method(
                 self.get_service,
@@ -159,7 +161,9 @@ class ServiceMonitoringServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.update_service: gapic_v1.method.wrap_method(
-                self.update_service, default_timeout=30.0, client_info=client_info,
+                self.update_service,
+                default_timeout=30.0,
+                client_info=client_info,
             ),
             self.delete_service: gapic_v1.method.wrap_method(
                 self.delete_service,
@@ -232,9 +236,9 @@ class ServiceMonitoringServiceTransport(abc.ABC):
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

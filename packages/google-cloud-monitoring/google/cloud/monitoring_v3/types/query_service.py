@@ -15,7 +15,10 @@
 #
 
 
-__protobuf__ = proto.module(package="google.monitoring.v3", manifest={},)
+__protobuf__ = proto.module(
+    package="google.monitoring.v3",
+    manifest={},
+)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
