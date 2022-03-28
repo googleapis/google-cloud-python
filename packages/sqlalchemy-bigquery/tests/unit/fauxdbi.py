@@ -172,7 +172,8 @@ class Cursor:
         return m.group(0).replace("<", "_").replace(">", "_")
 
     def __handle_array_types(
-        self, operation,
+        self,
+        operation,
     ):
         if self.__create_table(operation):
             return self.__normalize_array_types(operation)
@@ -187,7 +188,8 @@ class Cursor:
 
         if type_ == "datetime":
             return datetime.datetime.strptime(
-                value, "%Y-%m-%d %H:%M:%S.%f" if "." in value else "%Y-%m-%d %H:%M:%S",
+                value,
+                "%Y-%m-%d %H:%M:%S.%f" if "." in value else "%Y-%m-%d %H:%M:%S",
             )
         elif type_ == "date":
             return datetime.date(*map(int, value.split("-")))

@@ -124,12 +124,14 @@ if sqlalchemy_1_4_or_more:
             bindparam_type=sqlalchemy.types.String(),
         )
 
-
 else:
 
     def _field_index(self, name, operator):
         return sqlalchemy.sql.default_comparator._check_literal(
-            self.expr, operator, name, bindparam_type=sqlalchemy.types.String(),
+            self.expr,
+            operator,
+            name,
+            bindparam_type=sqlalchemy.types.String(),
         )
 
 

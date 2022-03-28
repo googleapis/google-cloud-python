@@ -53,7 +53,9 @@ def load_sample_data(
 
     with open(DATA_DIR / filename, "rb") as data_file:
         return bigquery_client.load_table_from_file(
-            data_file, full_table_id, job_config=sample_config,
+            data_file,
+            full_table_id,
+            job_config=sample_config,
         )
 
 
@@ -86,7 +88,9 @@ def bigquery_dataset(
         filename="sample_one_row.json",
     )
     job2.result()
-    view = bigquery.Table(f"{project_id}.{dataset_id}.sample_view",)
+    view = bigquery.Table(
+        f"{project_id}.{dataset_id}.sample_view",
+    )
     view.view_query = f"SELECT string FROM `{dataset_id}.sample`"
     bigquery_client.create_table(view)
     yield dataset_id

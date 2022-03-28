@@ -148,7 +148,10 @@ def test_unnest_and_struct_access_233(engine, bigquery_dataset, metadata):
     metadata.create_all(engine)
 
     conn.execute(
-        mock_table.insert(), dict(mock_id="x"), dict(mock_id="y"), dict(mock_id="z"),
+        mock_table.insert(),
+        dict(mock_id="x"),
+        dict(mock_id="y"),
+        dict(mock_id="z"),
     )
     conn.execute(
         another_mock_table.insert(),
@@ -160,7 +163,8 @@ def test_unnest_and_struct_access_233(engine, bigquery_dataset, metadata):
     ).subquery()
 
     join = mock_table.join(
-        subquery, subquery.c.another_mock_objects["object_id"] == mock_table.c.mock_id,
+        subquery,
+        subquery.c.another_mock_objects["object_id"] == mock_table.c.mock_id,
     )
 
     query = select(mock_table).select_from(join)

@@ -34,8 +34,8 @@ def module_under_test():
 
 def test_create_bigquery_client_with_credentials_path(monkeypatch, module_under_test):
     mock_service_account = mock.create_autospec(service_account.Credentials)
-    mock_service_account.from_service_account_file.return_value = AnonymousCredentialsWithProject(
-        "service-account-project"
+    mock_service_account.from_service_account_file.return_value = (
+        AnonymousCredentialsWithProject("service-account-project")
     )
     monkeypatch.setattr(service_account, "Credentials", mock_service_account)
 
@@ -54,13 +54,14 @@ def test_create_bigquery_client_with_credentials_path_respects_project(
     https://github.com/googleapis/python-bigquery-sqlalchemy/issues/48
     """
     mock_service_account = mock.create_autospec(service_account.Credentials)
-    mock_service_account.from_service_account_file.return_value = AnonymousCredentialsWithProject(
-        "service-account-project"
+    mock_service_account.from_service_account_file.return_value = (
+        AnonymousCredentialsWithProject("service-account-project")
     )
     monkeypatch.setattr(service_account, "Credentials", mock_service_account)
 
     bqclient = module_under_test.create_bigquery_client(
-        credentials_path="path/to/key.json", project_id="connection-url-project",
+        credentials_path="path/to/key.json",
+        project_id="connection-url-project",
     )
 
     assert bqclient.project == "connection-url-project"
@@ -68,8 +69,8 @@ def test_create_bigquery_client_with_credentials_path_respects_project(
 
 def test_create_bigquery_client_with_credentials_info(monkeypatch, module_under_test):
     mock_service_account = mock.create_autospec(service_account.Credentials)
-    mock_service_account.from_service_account_info.return_value = AnonymousCredentialsWithProject(
-        "service-account-project"
+    mock_service_account.from_service_account_info.return_value = (
+        AnonymousCredentialsWithProject("service-account-project")
     )
     monkeypatch.setattr(service_account, "Credentials", mock_service_account)
 
@@ -91,8 +92,8 @@ def test_create_bigquery_client_with_credentials_info_respects_project(
     https://github.com/googleapis/python-bigquery-sqlalchemy/issues/48
     """
     mock_service_account = mock.create_autospec(service_account.Credentials)
-    mock_service_account.from_service_account_info.return_value = AnonymousCredentialsWithProject(
-        "service-account-project"
+    mock_service_account.from_service_account_info.return_value = (
+        AnonymousCredentialsWithProject("service-account-project")
     )
     monkeypatch.setattr(service_account, "Credentials", mock_service_account)
 
@@ -109,8 +110,8 @@ def test_create_bigquery_client_with_credentials_info_respects_project(
 
 def test_create_bigquery_client_with_credentials_base64(monkeypatch, module_under_test):
     mock_service_account = mock.create_autospec(service_account.Credentials)
-    mock_service_account.from_service_account_info.return_value = AnonymousCredentialsWithProject(
-        "service-account-project"
+    mock_service_account.from_service_account_info.return_value = (
+        AnonymousCredentialsWithProject("service-account-project")
     )
     monkeypatch.setattr(service_account, "Credentials", mock_service_account)
 
@@ -135,8 +136,8 @@ def test_create_bigquery_client_with_credentials_base64_respects_project(
     https://github.com/googleapis/python-bigquery-sqlalchemy/issues/48
     """
     mock_service_account = mock.create_autospec(service_account.Credentials)
-    mock_service_account.from_service_account_info.return_value = AnonymousCredentialsWithProject(
-        "service-account-project"
+    mock_service_account.from_service_account_info.return_value = (
+        AnonymousCredentialsWithProject("service-account-project")
     )
     monkeypatch.setattr(service_account, "Credentials", mock_service_account)
 
@@ -147,7 +148,8 @@ def test_create_bigquery_client_with_credentials_base64_respects_project(
     credentials_base64 = base64.b64encode(json.dumps(credentials_info).encode())
 
     bqclient = module_under_test.create_bigquery_client(
-        credentials_base64=credentials_base64, project_id="connection-url-project",
+        credentials_base64=credentials_base64,
+        project_id="connection-url-project",
     )
 
     assert bqclient.project == "connection-url-project"

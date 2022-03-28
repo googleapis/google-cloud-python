@@ -69,7 +69,6 @@ if packaging.version.parse(sqlalchemy.__version__) < packaging.version.parse("1.
             with mock.patch("sqlalchemy.testing.suite.test_types.literal", literal):
                 super(TimestampMicrosecondsTest, self).test_literal()
 
-
 else:
     from sqlalchemy.testing.suite import (
         FetchLimitOffsetTest as _FetchLimitOffsetTest,
@@ -95,7 +94,9 @@ else:
             u = sqlalchemy.union(select(stmt), select(stmt)).subquery().select()
 
             self._assert_result(
-                connection, u, [(1,)],
+                connection,
+                u,
+                [(1,)],
             )
 
     del DifficultParametersTest  # exercises column names illegal in BQ
@@ -193,7 +194,10 @@ class ExistsTest(_ExistsTest):
         eq_(
             connection.execute(
                 select([stuff.c.id]).where(
-                    and_(stuff.c.id == 1, exists().where(stuff.c.data == "some data"),)
+                    and_(
+                        stuff.c.id == 1,
+                        exists().where(stuff.c.data == "some data"),
+                    )
                 )
             ).fetchall(),
             [(1,)],

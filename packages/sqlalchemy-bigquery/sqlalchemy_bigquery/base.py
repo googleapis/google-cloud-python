@@ -76,7 +76,8 @@ class BigQueryIdentifierPreparer(IdentifierPreparer):
 
     def __init__(self, dialect):
         super(BigQueryIdentifierPreparer, self).__init__(
-            dialect, initial_quote="`",
+            dialect,
+            initial_quote="`",
         )
 
     def quote_column(self, value):
@@ -349,7 +350,7 @@ class BigQueryCompiler(_struct.SQLCompiler, SQLCompiler):
     __expanding_conflict = "" if __sqlalchemy_version_info < (1, 4, 27) else "__"
 
     __in_expanding_bind = _helpers.substitute_string_re_method(
-        fr"""
+        rf"""
         \sIN\s\(                     # ' IN ('
         (
         {__expanding_conflict}\[     # Expanding placeholder
@@ -435,7 +436,7 @@ class BigQueryCompiler(_struct.SQLCompiler, SQLCompiler):
     __placeholder = re.compile(r"%\(([^\]:]+)(:[^\]:]+)?\)s$").match
 
     __expanded_param = re.compile(
-        fr"\({__expanding_conflict}\[" fr"{__expanding_text}" fr"_[^\]]+\]\)$"
+        rf"\({__expanding_conflict}\[" rf"{__expanding_text}" rf"_[^\]]+\]\)$"
     ).match
 
     __remove_type_parameter = _helpers.substitute_string_re_method(
@@ -681,8 +682,7 @@ class BQBinary(sqlalchemy.sql.sqltypes._Binary):
 
 
 class BQClassTaggedStr(sqlalchemy.sql.type_api.TypeEngine):
-    """Type that can get literals via str
-    """
+    """Type that can get literals via str"""
 
     @staticmethod
     def process_literal_as_class_tagged_str(value):
@@ -693,8 +693,7 @@ class BQClassTaggedStr(sqlalchemy.sql.type_api.TypeEngine):
 
 
 class BQTimestamp(sqlalchemy.sql.type_api.TypeEngine):
-    """Type that can get literals via str
-    """
+    """Type that can get literals via str"""
 
     @staticmethod
     def process_timestamp_literal(value):

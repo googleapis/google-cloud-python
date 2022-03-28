@@ -52,7 +52,9 @@ def test_bind_processor():
 
 def _col():
     return sqlalchemy.Table(
-        "t", sqlalchemy.MetaData(), sqlalchemy.Column("person", _test_struct()),
+        "t",
+        sqlalchemy.MetaData(),
+        sqlalchemy.Column("person", _test_struct()),
     ).c.person
 
 

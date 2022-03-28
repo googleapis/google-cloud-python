@@ -54,7 +54,8 @@ def test_create_bigquery_client_with_credentials_path_respects_project(
     https://github.com/googleapis/python-bigquery-sqlalchemy/issues/48
     """
     bqclient = module_under_test.create_bigquery_client(
-        credentials_path=credentials_path, project_id="connection-url-project",
+        credentials_path=credentials_path,
+        project_id="connection-url-project",
     )
     assert bqclient.project == "connection-url-project"
 
@@ -76,7 +77,8 @@ def test_create_bigquery_client_with_credentials_info_respects_project(
     https://github.com/googleapis/python-bigquery-sqlalchemy/issues/48
     """
     bqclient = module_under_test.create_bigquery_client(
-        credentials_info=credentials_info, project_id="connection-url-project",
+        credentials_info=credentials_info,
+        project_id="connection-url-project",
     )
     assert bqclient.project == "connection-url-project"
 
@@ -98,6 +100,7 @@ def test_create_bigquery_client_with_credentials_base64_respects_project(
     https://github.com/googleapis/python-bigquery-sqlalchemy/issues/48
     """
     bqclient = module_under_test.create_bigquery_client(
-        credentials_base64=credentials_base64, project_id="connection-url-project",
+        credentials_base64=credentials_base64,
+        project_id="connection-url-project",
     )
     assert bqclient.project == "connection-url-project"

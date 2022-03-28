@@ -174,7 +174,9 @@ def test_select_struct(faux_conn, metadata):
     from sqlalchemy_bigquery import STRUCT
 
     table = sqlalchemy.Table(
-        "t", metadata, sqlalchemy.Column("x", STRUCT(y=sqlalchemy.Integer)),
+        "t",
+        metadata,
+        sqlalchemy.Column("x", STRUCT(y=sqlalchemy.Integer)),
     )
 
     faux_conn.ex("create table t (x RECORD)")
@@ -198,7 +200,9 @@ def test_force_quote(faux_conn):
     from sqlalchemy.sql.elements import quoted_name
 
     table = setup_table(
-        faux_conn, "t", sqlalchemy.Column(quoted_name("foo", True), sqlalchemy.Integer),
+        faux_conn,
+        "t",
+        sqlalchemy.Column(quoted_name("foo", True), sqlalchemy.Integer),
     )
     faux_conn.execute(sqlalchemy.select([table]))
     assert faux_conn.test_data["execute"][-1][0] == ("SELECT `t`.`foo` \nFROM `t`")
@@ -435,7 +439,9 @@ def test_unnest_w_no_table_references(faux_conn, alias):
 
 def test_array_indexing(faux_conn, metadata):
     t = sqlalchemy.Table(
-        "t", metadata, sqlalchemy.Column("a", sqlalchemy.ARRAY(sqlalchemy.String)),
+        "t",
+        metadata,
+        sqlalchemy.Column("a", sqlalchemy.ARRAY(sqlalchemy.String)),
     )
     got = str(sqlalchemy.select([t.c.a[0]]).compile(faux_conn.engine))
     assert got == "SELECT `t`.`a`[OFFSET(%(a_1:INT64)s)] AS `anon_1` \nFROM `t`"

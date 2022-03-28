@@ -56,7 +56,8 @@ def test_geoalchemy2_core(bigquery_dataset):
 
     conn.execute(
         lake_table.insert().values(
-            name="Majeur", geog="POLYGON((0 0,1 0,1 1,0 1,0 0))",
+            name="Majeur",
+            geog="POLYGON((0 0,1 0,1 1,0 1,0 0))",
         )
     )
 
@@ -113,7 +114,8 @@ def test_geoalchemy2_core(bigquery_dataset):
 
     conn.execute(
         lake_table.insert().values(
-            name="test2", geog=WKT("POLYGON((1 0,3 0,3 2,1 2,1 0))"),
+            name="test2",
+            geog=WKT("POLYGON((1 0,3 0,3 2,1 2,1 0))"),
         )
     )
     assert (

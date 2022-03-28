@@ -100,7 +100,9 @@ class GEOGRAPHY(geoalchemy2.Geography):
 
     def __init__(self):
         super().__init__(
-            geometry_type=None, spatial_index=False, srid=SRID,
+            geometry_type=None,
+            spatial_index=False,
+            srid=SRID,
         )
         self.extended = True
 
@@ -198,32 +200,74 @@ _argument_types = dict(
     st_boundary=(GEOGRAPHY,),
     st_centroid=(GEOGRAPHY,),
     st_centroid_agg=(GEOGRAPHY,),
-    st_closestpoint=(GEOGRAPHY, GEOGRAPHY,),
+    st_closestpoint=(
+        GEOGRAPHY,
+        GEOGRAPHY,
+    ),
     st_clusterdbscan=(GEOGRAPHY,),
-    st_contains=(GEOGRAPHY, GEOGRAPHY,),
+    st_contains=(
+        GEOGRAPHY,
+        GEOGRAPHY,
+    ),
     st_convexhull=(GEOGRAPHY,),
-    st_coveredby=(GEOGRAPHY, GEOGRAPHY,),
-    st_covers=(GEOGRAPHY, GEOGRAPHY,),
-    st_difference=(GEOGRAPHY, GEOGRAPHY,),
+    st_coveredby=(
+        GEOGRAPHY,
+        GEOGRAPHY,
+    ),
+    st_covers=(
+        GEOGRAPHY,
+        GEOGRAPHY,
+    ),
+    st_difference=(
+        GEOGRAPHY,
+        GEOGRAPHY,
+    ),
     st_dimension=(GEOGRAPHY,),
-    st_disjoint=(GEOGRAPHY, GEOGRAPHY,),
-    st_distance=(GEOGRAPHY, GEOGRAPHY,),
+    st_disjoint=(
+        GEOGRAPHY,
+        GEOGRAPHY,
+    ),
+    st_distance=(
+        GEOGRAPHY,
+        GEOGRAPHY,
+    ),
     st_dump=(GEOGRAPHY,),
-    st_dwithin=(GEOGRAPHY, GEOGRAPHY,),
+    st_dwithin=(
+        GEOGRAPHY,
+        GEOGRAPHY,
+    ),
     st_endpoint=(GEOGRAPHY,),
-    st_equals=(GEOGRAPHY, GEOGRAPHY,),
+    st_equals=(
+        GEOGRAPHY,
+        GEOGRAPHY,
+    ),
     st_exteriorring=(GEOGRAPHY,),
     st_geohash=(GEOGRAPHY,),
-    st_intersection=(GEOGRAPHY, GEOGRAPHY,),
-    st_intersects=(GEOGRAPHY, GEOGRAPHY,),
+    st_intersection=(
+        GEOGRAPHY,
+        GEOGRAPHY,
+    ),
+    st_intersects=(
+        GEOGRAPHY,
+        GEOGRAPHY,
+    ),
     st_intersectsbox=(GEOGRAPHY,),
     st_iscollection=(GEOGRAPHY,),
     st_isempty=(GEOGRAPHY,),
     st_length=(GEOGRAPHY,),
-    st_makeline=(GEOGRAPHY, GEOGRAPHY,),
-    st_makepolygon=(GEOGRAPHY, GEOGRAPHY,),
+    st_makeline=(
+        GEOGRAPHY,
+        GEOGRAPHY,
+    ),
+    st_makepolygon=(
+        GEOGRAPHY,
+        GEOGRAPHY,
+    ),
     st_makepolygonoriented=(GEOGRAPHY,),
-    st_maxdistance=(GEOGRAPHY, GEOGRAPHY,),
+    st_maxdistance=(
+        GEOGRAPHY,
+        GEOGRAPHY,
+    ),
     st_npoints=(GEOGRAPHY,),
     st_numpoints=(GEOGRAPHY,),
     st_perimeter=(GEOGRAPHY,),
@@ -231,10 +275,19 @@ _argument_types = dict(
     st_simplify=(GEOGRAPHY,),
     st_snaptogrid=(GEOGRAPHY,),
     st_startpoint=(GEOGRAPHY,),
-    st_touches=(GEOGRAPHY, GEOGRAPHY,),
-    st_union=(GEOGRAPHY, GEOGRAPHY,),
+    st_touches=(
+        GEOGRAPHY,
+        GEOGRAPHY,
+    ),
+    st_union=(
+        GEOGRAPHY,
+        GEOGRAPHY,
+    ),
     st_union_agg=(GEOGRAPHY,),
-    st_within=(GEOGRAPHY, GEOGRAPHY,),
+    st_within=(
+        GEOGRAPHY,
+        GEOGRAPHY,
+    ),
     st_x=(GEOGRAPHY,),
     st_y=(GEOGRAPHY,),
 )

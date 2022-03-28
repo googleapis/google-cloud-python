@@ -305,7 +305,8 @@ def test_content_from_reflect(engine, table_one_row):
 def test_unicode(engine, table_one_row):
     unicode_str = "白人看不懂"
     returned_str = sqlalchemy.select(
-        [expression.bindparam("好", unicode_str)], from_obj=table_one_row,
+        [expression.bindparam("好", unicode_str)],
+        from_obj=table_one_row,
     ).scalar()
     assert returned_str == unicode_str
 
@@ -756,7 +757,9 @@ def test_unnest(engine, bigquery_dataset):
     conn = engine.connect()
     metadata = MetaData()
     table = Table(
-        f"{bigquery_dataset}.test_unnest", metadata, Column("objects", ARRAY(String)),
+        f"{bigquery_dataset}.test_unnest",
+        metadata,
+        Column("objects", ARRAY(String)),
     )
     metadata.create_all(engine)
     conn.execute(

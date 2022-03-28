@@ -26,7 +26,9 @@ from .conftest import sqlalchemy_1_4_or_higher
 
 def test_constraints_are_ignored(faux_conn, metadata):
     sqlalchemy.Table(
-        "ref", metadata, sqlalchemy.Column("id", sqlalchemy.Integer),
+        "ref",
+        metadata,
+        sqlalchemy.Column("id", sqlalchemy.Integer),
     )
     sqlalchemy.Table(
         "some_table",
