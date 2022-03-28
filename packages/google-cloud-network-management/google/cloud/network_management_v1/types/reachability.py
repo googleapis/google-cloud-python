@@ -72,11 +72,26 @@ class ListConnectivityTestsRequest(proto.Message):
             Field to use to sort the list.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    filter = proto.Field(proto.STRING, number=4,)
-    order_by = proto.Field(proto.STRING, number=5,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class ListConnectivityTestsResponse(proto.Message):
@@ -98,10 +113,18 @@ class ListConnectivityTestsResponse(proto.Message):
         return self
 
     resources = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=connectivity_test.ConnectivityTest,
+        proto.MESSAGE,
+        number=1,
+        message=connectivity_test.ConnectivityTest,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
-    unreachable = proto.RepeatedField(proto.STRING, number=3,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 class GetConnectivityTestRequest(proto.Message):
@@ -113,7 +136,10 @@ class GetConnectivityTestRequest(proto.Message):
             ``projects/{project_id}/locations/global/connectivityTests/{test_id}``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CreateConnectivityTestRequest(proto.Message):
@@ -137,10 +163,18 @@ class CreateConnectivityTestRequest(proto.Message):
             Required. A ``ConnectivityTest`` resource
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    test_id = proto.Field(proto.STRING, number=2,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    test_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
     resource = proto.Field(
-        proto.MESSAGE, number=3, message=connectivity_test.ConnectivityTest,
+        proto.MESSAGE,
+        number=3,
+        message=connectivity_test.ConnectivityTest,
     )
 
 
@@ -156,10 +190,14 @@ class UpdateConnectivityTestRequest(proto.Message):
     """
 
     update_mask = proto.Field(
-        proto.MESSAGE, number=1, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=1,
+        message=field_mask_pb2.FieldMask,
     )
     resource = proto.Field(
-        proto.MESSAGE, number=2, message=connectivity_test.ConnectivityTest,
+        proto.MESSAGE,
+        number=2,
+        message=connectivity_test.ConnectivityTest,
     )
 
 
@@ -172,7 +210,10 @@ class DeleteConnectivityTestRequest(proto.Message):
             ``projects/{project_id}/locations/global/connectivityTests/{test_id}``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class RerunConnectivityTestRequest(proto.Message):
@@ -184,7 +225,10 @@ class RerunConnectivityTestRequest(proto.Message):
             ``projects/{project_id}/locations/global/connectivityTests/{test_id}``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class OperationMetadata(proto.Message):
@@ -210,13 +254,36 @@ class OperationMetadata(proto.Message):
             API version.
     """
 
-    create_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
-    end_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    target = proto.Field(proto.STRING, number=3,)
-    verb = proto.Field(proto.STRING, number=4,)
-    status_detail = proto.Field(proto.STRING, number=5,)
-    cancel_requested = proto.Field(proto.BOOL, number=6,)
-    api_version = proto.Field(proto.STRING, number=7,)
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    target = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    verb = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    status_detail = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    cancel_requested = proto.Field(
+        proto.BOOL,
+        number=6,
+    )
+    api_version = proto.Field(
+        proto.STRING,
+        number=7,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

@@ -22,7 +22,11 @@ from google.rpc import status_pb2  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.networkmanagement.v1",
-    manifest={"ConnectivityTest", "Endpoint", "ReachabilityDetails",},
+    manifest={
+        "ConnectivityTest",
+        "Endpoint",
+        "ReachabilityDetails",
+    },
 )
 
 
@@ -114,22 +118,55 @@ class ConnectivityTest(proto.Message):
             an existing test.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    description = proto.Field(proto.STRING, number=2,)
-    source = proto.Field(proto.MESSAGE, number=3, message="Endpoint",)
-    destination = proto.Field(proto.MESSAGE, number=4, message="Endpoint",)
-    protocol = proto.Field(proto.STRING, number=5,)
-    related_projects = proto.RepeatedField(proto.STRING, number=6,)
-    display_name = proto.Field(proto.STRING, number=7,)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=8,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    source = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="Endpoint",
+    )
+    destination = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="Endpoint",
+    )
+    protocol = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    related_projects = proto.RepeatedField(
+        proto.STRING,
+        number=6,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=8,
+    )
     create_time = proto.Field(
-        proto.MESSAGE, number=10, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=10,
+        message=timestamp_pb2.Timestamp,
     )
     update_time = proto.Field(
-        proto.MESSAGE, number=11, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=11,
+        message=timestamp_pb2.Timestamp,
     )
     reachability_details = proto.Field(
-        proto.MESSAGE, number=12, message="ReachabilityDetails",
+        proto.MESSAGE,
+        number=12,
+        message="ReachabilityDetails",
     )
 
 
@@ -182,14 +219,39 @@ class Endpoint(proto.Message):
         GCP_NETWORK = 1
         NON_GCP_NETWORK = 2
 
-    ip_address = proto.Field(proto.STRING, number=1,)
-    port = proto.Field(proto.INT32, number=2,)
-    instance = proto.Field(proto.STRING, number=3,)
-    gke_master_cluster = proto.Field(proto.STRING, number=7,)
-    cloud_sql_instance = proto.Field(proto.STRING, number=8,)
-    network = proto.Field(proto.STRING, number=4,)
-    network_type = proto.Field(proto.ENUM, number=5, enum=NetworkType,)
-    project_id = proto.Field(proto.STRING, number=6,)
+    ip_address = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    port = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    instance = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    gke_master_cluster = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    cloud_sql_instance = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    network = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    network_type = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum=NetworkType,
+    )
+    project_id = proto.Field(
+        proto.STRING,
+        number=6,
+    )
 
 
 class ReachabilityDetails(proto.Message):
@@ -220,10 +282,26 @@ class ReachabilityDetails(proto.Message):
         AMBIGUOUS = 4
         UNDETERMINED = 5
 
-    result = proto.Field(proto.ENUM, number=1, enum=Result,)
-    verify_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    error = proto.Field(proto.MESSAGE, number=3, message=status_pb2.Status,)
-    traces = proto.RepeatedField(proto.MESSAGE, number=5, message=trace.Trace,)
+    result = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Result,
+    )
+    verify_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    error = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=status_pb2.Status,
+    )
+    traces = proto.RepeatedField(
+        proto.MESSAGE,
+        number=5,
+        message=trace.Trace,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
