@@ -80,9 +80,18 @@ class AccessTuple(proto.Message):
             https://cloud.google.com/iam/help/roles/reference.
     """
 
-    principal = proto.Field(proto.STRING, number=1,)
-    full_resource_name = proto.Field(proto.STRING, number=2,)
-    permission = proto.Field(proto.STRING, number=3,)
+    principal = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    full_resource_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    permission = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ExplainedPolicy(proto.Message):
@@ -131,13 +140,30 @@ class ExplainedPolicy(proto.Message):
             policy, this field is omitted.
     """
 
-    access = proto.Field(proto.ENUM, number=1, enum="AccessState",)
-    full_resource_name = proto.Field(proto.STRING, number=2,)
-    policy = proto.Field(proto.MESSAGE, number=3, message=policy_pb2.Policy,)
-    binding_explanations = proto.RepeatedField(
-        proto.MESSAGE, number=4, message="BindingExplanation",
+    access = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum="AccessState",
     )
-    relevance = proto.Field(proto.ENUM, number=5, enum="HeuristicRelevance",)
+    full_resource_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    policy = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=policy_pb2.Policy,
+    )
+    binding_explanations = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message="BindingExplanation",
+    )
+    relevance = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum="HeuristicRelevance",
+    )
 
 
 class BindingExplanation(proto.Message):
@@ -233,21 +259,51 @@ class BindingExplanation(proto.Message):
         """
 
         membership = proto.Field(
-            proto.ENUM, number=1, enum="BindingExplanation.Membership",
+            proto.ENUM,
+            number=1,
+            enum="BindingExplanation.Membership",
         )
-        relevance = proto.Field(proto.ENUM, number=2, enum="HeuristicRelevance",)
+        relevance = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum="HeuristicRelevance",
+        )
 
-    access = proto.Field(proto.ENUM, number=1, enum="AccessState",)
-    role = proto.Field(proto.STRING, number=2,)
-    role_permission = proto.Field(proto.ENUM, number=3, enum=RolePermission,)
+    access = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum="AccessState",
+    )
+    role = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    role_permission = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=RolePermission,
+    )
     role_permission_relevance = proto.Field(
-        proto.ENUM, number=4, enum="HeuristicRelevance",
+        proto.ENUM,
+        number=4,
+        enum="HeuristicRelevance",
     )
     memberships = proto.MapField(
-        proto.STRING, proto.MESSAGE, number=5, message=AnnotatedMembership,
+        proto.STRING,
+        proto.MESSAGE,
+        number=5,
+        message=AnnotatedMembership,
     )
-    relevance = proto.Field(proto.ENUM, number=6, enum="HeuristicRelevance",)
-    condition = proto.Field(proto.MESSAGE, number=7, message=expr_pb2.Expr,)
+    relevance = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum="HeuristicRelevance",
+    )
+    condition = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=expr_pb2.Expr,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

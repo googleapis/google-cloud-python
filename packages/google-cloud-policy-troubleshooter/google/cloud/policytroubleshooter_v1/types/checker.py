@@ -20,7 +20,10 @@ from google.cloud.policytroubleshooter_v1.types import explanations
 
 __protobuf__ = proto.module(
     package="google.cloud.policytroubleshooter.v1",
-    manifest={"TroubleshootIamPolicyRequest", "TroubleshootIamPolicyResponse",},
+    manifest={
+        "TroubleshootIamPolicyRequest",
+        "TroubleshootIamPolicyResponse",
+    },
 )
 
 
@@ -35,7 +38,9 @@ class TroubleshootIamPolicyRequest(proto.Message):
     """
 
     access_tuple = proto.Field(
-        proto.MESSAGE, number=1, message=explanations.AccessTuple,
+        proto.MESSAGE,
+        number=1,
+        message=explanations.AccessTuple,
     )
 
 
@@ -64,9 +69,15 @@ class TroubleshootIamPolicyResponse(proto.Message):
             https://cloud.google.com/iam/help/resource-hierarchy.
     """
 
-    access = proto.Field(proto.ENUM, number=1, enum=explanations.AccessState,)
+    access = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=explanations.AccessState,
+    )
     explained_policies = proto.RepeatedField(
-        proto.MESSAGE, number=2, message=explanations.ExplainedPolicy,
+        proto.MESSAGE,
+        number=2,
+        message=explanations.ExplainedPolicy,
     )
 
 
