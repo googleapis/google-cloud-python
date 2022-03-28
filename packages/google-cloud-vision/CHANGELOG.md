@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-vision/#history
 
+### [2.7.2](https://github.com/googleapis/python-vision/compare/v2.7.1...v2.7.2) (2022-03-25)
+
+
+### Documentation
+
+* fixed 'annotate an image' ([#330](https://github.com/googleapis/python-vision/issues/330)) ([1019f29](https://github.com/googleapis/python-vision/commit/1019f2920b065359306f654cf864d9f27a90cf9d))
+
 ### [2.7.1](https://github.com/googleapis/python-vision/compare/v2.7.0...v2.7.1) (2022-03-05)
 
 
