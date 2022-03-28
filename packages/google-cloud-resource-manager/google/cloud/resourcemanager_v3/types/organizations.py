@@ -83,14 +83,43 @@ class Organization(proto.Message):
         ACTIVE = 1
         DELETE_REQUESTED = 2
 
-    name = proto.Field(proto.STRING, number=1,)
-    display_name = proto.Field(proto.STRING, number=2,)
-    directory_customer_id = proto.Field(proto.STRING, number=3, oneof="owner",)
-    state = proto.Field(proto.ENUM, number=4, enum=State,)
-    create_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,)
-    delete_time = proto.Field(proto.MESSAGE, number=7, message=timestamp_pb2.Timestamp,)
-    etag = proto.Field(proto.STRING, number=8,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    directory_customer_id = proto.Field(
+        proto.STRING,
+        number=3,
+        oneof="owner",
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=State,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
+    )
+    delete_time = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=timestamp_pb2.Timestamp,
+    )
+    etag = proto.Field(
+        proto.STRING,
+        number=8,
+    )
 
 
 class GetOrganizationRequest(proto.Message):
@@ -105,7 +134,10 @@ class GetOrganizationRequest(proto.Message):
             "organizations/1234".
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class SearchOrganizationsRequest(proto.Message):
@@ -144,9 +176,18 @@ class SearchOrganizationsRequest(proto.Message):
                resources corresponding to the domain ``google.com``.
     """
 
-    page_size = proto.Field(proto.INT32, number=1,)
-    page_token = proto.Field(proto.STRING, number=2,)
-    query = proto.Field(proto.STRING, number=3,)
+    page_size = proto.Field(
+        proto.INT32,
+        number=1,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    query = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class SearchOrganizationsResponse(proto.Message):
@@ -172,9 +213,14 @@ class SearchOrganizationsResponse(proto.Message):
         return self
 
     organizations = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="Organization",
+        proto.MESSAGE,
+        number=1,
+        message="Organization",
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class DeleteOrganizationMetadata(proto.Message):

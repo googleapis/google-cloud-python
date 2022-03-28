@@ -156,13 +156,19 @@ class TagValuesTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.create_tag_value: gapic_v1.method.wrap_method(
-                self.create_tag_value, default_timeout=60.0, client_info=client_info,
+                self.create_tag_value,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.update_tag_value: gapic_v1.method.wrap_method(
-                self.update_tag_value, default_timeout=60.0, client_info=client_info,
+                self.update_tag_value,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.delete_tag_value: gapic_v1.method.wrap_method(
-                self.delete_tag_value, default_timeout=60.0, client_info=client_info,
+                self.delete_tag_value,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.get_iam_policy: gapic_v1.method.wrap_method(
                 self.get_iam_policy,
@@ -179,7 +185,9 @@ class TagValuesTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.set_iam_policy: gapic_v1.method.wrap_method(
-                self.set_iam_policy, default_timeout=60.0, client_info=client_info,
+                self.set_iam_policy,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.test_iam_permissions: gapic_v1.method.wrap_method(
                 self.test_iam_permissions,
@@ -191,9 +199,9 @@ class TagValuesTransport(abc.ABC):
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

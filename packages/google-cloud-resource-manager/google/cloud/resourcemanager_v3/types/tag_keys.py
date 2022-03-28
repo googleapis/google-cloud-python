@@ -73,14 +73,40 @@ class TagKey(proto.Message):
             for details.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    parent = proto.Field(proto.STRING, number=2,)
-    short_name = proto.Field(proto.STRING, number=3,)
-    namespaced_name = proto.Field(proto.STRING, number=4,)
-    description = proto.Field(proto.STRING, number=5,)
-    create_time = proto.Field(proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=7, message=timestamp_pb2.Timestamp,)
-    etag = proto.Field(proto.STRING, number=8,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    parent = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    short_name = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    namespaced_name = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=timestamp_pb2.Timestamp,
+    )
+    etag = proto.Field(
+        proto.STRING,
+        number=8,
+    )
 
 
 class ListTagKeysRequest(proto.Message):
@@ -104,9 +130,18 @@ class ListTagKeysRequest(proto.Message):
             continue from.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListTagKeysResponse(proto.Message):
@@ -126,8 +161,15 @@ class ListTagKeysResponse(proto.Message):
     def raw_page(self):
         return self
 
-    tag_keys = proto.RepeatedField(proto.MESSAGE, number=1, message="TagKey",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    tag_keys = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="TagKey",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetTagKeyRequest(proto.Message):
@@ -139,7 +181,10 @@ class GetTagKeyRequest(proto.Message):
             such as ``tagKeys/123``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CreateTagKeyRequest(proto.Message):
@@ -156,13 +201,19 @@ class CreateTagKeyRequest(proto.Message):
             actually perform the action.
     """
 
-    tag_key = proto.Field(proto.MESSAGE, number=1, message="TagKey",)
-    validate_only = proto.Field(proto.BOOL, number=2,)
+    tag_key = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="TagKey",
+    )
+    validate_only = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
 
 
 class CreateTagKeyMetadata(proto.Message):
-    r"""Runtime operation information for creating a TagKey.
-    """
+    r"""Runtime operation information for creating a TagKey."""
 
 
 class UpdateTagKeyRequest(proto.Message):
@@ -185,16 +236,24 @@ class UpdateTagKeyRequest(proto.Message):
             perform the action.
     """
 
-    tag_key = proto.Field(proto.MESSAGE, number=1, message="TagKey",)
-    update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+    tag_key = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="TagKey",
     )
-    validate_only = proto.Field(proto.BOOL, number=3,)
+    update_mask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+    validate_only = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
 
 
 class UpdateTagKeyMetadata(proto.Message):
-    r"""Runtime operation information for updating a TagKey.
-    """
+    r"""Runtime operation information for updating a TagKey."""
 
 
 class DeleteTagKeyRequest(proto.Message):
@@ -215,14 +274,22 @@ class DeleteTagKeyRequest(proto.Message):
             used for optimistic concurrency.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    validate_only = proto.Field(proto.BOOL, number=2,)
-    etag = proto.Field(proto.STRING, number=3,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    validate_only = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+    etag = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class DeleteTagKeyMetadata(proto.Message):
-    r"""Runtime operation information for deleting a TagKey.
-    """
+    r"""Runtime operation information for deleting a TagKey."""
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

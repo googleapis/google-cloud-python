@@ -77,14 +77,40 @@ class TagValue(proto.Message):
             UpdateTagValueRequest for details.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    parent = proto.Field(proto.STRING, number=2,)
-    short_name = proto.Field(proto.STRING, number=3,)
-    namespaced_name = proto.Field(proto.STRING, number=4,)
-    description = proto.Field(proto.STRING, number=5,)
-    create_time = proto.Field(proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=7, message=timestamp_pb2.Timestamp,)
-    etag = proto.Field(proto.STRING, number=8,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    parent = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    short_name = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    namespaced_name = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=timestamp_pb2.Timestamp,
+    )
+    etag = proto.Field(
+        proto.STRING,
+        number=8,
+    )
 
 
 class ListTagValuesRequest(proto.Message):
@@ -107,9 +133,18 @@ class ListTagValuesRequest(proto.Message):
             should continue from.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListTagValuesResponse(proto.Message):
@@ -131,8 +166,15 @@ class ListTagValuesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    tag_values = proto.RepeatedField(proto.MESSAGE, number=1, message="TagValue",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    tag_values = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="TagValue",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetTagValueRequest(proto.Message):
@@ -144,7 +186,10 @@ class GetTagValueRequest(proto.Message):
             format ``tagValues/456``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CreateTagValueRequest(proto.Message):
@@ -161,13 +206,19 @@ class CreateTagValueRequest(proto.Message):
             but not actually perform the action.
     """
 
-    tag_value = proto.Field(proto.MESSAGE, number=1, message="TagValue",)
-    validate_only = proto.Field(proto.BOOL, number=2,)
+    tag_value = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="TagValue",
+    )
+    validate_only = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
 
 
 class CreateTagValueMetadata(proto.Message):
-    r"""Runtime operation information for creating a TagValue.
-    """
+    r"""Runtime operation information for creating a TagValue."""
 
 
 class UpdateTagValueRequest(proto.Message):
@@ -188,16 +239,24 @@ class UpdateTagValueRequest(proto.Message):
             actually perform the action.
     """
 
-    tag_value = proto.Field(proto.MESSAGE, number=1, message="TagValue",)
-    update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+    tag_value = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="TagValue",
     )
-    validate_only = proto.Field(proto.BOOL, number=3,)
+    update_mask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+    validate_only = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
 
 
 class UpdateTagValueMetadata(proto.Message):
-    r"""Runtime operation information for updating a TagValue.
-    """
+    r"""Runtime operation information for updating a TagValue."""
 
 
 class DeleteTagValueRequest(proto.Message):
@@ -217,14 +276,22 @@ class DeleteTagValueRequest(proto.Message):
             be used for optimistic concurrency.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    validate_only = proto.Field(proto.BOOL, number=2,)
-    etag = proto.Field(proto.STRING, number=3,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    validate_only = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+    etag = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class DeleteTagValueMetadata(proto.Message):
-    r"""Runtime operation information for deleting a TagValue.
-    """
+    r"""Runtime operation information for deleting a TagValue."""
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

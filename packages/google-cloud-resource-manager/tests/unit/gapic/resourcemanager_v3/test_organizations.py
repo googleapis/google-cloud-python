@@ -92,7 +92,11 @@ def test__get_default_mtls_endpoint():
 
 
 @pytest.mark.parametrize(
-    "client_class", [OrganizationsClient, OrganizationsAsyncClient,]
+    "client_class",
+    [
+        OrganizationsClient,
+        OrganizationsAsyncClient,
+    ],
 )
 def test_organizations_client_from_service_account_info(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -134,7 +138,11 @@ def test_organizations_client_service_account_always_use_jwt(
 
 
 @pytest.mark.parametrize(
-    "client_class", [OrganizationsClient, OrganizationsAsyncClient,]
+    "client_class",
+    [
+        OrganizationsClient,
+        OrganizationsAsyncClient,
+    ],
 )
 def test_organizations_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -498,7 +506,9 @@ def test_organizations_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -641,10 +651,17 @@ def test_organizations_client_create_channel_credentials_file(
         )
 
 
-@pytest.mark.parametrize("request_type", [organizations.GetOrganizationRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        organizations.GetOrganizationRequest,
+        dict,
+    ],
+)
 def test_get_organization(request_type, transport: str = "grpc"):
     client = OrganizationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -680,7 +697,8 @@ def test_get_organization_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = OrganizationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -696,7 +714,8 @@ async def test_get_organization_async(
     transport: str = "grpc_asyncio", request_type=organizations.GetOrganizationRequest
 ):
     client = OrganizationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -735,7 +754,9 @@ async def test_get_organization_async_from_dict():
 
 
 def test_get_organization_field_headers():
-    client = OrganizationsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = OrganizationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -755,7 +776,10 @@ def test_get_organization_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -784,11 +808,16 @@ async def test_get_organization_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_organization_flattened():
-    client = OrganizationsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = OrganizationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_organization), "__call__") as call:
@@ -796,7 +825,9 @@ def test_get_organization_flattened():
         call.return_value = organizations.Organization()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_organization(name="name_value",)
+        client.get_organization(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -808,13 +839,16 @@ def test_get_organization_flattened():
 
 
 def test_get_organization_flattened_error():
-    client = OrganizationsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = OrganizationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_organization(
-            organizations.GetOrganizationRequest(), name="name_value",
+            organizations.GetOrganizationRequest(),
+            name="name_value",
         )
 
 
@@ -834,7 +868,9 @@ async def test_get_organization_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_organization(name="name_value",)
+        response = await client.get_organization(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -855,16 +891,22 @@ async def test_get_organization_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_organization(
-            organizations.GetOrganizationRequest(), name="name_value",
+            organizations.GetOrganizationRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [organizations.SearchOrganizationsRequest, dict,]
+    "request_type",
+    [
+        organizations.SearchOrganizationsRequest,
+        dict,
+    ],
 )
 def test_search_organizations(request_type, transport: str = "grpc"):
     client = OrganizationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -895,7 +937,8 @@ def test_search_organizations_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = OrganizationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -914,7 +957,8 @@ async def test_search_organizations_async(
     request_type=organizations.SearchOrganizationsRequest,
 ):
     client = OrganizationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -949,7 +993,9 @@ async def test_search_organizations_async_from_dict():
 
 
 def test_search_organizations_flattened():
-    client = OrganizationsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = OrganizationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -959,7 +1005,9 @@ def test_search_organizations_flattened():
         call.return_value = organizations.SearchOrganizationsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.search_organizations(query="query_value",)
+        client.search_organizations(
+            query="query_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -971,13 +1019,16 @@ def test_search_organizations_flattened():
 
 
 def test_search_organizations_flattened_error():
-    client = OrganizationsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = OrganizationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.search_organizations(
-            organizations.SearchOrganizationsRequest(), query="query_value",
+            organizations.SearchOrganizationsRequest(),
+            query="query_value",
         )
 
 
@@ -999,7 +1050,9 @@ async def test_search_organizations_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.search_organizations(query="query_value",)
+        response = await client.search_organizations(
+            query="query_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1020,13 +1073,15 @@ async def test_search_organizations_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.search_organizations(
-            organizations.SearchOrganizationsRequest(), query="query_value",
+            organizations.SearchOrganizationsRequest(),
+            query="query_value",
         )
 
 
 def test_search_organizations_pager(transport_name: str = "grpc"):
     client = OrganizationsClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1044,10 +1099,14 @@ def test_search_organizations_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             organizations.SearchOrganizationsResponse(
-                organizations=[], next_page_token="def",
+                organizations=[],
+                next_page_token="def",
             ),
             organizations.SearchOrganizationsResponse(
-                organizations=[organizations.Organization(),], next_page_token="ghi",
+                organizations=[
+                    organizations.Organization(),
+                ],
+                next_page_token="ghi",
             ),
             organizations.SearchOrganizationsResponse(
                 organizations=[
@@ -1070,7 +1129,8 @@ def test_search_organizations_pager(transport_name: str = "grpc"):
 
 def test_search_organizations_pages(transport_name: str = "grpc"):
     client = OrganizationsClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1088,10 +1148,14 @@ def test_search_organizations_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             organizations.SearchOrganizationsResponse(
-                organizations=[], next_page_token="def",
+                organizations=[],
+                next_page_token="def",
             ),
             organizations.SearchOrganizationsResponse(
-                organizations=[organizations.Organization(),], next_page_token="ghi",
+                organizations=[
+                    organizations.Organization(),
+                ],
+                next_page_token="ghi",
             ),
             organizations.SearchOrganizationsResponse(
                 organizations=[
@@ -1108,7 +1172,9 @@ def test_search_organizations_pages(transport_name: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_search_organizations_async_pager():
-    client = OrganizationsAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = OrganizationsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1127,10 +1193,14 @@ async def test_search_organizations_async_pager():
                 next_page_token="abc",
             ),
             organizations.SearchOrganizationsResponse(
-                organizations=[], next_page_token="def",
+                organizations=[],
+                next_page_token="def",
             ),
             organizations.SearchOrganizationsResponse(
-                organizations=[organizations.Organization(),], next_page_token="ghi",
+                organizations=[
+                    organizations.Organization(),
+                ],
+                next_page_token="ghi",
             ),
             organizations.SearchOrganizationsResponse(
                 organizations=[
@@ -1140,7 +1210,9 @@ async def test_search_organizations_async_pager():
             ),
             RuntimeError,
         )
-        async_pager = await client.search_organizations(request={},)
+        async_pager = await client.search_organizations(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -1152,7 +1224,9 @@ async def test_search_organizations_async_pager():
 
 @pytest.mark.asyncio
 async def test_search_organizations_async_pages():
-    client = OrganizationsAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = OrganizationsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1171,10 +1245,14 @@ async def test_search_organizations_async_pages():
                 next_page_token="abc",
             ),
             organizations.SearchOrganizationsResponse(
-                organizations=[], next_page_token="def",
+                organizations=[],
+                next_page_token="def",
             ),
             organizations.SearchOrganizationsResponse(
-                organizations=[organizations.Organization(),], next_page_token="ghi",
+                organizations=[
+                    organizations.Organization(),
+                ],
+                next_page_token="ghi",
             ),
             organizations.SearchOrganizationsResponse(
                 organizations=[
@@ -1191,10 +1269,17 @@ async def test_search_organizations_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [iam_policy_pb2.GetIamPolicyRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.GetIamPolicyRequest,
+        dict,
+    ],
+)
 def test_get_iam_policy(request_type, transport: str = "grpc"):
     client = OrganizationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1204,7 +1289,10 @@ def test_get_iam_policy(request_type, transport: str = "grpc"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = policy_pb2.Policy(version=774, etag=b"etag_blob",)
+        call.return_value = policy_pb2.Policy(
+            version=774,
+            etag=b"etag_blob",
+        )
         response = client.get_iam_policy(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1222,7 +1310,8 @@ def test_get_iam_policy_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = OrganizationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1238,7 +1327,8 @@ async def test_get_iam_policy_async(
     transport: str = "grpc_asyncio", request_type=iam_policy_pb2.GetIamPolicyRequest
 ):
     client = OrganizationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1249,7 +1339,10 @@ async def test_get_iam_policy_async(
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            policy_pb2.Policy(version=774, etag=b"etag_blob",)
+            policy_pb2.Policy(
+                version=774,
+                etag=b"etag_blob",
+            )
         )
         response = await client.get_iam_policy(request)
 
@@ -1270,7 +1363,9 @@ async def test_get_iam_policy_async_from_dict():
 
 
 def test_get_iam_policy_field_headers():
-    client = OrganizationsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = OrganizationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1290,7 +1385,10 @@ def test_get_iam_policy_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1317,11 +1415,16 @@ async def test_get_iam_policy_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
 
 
 def test_get_iam_policy_from_dict_foreign():
-    client = OrganizationsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = OrganizationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
@@ -1336,7 +1439,9 @@ def test_get_iam_policy_from_dict_foreign():
 
 
 def test_get_iam_policy_flattened():
-    client = OrganizationsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = OrganizationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -1344,7 +1449,9 @@ def test_get_iam_policy_flattened():
         call.return_value = policy_pb2.Policy()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_iam_policy(resource="resource_value",)
+        client.get_iam_policy(
+            resource="resource_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1356,13 +1463,16 @@ def test_get_iam_policy_flattened():
 
 
 def test_get_iam_policy_flattened_error():
-    client = OrganizationsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = OrganizationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_iam_policy(
-            iam_policy_pb2.GetIamPolicyRequest(), resource="resource_value",
+            iam_policy_pb2.GetIamPolicyRequest(),
+            resource="resource_value",
         )
 
 
@@ -1380,7 +1490,9 @@ async def test_get_iam_policy_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(policy_pb2.Policy())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_iam_policy(resource="resource_value",)
+        response = await client.get_iam_policy(
+            resource="resource_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1401,14 +1513,22 @@ async def test_get_iam_policy_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_iam_policy(
-            iam_policy_pb2.GetIamPolicyRequest(), resource="resource_value",
+            iam_policy_pb2.GetIamPolicyRequest(),
+            resource="resource_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [iam_policy_pb2.SetIamPolicyRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.SetIamPolicyRequest,
+        dict,
+    ],
+)
 def test_set_iam_policy(request_type, transport: str = "grpc"):
     client = OrganizationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1418,7 +1538,10 @@ def test_set_iam_policy(request_type, transport: str = "grpc"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = policy_pb2.Policy(version=774, etag=b"etag_blob",)
+        call.return_value = policy_pb2.Policy(
+            version=774,
+            etag=b"etag_blob",
+        )
         response = client.set_iam_policy(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1436,7 +1559,8 @@ def test_set_iam_policy_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = OrganizationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1452,7 +1576,8 @@ async def test_set_iam_policy_async(
     transport: str = "grpc_asyncio", request_type=iam_policy_pb2.SetIamPolicyRequest
 ):
     client = OrganizationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1463,7 +1588,10 @@ async def test_set_iam_policy_async(
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            policy_pb2.Policy(version=774, etag=b"etag_blob",)
+            policy_pb2.Policy(
+                version=774,
+                etag=b"etag_blob",
+            )
         )
         response = await client.set_iam_policy(request)
 
@@ -1484,7 +1612,9 @@ async def test_set_iam_policy_async_from_dict():
 
 
 def test_set_iam_policy_field_headers():
-    client = OrganizationsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = OrganizationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1504,7 +1634,10 @@ def test_set_iam_policy_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1531,11 +1664,16 @@ async def test_set_iam_policy_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
 
 
 def test_set_iam_policy_from_dict_foreign():
-    client = OrganizationsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = OrganizationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
@@ -1550,7 +1688,9 @@ def test_set_iam_policy_from_dict_foreign():
 
 
 def test_set_iam_policy_flattened():
-    client = OrganizationsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = OrganizationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -1558,7 +1698,9 @@ def test_set_iam_policy_flattened():
         call.return_value = policy_pb2.Policy()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.set_iam_policy(resource="resource_value",)
+        client.set_iam_policy(
+            resource="resource_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1570,13 +1712,16 @@ def test_set_iam_policy_flattened():
 
 
 def test_set_iam_policy_flattened_error():
-    client = OrganizationsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = OrganizationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.set_iam_policy(
-            iam_policy_pb2.SetIamPolicyRequest(), resource="resource_value",
+            iam_policy_pb2.SetIamPolicyRequest(),
+            resource="resource_value",
         )
 
 
@@ -1594,7 +1739,9 @@ async def test_set_iam_policy_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(policy_pb2.Policy())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.set_iam_policy(resource="resource_value",)
+        response = await client.set_iam_policy(
+            resource="resource_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1615,16 +1762,22 @@ async def test_set_iam_policy_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.set_iam_policy(
-            iam_policy_pb2.SetIamPolicyRequest(), resource="resource_value",
+            iam_policy_pb2.SetIamPolicyRequest(),
+            resource="resource_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [iam_policy_pb2.TestIamPermissionsRequest, dict,]
+    "request_type",
+    [
+        iam_policy_pb2.TestIamPermissionsRequest,
+        dict,
+    ],
 )
 def test_test_iam_permissions(request_type, transport: str = "grpc"):
     client = OrganizationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1655,7 +1808,8 @@ def test_test_iam_permissions_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = OrganizationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1674,7 +1828,8 @@ async def test_test_iam_permissions_async(
     request_type=iam_policy_pb2.TestIamPermissionsRequest,
 ):
     client = OrganizationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1709,7 +1864,9 @@ async def test_test_iam_permissions_async_from_dict():
 
 
 def test_test_iam_permissions_field_headers():
-    client = OrganizationsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = OrganizationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1731,7 +1888,10 @@ def test_test_iam_permissions_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1762,11 +1922,16 @@ async def test_test_iam_permissions_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
 
 
 def test_test_iam_permissions_from_dict_foreign():
-    client = OrganizationsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = OrganizationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
         type(client.transport.test_iam_permissions), "__call__"
@@ -1783,7 +1948,9 @@ def test_test_iam_permissions_from_dict_foreign():
 
 
 def test_test_iam_permissions_flattened():
-    client = OrganizationsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = OrganizationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1794,7 +1961,8 @@ def test_test_iam_permissions_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.test_iam_permissions(
-            resource="resource_value", permissions=["permissions_value"],
+            resource="resource_value",
+            permissions=["permissions_value"],
         )
 
         # Establish that the underlying call was made with the expected
@@ -1810,7 +1978,9 @@ def test_test_iam_permissions_flattened():
 
 
 def test_test_iam_permissions_flattened_error():
-    client = OrganizationsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = OrganizationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1841,7 +2011,8 @@ async def test_test_iam_permissions_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.test_iam_permissions(
-            resource="resource_value", permissions=["permissions_value"],
+            resource="resource_value",
+            permissions=["permissions_value"],
         )
 
         # Establish that the underlying call was made with the expected
@@ -1879,7 +2050,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = OrganizationsClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -1899,7 +2071,10 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = OrganizationsClient(client_options=options, transport=transport,)
+        client = OrganizationsClient(
+            client_options=options,
+            transport=transport,
+        )
 
     # It is an error to provide an api_key and a credential.
     options = mock.Mock()
@@ -1915,7 +2090,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = OrganizationsClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -1960,8 +2136,13 @@ def test_transport_adc(transport_class):
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
-    client = OrganizationsClient(credentials=ga_credentials.AnonymousCredentials(),)
-    assert isinstance(client.transport, transports.OrganizationsGrpcTransport,)
+    client = OrganizationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    assert isinstance(
+        client.transport,
+        transports.OrganizationsGrpcTransport,
+    )
 
 
 def test_organizations_base_transport_error():
@@ -2010,7 +2191,8 @@ def test_organizations_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.OrganizationsTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -2180,7 +2362,8 @@ def test_organizations_grpc_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.OrganizationsGrpcTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -2192,7 +2375,8 @@ def test_organizations_grpc_asyncio_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.OrganizationsGrpcAsyncIOTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -2299,7 +2483,9 @@ def test_organizations_transport_channel_mtls_with_adc(transport_class):
 
 def test_organization_path():
     organization = "squid"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = OrganizationsClient.organization_path(organization)
     assert expected == actual
 
@@ -2337,7 +2523,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "oyster"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = OrganizationsClient.common_folder_path(folder)
     assert expected == actual
 
@@ -2355,7 +2543,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "cuttlefish"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = OrganizationsClient.common_organization_path(organization)
     assert expected == actual
 
@@ -2373,7 +2563,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "winkle"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = OrganizationsClient.common_project_path(project)
     assert expected == actual
 
@@ -2393,7 +2585,8 @@ def test_common_location_path():
     project = "scallop"
     location = "abalone"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = OrganizationsClient.common_location_path(project, location)
     assert expected == actual
@@ -2418,7 +2611,8 @@ def test_client_with_default_client_info():
         transports.OrganizationsTransport, "_prep_wrapped_messages"
     ) as prep:
         client = OrganizationsClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -2427,7 +2621,8 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = OrganizationsClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -2435,7 +2630,8 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = OrganizationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     with mock.patch.object(
         type(getattr(client.transport, "grpc_channel")), "close"

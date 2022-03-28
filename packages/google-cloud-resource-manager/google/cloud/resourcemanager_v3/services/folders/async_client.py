@@ -303,7 +303,12 @@ class FoldersAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -410,12 +415,20 @@ class FoldersAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.
         response = pagers.ListFoldersAsyncPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -543,12 +556,20 @@ class FoldersAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.
         response = pagers.SearchFoldersAsyncPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -672,7 +693,12 @@ class FoldersAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation_async.from_gapic(
@@ -815,7 +841,12 @@ class FoldersAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation_async.from_gapic(
@@ -949,7 +980,12 @@ class FoldersAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation_async.from_gapic(
@@ -1064,7 +1100,12 @@ class FoldersAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation_async.from_gapic(
@@ -1180,7 +1221,12 @@ class FoldersAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation_async.from_gapic(
@@ -1322,7 +1368,9 @@ class FoldersAsyncClient:
         if isinstance(request, dict):
             request = iam_policy_pb2.GetIamPolicyRequest(**request)
         elif not request:
-            request = iam_policy_pb2.GetIamPolicyRequest(resource=resource,)
+            request = iam_policy_pb2.GetIamPolicyRequest(
+                resource=resource,
+            )
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1348,7 +1396,12 @@ class FoldersAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1481,7 +1534,9 @@ class FoldersAsyncClient:
         if isinstance(request, dict):
             request = iam_policy_pb2.SetIamPolicyRequest(**request)
         elif not request:
-            request = iam_policy_pb2.SetIamPolicyRequest(resource=resource,)
+            request = iam_policy_pb2.SetIamPolicyRequest(
+                resource=resource,
+            )
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1498,7 +1553,12 @@ class FoldersAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1588,7 +1648,8 @@ class FoldersAsyncClient:
             request = iam_policy_pb2.TestIamPermissionsRequest(**request)
         elif not request:
             request = iam_policy_pb2.TestIamPermissionsRequest(
-                resource=resource, permissions=permissions,
+                resource=resource,
+                permissions=permissions,
             )
 
         # Wrap the RPC method; this adds retry and timeout information,
@@ -1606,7 +1667,12 @@ class FoldersAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response

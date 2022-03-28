@@ -92,14 +92,42 @@ class Folder(proto.Message):
         ACTIVE = 1
         DELETE_REQUESTED = 2
 
-    name = proto.Field(proto.STRING, number=1,)
-    parent = proto.Field(proto.STRING, number=2,)
-    display_name = proto.Field(proto.STRING, number=3,)
-    state = proto.Field(proto.ENUM, number=4, enum=State,)
-    create_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,)
-    delete_time = proto.Field(proto.MESSAGE, number=7, message=timestamp_pb2.Timestamp,)
-    etag = proto.Field(proto.STRING, number=8,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    parent = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=State,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
+    )
+    delete_time = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=timestamp_pb2.Timestamp,
+    )
+    etag = proto.Field(
+        proto.STRING,
+        number=8,
+    )
 
 
 class GetFolderRequest(proto.Message):
@@ -111,7 +139,10 @@ class GetFolderRequest(proto.Message):
             be of the form ``folders/{folder_id}``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListFoldersRequest(proto.Message):
@@ -139,10 +170,22 @@ class ListFoldersRequest(proto.Message):
             state should be returned. Defaults to false.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    show_deleted = proto.Field(proto.BOOL, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    show_deleted = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
 
 
 class ListFoldersResponse(proto.Message):
@@ -163,8 +206,15 @@ class ListFoldersResponse(proto.Message):
     def raw_page(self):
         return self
 
-    folders = proto.RepeatedField(proto.MESSAGE, number=1, message="Folder",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    folders = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Folder",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class SearchFoldersRequest(proto.Message):
@@ -217,9 +267,18 @@ class SearchFoldersRequest(proto.Message):
                "String".
     """
 
-    page_size = proto.Field(proto.INT32, number=1,)
-    page_token = proto.Field(proto.STRING, number=2,)
-    query = proto.Field(proto.STRING, number=3,)
+    page_size = proto.Field(
+        proto.INT32,
+        number=1,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    query = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class SearchFoldersResponse(proto.Message):
@@ -239,8 +298,15 @@ class SearchFoldersResponse(proto.Message):
     def raw_page(self):
         return self
 
-    folders = proto.RepeatedField(proto.MESSAGE, number=1, message="Folder",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    folders = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Folder",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class CreateFolderRequest(proto.Message):
@@ -253,7 +319,11 @@ class CreateFolderRequest(proto.Message):
             other fields will be ignored.
     """
 
-    folder = proto.Field(proto.MESSAGE, number=2, message="Folder",)
+    folder = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="Folder",
+    )
 
 
 class CreateFolderMetadata(proto.Message):
@@ -267,8 +337,14 @@ class CreateFolderMetadata(proto.Message):
             organization we are creating the folder under.
     """
 
-    display_name = proto.Field(proto.STRING, number=1,)
-    parent = proto.Field(proto.STRING, number=2,)
+    display_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    parent = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class UpdateFolderRequest(proto.Message):
@@ -290,9 +366,15 @@ class UpdateFolderRequest(proto.Message):
             can be updated.
     """
 
-    folder = proto.Field(proto.MESSAGE, number=1, message="Folder",)
+    folder = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="Folder",
+    )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -316,8 +398,14 @@ class MoveFolderRequest(proto.Message):
             ``folders/{folder_id}`` or ``organizations/{org_id}``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    destination_parent = proto.Field(proto.STRING, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    destination_parent = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class MoveFolderMetadata(proto.Message):
@@ -333,9 +421,18 @@ class MoveFolderMetadata(proto.Message):
             organization to move the folder to.
     """
 
-    display_name = proto.Field(proto.STRING, number=1,)
-    source_parent = proto.Field(proto.STRING, number=2,)
-    destination_parent = proto.Field(proto.STRING, number=3,)
+    display_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    source_parent = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    destination_parent = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class DeleteFolderRequest(proto.Message):
@@ -347,7 +444,10 @@ class DeleteFolderRequest(proto.Message):
             Must be of the form ``folders/{folder_id}``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class DeleteFolderMetadata(proto.Message):
@@ -366,7 +466,10 @@ class UndeleteFolderRequest(proto.Message):
             be of the form ``folders/{folder_id}``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class UndeleteFolderMetadata(proto.Message):

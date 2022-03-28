@@ -90,7 +90,13 @@ def test__get_default_mtls_endpoint():
     assert TagValuesClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
 
 
-@pytest.mark.parametrize("client_class", [TagValuesClient, TagValuesAsyncClient,])
+@pytest.mark.parametrize(
+    "client_class",
+    [
+        TagValuesClient,
+        TagValuesAsyncClient,
+    ],
+)
 def test_tag_values_client_from_service_account_info(client_class):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
@@ -130,7 +136,13 @@ def test_tag_values_client_service_account_always_use_jwt(
         use_jwt.assert_not_called()
 
 
-@pytest.mark.parametrize("client_class", [TagValuesClient, TagValuesAsyncClient,])
+@pytest.mark.parametrize(
+    "client_class",
+    [
+        TagValuesClient,
+        TagValuesAsyncClient,
+    ],
+)
 def test_tag_values_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
@@ -485,7 +497,9 @@ def test_tag_values_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -616,10 +630,17 @@ def test_tag_values_client_create_channel_credentials_file(
         )
 
 
-@pytest.mark.parametrize("request_type", [tag_values.ListTagValuesRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        tag_values.ListTagValuesRequest,
+        dict,
+    ],
+)
 def test_list_tag_values(request_type, transport: str = "grpc"):
     client = TagValuesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -648,7 +669,8 @@ def test_list_tag_values_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TagValuesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -664,7 +686,8 @@ async def test_list_tag_values_async(
     transport: str = "grpc_asyncio", request_type=tag_values.ListTagValuesRequest
 ):
     client = TagValuesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -675,7 +698,9 @@ async def test_list_tag_values_async(
     with mock.patch.object(type(client.transport.list_tag_values), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            tag_values.ListTagValuesResponse(next_page_token="next_page_token_value",)
+            tag_values.ListTagValuesResponse(
+                next_page_token="next_page_token_value",
+            )
         )
         response = await client.list_tag_values(request)
 
@@ -695,7 +720,9 @@ async def test_list_tag_values_async_from_dict():
 
 
 def test_list_tag_values_flattened():
-    client = TagValuesClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TagValuesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_tag_values), "__call__") as call:
@@ -703,7 +730,9 @@ def test_list_tag_values_flattened():
         call.return_value = tag_values.ListTagValuesResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_tag_values(parent="parent_value",)
+        client.list_tag_values(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -715,19 +744,24 @@ def test_list_tag_values_flattened():
 
 
 def test_list_tag_values_flattened_error():
-    client = TagValuesClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TagValuesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_tag_values(
-            tag_values.ListTagValuesRequest(), parent="parent_value",
+            tag_values.ListTagValuesRequest(),
+            parent="parent_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_list_tag_values_flattened_async():
-    client = TagValuesAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TagValuesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_tag_values), "__call__") as call:
@@ -739,7 +773,9 @@ async def test_list_tag_values_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_tag_values(parent="parent_value",)
+        response = await client.list_tag_values(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -752,19 +788,23 @@ async def test_list_tag_values_flattened_async():
 
 @pytest.mark.asyncio
 async def test_list_tag_values_flattened_error_async():
-    client = TagValuesAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TagValuesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_tag_values(
-            tag_values.ListTagValuesRequest(), parent="parent_value",
+            tag_values.ListTagValuesRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_tag_values_pager(transport_name: str = "grpc"):
     client = TagValuesClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -779,12 +819,21 @@ def test_list_tag_values_pager(transport_name: str = "grpc"):
                 ],
                 next_page_token="abc",
             ),
-            tag_values.ListTagValuesResponse(tag_values=[], next_page_token="def",),
             tag_values.ListTagValuesResponse(
-                tag_values=[tag_values.TagValue(),], next_page_token="ghi",
+                tag_values=[],
+                next_page_token="def",
             ),
             tag_values.ListTagValuesResponse(
-                tag_values=[tag_values.TagValue(), tag_values.TagValue(),],
+                tag_values=[
+                    tag_values.TagValue(),
+                ],
+                next_page_token="ghi",
+            ),
+            tag_values.ListTagValuesResponse(
+                tag_values=[
+                    tag_values.TagValue(),
+                    tag_values.TagValue(),
+                ],
             ),
             RuntimeError,
         )
@@ -801,7 +850,8 @@ def test_list_tag_values_pager(transport_name: str = "grpc"):
 
 def test_list_tag_values_pages(transport_name: str = "grpc"):
     client = TagValuesClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -816,12 +866,21 @@ def test_list_tag_values_pages(transport_name: str = "grpc"):
                 ],
                 next_page_token="abc",
             ),
-            tag_values.ListTagValuesResponse(tag_values=[], next_page_token="def",),
             tag_values.ListTagValuesResponse(
-                tag_values=[tag_values.TagValue(),], next_page_token="ghi",
+                tag_values=[],
+                next_page_token="def",
             ),
             tag_values.ListTagValuesResponse(
-                tag_values=[tag_values.TagValue(), tag_values.TagValue(),],
+                tag_values=[
+                    tag_values.TagValue(),
+                ],
+                next_page_token="ghi",
+            ),
+            tag_values.ListTagValuesResponse(
+                tag_values=[
+                    tag_values.TagValue(),
+                    tag_values.TagValue(),
+                ],
             ),
             RuntimeError,
         )
@@ -832,7 +891,9 @@ def test_list_tag_values_pages(transport_name: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_list_tag_values_async_pager():
-    client = TagValuesAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = TagValuesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -848,16 +909,27 @@ async def test_list_tag_values_async_pager():
                 ],
                 next_page_token="abc",
             ),
-            tag_values.ListTagValuesResponse(tag_values=[], next_page_token="def",),
             tag_values.ListTagValuesResponse(
-                tag_values=[tag_values.TagValue(),], next_page_token="ghi",
+                tag_values=[],
+                next_page_token="def",
             ),
             tag_values.ListTagValuesResponse(
-                tag_values=[tag_values.TagValue(), tag_values.TagValue(),],
+                tag_values=[
+                    tag_values.TagValue(),
+                ],
+                next_page_token="ghi",
+            ),
+            tag_values.ListTagValuesResponse(
+                tag_values=[
+                    tag_values.TagValue(),
+                    tag_values.TagValue(),
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.list_tag_values(request={},)
+        async_pager = await client.list_tag_values(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -869,7 +941,9 @@ async def test_list_tag_values_async_pager():
 
 @pytest.mark.asyncio
 async def test_list_tag_values_async_pages():
-    client = TagValuesAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = TagValuesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -885,12 +959,21 @@ async def test_list_tag_values_async_pages():
                 ],
                 next_page_token="abc",
             ),
-            tag_values.ListTagValuesResponse(tag_values=[], next_page_token="def",),
             tag_values.ListTagValuesResponse(
-                tag_values=[tag_values.TagValue(),], next_page_token="ghi",
+                tag_values=[],
+                next_page_token="def",
             ),
             tag_values.ListTagValuesResponse(
-                tag_values=[tag_values.TagValue(), tag_values.TagValue(),],
+                tag_values=[
+                    tag_values.TagValue(),
+                ],
+                next_page_token="ghi",
+            ),
+            tag_values.ListTagValuesResponse(
+                tag_values=[
+                    tag_values.TagValue(),
+                    tag_values.TagValue(),
+                ],
             ),
             RuntimeError,
         )
@@ -901,10 +984,17 @@ async def test_list_tag_values_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [tag_values.GetTagValueRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        tag_values.GetTagValueRequest,
+        dict,
+    ],
+)
 def test_get_tag_value(request_type, transport: str = "grpc"):
     client = TagValuesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -943,7 +1033,8 @@ def test_get_tag_value_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TagValuesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -959,7 +1050,8 @@ async def test_get_tag_value_async(
     transport: str = "grpc_asyncio", request_type=tag_values.GetTagValueRequest
 ):
     client = TagValuesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1002,7 +1094,9 @@ async def test_get_tag_value_async_from_dict():
 
 
 def test_get_tag_value_field_headers():
-    client = TagValuesClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TagValuesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1022,12 +1116,17 @@ def test_get_tag_value_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_get_tag_value_field_headers_async():
-    client = TagValuesAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TagValuesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1047,11 +1146,16 @@ async def test_get_tag_value_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_tag_value_flattened():
-    client = TagValuesClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TagValuesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_tag_value), "__call__") as call:
@@ -1059,7 +1163,9 @@ def test_get_tag_value_flattened():
         call.return_value = tag_values.TagValue()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_tag_value(name="name_value",)
+        client.get_tag_value(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1071,19 +1177,24 @@ def test_get_tag_value_flattened():
 
 
 def test_get_tag_value_flattened_error():
-    client = TagValuesClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TagValuesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_tag_value(
-            tag_values.GetTagValueRequest(), name="name_value",
+            tag_values.GetTagValueRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_get_tag_value_flattened_async():
-    client = TagValuesAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TagValuesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_tag_value), "__call__") as call:
@@ -1093,7 +1204,9 @@ async def test_get_tag_value_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(tag_values.TagValue())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_tag_value(name="name_value",)
+        response = await client.get_tag_value(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1106,20 +1219,30 @@ async def test_get_tag_value_flattened_async():
 
 @pytest.mark.asyncio
 async def test_get_tag_value_flattened_error_async():
-    client = TagValuesAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TagValuesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_tag_value(
-            tag_values.GetTagValueRequest(), name="name_value",
+            tag_values.GetTagValueRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [tag_values.CreateTagValueRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        tag_values.CreateTagValueRequest,
+        dict,
+    ],
+)
 def test_create_tag_value(request_type, transport: str = "grpc"):
     client = TagValuesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1145,7 +1268,8 @@ def test_create_tag_value_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TagValuesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1161,7 +1285,8 @@ async def test_create_tag_value_async(
     transport: str = "grpc_asyncio", request_type=tag_values.CreateTagValueRequest
 ):
     client = TagValuesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1191,7 +1316,9 @@ async def test_create_tag_value_async_from_dict():
 
 
 def test_create_tag_value_flattened():
-    client = TagValuesClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TagValuesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_tag_value), "__call__") as call:
@@ -1199,7 +1326,9 @@ def test_create_tag_value_flattened():
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.create_tag_value(tag_value=tag_values.TagValue(name="name_value"),)
+        client.create_tag_value(
+            tag_value=tag_values.TagValue(name="name_value"),
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1211,7 +1340,9 @@ def test_create_tag_value_flattened():
 
 
 def test_create_tag_value_flattened_error():
-    client = TagValuesClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TagValuesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1224,7 +1355,9 @@ def test_create_tag_value_flattened_error():
 
 @pytest.mark.asyncio
 async def test_create_tag_value_flattened_async():
-    client = TagValuesAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TagValuesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_tag_value), "__call__") as call:
@@ -1251,7 +1384,9 @@ async def test_create_tag_value_flattened_async():
 
 @pytest.mark.asyncio
 async def test_create_tag_value_flattened_error_async():
-    client = TagValuesAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TagValuesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1262,10 +1397,17 @@ async def test_create_tag_value_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [tag_values.UpdateTagValueRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        tag_values.UpdateTagValueRequest,
+        dict,
+    ],
+)
 def test_update_tag_value(request_type, transport: str = "grpc"):
     client = TagValuesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1291,7 +1433,8 @@ def test_update_tag_value_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TagValuesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1307,7 +1450,8 @@ async def test_update_tag_value_async(
     transport: str = "grpc_asyncio", request_type=tag_values.UpdateTagValueRequest
 ):
     client = TagValuesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1337,7 +1481,9 @@ async def test_update_tag_value_async_from_dict():
 
 
 def test_update_tag_value_field_headers():
-    client = TagValuesClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TagValuesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1357,14 +1503,17 @@ def test_update_tag_value_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "tag_value.name=tag_value.name/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "tag_value.name=tag_value.name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_update_tag_value_field_headers_async():
-    client = TagValuesAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TagValuesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1386,13 +1535,16 @@ async def test_update_tag_value_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "tag_value.name=tag_value.name/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "tag_value.name=tag_value.name/value",
+    ) in kw["metadata"]
 
 
 def test_update_tag_value_flattened():
-    client = TagValuesClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TagValuesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_tag_value), "__call__") as call:
@@ -1418,7 +1570,9 @@ def test_update_tag_value_flattened():
 
 
 def test_update_tag_value_flattened_error():
-    client = TagValuesClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TagValuesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1432,7 +1586,9 @@ def test_update_tag_value_flattened_error():
 
 @pytest.mark.asyncio
 async def test_update_tag_value_flattened_async():
-    client = TagValuesAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TagValuesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_tag_value), "__call__") as call:
@@ -1463,7 +1619,9 @@ async def test_update_tag_value_flattened_async():
 
 @pytest.mark.asyncio
 async def test_update_tag_value_flattened_error_async():
-    client = TagValuesAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TagValuesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1475,10 +1633,17 @@ async def test_update_tag_value_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [tag_values.DeleteTagValueRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        tag_values.DeleteTagValueRequest,
+        dict,
+    ],
+)
 def test_delete_tag_value(request_type, transport: str = "grpc"):
     client = TagValuesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1504,7 +1669,8 @@ def test_delete_tag_value_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TagValuesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1520,7 +1686,8 @@ async def test_delete_tag_value_async(
     transport: str = "grpc_asyncio", request_type=tag_values.DeleteTagValueRequest
 ):
     client = TagValuesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1550,7 +1717,9 @@ async def test_delete_tag_value_async_from_dict():
 
 
 def test_delete_tag_value_field_headers():
-    client = TagValuesClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TagValuesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1570,12 +1739,17 @@ def test_delete_tag_value_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_delete_tag_value_field_headers_async():
-    client = TagValuesAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TagValuesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1597,11 +1771,16 @@ async def test_delete_tag_value_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_tag_value_flattened():
-    client = TagValuesClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TagValuesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_tag_value), "__call__") as call:
@@ -1609,7 +1788,9 @@ def test_delete_tag_value_flattened():
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_tag_value(name="name_value",)
+        client.delete_tag_value(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1621,19 +1802,24 @@ def test_delete_tag_value_flattened():
 
 
 def test_delete_tag_value_flattened_error():
-    client = TagValuesClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TagValuesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_tag_value(
-            tag_values.DeleteTagValueRequest(), name="name_value",
+            tag_values.DeleteTagValueRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_delete_tag_value_flattened_async():
-    client = TagValuesAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TagValuesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_tag_value), "__call__") as call:
@@ -1645,7 +1831,9 @@ async def test_delete_tag_value_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_tag_value(name="name_value",)
+        response = await client.delete_tag_value(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1658,20 +1846,30 @@ async def test_delete_tag_value_flattened_async():
 
 @pytest.mark.asyncio
 async def test_delete_tag_value_flattened_error_async():
-    client = TagValuesAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TagValuesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_tag_value(
-            tag_values.DeleteTagValueRequest(), name="name_value",
+            tag_values.DeleteTagValueRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [iam_policy_pb2.GetIamPolicyRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.GetIamPolicyRequest,
+        dict,
+    ],
+)
 def test_get_iam_policy(request_type, transport: str = "grpc"):
     client = TagValuesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1681,7 +1879,10 @@ def test_get_iam_policy(request_type, transport: str = "grpc"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = policy_pb2.Policy(version=774, etag=b"etag_blob",)
+        call.return_value = policy_pb2.Policy(
+            version=774,
+            etag=b"etag_blob",
+        )
         response = client.get_iam_policy(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1699,7 +1900,8 @@ def test_get_iam_policy_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TagValuesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1715,7 +1917,8 @@ async def test_get_iam_policy_async(
     transport: str = "grpc_asyncio", request_type=iam_policy_pb2.GetIamPolicyRequest
 ):
     client = TagValuesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1726,7 +1929,10 @@ async def test_get_iam_policy_async(
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            policy_pb2.Policy(version=774, etag=b"etag_blob",)
+            policy_pb2.Policy(
+                version=774,
+                etag=b"etag_blob",
+            )
         )
         response = await client.get_iam_policy(request)
 
@@ -1747,7 +1953,9 @@ async def test_get_iam_policy_async_from_dict():
 
 
 def test_get_iam_policy_field_headers():
-    client = TagValuesClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TagValuesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1767,12 +1975,17 @@ def test_get_iam_policy_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_get_iam_policy_field_headers_async():
-    client = TagValuesAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TagValuesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1792,11 +2005,16 @@ async def test_get_iam_policy_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
 
 
 def test_get_iam_policy_from_dict_foreign():
-    client = TagValuesClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TagValuesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
@@ -1811,7 +2029,9 @@ def test_get_iam_policy_from_dict_foreign():
 
 
 def test_get_iam_policy_flattened():
-    client = TagValuesClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TagValuesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -1819,7 +2039,9 @@ def test_get_iam_policy_flattened():
         call.return_value = policy_pb2.Policy()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_iam_policy(resource="resource_value",)
+        client.get_iam_policy(
+            resource="resource_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1831,19 +2053,24 @@ def test_get_iam_policy_flattened():
 
 
 def test_get_iam_policy_flattened_error():
-    client = TagValuesClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TagValuesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_iam_policy(
-            iam_policy_pb2.GetIamPolicyRequest(), resource="resource_value",
+            iam_policy_pb2.GetIamPolicyRequest(),
+            resource="resource_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_get_iam_policy_flattened_async():
-    client = TagValuesAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TagValuesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -1853,7 +2080,9 @@ async def test_get_iam_policy_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(policy_pb2.Policy())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_iam_policy(resource="resource_value",)
+        response = await client.get_iam_policy(
+            resource="resource_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1866,20 +2095,30 @@ async def test_get_iam_policy_flattened_async():
 
 @pytest.mark.asyncio
 async def test_get_iam_policy_flattened_error_async():
-    client = TagValuesAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TagValuesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_iam_policy(
-            iam_policy_pb2.GetIamPolicyRequest(), resource="resource_value",
+            iam_policy_pb2.GetIamPolicyRequest(),
+            resource="resource_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [iam_policy_pb2.SetIamPolicyRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.SetIamPolicyRequest,
+        dict,
+    ],
+)
 def test_set_iam_policy(request_type, transport: str = "grpc"):
     client = TagValuesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1889,7 +2128,10 @@ def test_set_iam_policy(request_type, transport: str = "grpc"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = policy_pb2.Policy(version=774, etag=b"etag_blob",)
+        call.return_value = policy_pb2.Policy(
+            version=774,
+            etag=b"etag_blob",
+        )
         response = client.set_iam_policy(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1907,7 +2149,8 @@ def test_set_iam_policy_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TagValuesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1923,7 +2166,8 @@ async def test_set_iam_policy_async(
     transport: str = "grpc_asyncio", request_type=iam_policy_pb2.SetIamPolicyRequest
 ):
     client = TagValuesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1934,7 +2178,10 @@ async def test_set_iam_policy_async(
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            policy_pb2.Policy(version=774, etag=b"etag_blob",)
+            policy_pb2.Policy(
+                version=774,
+                etag=b"etag_blob",
+            )
         )
         response = await client.set_iam_policy(request)
 
@@ -1955,7 +2202,9 @@ async def test_set_iam_policy_async_from_dict():
 
 
 def test_set_iam_policy_field_headers():
-    client = TagValuesClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TagValuesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1975,12 +2224,17 @@ def test_set_iam_policy_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_set_iam_policy_field_headers_async():
-    client = TagValuesAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TagValuesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2000,11 +2254,16 @@ async def test_set_iam_policy_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
 
 
 def test_set_iam_policy_from_dict_foreign():
-    client = TagValuesClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TagValuesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
@@ -2019,7 +2278,9 @@ def test_set_iam_policy_from_dict_foreign():
 
 
 def test_set_iam_policy_flattened():
-    client = TagValuesClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TagValuesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -2027,7 +2288,9 @@ def test_set_iam_policy_flattened():
         call.return_value = policy_pb2.Policy()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.set_iam_policy(resource="resource_value",)
+        client.set_iam_policy(
+            resource="resource_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2039,19 +2302,24 @@ def test_set_iam_policy_flattened():
 
 
 def test_set_iam_policy_flattened_error():
-    client = TagValuesClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TagValuesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.set_iam_policy(
-            iam_policy_pb2.SetIamPolicyRequest(), resource="resource_value",
+            iam_policy_pb2.SetIamPolicyRequest(),
+            resource="resource_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_set_iam_policy_flattened_async():
-    client = TagValuesAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TagValuesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -2061,7 +2329,9 @@ async def test_set_iam_policy_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(policy_pb2.Policy())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.set_iam_policy(resource="resource_value",)
+        response = await client.set_iam_policy(
+            resource="resource_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2074,22 +2344,30 @@ async def test_set_iam_policy_flattened_async():
 
 @pytest.mark.asyncio
 async def test_set_iam_policy_flattened_error_async():
-    client = TagValuesAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TagValuesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.set_iam_policy(
-            iam_policy_pb2.SetIamPolicyRequest(), resource="resource_value",
+            iam_policy_pb2.SetIamPolicyRequest(),
+            resource="resource_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [iam_policy_pb2.TestIamPermissionsRequest, dict,]
+    "request_type",
+    [
+        iam_policy_pb2.TestIamPermissionsRequest,
+        dict,
+    ],
 )
 def test_test_iam_permissions(request_type, transport: str = "grpc"):
     client = TagValuesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2120,7 +2398,8 @@ def test_test_iam_permissions_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TagValuesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2139,7 +2418,8 @@ async def test_test_iam_permissions_async(
     request_type=iam_policy_pb2.TestIamPermissionsRequest,
 ):
     client = TagValuesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2174,7 +2454,9 @@ async def test_test_iam_permissions_async_from_dict():
 
 
 def test_test_iam_permissions_field_headers():
-    client = TagValuesClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TagValuesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2196,12 +2478,17 @@ def test_test_iam_permissions_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_test_iam_permissions_field_headers_async():
-    client = TagValuesAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TagValuesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2225,11 +2512,16 @@ async def test_test_iam_permissions_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
 
 
 def test_test_iam_permissions_from_dict_foreign():
-    client = TagValuesClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TagValuesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
         type(client.transport.test_iam_permissions), "__call__"
@@ -2246,7 +2538,9 @@ def test_test_iam_permissions_from_dict_foreign():
 
 
 def test_test_iam_permissions_flattened():
-    client = TagValuesClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TagValuesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2257,7 +2551,8 @@ def test_test_iam_permissions_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.test_iam_permissions(
-            resource="resource_value", permissions=["permissions_value"],
+            resource="resource_value",
+            permissions=["permissions_value"],
         )
 
         # Establish that the underlying call was made with the expected
@@ -2273,7 +2568,9 @@ def test_test_iam_permissions_flattened():
 
 
 def test_test_iam_permissions_flattened_error():
-    client = TagValuesClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TagValuesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2287,7 +2584,9 @@ def test_test_iam_permissions_flattened_error():
 
 @pytest.mark.asyncio
 async def test_test_iam_permissions_flattened_async():
-    client = TagValuesAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TagValuesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2302,7 +2601,8 @@ async def test_test_iam_permissions_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.test_iam_permissions(
-            resource="resource_value", permissions=["permissions_value"],
+            resource="resource_value",
+            permissions=["permissions_value"],
         )
 
         # Establish that the underlying call was made with the expected
@@ -2319,7 +2619,9 @@ async def test_test_iam_permissions_flattened_async():
 
 @pytest.mark.asyncio
 async def test_test_iam_permissions_flattened_error_async():
-    client = TagValuesAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TagValuesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2338,7 +2640,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = TagValuesClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -2358,7 +2661,10 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = TagValuesClient(client_options=options, transport=transport,)
+        client = TagValuesClient(
+            client_options=options,
+            transport=transport,
+        )
 
     # It is an error to provide an api_key and a credential.
     options = mock.Mock()
@@ -2374,7 +2680,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = TagValuesClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -2404,7 +2711,10 @@ def test_transport_get_channel():
 
 @pytest.mark.parametrize(
     "transport_class",
-    [transports.TagValuesGrpcTransport, transports.TagValuesGrpcAsyncIOTransport,],
+    [
+        transports.TagValuesGrpcTransport,
+        transports.TagValuesGrpcAsyncIOTransport,
+    ],
 )
 def test_transport_adc(transport_class):
     # Test default credentials are used if not provided.
@@ -2416,8 +2726,13 @@ def test_transport_adc(transport_class):
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
-    client = TagValuesClient(credentials=ga_credentials.AnonymousCredentials(),)
-    assert isinstance(client.transport, transports.TagValuesGrpcTransport,)
+    client = TagValuesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    assert isinstance(
+        client.transport,
+        transports.TagValuesGrpcTransport,
+    )
 
 
 def test_tag_values_base_transport_error():
@@ -2474,7 +2789,8 @@ def test_tag_values_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.TagValuesTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -2515,7 +2831,10 @@ def test_tag_values_auth_adc():
 
 @pytest.mark.parametrize(
     "transport_class",
-    [transports.TagValuesGrpcTransport, transports.TagValuesGrpcAsyncIOTransport,],
+    [
+        transports.TagValuesGrpcTransport,
+        transports.TagValuesGrpcAsyncIOTransport,
+    ],
 )
 def test_tag_values_transport_auth_adc(transport_class):
     # If credentials and host are not provided, the transport class should use
@@ -2638,7 +2957,8 @@ def test_tag_values_grpc_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.TagValuesGrpcTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -2650,7 +2970,8 @@ def test_tag_values_grpc_asyncio_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.TagValuesGrpcAsyncIOTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -2751,12 +3072,16 @@ def test_tag_values_transport_channel_mtls_with_adc(transport_class):
 
 def test_tag_values_grpc_lro_client():
     client = TagValuesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
     transport = client.transport
 
     # Ensure that we have a api-core operations client.
-    assert isinstance(transport.operations_client, operations_v1.OperationsClient,)
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsClient,
+    )
 
     # Ensure that subsequent calls to the property send the exact same object.
     assert transport.operations_client is transport.operations_client
@@ -2764,12 +3089,16 @@ def test_tag_values_grpc_lro_client():
 
 def test_tag_values_grpc_lro_async_client():
     client = TagValuesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     transport = client.transport
 
     # Ensure that we have a api-core operations client.
-    assert isinstance(transport.operations_client, operations_v1.OperationsAsyncClient,)
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsAsyncClient,
+    )
 
     # Ensure that subsequent calls to the property send the exact same object.
     assert transport.operations_client is transport.operations_client
@@ -2777,7 +3106,9 @@ def test_tag_values_grpc_lro_async_client():
 
 def test_tag_value_path():
     tag_value = "squid"
-    expected = "tagValues/{tag_value}".format(tag_value=tag_value,)
+    expected = "tagValues/{tag_value}".format(
+        tag_value=tag_value,
+    )
     actual = TagValuesClient.tag_value_path(tag_value)
     assert expected == actual
 
@@ -2815,7 +3146,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "oyster"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = TagValuesClient.common_folder_path(folder)
     assert expected == actual
 
@@ -2833,7 +3166,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "cuttlefish"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = TagValuesClient.common_organization_path(organization)
     assert expected == actual
 
@@ -2851,7 +3186,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "winkle"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = TagValuesClient.common_project_path(project)
     assert expected == actual
 
@@ -2871,7 +3208,8 @@ def test_common_location_path():
     project = "scallop"
     location = "abalone"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = TagValuesClient.common_location_path(project, location)
     assert expected == actual
@@ -2896,7 +3234,8 @@ def test_client_with_default_client_info():
         transports.TagValuesTransport, "_prep_wrapped_messages"
     ) as prep:
         client = TagValuesClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -2905,7 +3244,8 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = TagValuesClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -2913,7 +3253,8 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = TagValuesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     with mock.patch.object(
         type(getattr(client.transport, "grpc_channel")), "close"

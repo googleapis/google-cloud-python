@@ -156,22 +156,34 @@ class FoldersTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.search_folders: gapic_v1.method.wrap_method(
-                self.search_folders, default_timeout=60.0, client_info=client_info,
+                self.search_folders,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.create_folder: gapic_v1.method.wrap_method(
-                self.create_folder, default_timeout=60.0, client_info=client_info,
+                self.create_folder,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.update_folder: gapic_v1.method.wrap_method(
-                self.update_folder, default_timeout=60.0, client_info=client_info,
+                self.update_folder,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.move_folder: gapic_v1.method.wrap_method(
-                self.move_folder, default_timeout=60.0, client_info=client_info,
+                self.move_folder,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.delete_folder: gapic_v1.method.wrap_method(
-                self.delete_folder, default_timeout=60.0, client_info=client_info,
+                self.delete_folder,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.undelete_folder: gapic_v1.method.wrap_method(
-                self.undelete_folder, default_timeout=60.0, client_info=client_info,
+                self.undelete_folder,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.get_iam_policy: gapic_v1.method.wrap_method(
                 self.get_iam_policy,
@@ -188,7 +200,9 @@ class FoldersTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.set_iam_policy: gapic_v1.method.wrap_method(
-                self.set_iam_policy, default_timeout=60.0, client_info=client_info,
+                self.set_iam_policy,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.test_iam_permissions: gapic_v1.method.wrap_method(
                 self.test_iam_permissions,
@@ -200,9 +214,9 @@ class FoldersTransport(abc.ABC):
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 
