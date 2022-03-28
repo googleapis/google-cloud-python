@@ -48,6 +48,8 @@ s.move(templated_files, excludes=[".coveragerc"])  # microgenerator has a good .
 # ----------------------------------------------------------------------------
 python.py_samples(skip_readmes=True)
 
+python.configure_previous_major_version_branches()
+
 # Temporarily disable warnings due to
 # https://github.com/googleapis/gapic-generator-python/issues/525
 s.replace("noxfile.py", '[\"\']-W[\"\']', '# "-W"')
