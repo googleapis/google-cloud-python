@@ -44,8 +44,15 @@ class CreateBudgetRequest(proto.Message):
             Required. Budget to create.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    budget = proto.Field(proto.MESSAGE, number=2, message=budget_model.Budget,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    budget = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=budget_model.Budget,
+    )
 
 
 class UpdateBudgetRequest(proto.Message):
@@ -65,9 +72,15 @@ class UpdateBudgetRequest(proto.Message):
             for more details about default values.
     """
 
-    budget = proto.Field(proto.MESSAGE, number=1, message=budget_model.Budget,)
+    budget = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=budget_model.Budget,
+    )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -80,7 +93,10 @@ class GetBudgetRequest(proto.Message):
             ``billingAccounts/{billingAccountId}/budgets/{budgetId}``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListBudgetsRequest(proto.Message):
@@ -102,9 +118,18 @@ class ListBudgetsRequest(proto.Message):
             system should return the next page of data.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListBudgetsResponse(proto.Message):
@@ -124,8 +149,15 @@ class ListBudgetsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    budgets = proto.RepeatedField(proto.MESSAGE, number=1, message=budget_model.Budget,)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    budgets = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=budget_model.Budget,
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class DeleteBudgetRequest(proto.Message):
@@ -138,7 +170,10 @@ class DeleteBudgetRequest(proto.Message):
             ``billingAccounts/{billingAccountId}/budgets/{budgetId}``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
