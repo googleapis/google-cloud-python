@@ -87,7 +87,13 @@ def test__get_default_mtls_endpoint():
     assert AssetServiceClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
 
 
-@pytest.mark.parametrize("client_class", [AssetServiceClient, AssetServiceAsyncClient,])
+@pytest.mark.parametrize(
+    "client_class",
+    [
+        AssetServiceClient,
+        AssetServiceAsyncClient,
+    ],
+)
 def test_asset_service_client_from_service_account_info(client_class):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
@@ -127,7 +133,13 @@ def test_asset_service_client_service_account_always_use_jwt(
         use_jwt.assert_not_called()
 
 
-@pytest.mark.parametrize("client_class", [AssetServiceClient, AssetServiceAsyncClient,])
+@pytest.mark.parametrize(
+    "client_class",
+    [
+        AssetServiceClient,
+        AssetServiceAsyncClient,
+    ],
+)
 def test_asset_service_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
@@ -482,7 +494,9 @@ def test_asset_service_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -620,10 +634,17 @@ def test_asset_service_client_create_channel_credentials_file(
         )
 
 
-@pytest.mark.parametrize("request_type", [asset_service.AnalyzeIamPolicyRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        asset_service.AnalyzeIamPolicyRequest,
+        dict,
+    ],
+)
 def test_analyze_iam_policy(request_type, transport: str = "grpc"):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -635,7 +656,9 @@ def test_analyze_iam_policy(request_type, transport: str = "grpc"):
         type(client.transport.analyze_iam_policy), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = asset_service.AnalyzeIamPolicyResponse(fully_explored=True,)
+        call.return_value = asset_service.AnalyzeIamPolicyResponse(
+            fully_explored=True,
+        )
         response = client.analyze_iam_policy(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -652,7 +675,8 @@ def test_analyze_iam_policy_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -670,7 +694,8 @@ async def test_analyze_iam_policy_async(
     transport: str = "grpc_asyncio", request_type=asset_service.AnalyzeIamPolicyRequest
 ):
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -683,7 +708,9 @@ async def test_analyze_iam_policy_async(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            asset_service.AnalyzeIamPolicyResponse(fully_explored=True,)
+            asset_service.AnalyzeIamPolicyResponse(
+                fully_explored=True,
+            )
         )
         response = await client.analyze_iam_policy(request)
 
@@ -703,7 +730,9 @@ async def test_analyze_iam_policy_async_from_dict():
 
 
 def test_analyze_iam_policy_field_headers():
-    client = AssetServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -733,7 +762,9 @@ def test_analyze_iam_policy_field_headers():
 
 @pytest.mark.asyncio
 async def test_analyze_iam_policy_field_headers_async():
-    client = AssetServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -764,11 +795,16 @@ async def test_analyze_iam_policy_field_headers_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [asset_service.ExportIamPolicyAnalysisRequest, dict,]
+    "request_type",
+    [
+        asset_service.ExportIamPolicyAnalysisRequest,
+        dict,
+    ],
 )
 def test_export_iam_policy_analysis(request_type, transport: str = "grpc"):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -796,7 +832,8 @@ def test_export_iam_policy_analysis_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -815,7 +852,8 @@ async def test_export_iam_policy_analysis_async(
     request_type=asset_service.ExportIamPolicyAnalysisRequest,
 ):
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -847,7 +885,9 @@ async def test_export_iam_policy_analysis_async_from_dict():
 
 
 def test_export_iam_policy_analysis_field_headers():
-    client = AssetServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -877,7 +917,9 @@ def test_export_iam_policy_analysis_field_headers():
 
 @pytest.mark.asyncio
 async def test_export_iam_policy_analysis_field_headers_async():
-    client = AssetServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -914,7 +956,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = AssetServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -934,7 +977,10 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = AssetServiceClient(client_options=options, transport=transport,)
+        client = AssetServiceClient(
+            client_options=options,
+            transport=transport,
+        )
 
     # It is an error to provide an api_key and a credential.
     options = mock.Mock()
@@ -950,7 +996,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = AssetServiceClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -995,8 +1042,13 @@ def test_transport_adc(transport_class):
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
-    client = AssetServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
-    assert isinstance(client.transport, transports.AssetServiceGrpcTransport,)
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    assert isinstance(
+        client.transport,
+        transports.AssetServiceGrpcTransport,
+    )
 
 
 def test_asset_service_base_transport_error():
@@ -1047,7 +1099,8 @@ def test_asset_service_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.AssetServiceTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -1202,7 +1255,8 @@ def test_asset_service_grpc_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.AssetServiceGrpcTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -1214,7 +1268,8 @@ def test_asset_service_grpc_asyncio_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.AssetServiceGrpcAsyncIOTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -1315,12 +1370,16 @@ def test_asset_service_transport_channel_mtls_with_adc(transport_class):
 
 def test_asset_service_grpc_lro_client():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
     transport = client.transport
 
     # Ensure that we have a api-core operations client.
-    assert isinstance(transport.operations_client, operations_v1.OperationsClient,)
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsClient,
+    )
 
     # Ensure that subsequent calls to the property send the exact same object.
     assert transport.operations_client is transport.operations_client
@@ -1328,12 +1387,16 @@ def test_asset_service_grpc_lro_client():
 
 def test_asset_service_grpc_lro_async_client():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     transport = client.transport
 
     # Ensure that we have a api-core operations client.
-    assert isinstance(transport.operations_client, operations_v1.OperationsAsyncClient,)
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsAsyncClient,
+    )
 
     # Ensure that subsequent calls to the property send the exact same object.
     assert transport.operations_client is transport.operations_client
@@ -1361,7 +1424,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "whelk"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = AssetServiceClient.common_folder_path(folder)
     assert expected == actual
 
@@ -1379,7 +1444,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "oyster"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = AssetServiceClient.common_organization_path(organization)
     assert expected == actual
 
@@ -1397,7 +1464,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "cuttlefish"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = AssetServiceClient.common_project_path(project)
     assert expected == actual
 
@@ -1417,7 +1486,8 @@ def test_common_location_path():
     project = "winkle"
     location = "nautilus"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = AssetServiceClient.common_location_path(project, location)
     assert expected == actual
@@ -1442,7 +1512,8 @@ def test_client_with_default_client_info():
         transports.AssetServiceTransport, "_prep_wrapped_messages"
     ) as prep:
         client = AssetServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -1451,7 +1522,8 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = AssetServiceClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -1459,7 +1531,8 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     with mock.patch.object(
         type(getattr(client.transport, "grpc_channel")), "close"

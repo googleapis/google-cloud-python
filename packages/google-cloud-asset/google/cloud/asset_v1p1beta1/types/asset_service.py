@@ -70,12 +70,30 @@ class SearchAllResourcesRequest(proto.Message):
             example, "  foo ,  bar  desc  ".
     """
 
-    scope = proto.Field(proto.STRING, number=1,)
-    query = proto.Field(proto.STRING, number=2,)
-    asset_types = proto.RepeatedField(proto.STRING, number=3,)
-    page_size = proto.Field(proto.INT32, number=4,)
-    page_token = proto.Field(proto.STRING, number=5,)
-    order_by = proto.Field(proto.STRING, number=10,)
+    scope = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    query = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    asset_types = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=4,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    order_by = proto.Field(
+        proto.STRING,
+        number=10,
+    )
 
 
 class SearchAllResourcesResponse(proto.Message):
@@ -97,9 +115,14 @@ class SearchAllResourcesResponse(proto.Message):
         return self
 
     results = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=assets.StandardResourceMetadata,
+        proto.MESSAGE,
+        number=1,
+        message=assets.StandardResourceMetadata,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class SearchAllIamPoliciesRequest(proto.Message):
@@ -135,10 +158,22 @@ class SearchAllIamPoliciesRequest(proto.Message):
             identical to those in the previous call.
     """
 
-    scope = proto.Field(proto.STRING, number=1,)
-    query = proto.Field(proto.STRING, number=2,)
-    page_size = proto.Field(proto.INT32, number=3,)
-    page_token = proto.Field(proto.STRING, number=4,)
+    scope = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    query = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class SearchAllIamPoliciesResponse(proto.Message):
@@ -161,9 +196,14 @@ class SearchAllIamPoliciesResponse(proto.Message):
         return self
 
     results = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=assets.IamPolicySearchResult,
+        proto.MESSAGE,
+        number=1,
+        message=assets.IamPolicySearchResult,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

@@ -20,7 +20,11 @@ from google.iam.v1 import policy_pb2  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.asset.v1p1beta1",
-    manifest={"StandardResourceMetadata", "IamPolicySearchResult", "Permissions",},
+    manifest={
+        "StandardResourceMetadata",
+        "IamPolicySearchResult",
+        "Permissions",
+    },
 )
 
 
@@ -67,15 +71,43 @@ class StandardResourceMetadata(proto.Message):
             for more information.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    asset_type = proto.Field(proto.STRING, number=2,)
-    project = proto.Field(proto.STRING, number=3,)
-    display_name = proto.Field(proto.STRING, number=4,)
-    description = proto.Field(proto.STRING, number=5,)
-    additional_attributes = proto.RepeatedField(proto.STRING, number=10,)
-    location = proto.Field(proto.STRING, number=11,)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=12,)
-    network_tags = proto.RepeatedField(proto.STRING, number=13,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    asset_type = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    project = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    additional_attributes = proto.RepeatedField(
+        proto.STRING,
+        number=10,
+    )
+    location = proto.Field(
+        proto.STRING,
+        number=11,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=12,
+    )
+    network_tags = proto.RepeatedField(
+        proto.STRING,
+        number=13,
+    )
 
 
 class IamPolicySearchResult(proto.Message):
@@ -121,13 +153,30 @@ class IamPolicySearchResult(proto.Message):
         """
 
         matched_permissions = proto.MapField(
-            proto.STRING, proto.MESSAGE, number=1, message="Permissions",
+            proto.STRING,
+            proto.MESSAGE,
+            number=1,
+            message="Permissions",
         )
 
-    resource = proto.Field(proto.STRING, number=1,)
-    project = proto.Field(proto.STRING, number=3,)
-    policy = proto.Field(proto.MESSAGE, number=4, message=policy_pb2.Policy,)
-    explanation = proto.Field(proto.MESSAGE, number=5, message=Explanation,)
+    resource = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    project = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    policy = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=policy_pb2.Policy,
+    )
+    explanation = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=Explanation,
+    )
 
 
 class Permissions(proto.Message):
@@ -139,7 +188,10 @@ class Permissions(proto.Message):
             string: "compute.disk.get".
     """
 
-    permissions = proto.RepeatedField(proto.STRING, number=1,)
+    permissions = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

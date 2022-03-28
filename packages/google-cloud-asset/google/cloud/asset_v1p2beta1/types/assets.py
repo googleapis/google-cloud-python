@@ -22,7 +22,12 @@ from google.protobuf import timestamp_pb2  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.asset.v1p2beta1",
-    manifest={"TemporalAsset", "TimeWindow", "Asset", "Resource",},
+    manifest={
+        "TemporalAsset",
+        "TimeWindow",
+        "Asset",
+        "Resource",
+    },
 )
 
 
@@ -41,9 +46,20 @@ class TemporalAsset(proto.Message):
             Asset.
     """
 
-    window = proto.Field(proto.MESSAGE, number=1, message="TimeWindow",)
-    deleted = proto.Field(proto.BOOL, number=2,)
-    asset = proto.Field(proto.MESSAGE, number=3, message="Asset",)
+    window = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="TimeWindow",
+    )
+    deleted = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+    asset = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="Asset",
+    )
 
 
 class TimeWindow(proto.Message):
@@ -57,8 +73,16 @@ class TimeWindow(proto.Message):
             Current timestamp if not specified.
     """
 
-    start_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
-    end_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
+    start_time = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 class Asset(proto.Message):
@@ -93,11 +117,28 @@ class Asset(proto.Message):
             "organizations/1234"]
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    asset_type = proto.Field(proto.STRING, number=2,)
-    resource = proto.Field(proto.MESSAGE, number=3, message="Resource",)
-    iam_policy = proto.Field(proto.MESSAGE, number=4, message=policy_pb2.Policy,)
-    ancestors = proto.RepeatedField(proto.STRING, number=6,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    asset_type = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    resource = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="Resource",
+    )
+    iam_policy = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=policy_pb2.Policy,
+    )
+    ancestors = proto.RepeatedField(
+        proto.STRING,
+        number=6,
+    )
 
 
 class Resource(proto.Message):
@@ -143,12 +184,31 @@ class Resource(proto.Message):
             be present.
     """
 
-    version = proto.Field(proto.STRING, number=1,)
-    discovery_document_uri = proto.Field(proto.STRING, number=2,)
-    discovery_name = proto.Field(proto.STRING, number=3,)
-    resource_url = proto.Field(proto.STRING, number=4,)
-    parent = proto.Field(proto.STRING, number=5,)
-    data = proto.Field(proto.MESSAGE, number=6, message=struct_pb2.Struct,)
+    version = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    discovery_document_uri = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    discovery_name = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    resource_url = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    parent = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    data = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=struct_pb2.Struct,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

@@ -69,9 +69,19 @@ class CreateFeedRequest(proto.Message):
             organizations/organization_number/feeds/feed_id
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    feed_id = proto.Field(proto.STRING, number=2,)
-    feed = proto.Field(proto.MESSAGE, number=3, message="Feed",)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    feed_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    feed = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="Feed",
+    )
 
 
 class GetFeedRequest(proto.Message):
@@ -85,7 +95,10 @@ class GetFeedRequest(proto.Message):
             organizations/organization_number/feeds/feed_id
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListFeedsRequest(proto.Message):
@@ -101,7 +114,10 @@ class ListFeedsRequest(proto.Message):
             "projects/my-project-id").
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListFeedsResponse(proto.Message):
@@ -112,7 +128,11 @@ class ListFeedsResponse(proto.Message):
             A list of feeds.
     """
 
-    feeds = proto.RepeatedField(proto.MESSAGE, number=1, message="Feed",)
+    feeds = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Feed",
+    )
 
 
 class UpdateFeedRequest(proto.Message):
@@ -131,9 +151,15 @@ class UpdateFeedRequest(proto.Message):
             contain fields that are immutable or only set by the server.
     """
 
-    feed = proto.Field(proto.MESSAGE, number=1, message="Feed",)
+    feed = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="Feed",
+    )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -148,7 +174,10 @@ class DeleteFeedRequest(proto.Message):
             organizations/organization_number/feeds/feed_id
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class OutputConfig(proto.Message):
@@ -164,7 +193,10 @@ class OutputConfig(proto.Message):
     """
 
     gcs_destination = proto.Field(
-        proto.MESSAGE, number=1, oneof="destination", message="GcsDestination",
+        proto.MESSAGE,
+        number=1,
+        oneof="destination",
+        message="GcsDestination",
     )
 
 
@@ -185,7 +217,11 @@ class GcsDestination(proto.Message):
             This field is a member of `oneof`_ ``object_uri``.
     """
 
-    uri = proto.Field(proto.STRING, number=1, oneof="object_uri",)
+    uri = proto.Field(
+        proto.STRING,
+        number=1,
+        oneof="object_uri",
+    )
 
 
 class PubsubDestination(proto.Message):
@@ -197,7 +233,10 @@ class PubsubDestination(proto.Message):
             example: ``projects/PROJECT_ID/topics/TOPIC_ID``.
     """
 
-    topic = proto.Field(proto.STRING, number=1,)
+    topic = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class FeedOutputConfig(proto.Message):
@@ -213,7 +252,10 @@ class FeedOutputConfig(proto.Message):
     """
 
     pubsub_destination = proto.Field(
-        proto.MESSAGE, number=1, oneof="destination", message="PubsubDestination",
+        proto.MESSAGE,
+        number=1,
+        oneof="destination",
+        message="PubsubDestination",
     )
 
 
@@ -263,12 +305,27 @@ class Feed(proto.Message):
             where the asset updates are published to.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    asset_names = proto.RepeatedField(proto.STRING, number=2,)
-    asset_types = proto.RepeatedField(proto.STRING, number=3,)
-    content_type = proto.Field(proto.ENUM, number=4, enum="ContentType",)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    asset_names = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+    asset_types = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+    content_type = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum="ContentType",
+    )
     feed_output_config = proto.Field(
-        proto.MESSAGE, number=5, message="FeedOutputConfig",
+        proto.MESSAGE,
+        number=5,
+        message="FeedOutputConfig",
     )
 
 

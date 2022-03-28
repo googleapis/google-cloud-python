@@ -91,7 +91,13 @@ def test__get_default_mtls_endpoint():
     assert AssetServiceClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
 
 
-@pytest.mark.parametrize("client_class", [AssetServiceClient, AssetServiceAsyncClient,])
+@pytest.mark.parametrize(
+    "client_class",
+    [
+        AssetServiceClient,
+        AssetServiceAsyncClient,
+    ],
+)
 def test_asset_service_client_from_service_account_info(client_class):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
@@ -131,7 +137,13 @@ def test_asset_service_client_service_account_always_use_jwt(
         use_jwt.assert_not_called()
 
 
-@pytest.mark.parametrize("client_class", [AssetServiceClient, AssetServiceAsyncClient,])
+@pytest.mark.parametrize(
+    "client_class",
+    [
+        AssetServiceClient,
+        AssetServiceAsyncClient,
+    ],
+)
 def test_asset_service_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
@@ -486,7 +498,9 @@ def test_asset_service_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -624,10 +638,17 @@ def test_asset_service_client_create_channel_credentials_file(
         )
 
 
-@pytest.mark.parametrize("request_type", [asset_service.ExportAssetsRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        asset_service.ExportAssetsRequest,
+        dict,
+    ],
+)
 def test_export_assets(request_type, transport: str = "grpc"):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -653,7 +674,8 @@ def test_export_assets_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -669,7 +691,8 @@ async def test_export_assets_async(
     transport: str = "grpc_asyncio", request_type=asset_service.ExportAssetsRequest
 ):
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -699,7 +722,9 @@ async def test_export_assets_async_from_dict():
 
 
 def test_export_assets_field_headers():
-    client = AssetServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -719,12 +744,17 @@ def test_export_assets_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_export_assets_field_headers_async():
-    client = AssetServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -746,13 +776,23 @@ async def test_export_assets_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
-@pytest.mark.parametrize("request_type", [asset_service.ListAssetsRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        asset_service.ListAssetsRequest,
+        dict,
+    ],
+)
 def test_list_assets(request_type, transport: str = "grpc"):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -781,7 +821,8 @@ def test_list_assets_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -797,7 +838,8 @@ async def test_list_assets_async(
     transport: str = "grpc_asyncio", request_type=asset_service.ListAssetsRequest
 ):
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -808,7 +850,9 @@ async def test_list_assets_async(
     with mock.patch.object(type(client.transport.list_assets), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            asset_service.ListAssetsResponse(next_page_token="next_page_token_value",)
+            asset_service.ListAssetsResponse(
+                next_page_token="next_page_token_value",
+            )
         )
         response = await client.list_assets(request)
 
@@ -828,7 +872,9 @@ async def test_list_assets_async_from_dict():
 
 
 def test_list_assets_field_headers():
-    client = AssetServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -848,12 +894,17 @@ def test_list_assets_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_list_assets_field_headers_async():
-    client = AssetServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -875,11 +926,16 @@ async def test_list_assets_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_assets_flattened():
-    client = AssetServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_assets), "__call__") as call:
@@ -887,7 +943,9 @@ def test_list_assets_flattened():
         call.return_value = asset_service.ListAssetsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_assets(parent="parent_value",)
+        client.list_assets(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -899,19 +957,24 @@ def test_list_assets_flattened():
 
 
 def test_list_assets_flattened_error():
-    client = AssetServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_assets(
-            asset_service.ListAssetsRequest(), parent="parent_value",
+            asset_service.ListAssetsRequest(),
+            parent="parent_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_list_assets_flattened_async():
-    client = AssetServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_assets), "__call__") as call:
@@ -923,7 +986,9 @@ async def test_list_assets_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_assets(parent="parent_value",)
+        response = await client.list_assets(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -936,19 +1001,23 @@ async def test_list_assets_flattened_async():
 
 @pytest.mark.asyncio
 async def test_list_assets_flattened_error_async():
-    client = AssetServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_assets(
-            asset_service.ListAssetsRequest(), parent="parent_value",
+            asset_service.ListAssetsRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_assets_pager(transport_name: str = "grpc"):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -956,14 +1025,29 @@ def test_list_assets_pager(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             asset_service.ListAssetsResponse(
-                assets=[assets.Asset(), assets.Asset(), assets.Asset(),],
+                assets=[
+                    assets.Asset(),
+                    assets.Asset(),
+                    assets.Asset(),
+                ],
                 next_page_token="abc",
             ),
-            asset_service.ListAssetsResponse(assets=[], next_page_token="def",),
             asset_service.ListAssetsResponse(
-                assets=[assets.Asset(),], next_page_token="ghi",
+                assets=[],
+                next_page_token="def",
             ),
-            asset_service.ListAssetsResponse(assets=[assets.Asset(), assets.Asset(),],),
+            asset_service.ListAssetsResponse(
+                assets=[
+                    assets.Asset(),
+                ],
+                next_page_token="ghi",
+            ),
+            asset_service.ListAssetsResponse(
+                assets=[
+                    assets.Asset(),
+                    assets.Asset(),
+                ],
+            ),
             RuntimeError,
         )
 
@@ -982,7 +1066,8 @@ def test_list_assets_pager(transport_name: str = "grpc"):
 
 def test_list_assets_pages(transport_name: str = "grpc"):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -990,14 +1075,29 @@ def test_list_assets_pages(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             asset_service.ListAssetsResponse(
-                assets=[assets.Asset(), assets.Asset(), assets.Asset(),],
+                assets=[
+                    assets.Asset(),
+                    assets.Asset(),
+                    assets.Asset(),
+                ],
                 next_page_token="abc",
             ),
-            asset_service.ListAssetsResponse(assets=[], next_page_token="def",),
             asset_service.ListAssetsResponse(
-                assets=[assets.Asset(),], next_page_token="ghi",
+                assets=[],
+                next_page_token="def",
             ),
-            asset_service.ListAssetsResponse(assets=[assets.Asset(), assets.Asset(),],),
+            asset_service.ListAssetsResponse(
+                assets=[
+                    assets.Asset(),
+                ],
+                next_page_token="ghi",
+            ),
+            asset_service.ListAssetsResponse(
+                assets=[
+                    assets.Asset(),
+                    assets.Asset(),
+                ],
+            ),
             RuntimeError,
         )
         pages = list(client.list_assets(request={}).pages)
@@ -1007,7 +1107,9 @@ def test_list_assets_pages(transport_name: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_list_assets_async_pager():
-    client = AssetServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1016,17 +1118,34 @@ async def test_list_assets_async_pager():
         # Set the response to a series of pages.
         call.side_effect = (
             asset_service.ListAssetsResponse(
-                assets=[assets.Asset(), assets.Asset(), assets.Asset(),],
+                assets=[
+                    assets.Asset(),
+                    assets.Asset(),
+                    assets.Asset(),
+                ],
                 next_page_token="abc",
             ),
-            asset_service.ListAssetsResponse(assets=[], next_page_token="def",),
             asset_service.ListAssetsResponse(
-                assets=[assets.Asset(),], next_page_token="ghi",
+                assets=[],
+                next_page_token="def",
             ),
-            asset_service.ListAssetsResponse(assets=[assets.Asset(), assets.Asset(),],),
+            asset_service.ListAssetsResponse(
+                assets=[
+                    assets.Asset(),
+                ],
+                next_page_token="ghi",
+            ),
+            asset_service.ListAssetsResponse(
+                assets=[
+                    assets.Asset(),
+                    assets.Asset(),
+                ],
+            ),
             RuntimeError,
         )
-        async_pager = await client.list_assets(request={},)
+        async_pager = await client.list_assets(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -1038,7 +1157,9 @@ async def test_list_assets_async_pager():
 
 @pytest.mark.asyncio
 async def test_list_assets_async_pages():
-    client = AssetServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1047,14 +1168,29 @@ async def test_list_assets_async_pages():
         # Set the response to a series of pages.
         call.side_effect = (
             asset_service.ListAssetsResponse(
-                assets=[assets.Asset(), assets.Asset(), assets.Asset(),],
+                assets=[
+                    assets.Asset(),
+                    assets.Asset(),
+                    assets.Asset(),
+                ],
                 next_page_token="abc",
             ),
-            asset_service.ListAssetsResponse(assets=[], next_page_token="def",),
             asset_service.ListAssetsResponse(
-                assets=[assets.Asset(),], next_page_token="ghi",
+                assets=[],
+                next_page_token="def",
             ),
-            asset_service.ListAssetsResponse(assets=[assets.Asset(), assets.Asset(),],),
+            asset_service.ListAssetsResponse(
+                assets=[
+                    assets.Asset(),
+                ],
+                next_page_token="ghi",
+            ),
+            asset_service.ListAssetsResponse(
+                assets=[
+                    assets.Asset(),
+                    assets.Asset(),
+                ],
+            ),
             RuntimeError,
         )
         pages = []
@@ -1065,11 +1201,16 @@ async def test_list_assets_async_pages():
 
 
 @pytest.mark.parametrize(
-    "request_type", [asset_service.BatchGetAssetsHistoryRequest, dict,]
+    "request_type",
+    [
+        asset_service.BatchGetAssetsHistoryRequest,
+        dict,
+    ],
 )
 def test_batch_get_assets_history(request_type, transport: str = "grpc"):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1097,7 +1238,8 @@ def test_batch_get_assets_history_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1116,7 +1258,8 @@ async def test_batch_get_assets_history_async(
     request_type=asset_service.BatchGetAssetsHistoryRequest,
 ):
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1148,7 +1291,9 @@ async def test_batch_get_assets_history_async_from_dict():
 
 
 def test_batch_get_assets_history_field_headers():
-    client = AssetServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1170,12 +1315,17 @@ def test_batch_get_assets_history_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_batch_get_assets_history_field_headers_async():
-    client = AssetServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1199,13 +1349,23 @@ async def test_batch_get_assets_history_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
-@pytest.mark.parametrize("request_type", [asset_service.CreateFeedRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        asset_service.CreateFeedRequest,
+        dict,
+    ],
+)
 def test_create_feed(request_type, transport: str = "grpc"):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1242,7 +1402,8 @@ def test_create_feed_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1258,7 +1419,8 @@ async def test_create_feed_async(
     transport: str = "grpc_asyncio", request_type=asset_service.CreateFeedRequest
 ):
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1299,7 +1461,9 @@ async def test_create_feed_async_from_dict():
 
 
 def test_create_feed_field_headers():
-    client = AssetServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1319,12 +1483,17 @@ def test_create_feed_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_create_feed_field_headers_async():
-    client = AssetServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1344,11 +1513,16 @@ async def test_create_feed_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_feed_flattened():
-    client = AssetServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_feed), "__call__") as call:
@@ -1356,7 +1530,9 @@ def test_create_feed_flattened():
         call.return_value = asset_service.Feed()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.create_feed(parent="parent_value",)
+        client.create_feed(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1368,19 +1544,24 @@ def test_create_feed_flattened():
 
 
 def test_create_feed_flattened_error():
-    client = AssetServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.create_feed(
-            asset_service.CreateFeedRequest(), parent="parent_value",
+            asset_service.CreateFeedRequest(),
+            parent="parent_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_create_feed_flattened_async():
-    client = AssetServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_feed), "__call__") as call:
@@ -1390,7 +1571,9 @@ async def test_create_feed_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.Feed())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.create_feed(parent="parent_value",)
+        response = await client.create_feed(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1403,20 +1586,30 @@ async def test_create_feed_flattened_async():
 
 @pytest.mark.asyncio
 async def test_create_feed_flattened_error_async():
-    client = AssetServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.create_feed(
-            asset_service.CreateFeedRequest(), parent="parent_value",
+            asset_service.CreateFeedRequest(),
+            parent="parent_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [asset_service.GetFeedRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        asset_service.GetFeedRequest,
+        dict,
+    ],
+)
 def test_get_feed(request_type, transport: str = "grpc"):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1453,7 +1646,8 @@ def test_get_feed_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1469,7 +1663,8 @@ async def test_get_feed_async(
     transport: str = "grpc_asyncio", request_type=asset_service.GetFeedRequest
 ):
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1510,7 +1705,9 @@ async def test_get_feed_async_from_dict():
 
 
 def test_get_feed_field_headers():
-    client = AssetServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1530,12 +1727,17 @@ def test_get_feed_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_get_feed_field_headers_async():
-    client = AssetServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1555,11 +1757,16 @@ async def test_get_feed_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_feed_flattened():
-    client = AssetServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_feed), "__call__") as call:
@@ -1567,7 +1774,9 @@ def test_get_feed_flattened():
         call.return_value = asset_service.Feed()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_feed(name="name_value",)
+        client.get_feed(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1579,19 +1788,24 @@ def test_get_feed_flattened():
 
 
 def test_get_feed_flattened_error():
-    client = AssetServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_feed(
-            asset_service.GetFeedRequest(), name="name_value",
+            asset_service.GetFeedRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_get_feed_flattened_async():
-    client = AssetServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_feed), "__call__") as call:
@@ -1601,7 +1815,9 @@ async def test_get_feed_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.Feed())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_feed(name="name_value",)
+        response = await client.get_feed(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1614,20 +1830,30 @@ async def test_get_feed_flattened_async():
 
 @pytest.mark.asyncio
 async def test_get_feed_flattened_error_async():
-    client = AssetServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_feed(
-            asset_service.GetFeedRequest(), name="name_value",
+            asset_service.GetFeedRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [asset_service.ListFeedsRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        asset_service.ListFeedsRequest,
+        dict,
+    ],
+)
 def test_list_feeds(request_type, transport: str = "grpc"):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1653,7 +1879,8 @@ def test_list_feeds_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1669,7 +1896,8 @@ async def test_list_feeds_async(
     transport: str = "grpc_asyncio", request_type=asset_service.ListFeedsRequest
 ):
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1699,7 +1927,9 @@ async def test_list_feeds_async_from_dict():
 
 
 def test_list_feeds_field_headers():
-    client = AssetServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1719,12 +1949,17 @@ def test_list_feeds_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_list_feeds_field_headers_async():
-    client = AssetServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1746,11 +1981,16 @@ async def test_list_feeds_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_feeds_flattened():
-    client = AssetServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_feeds), "__call__") as call:
@@ -1758,7 +1998,9 @@ def test_list_feeds_flattened():
         call.return_value = asset_service.ListFeedsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_feeds(parent="parent_value",)
+        client.list_feeds(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1770,19 +2012,24 @@ def test_list_feeds_flattened():
 
 
 def test_list_feeds_flattened_error():
-    client = AssetServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_feeds(
-            asset_service.ListFeedsRequest(), parent="parent_value",
+            asset_service.ListFeedsRequest(),
+            parent="parent_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_list_feeds_flattened_async():
-    client = AssetServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_feeds), "__call__") as call:
@@ -1794,7 +2041,9 @@ async def test_list_feeds_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_feeds(parent="parent_value",)
+        response = await client.list_feeds(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1807,20 +2056,30 @@ async def test_list_feeds_flattened_async():
 
 @pytest.mark.asyncio
 async def test_list_feeds_flattened_error_async():
-    client = AssetServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_feeds(
-            asset_service.ListFeedsRequest(), parent="parent_value",
+            asset_service.ListFeedsRequest(),
+            parent="parent_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [asset_service.UpdateFeedRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        asset_service.UpdateFeedRequest,
+        dict,
+    ],
+)
 def test_update_feed(request_type, transport: str = "grpc"):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1857,7 +2116,8 @@ def test_update_feed_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1873,7 +2133,8 @@ async def test_update_feed_async(
     transport: str = "grpc_asyncio", request_type=asset_service.UpdateFeedRequest
 ):
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1914,7 +2175,9 @@ async def test_update_feed_async_from_dict():
 
 
 def test_update_feed_field_headers():
-    client = AssetServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1934,12 +2197,17 @@ def test_update_feed_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "feed.name=feed.name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "feed.name=feed.name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_update_feed_field_headers_async():
-    client = AssetServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1959,11 +2227,16 @@ async def test_update_feed_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "feed.name=feed.name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "feed.name=feed.name/value",
+    ) in kw["metadata"]
 
 
 def test_update_feed_flattened():
-    client = AssetServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_feed), "__call__") as call:
@@ -1971,7 +2244,9 @@ def test_update_feed_flattened():
         call.return_value = asset_service.Feed()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.update_feed(feed=asset_service.Feed(name="name_value"),)
+        client.update_feed(
+            feed=asset_service.Feed(name="name_value"),
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1983,7 +2258,9 @@ def test_update_feed_flattened():
 
 
 def test_update_feed_flattened_error():
-    client = AssetServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1996,7 +2273,9 @@ def test_update_feed_flattened_error():
 
 @pytest.mark.asyncio
 async def test_update_feed_flattened_async():
-    client = AssetServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_feed), "__call__") as call:
@@ -2006,7 +2285,9 @@ async def test_update_feed_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.Feed())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.update_feed(feed=asset_service.Feed(name="name_value"),)
+        response = await client.update_feed(
+            feed=asset_service.Feed(name="name_value"),
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2019,7 +2300,9 @@ async def test_update_feed_flattened_async():
 
 @pytest.mark.asyncio
 async def test_update_feed_flattened_error_async():
-    client = AssetServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2030,10 +2313,17 @@ async def test_update_feed_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [asset_service.DeleteFeedRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        asset_service.DeleteFeedRequest,
+        dict,
+    ],
+)
 def test_delete_feed(request_type, transport: str = "grpc"):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2059,7 +2349,8 @@ def test_delete_feed_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2075,7 +2366,8 @@ async def test_delete_feed_async(
     transport: str = "grpc_asyncio", request_type=asset_service.DeleteFeedRequest
 ):
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2103,7 +2395,9 @@ async def test_delete_feed_async_from_dict():
 
 
 def test_delete_feed_field_headers():
-    client = AssetServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2123,12 +2417,17 @@ def test_delete_feed_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_delete_feed_field_headers_async():
-    client = AssetServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2148,11 +2447,16 @@ async def test_delete_feed_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_feed_flattened():
-    client = AssetServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_feed), "__call__") as call:
@@ -2160,7 +2464,9 @@ def test_delete_feed_flattened():
         call.return_value = None
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_feed(name="name_value",)
+        client.delete_feed(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2172,19 +2478,24 @@ def test_delete_feed_flattened():
 
 
 def test_delete_feed_flattened_error():
-    client = AssetServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_feed(
-            asset_service.DeleteFeedRequest(), name="name_value",
+            asset_service.DeleteFeedRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_delete_feed_flattened_async():
-    client = AssetServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_feed), "__call__") as call:
@@ -2194,7 +2505,9 @@ async def test_delete_feed_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_feed(name="name_value",)
+        response = await client.delete_feed(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2207,22 +2520,30 @@ async def test_delete_feed_flattened_async():
 
 @pytest.mark.asyncio
 async def test_delete_feed_flattened_error_async():
-    client = AssetServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_feed(
-            asset_service.DeleteFeedRequest(), name="name_value",
+            asset_service.DeleteFeedRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [asset_service.SearchAllResourcesRequest, dict,]
+    "request_type",
+    [
+        asset_service.SearchAllResourcesRequest,
+        dict,
+    ],
 )
 def test_search_all_resources(request_type, transport: str = "grpc"):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2253,7 +2574,8 @@ def test_search_all_resources_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2272,7 +2594,8 @@ async def test_search_all_resources_async(
     request_type=asset_service.SearchAllResourcesRequest,
 ):
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2307,7 +2630,9 @@ async def test_search_all_resources_async_from_dict():
 
 
 def test_search_all_resources_field_headers():
-    client = AssetServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2329,12 +2654,17 @@ def test_search_all_resources_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "scope=scope/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "scope=scope/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_search_all_resources_field_headers_async():
-    client = AssetServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2358,11 +2688,16 @@ async def test_search_all_resources_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "scope=scope/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "scope=scope/value",
+    ) in kw["metadata"]
 
 
 def test_search_all_resources_flattened():
-    client = AssetServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2373,7 +2708,9 @@ def test_search_all_resources_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.search_all_resources(
-            scope="scope_value", query="query_value", asset_types=["asset_types_value"],
+            scope="scope_value",
+            query="query_value",
+            asset_types=["asset_types_value"],
         )
 
         # Establish that the underlying call was made with the expected
@@ -2392,7 +2729,9 @@ def test_search_all_resources_flattened():
 
 
 def test_search_all_resources_flattened_error():
-    client = AssetServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2407,7 +2746,9 @@ def test_search_all_resources_flattened_error():
 
 @pytest.mark.asyncio
 async def test_search_all_resources_flattened_async():
-    client = AssetServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2422,7 +2763,9 @@ async def test_search_all_resources_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.search_all_resources(
-            scope="scope_value", query="query_value", asset_types=["asset_types_value"],
+            scope="scope_value",
+            query="query_value",
+            asset_types=["asset_types_value"],
         )
 
         # Establish that the underlying call was made with the expected
@@ -2442,7 +2785,9 @@ async def test_search_all_resources_flattened_async():
 
 @pytest.mark.asyncio
 async def test_search_all_resources_flattened_error_async():
-    client = AssetServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2457,7 +2802,8 @@ async def test_search_all_resources_flattened_error_async():
 
 def test_search_all_resources_pager(transport_name: str = "grpc"):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2475,13 +2821,20 @@ def test_search_all_resources_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             asset_service.SearchAllResourcesResponse(
-                results=[], next_page_token="def",
+                results=[],
+                next_page_token="def",
             ),
             asset_service.SearchAllResourcesResponse(
-                results=[assets.ResourceSearchResult(),], next_page_token="ghi",
+                results=[
+                    assets.ResourceSearchResult(),
+                ],
+                next_page_token="ghi",
             ),
             asset_service.SearchAllResourcesResponse(
-                results=[assets.ResourceSearchResult(), assets.ResourceSearchResult(),],
+                results=[
+                    assets.ResourceSearchResult(),
+                    assets.ResourceSearchResult(),
+                ],
             ),
             RuntimeError,
         )
@@ -2501,7 +2854,8 @@ def test_search_all_resources_pager(transport_name: str = "grpc"):
 
 def test_search_all_resources_pages(transport_name: str = "grpc"):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2519,13 +2873,20 @@ def test_search_all_resources_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             asset_service.SearchAllResourcesResponse(
-                results=[], next_page_token="def",
+                results=[],
+                next_page_token="def",
             ),
             asset_service.SearchAllResourcesResponse(
-                results=[assets.ResourceSearchResult(),], next_page_token="ghi",
+                results=[
+                    assets.ResourceSearchResult(),
+                ],
+                next_page_token="ghi",
             ),
             asset_service.SearchAllResourcesResponse(
-                results=[assets.ResourceSearchResult(), assets.ResourceSearchResult(),],
+                results=[
+                    assets.ResourceSearchResult(),
+                    assets.ResourceSearchResult(),
+                ],
             ),
             RuntimeError,
         )
@@ -2536,7 +2897,9 @@ def test_search_all_resources_pages(transport_name: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_search_all_resources_async_pager():
-    client = AssetServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2555,17 +2918,26 @@ async def test_search_all_resources_async_pager():
                 next_page_token="abc",
             ),
             asset_service.SearchAllResourcesResponse(
-                results=[], next_page_token="def",
+                results=[],
+                next_page_token="def",
             ),
             asset_service.SearchAllResourcesResponse(
-                results=[assets.ResourceSearchResult(),], next_page_token="ghi",
+                results=[
+                    assets.ResourceSearchResult(),
+                ],
+                next_page_token="ghi",
             ),
             asset_service.SearchAllResourcesResponse(
-                results=[assets.ResourceSearchResult(), assets.ResourceSearchResult(),],
+                results=[
+                    assets.ResourceSearchResult(),
+                    assets.ResourceSearchResult(),
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.search_all_resources(request={},)
+        async_pager = await client.search_all_resources(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -2577,7 +2949,9 @@ async def test_search_all_resources_async_pager():
 
 @pytest.mark.asyncio
 async def test_search_all_resources_async_pages():
-    client = AssetServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2596,13 +2970,20 @@ async def test_search_all_resources_async_pages():
                 next_page_token="abc",
             ),
             asset_service.SearchAllResourcesResponse(
-                results=[], next_page_token="def",
+                results=[],
+                next_page_token="def",
             ),
             asset_service.SearchAllResourcesResponse(
-                results=[assets.ResourceSearchResult(),], next_page_token="ghi",
+                results=[
+                    assets.ResourceSearchResult(),
+                ],
+                next_page_token="ghi",
             ),
             asset_service.SearchAllResourcesResponse(
-                results=[assets.ResourceSearchResult(), assets.ResourceSearchResult(),],
+                results=[
+                    assets.ResourceSearchResult(),
+                    assets.ResourceSearchResult(),
+                ],
             ),
             RuntimeError,
         )
@@ -2614,11 +2995,16 @@ async def test_search_all_resources_async_pages():
 
 
 @pytest.mark.parametrize(
-    "request_type", [asset_service.SearchAllIamPoliciesRequest, dict,]
+    "request_type",
+    [
+        asset_service.SearchAllIamPoliciesRequest,
+        dict,
+    ],
 )
 def test_search_all_iam_policies(request_type, transport: str = "grpc"):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2649,7 +3035,8 @@ def test_search_all_iam_policies_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2668,7 +3055,8 @@ async def test_search_all_iam_policies_async(
     request_type=asset_service.SearchAllIamPoliciesRequest,
 ):
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2703,7 +3091,9 @@ async def test_search_all_iam_policies_async_from_dict():
 
 
 def test_search_all_iam_policies_field_headers():
-    client = AssetServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2725,12 +3115,17 @@ def test_search_all_iam_policies_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "scope=scope/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "scope=scope/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_search_all_iam_policies_field_headers_async():
-    client = AssetServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2754,11 +3149,16 @@ async def test_search_all_iam_policies_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "scope=scope/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "scope=scope/value",
+    ) in kw["metadata"]
 
 
 def test_search_all_iam_policies_flattened():
-    client = AssetServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2769,7 +3169,8 @@ def test_search_all_iam_policies_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.search_all_iam_policies(
-            scope="scope_value", query="query_value",
+            scope="scope_value",
+            query="query_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -2785,7 +3186,9 @@ def test_search_all_iam_policies_flattened():
 
 
 def test_search_all_iam_policies_flattened_error():
-    client = AssetServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2799,7 +3202,9 @@ def test_search_all_iam_policies_flattened_error():
 
 @pytest.mark.asyncio
 async def test_search_all_iam_policies_flattened_async():
-    client = AssetServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2814,7 +3219,8 @@ async def test_search_all_iam_policies_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.search_all_iam_policies(
-            scope="scope_value", query="query_value",
+            scope="scope_value",
+            query="query_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -2831,7 +3237,9 @@ async def test_search_all_iam_policies_flattened_async():
 
 @pytest.mark.asyncio
 async def test_search_all_iam_policies_flattened_error_async():
-    client = AssetServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2845,7 +3253,8 @@ async def test_search_all_iam_policies_flattened_error_async():
 
 def test_search_all_iam_policies_pager(transport_name: str = "grpc"):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2863,10 +3272,14 @@ def test_search_all_iam_policies_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             asset_service.SearchAllIamPoliciesResponse(
-                results=[], next_page_token="def",
+                results=[],
+                next_page_token="def",
             ),
             asset_service.SearchAllIamPoliciesResponse(
-                results=[assets.IamPolicySearchResult(),], next_page_token="ghi",
+                results=[
+                    assets.IamPolicySearchResult(),
+                ],
+                next_page_token="ghi",
             ),
             asset_service.SearchAllIamPoliciesResponse(
                 results=[
@@ -2892,7 +3305,8 @@ def test_search_all_iam_policies_pager(transport_name: str = "grpc"):
 
 def test_search_all_iam_policies_pages(transport_name: str = "grpc"):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2910,10 +3324,14 @@ def test_search_all_iam_policies_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             asset_service.SearchAllIamPoliciesResponse(
-                results=[], next_page_token="def",
+                results=[],
+                next_page_token="def",
             ),
             asset_service.SearchAllIamPoliciesResponse(
-                results=[assets.IamPolicySearchResult(),], next_page_token="ghi",
+                results=[
+                    assets.IamPolicySearchResult(),
+                ],
+                next_page_token="ghi",
             ),
             asset_service.SearchAllIamPoliciesResponse(
                 results=[
@@ -2930,7 +3348,9 @@ def test_search_all_iam_policies_pages(transport_name: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_search_all_iam_policies_async_pager():
-    client = AssetServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2949,10 +3369,14 @@ async def test_search_all_iam_policies_async_pager():
                 next_page_token="abc",
             ),
             asset_service.SearchAllIamPoliciesResponse(
-                results=[], next_page_token="def",
+                results=[],
+                next_page_token="def",
             ),
             asset_service.SearchAllIamPoliciesResponse(
-                results=[assets.IamPolicySearchResult(),], next_page_token="ghi",
+                results=[
+                    assets.IamPolicySearchResult(),
+                ],
+                next_page_token="ghi",
             ),
             asset_service.SearchAllIamPoliciesResponse(
                 results=[
@@ -2962,7 +3386,9 @@ async def test_search_all_iam_policies_async_pager():
             ),
             RuntimeError,
         )
-        async_pager = await client.search_all_iam_policies(request={},)
+        async_pager = await client.search_all_iam_policies(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -2974,7 +3400,9 @@ async def test_search_all_iam_policies_async_pager():
 
 @pytest.mark.asyncio
 async def test_search_all_iam_policies_async_pages():
-    client = AssetServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2993,10 +3421,14 @@ async def test_search_all_iam_policies_async_pages():
                 next_page_token="abc",
             ),
             asset_service.SearchAllIamPoliciesResponse(
-                results=[], next_page_token="def",
+                results=[],
+                next_page_token="def",
             ),
             asset_service.SearchAllIamPoliciesResponse(
-                results=[assets.IamPolicySearchResult(),], next_page_token="ghi",
+                results=[
+                    assets.IamPolicySearchResult(),
+                ],
+                next_page_token="ghi",
             ),
             asset_service.SearchAllIamPoliciesResponse(
                 results=[
@@ -3013,10 +3445,17 @@ async def test_search_all_iam_policies_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [asset_service.AnalyzeIamPolicyRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        asset_service.AnalyzeIamPolicyRequest,
+        dict,
+    ],
+)
 def test_analyze_iam_policy(request_type, transport: str = "grpc"):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3028,7 +3467,9 @@ def test_analyze_iam_policy(request_type, transport: str = "grpc"):
         type(client.transport.analyze_iam_policy), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = asset_service.AnalyzeIamPolicyResponse(fully_explored=True,)
+        call.return_value = asset_service.AnalyzeIamPolicyResponse(
+            fully_explored=True,
+        )
         response = client.analyze_iam_policy(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -3045,7 +3486,8 @@ def test_analyze_iam_policy_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3063,7 +3505,8 @@ async def test_analyze_iam_policy_async(
     transport: str = "grpc_asyncio", request_type=asset_service.AnalyzeIamPolicyRequest
 ):
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3076,7 +3519,9 @@ async def test_analyze_iam_policy_async(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            asset_service.AnalyzeIamPolicyResponse(fully_explored=True,)
+            asset_service.AnalyzeIamPolicyResponse(
+                fully_explored=True,
+            )
         )
         response = await client.analyze_iam_policy(request)
 
@@ -3096,7 +3541,9 @@ async def test_analyze_iam_policy_async_from_dict():
 
 
 def test_analyze_iam_policy_field_headers():
-    client = AssetServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3126,7 +3573,9 @@ def test_analyze_iam_policy_field_headers():
 
 @pytest.mark.asyncio
 async def test_analyze_iam_policy_field_headers_async():
-    client = AssetServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3157,11 +3606,16 @@ async def test_analyze_iam_policy_field_headers_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [asset_service.AnalyzeIamPolicyLongrunningRequest, dict,]
+    "request_type",
+    [
+        asset_service.AnalyzeIamPolicyLongrunningRequest,
+        dict,
+    ],
 )
 def test_analyze_iam_policy_longrunning(request_type, transport: str = "grpc"):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3189,7 +3643,8 @@ def test_analyze_iam_policy_longrunning_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3208,7 +3663,8 @@ async def test_analyze_iam_policy_longrunning_async(
     request_type=asset_service.AnalyzeIamPolicyLongrunningRequest,
 ):
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3240,7 +3696,9 @@ async def test_analyze_iam_policy_longrunning_async_from_dict():
 
 
 def test_analyze_iam_policy_longrunning_field_headers():
-    client = AssetServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3270,7 +3728,9 @@ def test_analyze_iam_policy_longrunning_field_headers():
 
 @pytest.mark.asyncio
 async def test_analyze_iam_policy_longrunning_field_headers_async():
-    client = AssetServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3300,10 +3760,17 @@ async def test_analyze_iam_policy_longrunning_field_headers_async():
     ) in kw["metadata"]
 
 
-@pytest.mark.parametrize("request_type", [asset_service.AnalyzeMoveRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        asset_service.AnalyzeMoveRequest,
+        dict,
+    ],
+)
 def test_analyze_move(request_type, transport: str = "grpc"):
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3329,7 +3796,8 @@ def test_analyze_move_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3345,7 +3813,8 @@ async def test_analyze_move_async(
     transport: str = "grpc_asyncio", request_type=asset_service.AnalyzeMoveRequest
 ):
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3375,7 +3844,9 @@ async def test_analyze_move_async_from_dict():
 
 
 def test_analyze_move_field_headers():
-    client = AssetServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3395,12 +3866,17 @@ def test_analyze_move_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_analyze_move_field_headers_async():
-    client = AssetServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3422,7 +3898,10 @@ async def test_analyze_move_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
 
 
 def test_credentials_transport_error():
@@ -3432,7 +3911,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = AssetServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -3452,7 +3932,10 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = AssetServiceClient(client_options=options, transport=transport,)
+        client = AssetServiceClient(
+            client_options=options,
+            transport=transport,
+        )
 
     # It is an error to provide an api_key and a credential.
     options = mock.Mock()
@@ -3468,7 +3951,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = AssetServiceClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -3513,8 +3997,13 @@ def test_transport_adc(transport_class):
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
-    client = AssetServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
-    assert isinstance(client.transport, transports.AssetServiceGrpcTransport,)
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    assert isinstance(
+        client.transport,
+        transports.AssetServiceGrpcTransport,
+    )
 
 
 def test_asset_service_base_transport_error():
@@ -3576,7 +4065,8 @@ def test_asset_service_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.AssetServiceTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -3731,7 +4221,8 @@ def test_asset_service_grpc_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.AssetServiceGrpcTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -3743,7 +4234,8 @@ def test_asset_service_grpc_asyncio_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.AssetServiceGrpcAsyncIOTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -3844,12 +4336,16 @@ def test_asset_service_transport_channel_mtls_with_adc(transport_class):
 
 def test_asset_service_grpc_lro_client():
     client = AssetServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
     transport = client.transport
 
     # Ensure that we have a api-core operations client.
-    assert isinstance(transport.operations_client, operations_v1.OperationsClient,)
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsClient,
+    )
 
     # Ensure that subsequent calls to the property send the exact same object.
     assert transport.operations_client is transport.operations_client
@@ -3857,12 +4353,16 @@ def test_asset_service_grpc_lro_client():
 
 def test_asset_service_grpc_lro_async_client():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     transport = client.transport
 
     # Ensure that we have a api-core operations client.
-    assert isinstance(transport.operations_client, operations_v1.OperationsAsyncClient,)
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsAsyncClient,
+    )
 
     # Ensure that subsequent calls to the property send the exact same object.
     assert transport.operations_client is transport.operations_client
@@ -3872,7 +4372,8 @@ def test_access_level_path():
     access_policy = "squid"
     access_level = "clam"
     expected = "accessPolicies/{access_policy}/accessLevels/{access_level}".format(
-        access_policy=access_policy, access_level=access_level,
+        access_policy=access_policy,
+        access_level=access_level,
     )
     actual = AssetServiceClient.access_level_path(access_policy, access_level)
     assert expected == actual
@@ -3892,7 +4393,9 @@ def test_parse_access_level_path():
 
 def test_access_policy_path():
     access_policy = "oyster"
-    expected = "accessPolicies/{access_policy}".format(access_policy=access_policy,)
+    expected = "accessPolicies/{access_policy}".format(
+        access_policy=access_policy,
+    )
     actual = AssetServiceClient.access_policy_path(access_policy)
     assert expected == actual
 
@@ -3917,7 +4420,10 @@ def test_asset_path():
 def test_feed_path():
     project = "cuttlefish"
     feed = "mussel"
-    expected = "projects/{project}/feeds/{feed}".format(project=project, feed=feed,)
+    expected = "projects/{project}/feeds/{feed}".format(
+        project=project,
+        feed=feed,
+    )
     actual = AssetServiceClient.feed_path(project, feed)
     assert expected == actual
 
@@ -3938,8 +4444,12 @@ def test_inventory_path():
     project = "scallop"
     location = "abalone"
     instance = "squid"
-    expected = "projects/{project}/locations/{location}/instances/{instance}/inventory".format(
-        project=project, location=location, instance=instance,
+    expected = (
+        "projects/{project}/locations/{location}/instances/{instance}/inventory".format(
+            project=project,
+            location=location,
+            instance=instance,
+        )
     )
     actual = AssetServiceClient.inventory_path(project, location, instance)
     assert expected == actual
@@ -3961,8 +4471,11 @@ def test_parse_inventory_path():
 def test_service_perimeter_path():
     access_policy = "oyster"
     service_perimeter = "nudibranch"
-    expected = "accessPolicies/{access_policy}/servicePerimeters/{service_perimeter}".format(
-        access_policy=access_policy, service_perimeter=service_perimeter,
+    expected = (
+        "accessPolicies/{access_policy}/servicePerimeters/{service_perimeter}".format(
+            access_policy=access_policy,
+            service_perimeter=service_perimeter,
+        )
     )
     actual = AssetServiceClient.service_perimeter_path(access_policy, service_perimeter)
     assert expected == actual
@@ -4002,7 +4515,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "scallop"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = AssetServiceClient.common_folder_path(folder)
     assert expected == actual
 
@@ -4020,7 +4535,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "squid"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = AssetServiceClient.common_organization_path(organization)
     assert expected == actual
 
@@ -4038,7 +4555,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "whelk"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = AssetServiceClient.common_project_path(project)
     assert expected == actual
 
@@ -4058,7 +4577,8 @@ def test_common_location_path():
     project = "oyster"
     location = "nudibranch"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = AssetServiceClient.common_location_path(project, location)
     assert expected == actual
@@ -4083,7 +4603,8 @@ def test_client_with_default_client_info():
         transports.AssetServiceTransport, "_prep_wrapped_messages"
     ) as prep:
         client = AssetServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -4092,7 +4613,8 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = AssetServiceClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -4100,7 +4622,8 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = AssetServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     with mock.patch.object(
         type(getattr(client.transport, "grpc_channel")), "close"

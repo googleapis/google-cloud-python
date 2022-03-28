@@ -24,7 +24,11 @@ from google.protobuf import struct_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.asset.v1p5beta1", manifest={"Asset", "Resource",},
+    package="google.cloud.asset.v1p5beta1",
+    manifest={
+        "Asset",
+        "Resource",
+    },
 )
 
 
@@ -81,12 +85,28 @@ class Asset(proto.Message):
             "organizations/1234"]
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    asset_type = proto.Field(proto.STRING, number=2,)
-    resource = proto.Field(proto.MESSAGE, number=3, message="Resource",)
-    iam_policy = proto.Field(proto.MESSAGE, number=4, message=policy_pb2.Policy,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    asset_type = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    resource = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="Resource",
+    )
+    iam_policy = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=policy_pb2.Policy,
+    )
     org_policy = proto.RepeatedField(
-        proto.MESSAGE, number=6, message=orgpolicy_pb2.Policy,
+        proto.MESSAGE,
+        number=6,
+        message=orgpolicy_pb2.Policy,
     )
     access_policy = proto.Field(
         proto.MESSAGE,
@@ -106,7 +126,10 @@ class Asset(proto.Message):
         oneof="access_context_policy",
         message=service_perimeter_pb2.ServicePerimeter,
     )
-    ancestors = proto.RepeatedField(proto.STRING, number=10,)
+    ancestors = proto.RepeatedField(
+        proto.STRING,
+        number=10,
+    )
 
 
 class Resource(proto.Message):
@@ -152,12 +175,31 @@ class Resource(proto.Message):
             be present.
     """
 
-    version = proto.Field(proto.STRING, number=1,)
-    discovery_document_uri = proto.Field(proto.STRING, number=2,)
-    discovery_name = proto.Field(proto.STRING, number=3,)
-    resource_url = proto.Field(proto.STRING, number=4,)
-    parent = proto.Field(proto.STRING, number=5,)
-    data = proto.Field(proto.MESSAGE, number=6, message=struct_pb2.Struct,)
+    version = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    discovery_document_uri = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    discovery_name = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    resource_url = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    parent = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    data = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=struct_pb2.Struct,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

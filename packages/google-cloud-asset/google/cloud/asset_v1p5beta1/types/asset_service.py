@@ -21,7 +21,11 @@ from google.protobuf import timestamp_pb2  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.asset.v1p5beta1",
-    manifest={"ContentType", "ListAssetsRequest", "ListAssetsResponse",},
+    manifest={
+        "ContentType",
+        "ListAssetsRequest",
+        "ListAssetsResponse",
+    },
 )
 
 
@@ -74,12 +78,32 @@ class ListAssetsRequest(proto.Message):
             of assets.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    read_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    asset_types = proto.RepeatedField(proto.STRING, number=3,)
-    content_type = proto.Field(proto.ENUM, number=4, enum="ContentType",)
-    page_size = proto.Field(proto.INT32, number=5,)
-    page_token = proto.Field(proto.STRING, number=6,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    read_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    asset_types = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+    content_type = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum="ContentType",
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=5,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=6,
+    )
 
 
 class ListAssetsResponse(proto.Message):
@@ -99,9 +123,20 @@ class ListAssetsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    read_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
-    assets = proto.RepeatedField(proto.MESSAGE, number=2, message=gca_assets.Asset,)
-    next_page_token = proto.Field(proto.STRING, number=3,)
+    read_time = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    assets = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=gca_assets.Asset,
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

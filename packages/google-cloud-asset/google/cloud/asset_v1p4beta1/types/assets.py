@@ -20,7 +20,10 @@ from google.rpc import code_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.asset.v1p4beta1", manifest={"IamPolicyAnalysisResult",},
+    package="google.cloud.asset.v1p4beta1",
+    manifest={
+        "IamPolicyAnalysisResult",
+    },
 )
 
 
@@ -71,8 +74,15 @@ class IamPolicyAnalysisResult(proto.Message):
                 of failure.
         """
 
-        code = proto.Field(proto.ENUM, number=1, enum=code_pb2.Code,)
-        cause = proto.Field(proto.STRING, number=2,)
+        code = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum=code_pb2.Code,
+        )
+        cause = proto.Field(
+            proto.STRING,
+            number=2,
+        )
 
     class Resource(proto.Message):
         r"""A GCP resource that appears in an access control list.
@@ -85,9 +95,14 @@ class IamPolicyAnalysisResult(proto.Message):
                 The analysis state of this resource node.
         """
 
-        full_resource_name = proto.Field(proto.STRING, number=1,)
+        full_resource_name = proto.Field(
+            proto.STRING,
+            number=1,
+        )
         analysis_state = proto.Field(
-            proto.MESSAGE, number=2, message="IamPolicyAnalysisResult.AnalysisState",
+            proto.MESSAGE,
+            number=2,
+            message="IamPolicyAnalysisResult.AnalysisState",
         )
 
     class Access(proto.Message):
@@ -113,10 +128,20 @@ class IamPolicyAnalysisResult(proto.Message):
                 The analysis state of this access node.
         """
 
-        role = proto.Field(proto.STRING, number=1, oneof="oneof_access",)
-        permission = proto.Field(proto.STRING, number=2, oneof="oneof_access",)
+        role = proto.Field(
+            proto.STRING,
+            number=1,
+            oneof="oneof_access",
+        )
+        permission = proto.Field(
+            proto.STRING,
+            number=2,
+            oneof="oneof_access",
+        )
         analysis_state = proto.Field(
-            proto.MESSAGE, number=3, message="IamPolicyAnalysisResult.AnalysisState",
+            proto.MESSAGE,
+            number=3,
+            message="IamPolicyAnalysisResult.AnalysisState",
         )
 
     class Edge(proto.Message):
@@ -129,8 +154,14 @@ class IamPolicyAnalysisResult(proto.Message):
                 The target node of the edge.
         """
 
-        source_node = proto.Field(proto.STRING, number=1,)
-        target_node = proto.Field(proto.STRING, number=2,)
+        source_node = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        target_node = proto.Field(
+            proto.STRING,
+            number=2,
+        )
 
     class Identity(proto.Message):
         r"""An identity that appears in an access control list.
@@ -153,9 +184,14 @@ class IamPolicyAnalysisResult(proto.Message):
                 The analysis state of this identity node.
         """
 
-        name = proto.Field(proto.STRING, number=1,)
+        name = proto.Field(
+            proto.STRING,
+            number=1,
+        )
         analysis_state = proto.Field(
-            proto.MESSAGE, number=2, message="IamPolicyAnalysisResult.AnalysisState",
+            proto.MESSAGE,
+            number=2,
+            message="IamPolicyAnalysisResult.AnalysisState",
         )
 
     class AccessControlList(proto.Message):
@@ -203,13 +239,19 @@ class IamPolicyAnalysisResult(proto.Message):
         """
 
         resources = proto.RepeatedField(
-            proto.MESSAGE, number=1, message="IamPolicyAnalysisResult.Resource",
+            proto.MESSAGE,
+            number=1,
+            message="IamPolicyAnalysisResult.Resource",
         )
         accesses = proto.RepeatedField(
-            proto.MESSAGE, number=2, message="IamPolicyAnalysisResult.Access",
+            proto.MESSAGE,
+            number=2,
+            message="IamPolicyAnalysisResult.Access",
         )
         resource_edges = proto.RepeatedField(
-            proto.MESSAGE, number=3, message="IamPolicyAnalysisResult.Edge",
+            proto.MESSAGE,
+            number=3,
+            message="IamPolicyAnalysisResult.Edge",
         )
 
     class IdentityList(proto.Message):
@@ -238,19 +280,39 @@ class IamPolicyAnalysisResult(proto.Message):
         """
 
         identities = proto.RepeatedField(
-            proto.MESSAGE, number=1, message="IamPolicyAnalysisResult.Identity",
+            proto.MESSAGE,
+            number=1,
+            message="IamPolicyAnalysisResult.Identity",
         )
         group_edges = proto.RepeatedField(
-            proto.MESSAGE, number=2, message="IamPolicyAnalysisResult.Edge",
+            proto.MESSAGE,
+            number=2,
+            message="IamPolicyAnalysisResult.Edge",
         )
 
-    attached_resource_full_name = proto.Field(proto.STRING, number=1,)
-    iam_binding = proto.Field(proto.MESSAGE, number=2, message=policy_pb2.Binding,)
-    access_control_lists = proto.RepeatedField(
-        proto.MESSAGE, number=3, message=AccessControlList,
+    attached_resource_full_name = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    identity_list = proto.Field(proto.MESSAGE, number=4, message=IdentityList,)
-    fully_explored = proto.Field(proto.BOOL, number=5,)
+    iam_binding = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=policy_pb2.Binding,
+    )
+    access_control_lists = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=AccessControlList,
+    )
+    identity_list = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=IdentityList,
+    )
+    fully_explored = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

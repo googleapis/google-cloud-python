@@ -30,7 +30,9 @@ from google.protobuf import empty_pb2  # type: ignore
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-asset",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-asset",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
@@ -120,7 +122,9 @@ class AssetServiceTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.create_feed: gapic_v1.method.wrap_method(
-                self.create_feed, default_timeout=60.0, client_info=client_info,
+                self.create_feed,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.get_feed: gapic_v1.method.wrap_method(
                 self.get_feed,
@@ -153,7 +157,9 @@ class AssetServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.update_feed: gapic_v1.method.wrap_method(
-                self.update_feed, default_timeout=60.0, client_info=client_info,
+                self.update_feed,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.delete_feed: gapic_v1.method.wrap_method(
                 self.delete_feed,
@@ -175,9 +181,9 @@ class AssetServiceTransport(abc.ABC):
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

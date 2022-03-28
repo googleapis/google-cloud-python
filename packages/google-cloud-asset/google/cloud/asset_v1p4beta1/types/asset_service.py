@@ -71,7 +71,10 @@ class IamPolicyAnalysisQuery(proto.Message):
                 .
         """
 
-        full_resource_name = proto.Field(proto.STRING, number=1,)
+        full_resource_name = proto.Field(
+            proto.STRING,
+            number=1,
+        )
 
     class IdentitySelector(proto.Message):
         r"""Specifies an identity for which to determine resource access,
@@ -85,7 +88,10 @@ class IamPolicyAnalysisQuery(proto.Message):
                 binding <https://cloud.google.com/iam/reference/rest/v1/Binding>`__.
         """
 
-        identity = proto.Field(proto.STRING, number=1,)
+        identity = proto.Field(
+            proto.STRING,
+            number=1,
+        )
 
     class AccessSelector(proto.Message):
         r"""Specifies roles and/or permissions to analyze, to determine
@@ -101,13 +107,34 @@ class IamPolicyAnalysisQuery(proto.Message):
                 result.
         """
 
-        roles = proto.RepeatedField(proto.STRING, number=1,)
-        permissions = proto.RepeatedField(proto.STRING, number=2,)
+        roles = proto.RepeatedField(
+            proto.STRING,
+            number=1,
+        )
+        permissions = proto.RepeatedField(
+            proto.STRING,
+            number=2,
+        )
 
-    parent = proto.Field(proto.STRING, number=1,)
-    resource_selector = proto.Field(proto.MESSAGE, number=2, message=ResourceSelector,)
-    identity_selector = proto.Field(proto.MESSAGE, number=3, message=IdentitySelector,)
-    access_selector = proto.Field(proto.MESSAGE, number=4, message=AccessSelector,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    resource_selector = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=ResourceSelector,
+    )
+    identity_selector = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=IdentitySelector,
+    )
+    access_selector = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=AccessSelector,
+    )
 
 
 class AnalyzeIamPolicyRequest(proto.Message):
@@ -208,20 +235,46 @@ class AnalyzeIamPolicyRequest(proto.Message):
                 Default is empty.
         """
 
-        expand_groups = proto.Field(proto.BOOL, number=1,)
-        expand_roles = proto.Field(proto.BOOL, number=2,)
-        expand_resources = proto.Field(proto.BOOL, number=3,)
-        output_resource_edges = proto.Field(proto.BOOL, number=4,)
-        output_group_edges = proto.Field(proto.BOOL, number=5,)
-        analyze_service_account_impersonation = proto.Field(proto.BOOL, number=6,)
+        expand_groups = proto.Field(
+            proto.BOOL,
+            number=1,
+        )
+        expand_roles = proto.Field(
+            proto.BOOL,
+            number=2,
+        )
+        expand_resources = proto.Field(
+            proto.BOOL,
+            number=3,
+        )
+        output_resource_edges = proto.Field(
+            proto.BOOL,
+            number=4,
+        )
+        output_group_edges = proto.Field(
+            proto.BOOL,
+            number=5,
+        )
+        analyze_service_account_impersonation = proto.Field(
+            proto.BOOL,
+            number=6,
+        )
         execution_timeout = proto.Field(
-            proto.MESSAGE, number=7, message=duration_pb2.Duration,
+            proto.MESSAGE,
+            number=7,
+            message=duration_pb2.Duration,
         )
 
     analysis_query = proto.Field(
-        proto.MESSAGE, number=1, message="IamPolicyAnalysisQuery",
+        proto.MESSAGE,
+        number=1,
+        message="IamPolicyAnalysisQuery",
     )
-    options = proto.Field(proto.MESSAGE, number=2, message=Options,)
+    options = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=Options,
+    )
 
 
 class AnalyzeIamPolicyResponse(proto.Message):
@@ -266,20 +319,38 @@ class AnalyzeIamPolicyResponse(proto.Message):
         """
 
         analysis_query = proto.Field(
-            proto.MESSAGE, number=1, message="IamPolicyAnalysisQuery",
+            proto.MESSAGE,
+            number=1,
+            message="IamPolicyAnalysisQuery",
         )
         analysis_results = proto.RepeatedField(
-            proto.MESSAGE, number=2, message=assets.IamPolicyAnalysisResult,
+            proto.MESSAGE,
+            number=2,
+            message=assets.IamPolicyAnalysisResult,
         )
-        fully_explored = proto.Field(proto.BOOL, number=3,)
+        fully_explored = proto.Field(
+            proto.BOOL,
+            number=3,
+        )
 
-    main_analysis = proto.Field(proto.MESSAGE, number=1, message=IamPolicyAnalysis,)
-    service_account_impersonation_analysis = proto.RepeatedField(
-        proto.MESSAGE, number=2, message=IamPolicyAnalysis,
+    main_analysis = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=IamPolicyAnalysis,
     )
-    fully_explored = proto.Field(proto.BOOL, number=3,)
+    service_account_impersonation_analysis = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=IamPolicyAnalysis,
+    )
+    fully_explored = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
     non_critical_errors = proto.RepeatedField(
-        proto.MESSAGE, number=4, message=assets.IamPolicyAnalysisResult.AnalysisState,
+        proto.MESSAGE,
+        number=4,
+        message=assets.IamPolicyAnalysisResult.AnalysisState,
     )
 
 
@@ -310,10 +381,16 @@ class IamPolicyAnalysisOutputConfig(proto.Message):
                 for more information.
         """
 
-        uri = proto.Field(proto.STRING, number=1,)
+        uri = proto.Field(
+            proto.STRING,
+            number=1,
+        )
 
     gcs_destination = proto.Field(
-        proto.MESSAGE, number=1, oneof="destination", message=GcsDestination,
+        proto.MESSAGE,
+        number=1,
+        oneof="destination",
+        message=GcsDestination,
     )
 
 
@@ -404,19 +481,45 @@ class ExportIamPolicyAnalysisRequest(proto.Message):
                 Default is false.
         """
 
-        expand_groups = proto.Field(proto.BOOL, number=1,)
-        expand_roles = proto.Field(proto.BOOL, number=2,)
-        expand_resources = proto.Field(proto.BOOL, number=3,)
-        output_resource_edges = proto.Field(proto.BOOL, number=4,)
-        output_group_edges = proto.Field(proto.BOOL, number=5,)
-        analyze_service_account_impersonation = proto.Field(proto.BOOL, number=6,)
+        expand_groups = proto.Field(
+            proto.BOOL,
+            number=1,
+        )
+        expand_roles = proto.Field(
+            proto.BOOL,
+            number=2,
+        )
+        expand_resources = proto.Field(
+            proto.BOOL,
+            number=3,
+        )
+        output_resource_edges = proto.Field(
+            proto.BOOL,
+            number=4,
+        )
+        output_group_edges = proto.Field(
+            proto.BOOL,
+            number=5,
+        )
+        analyze_service_account_impersonation = proto.Field(
+            proto.BOOL,
+            number=6,
+        )
 
     analysis_query = proto.Field(
-        proto.MESSAGE, number=1, message="IamPolicyAnalysisQuery",
+        proto.MESSAGE,
+        number=1,
+        message="IamPolicyAnalysisQuery",
     )
-    options = proto.Field(proto.MESSAGE, number=2, message=Options,)
+    options = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=Options,
+    )
     output_config = proto.Field(
-        proto.MESSAGE, number=3, message="IamPolicyAnalysisOutputConfig",
+        proto.MESSAGE,
+        number=3,
+        message="IamPolicyAnalysisOutputConfig",
     )
 
 
@@ -432,7 +535,9 @@ class ExportIamPolicyAnalysisResponse(proto.Message):
     """
 
     output_config = proto.Field(
-        proto.MESSAGE, number=1, message="IamPolicyAnalysisOutputConfig",
+        proto.MESSAGE,
+        number=1,
+        message="IamPolicyAnalysisOutputConfig",
     )
 
 
