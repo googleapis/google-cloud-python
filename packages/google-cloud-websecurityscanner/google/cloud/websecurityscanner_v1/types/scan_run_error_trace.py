@@ -21,7 +21,10 @@ from google.cloud.websecurityscanner_v1.types import (
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.websecurityscanner.v1", manifest={"ScanRunErrorTrace",},
+    package="google.cloud.websecurityscanner.v1",
+    manifest={
+        "ScanRunErrorTrace",
+    },
 )
 
 
@@ -57,11 +60,20 @@ class ScanRunErrorTrace(proto.Message):
         TOO_MANY_REDIRECTS = 5
         TOO_MANY_HTTP_ERRORS = 6
 
-    code = proto.Field(proto.ENUM, number=1, enum=Code,)
-    scan_config_error = proto.Field(
-        proto.MESSAGE, number=2, message=gcw_scan_config_error.ScanConfigError,
+    code = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Code,
     )
-    most_common_http_error_code = proto.Field(proto.INT32, number=3,)
+    scan_config_error = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=gcw_scan_config_error.ScanConfigError,
+    )
+    most_common_http_error_code = proto.Field(
+        proto.INT32,
+        number=3,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

@@ -100,7 +100,11 @@ def test__get_default_mtls_endpoint():
 
 
 @pytest.mark.parametrize(
-    "client_class", [WebSecurityScannerClient, WebSecurityScannerAsyncClient,]
+    "client_class",
+    [
+        WebSecurityScannerClient,
+        WebSecurityScannerAsyncClient,
+    ],
 )
 def test_web_security_scanner_client_from_service_account_info(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -142,7 +146,11 @@ def test_web_security_scanner_client_service_account_always_use_jwt(
 
 
 @pytest.mark.parametrize(
-    "client_class", [WebSecurityScannerClient, WebSecurityScannerAsyncClient,]
+    "client_class",
+    [
+        WebSecurityScannerClient,
+        WebSecurityScannerAsyncClient,
+    ],
 )
 def test_web_security_scanner_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -516,7 +524,9 @@ def test_web_security_scanner_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -657,11 +667,16 @@ def test_web_security_scanner_client_create_channel_credentials_file(
 
 
 @pytest.mark.parametrize(
-    "request_type", [web_security_scanner.CreateScanConfigRequest, dict,]
+    "request_type",
+    [
+        web_security_scanner.CreateScanConfigRequest,
+        dict,
+    ],
 )
 def test_create_scan_config(request_type, transport: str = "grpc"):
     client = WebSecurityScannerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -713,7 +728,8 @@ def test_create_scan_config_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = WebSecurityScannerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -732,7 +748,8 @@ async def test_create_scan_config_async(
     request_type=web_security_scanner.CreateScanConfigRequest,
 ):
     client = WebSecurityScannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -812,7 +829,10 @@ def test_create_scan_config_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -843,15 +863,23 @@ async def test_create_scan_config_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.parametrize(
-    "request_type", [web_security_scanner.DeleteScanConfigRequest, dict,]
+    "request_type",
+    [
+        web_security_scanner.DeleteScanConfigRequest,
+        dict,
+    ],
 )
 def test_delete_scan_config(request_type, transport: str = "grpc"):
     client = WebSecurityScannerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -879,7 +907,8 @@ def test_delete_scan_config_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = WebSecurityScannerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -898,7 +927,8 @@ async def test_delete_scan_config_async(
     request_type=web_security_scanner.DeleteScanConfigRequest,
 ):
     client = WebSecurityScannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -952,7 +982,10 @@ def test_delete_scan_config_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -981,15 +1014,23 @@ async def test_delete_scan_config_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.parametrize(
-    "request_type", [web_security_scanner.GetScanConfigRequest, dict,]
+    "request_type",
+    [
+        web_security_scanner.GetScanConfigRequest,
+        dict,
+    ],
 )
 def test_get_scan_config(request_type, transport: str = "grpc"):
     client = WebSecurityScannerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1039,7 +1080,8 @@ def test_get_scan_config_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = WebSecurityScannerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1056,7 +1098,8 @@ async def test_get_scan_config_async(
     request_type=web_security_scanner.GetScanConfigRequest,
 ):
     client = WebSecurityScannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1132,7 +1175,10 @@ def test_get_scan_config_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1161,15 +1207,23 @@ async def test_get_scan_config_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.parametrize(
-    "request_type", [web_security_scanner.ListScanConfigsRequest, dict,]
+    "request_type",
+    [
+        web_security_scanner.ListScanConfigsRequest,
+        dict,
+    ],
 )
 def test_list_scan_configs(request_type, transport: str = "grpc"):
     client = WebSecurityScannerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1200,7 +1254,8 @@ def test_list_scan_configs_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = WebSecurityScannerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1219,7 +1274,8 @@ async def test_list_scan_configs_async(
     request_type=web_security_scanner.ListScanConfigsRequest,
 ):
     client = WebSecurityScannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1278,7 +1334,10 @@ def test_list_scan_configs_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1309,12 +1368,16 @@ async def test_list_scan_configs_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_scan_configs_pager(transport_name: str = "grpc"):
     client = WebSecurityScannerClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1332,13 +1395,20 @@ def test_list_scan_configs_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             web_security_scanner.ListScanConfigsResponse(
-                scan_configs=[], next_page_token="def",
+                scan_configs=[],
+                next_page_token="def",
             ),
             web_security_scanner.ListScanConfigsResponse(
-                scan_configs=[scan_config.ScanConfig(),], next_page_token="ghi",
+                scan_configs=[
+                    scan_config.ScanConfig(),
+                ],
+                next_page_token="ghi",
             ),
             web_security_scanner.ListScanConfigsResponse(
-                scan_configs=[scan_config.ScanConfig(), scan_config.ScanConfig(),],
+                scan_configs=[
+                    scan_config.ScanConfig(),
+                    scan_config.ScanConfig(),
+                ],
             ),
             RuntimeError,
         )
@@ -1358,7 +1428,8 @@ def test_list_scan_configs_pager(transport_name: str = "grpc"):
 
 def test_list_scan_configs_pages(transport_name: str = "grpc"):
     client = WebSecurityScannerClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1376,13 +1447,20 @@ def test_list_scan_configs_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             web_security_scanner.ListScanConfigsResponse(
-                scan_configs=[], next_page_token="def",
+                scan_configs=[],
+                next_page_token="def",
             ),
             web_security_scanner.ListScanConfigsResponse(
-                scan_configs=[scan_config.ScanConfig(),], next_page_token="ghi",
+                scan_configs=[
+                    scan_config.ScanConfig(),
+                ],
+                next_page_token="ghi",
             ),
             web_security_scanner.ListScanConfigsResponse(
-                scan_configs=[scan_config.ScanConfig(), scan_config.ScanConfig(),],
+                scan_configs=[
+                    scan_config.ScanConfig(),
+                    scan_config.ScanConfig(),
+                ],
             ),
             RuntimeError,
         )
@@ -1414,17 +1492,26 @@ async def test_list_scan_configs_async_pager():
                 next_page_token="abc",
             ),
             web_security_scanner.ListScanConfigsResponse(
-                scan_configs=[], next_page_token="def",
+                scan_configs=[],
+                next_page_token="def",
             ),
             web_security_scanner.ListScanConfigsResponse(
-                scan_configs=[scan_config.ScanConfig(),], next_page_token="ghi",
+                scan_configs=[
+                    scan_config.ScanConfig(),
+                ],
+                next_page_token="ghi",
             ),
             web_security_scanner.ListScanConfigsResponse(
-                scan_configs=[scan_config.ScanConfig(), scan_config.ScanConfig(),],
+                scan_configs=[
+                    scan_config.ScanConfig(),
+                    scan_config.ScanConfig(),
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.list_scan_configs(request={},)
+        async_pager = await client.list_scan_configs(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -1457,13 +1544,20 @@ async def test_list_scan_configs_async_pages():
                 next_page_token="abc",
             ),
             web_security_scanner.ListScanConfigsResponse(
-                scan_configs=[], next_page_token="def",
+                scan_configs=[],
+                next_page_token="def",
             ),
             web_security_scanner.ListScanConfigsResponse(
-                scan_configs=[scan_config.ScanConfig(),], next_page_token="ghi",
+                scan_configs=[
+                    scan_config.ScanConfig(),
+                ],
+                next_page_token="ghi",
             ),
             web_security_scanner.ListScanConfigsResponse(
-                scan_configs=[scan_config.ScanConfig(), scan_config.ScanConfig(),],
+                scan_configs=[
+                    scan_config.ScanConfig(),
+                    scan_config.ScanConfig(),
+                ],
             ),
             RuntimeError,
         )
@@ -1475,11 +1569,16 @@ async def test_list_scan_configs_async_pages():
 
 
 @pytest.mark.parametrize(
-    "request_type", [web_security_scanner.UpdateScanConfigRequest, dict,]
+    "request_type",
+    [
+        web_security_scanner.UpdateScanConfigRequest,
+        dict,
+    ],
 )
 def test_update_scan_config(request_type, transport: str = "grpc"):
     client = WebSecurityScannerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1531,7 +1630,8 @@ def test_update_scan_config_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = WebSecurityScannerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1550,7 +1650,8 @@ async def test_update_scan_config_async(
     request_type=web_security_scanner.UpdateScanConfigRequest,
 ):
     client = WebSecurityScannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1630,9 +1731,10 @@ def test_update_scan_config_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "scan_config.name=scan_config.name/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "scan_config.name=scan_config.name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1663,17 +1765,23 @@ async def test_update_scan_config_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "scan_config.name=scan_config.name/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "scan_config.name=scan_config.name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.parametrize(
-    "request_type", [web_security_scanner.StartScanRunRequest, dict,]
+    "request_type",
+    [
+        web_security_scanner.StartScanRunRequest,
+        dict,
+    ],
 )
 def test_start_scan_run(request_type, transport: str = "grpc"):
     client = WebSecurityScannerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1714,7 +1822,8 @@ def test_start_scan_run_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = WebSecurityScannerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1731,7 +1840,8 @@ async def test_start_scan_run_async(
     request_type=web_security_scanner.StartScanRunRequest,
 ):
     client = WebSecurityScannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1798,7 +1908,10 @@ def test_start_scan_run_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1825,15 +1938,23 @@ async def test_start_scan_run_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.parametrize(
-    "request_type", [web_security_scanner.GetScanRunRequest, dict,]
+    "request_type",
+    [
+        web_security_scanner.GetScanRunRequest,
+        dict,
+    ],
 )
 def test_get_scan_run(request_type, transport: str = "grpc"):
     client = WebSecurityScannerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1874,7 +1995,8 @@ def test_get_scan_run_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = WebSecurityScannerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1890,7 +2012,8 @@ async def test_get_scan_run_async(
     transport: str = "grpc_asyncio", request_type=web_security_scanner.GetScanRunRequest
 ):
     client = WebSecurityScannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1957,7 +2080,10 @@ def test_get_scan_run_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1984,15 +2110,23 @@ async def test_get_scan_run_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.parametrize(
-    "request_type", [web_security_scanner.ListScanRunsRequest, dict,]
+    "request_type",
+    [
+        web_security_scanner.ListScanRunsRequest,
+        dict,
+    ],
 )
 def test_list_scan_runs(request_type, transport: str = "grpc"):
     client = WebSecurityScannerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2021,7 +2155,8 @@ def test_list_scan_runs_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = WebSecurityScannerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2038,7 +2173,8 @@ async def test_list_scan_runs_async(
     request_type=web_security_scanner.ListScanRunsRequest,
 ):
     client = WebSecurityScannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2093,7 +2229,10 @@ def test_list_scan_runs_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2122,12 +2261,16 @@ async def test_list_scan_runs_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_scan_runs_pager(transport_name: str = "grpc"):
     client = WebSecurityScannerClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2135,17 +2278,28 @@ def test_list_scan_runs_pager(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             web_security_scanner.ListScanRunsResponse(
-                scan_runs=[scan_run.ScanRun(), scan_run.ScanRun(), scan_run.ScanRun(),],
+                scan_runs=[
+                    scan_run.ScanRun(),
+                    scan_run.ScanRun(),
+                    scan_run.ScanRun(),
+                ],
                 next_page_token="abc",
             ),
             web_security_scanner.ListScanRunsResponse(
-                scan_runs=[], next_page_token="def",
+                scan_runs=[],
+                next_page_token="def",
             ),
             web_security_scanner.ListScanRunsResponse(
-                scan_runs=[scan_run.ScanRun(),], next_page_token="ghi",
+                scan_runs=[
+                    scan_run.ScanRun(),
+                ],
+                next_page_token="ghi",
             ),
             web_security_scanner.ListScanRunsResponse(
-                scan_runs=[scan_run.ScanRun(), scan_run.ScanRun(),],
+                scan_runs=[
+                    scan_run.ScanRun(),
+                    scan_run.ScanRun(),
+                ],
             ),
             RuntimeError,
         )
@@ -2165,7 +2319,8 @@ def test_list_scan_runs_pager(transport_name: str = "grpc"):
 
 def test_list_scan_runs_pages(transport_name: str = "grpc"):
     client = WebSecurityScannerClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2173,17 +2328,28 @@ def test_list_scan_runs_pages(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             web_security_scanner.ListScanRunsResponse(
-                scan_runs=[scan_run.ScanRun(), scan_run.ScanRun(), scan_run.ScanRun(),],
+                scan_runs=[
+                    scan_run.ScanRun(),
+                    scan_run.ScanRun(),
+                    scan_run.ScanRun(),
+                ],
                 next_page_token="abc",
             ),
             web_security_scanner.ListScanRunsResponse(
-                scan_runs=[], next_page_token="def",
+                scan_runs=[],
+                next_page_token="def",
             ),
             web_security_scanner.ListScanRunsResponse(
-                scan_runs=[scan_run.ScanRun(),], next_page_token="ghi",
+                scan_runs=[
+                    scan_run.ScanRun(),
+                ],
+                next_page_token="ghi",
             ),
             web_security_scanner.ListScanRunsResponse(
-                scan_runs=[scan_run.ScanRun(), scan_run.ScanRun(),],
+                scan_runs=[
+                    scan_run.ScanRun(),
+                    scan_run.ScanRun(),
+                ],
             ),
             RuntimeError,
         )
@@ -2205,21 +2371,34 @@ async def test_list_scan_runs_async_pager():
         # Set the response to a series of pages.
         call.side_effect = (
             web_security_scanner.ListScanRunsResponse(
-                scan_runs=[scan_run.ScanRun(), scan_run.ScanRun(), scan_run.ScanRun(),],
+                scan_runs=[
+                    scan_run.ScanRun(),
+                    scan_run.ScanRun(),
+                    scan_run.ScanRun(),
+                ],
                 next_page_token="abc",
             ),
             web_security_scanner.ListScanRunsResponse(
-                scan_runs=[], next_page_token="def",
+                scan_runs=[],
+                next_page_token="def",
             ),
             web_security_scanner.ListScanRunsResponse(
-                scan_runs=[scan_run.ScanRun(),], next_page_token="ghi",
+                scan_runs=[
+                    scan_run.ScanRun(),
+                ],
+                next_page_token="ghi",
             ),
             web_security_scanner.ListScanRunsResponse(
-                scan_runs=[scan_run.ScanRun(), scan_run.ScanRun(),],
+                scan_runs=[
+                    scan_run.ScanRun(),
+                    scan_run.ScanRun(),
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.list_scan_runs(request={},)
+        async_pager = await client.list_scan_runs(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -2242,17 +2421,28 @@ async def test_list_scan_runs_async_pages():
         # Set the response to a series of pages.
         call.side_effect = (
             web_security_scanner.ListScanRunsResponse(
-                scan_runs=[scan_run.ScanRun(), scan_run.ScanRun(), scan_run.ScanRun(),],
+                scan_runs=[
+                    scan_run.ScanRun(),
+                    scan_run.ScanRun(),
+                    scan_run.ScanRun(),
+                ],
                 next_page_token="abc",
             ),
             web_security_scanner.ListScanRunsResponse(
-                scan_runs=[], next_page_token="def",
+                scan_runs=[],
+                next_page_token="def",
             ),
             web_security_scanner.ListScanRunsResponse(
-                scan_runs=[scan_run.ScanRun(),], next_page_token="ghi",
+                scan_runs=[
+                    scan_run.ScanRun(),
+                ],
+                next_page_token="ghi",
             ),
             web_security_scanner.ListScanRunsResponse(
-                scan_runs=[scan_run.ScanRun(), scan_run.ScanRun(),],
+                scan_runs=[
+                    scan_run.ScanRun(),
+                    scan_run.ScanRun(),
+                ],
             ),
             RuntimeError,
         )
@@ -2264,11 +2454,16 @@ async def test_list_scan_runs_async_pages():
 
 
 @pytest.mark.parametrize(
-    "request_type", [web_security_scanner.StopScanRunRequest, dict,]
+    "request_type",
+    [
+        web_security_scanner.StopScanRunRequest,
+        dict,
+    ],
 )
 def test_stop_scan_run(request_type, transport: str = "grpc"):
     client = WebSecurityScannerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2309,7 +2504,8 @@ def test_stop_scan_run_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = WebSecurityScannerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2326,7 +2522,8 @@ async def test_stop_scan_run_async(
     request_type=web_security_scanner.StopScanRunRequest,
 ):
     client = WebSecurityScannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2393,7 +2590,10 @@ def test_stop_scan_run_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2420,15 +2620,23 @@ async def test_stop_scan_run_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.parametrize(
-    "request_type", [web_security_scanner.ListCrawledUrlsRequest, dict,]
+    "request_type",
+    [
+        web_security_scanner.ListCrawledUrlsRequest,
+        dict,
+    ],
 )
 def test_list_crawled_urls(request_type, transport: str = "grpc"):
     client = WebSecurityScannerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2459,7 +2667,8 @@ def test_list_crawled_urls_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = WebSecurityScannerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2478,7 +2687,8 @@ async def test_list_crawled_urls_async(
     request_type=web_security_scanner.ListCrawledUrlsRequest,
 ):
     client = WebSecurityScannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2537,7 +2747,10 @@ def test_list_crawled_urls_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2568,12 +2781,16 @@ async def test_list_crawled_urls_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_crawled_urls_pager(transport_name: str = "grpc"):
     client = WebSecurityScannerClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2591,13 +2808,20 @@ def test_list_crawled_urls_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             web_security_scanner.ListCrawledUrlsResponse(
-                crawled_urls=[], next_page_token="def",
+                crawled_urls=[],
+                next_page_token="def",
             ),
             web_security_scanner.ListCrawledUrlsResponse(
-                crawled_urls=[crawled_url.CrawledUrl(),], next_page_token="ghi",
+                crawled_urls=[
+                    crawled_url.CrawledUrl(),
+                ],
+                next_page_token="ghi",
             ),
             web_security_scanner.ListCrawledUrlsResponse(
-                crawled_urls=[crawled_url.CrawledUrl(), crawled_url.CrawledUrl(),],
+                crawled_urls=[
+                    crawled_url.CrawledUrl(),
+                    crawled_url.CrawledUrl(),
+                ],
             ),
             RuntimeError,
         )
@@ -2617,7 +2841,8 @@ def test_list_crawled_urls_pager(transport_name: str = "grpc"):
 
 def test_list_crawled_urls_pages(transport_name: str = "grpc"):
     client = WebSecurityScannerClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2635,13 +2860,20 @@ def test_list_crawled_urls_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             web_security_scanner.ListCrawledUrlsResponse(
-                crawled_urls=[], next_page_token="def",
+                crawled_urls=[],
+                next_page_token="def",
             ),
             web_security_scanner.ListCrawledUrlsResponse(
-                crawled_urls=[crawled_url.CrawledUrl(),], next_page_token="ghi",
+                crawled_urls=[
+                    crawled_url.CrawledUrl(),
+                ],
+                next_page_token="ghi",
             ),
             web_security_scanner.ListCrawledUrlsResponse(
-                crawled_urls=[crawled_url.CrawledUrl(), crawled_url.CrawledUrl(),],
+                crawled_urls=[
+                    crawled_url.CrawledUrl(),
+                    crawled_url.CrawledUrl(),
+                ],
             ),
             RuntimeError,
         )
@@ -2673,17 +2905,26 @@ async def test_list_crawled_urls_async_pager():
                 next_page_token="abc",
             ),
             web_security_scanner.ListCrawledUrlsResponse(
-                crawled_urls=[], next_page_token="def",
+                crawled_urls=[],
+                next_page_token="def",
             ),
             web_security_scanner.ListCrawledUrlsResponse(
-                crawled_urls=[crawled_url.CrawledUrl(),], next_page_token="ghi",
+                crawled_urls=[
+                    crawled_url.CrawledUrl(),
+                ],
+                next_page_token="ghi",
             ),
             web_security_scanner.ListCrawledUrlsResponse(
-                crawled_urls=[crawled_url.CrawledUrl(), crawled_url.CrawledUrl(),],
+                crawled_urls=[
+                    crawled_url.CrawledUrl(),
+                    crawled_url.CrawledUrl(),
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.list_crawled_urls(request={},)
+        async_pager = await client.list_crawled_urls(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -2716,13 +2957,20 @@ async def test_list_crawled_urls_async_pages():
                 next_page_token="abc",
             ),
             web_security_scanner.ListCrawledUrlsResponse(
-                crawled_urls=[], next_page_token="def",
+                crawled_urls=[],
+                next_page_token="def",
             ),
             web_security_scanner.ListCrawledUrlsResponse(
-                crawled_urls=[crawled_url.CrawledUrl(),], next_page_token="ghi",
+                crawled_urls=[
+                    crawled_url.CrawledUrl(),
+                ],
+                next_page_token="ghi",
             ),
             web_security_scanner.ListCrawledUrlsResponse(
-                crawled_urls=[crawled_url.CrawledUrl(), crawled_url.CrawledUrl(),],
+                crawled_urls=[
+                    crawled_url.CrawledUrl(),
+                    crawled_url.CrawledUrl(),
+                ],
             ),
             RuntimeError,
         )
@@ -2734,11 +2982,16 @@ async def test_list_crawled_urls_async_pages():
 
 
 @pytest.mark.parametrize(
-    "request_type", [web_security_scanner.GetFindingRequest, dict,]
+    "request_type",
+    [
+        web_security_scanner.GetFindingRequest,
+        dict,
+    ],
 )
 def test_get_finding(request_type, transport: str = "grpc"):
     client = WebSecurityScannerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2787,7 +3040,8 @@ def test_get_finding_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = WebSecurityScannerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2803,7 +3057,8 @@ async def test_get_finding_async(
     transport: str = "grpc_asyncio", request_type=web_security_scanner.GetFindingRequest
 ):
     client = WebSecurityScannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2878,7 +3133,10 @@ def test_get_finding_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2905,15 +3163,23 @@ async def test_get_finding_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.parametrize(
-    "request_type", [web_security_scanner.ListFindingsRequest, dict,]
+    "request_type",
+    [
+        web_security_scanner.ListFindingsRequest,
+        dict,
+    ],
 )
 def test_list_findings(request_type, transport: str = "grpc"):
     client = WebSecurityScannerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2942,7 +3208,8 @@ def test_list_findings_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = WebSecurityScannerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2959,7 +3226,8 @@ async def test_list_findings_async(
     request_type=web_security_scanner.ListFindingsRequest,
 ):
     client = WebSecurityScannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3014,7 +3282,10 @@ def test_list_findings_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -3043,12 +3314,16 @@ async def test_list_findings_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_findings_pager(transport_name: str = "grpc"):
     client = WebSecurityScannerClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3056,17 +3331,28 @@ def test_list_findings_pager(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             web_security_scanner.ListFindingsResponse(
-                findings=[finding.Finding(), finding.Finding(), finding.Finding(),],
+                findings=[
+                    finding.Finding(),
+                    finding.Finding(),
+                    finding.Finding(),
+                ],
                 next_page_token="abc",
             ),
             web_security_scanner.ListFindingsResponse(
-                findings=[], next_page_token="def",
+                findings=[],
+                next_page_token="def",
             ),
             web_security_scanner.ListFindingsResponse(
-                findings=[finding.Finding(),], next_page_token="ghi",
+                findings=[
+                    finding.Finding(),
+                ],
+                next_page_token="ghi",
             ),
             web_security_scanner.ListFindingsResponse(
-                findings=[finding.Finding(), finding.Finding(),],
+                findings=[
+                    finding.Finding(),
+                    finding.Finding(),
+                ],
             ),
             RuntimeError,
         )
@@ -3086,7 +3372,8 @@ def test_list_findings_pager(transport_name: str = "grpc"):
 
 def test_list_findings_pages(transport_name: str = "grpc"):
     client = WebSecurityScannerClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3094,17 +3381,28 @@ def test_list_findings_pages(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             web_security_scanner.ListFindingsResponse(
-                findings=[finding.Finding(), finding.Finding(), finding.Finding(),],
+                findings=[
+                    finding.Finding(),
+                    finding.Finding(),
+                    finding.Finding(),
+                ],
                 next_page_token="abc",
             ),
             web_security_scanner.ListFindingsResponse(
-                findings=[], next_page_token="def",
+                findings=[],
+                next_page_token="def",
             ),
             web_security_scanner.ListFindingsResponse(
-                findings=[finding.Finding(),], next_page_token="ghi",
+                findings=[
+                    finding.Finding(),
+                ],
+                next_page_token="ghi",
             ),
             web_security_scanner.ListFindingsResponse(
-                findings=[finding.Finding(), finding.Finding(),],
+                findings=[
+                    finding.Finding(),
+                    finding.Finding(),
+                ],
             ),
             RuntimeError,
         )
@@ -3126,21 +3424,34 @@ async def test_list_findings_async_pager():
         # Set the response to a series of pages.
         call.side_effect = (
             web_security_scanner.ListFindingsResponse(
-                findings=[finding.Finding(), finding.Finding(), finding.Finding(),],
+                findings=[
+                    finding.Finding(),
+                    finding.Finding(),
+                    finding.Finding(),
+                ],
                 next_page_token="abc",
             ),
             web_security_scanner.ListFindingsResponse(
-                findings=[], next_page_token="def",
+                findings=[],
+                next_page_token="def",
             ),
             web_security_scanner.ListFindingsResponse(
-                findings=[finding.Finding(),], next_page_token="ghi",
+                findings=[
+                    finding.Finding(),
+                ],
+                next_page_token="ghi",
             ),
             web_security_scanner.ListFindingsResponse(
-                findings=[finding.Finding(), finding.Finding(),],
+                findings=[
+                    finding.Finding(),
+                    finding.Finding(),
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.list_findings(request={},)
+        async_pager = await client.list_findings(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -3163,17 +3474,28 @@ async def test_list_findings_async_pages():
         # Set the response to a series of pages.
         call.side_effect = (
             web_security_scanner.ListFindingsResponse(
-                findings=[finding.Finding(), finding.Finding(), finding.Finding(),],
+                findings=[
+                    finding.Finding(),
+                    finding.Finding(),
+                    finding.Finding(),
+                ],
                 next_page_token="abc",
             ),
             web_security_scanner.ListFindingsResponse(
-                findings=[], next_page_token="def",
+                findings=[],
+                next_page_token="def",
             ),
             web_security_scanner.ListFindingsResponse(
-                findings=[finding.Finding(),], next_page_token="ghi",
+                findings=[
+                    finding.Finding(),
+                ],
+                next_page_token="ghi",
             ),
             web_security_scanner.ListFindingsResponse(
-                findings=[finding.Finding(), finding.Finding(),],
+                findings=[
+                    finding.Finding(),
+                    finding.Finding(),
+                ],
             ),
             RuntimeError,
         )
@@ -3185,11 +3507,16 @@ async def test_list_findings_async_pages():
 
 
 @pytest.mark.parametrize(
-    "request_type", [web_security_scanner.ListFindingTypeStatsRequest, dict,]
+    "request_type",
+    [
+        web_security_scanner.ListFindingTypeStatsRequest,
+        dict,
+    ],
 )
 def test_list_finding_type_stats(request_type, transport: str = "grpc"):
     client = WebSecurityScannerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3217,7 +3544,8 @@ def test_list_finding_type_stats_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = WebSecurityScannerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3236,7 +3564,8 @@ async def test_list_finding_type_stats_async(
     request_type=web_security_scanner.ListFindingTypeStatsRequest,
 ):
     client = WebSecurityScannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3292,7 +3621,10 @@ def test_list_finding_type_stats_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -3323,7 +3655,10 @@ async def test_list_finding_type_stats_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_credentials_transport_error():
@@ -3333,7 +3668,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = WebSecurityScannerClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -3353,7 +3689,10 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = WebSecurityScannerClient(client_options=options, transport=transport,)
+        client = WebSecurityScannerClient(
+            client_options=options,
+            transport=transport,
+        )
 
     # It is an error to provide an api_key and a credential.
     options = mock.Mock()
@@ -3369,7 +3708,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = WebSecurityScannerClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -3417,7 +3757,10 @@ def test_transport_grpc_default():
     client = WebSecurityScannerClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
-    assert isinstance(client.transport, transports.WebSecurityScannerGrpcTransport,)
+    assert isinstance(
+        client.transport,
+        transports.WebSecurityScannerGrpcTransport,
+    )
 
 
 def test_web_security_scanner_base_transport_error():
@@ -3474,7 +3817,8 @@ def test_web_security_scanner_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.WebSecurityScannerTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -3634,7 +3978,8 @@ def test_web_security_scanner_grpc_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.WebSecurityScannerGrpcTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -3646,7 +3991,8 @@ def test_web_security_scanner_grpc_asyncio_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.WebSecurityScannerGrpcAsyncIOTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -3759,7 +4105,10 @@ def test_finding_path():
     scan_run = "whelk"
     finding = "octopus"
     expected = "projects/{project}/scanConfigs/{scan_config}/scanRuns/{scan_run}/findings/{finding}".format(
-        project=project, scan_config=scan_config, scan_run=scan_run, finding=finding,
+        project=project,
+        scan_config=scan_config,
+        scan_run=scan_run,
+        finding=finding,
     )
     actual = WebSecurityScannerClient.finding_path(
         project, scan_config, scan_run, finding
@@ -3803,7 +4152,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "scallop"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = WebSecurityScannerClient.common_folder_path(folder)
     assert expected == actual
 
@@ -3821,7 +4172,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "squid"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = WebSecurityScannerClient.common_organization_path(organization)
     assert expected == actual
 
@@ -3839,7 +4192,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "whelk"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = WebSecurityScannerClient.common_project_path(project)
     assert expected == actual
 
@@ -3859,7 +4214,8 @@ def test_common_location_path():
     project = "oyster"
     location = "nudibranch"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = WebSecurityScannerClient.common_location_path(project, location)
     assert expected == actual
@@ -3884,7 +4240,8 @@ def test_client_with_default_client_info():
         transports.WebSecurityScannerTransport, "_prep_wrapped_messages"
     ) as prep:
         client = WebSecurityScannerClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -3893,7 +4250,8 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = WebSecurityScannerClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -3901,7 +4259,8 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = WebSecurityScannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     with mock.patch.object(
         type(getattr(client.transport, "grpc_channel")), "close"

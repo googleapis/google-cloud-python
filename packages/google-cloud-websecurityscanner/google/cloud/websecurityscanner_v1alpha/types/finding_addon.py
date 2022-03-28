@@ -41,9 +41,18 @@ class OutdatedLibrary(proto.Message):
             vulnerabilities in the library.
     """
 
-    library_name = proto.Field(proto.STRING, number=1,)
-    version = proto.Field(proto.STRING, number=2,)
-    learn_more_urls = proto.RepeatedField(proto.STRING, number=3,)
+    library_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    version = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    learn_more_urls = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ViolatingResource(proto.Message):
@@ -57,8 +66,14 @@ class ViolatingResource(proto.Message):
             URL of this violating resource.
     """
 
-    content_type = proto.Field(proto.STRING, number=1,)
-    resource_url = proto.Field(proto.STRING, number=2,)
+    content_type = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    resource_url = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class VulnerableParameters(proto.Message):
@@ -69,7 +84,10 @@ class VulnerableParameters(proto.Message):
             The vulnerable parameter names.
     """
 
-    parameter_names = proto.RepeatedField(proto.STRING, number=1,)
+    parameter_names = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
 
 
 class VulnerableHeaders(proto.Message):
@@ -92,11 +110,25 @@ class VulnerableHeaders(proto.Message):
                 Header value.
         """
 
-        name = proto.Field(proto.STRING, number=1,)
-        value = proto.Field(proto.STRING, number=2,)
+        name = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        value = proto.Field(
+            proto.STRING,
+            number=2,
+        )
 
-    headers = proto.RepeatedField(proto.MESSAGE, number=1, message=Header,)
-    missing_headers = proto.RepeatedField(proto.MESSAGE, number=2, message=Header,)
+    headers = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=Header,
+    )
+    missing_headers = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=Header,
+    )
 
 
 class Xss(proto.Message):
@@ -111,8 +143,14 @@ class Xss(proto.Message):
             breakage.
     """
 
-    stack_traces = proto.RepeatedField(proto.STRING, number=1,)
-    error_message = proto.Field(proto.STRING, number=2,)
+    stack_traces = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
+    error_message = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

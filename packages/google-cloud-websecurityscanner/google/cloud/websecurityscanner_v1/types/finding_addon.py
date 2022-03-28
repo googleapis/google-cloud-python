@@ -41,8 +41,14 @@ class Form(proto.Message):
             vulnerability.
     """
 
-    action_uri = proto.Field(proto.STRING, number=1,)
-    fields = proto.RepeatedField(proto.STRING, number=2,)
+    action_uri = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    fields = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
 
 
 class OutdatedLibrary(proto.Message):
@@ -58,9 +64,18 @@ class OutdatedLibrary(proto.Message):
             vulnerabilities in the library.
     """
 
-    library_name = proto.Field(proto.STRING, number=1,)
-    version = proto.Field(proto.STRING, number=2,)
-    learn_more_urls = proto.RepeatedField(proto.STRING, number=3,)
+    library_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    version = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    learn_more_urls = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ViolatingResource(proto.Message):
@@ -74,8 +89,14 @@ class ViolatingResource(proto.Message):
             URL of this violating resource.
     """
 
-    content_type = proto.Field(proto.STRING, number=1,)
-    resource_url = proto.Field(proto.STRING, number=2,)
+    content_type = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    resource_url = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class VulnerableParameters(proto.Message):
@@ -86,7 +107,10 @@ class VulnerableParameters(proto.Message):
             The vulnerable parameter names.
     """
 
-    parameter_names = proto.RepeatedField(proto.STRING, number=1,)
+    parameter_names = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
 
 
 class VulnerableHeaders(proto.Message):
@@ -109,11 +133,25 @@ class VulnerableHeaders(proto.Message):
                 Header value.
         """
 
-        name = proto.Field(proto.STRING, number=1,)
-        value = proto.Field(proto.STRING, number=2,)
+        name = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        value = proto.Field(
+            proto.STRING,
+            number=2,
+        )
 
-    headers = proto.RepeatedField(proto.MESSAGE, number=1, message=Header,)
-    missing_headers = proto.RepeatedField(proto.MESSAGE, number=2, message=Header,)
+    headers = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=Header,
+    )
+    missing_headers = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=Header,
+    )
 
 
 class Xss(proto.Message):
@@ -153,10 +191,23 @@ class Xss(proto.Message):
         SAME_ORIGIN = 14
         USER_CONTROLLABLE_URL = 15
 
-    stack_traces = proto.RepeatedField(proto.STRING, number=1,)
-    error_message = proto.Field(proto.STRING, number=2,)
-    attack_vector = proto.Field(proto.ENUM, number=3, enum=AttackVector,)
-    stored_xss_seeding_url = proto.Field(proto.STRING, number=4,)
+    stack_traces = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
+    error_message = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    attack_vector = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=AttackVector,
+    )
+    stored_xss_seeding_url = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

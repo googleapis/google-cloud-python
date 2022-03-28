@@ -17,7 +17,10 @@ import proto  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.websecurityscanner.v1alpha", manifest={"CrawledUrl",},
+    package="google.cloud.websecurityscanner.v1alpha",
+    manifest={
+        "CrawledUrl",
+    },
 )
 
 
@@ -38,9 +41,18 @@ class CrawledUrl(proto.Message):
             used to visit the URL.
     """
 
-    http_method = proto.Field(proto.STRING, number=1,)
-    url = proto.Field(proto.STRING, number=2,)
-    body = proto.Field(proto.STRING, number=3,)
+    http_method = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    url = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    body = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

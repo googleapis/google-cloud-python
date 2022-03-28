@@ -19,7 +19,10 @@ from google.cloud.websecurityscanner_v1alpha.types import finding_addon
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.websecurityscanner.v1alpha", manifest={"Finding",},
+    package="google.cloud.websecurityscanner.v1alpha",
+    manifest={
+        "Finding",
+    },
 )
 
 
@@ -95,29 +98,72 @@ class Finding(proto.Message):
         MISSPELLED_SECURITY_HEADER_NAME = 10
         MISMATCHING_SECURITY_HEADER_VALUES = 11
 
-    name = proto.Field(proto.STRING, number=1,)
-    finding_type = proto.Field(proto.ENUM, number=2, enum=FindingType,)
-    http_method = proto.Field(proto.STRING, number=3,)
-    fuzzed_url = proto.Field(proto.STRING, number=4,)
-    body = proto.Field(proto.STRING, number=5,)
-    description = proto.Field(proto.STRING, number=6,)
-    reproduction_url = proto.Field(proto.STRING, number=7,)
-    frame_url = proto.Field(proto.STRING, number=8,)
-    final_url = proto.Field(proto.STRING, number=9,)
-    tracking_id = proto.Field(proto.STRING, number=10,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    finding_type = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=FindingType,
+    )
+    http_method = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    fuzzed_url = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    body = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    reproduction_url = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    frame_url = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    final_url = proto.Field(
+        proto.STRING,
+        number=9,
+    )
+    tracking_id = proto.Field(
+        proto.STRING,
+        number=10,
+    )
     outdated_library = proto.Field(
-        proto.MESSAGE, number=11, message=finding_addon.OutdatedLibrary,
+        proto.MESSAGE,
+        number=11,
+        message=finding_addon.OutdatedLibrary,
     )
     violating_resource = proto.Field(
-        proto.MESSAGE, number=12, message=finding_addon.ViolatingResource,
+        proto.MESSAGE,
+        number=12,
+        message=finding_addon.ViolatingResource,
     )
     vulnerable_headers = proto.Field(
-        proto.MESSAGE, number=15, message=finding_addon.VulnerableHeaders,
+        proto.MESSAGE,
+        number=15,
+        message=finding_addon.VulnerableHeaders,
     )
     vulnerable_parameters = proto.Field(
-        proto.MESSAGE, number=13, message=finding_addon.VulnerableParameters,
+        proto.MESSAGE,
+        number=13,
+        message=finding_addon.VulnerableParameters,
     )
-    xss = proto.Field(proto.MESSAGE, number=14, message=finding_addon.Xss,)
+    xss = proto.Field(
+        proto.MESSAGE,
+        number=14,
+        message=finding_addon.Xss,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

@@ -126,7 +126,9 @@ class WebSecurityScannerTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.create_scan_config: gapic_v1.method.wrap_method(
-                self.create_scan_config, default_timeout=600.0, client_info=client_info,
+                self.create_scan_config,
+                default_timeout=600.0,
+                client_info=client_info,
             ),
             self.delete_scan_config: gapic_v1.method.wrap_method(
                 self.delete_scan_config,
@@ -174,10 +176,14 @@ class WebSecurityScannerTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.update_scan_config: gapic_v1.method.wrap_method(
-                self.update_scan_config, default_timeout=600.0, client_info=client_info,
+                self.update_scan_config,
+                default_timeout=600.0,
+                client_info=client_info,
             ),
             self.start_scan_run: gapic_v1.method.wrap_method(
-                self.start_scan_run, default_timeout=600.0, client_info=client_info,
+                self.start_scan_run,
+                default_timeout=600.0,
+                client_info=client_info,
             ),
             self.get_scan_run: gapic_v1.method.wrap_method(
                 self.get_scan_run,
@@ -210,7 +216,9 @@ class WebSecurityScannerTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.stop_scan_run: gapic_v1.method.wrap_method(
-                self.stop_scan_run, default_timeout=600.0, client_info=client_info,
+                self.stop_scan_run,
+                default_timeout=600.0,
+                client_info=client_info,
             ),
             self.list_crawled_urls: gapic_v1.method.wrap_method(
                 self.list_crawled_urls,
@@ -277,9 +285,9 @@ class WebSecurityScannerTransport(abc.ABC):
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

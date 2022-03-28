@@ -19,7 +19,10 @@ from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.websecurityscanner.v1alpha", manifest={"ScanRun",},
+    package="google.cloud.websecurityscanner.v1alpha",
+    manifest={
+        "ScanRun",
+    },
 )
 
 
@@ -82,15 +85,46 @@ class ScanRun(proto.Message):
         ERROR = 2
         KILLED = 3
 
-    name = proto.Field(proto.STRING, number=1,)
-    execution_state = proto.Field(proto.ENUM, number=2, enum=ExecutionState,)
-    result_state = proto.Field(proto.ENUM, number=3, enum=ResultState,)
-    start_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
-    end_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
-    urls_crawled_count = proto.Field(proto.INT64, number=6,)
-    urls_tested_count = proto.Field(proto.INT64, number=7,)
-    has_vulnerabilities = proto.Field(proto.BOOL, number=8,)
-    progress_percent = proto.Field(proto.INT32, number=9,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    execution_state = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=ExecutionState,
+    )
+    result_state = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=ResultState,
+    )
+    start_time = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+    urls_crawled_count = proto.Field(
+        proto.INT64,
+        number=6,
+    )
+    urls_tested_count = proto.Field(
+        proto.INT64,
+        number=7,
+    )
+    has_vulnerabilities = proto.Field(
+        proto.BOOL,
+        number=8,
+    )
+    progress_percent = proto.Field(
+        proto.INT32,
+        number=9,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

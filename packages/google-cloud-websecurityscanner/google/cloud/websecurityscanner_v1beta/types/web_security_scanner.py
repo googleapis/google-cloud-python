@@ -63,9 +63,14 @@ class CreateScanConfigRequest(proto.Message):
             Required. The ScanConfig to be created.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     scan_config = proto.Field(
-        proto.MESSAGE, number=2, message=gcw_scan_config.ScanConfig,
+        proto.MESSAGE,
+        number=2,
+        message=gcw_scan_config.ScanConfig,
     )
 
 
@@ -79,7 +84,10 @@ class DeleteScanConfigRequest(proto.Message):
             'projects/{projectId}/scanConfigs/{scanConfigId}'.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class GetScanConfigRequest(proto.Message):
@@ -92,7 +100,10 @@ class GetScanConfigRequest(proto.Message):
             'projects/{projectId}/scanConfigs/{scanConfigId}'.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListScanConfigsRequest(proto.Message):
@@ -115,9 +126,18 @@ class ListScanConfigsRequest(proto.Message):
             reasonable value.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_token = proto.Field(proto.STRING, number=2,)
-    page_size = proto.Field(proto.INT32, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=3,
+    )
 
 
 class UpdateScanConfigRequest(proto.Message):
@@ -136,10 +156,14 @@ class UpdateScanConfigRequest(proto.Message):
     """
 
     scan_config = proto.Field(
-        proto.MESSAGE, number=2, message=gcw_scan_config.ScanConfig,
+        proto.MESSAGE,
+        number=2,
+        message=gcw_scan_config.ScanConfig,
     )
     update_mask = proto.Field(
-        proto.MESSAGE, number=3, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=3,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -160,9 +184,14 @@ class ListScanConfigsResponse(proto.Message):
         return self
 
     scan_configs = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=gcw_scan_config.ScanConfig,
+        proto.MESSAGE,
+        number=1,
+        message=gcw_scan_config.ScanConfig,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class StartScanRunRequest(proto.Message):
@@ -175,7 +204,10 @@ class StartScanRunRequest(proto.Message):
             'projects/{projectId}/scanConfigs/{scanConfigId}'.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class GetScanRunRequest(proto.Message):
@@ -188,7 +220,10 @@ class GetScanRunRequest(proto.Message):
             'projects/{projectId}/scanConfigs/{scanConfigId}/scanRuns/{scanRunId}'.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListScanRunsRequest(proto.Message):
@@ -211,9 +246,18 @@ class ListScanRunsRequest(proto.Message):
             reasonable value.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_token = proto.Field(proto.STRING, number=2,)
-    page_size = proto.Field(proto.INT32, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=3,
+    )
 
 
 class ListScanRunsResponse(proto.Message):
@@ -232,8 +276,15 @@ class ListScanRunsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    scan_runs = proto.RepeatedField(proto.MESSAGE, number=1, message=scan_run.ScanRun,)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    scan_runs = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=scan_run.ScanRun,
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class StopScanRunRequest(proto.Message):
@@ -246,7 +297,10 @@ class StopScanRunRequest(proto.Message):
             'projects/{projectId}/scanConfigs/{scanConfigId}/scanRuns/{scanRunId}'.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListCrawledUrlsRequest(proto.Message):
@@ -269,9 +323,18 @@ class ListCrawledUrlsRequest(proto.Message):
             reasonable value.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_token = proto.Field(proto.STRING, number=2,)
-    page_size = proto.Field(proto.INT32, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=3,
+    )
 
 
 class ListCrawledUrlsResponse(proto.Message):
@@ -291,9 +354,14 @@ class ListCrawledUrlsResponse(proto.Message):
         return self
 
     crawled_urls = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=crawled_url.CrawledUrl,
+        proto.MESSAGE,
+        number=1,
+        message=crawled_url.CrawledUrl,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetFindingRequest(proto.Message):
@@ -306,7 +374,10 @@ class GetFindingRequest(proto.Message):
             'projects/{projectId}/scanConfigs/{scanConfigId}/scanRuns/{scanRunId}/findings/{findingId}'.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListFindingsRequest(proto.Message):
@@ -333,10 +404,22 @@ class ListFindingsRequest(proto.Message):
             reasonable value.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    filter = proto.Field(proto.STRING, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    page_size = proto.Field(proto.INT32, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=4,
+    )
 
 
 class ListFindingsResponse(proto.Message):
@@ -355,8 +438,15 @@ class ListFindingsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    findings = proto.RepeatedField(proto.MESSAGE, number=1, message=finding.Finding,)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    findings = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=finding.Finding,
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class ListFindingTypeStatsRequest(proto.Message):
@@ -369,7 +459,10 @@ class ListFindingTypeStatsRequest(proto.Message):
             'projects/{projectId}/scanConfigs/{scanConfigId}/scanRuns/{scanRunId}'.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListFindingTypeStatsResponse(proto.Message):
@@ -381,7 +474,9 @@ class ListFindingTypeStatsResponse(proto.Message):
     """
 
     finding_type_stats = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=gcw_finding_type_stats.FindingTypeStats,
+        proto.MESSAGE,
+        number=1,
+        message=gcw_finding_type_stats.FindingTypeStats,
     )
 
 

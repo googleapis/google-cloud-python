@@ -17,7 +17,10 @@ import proto  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.websecurityscanner.v1", manifest={"FindingTypeStats",},
+    package="google.cloud.websecurityscanner.v1",
+    manifest={
+        "FindingTypeStats",
+    },
 )
 
 
@@ -34,8 +37,14 @@ class FindingTypeStats(proto.Message):
             to this finding type.
     """
 
-    finding_type = proto.Field(proto.STRING, number=1,)
-    finding_count = proto.Field(proto.INT32, number=2,)
+    finding_type = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    finding_count = proto.Field(
+        proto.INT32,
+        number=2,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

@@ -19,7 +19,10 @@ from google.cloud.websecurityscanner_v1alpha.types import finding
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.websecurityscanner.v1alpha", manifest={"FindingTypeStats",},
+    package="google.cloud.websecurityscanner.v1alpha",
+    manifest={
+        "FindingTypeStats",
+    },
 )
 
 
@@ -35,8 +38,15 @@ class FindingTypeStats(proto.Message):
             finding type.
     """
 
-    finding_type = proto.Field(proto.ENUM, number=1, enum=finding.Finding.FindingType,)
-    finding_count = proto.Field(proto.INT32, number=2,)
+    finding_type = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=finding.Finding.FindingType,
+    )
+    finding_count = proto.Field(
+        proto.INT32,
+        number=2,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
