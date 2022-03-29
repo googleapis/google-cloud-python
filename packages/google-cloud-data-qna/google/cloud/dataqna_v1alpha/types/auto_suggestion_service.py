@@ -65,10 +65,23 @@ class SuggestQueriesRequest(proto.Message):
             cut these suggestions off.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    scopes = proto.RepeatedField(proto.STRING, number=2,)
-    query = proto.Field(proto.STRING, number=3,)
-    suggestion_types = proto.RepeatedField(proto.ENUM, number=4, enum="SuggestionType",)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    scopes = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+    query = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    suggestion_types = proto.RepeatedField(
+        proto.ENUM,
+        number=4,
+        enum="SuggestionType",
+    )
 
 
 class Suggestion(proto.Message):
@@ -86,9 +99,20 @@ class Suggestion(proto.Message):
             The type of the suggestion.
     """
 
-    suggestion_info = proto.Field(proto.MESSAGE, number=1, message="SuggestionInfo",)
-    ranking_score = proto.Field(proto.DOUBLE, number=2,)
-    suggestion_type = proto.Field(proto.ENUM, number=3, enum="SuggestionType",)
+    suggestion_info = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="SuggestionInfo",
+    )
+    ranking_score = proto.Field(
+        proto.DOUBLE,
+        number=2,
+    )
+    suggestion_type = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum="SuggestionType",
+    )
 
 
 class SuggestionInfo(proto.Message):
@@ -140,13 +164,25 @@ class SuggestionInfo(proto.Message):
                 substring.
         """
 
-        start_char_index = proto.Field(proto.INT32, number=1,)
-        length = proto.Field(proto.INT32, number=2,)
+        start_char_index = proto.Field(
+            proto.INT32,
+            number=1,
+        )
+        length = proto.Field(
+            proto.INT32,
+            number=2,
+        )
 
     annotated_suggestion = proto.Field(
-        proto.MESSAGE, number=1, message=annotated_string.AnnotatedString,
+        proto.MESSAGE,
+        number=1,
+        message=annotated_string.AnnotatedString,
     )
-    query_matches = proto.RepeatedField(proto.MESSAGE, number=2, message=MatchInfo,)
+    query_matches = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=MatchInfo,
+    )
 
 
 class SuggestQueriesResponse(proto.Message):
@@ -157,7 +193,11 @@ class SuggestQueriesResponse(proto.Message):
             A list of suggestions.
     """
 
-    suggestions = proto.RepeatedField(proto.MESSAGE, number=1, message="Suggestion",)
+    suggestions = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Suggestion",
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

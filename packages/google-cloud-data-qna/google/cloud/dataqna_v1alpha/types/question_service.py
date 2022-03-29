@@ -43,8 +43,15 @@ class GetQuestionRequest(proto.Message):
             The list of fields to be retrieved.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    read_mask = proto.Field(proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    read_mask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
 
 
 class CreateQuestionRequest(proto.Message):
@@ -58,8 +65,15 @@ class CreateQuestionRequest(proto.Message):
             Required. The question to create.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    question = proto.Field(proto.MESSAGE, number=2, message=gcd_question.Question,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    question = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=gcd_question.Question,
+    )
 
 
 class ExecuteQuestionRequest(proto.Message):
@@ -74,8 +88,14 @@ class ExecuteQuestionRequest(proto.Message):
             execute.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    interpretation_index = proto.Field(proto.INT32, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    interpretation_index = proto.Field(
+        proto.INT32,
+        number=2,
+    )
 
 
 class GetUserFeedbackRequest(proto.Message):
@@ -88,7 +108,10 @@ class GetUserFeedbackRequest(proto.Message):
             ``projects/foo/locations/bar/questions/1234/userFeedback``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class UpdateUserFeedbackRequest(proto.Message):
@@ -106,10 +129,14 @@ class UpdateUserFeedbackRequest(proto.Message):
     """
 
     user_feedback = proto.Field(
-        proto.MESSAGE, number=1, message=gcd_user_feedback.UserFeedback,
+        proto.MESSAGE,
+        number=1,
+        message=gcd_user_feedback.UserFeedback,
     )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 

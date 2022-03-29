@@ -17,7 +17,10 @@ import proto  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.dataqna.v1alpha", manifest={"AnnotatedString",},
+    package="google.cloud.dataqna.v1alpha",
+    manifest={
+        "AnnotatedString",
+    },
 )
 
 
@@ -87,14 +90,32 @@ class AnnotatedString(proto.Message):
         """
 
         type_ = proto.Field(
-            proto.ENUM, number=1, enum="AnnotatedString.SemanticMarkupType",
+            proto.ENUM,
+            number=1,
+            enum="AnnotatedString.SemanticMarkupType",
         )
-        start_char_index = proto.Field(proto.INT32, number=2,)
-        length = proto.Field(proto.INT32, number=3,)
+        start_char_index = proto.Field(
+            proto.INT32,
+            number=2,
+        )
+        length = proto.Field(
+            proto.INT32,
+            number=3,
+        )
 
-    text_formatted = proto.Field(proto.STRING, number=1,)
-    html_formatted = proto.Field(proto.STRING, number=2,)
-    markups = proto.RepeatedField(proto.MESSAGE, number=3, message=SemanticMarkup,)
+    text_formatted = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    html_formatted = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    markups = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=SemanticMarkup,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

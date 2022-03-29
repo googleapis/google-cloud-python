@@ -17,7 +17,10 @@ import proto  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.dataqna.v1alpha", manifest={"UserFeedback",},
+    package="google.cloud.dataqna.v1alpha",
+    manifest={
+        "UserFeedback",
+    },
 )
 
 
@@ -41,9 +44,19 @@ class UserFeedback(proto.Message):
         POSITIVE = 1
         NEGATIVE = 2
 
-    name = proto.Field(proto.STRING, number=1,)
-    free_form_feedback = proto.Field(proto.STRING, number=2,)
-    rating = proto.Field(proto.ENUM, number=3, enum=UserFeedbackRating,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    free_form_feedback = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    rating = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=UserFeedbackRating,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
