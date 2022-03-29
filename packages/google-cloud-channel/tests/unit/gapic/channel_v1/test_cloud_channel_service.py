@@ -106,7 +106,11 @@ def test__get_default_mtls_endpoint():
 
 
 @pytest.mark.parametrize(
-    "client_class", [CloudChannelServiceClient, CloudChannelServiceAsyncClient,]
+    "client_class",
+    [
+        CloudChannelServiceClient,
+        CloudChannelServiceAsyncClient,
+    ],
 )
 def test_cloud_channel_service_client_from_service_account_info(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -148,7 +152,11 @@ def test_cloud_channel_service_client_service_account_always_use_jwt(
 
 
 @pytest.mark.parametrize(
-    "client_class", [CloudChannelServiceClient, CloudChannelServiceAsyncClient,]
+    "client_class",
+    [
+        CloudChannelServiceClient,
+        CloudChannelServiceAsyncClient,
+    ],
 )
 def test_cloud_channel_service_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -530,7 +538,9 @@ def test_cloud_channel_service_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -670,10 +680,17 @@ def test_cloud_channel_service_client_create_channel_credentials_file(
         )
 
 
-@pytest.mark.parametrize("request_type", [service.ListCustomersRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListCustomersRequest,
+        dict,
+    ],
+)
 def test_list_customers(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -702,7 +719,8 @@ def test_list_customers_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -718,7 +736,8 @@ async def test_list_customers_async(
     transport: str = "grpc_asyncio", request_type=service.ListCustomersRequest
 ):
     client = CloudChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -729,7 +748,9 @@ async def test_list_customers_async(
     with mock.patch.object(type(client.transport.list_customers), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListCustomersResponse(next_page_token="next_page_token_value",)
+            service.ListCustomersResponse(
+                next_page_token="next_page_token_value",
+            )
         )
         response = await client.list_customers(request)
 
@@ -771,7 +792,10 @@ def test_list_customers_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -800,12 +824,16 @@ async def test_list_customers_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_customers_pager(transport_name: str = "grpc"):
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -820,12 +848,21 @@ def test_list_customers_pager(transport_name: str = "grpc"):
                 ],
                 next_page_token="abc",
             ),
-            service.ListCustomersResponse(customers=[], next_page_token="def",),
             service.ListCustomersResponse(
-                customers=[customers.Customer(),], next_page_token="ghi",
+                customers=[],
+                next_page_token="def",
             ),
             service.ListCustomersResponse(
-                customers=[customers.Customer(), customers.Customer(),],
+                customers=[
+                    customers.Customer(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListCustomersResponse(
+                customers=[
+                    customers.Customer(),
+                    customers.Customer(),
+                ],
             ),
             RuntimeError,
         )
@@ -845,7 +882,8 @@ def test_list_customers_pager(transport_name: str = "grpc"):
 
 def test_list_customers_pages(transport_name: str = "grpc"):
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -860,12 +898,21 @@ def test_list_customers_pages(transport_name: str = "grpc"):
                 ],
                 next_page_token="abc",
             ),
-            service.ListCustomersResponse(customers=[], next_page_token="def",),
             service.ListCustomersResponse(
-                customers=[customers.Customer(),], next_page_token="ghi",
+                customers=[],
+                next_page_token="def",
             ),
             service.ListCustomersResponse(
-                customers=[customers.Customer(), customers.Customer(),],
+                customers=[
+                    customers.Customer(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListCustomersResponse(
+                customers=[
+                    customers.Customer(),
+                    customers.Customer(),
+                ],
             ),
             RuntimeError,
         )
@@ -894,16 +941,27 @@ async def test_list_customers_async_pager():
                 ],
                 next_page_token="abc",
             ),
-            service.ListCustomersResponse(customers=[], next_page_token="def",),
             service.ListCustomersResponse(
-                customers=[customers.Customer(),], next_page_token="ghi",
+                customers=[],
+                next_page_token="def",
             ),
             service.ListCustomersResponse(
-                customers=[customers.Customer(), customers.Customer(),],
+                customers=[
+                    customers.Customer(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListCustomersResponse(
+                customers=[
+                    customers.Customer(),
+                    customers.Customer(),
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.list_customers(request={},)
+        async_pager = await client.list_customers(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -933,12 +991,21 @@ async def test_list_customers_async_pages():
                 ],
                 next_page_token="abc",
             ),
-            service.ListCustomersResponse(customers=[], next_page_token="def",),
             service.ListCustomersResponse(
-                customers=[customers.Customer(),], next_page_token="ghi",
+                customers=[],
+                next_page_token="def",
             ),
             service.ListCustomersResponse(
-                customers=[customers.Customer(), customers.Customer(),],
+                customers=[
+                    customers.Customer(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListCustomersResponse(
+                customers=[
+                    customers.Customer(),
+                    customers.Customer(),
+                ],
             ),
             RuntimeError,
         )
@@ -949,10 +1016,17 @@ async def test_list_customers_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [service.GetCustomerRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetCustomerRequest,
+        dict,
+    ],
+)
 def test_get_customer(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -993,7 +1067,8 @@ def test_get_customer_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1009,7 +1084,8 @@ async def test_get_customer_async(
     transport: str = "grpc_asyncio", request_type=service.GetCustomerRequest
 ):
     client = CloudChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1076,7 +1152,10 @@ def test_get_customer_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1103,7 +1182,10 @@ async def test_get_customer_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_customer_flattened():
@@ -1117,7 +1199,9 @@ def test_get_customer_flattened():
         call.return_value = customers.Customer()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_customer(name="name_value",)
+        client.get_customer(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1137,7 +1221,8 @@ def test_get_customer_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_customer(
-            service.GetCustomerRequest(), name="name_value",
+            service.GetCustomerRequest(),
+            name="name_value",
         )
 
 
@@ -1155,7 +1240,9 @@ async def test_get_customer_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(customers.Customer())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_customer(name="name_value",)
+        response = await client.get_customer(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1176,16 +1263,22 @@ async def test_get_customer_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_customer(
-            service.GetCustomerRequest(), name="name_value",
+            service.GetCustomerRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [service.CheckCloudIdentityAccountsExistRequest, dict,]
+    "request_type",
+    [
+        service.CheckCloudIdentityAccountsExistRequest,
+        dict,
+    ],
 )
 def test_check_cloud_identity_accounts_exist(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1213,7 +1306,8 @@ def test_check_cloud_identity_accounts_exist_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1232,7 +1326,8 @@ async def test_check_cloud_identity_accounts_exist_async(
     request_type=service.CheckCloudIdentityAccountsExistRequest,
 ):
     client = CloudChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1288,7 +1383,10 @@ def test_check_cloud_identity_accounts_exist_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1319,13 +1417,23 @@ async def test_check_cloud_identity_accounts_exist_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
-@pytest.mark.parametrize("request_type", [service.CreateCustomerRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateCustomerRequest,
+        dict,
+    ],
+)
 def test_create_customer(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1366,7 +1474,8 @@ def test_create_customer_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1382,7 +1491,8 @@ async def test_create_customer_async(
     transport: str = "grpc_asyncio", request_type=service.CreateCustomerRequest
 ):
     client = CloudChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1449,7 +1559,10 @@ def test_create_customer_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1476,13 +1589,23 @@ async def test_create_customer_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
-@pytest.mark.parametrize("request_type", [service.UpdateCustomerRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UpdateCustomerRequest,
+        dict,
+    ],
+)
 def test_update_customer(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1523,7 +1646,8 @@ def test_update_customer_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1539,7 +1663,8 @@ async def test_update_customer_async(
     transport: str = "grpc_asyncio", request_type=service.UpdateCustomerRequest
 ):
     client = CloudChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1606,9 +1731,10 @@ def test_update_customer_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "customer.name=customer.name/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "customer.name=customer.name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1635,15 +1761,23 @@ async def test_update_customer_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "customer.name=customer.name/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "customer.name=customer.name/value",
+    ) in kw["metadata"]
 
 
-@pytest.mark.parametrize("request_type", [service.DeleteCustomerRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DeleteCustomerRequest,
+        dict,
+    ],
+)
 def test_delete_customer(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1669,7 +1803,8 @@ def test_delete_customer_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1685,7 +1820,8 @@ async def test_delete_customer_async(
     transport: str = "grpc_asyncio", request_type=service.DeleteCustomerRequest
 ):
     client = CloudChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1735,7 +1871,10 @@ def test_delete_customer_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1762,7 +1901,10 @@ async def test_delete_customer_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_customer_flattened():
@@ -1776,7 +1918,9 @@ def test_delete_customer_flattened():
         call.return_value = None
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_customer(name="name_value",)
+        client.delete_customer(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1796,7 +1940,8 @@ def test_delete_customer_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_customer(
-            service.DeleteCustomerRequest(), name="name_value",
+            service.DeleteCustomerRequest(),
+            name="name_value",
         )
 
 
@@ -1814,7 +1959,9 @@ async def test_delete_customer_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_customer(name="name_value",)
+        response = await client.delete_customer(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1835,14 +1982,22 @@ async def test_delete_customer_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_customer(
-            service.DeleteCustomerRequest(), name="name_value",
+            service.DeleteCustomerRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [service.ImportCustomerRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ImportCustomerRequest,
+        dict,
+    ],
+)
 def test_import_customer(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1883,7 +2038,8 @@ def test_import_customer_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1899,7 +2055,8 @@ async def test_import_customer_async(
     transport: str = "grpc_asyncio", request_type=service.ImportCustomerRequest
 ):
     client = CloudChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1966,7 +2123,10 @@ def test_import_customer_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1993,13 +2153,23 @@ async def test_import_customer_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
-@pytest.mark.parametrize("request_type", [service.ProvisionCloudIdentityRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ProvisionCloudIdentityRequest,
+        dict,
+    ],
+)
 def test_provision_cloud_identity(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2027,7 +2197,8 @@ def test_provision_cloud_identity_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2045,7 +2216,8 @@ async def test_provision_cloud_identity_async(
     transport: str = "grpc_asyncio", request_type=service.ProvisionCloudIdentityRequest
 ):
     client = CloudChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2101,7 +2273,10 @@ def test_provision_cloud_identity_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "customer=customer/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "customer=customer/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2132,13 +2307,23 @@ async def test_provision_cloud_identity_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "customer=customer/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "customer=customer/value",
+    ) in kw["metadata"]
 
 
-@pytest.mark.parametrize("request_type", [service.ListEntitlementsRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListEntitlementsRequest,
+        dict,
+    ],
+)
 def test_list_entitlements(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2169,7 +2354,8 @@ def test_list_entitlements_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2187,7 +2373,8 @@ async def test_list_entitlements_async(
     transport: str = "grpc_asyncio", request_type=service.ListEntitlementsRequest
 ):
     client = CloudChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2200,7 +2387,9 @@ async def test_list_entitlements_async(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListEntitlementsResponse(next_page_token="next_page_token_value",)
+            service.ListEntitlementsResponse(
+                next_page_token="next_page_token_value",
+            )
         )
         response = await client.list_entitlements(request)
 
@@ -2244,7 +2433,10 @@ def test_list_entitlements_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2275,12 +2467,16 @@ async def test_list_entitlements_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_entitlements_pager(transport_name: str = "grpc"):
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2297,12 +2493,21 @@ def test_list_entitlements_pager(transport_name: str = "grpc"):
                 ],
                 next_page_token="abc",
             ),
-            service.ListEntitlementsResponse(entitlements=[], next_page_token="def",),
             service.ListEntitlementsResponse(
-                entitlements=[entitlements.Entitlement(),], next_page_token="ghi",
+                entitlements=[],
+                next_page_token="def",
             ),
             service.ListEntitlementsResponse(
-                entitlements=[entitlements.Entitlement(), entitlements.Entitlement(),],
+                entitlements=[
+                    entitlements.Entitlement(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListEntitlementsResponse(
+                entitlements=[
+                    entitlements.Entitlement(),
+                    entitlements.Entitlement(),
+                ],
             ),
             RuntimeError,
         )
@@ -2322,7 +2527,8 @@ def test_list_entitlements_pager(transport_name: str = "grpc"):
 
 def test_list_entitlements_pages(transport_name: str = "grpc"):
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2339,12 +2545,21 @@ def test_list_entitlements_pages(transport_name: str = "grpc"):
                 ],
                 next_page_token="abc",
             ),
-            service.ListEntitlementsResponse(entitlements=[], next_page_token="def",),
             service.ListEntitlementsResponse(
-                entitlements=[entitlements.Entitlement(),], next_page_token="ghi",
+                entitlements=[],
+                next_page_token="def",
             ),
             service.ListEntitlementsResponse(
-                entitlements=[entitlements.Entitlement(), entitlements.Entitlement(),],
+                entitlements=[
+                    entitlements.Entitlement(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListEntitlementsResponse(
+                entitlements=[
+                    entitlements.Entitlement(),
+                    entitlements.Entitlement(),
+                ],
             ),
             RuntimeError,
         )
@@ -2375,16 +2590,27 @@ async def test_list_entitlements_async_pager():
                 ],
                 next_page_token="abc",
             ),
-            service.ListEntitlementsResponse(entitlements=[], next_page_token="def",),
             service.ListEntitlementsResponse(
-                entitlements=[entitlements.Entitlement(),], next_page_token="ghi",
+                entitlements=[],
+                next_page_token="def",
             ),
             service.ListEntitlementsResponse(
-                entitlements=[entitlements.Entitlement(), entitlements.Entitlement(),],
+                entitlements=[
+                    entitlements.Entitlement(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListEntitlementsResponse(
+                entitlements=[
+                    entitlements.Entitlement(),
+                    entitlements.Entitlement(),
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.list_entitlements(request={},)
+        async_pager = await client.list_entitlements(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -2416,12 +2642,21 @@ async def test_list_entitlements_async_pages():
                 ],
                 next_page_token="abc",
             ),
-            service.ListEntitlementsResponse(entitlements=[], next_page_token="def",),
             service.ListEntitlementsResponse(
-                entitlements=[entitlements.Entitlement(),], next_page_token="ghi",
+                entitlements=[],
+                next_page_token="def",
             ),
             service.ListEntitlementsResponse(
-                entitlements=[entitlements.Entitlement(), entitlements.Entitlement(),],
+                entitlements=[
+                    entitlements.Entitlement(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListEntitlementsResponse(
+                entitlements=[
+                    entitlements.Entitlement(),
+                    entitlements.Entitlement(),
+                ],
             ),
             RuntimeError,
         )
@@ -2432,10 +2667,17 @@ async def test_list_entitlements_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [service.ListTransferableSkusRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListTransferableSkusRequest,
+        dict,
+    ],
+)
 def test_list_transferable_skus(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2466,7 +2708,8 @@ def test_list_transferable_skus_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2484,7 +2727,8 @@ async def test_list_transferable_skus_async(
     transport: str = "grpc_asyncio", request_type=service.ListTransferableSkusRequest
 ):
     client = CloudChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2543,7 +2787,10 @@ def test_list_transferable_skus_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2574,12 +2821,16 @@ async def test_list_transferable_skus_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_transferable_skus_pager(transport_name: str = "grpc"):
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2597,10 +2848,13 @@ def test_list_transferable_skus_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             service.ListTransferableSkusResponse(
-                transferable_skus=[], next_page_token="def",
+                transferable_skus=[],
+                next_page_token="def",
             ),
             service.ListTransferableSkusResponse(
-                transferable_skus=[entitlements.TransferableSku(),],
+                transferable_skus=[
+                    entitlements.TransferableSku(),
+                ],
                 next_page_token="ghi",
             ),
             service.ListTransferableSkusResponse(
@@ -2627,7 +2881,8 @@ def test_list_transferable_skus_pager(transport_name: str = "grpc"):
 
 def test_list_transferable_skus_pages(transport_name: str = "grpc"):
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2645,10 +2900,13 @@ def test_list_transferable_skus_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             service.ListTransferableSkusResponse(
-                transferable_skus=[], next_page_token="def",
+                transferable_skus=[],
+                next_page_token="def",
             ),
             service.ListTransferableSkusResponse(
-                transferable_skus=[entitlements.TransferableSku(),],
+                transferable_skus=[
+                    entitlements.TransferableSku(),
+                ],
                 next_page_token="ghi",
             ),
             service.ListTransferableSkusResponse(
@@ -2687,10 +2945,13 @@ async def test_list_transferable_skus_async_pager():
                 next_page_token="abc",
             ),
             service.ListTransferableSkusResponse(
-                transferable_skus=[], next_page_token="def",
+                transferable_skus=[],
+                next_page_token="def",
             ),
             service.ListTransferableSkusResponse(
-                transferable_skus=[entitlements.TransferableSku(),],
+                transferable_skus=[
+                    entitlements.TransferableSku(),
+                ],
                 next_page_token="ghi",
             ),
             service.ListTransferableSkusResponse(
@@ -2701,7 +2962,9 @@ async def test_list_transferable_skus_async_pager():
             ),
             RuntimeError,
         )
-        async_pager = await client.list_transferable_skus(request={},)
+        async_pager = await client.list_transferable_skus(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -2734,10 +2997,13 @@ async def test_list_transferable_skus_async_pages():
                 next_page_token="abc",
             ),
             service.ListTransferableSkusResponse(
-                transferable_skus=[], next_page_token="def",
+                transferable_skus=[],
+                next_page_token="def",
             ),
             service.ListTransferableSkusResponse(
-                transferable_skus=[entitlements.TransferableSku(),],
+                transferable_skus=[
+                    entitlements.TransferableSku(),
+                ],
                 next_page_token="ghi",
             ),
             service.ListTransferableSkusResponse(
@@ -2755,10 +3021,17 @@ async def test_list_transferable_skus_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [service.ListTransferableOffersRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListTransferableOffersRequest,
+        dict,
+    ],
+)
 def test_list_transferable_offers(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2789,7 +3062,8 @@ def test_list_transferable_offers_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2807,7 +3081,8 @@ async def test_list_transferable_offers_async(
     transport: str = "grpc_asyncio", request_type=service.ListTransferableOffersRequest
 ):
     client = CloudChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2866,7 +3141,10 @@ def test_list_transferable_offers_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2897,12 +3175,16 @@ async def test_list_transferable_offers_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_transferable_offers_pager(transport_name: str = "grpc"):
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2920,10 +3202,13 @@ def test_list_transferable_offers_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             service.ListTransferableOffersResponse(
-                transferable_offers=[], next_page_token="def",
+                transferable_offers=[],
+                next_page_token="def",
             ),
             service.ListTransferableOffersResponse(
-                transferable_offers=[service.TransferableOffer(),],
+                transferable_offers=[
+                    service.TransferableOffer(),
+                ],
                 next_page_token="ghi",
             ),
             service.ListTransferableOffersResponse(
@@ -2950,7 +3235,8 @@ def test_list_transferable_offers_pager(transport_name: str = "grpc"):
 
 def test_list_transferable_offers_pages(transport_name: str = "grpc"):
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2968,10 +3254,13 @@ def test_list_transferable_offers_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             service.ListTransferableOffersResponse(
-                transferable_offers=[], next_page_token="def",
+                transferable_offers=[],
+                next_page_token="def",
             ),
             service.ListTransferableOffersResponse(
-                transferable_offers=[service.TransferableOffer(),],
+                transferable_offers=[
+                    service.TransferableOffer(),
+                ],
                 next_page_token="ghi",
             ),
             service.ListTransferableOffersResponse(
@@ -3010,10 +3299,13 @@ async def test_list_transferable_offers_async_pager():
                 next_page_token="abc",
             ),
             service.ListTransferableOffersResponse(
-                transferable_offers=[], next_page_token="def",
+                transferable_offers=[],
+                next_page_token="def",
             ),
             service.ListTransferableOffersResponse(
-                transferable_offers=[service.TransferableOffer(),],
+                transferable_offers=[
+                    service.TransferableOffer(),
+                ],
                 next_page_token="ghi",
             ),
             service.ListTransferableOffersResponse(
@@ -3024,7 +3316,9 @@ async def test_list_transferable_offers_async_pager():
             ),
             RuntimeError,
         )
-        async_pager = await client.list_transferable_offers(request={},)
+        async_pager = await client.list_transferable_offers(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -3057,10 +3351,13 @@ async def test_list_transferable_offers_async_pages():
                 next_page_token="abc",
             ),
             service.ListTransferableOffersResponse(
-                transferable_offers=[], next_page_token="def",
+                transferable_offers=[],
+                next_page_token="def",
             ),
             service.ListTransferableOffersResponse(
-                transferable_offers=[service.TransferableOffer(),],
+                transferable_offers=[
+                    service.TransferableOffer(),
+                ],
                 next_page_token="ghi",
             ),
             service.ListTransferableOffersResponse(
@@ -3078,10 +3375,17 @@ async def test_list_transferable_offers_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [service.GetEntitlementRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetEntitlementRequest,
+        dict,
+    ],
+)
 def test_get_entitlement(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3124,7 +3428,8 @@ def test_get_entitlement_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3140,7 +3445,8 @@ async def test_get_entitlement_async(
     transport: str = "grpc_asyncio", request_type=service.GetEntitlementRequest
 ):
     client = CloudChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3209,7 +3515,10 @@ def test_get_entitlement_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -3238,13 +3547,23 @@ async def test_get_entitlement_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
-@pytest.mark.parametrize("request_type", [service.CreateEntitlementRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateEntitlementRequest,
+        dict,
+    ],
+)
 def test_create_entitlement(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3272,7 +3591,8 @@ def test_create_entitlement_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3290,7 +3610,8 @@ async def test_create_entitlement_async(
     transport: str = "grpc_asyncio", request_type=service.CreateEntitlementRequest
 ):
     client = CloudChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3346,7 +3667,10 @@ def test_create_entitlement_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -3377,13 +3701,23 @@ async def test_create_entitlement_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
-@pytest.mark.parametrize("request_type", [service.ChangeParametersRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ChangeParametersRequest,
+        dict,
+    ],
+)
 def test_change_parameters(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3411,7 +3745,8 @@ def test_change_parameters_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3429,7 +3764,8 @@ async def test_change_parameters_async(
     transport: str = "grpc_asyncio", request_type=service.ChangeParametersRequest
 ):
     client = CloudChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3485,7 +3821,10 @@ def test_change_parameters_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -3516,13 +3855,23 @@ async def test_change_parameters_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
-@pytest.mark.parametrize("request_type", [service.ChangeRenewalSettingsRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ChangeRenewalSettingsRequest,
+        dict,
+    ],
+)
 def test_change_renewal_settings(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3550,7 +3899,8 @@ def test_change_renewal_settings_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3568,7 +3918,8 @@ async def test_change_renewal_settings_async(
     transport: str = "grpc_asyncio", request_type=service.ChangeRenewalSettingsRequest
 ):
     client = CloudChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3624,7 +3975,10 @@ def test_change_renewal_settings_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -3655,13 +4009,23 @@ async def test_change_renewal_settings_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
-@pytest.mark.parametrize("request_type", [service.ChangeOfferRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ChangeOfferRequest,
+        dict,
+    ],
+)
 def test_change_offer(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3687,7 +4051,8 @@ def test_change_offer_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3703,7 +4068,8 @@ async def test_change_offer_async(
     transport: str = "grpc_asyncio", request_type=service.ChangeOfferRequest
 ):
     client = CloudChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3755,7 +4121,10 @@ def test_change_offer_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -3784,13 +4153,23 @@ async def test_change_offer_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
-@pytest.mark.parametrize("request_type", [service.StartPaidServiceRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.StartPaidServiceRequest,
+        dict,
+    ],
+)
 def test_start_paid_service(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3818,7 +4197,8 @@ def test_start_paid_service_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3836,7 +4216,8 @@ async def test_start_paid_service_async(
     transport: str = "grpc_asyncio", request_type=service.StartPaidServiceRequest
 ):
     client = CloudChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3892,7 +4273,10 @@ def test_start_paid_service_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -3923,13 +4307,23 @@ async def test_start_paid_service_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
-@pytest.mark.parametrize("request_type", [service.SuspendEntitlementRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.SuspendEntitlementRequest,
+        dict,
+    ],
+)
 def test_suspend_entitlement(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3957,7 +4351,8 @@ def test_suspend_entitlement_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3975,7 +4370,8 @@ async def test_suspend_entitlement_async(
     transport: str = "grpc_asyncio", request_type=service.SuspendEntitlementRequest
 ):
     client = CloudChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4031,7 +4427,10 @@ def test_suspend_entitlement_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -4062,13 +4461,23 @@ async def test_suspend_entitlement_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
-@pytest.mark.parametrize("request_type", [service.CancelEntitlementRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CancelEntitlementRequest,
+        dict,
+    ],
+)
 def test_cancel_entitlement(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4096,7 +4505,8 @@ def test_cancel_entitlement_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4114,7 +4524,8 @@ async def test_cancel_entitlement_async(
     transport: str = "grpc_asyncio", request_type=service.CancelEntitlementRequest
 ):
     client = CloudChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4170,7 +4581,10 @@ def test_cancel_entitlement_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -4201,13 +4615,23 @@ async def test_cancel_entitlement_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
-@pytest.mark.parametrize("request_type", [service.ActivateEntitlementRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ActivateEntitlementRequest,
+        dict,
+    ],
+)
 def test_activate_entitlement(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4235,7 +4659,8 @@ def test_activate_entitlement_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4253,7 +4678,8 @@ async def test_activate_entitlement_async(
     transport: str = "grpc_asyncio", request_type=service.ActivateEntitlementRequest
 ):
     client = CloudChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4309,7 +4735,10 @@ def test_activate_entitlement_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -4340,13 +4769,23 @@ async def test_activate_entitlement_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
-@pytest.mark.parametrize("request_type", [service.TransferEntitlementsRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.TransferEntitlementsRequest,
+        dict,
+    ],
+)
 def test_transfer_entitlements(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4374,7 +4813,8 @@ def test_transfer_entitlements_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4392,7 +4832,8 @@ async def test_transfer_entitlements_async(
     transport: str = "grpc_asyncio", request_type=service.TransferEntitlementsRequest
 ):
     client = CloudChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4448,7 +4889,10 @@ def test_transfer_entitlements_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -4479,15 +4923,23 @@ async def test_transfer_entitlements_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.parametrize(
-    "request_type", [service.TransferEntitlementsToGoogleRequest, dict,]
+    "request_type",
+    [
+        service.TransferEntitlementsToGoogleRequest,
+        dict,
+    ],
 )
 def test_transfer_entitlements_to_google(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4515,7 +4967,8 @@ def test_transfer_entitlements_to_google_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4534,7 +4987,8 @@ async def test_transfer_entitlements_to_google_async(
     request_type=service.TransferEntitlementsToGoogleRequest,
 ):
     client = CloudChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4590,7 +5044,10 @@ def test_transfer_entitlements_to_google_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -4621,15 +5078,23 @@ async def test_transfer_entitlements_to_google_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.parametrize(
-    "request_type", [service.ListChannelPartnerLinksRequest, dict,]
+    "request_type",
+    [
+        service.ListChannelPartnerLinksRequest,
+        dict,
+    ],
 )
 def test_list_channel_partner_links(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4660,7 +5125,8 @@ def test_list_channel_partner_links_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4678,7 +5144,8 @@ async def test_list_channel_partner_links_async(
     transport: str = "grpc_asyncio", request_type=service.ListChannelPartnerLinksRequest
 ):
     client = CloudChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4737,7 +5204,10 @@ def test_list_channel_partner_links_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -4768,12 +5238,16 @@ async def test_list_channel_partner_links_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_channel_partner_links_pager(transport_name: str = "grpc"):
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4791,10 +5265,13 @@ def test_list_channel_partner_links_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             service.ListChannelPartnerLinksResponse(
-                channel_partner_links=[], next_page_token="def",
+                channel_partner_links=[],
+                next_page_token="def",
             ),
             service.ListChannelPartnerLinksResponse(
-                channel_partner_links=[channel_partner_links.ChannelPartnerLink(),],
+                channel_partner_links=[
+                    channel_partner_links.ChannelPartnerLink(),
+                ],
                 next_page_token="ghi",
             ),
             service.ListChannelPartnerLinksResponse(
@@ -4823,7 +5300,8 @@ def test_list_channel_partner_links_pager(transport_name: str = "grpc"):
 
 def test_list_channel_partner_links_pages(transport_name: str = "grpc"):
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4841,10 +5319,13 @@ def test_list_channel_partner_links_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             service.ListChannelPartnerLinksResponse(
-                channel_partner_links=[], next_page_token="def",
+                channel_partner_links=[],
+                next_page_token="def",
             ),
             service.ListChannelPartnerLinksResponse(
-                channel_partner_links=[channel_partner_links.ChannelPartnerLink(),],
+                channel_partner_links=[
+                    channel_partner_links.ChannelPartnerLink(),
+                ],
                 next_page_token="ghi",
             ),
             service.ListChannelPartnerLinksResponse(
@@ -4883,10 +5364,13 @@ async def test_list_channel_partner_links_async_pager():
                 next_page_token="abc",
             ),
             service.ListChannelPartnerLinksResponse(
-                channel_partner_links=[], next_page_token="def",
+                channel_partner_links=[],
+                next_page_token="def",
             ),
             service.ListChannelPartnerLinksResponse(
-                channel_partner_links=[channel_partner_links.ChannelPartnerLink(),],
+                channel_partner_links=[
+                    channel_partner_links.ChannelPartnerLink(),
+                ],
                 next_page_token="ghi",
             ),
             service.ListChannelPartnerLinksResponse(
@@ -4897,7 +5381,9 @@ async def test_list_channel_partner_links_async_pager():
             ),
             RuntimeError,
         )
-        async_pager = await client.list_channel_partner_links(request={},)
+        async_pager = await client.list_channel_partner_links(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -4932,10 +5418,13 @@ async def test_list_channel_partner_links_async_pages():
                 next_page_token="abc",
             ),
             service.ListChannelPartnerLinksResponse(
-                channel_partner_links=[], next_page_token="def",
+                channel_partner_links=[],
+                next_page_token="def",
             ),
             service.ListChannelPartnerLinksResponse(
-                channel_partner_links=[channel_partner_links.ChannelPartnerLink(),],
+                channel_partner_links=[
+                    channel_partner_links.ChannelPartnerLink(),
+                ],
                 next_page_token="ghi",
             ),
             service.ListChannelPartnerLinksResponse(
@@ -4953,10 +5442,17 @@ async def test_list_channel_partner_links_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [service.GetChannelPartnerLinkRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetChannelPartnerLinkRequest,
+        dict,
+    ],
+)
 def test_get_channel_partner_link(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4995,7 +5491,8 @@ def test_get_channel_partner_link_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5013,7 +5510,8 @@ async def test_get_channel_partner_link_async(
     transport: str = "grpc_asyncio", request_type=service.GetChannelPartnerLinkRequest
 ):
     client = CloudChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5080,7 +5578,10 @@ def test_get_channel_partner_link_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -5111,15 +5612,23 @@ async def test_get_channel_partner_link_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.parametrize(
-    "request_type", [service.CreateChannelPartnerLinkRequest, dict,]
+    "request_type",
+    [
+        service.CreateChannelPartnerLinkRequest,
+        dict,
+    ],
 )
 def test_create_channel_partner_link(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5158,7 +5667,8 @@ def test_create_channel_partner_link_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5177,7 +5687,8 @@ async def test_create_channel_partner_link_async(
     request_type=service.CreateChannelPartnerLinkRequest,
 ):
     client = CloudChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5244,7 +5755,10 @@ def test_create_channel_partner_link_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -5275,15 +5789,23 @@ async def test_create_channel_partner_link_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.parametrize(
-    "request_type", [service.UpdateChannelPartnerLinkRequest, dict,]
+    "request_type",
+    [
+        service.UpdateChannelPartnerLinkRequest,
+        dict,
+    ],
 )
 def test_update_channel_partner_link(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5322,7 +5844,8 @@ def test_update_channel_partner_link_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5341,7 +5864,8 @@ async def test_update_channel_partner_link_async(
     request_type=service.UpdateChannelPartnerLinkRequest,
 ):
     client = CloudChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5408,7 +5932,10 @@ def test_update_channel_partner_link_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -5439,13 +5966,23 @@ async def test_update_channel_partner_link_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
-@pytest.mark.parametrize("request_type", [service.LookupOfferRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.LookupOfferRequest,
+        dict,
+    ],
+)
 def test_lookup_offer(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5455,7 +5992,9 @@ def test_lookup_offer(request_type, transport: str = "grpc"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.lookup_offer), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = offers.Offer(name="name_value",)
+        call.return_value = offers.Offer(
+            name="name_value",
+        )
         response = client.lookup_offer(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -5472,7 +6011,8 @@ def test_lookup_offer_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5488,7 +6028,8 @@ async def test_lookup_offer_async(
     transport: str = "grpc_asyncio", request_type=service.LookupOfferRequest
 ):
     client = CloudChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5499,7 +6040,9 @@ async def test_lookup_offer_async(
     with mock.patch.object(type(client.transport.lookup_offer), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            offers.Offer(name="name_value",)
+            offers.Offer(
+                name="name_value",
+            )
         )
         response = await client.lookup_offer(request)
 
@@ -5541,7 +6084,10 @@ def test_lookup_offer_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "entitlement=entitlement/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "entitlement=entitlement/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -5568,13 +6114,23 @@ async def test_lookup_offer_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "entitlement=entitlement/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "entitlement=entitlement/value",
+    ) in kw["metadata"]
 
 
-@pytest.mark.parametrize("request_type", [service.ListProductsRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListProductsRequest,
+        dict,
+    ],
+)
 def test_list_products(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5603,7 +6159,8 @@ def test_list_products_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5619,7 +6176,8 @@ async def test_list_products_async(
     transport: str = "grpc_asyncio", request_type=service.ListProductsRequest
 ):
     client = CloudChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5630,7 +6188,9 @@ async def test_list_products_async(
     with mock.patch.object(type(client.transport.list_products), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListProductsResponse(next_page_token="next_page_token_value",)
+            service.ListProductsResponse(
+                next_page_token="next_page_token_value",
+            )
         )
         response = await client.list_products(request)
 
@@ -5651,7 +6211,8 @@ async def test_list_products_async_from_dict():
 
 def test_list_products_pager(transport_name: str = "grpc"):
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5659,15 +6220,28 @@ def test_list_products_pager(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListProductsResponse(
-                products=[products.Product(), products.Product(), products.Product(),],
+                products=[
+                    products.Product(),
+                    products.Product(),
+                    products.Product(),
+                ],
                 next_page_token="abc",
             ),
-            service.ListProductsResponse(products=[], next_page_token="def",),
             service.ListProductsResponse(
-                products=[products.Product(),], next_page_token="ghi",
+                products=[],
+                next_page_token="def",
             ),
             service.ListProductsResponse(
-                products=[products.Product(), products.Product(),],
+                products=[
+                    products.Product(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListProductsResponse(
+                products=[
+                    products.Product(),
+                    products.Product(),
+                ],
             ),
             RuntimeError,
         )
@@ -5684,7 +6258,8 @@ def test_list_products_pager(transport_name: str = "grpc"):
 
 def test_list_products_pages(transport_name: str = "grpc"):
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5692,15 +6267,28 @@ def test_list_products_pages(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListProductsResponse(
-                products=[products.Product(), products.Product(), products.Product(),],
+                products=[
+                    products.Product(),
+                    products.Product(),
+                    products.Product(),
+                ],
                 next_page_token="abc",
             ),
-            service.ListProductsResponse(products=[], next_page_token="def",),
             service.ListProductsResponse(
-                products=[products.Product(),], next_page_token="ghi",
+                products=[],
+                next_page_token="def",
             ),
             service.ListProductsResponse(
-                products=[products.Product(), products.Product(),],
+                products=[
+                    products.Product(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListProductsResponse(
+                products=[
+                    products.Product(),
+                    products.Product(),
+                ],
             ),
             RuntimeError,
         )
@@ -5722,19 +6310,34 @@ async def test_list_products_async_pager():
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListProductsResponse(
-                products=[products.Product(), products.Product(), products.Product(),],
+                products=[
+                    products.Product(),
+                    products.Product(),
+                    products.Product(),
+                ],
                 next_page_token="abc",
             ),
-            service.ListProductsResponse(products=[], next_page_token="def",),
             service.ListProductsResponse(
-                products=[products.Product(),], next_page_token="ghi",
+                products=[],
+                next_page_token="def",
             ),
             service.ListProductsResponse(
-                products=[products.Product(), products.Product(),],
+                products=[
+                    products.Product(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListProductsResponse(
+                products=[
+                    products.Product(),
+                    products.Product(),
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.list_products(request={},)
+        async_pager = await client.list_products(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -5757,15 +6360,28 @@ async def test_list_products_async_pages():
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListProductsResponse(
-                products=[products.Product(), products.Product(), products.Product(),],
+                products=[
+                    products.Product(),
+                    products.Product(),
+                    products.Product(),
+                ],
                 next_page_token="abc",
             ),
-            service.ListProductsResponse(products=[], next_page_token="def",),
             service.ListProductsResponse(
-                products=[products.Product(),], next_page_token="ghi",
+                products=[],
+                next_page_token="def",
             ),
             service.ListProductsResponse(
-                products=[products.Product(), products.Product(),],
+                products=[
+                    products.Product(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListProductsResponse(
+                products=[
+                    products.Product(),
+                    products.Product(),
+                ],
             ),
             RuntimeError,
         )
@@ -5776,10 +6392,17 @@ async def test_list_products_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [service.ListSkusRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListSkusRequest,
+        dict,
+    ],
+)
 def test_list_skus(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5808,7 +6431,8 @@ def test_list_skus_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5824,7 +6448,8 @@ async def test_list_skus_async(
     transport: str = "grpc_asyncio", request_type=service.ListSkusRequest
 ):
     client = CloudChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5835,7 +6460,9 @@ async def test_list_skus_async(
     with mock.patch.object(type(client.transport.list_skus), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListSkusResponse(next_page_token="next_page_token_value",)
+            service.ListSkusResponse(
+                next_page_token="next_page_token_value",
+            )
         )
         response = await client.list_skus(request)
 
@@ -5877,7 +6504,10 @@ def test_list_skus_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -5906,12 +6536,16 @@ async def test_list_skus_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_skus_pager(transport_name: str = "grpc"):
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5919,12 +6553,29 @@ def test_list_skus_pager(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListSkusResponse(
-                skus=[products.Sku(), products.Sku(), products.Sku(),],
+                skus=[
+                    products.Sku(),
+                    products.Sku(),
+                    products.Sku(),
+                ],
                 next_page_token="abc",
             ),
-            service.ListSkusResponse(skus=[], next_page_token="def",),
-            service.ListSkusResponse(skus=[products.Sku(),], next_page_token="ghi",),
-            service.ListSkusResponse(skus=[products.Sku(), products.Sku(),],),
+            service.ListSkusResponse(
+                skus=[],
+                next_page_token="def",
+            ),
+            service.ListSkusResponse(
+                skus=[
+                    products.Sku(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListSkusResponse(
+                skus=[
+                    products.Sku(),
+                    products.Sku(),
+                ],
+            ),
             RuntimeError,
         )
 
@@ -5943,7 +6594,8 @@ def test_list_skus_pager(transport_name: str = "grpc"):
 
 def test_list_skus_pages(transport_name: str = "grpc"):
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5951,12 +6603,29 @@ def test_list_skus_pages(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListSkusResponse(
-                skus=[products.Sku(), products.Sku(), products.Sku(),],
+                skus=[
+                    products.Sku(),
+                    products.Sku(),
+                    products.Sku(),
+                ],
                 next_page_token="abc",
             ),
-            service.ListSkusResponse(skus=[], next_page_token="def",),
-            service.ListSkusResponse(skus=[products.Sku(),], next_page_token="ghi",),
-            service.ListSkusResponse(skus=[products.Sku(), products.Sku(),],),
+            service.ListSkusResponse(
+                skus=[],
+                next_page_token="def",
+            ),
+            service.ListSkusResponse(
+                skus=[
+                    products.Sku(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListSkusResponse(
+                skus=[
+                    products.Sku(),
+                    products.Sku(),
+                ],
+            ),
             RuntimeError,
         )
         pages = list(client.list_skus(request={}).pages)
@@ -5977,15 +6646,34 @@ async def test_list_skus_async_pager():
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListSkusResponse(
-                skus=[products.Sku(), products.Sku(), products.Sku(),],
+                skus=[
+                    products.Sku(),
+                    products.Sku(),
+                    products.Sku(),
+                ],
                 next_page_token="abc",
             ),
-            service.ListSkusResponse(skus=[], next_page_token="def",),
-            service.ListSkusResponse(skus=[products.Sku(),], next_page_token="ghi",),
-            service.ListSkusResponse(skus=[products.Sku(), products.Sku(),],),
+            service.ListSkusResponse(
+                skus=[],
+                next_page_token="def",
+            ),
+            service.ListSkusResponse(
+                skus=[
+                    products.Sku(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListSkusResponse(
+                skus=[
+                    products.Sku(),
+                    products.Sku(),
+                ],
+            ),
             RuntimeError,
         )
-        async_pager = await client.list_skus(request={},)
+        async_pager = await client.list_skus(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -6008,12 +6696,29 @@ async def test_list_skus_async_pages():
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListSkusResponse(
-                skus=[products.Sku(), products.Sku(), products.Sku(),],
+                skus=[
+                    products.Sku(),
+                    products.Sku(),
+                    products.Sku(),
+                ],
                 next_page_token="abc",
             ),
-            service.ListSkusResponse(skus=[], next_page_token="def",),
-            service.ListSkusResponse(skus=[products.Sku(),], next_page_token="ghi",),
-            service.ListSkusResponse(skus=[products.Sku(), products.Sku(),],),
+            service.ListSkusResponse(
+                skus=[],
+                next_page_token="def",
+            ),
+            service.ListSkusResponse(
+                skus=[
+                    products.Sku(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListSkusResponse(
+                skus=[
+                    products.Sku(),
+                    products.Sku(),
+                ],
+            ),
             RuntimeError,
         )
         pages = []
@@ -6023,10 +6728,17 @@ async def test_list_skus_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [service.ListOffersRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListOffersRequest,
+        dict,
+    ],
+)
 def test_list_offers(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -6055,7 +6767,8 @@ def test_list_offers_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6071,7 +6784,8 @@ async def test_list_offers_async(
     transport: str = "grpc_asyncio", request_type=service.ListOffersRequest
 ):
     client = CloudChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -6082,7 +6796,9 @@ async def test_list_offers_async(
     with mock.patch.object(type(client.transport.list_offers), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListOffersResponse(next_page_token="next_page_token_value",)
+            service.ListOffersResponse(
+                next_page_token="next_page_token_value",
+            )
         )
         response = await client.list_offers(request)
 
@@ -6124,7 +6840,10 @@ def test_list_offers_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -6153,12 +6872,16 @@ async def test_list_offers_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_offers_pager(transport_name: str = "grpc"):
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6166,14 +6889,29 @@ def test_list_offers_pager(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListOffersResponse(
-                offers=[offers.Offer(), offers.Offer(), offers.Offer(),],
+                offers=[
+                    offers.Offer(),
+                    offers.Offer(),
+                    offers.Offer(),
+                ],
                 next_page_token="abc",
             ),
-            service.ListOffersResponse(offers=[], next_page_token="def",),
             service.ListOffersResponse(
-                offers=[offers.Offer(),], next_page_token="ghi",
+                offers=[],
+                next_page_token="def",
             ),
-            service.ListOffersResponse(offers=[offers.Offer(), offers.Offer(),],),
+            service.ListOffersResponse(
+                offers=[
+                    offers.Offer(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListOffersResponse(
+                offers=[
+                    offers.Offer(),
+                    offers.Offer(),
+                ],
+            ),
             RuntimeError,
         )
 
@@ -6192,7 +6930,8 @@ def test_list_offers_pager(transport_name: str = "grpc"):
 
 def test_list_offers_pages(transport_name: str = "grpc"):
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6200,14 +6939,29 @@ def test_list_offers_pages(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListOffersResponse(
-                offers=[offers.Offer(), offers.Offer(), offers.Offer(),],
+                offers=[
+                    offers.Offer(),
+                    offers.Offer(),
+                    offers.Offer(),
+                ],
                 next_page_token="abc",
             ),
-            service.ListOffersResponse(offers=[], next_page_token="def",),
             service.ListOffersResponse(
-                offers=[offers.Offer(),], next_page_token="ghi",
+                offers=[],
+                next_page_token="def",
             ),
-            service.ListOffersResponse(offers=[offers.Offer(), offers.Offer(),],),
+            service.ListOffersResponse(
+                offers=[
+                    offers.Offer(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListOffersResponse(
+                offers=[
+                    offers.Offer(),
+                    offers.Offer(),
+                ],
+            ),
             RuntimeError,
         )
         pages = list(client.list_offers(request={}).pages)
@@ -6228,17 +6982,34 @@ async def test_list_offers_async_pager():
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListOffersResponse(
-                offers=[offers.Offer(), offers.Offer(), offers.Offer(),],
+                offers=[
+                    offers.Offer(),
+                    offers.Offer(),
+                    offers.Offer(),
+                ],
                 next_page_token="abc",
             ),
-            service.ListOffersResponse(offers=[], next_page_token="def",),
             service.ListOffersResponse(
-                offers=[offers.Offer(),], next_page_token="ghi",
+                offers=[],
+                next_page_token="def",
             ),
-            service.ListOffersResponse(offers=[offers.Offer(), offers.Offer(),],),
+            service.ListOffersResponse(
+                offers=[
+                    offers.Offer(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListOffersResponse(
+                offers=[
+                    offers.Offer(),
+                    offers.Offer(),
+                ],
+            ),
             RuntimeError,
         )
-        async_pager = await client.list_offers(request={},)
+        async_pager = await client.list_offers(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -6261,14 +7032,29 @@ async def test_list_offers_async_pages():
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListOffersResponse(
-                offers=[offers.Offer(), offers.Offer(), offers.Offer(),],
+                offers=[
+                    offers.Offer(),
+                    offers.Offer(),
+                    offers.Offer(),
+                ],
                 next_page_token="abc",
             ),
-            service.ListOffersResponse(offers=[], next_page_token="def",),
             service.ListOffersResponse(
-                offers=[offers.Offer(),], next_page_token="ghi",
+                offers=[],
+                next_page_token="def",
             ),
-            service.ListOffersResponse(offers=[offers.Offer(), offers.Offer(),],),
+            service.ListOffersResponse(
+                offers=[
+                    offers.Offer(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListOffersResponse(
+                offers=[
+                    offers.Offer(),
+                    offers.Offer(),
+                ],
+            ),
             RuntimeError,
         )
         pages = []
@@ -6278,10 +7064,17 @@ async def test_list_offers_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [service.ListPurchasableSkusRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListPurchasableSkusRequest,
+        dict,
+    ],
+)
 def test_list_purchasable_skus(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -6312,7 +7105,8 @@ def test_list_purchasable_skus_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6330,7 +7124,8 @@ async def test_list_purchasable_skus_async(
     transport: str = "grpc_asyncio", request_type=service.ListPurchasableSkusRequest
 ):
     client = CloudChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -6389,7 +7184,10 @@ def test_list_purchasable_skus_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "customer=customer/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "customer=customer/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -6420,12 +7218,16 @@ async def test_list_purchasable_skus_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "customer=customer/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "customer=customer/value",
+    ) in kw["metadata"]
 
 
 def test_list_purchasable_skus_pager(transport_name: str = "grpc"):
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6443,13 +7245,20 @@ def test_list_purchasable_skus_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             service.ListPurchasableSkusResponse(
-                purchasable_skus=[], next_page_token="def",
+                purchasable_skus=[],
+                next_page_token="def",
             ),
             service.ListPurchasableSkusResponse(
-                purchasable_skus=[service.PurchasableSku(),], next_page_token="ghi",
+                purchasable_skus=[
+                    service.PurchasableSku(),
+                ],
+                next_page_token="ghi",
             ),
             service.ListPurchasableSkusResponse(
-                purchasable_skus=[service.PurchasableSku(), service.PurchasableSku(),],
+                purchasable_skus=[
+                    service.PurchasableSku(),
+                    service.PurchasableSku(),
+                ],
             ),
             RuntimeError,
         )
@@ -6469,7 +7278,8 @@ def test_list_purchasable_skus_pager(transport_name: str = "grpc"):
 
 def test_list_purchasable_skus_pages(transport_name: str = "grpc"):
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6487,13 +7297,20 @@ def test_list_purchasable_skus_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             service.ListPurchasableSkusResponse(
-                purchasable_skus=[], next_page_token="def",
+                purchasable_skus=[],
+                next_page_token="def",
             ),
             service.ListPurchasableSkusResponse(
-                purchasable_skus=[service.PurchasableSku(),], next_page_token="ghi",
+                purchasable_skus=[
+                    service.PurchasableSku(),
+                ],
+                next_page_token="ghi",
             ),
             service.ListPurchasableSkusResponse(
-                purchasable_skus=[service.PurchasableSku(), service.PurchasableSku(),],
+                purchasable_skus=[
+                    service.PurchasableSku(),
+                    service.PurchasableSku(),
+                ],
             ),
             RuntimeError,
         )
@@ -6525,17 +7342,26 @@ async def test_list_purchasable_skus_async_pager():
                 next_page_token="abc",
             ),
             service.ListPurchasableSkusResponse(
-                purchasable_skus=[], next_page_token="def",
+                purchasable_skus=[],
+                next_page_token="def",
             ),
             service.ListPurchasableSkusResponse(
-                purchasable_skus=[service.PurchasableSku(),], next_page_token="ghi",
+                purchasable_skus=[
+                    service.PurchasableSku(),
+                ],
+                next_page_token="ghi",
             ),
             service.ListPurchasableSkusResponse(
-                purchasable_skus=[service.PurchasableSku(), service.PurchasableSku(),],
+                purchasable_skus=[
+                    service.PurchasableSku(),
+                    service.PurchasableSku(),
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.list_purchasable_skus(request={},)
+        async_pager = await client.list_purchasable_skus(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -6568,13 +7394,20 @@ async def test_list_purchasable_skus_async_pages():
                 next_page_token="abc",
             ),
             service.ListPurchasableSkusResponse(
-                purchasable_skus=[], next_page_token="def",
+                purchasable_skus=[],
+                next_page_token="def",
             ),
             service.ListPurchasableSkusResponse(
-                purchasable_skus=[service.PurchasableSku(),], next_page_token="ghi",
+                purchasable_skus=[
+                    service.PurchasableSku(),
+                ],
+                next_page_token="ghi",
             ),
             service.ListPurchasableSkusResponse(
-                purchasable_skus=[service.PurchasableSku(), service.PurchasableSku(),],
+                purchasable_skus=[
+                    service.PurchasableSku(),
+                    service.PurchasableSku(),
+                ],
             ),
             RuntimeError,
         )
@@ -6585,10 +7418,17 @@ async def test_list_purchasable_skus_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [service.ListPurchasableOffersRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListPurchasableOffersRequest,
+        dict,
+    ],
+)
 def test_list_purchasable_offers(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -6619,7 +7459,8 @@ def test_list_purchasable_offers_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6637,7 +7478,8 @@ async def test_list_purchasable_offers_async(
     transport: str = "grpc_asyncio", request_type=service.ListPurchasableOffersRequest
 ):
     client = CloudChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -6696,7 +7538,10 @@ def test_list_purchasable_offers_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "customer=customer/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "customer=customer/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -6727,12 +7572,16 @@ async def test_list_purchasable_offers_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "customer=customer/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "customer=customer/value",
+    ) in kw["metadata"]
 
 
 def test_list_purchasable_offers_pager(transport_name: str = "grpc"):
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6750,10 +7599,14 @@ def test_list_purchasable_offers_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             service.ListPurchasableOffersResponse(
-                purchasable_offers=[], next_page_token="def",
+                purchasable_offers=[],
+                next_page_token="def",
             ),
             service.ListPurchasableOffersResponse(
-                purchasable_offers=[service.PurchasableOffer(),], next_page_token="ghi",
+                purchasable_offers=[
+                    service.PurchasableOffer(),
+                ],
+                next_page_token="ghi",
             ),
             service.ListPurchasableOffersResponse(
                 purchasable_offers=[
@@ -6779,7 +7632,8 @@ def test_list_purchasable_offers_pager(transport_name: str = "grpc"):
 
 def test_list_purchasable_offers_pages(transport_name: str = "grpc"):
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6797,10 +7651,14 @@ def test_list_purchasable_offers_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             service.ListPurchasableOffersResponse(
-                purchasable_offers=[], next_page_token="def",
+                purchasable_offers=[],
+                next_page_token="def",
             ),
             service.ListPurchasableOffersResponse(
-                purchasable_offers=[service.PurchasableOffer(),], next_page_token="ghi",
+                purchasable_offers=[
+                    service.PurchasableOffer(),
+                ],
+                next_page_token="ghi",
             ),
             service.ListPurchasableOffersResponse(
                 purchasable_offers=[
@@ -6838,10 +7696,14 @@ async def test_list_purchasable_offers_async_pager():
                 next_page_token="abc",
             ),
             service.ListPurchasableOffersResponse(
-                purchasable_offers=[], next_page_token="def",
+                purchasable_offers=[],
+                next_page_token="def",
             ),
             service.ListPurchasableOffersResponse(
-                purchasable_offers=[service.PurchasableOffer(),], next_page_token="ghi",
+                purchasable_offers=[
+                    service.PurchasableOffer(),
+                ],
+                next_page_token="ghi",
             ),
             service.ListPurchasableOffersResponse(
                 purchasable_offers=[
@@ -6851,7 +7713,9 @@ async def test_list_purchasable_offers_async_pager():
             ),
             RuntimeError,
         )
-        async_pager = await client.list_purchasable_offers(request={},)
+        async_pager = await client.list_purchasable_offers(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -6884,10 +7748,14 @@ async def test_list_purchasable_offers_async_pages():
                 next_page_token="abc",
             ),
             service.ListPurchasableOffersResponse(
-                purchasable_offers=[], next_page_token="def",
+                purchasable_offers=[],
+                next_page_token="def",
             ),
             service.ListPurchasableOffersResponse(
-                purchasable_offers=[service.PurchasableOffer(),], next_page_token="ghi",
+                purchasable_offers=[
+                    service.PurchasableOffer(),
+                ],
+                next_page_token="ghi",
             ),
             service.ListPurchasableOffersResponse(
                 purchasable_offers=[
@@ -6904,10 +7772,17 @@ async def test_list_purchasable_offers_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [service.RegisterSubscriberRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.RegisterSubscriberRequest,
+        dict,
+    ],
+)
 def test_register_subscriber(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -6919,7 +7794,9 @@ def test_register_subscriber(request_type, transport: str = "grpc"):
         type(client.transport.register_subscriber), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = service.RegisterSubscriberResponse(topic="topic_value",)
+        call.return_value = service.RegisterSubscriberResponse(
+            topic="topic_value",
+        )
         response = client.register_subscriber(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -6936,7 +7813,8 @@ def test_register_subscriber_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6954,7 +7832,8 @@ async def test_register_subscriber_async(
     transport: str = "grpc_asyncio", request_type=service.RegisterSubscriberRequest
 ):
     client = CloudChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -6967,7 +7846,9 @@ async def test_register_subscriber_async(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.RegisterSubscriberResponse(topic="topic_value",)
+            service.RegisterSubscriberResponse(
+                topic="topic_value",
+            )
         )
         response = await client.register_subscriber(request)
 
@@ -7011,7 +7892,10 @@ def test_register_subscriber_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "account=account/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "account=account/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -7042,13 +7926,23 @@ async def test_register_subscriber_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "account=account/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "account=account/value",
+    ) in kw["metadata"]
 
 
-@pytest.mark.parametrize("request_type", [service.UnregisterSubscriberRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UnregisterSubscriberRequest,
+        dict,
+    ],
+)
 def test_unregister_subscriber(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -7060,7 +7954,9 @@ def test_unregister_subscriber(request_type, transport: str = "grpc"):
         type(client.transport.unregister_subscriber), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = service.UnregisterSubscriberResponse(topic="topic_value",)
+        call.return_value = service.UnregisterSubscriberResponse(
+            topic="topic_value",
+        )
         response = client.unregister_subscriber(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -7077,7 +7973,8 @@ def test_unregister_subscriber_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7095,7 +7992,8 @@ async def test_unregister_subscriber_async(
     transport: str = "grpc_asyncio", request_type=service.UnregisterSubscriberRequest
 ):
     client = CloudChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -7108,7 +8006,9 @@ async def test_unregister_subscriber_async(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.UnregisterSubscriberResponse(topic="topic_value",)
+            service.UnregisterSubscriberResponse(
+                topic="topic_value",
+            )
         )
         response = await client.unregister_subscriber(request)
 
@@ -7152,7 +8052,10 @@ def test_unregister_subscriber_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "account=account/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "account=account/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -7183,13 +8086,23 @@ async def test_unregister_subscriber_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "account=account/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "account=account/value",
+    ) in kw["metadata"]
 
 
-@pytest.mark.parametrize("request_type", [service.ListSubscribersRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListSubscribersRequest,
+        dict,
+    ],
+)
 def test_list_subscribers(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -7222,7 +8135,8 @@ def test_list_subscribers_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7238,7 +8152,8 @@ async def test_list_subscribers_async(
     transport: str = "grpc_asyncio", request_type=service.ListSubscribersRequest
 ):
     client = CloudChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -7297,7 +8212,10 @@ def test_list_subscribers_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "account=account/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "account=account/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -7326,12 +8244,16 @@ async def test_list_subscribers_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "account=account/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "account=account/value",
+    ) in kw["metadata"]
 
 
 def test_list_subscribers_pager(transport_name: str = "grpc"):
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7339,15 +8261,29 @@ def test_list_subscribers_pager(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListSubscribersResponse(
-                service_accounts=[str(), str(), str(),], next_page_token="abc",
+                service_accounts=[
+                    str(),
+                    str(),
+                    str(),
+                ],
+                next_page_token="abc",
             ),
             service.ListSubscribersResponse(
-                service_accounts=[], next_page_token="def",
+                service_accounts=[],
+                next_page_token="def",
             ),
             service.ListSubscribersResponse(
-                service_accounts=[str(),], next_page_token="ghi",
+                service_accounts=[
+                    str(),
+                ],
+                next_page_token="ghi",
             ),
-            service.ListSubscribersResponse(service_accounts=[str(), str(),],),
+            service.ListSubscribersResponse(
+                service_accounts=[
+                    str(),
+                    str(),
+                ],
+            ),
             RuntimeError,
         )
 
@@ -7366,7 +8302,8 @@ def test_list_subscribers_pager(transport_name: str = "grpc"):
 
 def test_list_subscribers_pages(transport_name: str = "grpc"):
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7374,15 +8311,29 @@ def test_list_subscribers_pages(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListSubscribersResponse(
-                service_accounts=[str(), str(), str(),], next_page_token="abc",
+                service_accounts=[
+                    str(),
+                    str(),
+                    str(),
+                ],
+                next_page_token="abc",
             ),
             service.ListSubscribersResponse(
-                service_accounts=[], next_page_token="def",
+                service_accounts=[],
+                next_page_token="def",
             ),
             service.ListSubscribersResponse(
-                service_accounts=[str(),], next_page_token="ghi",
+                service_accounts=[
+                    str(),
+                ],
+                next_page_token="ghi",
             ),
-            service.ListSubscribersResponse(service_accounts=[str(), str(),],),
+            service.ListSubscribersResponse(
+                service_accounts=[
+                    str(),
+                    str(),
+                ],
+            ),
             RuntimeError,
         )
         pages = list(client.list_subscribers(request={}).pages)
@@ -7403,18 +8354,34 @@ async def test_list_subscribers_async_pager():
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListSubscribersResponse(
-                service_accounts=[str(), str(), str(),], next_page_token="abc",
+                service_accounts=[
+                    str(),
+                    str(),
+                    str(),
+                ],
+                next_page_token="abc",
             ),
             service.ListSubscribersResponse(
-                service_accounts=[], next_page_token="def",
+                service_accounts=[],
+                next_page_token="def",
             ),
             service.ListSubscribersResponse(
-                service_accounts=[str(),], next_page_token="ghi",
+                service_accounts=[
+                    str(),
+                ],
+                next_page_token="ghi",
             ),
-            service.ListSubscribersResponse(service_accounts=[str(), str(),],),
+            service.ListSubscribersResponse(
+                service_accounts=[
+                    str(),
+                    str(),
+                ],
+            ),
             RuntimeError,
         )
-        async_pager = await client.list_subscribers(request={},)
+        async_pager = await client.list_subscribers(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -7437,15 +8404,29 @@ async def test_list_subscribers_async_pages():
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListSubscribersResponse(
-                service_accounts=[str(), str(), str(),], next_page_token="abc",
+                service_accounts=[
+                    str(),
+                    str(),
+                    str(),
+                ],
+                next_page_token="abc",
             ),
             service.ListSubscribersResponse(
-                service_accounts=[], next_page_token="def",
+                service_accounts=[],
+                next_page_token="def",
             ),
             service.ListSubscribersResponse(
-                service_accounts=[str(),], next_page_token="ghi",
+                service_accounts=[
+                    str(),
+                ],
+                next_page_token="ghi",
             ),
-            service.ListSubscribersResponse(service_accounts=[str(), str(),],),
+            service.ListSubscribersResponse(
+                service_accounts=[
+                    str(),
+                    str(),
+                ],
+            ),
             RuntimeError,
         )
         pages = []
@@ -7462,7 +8443,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = CloudChannelServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -7482,7 +8464,10 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = CloudChannelServiceClient(client_options=options, transport=transport,)
+        client = CloudChannelServiceClient(
+            client_options=options,
+            transport=transport,
+        )
 
     # It is an error to provide an api_key and a credential.
     options = mock.Mock()
@@ -7498,7 +8483,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = CloudChannelServiceClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -7546,7 +8532,10 @@ def test_transport_grpc_default():
     client = CloudChannelServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
-    assert isinstance(client.transport, transports.CloudChannelServiceGrpcTransport,)
+    assert isinstance(
+        client.transport,
+        transports.CloudChannelServiceGrpcTransport,
+    )
 
 
 def test_cloud_channel_service_base_transport_error():
@@ -7630,7 +8619,8 @@ def test_cloud_channel_service_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.CloudChannelServiceTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -7790,7 +8780,8 @@ def test_cloud_channel_service_grpc_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.CloudChannelServiceGrpcTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -7802,7 +8793,8 @@ def test_cloud_channel_service_grpc_asyncio_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.CloudChannelServiceGrpcAsyncIOTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -7911,12 +8903,16 @@ def test_cloud_channel_service_transport_channel_mtls_with_adc(transport_class):
 
 def test_cloud_channel_service_grpc_lro_client():
     client = CloudChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
     transport = client.transport
 
     # Ensure that we have a api-core operations client.
-    assert isinstance(transport.operations_client, operations_v1.OperationsClient,)
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsClient,
+    )
 
     # Ensure that subsequent calls to the property send the exact same object.
     assert transport.operations_client is transport.operations_client
@@ -7924,12 +8920,16 @@ def test_cloud_channel_service_grpc_lro_client():
 
 def test_cloud_channel_service_grpc_lro_async_client():
     client = CloudChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     transport = client.transport
 
     # Ensure that we have a api-core operations client.
-    assert isinstance(transport.operations_client, operations_v1.OperationsAsyncClient,)
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsAsyncClient,
+    )
 
     # Ensure that subsequent calls to the property send the exact same object.
     assert transport.operations_client is transport.operations_client
@@ -7939,7 +8939,8 @@ def test_channel_partner_link_path():
     account = "squid"
     channel_partner_link = "clam"
     expected = "accounts/{account}/channelPartnerLinks/{channel_partner_link}".format(
-        account=account, channel_partner_link=channel_partner_link,
+        account=account,
+        channel_partner_link=channel_partner_link,
     )
     actual = CloudChannelServiceClient.channel_partner_link_path(
         account, channel_partner_link
@@ -7963,7 +8964,8 @@ def test_customer_path():
     account = "oyster"
     customer = "nudibranch"
     expected = "accounts/{account}/customers/{customer}".format(
-        account=account, customer=customer,
+        account=account,
+        customer=customer,
     )
     actual = CloudChannelServiceClient.customer_path(account, customer)
     assert expected == actual
@@ -7985,8 +8987,12 @@ def test_entitlement_path():
     account = "winkle"
     customer = "nautilus"
     entitlement = "scallop"
-    expected = "accounts/{account}/customers/{customer}/entitlements/{entitlement}".format(
-        account=account, customer=customer, entitlement=entitlement,
+    expected = (
+        "accounts/{account}/customers/{customer}/entitlements/{entitlement}".format(
+            account=account,
+            customer=customer,
+            entitlement=entitlement,
+        )
     )
     actual = CloudChannelServiceClient.entitlement_path(account, customer, entitlement)
     assert expected == actual
@@ -8008,7 +9014,10 @@ def test_parse_entitlement_path():
 def test_offer_path():
     account = "whelk"
     offer = "octopus"
-    expected = "accounts/{account}/offers/{offer}".format(account=account, offer=offer,)
+    expected = "accounts/{account}/offers/{offer}".format(
+        account=account,
+        offer=offer,
+    )
     actual = CloudChannelServiceClient.offer_path(account, offer)
     assert expected == actual
 
@@ -8027,7 +9036,9 @@ def test_parse_offer_path():
 
 def test_product_path():
     product = "cuttlefish"
-    expected = "products/{product}".format(product=product,)
+    expected = "products/{product}".format(
+        product=product,
+    )
     actual = CloudChannelServiceClient.product_path(product)
     assert expected == actual
 
@@ -8046,7 +9057,10 @@ def test_parse_product_path():
 def test_sku_path():
     product = "winkle"
     sku = "nautilus"
-    expected = "products/{product}/skus/{sku}".format(product=product, sku=sku,)
+    expected = "products/{product}/skus/{sku}".format(
+        product=product,
+        sku=sku,
+    )
     actual = CloudChannelServiceClient.sku_path(product, sku)
     assert expected == actual
 
@@ -8085,7 +9099,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "whelk"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = CloudChannelServiceClient.common_folder_path(folder)
     assert expected == actual
 
@@ -8103,7 +9119,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "oyster"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = CloudChannelServiceClient.common_organization_path(organization)
     assert expected == actual
 
@@ -8121,7 +9139,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "cuttlefish"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = CloudChannelServiceClient.common_project_path(project)
     assert expected == actual
 
@@ -8141,7 +9161,8 @@ def test_common_location_path():
     project = "winkle"
     location = "nautilus"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = CloudChannelServiceClient.common_location_path(project, location)
     assert expected == actual
@@ -8166,7 +9187,8 @@ def test_client_with_default_client_info():
         transports.CloudChannelServiceTransport, "_prep_wrapped_messages"
     ) as prep:
         client = CloudChannelServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -8175,7 +9197,8 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = CloudChannelServiceClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -8183,7 +9206,8 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = CloudChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     with mock.patch.object(
         type(getattr(client.transport, "grpc_channel")), "close"

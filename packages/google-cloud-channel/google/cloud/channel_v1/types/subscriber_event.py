@@ -18,7 +18,11 @@ import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.channel.v1",
-    manifest={"CustomerEvent", "EntitlementEvent", "SubscriberEvent",},
+    manifest={
+        "CustomerEvent",
+        "EntitlementEvent",
+        "SubscriberEvent",
+    },
 )
 
 
@@ -40,8 +44,15 @@ class CustomerEvent(proto.Message):
         PRIMARY_DOMAIN_CHANGED = 1
         PRIMARY_DOMAIN_VERIFIED = 2
 
-    customer = proto.Field(proto.STRING, number=1,)
-    event_type = proto.Field(proto.ENUM, number=2, enum=Type,)
+    customer = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    event_type = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=Type,
+    )
 
 
 class EntitlementEvent(proto.Message):
@@ -73,8 +84,15 @@ class EntitlementEvent(proto.Message):
         LICENSE_ASSIGNMENT_CHANGED = 12
         LICENSE_CAP_CHANGED = 13
 
-    entitlement = proto.Field(proto.STRING, number=1,)
-    event_type = proto.Field(proto.ENUM, number=2, enum=Type,)
+    entitlement = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    event_type = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=Type,
+    )
 
 
 class SubscriberEvent(proto.Message):
@@ -102,10 +120,16 @@ class SubscriberEvent(proto.Message):
     """
 
     customer_event = proto.Field(
-        proto.MESSAGE, number=1, oneof="event", message="CustomerEvent",
+        proto.MESSAGE,
+        number=1,
+        oneof="event",
+        message="CustomerEvent",
     )
     entitlement_event = proto.Field(
-        proto.MESSAGE, number=2, oneof="event", message="EntitlementEvent",
+        proto.MESSAGE,
+        number=2,
+        oneof="event",
+        message="EntitlementEvent",
     )
 
 

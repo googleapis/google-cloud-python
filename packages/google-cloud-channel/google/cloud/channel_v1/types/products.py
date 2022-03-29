@@ -18,7 +18,13 @@ import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.channel.v1",
-    manifest={"MediaType", "Product", "Sku", "MarketingInfo", "Media",},
+    manifest={
+        "MediaType",
+        "Product",
+        "Sku",
+        "MarketingInfo",
+        "Media",
+    },
 )
 
 
@@ -39,8 +45,15 @@ class Product(proto.Message):
             Marketing information for the product.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    marketing_info = proto.Field(proto.MESSAGE, number=2, message="MarketingInfo",)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    marketing_info = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="MarketingInfo",
+    )
 
 
 class Sku(proto.Message):
@@ -59,9 +72,20 @@ class Sku(proto.Message):
             Product the SKU is associated with.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    marketing_info = proto.Field(proto.MESSAGE, number=2, message="MarketingInfo",)
-    product = proto.Field(proto.MESSAGE, number=3, message="Product",)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    marketing_info = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="MarketingInfo",
+    )
+    product = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="Product",
+    )
 
 
 class MarketingInfo(proto.Message):
@@ -78,9 +102,19 @@ class MarketingInfo(proto.Message):
             Default logo.
     """
 
-    display_name = proto.Field(proto.STRING, number=1,)
-    description = proto.Field(proto.STRING, number=2,)
-    default_logo = proto.Field(proto.MESSAGE, number=3, message="Media",)
+    display_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    default_logo = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="Media",
+    )
 
 
 class Media(proto.Message):
@@ -95,9 +129,19 @@ class Media(proto.Message):
             Type of the media.
     """
 
-    title = proto.Field(proto.STRING, number=1,)
-    content = proto.Field(proto.STRING, number=2,)
-    type_ = proto.Field(proto.ENUM, number=3, enum="MediaType",)
+    title = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    content = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    type_ = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum="MediaType",
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

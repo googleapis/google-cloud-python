@@ -36,7 +36,9 @@ from google.protobuf import empty_pb2  # type: ignore
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-channel",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-channel",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
@@ -126,10 +128,14 @@ class CloudChannelServiceTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.list_customers: gapic_v1.method.wrap_method(
-                self.list_customers, default_timeout=None, client_info=client_info,
+                self.list_customers,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_customer: gapic_v1.method.wrap_method(
-                self.get_customer, default_timeout=None, client_info=client_info,
+                self.get_customer,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.check_cloud_identity_accounts_exist: gapic_v1.method.wrap_method(
                 self.check_cloud_identity_accounts_exist,
@@ -137,16 +143,24 @@ class CloudChannelServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.create_customer: gapic_v1.method.wrap_method(
-                self.create_customer, default_timeout=None, client_info=client_info,
+                self.create_customer,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.update_customer: gapic_v1.method.wrap_method(
-                self.update_customer, default_timeout=None, client_info=client_info,
+                self.update_customer,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.delete_customer: gapic_v1.method.wrap_method(
-                self.delete_customer, default_timeout=None, client_info=client_info,
+                self.delete_customer,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.import_customer: gapic_v1.method.wrap_method(
-                self.import_customer, default_timeout=None, client_info=client_info,
+                self.import_customer,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.provision_cloud_identity: gapic_v1.method.wrap_method(
                 self.provision_cloud_identity,
@@ -154,7 +168,9 @@ class CloudChannelServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.list_entitlements: gapic_v1.method.wrap_method(
-                self.list_entitlements, default_timeout=None, client_info=client_info,
+                self.list_entitlements,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_transferable_skus: gapic_v1.method.wrap_method(
                 self.list_transferable_skus,
@@ -167,13 +183,19 @@ class CloudChannelServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.get_entitlement: gapic_v1.method.wrap_method(
-                self.get_entitlement, default_timeout=None, client_info=client_info,
+                self.get_entitlement,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.create_entitlement: gapic_v1.method.wrap_method(
-                self.create_entitlement, default_timeout=60.0, client_info=client_info,
+                self.create_entitlement,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.change_parameters: gapic_v1.method.wrap_method(
-                self.change_parameters, default_timeout=60.0, client_info=client_info,
+                self.change_parameters,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.change_renewal_settings: gapic_v1.method.wrap_method(
                 self.change_renewal_settings,
@@ -181,16 +203,24 @@ class CloudChannelServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.change_offer: gapic_v1.method.wrap_method(
-                self.change_offer, default_timeout=60.0, client_info=client_info,
+                self.change_offer,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.start_paid_service: gapic_v1.method.wrap_method(
-                self.start_paid_service, default_timeout=60.0, client_info=client_info,
+                self.start_paid_service,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.suspend_entitlement: gapic_v1.method.wrap_method(
-                self.suspend_entitlement, default_timeout=60.0, client_info=client_info,
+                self.suspend_entitlement,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.cancel_entitlement: gapic_v1.method.wrap_method(
-                self.cancel_entitlement, default_timeout=60.0, client_info=client_info,
+                self.cancel_entitlement,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.activate_entitlement: gapic_v1.method.wrap_method(
                 self.activate_entitlement,
@@ -228,16 +258,24 @@ class CloudChannelServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.lookup_offer: gapic_v1.method.wrap_method(
-                self.lookup_offer, default_timeout=None, client_info=client_info,
+                self.lookup_offer,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_products: gapic_v1.method.wrap_method(
-                self.list_products, default_timeout=None, client_info=client_info,
+                self.list_products,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_skus: gapic_v1.method.wrap_method(
-                self.list_skus, default_timeout=None, client_info=client_info,
+                self.list_skus,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_offers: gapic_v1.method.wrap_method(
-                self.list_offers, default_timeout=None, client_info=client_info,
+                self.list_offers,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_purchasable_skus: gapic_v1.method.wrap_method(
                 self.list_purchasable_skus,
@@ -250,7 +288,9 @@ class CloudChannelServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.register_subscriber: gapic_v1.method.wrap_method(
-                self.register_subscriber, default_timeout=None, client_info=client_info,
+                self.register_subscriber,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.unregister_subscriber: gapic_v1.method.wrap_method(
                 self.unregister_subscriber,
@@ -258,16 +298,18 @@ class CloudChannelServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.list_subscribers: gapic_v1.method.wrap_method(
-                self.list_subscribers, default_timeout=None, client_info=client_info,
+                self.list_subscribers,
+                default_timeout=None,
+                client_info=client_info,
             ),
         }
 
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

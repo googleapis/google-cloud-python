@@ -115,24 +115,63 @@ class Entitlement(proto.Message):
         PENDING_TOS_ACCEPTANCE = 4
         OTHER = 100
 
-    name = proto.Field(proto.STRING, number=1,)
-    create_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,)
-    offer = proto.Field(proto.STRING, number=8,)
-    commitment_settings = proto.Field(
-        proto.MESSAGE, number=12, message="CommitmentSettings",
+    name = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    provisioning_state = proto.Field(proto.ENUM, number=13, enum=ProvisioningState,)
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
+    )
+    offer = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    commitment_settings = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        message="CommitmentSettings",
+    )
+    provisioning_state = proto.Field(
+        proto.ENUM,
+        number=13,
+        enum=ProvisioningState,
+    )
     provisioned_service = proto.Field(
-        proto.MESSAGE, number=16, message="ProvisionedService",
+        proto.MESSAGE,
+        number=16,
+        message="ProvisionedService",
     )
     suspension_reasons = proto.RepeatedField(
-        proto.ENUM, number=18, enum=SuspensionReason,
+        proto.ENUM,
+        number=18,
+        enum=SuspensionReason,
     )
-    purchase_order_id = proto.Field(proto.STRING, number=19,)
-    trial_settings = proto.Field(proto.MESSAGE, number=21, message="TrialSettings",)
-    association_info = proto.Field(proto.MESSAGE, number=23, message="AssociationInfo",)
-    parameters = proto.RepeatedField(proto.MESSAGE, number=26, message="Parameter",)
+    purchase_order_id = proto.Field(
+        proto.STRING,
+        number=19,
+    )
+    trial_settings = proto.Field(
+        proto.MESSAGE,
+        number=21,
+        message="TrialSettings",
+    )
+    association_info = proto.Field(
+        proto.MESSAGE,
+        number=23,
+        message="AssociationInfo",
+    )
+    parameters = proto.RepeatedField(
+        proto.MESSAGE,
+        number=26,
+        message="Parameter",
+    )
 
 
 class Parameter(proto.Message):
@@ -150,9 +189,19 @@ class Parameter(proto.Message):
             editable when entitlement is active.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    value = proto.Field(proto.MESSAGE, number=2, message=common.Value,)
-    editable = proto.Field(proto.BOOL, number=3,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    value = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=common.Value,
+    )
+    editable = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
 
 
 class AssociationInfo(proto.Message):
@@ -165,7 +214,10 @@ class AssociationInfo(proto.Message):
             this entitlement is an add-on.
     """
 
-    base_entitlement = proto.Field(proto.STRING, number=1,)
+    base_entitlement = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ProvisionedService(proto.Message):
@@ -186,9 +238,18 @@ class ProvisionedService(proto.Message):
             provisioning resource as specified in the Offer.
     """
 
-    provisioning_id = proto.Field(proto.STRING, number=1,)
-    product_id = proto.Field(proto.STRING, number=2,)
-    sku_id = proto.Field(proto.STRING, number=3,)
+    provisioning_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    product_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    sku_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class CommitmentSettings(proto.Message):
@@ -204,9 +265,21 @@ class CommitmentSettings(proto.Message):
             commitment-based Offer.
     """
 
-    start_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
-    end_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    renewal_settings = proto.Field(proto.MESSAGE, number=4, message="RenewalSettings",)
+    start_time = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    renewal_settings = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="RenewalSettings",
+    )
 
 
 class RenewalSettings(proto.Message):
@@ -227,10 +300,24 @@ class RenewalSettings(proto.Message):
             billed, such as once per month.
     """
 
-    enable_renewal = proto.Field(proto.BOOL, number=1,)
-    resize_unit_count = proto.Field(proto.BOOL, number=2,)
-    payment_plan = proto.Field(proto.ENUM, number=5, enum=offers.PaymentPlan,)
-    payment_cycle = proto.Field(proto.MESSAGE, number=6, message=offers.Period,)
+    enable_renewal = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
+    resize_unit_count = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+    payment_plan = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum=offers.PaymentPlan,
+    )
+    payment_cycle = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=offers.Period,
+    )
 
 
 class TrialSettings(proto.Message):
@@ -248,8 +335,15 @@ class TrialSettings(proto.Message):
             converter <https://www.epochconverter.com>`__.
     """
 
-    trial = proto.Field(proto.BOOL, number=1,)
-    end_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
+    trial = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
+    end_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 class TransferableSku(proto.Message):
@@ -269,10 +363,20 @@ class TransferableSku(proto.Message):
     """
 
     transfer_eligibility = proto.Field(
-        proto.MESSAGE, number=9, message="TransferEligibility",
+        proto.MESSAGE,
+        number=9,
+        message="TransferEligibility",
     )
-    sku = proto.Field(proto.MESSAGE, number=11, message=products.Sku,)
-    legacy_sku = proto.Field(proto.MESSAGE, number=12, message=products.Sku,)
+    sku = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message=products.Sku,
+    )
+    legacy_sku = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        message=products.Sku,
+    )
 
 
 class TransferEligibility(proto.Message):
@@ -296,9 +400,19 @@ class TransferEligibility(proto.Message):
         SKU_NOT_ELIGIBLE = 2
         SKU_SUSPENDED = 3
 
-    is_eligible = proto.Field(proto.BOOL, number=1,)
-    description = proto.Field(proto.STRING, number=2,)
-    ineligibility_reason = proto.Field(proto.ENUM, number=3, enum=Reason,)
+    is_eligible = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    ineligibility_reason = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=Reason,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

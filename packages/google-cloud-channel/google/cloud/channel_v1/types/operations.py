@@ -17,7 +17,10 @@ import proto  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.channel.v1", manifest={"OperationMetadata",},
+    package="google.cloud.channel.v1",
+    manifest={
+        "OperationMetadata",
+    },
 )
 
 
@@ -46,7 +49,11 @@ class OperationMetadata(proto.Message):
         CHANGE_PARAMETERS = 15
         PROVISION_CLOUD_IDENTITY = 16
 
-    operation_type = proto.Field(proto.ENUM, number=1, enum=OperationType,)
+    operation_type = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=OperationType,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

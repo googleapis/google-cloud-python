@@ -68,7 +68,8 @@ class CloudChannelServiceClientMeta(type):
     _transport_registry["grpc_asyncio"] = CloudChannelServiceGrpcAsyncIOTransport
 
     def get_transport_class(
-        cls, label: str = None,
+        cls,
+        label: str = None,
     ) -> Type[CloudChannelServiceTransport]:
         """Returns an appropriate transport class.
 
@@ -197,10 +198,14 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         return self._transport
 
     @staticmethod
-    def channel_partner_link_path(account: str, channel_partner_link: str,) -> str:
+    def channel_partner_link_path(
+        account: str,
+        channel_partner_link: str,
+    ) -> str:
         """Returns a fully-qualified channel_partner_link string."""
         return "accounts/{account}/channelPartnerLinks/{channel_partner_link}".format(
-            account=account, channel_partner_link=channel_partner_link,
+            account=account,
+            channel_partner_link=channel_partner_link,
         )
 
     @staticmethod
@@ -213,10 +218,14 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def customer_path(account: str, customer: str,) -> str:
+    def customer_path(
+        account: str,
+        customer: str,
+    ) -> str:
         """Returns a fully-qualified customer string."""
         return "accounts/{account}/customers/{customer}".format(
-            account=account, customer=customer,
+            account=account,
+            customer=customer,
         )
 
     @staticmethod
@@ -226,10 +235,18 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def entitlement_path(account: str, customer: str, entitlement: str,) -> str:
+    def entitlement_path(
+        account: str,
+        customer: str,
+        entitlement: str,
+    ) -> str:
         """Returns a fully-qualified entitlement string."""
-        return "accounts/{account}/customers/{customer}/entitlements/{entitlement}".format(
-            account=account, customer=customer, entitlement=entitlement,
+        return (
+            "accounts/{account}/customers/{customer}/entitlements/{entitlement}".format(
+                account=account,
+                customer=customer,
+                entitlement=entitlement,
+            )
         )
 
     @staticmethod
@@ -242,9 +259,15 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def offer_path(account: str, offer: str,) -> str:
+    def offer_path(
+        account: str,
+        offer: str,
+    ) -> str:
         """Returns a fully-qualified offer string."""
-        return "accounts/{account}/offers/{offer}".format(account=account, offer=offer,)
+        return "accounts/{account}/offers/{offer}".format(
+            account=account,
+            offer=offer,
+        )
 
     @staticmethod
     def parse_offer_path(path: str) -> Dict[str, str]:
@@ -253,9 +276,13 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def product_path(product: str,) -> str:
+    def product_path(
+        product: str,
+    ) -> str:
         """Returns a fully-qualified product string."""
-        return "products/{product}".format(product=product,)
+        return "products/{product}".format(
+            product=product,
+        )
 
     @staticmethod
     def parse_product_path(path: str) -> Dict[str, str]:
@@ -264,9 +291,15 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def sku_path(product: str, sku: str,) -> str:
+    def sku_path(
+        product: str,
+        sku: str,
+    ) -> str:
         """Returns a fully-qualified sku string."""
-        return "products/{product}/skus/{sku}".format(product=product, sku=sku,)
+        return "products/{product}/skus/{sku}".format(
+            product=product,
+            sku=sku,
+        )
 
     @staticmethod
     def parse_sku_path(path: str) -> Dict[str, str]:
@@ -275,7 +308,9 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_billing_account_path(billing_account: str,) -> str:
+    def common_billing_account_path(
+        billing_account: str,
+    ) -> str:
         """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
@@ -288,9 +323,13 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(folder: str,) -> str:
+    def common_folder_path(
+        folder: str,
+    ) -> str:
         """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(folder=folder,)
+        return "folders/{folder}".format(
+            folder=folder,
+        )
 
     @staticmethod
     def parse_common_folder_path(path: str) -> Dict[str, str]:
@@ -299,9 +338,13 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(organization: str,) -> str:
+    def common_organization_path(
+        organization: str,
+    ) -> str:
         """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(organization=organization,)
+        return "organizations/{organization}".format(
+            organization=organization,
+        )
 
     @staticmethod
     def parse_common_organization_path(path: str) -> Dict[str, str]:
@@ -310,9 +353,13 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(project: str,) -> str:
+    def common_project_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified project string."""
-        return "projects/{project}".format(project=project,)
+        return "projects/{project}".format(
+            project=project,
+        )
 
     @staticmethod
     def parse_common_project_path(path: str) -> Dict[str, str]:
@@ -321,10 +368,14 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(project: str, location: str,) -> str:
+    def common_location_path(
+        project: str,
+        location: str,
+    ) -> str:
         """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
-            project=project, location=location,
+            project=project,
+            location=location,
         )
 
     @staticmethod
@@ -578,12 +629,20 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListCustomersPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -689,7 +748,12 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -781,7 +845,12 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -869,7 +938,12 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -958,7 +1032,12 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1052,7 +1131,10 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def import_customer(
@@ -1138,7 +1220,12 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1237,7 +1324,12 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1330,12 +1422,20 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListEntitlementsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1433,12 +1533,20 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListTransferableSkusPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1539,12 +1647,20 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListTransferableOffersPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1627,7 +1743,12 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1753,7 +1874,12 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1863,7 +1989,12 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1975,7 +2106,12 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -2084,7 +2220,12 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -2195,7 +2336,12 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -2303,7 +2449,12 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -2425,7 +2576,12 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -2540,7 +2696,12 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -2664,7 +2825,12 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -2800,7 +2966,12 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -2898,12 +3069,20 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListChannelPartnerLinksPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -2990,7 +3169,12 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -3092,7 +3276,12 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -3194,7 +3383,12 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -3280,7 +3474,12 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -3351,12 +3550,20 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.list_products]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListProductsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -3435,12 +3642,20 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListSkusPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -3518,12 +3733,20 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListOffersPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -3612,12 +3835,20 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListPurchasableSkusPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -3706,12 +3937,20 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListPurchasableOffersPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -3801,7 +4040,12 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -3893,7 +4137,12 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -3981,12 +4230,20 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListSubscribersPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -4008,7 +4265,9 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-channel",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-channel",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
