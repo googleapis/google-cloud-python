@@ -58,7 +58,10 @@ class GetIapSettingsRequest(proto.Message):
             permission for the associated resource.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class UpdateIapSettingsRequest(proto.Message):
@@ -76,9 +79,15 @@ class UpdateIapSettingsRequest(proto.Message):
             https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask
     """
 
-    iap_settings = proto.Field(proto.MESSAGE, number=1, message="IapSettings",)
+    iap_settings = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="IapSettings",
+    )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -97,10 +106,19 @@ class IapSettings(proto.Message):
             settings in IAP
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    access_settings = proto.Field(proto.MESSAGE, number=5, message="AccessSettings",)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    access_settings = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message="AccessSettings",
+    )
     application_settings = proto.Field(
-        proto.MESSAGE, number=6, message="ApplicationSettings",
+        proto.MESSAGE,
+        number=6,
+        message="ApplicationSettings",
     )
 
 
@@ -118,9 +136,21 @@ class AccessSettings(proto.Message):
             Settings to configure IAP's OAuth behavior.
     """
 
-    gcip_settings = proto.Field(proto.MESSAGE, number=1, message="GcipSettings",)
-    cors_settings = proto.Field(proto.MESSAGE, number=2, message="CorsSettings",)
-    oauth_settings = proto.Field(proto.MESSAGE, number=3, message="OAuthSettings",)
+    gcip_settings = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="GcipSettings",
+    )
+    cors_settings = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="CorsSettings",
+    )
+    oauth_settings = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="OAuthSettings",
+    )
 
 
 class GcipSettings(proto.Message):
@@ -143,9 +173,14 @@ class GcipSettings(proto.Message):
             level.
     """
 
-    tenant_ids = proto.RepeatedField(proto.STRING, number=1,)
+    tenant_ids = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
     login_page_uri = proto.Field(
-        proto.MESSAGE, number=2, message=wrappers_pb2.StringValue,
+        proto.MESSAGE,
+        number=2,
+        message=wrappers_pb2.StringValue,
     )
 
 
@@ -162,7 +197,9 @@ class CorsSettings(proto.Message):
     """
 
     allow_http_options = proto.Field(
-        proto.MESSAGE, number=1, message=wrappers_pb2.BoolValue,
+        proto.MESSAGE,
+        number=1,
+        message=wrappers_pb2.BoolValue,
     )
 
 
@@ -181,7 +218,11 @@ class OAuthSettings(proto.Message):
             is managed by IAM policies.
     """
 
-    login_hint = proto.Field(proto.MESSAGE, number=2, message=wrappers_pb2.StringValue,)
+    login_hint = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=wrappers_pb2.StringValue,
+    )
 
 
 class ApplicationSettings(proto.Message):
@@ -199,12 +240,20 @@ class ApplicationSettings(proto.Message):
             but will be ignored at runtime if invalid.
     """
 
-    csm_settings = proto.Field(proto.MESSAGE, number=1, message="CsmSettings",)
+    csm_settings = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="CsmSettings",
+    )
     access_denied_page_settings = proto.Field(
-        proto.MESSAGE, number=2, message="AccessDeniedPageSettings",
+        proto.MESSAGE,
+        number=2,
+        message="AccessDeniedPageSettings",
     )
     cookie_domain = proto.Field(
-        proto.MESSAGE, number=3, message=wrappers_pb2.StringValue,
+        proto.MESSAGE,
+        number=3,
+        message=wrappers_pb2.StringValue,
     )
 
 
@@ -222,7 +271,9 @@ class CsmSettings(proto.Message):
     """
 
     rctoken_aud = proto.Field(
-        proto.MESSAGE, number=1, message=wrappers_pb2.StringValue,
+        proto.MESSAGE,
+        number=1,
+        message=wrappers_pb2.StringValue,
     )
 
 
@@ -242,10 +293,14 @@ class AccessDeniedPageSettings(proto.Message):
     """
 
     access_denied_page_uri = proto.Field(
-        proto.MESSAGE, number=1, message=wrappers_pb2.StringValue,
+        proto.MESSAGE,
+        number=1,
+        message=wrappers_pb2.StringValue,
     )
     generate_troubleshooting_uri = proto.Field(
-        proto.MESSAGE, number=2, message=wrappers_pb2.BoolValue,
+        proto.MESSAGE,
+        number=2,
+        message=wrappers_pb2.BoolValue,
     )
 
 
@@ -258,7 +313,10 @@ class ListBrandsRequest(proto.Message):
             projects/{project_number/id}.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListBrandsResponse(proto.Message):
@@ -269,7 +327,11 @@ class ListBrandsResponse(proto.Message):
             Brands existing in the project.
     """
 
-    brands = proto.RepeatedField(proto.MESSAGE, number=1, message="Brand",)
+    brands = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Brand",
+    )
 
 
 class CreateBrandRequest(proto.Message):
@@ -284,8 +346,15 @@ class CreateBrandRequest(proto.Message):
             Required. The brand to be created.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    brand = proto.Field(proto.MESSAGE, number=2, message="Brand",)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    brand = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="Brand",
+    )
 
 
 class GetBrandRequest(proto.Message):
@@ -297,7 +366,10 @@ class GetBrandRequest(proto.Message):
             format: projects/{project_number/id}/brands/{brand}.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListIdentityAwareProxyClientsRequest(proto.Message):
@@ -323,9 +395,18 @@ class ListIdentityAwareProxyClientsRequest(proto.Message):
             provided the page token.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListIdentityAwareProxyClientsResponse(proto.Message):
@@ -345,9 +426,14 @@ class ListIdentityAwareProxyClientsResponse(proto.Message):
         return self
 
     identity_aware_proxy_clients = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="IdentityAwareProxyClient",
+        proto.MESSAGE,
+        number=1,
+        message="IdentityAwareProxyClient",
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class CreateIdentityAwareProxyClientRequest(proto.Message):
@@ -363,9 +449,14 @@ class CreateIdentityAwareProxyClientRequest(proto.Message):
             created.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     identity_aware_proxy_client = proto.Field(
-        proto.MESSAGE, number=2, message="IdentityAwareProxyClient",
+        proto.MESSAGE,
+        number=2,
+        message="IdentityAwareProxyClient",
     )
 
 
@@ -379,7 +470,10 @@ class GetIdentityAwareProxyClientRequest(proto.Message):
             projects/{project_number/id}/brands/{brand}/identityAwareProxyClients/{client_id}.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ResetIdentityAwareProxyClientSecretRequest(proto.Message):
@@ -392,7 +486,10 @@ class ResetIdentityAwareProxyClientSecretRequest(proto.Message):
             projects/{project_number/id}/brands/{brand}/identityAwareProxyClients/{client_id}.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class DeleteIdentityAwareProxyClientRequest(proto.Message):
@@ -405,7 +502,10 @@ class DeleteIdentityAwareProxyClientRequest(proto.Message):
             projects/{project_number/id}/brands/{brand}/identityAwareProxyClients/{client_id}.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class Brand(proto.Message):
@@ -431,10 +531,22 @@ class Brand(proto.Message):
             organization only.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    support_email = proto.Field(proto.STRING, number=2,)
-    application_title = proto.Field(proto.STRING, number=3,)
-    org_internal_only = proto.Field(proto.BOOL, number=4,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    support_email = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    application_title = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    org_internal_only = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
 
 
 class IdentityAwareProxyClient(proto.Message):
@@ -453,9 +565,18 @@ class IdentityAwareProxyClient(proto.Message):
             client.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    secret = proto.Field(proto.STRING, number=2,)
-    display_name = proto.Field(proto.STRING, number=3,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    secret = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

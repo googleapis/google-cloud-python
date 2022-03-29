@@ -97,7 +97,10 @@ def test__get_default_mtls_endpoint():
 
 @pytest.mark.parametrize(
     "client_class",
-    [IdentityAwareProxyOAuthServiceClient, IdentityAwareProxyOAuthServiceAsyncClient,],
+    [
+        IdentityAwareProxyOAuthServiceClient,
+        IdentityAwareProxyOAuthServiceAsyncClient,
+    ],
 )
 def test_identity_aware_proxy_o_auth_service_client_from_service_account_info(
     client_class,
@@ -142,7 +145,10 @@ def test_identity_aware_proxy_o_auth_service_client_service_account_always_use_j
 
 @pytest.mark.parametrize(
     "client_class",
-    [IdentityAwareProxyOAuthServiceClient, IdentityAwareProxyOAuthServiceAsyncClient,],
+    [
+        IdentityAwareProxyOAuthServiceClient,
+        IdentityAwareProxyOAuthServiceAsyncClient,
+    ],
 )
 def test_identity_aware_proxy_o_auth_service_client_from_service_account_file(
     client_class,
@@ -533,7 +539,9 @@ def test_identity_aware_proxy_o_auth_service_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -673,10 +681,17 @@ def test_identity_aware_proxy_o_auth_service_client_create_channel_credentials_f
         )
 
 
-@pytest.mark.parametrize("request_type", [service.ListBrandsRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListBrandsRequest,
+        dict,
+    ],
+)
 def test_list_brands(request_type, transport: str = "grpc"):
     client = IdentityAwareProxyOAuthServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -702,7 +717,8 @@ def test_list_brands_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = IdentityAwareProxyOAuthServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -718,7 +734,8 @@ async def test_list_brands_async(
     transport: str = "grpc_asyncio", request_type=service.ListBrandsRequest
 ):
     client = IdentityAwareProxyOAuthServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -770,7 +787,10 @@ def test_list_brands_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -799,13 +819,23 @@ async def test_list_brands_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
-@pytest.mark.parametrize("request_type", [service.CreateBrandRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateBrandRequest,
+        dict,
+    ],
+)
 def test_create_brand(request_type, transport: str = "grpc"):
     client = IdentityAwareProxyOAuthServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -840,7 +870,8 @@ def test_create_brand_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = IdentityAwareProxyOAuthServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -856,7 +887,8 @@ async def test_create_brand_async(
     transport: str = "grpc_asyncio", request_type=service.CreateBrandRequest
 ):
     client = IdentityAwareProxyOAuthServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -917,7 +949,10 @@ def test_create_brand_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -944,13 +979,23 @@ async def test_create_brand_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
-@pytest.mark.parametrize("request_type", [service.GetBrandRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetBrandRequest,
+        dict,
+    ],
+)
 def test_get_brand(request_type, transport: str = "grpc"):
     client = IdentityAwareProxyOAuthServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -985,7 +1030,8 @@ def test_get_brand_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = IdentityAwareProxyOAuthServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1001,7 +1047,8 @@ async def test_get_brand_async(
     transport: str = "grpc_asyncio", request_type=service.GetBrandRequest
 ):
     client = IdentityAwareProxyOAuthServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1062,7 +1109,10 @@ def test_get_brand_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1089,15 +1139,23 @@ async def test_get_brand_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.parametrize(
-    "request_type", [service.CreateIdentityAwareProxyClientRequest, dict,]
+    "request_type",
+    [
+        service.CreateIdentityAwareProxyClientRequest,
+        dict,
+    ],
 )
 def test_create_identity_aware_proxy_client(request_type, transport: str = "grpc"):
     client = IdentityAwareProxyOAuthServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1110,7 +1168,9 @@ def test_create_identity_aware_proxy_client(request_type, transport: str = "grpc
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = service.IdentityAwareProxyClient(
-            name="name_value", secret="secret_value", display_name="display_name_value",
+            name="name_value",
+            secret="secret_value",
+            display_name="display_name_value",
         )
         response = client.create_identity_aware_proxy_client(request)
 
@@ -1130,7 +1190,8 @@ def test_create_identity_aware_proxy_client_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = IdentityAwareProxyOAuthServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1149,7 +1210,8 @@ async def test_create_identity_aware_proxy_client_async(
     request_type=service.CreateIdentityAwareProxyClientRequest,
 ):
     client = IdentityAwareProxyOAuthServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1212,7 +1274,10 @@ def test_create_identity_aware_proxy_client_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1243,15 +1308,23 @@ async def test_create_identity_aware_proxy_client_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.parametrize(
-    "request_type", [service.ListIdentityAwareProxyClientsRequest, dict,]
+    "request_type",
+    [
+        service.ListIdentityAwareProxyClientsRequest,
+        dict,
+    ],
 )
 def test_list_identity_aware_proxy_clients(request_type, transport: str = "grpc"):
     client = IdentityAwareProxyOAuthServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1282,7 +1355,8 @@ def test_list_identity_aware_proxy_clients_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = IdentityAwareProxyOAuthServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1301,7 +1375,8 @@ async def test_list_identity_aware_proxy_clients_async(
     request_type=service.ListIdentityAwareProxyClientsRequest,
 ):
     client = IdentityAwareProxyOAuthServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1360,7 +1435,10 @@ def test_list_identity_aware_proxy_clients_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1391,12 +1469,16 @@ async def test_list_identity_aware_proxy_clients_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_identity_aware_proxy_clients_pager(transport_name: str = "grpc"):
     client = IdentityAwareProxyOAuthServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1414,10 +1496,13 @@ def test_list_identity_aware_proxy_clients_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             service.ListIdentityAwareProxyClientsResponse(
-                identity_aware_proxy_clients=[], next_page_token="def",
+                identity_aware_proxy_clients=[],
+                next_page_token="def",
             ),
             service.ListIdentityAwareProxyClientsResponse(
-                identity_aware_proxy_clients=[service.IdentityAwareProxyClient(),],
+                identity_aware_proxy_clients=[
+                    service.IdentityAwareProxyClient(),
+                ],
                 next_page_token="ghi",
             ),
             service.ListIdentityAwareProxyClientsResponse(
@@ -1444,7 +1529,8 @@ def test_list_identity_aware_proxy_clients_pager(transport_name: str = "grpc"):
 
 def test_list_identity_aware_proxy_clients_pages(transport_name: str = "grpc"):
     client = IdentityAwareProxyOAuthServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1462,10 +1548,13 @@ def test_list_identity_aware_proxy_clients_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             service.ListIdentityAwareProxyClientsResponse(
-                identity_aware_proxy_clients=[], next_page_token="def",
+                identity_aware_proxy_clients=[],
+                next_page_token="def",
             ),
             service.ListIdentityAwareProxyClientsResponse(
-                identity_aware_proxy_clients=[service.IdentityAwareProxyClient(),],
+                identity_aware_proxy_clients=[
+                    service.IdentityAwareProxyClient(),
+                ],
                 next_page_token="ghi",
             ),
             service.ListIdentityAwareProxyClientsResponse(
@@ -1504,10 +1593,13 @@ async def test_list_identity_aware_proxy_clients_async_pager():
                 next_page_token="abc",
             ),
             service.ListIdentityAwareProxyClientsResponse(
-                identity_aware_proxy_clients=[], next_page_token="def",
+                identity_aware_proxy_clients=[],
+                next_page_token="def",
             ),
             service.ListIdentityAwareProxyClientsResponse(
-                identity_aware_proxy_clients=[service.IdentityAwareProxyClient(),],
+                identity_aware_proxy_clients=[
+                    service.IdentityAwareProxyClient(),
+                ],
                 next_page_token="ghi",
             ),
             service.ListIdentityAwareProxyClientsResponse(
@@ -1518,7 +1610,9 @@ async def test_list_identity_aware_proxy_clients_async_pager():
             ),
             RuntimeError,
         )
-        async_pager = await client.list_identity_aware_proxy_clients(request={},)
+        async_pager = await client.list_identity_aware_proxy_clients(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -1551,10 +1645,13 @@ async def test_list_identity_aware_proxy_clients_async_pages():
                 next_page_token="abc",
             ),
             service.ListIdentityAwareProxyClientsResponse(
-                identity_aware_proxy_clients=[], next_page_token="def",
+                identity_aware_proxy_clients=[],
+                next_page_token="def",
             ),
             service.ListIdentityAwareProxyClientsResponse(
-                identity_aware_proxy_clients=[service.IdentityAwareProxyClient(),],
+                identity_aware_proxy_clients=[
+                    service.IdentityAwareProxyClient(),
+                ],
                 next_page_token="ghi",
             ),
             service.ListIdentityAwareProxyClientsResponse(
@@ -1575,11 +1672,16 @@ async def test_list_identity_aware_proxy_clients_async_pages():
 
 
 @pytest.mark.parametrize(
-    "request_type", [service.GetIdentityAwareProxyClientRequest, dict,]
+    "request_type",
+    [
+        service.GetIdentityAwareProxyClientRequest,
+        dict,
+    ],
 )
 def test_get_identity_aware_proxy_client(request_type, transport: str = "grpc"):
     client = IdentityAwareProxyOAuthServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1592,7 +1694,9 @@ def test_get_identity_aware_proxy_client(request_type, transport: str = "grpc"):
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = service.IdentityAwareProxyClient(
-            name="name_value", secret="secret_value", display_name="display_name_value",
+            name="name_value",
+            secret="secret_value",
+            display_name="display_name_value",
         )
         response = client.get_identity_aware_proxy_client(request)
 
@@ -1612,7 +1716,8 @@ def test_get_identity_aware_proxy_client_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = IdentityAwareProxyOAuthServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1631,7 +1736,8 @@ async def test_get_identity_aware_proxy_client_async(
     request_type=service.GetIdentityAwareProxyClientRequest,
 ):
     client = IdentityAwareProxyOAuthServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1694,7 +1800,10 @@ def test_get_identity_aware_proxy_client_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1725,17 +1834,25 @@ async def test_get_identity_aware_proxy_client_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.parametrize(
-    "request_type", [service.ResetIdentityAwareProxyClientSecretRequest, dict,]
+    "request_type",
+    [
+        service.ResetIdentityAwareProxyClientSecretRequest,
+        dict,
+    ],
 )
 def test_reset_identity_aware_proxy_client_secret(
     request_type, transport: str = "grpc"
 ):
     client = IdentityAwareProxyOAuthServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1748,7 +1865,9 @@ def test_reset_identity_aware_proxy_client_secret(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = service.IdentityAwareProxyClient(
-            name="name_value", secret="secret_value", display_name="display_name_value",
+            name="name_value",
+            secret="secret_value",
+            display_name="display_name_value",
         )
         response = client.reset_identity_aware_proxy_client_secret(request)
 
@@ -1768,7 +1887,8 @@ def test_reset_identity_aware_proxy_client_secret_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = IdentityAwareProxyOAuthServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1787,7 +1907,8 @@ async def test_reset_identity_aware_proxy_client_secret_async(
     request_type=service.ResetIdentityAwareProxyClientSecretRequest,
 ):
     client = IdentityAwareProxyOAuthServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1850,7 +1971,10 @@ def test_reset_identity_aware_proxy_client_secret_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1881,15 +2005,23 @@ async def test_reset_identity_aware_proxy_client_secret_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.parametrize(
-    "request_type", [service.DeleteIdentityAwareProxyClientRequest, dict,]
+    "request_type",
+    [
+        service.DeleteIdentityAwareProxyClientRequest,
+        dict,
+    ],
 )
 def test_delete_identity_aware_proxy_client(request_type, transport: str = "grpc"):
     client = IdentityAwareProxyOAuthServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1917,7 +2049,8 @@ def test_delete_identity_aware_proxy_client_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = IdentityAwareProxyOAuthServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1936,7 +2069,8 @@ async def test_delete_identity_aware_proxy_client_async(
     request_type=service.DeleteIdentityAwareProxyClientRequest,
 ):
     client = IdentityAwareProxyOAuthServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1990,7 +2124,10 @@ def test_delete_identity_aware_proxy_client_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2019,7 +2156,10 @@ async def test_delete_identity_aware_proxy_client_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_credentials_transport_error():
@@ -2029,7 +2169,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = IdentityAwareProxyOAuthServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -2050,7 +2191,8 @@ def test_credentials_transport_error():
     options.api_key = "api_key"
     with pytest.raises(ValueError):
         client = IdentityAwareProxyOAuthServiceClient(
-            client_options=options, transport=transport,
+            client_options=options,
+            transport=transport,
         )
 
     # It is an error to provide an api_key and a credential.
@@ -2067,7 +2209,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = IdentityAwareProxyOAuthServiceClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -2116,7 +2259,8 @@ def test_transport_grpc_default():
         credentials=ga_credentials.AnonymousCredentials(),
     )
     assert isinstance(
-        client.transport, transports.IdentityAwareProxyOAuthServiceGrpcTransport,
+        client.transport,
+        transports.IdentityAwareProxyOAuthServiceGrpcTransport,
     )
 
 
@@ -2169,7 +2313,8 @@ def test_identity_aware_proxy_o_auth_service_base_transport_with_credentials_fil
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.IdentityAwareProxyOAuthServiceTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -2332,7 +2477,8 @@ def test_identity_aware_proxy_o_auth_service_grpc_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.IdentityAwareProxyOAuthServiceGrpcTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -2344,7 +2490,8 @@ def test_identity_aware_proxy_o_auth_service_grpc_asyncio_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.IdentityAwareProxyOAuthServiceGrpcAsyncIOTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -2479,7 +2626,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "whelk"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = IdentityAwareProxyOAuthServiceClient.common_folder_path(folder)
     assert expected == actual
 
@@ -2497,7 +2646,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "oyster"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = IdentityAwareProxyOAuthServiceClient.common_organization_path(organization)
     assert expected == actual
 
@@ -2515,7 +2666,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "cuttlefish"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = IdentityAwareProxyOAuthServiceClient.common_project_path(project)
     assert expected == actual
 
@@ -2535,7 +2688,8 @@ def test_common_location_path():
     project = "winkle"
     location = "nautilus"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = IdentityAwareProxyOAuthServiceClient.common_location_path(
         project, location
@@ -2562,7 +2716,8 @@ def test_client_with_default_client_info():
         transports.IdentityAwareProxyOAuthServiceTransport, "_prep_wrapped_messages"
     ) as prep:
         client = IdentityAwareProxyOAuthServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -2571,7 +2726,8 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = IdentityAwareProxyOAuthServiceClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -2579,7 +2735,8 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = IdentityAwareProxyOAuthServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     with mock.patch.object(
         type(getattr(client.transport, "grpc_channel")), "close"

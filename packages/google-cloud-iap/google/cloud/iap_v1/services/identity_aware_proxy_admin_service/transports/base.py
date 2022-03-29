@@ -31,7 +31,9 @@ from google.iam.v1 import policy_pb2  # type: ignore
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-iap",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-iap",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
@@ -121,10 +123,14 @@ class IdentityAwareProxyAdminServiceTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.set_iam_policy: gapic_v1.method.wrap_method(
-                self.set_iam_policy, default_timeout=None, client_info=client_info,
+                self.set_iam_policy,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_iam_policy: gapic_v1.method.wrap_method(
-                self.get_iam_policy, default_timeout=None, client_info=client_info,
+                self.get_iam_policy,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.test_iam_permissions: gapic_v1.method.wrap_method(
                 self.test_iam_permissions,
@@ -132,19 +138,23 @@ class IdentityAwareProxyAdminServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.get_iap_settings: gapic_v1.method.wrap_method(
-                self.get_iap_settings, default_timeout=None, client_info=client_info,
+                self.get_iap_settings,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.update_iap_settings: gapic_v1.method.wrap_method(
-                self.update_iap_settings, default_timeout=None, client_info=client_info,
+                self.update_iap_settings,
+                default_timeout=None,
+                client_info=client_info,
             ),
         }
 
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

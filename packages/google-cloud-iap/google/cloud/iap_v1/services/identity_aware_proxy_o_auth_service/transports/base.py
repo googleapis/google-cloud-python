@@ -30,7 +30,9 @@ from google.protobuf import empty_pb2  # type: ignore
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-iap",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-iap",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
@@ -120,13 +122,19 @@ class IdentityAwareProxyOAuthServiceTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.list_brands: gapic_v1.method.wrap_method(
-                self.list_brands, default_timeout=None, client_info=client_info,
+                self.list_brands,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.create_brand: gapic_v1.method.wrap_method(
-                self.create_brand, default_timeout=None, client_info=client_info,
+                self.create_brand,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_brand: gapic_v1.method.wrap_method(
-                self.get_brand, default_timeout=None, client_info=client_info,
+                self.get_brand,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.create_identity_aware_proxy_client: gapic_v1.method.wrap_method(
                 self.create_identity_aware_proxy_client,
@@ -158,9 +166,9 @@ class IdentityAwareProxyOAuthServiceTransport(abc.ABC):
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 
