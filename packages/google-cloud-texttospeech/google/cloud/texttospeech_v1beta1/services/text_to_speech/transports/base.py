@@ -121,19 +121,23 @@ class TextToSpeechTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.list_voices: gapic_v1.method.wrap_method(
-                self.list_voices, default_timeout=None, client_info=client_info,
+                self.list_voices,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.synthesize_speech: gapic_v1.method.wrap_method(
-                self.synthesize_speech, default_timeout=None, client_info=client_info,
+                self.synthesize_speech,
+                default_timeout=None,
+                client_info=client_info,
             ),
         }
 
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

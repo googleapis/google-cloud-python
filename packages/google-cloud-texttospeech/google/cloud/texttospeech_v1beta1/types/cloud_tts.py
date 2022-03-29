@@ -75,7 +75,10 @@ class ListVoicesRequest(proto.Message):
             (Norwegian Bokmal) voices will be returned.
     """
 
-    language_code = proto.Field(proto.STRING, number=1,)
+    language_code = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListVoicesResponse(proto.Message):
@@ -86,7 +89,11 @@ class ListVoicesResponse(proto.Message):
             The list of voices.
     """
 
-    voices = proto.RepeatedField(proto.MESSAGE, number=1, message="Voice",)
+    voices = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Voice",
+    )
 
 
 class Voice(proto.Message):
@@ -107,10 +114,23 @@ class Voice(proto.Message):
             voice.
     """
 
-    language_codes = proto.RepeatedField(proto.STRING, number=1,)
-    name = proto.Field(proto.STRING, number=2,)
-    ssml_gender = proto.Field(proto.ENUM, number=3, enum="SsmlVoiceGender",)
-    natural_sample_rate_hertz = proto.Field(proto.INT32, number=4,)
+    language_codes = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
+    name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    ssml_gender = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum="SsmlVoiceGender",
+    )
+    natural_sample_rate_hertz = proto.Field(
+        proto.INT32,
+        number=4,
+    )
 
 
 class SynthesizeSpeechRequest(proto.Message):
@@ -139,11 +159,25 @@ class SynthesizeSpeechRequest(proto.Message):
         TIMEPOINT_TYPE_UNSPECIFIED = 0
         SSML_MARK = 1
 
-    input = proto.Field(proto.MESSAGE, number=1, message="SynthesisInput",)
-    voice = proto.Field(proto.MESSAGE, number=2, message="VoiceSelectionParams",)
-    audio_config = proto.Field(proto.MESSAGE, number=3, message="AudioConfig",)
+    input = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="SynthesisInput",
+    )
+    voice = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="VoiceSelectionParams",
+    )
+    audio_config = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="AudioConfig",
+    )
     enable_time_pointing = proto.RepeatedField(
-        proto.ENUM, number=4, enum=TimepointType,
+        proto.ENUM,
+        number=4,
+        enum=TimepointType,
     )
 
 
@@ -175,8 +209,16 @@ class SynthesisInput(proto.Message):
             This field is a member of `oneof`_ ``input_source``.
     """
 
-    text = proto.Field(proto.STRING, number=1, oneof="input_source",)
-    ssml = proto.Field(proto.STRING, number=2, oneof="input_source",)
+    text = proto.Field(
+        proto.STRING,
+        number=1,
+        oneof="input_source",
+    )
+    ssml = proto.Field(
+        proto.STRING,
+        number=2,
+        oneof="input_source",
+    )
 
 
 class VoiceSelectionParams(proto.Message):
@@ -215,10 +257,24 @@ class VoiceSelectionParams(proto.Message):
             the custom voice matching the specified configuration.
     """
 
-    language_code = proto.Field(proto.STRING, number=1,)
-    name = proto.Field(proto.STRING, number=2,)
-    ssml_gender = proto.Field(proto.ENUM, number=3, enum="SsmlVoiceGender",)
-    custom_voice = proto.Field(proto.MESSAGE, number=4, message="CustomVoiceParams",)
+    language_code = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    ssml_gender = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum="SsmlVoiceGender",
+    )
+    custom_voice = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="CustomVoiceParams",
+    )
 
 
 class AudioConfig(proto.Message):
@@ -268,12 +324,31 @@ class AudioConfig(proto.Message):
             for current supported profile ids.
     """
 
-    audio_encoding = proto.Field(proto.ENUM, number=1, enum="AudioEncoding",)
-    speaking_rate = proto.Field(proto.DOUBLE, number=2,)
-    pitch = proto.Field(proto.DOUBLE, number=3,)
-    volume_gain_db = proto.Field(proto.DOUBLE, number=4,)
-    sample_rate_hertz = proto.Field(proto.INT32, number=5,)
-    effects_profile_id = proto.RepeatedField(proto.STRING, number=6,)
+    audio_encoding = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum="AudioEncoding",
+    )
+    speaking_rate = proto.Field(
+        proto.DOUBLE,
+        number=2,
+    )
+    pitch = proto.Field(
+        proto.DOUBLE,
+        number=3,
+    )
+    volume_gain_db = proto.Field(
+        proto.DOUBLE,
+        number=4,
+    )
+    sample_rate_hertz = proto.Field(
+        proto.INT32,
+        number=5,
+    )
+    effects_profile_id = proto.RepeatedField(
+        proto.STRING,
+        number=6,
+    )
 
 
 class CustomVoiceParams(proto.Message):
@@ -297,8 +372,15 @@ class CustomVoiceParams(proto.Message):
         REALTIME = 1
         OFFLINE = 2
 
-    model = proto.Field(proto.STRING, number=1,)
-    reported_usage = proto.Field(proto.ENUM, number=3, enum=ReportedUsage,)
+    model = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    reported_usage = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=ReportedUsage,
+    )
 
 
 class SynthesizeSpeechResponse(proto.Message):
@@ -321,9 +403,20 @@ class SynthesizeSpeechResponse(proto.Message):
             The audio metadata of ``audio_content``.
     """
 
-    audio_content = proto.Field(proto.BYTES, number=1,)
-    timepoints = proto.RepeatedField(proto.MESSAGE, number=2, message="Timepoint",)
-    audio_config = proto.Field(proto.MESSAGE, number=4, message="AudioConfig",)
+    audio_content = proto.Field(
+        proto.BYTES,
+        number=1,
+    )
+    timepoints = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="Timepoint",
+    )
+    audio_config = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="AudioConfig",
+    )
 
 
 class Timepoint(proto.Message):
@@ -339,8 +432,14 @@ class Timepoint(proto.Message):
             synthesized audio.
     """
 
-    mark_name = proto.Field(proto.STRING, number=4,)
-    time_seconds = proto.Field(proto.DOUBLE, number=3,)
+    mark_name = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    time_seconds = proto.Field(
+        proto.DOUBLE,
+        number=3,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
