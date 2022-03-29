@@ -20,7 +20,9 @@ from google.protobuf import timestamp_pb2  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.orchestration.airflow.service.v1beta1",
-    manifest={"OperationMetadata",},
+    manifest={
+        "OperationMetadata",
+    },
 )
 
 
@@ -66,12 +68,34 @@ class OperationMetadata(proto.Message):
         UPDATE = 3
         CHECK = 4
 
-    state = proto.Field(proto.ENUM, number=1, enum=State,)
-    operation_type = proto.Field(proto.ENUM, number=2, enum=Type,)
-    resource = proto.Field(proto.STRING, number=3,)
-    resource_uuid = proto.Field(proto.STRING, number=4,)
-    create_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
-    end_time = proto.Field(proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,)
+    state = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=State,
+    )
+    operation_type = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=Type,
+    )
+    resource = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    resource_uuid = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

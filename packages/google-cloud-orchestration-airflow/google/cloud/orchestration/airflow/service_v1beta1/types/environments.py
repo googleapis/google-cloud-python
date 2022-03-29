@@ -59,8 +59,15 @@ class CreateEnvironmentRequest(proto.Message):
             The environment to create.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    environment = proto.Field(proto.MESSAGE, number=2, message="Environment",)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    environment = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="Environment",
+    )
 
 
 class GetEnvironmentRequest(proto.Message):
@@ -73,7 +80,10 @@ class GetEnvironmentRequest(proto.Message):
             "projects/{projectId}/locations/{locationId}/environments/{environmentId}".
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListEnvironmentsRequest(proto.Message):
@@ -91,9 +101,18 @@ class ListEnvironmentsRequest(proto.Message):
             request, if any.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListEnvironmentsResponse(proto.Message):
@@ -112,8 +131,15 @@ class ListEnvironmentsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    environments = proto.RepeatedField(proto.MESSAGE, number=1, message="Environment",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    environments = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Environment",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class DeleteEnvironmentRequest(proto.Message):
@@ -125,7 +151,10 @@ class DeleteEnvironmentRequest(proto.Message):
             "projects/{projectId}/locations/{locationId}/environments/{environmentId}".
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class UpdateEnvironmentRequest(proto.Message):
@@ -314,10 +343,19 @@ class UpdateEnvironmentRequest(proto.Message):
                   components may be under maintenance.
     """
 
-    name = proto.Field(proto.STRING, number=2,)
-    environment = proto.Field(proto.MESSAGE, number=1, message="Environment",)
+    name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    environment = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="Environment",
+    )
     update_mask = proto.Field(
-        proto.MESSAGE, number=3, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=3,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -331,7 +369,10 @@ class RestartWebServerRequest(proto.Message):
             "projects/{projectId}/locations/{locationId}/environments/{environmentId}".
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class EnvironmentConfig(proto.Message):
@@ -424,30 +465,72 @@ class EnvironmentConfig(proto.Message):
         ENVIRONMENT_SIZE_MEDIUM = 2
         ENVIRONMENT_SIZE_LARGE = 3
 
-    gke_cluster = proto.Field(proto.STRING, number=1,)
-    dag_gcs_prefix = proto.Field(proto.STRING, number=2,)
-    node_count = proto.Field(proto.INT32, number=3,)
-    software_config = proto.Field(proto.MESSAGE, number=4, message="SoftwareConfig",)
-    node_config = proto.Field(proto.MESSAGE, number=5, message="NodeConfig",)
+    gke_cluster = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    dag_gcs_prefix = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    node_count = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    software_config = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="SoftwareConfig",
+    )
+    node_config = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message="NodeConfig",
+    )
     private_environment_config = proto.Field(
-        proto.MESSAGE, number=7, message="PrivateEnvironmentConfig",
+        proto.MESSAGE,
+        number=7,
+        message="PrivateEnvironmentConfig",
     )
     web_server_network_access_control = proto.Field(
-        proto.MESSAGE, number=9, message="WebServerNetworkAccessControl",
+        proto.MESSAGE,
+        number=9,
+        message="WebServerNetworkAccessControl",
     )
-    database_config = proto.Field(proto.MESSAGE, number=10, message="DatabaseConfig",)
+    database_config = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message="DatabaseConfig",
+    )
     web_server_config = proto.Field(
-        proto.MESSAGE, number=11, message="WebServerConfig",
+        proto.MESSAGE,
+        number=11,
+        message="WebServerConfig",
     )
-    airflow_uri = proto.Field(proto.STRING, number=6,)
+    airflow_uri = proto.Field(
+        proto.STRING,
+        number=6,
+    )
     encryption_config = proto.Field(
-        proto.MESSAGE, number=12, message="EncryptionConfig",
+        proto.MESSAGE,
+        number=12,
+        message="EncryptionConfig",
     )
     maintenance_window = proto.Field(
-        proto.MESSAGE, number=13, message="MaintenanceWindow",
+        proto.MESSAGE,
+        number=13,
+        message="MaintenanceWindow",
     )
-    workloads_config = proto.Field(proto.MESSAGE, number=15, message="WorkloadsConfig",)
-    environment_size = proto.Field(proto.ENUM, number=16, enum=EnvironmentSize,)
+    workloads_config = proto.Field(
+        proto.MESSAGE,
+        number=15,
+        message="WorkloadsConfig",
+    )
+    environment_size = proto.Field(
+        proto.ENUM,
+        number=16,
+        enum=EnvironmentSize,
+    )
 
 
 class WebServerNetworkAccessControl(proto.Message):
@@ -479,11 +562,19 @@ class WebServerNetworkAccessControl(proto.Message):
                 contain at most 300 characters.
         """
 
-        value = proto.Field(proto.STRING, number=1,)
-        description = proto.Field(proto.STRING, number=2,)
+        value = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        description = proto.Field(
+            proto.STRING,
+            number=2,
+        )
 
     allowed_ip_ranges = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=AllowedIpRange,
+        proto.MESSAGE,
+        number=1,
+        message=AllowedIpRange,
     )
 
 
@@ -576,11 +667,29 @@ class SoftwareConfig(proto.Message):
             default is '3'. Cannot be updated.
     """
 
-    image_version = proto.Field(proto.STRING, number=1,)
-    airflow_config_overrides = proto.MapField(proto.STRING, proto.STRING, number=2,)
-    pypi_packages = proto.MapField(proto.STRING, proto.STRING, number=3,)
-    env_variables = proto.MapField(proto.STRING, proto.STRING, number=4,)
-    python_version = proto.Field(proto.STRING, number=6,)
+    image_version = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    airflow_config_overrides = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=2,
+    )
+    pypi_packages = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=3,
+    )
+    env_variables = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=4,
+    )
+    python_version = proto.Field(
+        proto.STRING,
+        number=6,
+    )
 
 
 class IPAllocationPolicy(proto.Message):
@@ -649,11 +758,26 @@ class IPAllocationPolicy(proto.Message):
             ``services_ipv4_cidr_block`` but not both.
     """
 
-    use_ip_aliases = proto.Field(proto.BOOL, number=1,)
-    cluster_secondary_range_name = proto.Field(proto.STRING, number=2,)
-    services_secondary_range_name = proto.Field(proto.STRING, number=3,)
-    cluster_ipv4_cidr_block = proto.Field(proto.STRING, number=4,)
-    services_ipv4_cidr_block = proto.Field(proto.STRING, number=5,)
+    use_ip_aliases = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
+    cluster_secondary_range_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    services_secondary_range_name = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    cluster_ipv4_cidr_block = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    services_ipv4_cidr_block = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class NodeConfig(proto.Message):
@@ -764,18 +888,47 @@ class NodeConfig(proto.Message):
             Cannot be updated.
     """
 
-    location = proto.Field(proto.STRING, number=1,)
-    machine_type = proto.Field(proto.STRING, number=2,)
-    network = proto.Field(proto.STRING, number=3,)
-    subnetwork = proto.Field(proto.STRING, number=4,)
-    disk_size_gb = proto.Field(proto.INT32, number=5,)
-    oauth_scopes = proto.RepeatedField(proto.STRING, number=6,)
-    service_account = proto.Field(proto.STRING, number=7,)
-    tags = proto.RepeatedField(proto.STRING, number=8,)
-    ip_allocation_policy = proto.Field(
-        proto.MESSAGE, number=9, message="IPAllocationPolicy",
+    location = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    max_pods_per_node = proto.Field(proto.INT32, number=10,)
+    machine_type = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    network = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    subnetwork = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    disk_size_gb = proto.Field(
+        proto.INT32,
+        number=5,
+    )
+    oauth_scopes = proto.RepeatedField(
+        proto.STRING,
+        number=6,
+    )
+    service_account = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    tags = proto.RepeatedField(
+        proto.STRING,
+        number=8,
+    )
+    ip_allocation_policy = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message="IPAllocationPolicy",
+    )
+    max_pods_per_node = proto.Field(
+        proto.INT32,
+        number=10,
+    )
 
 
 class PrivateClusterConfig(proto.Message):
@@ -801,9 +954,18 @@ class PrivateClusterConfig(proto.Message):
             within the cluster's network.
     """
 
-    enable_private_endpoint = proto.Field(proto.BOOL, number=1,)
-    master_ipv4_cidr_block = proto.Field(proto.STRING, number=2,)
-    master_ipv4_reserved_range = proto.Field(proto.STRING, number=3,)
+    enable_private_endpoint = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
+    master_ipv4_cidr_block = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    master_ipv4_reserved_range = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class PrivateEnvironmentConfig(proto.Message):
@@ -848,15 +1010,35 @@ class PrivateEnvironmentConfig(proto.Message):
             versions composer-2.\ *.*-airflow-*.*.\* and newer.
     """
 
-    enable_private_environment = proto.Field(proto.BOOL, number=1,)
-    private_cluster_config = proto.Field(
-        proto.MESSAGE, number=2, message="PrivateClusterConfig",
+    enable_private_environment = proto.Field(
+        proto.BOOL,
+        number=1,
     )
-    web_server_ipv4_cidr_block = proto.Field(proto.STRING, number=3,)
-    cloud_sql_ipv4_cidr_block = proto.Field(proto.STRING, number=4,)
-    web_server_ipv4_reserved_range = proto.Field(proto.STRING, number=5,)
-    cloud_composer_network_ipv4_cidr_block = proto.Field(proto.STRING, number=7,)
-    cloud_composer_network_ipv4_reserved_range = proto.Field(proto.STRING, number=8,)
+    private_cluster_config = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="PrivateClusterConfig",
+    )
+    web_server_ipv4_cidr_block = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    cloud_sql_ipv4_cidr_block = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    web_server_ipv4_reserved_range = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    cloud_composer_network_ipv4_cidr_block = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    cloud_composer_network_ipv4_reserved_range = proto.Field(
+        proto.STRING,
+        number=8,
+    )
 
 
 class DatabaseConfig(proto.Message):
@@ -872,7 +1054,10 @@ class DatabaseConfig(proto.Message):
             specified, db-n1-standard-2 will be used.
     """
 
-    machine_type = proto.Field(proto.STRING, number=1,)
+    machine_type = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class WebServerConfig(proto.Message):
@@ -891,7 +1076,10 @@ class WebServerConfig(proto.Message):
             manually changed to a non-standard values.
     """
 
-    machine_type = proto.Field(proto.STRING, number=1,)
+    machine_type = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class EncryptionConfig(proto.Message):
@@ -906,7 +1094,10 @@ class EncryptionConfig(proto.Message):
             Google-managed key will be used.
     """
 
-    kms_key_name = proto.Field(proto.STRING, number=1,)
+    kms_key_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class MaintenanceWindow(proto.Message):
@@ -941,9 +1132,20 @@ class MaintenanceWindow(proto.Message):
             ``FREQ=WEEKLY;BYDAY=TU,WE``, ``FREQ=DAILY``.
     """
 
-    start_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
-    end_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    recurrence = proto.Field(proto.STRING, number=3,)
+    start_time = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    recurrence = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class WorkloadsConfig(proto.Message):
@@ -979,10 +1181,22 @@ class WorkloadsConfig(proto.Message):
                 Optional. The number of schedulers.
         """
 
-        cpu = proto.Field(proto.FLOAT, number=1,)
-        memory_gb = proto.Field(proto.FLOAT, number=2,)
-        storage_gb = proto.Field(proto.FLOAT, number=3,)
-        count = proto.Field(proto.INT32, number=4,)
+        cpu = proto.Field(
+            proto.FLOAT,
+            number=1,
+        )
+        memory_gb = proto.Field(
+            proto.FLOAT,
+            number=2,
+        )
+        storage_gb = proto.Field(
+            proto.FLOAT,
+            number=3,
+        )
+        count = proto.Field(
+            proto.INT32,
+            number=4,
+        )
 
     class WebServerResource(proto.Message):
         r"""Configuration for resources used by Airflow web server.
@@ -999,9 +1213,18 @@ class WorkloadsConfig(proto.Message):
                 Airflow web server.
         """
 
-        cpu = proto.Field(proto.FLOAT, number=1,)
-        memory_gb = proto.Field(proto.FLOAT, number=2,)
-        storage_gb = proto.Field(proto.FLOAT, number=3,)
+        cpu = proto.Field(
+            proto.FLOAT,
+            number=1,
+        )
+        memory_gb = proto.Field(
+            proto.FLOAT,
+            number=2,
+        )
+        storage_gb = proto.Field(
+            proto.FLOAT,
+            number=3,
+        )
 
     class WorkerResource(proto.Message):
         r"""Configuration for resources used by Airflow workers.
@@ -1024,15 +1247,42 @@ class WorkloadsConfig(proto.Message):
                 autoscaling.
         """
 
-        cpu = proto.Field(proto.FLOAT, number=1,)
-        memory_gb = proto.Field(proto.FLOAT, number=2,)
-        storage_gb = proto.Field(proto.FLOAT, number=3,)
-        min_count = proto.Field(proto.INT32, number=4,)
-        max_count = proto.Field(proto.INT32, number=5,)
+        cpu = proto.Field(
+            proto.FLOAT,
+            number=1,
+        )
+        memory_gb = proto.Field(
+            proto.FLOAT,
+            number=2,
+        )
+        storage_gb = proto.Field(
+            proto.FLOAT,
+            number=3,
+        )
+        min_count = proto.Field(
+            proto.INT32,
+            number=4,
+        )
+        max_count = proto.Field(
+            proto.INT32,
+            number=5,
+        )
 
-    scheduler = proto.Field(proto.MESSAGE, number=1, message=SchedulerResource,)
-    web_server = proto.Field(proto.MESSAGE, number=2, message=WebServerResource,)
-    worker = proto.Field(proto.MESSAGE, number=3, message=WorkerResource,)
+    scheduler = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=SchedulerResource,
+    )
+    web_server = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=WebServerResource,
+    )
+    worker = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=WorkerResource,
+    )
 
 
 class Environment(proto.Message):
@@ -1085,13 +1335,39 @@ class Environment(proto.Message):
         DELETING = 4
         ERROR = 5
 
-    name = proto.Field(proto.STRING, number=1,)
-    config = proto.Field(proto.MESSAGE, number=2, message="EnvironmentConfig",)
-    uuid = proto.Field(proto.STRING, number=3,)
-    state = proto.Field(proto.ENUM, number=4, enum=State,)
-    create_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=7,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    config = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="EnvironmentConfig",
+    )
+    uuid = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=State,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=7,
+    )
 
 
 class CheckUpgradeRequest(proto.Message):
@@ -1128,8 +1404,14 @@ class CheckUpgradeRequest(proto.Message):
             (/composer/docs/concepts/versioning/composer-versions).
     """
 
-    environment = proto.Field(proto.STRING, number=1,)
-    image_version = proto.Field(proto.STRING, number=2,)
+    environment = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    image_version = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class CheckUpgradeResponse(proto.Message):
@@ -1164,13 +1446,28 @@ class CheckUpgradeResponse(proto.Message):
         CONFLICT = 1
         NO_CONFLICT = 2
 
-    build_log_uri = proto.Field(proto.STRING, number=1,)
-    contains_pypi_modules_conflict = proto.Field(
-        proto.ENUM, number=4, enum=ConflictResult,
+    build_log_uri = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    pypi_conflict_build_log_extract = proto.Field(proto.STRING, number=3,)
-    image_version = proto.Field(proto.STRING, number=5,)
-    pypi_dependencies = proto.MapField(proto.STRING, proto.STRING, number=6,)
+    contains_pypi_modules_conflict = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=ConflictResult,
+    )
+    pypi_conflict_build_log_extract = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    image_version = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    pypi_dependencies = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=6,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

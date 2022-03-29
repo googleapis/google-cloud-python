@@ -20,7 +20,11 @@ from google.type import date_pb2  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.orchestration.airflow.service.v1",
-    manifest={"ListImageVersionsRequest", "ListImageVersionsResponse", "ImageVersion",},
+    manifest={
+        "ListImageVersionsRequest",
+        "ListImageVersionsResponse",
+        "ImageVersion",
+    },
 )
 
 
@@ -42,10 +46,22 @@ class ListImageVersionsRequest(proto.Message):
             releases should be included.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    include_past_releases = proto.Field(proto.BOOL, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    include_past_releases = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
 
 
 class ListImageVersionsResponse(proto.Message):
@@ -65,9 +81,14 @@ class ListImageVersionsResponse(proto.Message):
         return self
 
     image_versions = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="ImageVersion",
+        proto.MESSAGE,
+        number=1,
+        message="ImageVersion",
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class ImageVersion(proto.Message):
@@ -93,12 +114,31 @@ class ImageVersion(proto.Message):
             environment running with the image version.
     """
 
-    image_version_id = proto.Field(proto.STRING, number=1,)
-    is_default = proto.Field(proto.BOOL, number=2,)
-    supported_python_versions = proto.RepeatedField(proto.STRING, number=3,)
-    release_date = proto.Field(proto.MESSAGE, number=4, message=date_pb2.Date,)
-    creation_disabled = proto.Field(proto.BOOL, number=5,)
-    upgrade_disabled = proto.Field(proto.BOOL, number=6,)
+    image_version_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    is_default = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+    supported_python_versions = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+    release_date = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=date_pb2.Date,
+    )
+    creation_disabled = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
+    upgrade_disabled = proto.Field(
+        proto.BOOL,
+        number=6,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
