@@ -34,7 +34,9 @@ from google.longrunning import operations_pb2  # type: ignore
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-eventarc",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-eventarc",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
@@ -124,34 +126,54 @@ class EventarcTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.get_trigger: gapic_v1.method.wrap_method(
-                self.get_trigger, default_timeout=None, client_info=client_info,
+                self.get_trigger,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_triggers: gapic_v1.method.wrap_method(
-                self.list_triggers, default_timeout=None, client_info=client_info,
+                self.list_triggers,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.create_trigger: gapic_v1.method.wrap_method(
-                self.create_trigger, default_timeout=None, client_info=client_info,
+                self.create_trigger,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.update_trigger: gapic_v1.method.wrap_method(
-                self.update_trigger, default_timeout=None, client_info=client_info,
+                self.update_trigger,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.delete_trigger: gapic_v1.method.wrap_method(
-                self.delete_trigger, default_timeout=None, client_info=client_info,
+                self.delete_trigger,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_channel: gapic_v1.method.wrap_method(
-                self.get_channel, default_timeout=None, client_info=client_info,
+                self.get_channel,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_channels: gapic_v1.method.wrap_method(
-                self.list_channels, default_timeout=None, client_info=client_info,
+                self.list_channels,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.create_channel_: gapic_v1.method.wrap_method(
-                self.create_channel_, default_timeout=None, client_info=client_info,
+                self.create_channel_,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.update_channel: gapic_v1.method.wrap_method(
-                self.update_channel, default_timeout=None, client_info=client_info,
+                self.update_channel,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.delete_channel: gapic_v1.method.wrap_method(
-                self.delete_channel, default_timeout=None, client_info=client_info,
+                self.delete_channel,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_channel_connection: gapic_v1.method.wrap_method(
                 self.get_channel_connection,
@@ -178,9 +200,9 @@ class EventarcTransport(abc.ABC):
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

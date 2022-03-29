@@ -63,7 +63,10 @@ class EventarcClientMeta(type):
     _transport_registry["grpc"] = EventarcGrpcTransport
     _transport_registry["grpc_asyncio"] = EventarcGrpcAsyncIOTransport
 
-    def get_transport_class(cls, label: str = None,) -> Type[EventarcTransport]:
+    def get_transport_class(
+        cls,
+        label: str = None,
+    ) -> Type[EventarcTransport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -171,10 +174,16 @@ class EventarcClient(metaclass=EventarcClientMeta):
         return self._transport
 
     @staticmethod
-    def channel_path(project: str, location: str, channel: str,) -> str:
+    def channel_path(
+        project: str,
+        location: str,
+        channel: str,
+    ) -> str:
         """Returns a fully-qualified channel string."""
         return "projects/{project}/locations/{location}/channels/{channel}".format(
-            project=project, location=location, channel=channel,
+            project=project,
+            location=location,
+            channel=channel,
         )
 
     @staticmethod
@@ -188,11 +197,15 @@ class EventarcClient(metaclass=EventarcClientMeta):
 
     @staticmethod
     def channel_connection_path(
-        project: str, location: str, channel_connection: str,
+        project: str,
+        location: str,
+        channel_connection: str,
     ) -> str:
         """Returns a fully-qualified channel_connection string."""
         return "projects/{project}/locations/{location}/channelConnections/{channel_connection}".format(
-            project=project, location=location, channel_connection=channel_connection,
+            project=project,
+            location=location,
+            channel_connection=channel_connection,
         )
 
     @staticmethod
@@ -205,10 +218,16 @@ class EventarcClient(metaclass=EventarcClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def cloud_function_path(project: str, location: str, function: str,) -> str:
+    def cloud_function_path(
+        project: str,
+        location: str,
+        function: str,
+    ) -> str:
         """Returns a fully-qualified cloud_function string."""
         return "projects/{project}/locations/{location}/functions/{function}".format(
-            project=project, location=location, function=function,
+            project=project,
+            location=location,
+            function=function,
         )
 
     @staticmethod
@@ -226,10 +245,14 @@ class EventarcClient(metaclass=EventarcClientMeta):
         return "*".format()
 
     @staticmethod
-    def service_account_path(project: str, service_account: str,) -> str:
+    def service_account_path(
+        project: str,
+        service_account: str,
+    ) -> str:
         """Returns a fully-qualified service_account string."""
         return "projects/{project}/serviceAccounts/{service_account}".format(
-            project=project, service_account=service_account,
+            project=project,
+            service_account=service_account,
         )
 
     @staticmethod
@@ -242,10 +265,16 @@ class EventarcClient(metaclass=EventarcClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def trigger_path(project: str, location: str, trigger: str,) -> str:
+    def trigger_path(
+        project: str,
+        location: str,
+        trigger: str,
+    ) -> str:
         """Returns a fully-qualified trigger string."""
         return "projects/{project}/locations/{location}/triggers/{trigger}".format(
-            project=project, location=location, trigger=trigger,
+            project=project,
+            location=location,
+            trigger=trigger,
         )
 
     @staticmethod
@@ -258,7 +287,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_billing_account_path(billing_account: str,) -> str:
+    def common_billing_account_path(
+        billing_account: str,
+    ) -> str:
         """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
@@ -271,9 +302,13 @@ class EventarcClient(metaclass=EventarcClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(folder: str,) -> str:
+    def common_folder_path(
+        folder: str,
+    ) -> str:
         """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(folder=folder,)
+        return "folders/{folder}".format(
+            folder=folder,
+        )
 
     @staticmethod
     def parse_common_folder_path(path: str) -> Dict[str, str]:
@@ -282,9 +317,13 @@ class EventarcClient(metaclass=EventarcClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(organization: str,) -> str:
+    def common_organization_path(
+        organization: str,
+    ) -> str:
         """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(organization=organization,)
+        return "organizations/{organization}".format(
+            organization=organization,
+        )
 
     @staticmethod
     def parse_common_organization_path(path: str) -> Dict[str, str]:
@@ -293,9 +332,13 @@ class EventarcClient(metaclass=EventarcClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(project: str,) -> str:
+    def common_project_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified project string."""
-        return "projects/{project}".format(project=project,)
+        return "projects/{project}".format(
+            project=project,
+        )
 
     @staticmethod
     def parse_common_project_path(path: str) -> Dict[str, str]:
@@ -304,10 +347,14 @@ class EventarcClient(metaclass=EventarcClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(project: str, location: str,) -> str:
+    def common_location_path(
+        project: str,
+        location: str,
+    ) -> str:
         """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
-            project=project, location=location,
+            project=project,
+            location=location,
         )
 
     @staticmethod
@@ -566,7 +613,12 @@ class EventarcClient(metaclass=EventarcClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -659,12 +711,20 @@ class EventarcClient(metaclass=EventarcClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListTriggersPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -792,7 +852,12 @@ class EventarcClient(metaclass=EventarcClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -920,7 +985,12 @@ class EventarcClient(metaclass=EventarcClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1037,7 +1107,12 @@ class EventarcClient(metaclass=EventarcClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1141,7 +1216,12 @@ class EventarcClient(metaclass=EventarcClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1234,12 +1314,20 @@ class EventarcClient(metaclass=EventarcClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListChannelsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1368,7 +1456,12 @@ class EventarcClient(metaclass=EventarcClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1488,7 +1581,12 @@ class EventarcClient(metaclass=EventarcClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1597,7 +1695,12 @@ class EventarcClient(metaclass=EventarcClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1700,7 +1803,12 @@ class EventarcClient(metaclass=EventarcClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1794,12 +1902,20 @@ class EventarcClient(metaclass=EventarcClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListChannelConnectionsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1929,7 +2045,12 @@ class EventarcClient(metaclass=EventarcClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -2038,7 +2159,12 @@ class EventarcClient(metaclass=EventarcClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -2067,7 +2193,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-eventarc",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-eventarc",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()

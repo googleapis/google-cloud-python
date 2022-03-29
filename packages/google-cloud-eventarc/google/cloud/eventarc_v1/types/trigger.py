@@ -99,17 +99,56 @@ class Trigger(proto.Message):
             proceeding.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    uid = proto.Field(proto.STRING, number=2,)
-    create_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,)
-    event_filters = proto.RepeatedField(proto.MESSAGE, number=8, message="EventFilter",)
-    service_account = proto.Field(proto.STRING, number=9,)
-    destination = proto.Field(proto.MESSAGE, number=10, message="Destination",)
-    transport = proto.Field(proto.MESSAGE, number=11, message="Transport",)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=12,)
-    channel = proto.Field(proto.STRING, number=13,)
-    etag = proto.Field(proto.STRING, number=99,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    uid = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
+    )
+    event_filters = proto.RepeatedField(
+        proto.MESSAGE,
+        number=8,
+        message="EventFilter",
+    )
+    service_account = proto.Field(
+        proto.STRING,
+        number=9,
+    )
+    destination = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message="Destination",
+    )
+    transport = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message="Transport",
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=12,
+    )
+    channel = proto.Field(
+        proto.STRING,
+        number=13,
+    )
+    etag = proto.Field(
+        proto.STRING,
+        number=99,
+    )
 
 
 class EventFilter(proto.Message):
@@ -132,9 +171,18 @@ class EventFilter(proto.Message):
             The only allowed value is ``match-path-pattern``.
     """
 
-    attribute = proto.Field(proto.STRING, number=1,)
-    value = proto.Field(proto.STRING, number=2,)
-    operator = proto.Field(proto.STRING, number=3,)
+    attribute = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    value = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    operator = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class Destination(proto.Message):
@@ -169,10 +217,22 @@ class Destination(proto.Message):
     """
 
     cloud_run = proto.Field(
-        proto.MESSAGE, number=1, oneof="descriptor", message="CloudRun",
+        proto.MESSAGE,
+        number=1,
+        oneof="descriptor",
+        message="CloudRun",
     )
-    cloud_function = proto.Field(proto.STRING, number=2, oneof="descriptor",)
-    gke = proto.Field(proto.MESSAGE, number=3, oneof="descriptor", message="GKE",)
+    cloud_function = proto.Field(
+        proto.STRING,
+        number=2,
+        oneof="descriptor",
+    )
+    gke = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="descriptor",
+        message="GKE",
+    )
 
 
 class Transport(proto.Message):
@@ -191,7 +251,10 @@ class Transport(proto.Message):
     """
 
     pubsub = proto.Field(
-        proto.MESSAGE, number=1, oneof="intermediary", message="Pubsub",
+        proto.MESSAGE,
+        number=1,
+        oneof="intermediary",
+        message="Pubsub",
     )
 
 
@@ -216,9 +279,18 @@ class CloudRun(proto.Message):
             deployed in.
     """
 
-    service = proto.Field(proto.STRING, number=1,)
-    path = proto.Field(proto.STRING, number=2,)
-    region = proto.Field(proto.STRING, number=3,)
+    service = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    path = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    region = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class GKE(proto.Message):
@@ -250,11 +322,26 @@ class GKE(proto.Message):
             Examples: "/route", "route", "route/subroute".
     """
 
-    cluster = proto.Field(proto.STRING, number=1,)
-    location = proto.Field(proto.STRING, number=2,)
-    namespace = proto.Field(proto.STRING, number=3,)
-    service = proto.Field(proto.STRING, number=4,)
-    path = proto.Field(proto.STRING, number=5,)
+    cluster = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    location = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    namespace = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    service = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    path = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class Pubsub(proto.Message):
@@ -277,8 +364,14 @@ class Pubsub(proto.Message):
             ``projects/{PROJECT_ID}/subscriptions/{SUBSCRIPTION_NAME}``.
     """
 
-    topic = proto.Field(proto.STRING, number=1,)
-    subscription = proto.Field(proto.STRING, number=2,)
+    topic = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    subscription = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

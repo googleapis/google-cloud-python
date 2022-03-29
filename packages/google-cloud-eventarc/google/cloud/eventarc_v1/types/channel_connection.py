@@ -19,7 +19,10 @@ from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.eventarc.v1", manifest={"ChannelConnection",},
+    package="google.cloud.eventarc.v1",
+    manifest={
+        "ChannelConnection",
+    },
 )
 
 
@@ -54,12 +57,32 @@ class ChannelConnection(proto.Message):
             in the provider resource.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    uid = proto.Field(proto.STRING, number=2,)
-    channel = proto.Field(proto.STRING, number=5,)
-    create_time = proto.Field(proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=7, message=timestamp_pb2.Timestamp,)
-    activation_token = proto.Field(proto.STRING, number=8,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    uid = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    channel = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=timestamp_pb2.Timestamp,
+    )
+    activation_token = proto.Field(
+        proto.STRING,
+        number=8,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

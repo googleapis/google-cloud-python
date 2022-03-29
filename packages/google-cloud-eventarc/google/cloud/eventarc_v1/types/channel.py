@@ -18,7 +18,12 @@ import proto  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
 
-__protobuf__ = proto.module(package="google.cloud.eventarc.v1", manifest={"Channel",},)
+__protobuf__ = proto.module(
+    package="google.cloud.eventarc.v1",
+    manifest={
+        "Channel",
+    },
+)
 
 
 class Channel(proto.Message):
@@ -73,14 +78,42 @@ class Channel(proto.Message):
         ACTIVE = 2
         INACTIVE = 3
 
-    name = proto.Field(proto.STRING, number=1,)
-    uid = proto.Field(proto.STRING, number=2,)
-    create_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,)
-    provider = proto.Field(proto.STRING, number=7,)
-    pubsub_topic = proto.Field(proto.STRING, number=8, oneof="transport",)
-    state = proto.Field(proto.ENUM, number=9, enum=State,)
-    activation_token = proto.Field(proto.STRING, number=10,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    uid = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
+    )
+    provider = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    pubsub_topic = proto.Field(
+        proto.STRING,
+        number=8,
+        oneof="transport",
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=9,
+        enum=State,
+    )
+    activation_token = proto.Field(
+        proto.STRING,
+        number=10,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

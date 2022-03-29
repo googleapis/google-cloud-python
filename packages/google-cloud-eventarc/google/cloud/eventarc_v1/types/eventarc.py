@@ -55,7 +55,10 @@ class GetTriggerRequest(proto.Message):
             Required. The name of the trigger to get.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListTriggersRequest(proto.Message):
@@ -84,10 +87,22 @@ class ListTriggersRequest(proto.Message):
             ``name desc, trigger_id``.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    order_by = proto.Field(proto.STRING, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    order_by = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class ListTriggersResponse(proto.Message):
@@ -110,10 +125,18 @@ class ListTriggersResponse(proto.Message):
         return self
 
     triggers = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=gce_trigger.Trigger,
+        proto.MESSAGE,
+        number=1,
+        message=gce_trigger.Trigger,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
-    unreachable = proto.RepeatedField(proto.STRING, number=3,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 class CreateTriggerRequest(proto.Message):
@@ -133,10 +156,23 @@ class CreateTriggerRequest(proto.Message):
             preview the review, but do not post it.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    trigger = proto.Field(proto.MESSAGE, number=2, message=gce_trigger.Trigger,)
-    trigger_id = proto.Field(proto.STRING, number=3,)
-    validate_only = proto.Field(proto.BOOL, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    trigger = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=gce_trigger.Trigger,
+    )
+    trigger_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    validate_only = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
 
 
 class UpdateTriggerRequest(proto.Message):
@@ -159,12 +195,24 @@ class UpdateTriggerRequest(proto.Message):
             preview the review, but do not post it.
     """
 
-    trigger = proto.Field(proto.MESSAGE, number=1, message=gce_trigger.Trigger,)
-    update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+    trigger = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=gce_trigger.Trigger,
     )
-    allow_missing = proto.Field(proto.BOOL, number=3,)
-    validate_only = proto.Field(proto.BOOL, number=4,)
+    update_mask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+    allow_missing = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+    validate_only = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
 
 
 class DeleteTriggerRequest(proto.Message):
@@ -187,10 +235,22 @@ class DeleteTriggerRequest(proto.Message):
             preview the review, but do not post it.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    etag = proto.Field(proto.STRING, number=2,)
-    allow_missing = proto.Field(proto.BOOL, number=3,)
-    validate_only = proto.Field(proto.BOOL, number=4,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    etag = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    allow_missing = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+    validate_only = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
 
 
 class GetChannelRequest(proto.Message):
@@ -201,7 +261,10 @@ class GetChannelRequest(proto.Message):
             Required. The name of the channel to get.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListChannelsRequest(proto.Message):
@@ -230,10 +293,22 @@ class ListChannelsRequest(proto.Message):
             ``name desc, channel_id``.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    order_by = proto.Field(proto.STRING, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    order_by = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class ListChannelsResponse(proto.Message):
@@ -256,10 +331,18 @@ class ListChannelsResponse(proto.Message):
         return self
 
     channels = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=gce_channel.Channel,
+        proto.MESSAGE,
+        number=1,
+        message=gce_channel.Channel,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
-    unreachable = proto.RepeatedField(proto.STRING, number=3,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 class CreateChannelRequest(proto.Message):
@@ -279,10 +362,23 @@ class CreateChannelRequest(proto.Message):
             preview the review, but do not post it.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    channel = proto.Field(proto.MESSAGE, number=2, message=gce_channel.Channel,)
-    channel_id = proto.Field(proto.STRING, number=3,)
-    validate_only = proto.Field(proto.BOOL, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    channel = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=gce_channel.Channel,
+    )
+    channel_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    validate_only = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
 
 
 class UpdateChannelRequest(proto.Message):
@@ -301,11 +397,20 @@ class UpdateChannelRequest(proto.Message):
             preview the review, but do not post it.
     """
 
-    channel = proto.Field(proto.MESSAGE, number=1, message=gce_channel.Channel,)
-    update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+    channel = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=gce_channel.Channel,
     )
-    validate_only = proto.Field(proto.BOOL, number=3,)
+    update_mask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+    validate_only = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
 
 
 class DeleteChannelRequest(proto.Message):
@@ -320,8 +425,14 @@ class DeleteChannelRequest(proto.Message):
             preview the review, but do not post it.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    validate_only = proto.Field(proto.BOOL, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    validate_only = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
 
 
 class GetChannelConnectionRequest(proto.Message):
@@ -333,7 +444,10 @@ class GetChannelConnectionRequest(proto.Message):
             to get.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListChannelConnectionsRequest(proto.Message):
@@ -358,9 +472,18 @@ class ListChannelConnectionsRequest(proto.Message):
             page token.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListChannelConnectionsResponse(proto.Message):
@@ -383,10 +506,18 @@ class ListChannelConnectionsResponse(proto.Message):
         return self
 
     channel_connections = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=gce_channel_connection.ChannelConnection,
+        proto.MESSAGE,
+        number=1,
+        message=gce_channel_connection.ChannelConnection,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
-    unreachable = proto.RepeatedField(proto.STRING, number=3,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 class CreateChannelConnectionRequest(proto.Message):
@@ -403,11 +534,19 @@ class CreateChannelConnectionRequest(proto.Message):
             to the channel connection.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    channel_connection = proto.Field(
-        proto.MESSAGE, number=2, message=gce_channel_connection.ChannelConnection,
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    channel_connection_id = proto.Field(proto.STRING, number=3,)
+    channel_connection = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=gce_channel_connection.ChannelConnection,
+    )
+    channel_connection_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class DeleteChannelConnectionRequest(proto.Message):
@@ -419,7 +558,10 @@ class DeleteChannelConnectionRequest(proto.Message):
             to delete.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class OperationMetadata(proto.Message):
@@ -452,13 +594,36 @@ class OperationMetadata(proto.Message):
             operation.
     """
 
-    create_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
-    end_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    target = proto.Field(proto.STRING, number=3,)
-    verb = proto.Field(proto.STRING, number=4,)
-    status_message = proto.Field(proto.STRING, number=5,)
-    requested_cancellation = proto.Field(proto.BOOL, number=6,)
-    api_version = proto.Field(proto.STRING, number=7,)
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    target = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    verb = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    status_message = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    requested_cancellation = proto.Field(
+        proto.BOOL,
+        number=6,
+    )
+    api_version = proto.Field(
+        proto.STRING,
+        number=7,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
