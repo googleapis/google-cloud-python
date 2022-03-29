@@ -22,7 +22,12 @@ from google.protobuf import timestamp_pb2  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.appengine.logging.v1",
-    manifest={"LogLine", "SourceLocation", "SourceReference", "RequestLog",},
+    manifest={
+        "LogLine",
+        "SourceLocation",
+        "SourceReference",
+        "RequestLog",
+    },
 )
 
 
@@ -42,10 +47,25 @@ class LogLine(proto.Message):
             written.
     """
 
-    time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
-    severity = proto.Field(proto.ENUM, number=2, enum=log_severity_pb2.LogSeverity,)
-    log_message = proto.Field(proto.STRING, number=3,)
-    source_location = proto.Field(proto.MESSAGE, number=4, message="SourceLocation",)
+    time = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    severity = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=log_severity_pb2.LogSeverity,
+    )
+    log_message = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    source_location = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="SourceLocation",
+    )
 
 
 class SourceLocation(proto.Message):
@@ -68,9 +88,18 @@ class SourceLocation(proto.Message):
             (Go), ``function`` (Python).
     """
 
-    file = proto.Field(proto.STRING, number=1,)
-    line = proto.Field(proto.INT64, number=2,)
-    function_name = proto.Field(proto.STRING, number=3,)
+    file = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    line = proto.Field(
+        proto.INT64,
+        number=2,
+    )
+    function_name = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class SourceReference(proto.Message):
@@ -88,8 +117,14 @@ class SourceReference(proto.Message):
             "0035781c50ec7aa23385dc841529ce8a4b70db1b".
     """
 
-    repository = proto.Field(proto.STRING, number=1,)
-    revision_id = proto.Field(proto.STRING, number=2,)
+    repository = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    revision_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class RequestLog(proto.Message):
@@ -205,40 +240,143 @@ class RequestLog(proto.Message):
             code is distributed among multiple repositories.
     """
 
-    app_id = proto.Field(proto.STRING, number=1,)
-    module_id = proto.Field(proto.STRING, number=37,)
-    version_id = proto.Field(proto.STRING, number=2,)
-    request_id = proto.Field(proto.STRING, number=3,)
-    ip = proto.Field(proto.STRING, number=4,)
-    start_time = proto.Field(proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,)
-    end_time = proto.Field(proto.MESSAGE, number=7, message=timestamp_pb2.Timestamp,)
-    latency = proto.Field(proto.MESSAGE, number=8, message=duration_pb2.Duration,)
-    mega_cycles = proto.Field(proto.INT64, number=9,)
-    method = proto.Field(proto.STRING, number=10,)
-    resource = proto.Field(proto.STRING, number=11,)
-    http_version = proto.Field(proto.STRING, number=12,)
-    status = proto.Field(proto.INT32, number=13,)
-    response_size = proto.Field(proto.INT64, number=14,)
-    referrer = proto.Field(proto.STRING, number=15,)
-    user_agent = proto.Field(proto.STRING, number=16,)
-    nickname = proto.Field(proto.STRING, number=40,)
-    url_map_entry = proto.Field(proto.STRING, number=17,)
-    host = proto.Field(proto.STRING, number=20,)
-    cost = proto.Field(proto.DOUBLE, number=21,)
-    task_queue_name = proto.Field(proto.STRING, number=22,)
-    task_name = proto.Field(proto.STRING, number=23,)
-    was_loading_request = proto.Field(proto.BOOL, number=24,)
-    pending_time = proto.Field(proto.MESSAGE, number=25, message=duration_pb2.Duration,)
-    instance_index = proto.Field(proto.INT32, number=26,)
-    finished = proto.Field(proto.BOOL, number=27,)
-    first = proto.Field(proto.BOOL, number=42,)
-    instance_id = proto.Field(proto.STRING, number=28,)
-    line = proto.RepeatedField(proto.MESSAGE, number=29, message="LogLine",)
-    app_engine_release = proto.Field(proto.STRING, number=38,)
-    trace_id = proto.Field(proto.STRING, number=39,)
-    trace_sampled = proto.Field(proto.BOOL, number=43,)
+    app_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    module_id = proto.Field(
+        proto.STRING,
+        number=37,
+    )
+    version_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    request_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    ip = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    start_time = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=timestamp_pb2.Timestamp,
+    )
+    latency = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=duration_pb2.Duration,
+    )
+    mega_cycles = proto.Field(
+        proto.INT64,
+        number=9,
+    )
+    method = proto.Field(
+        proto.STRING,
+        number=10,
+    )
+    resource = proto.Field(
+        proto.STRING,
+        number=11,
+    )
+    http_version = proto.Field(
+        proto.STRING,
+        number=12,
+    )
+    status = proto.Field(
+        proto.INT32,
+        number=13,
+    )
+    response_size = proto.Field(
+        proto.INT64,
+        number=14,
+    )
+    referrer = proto.Field(
+        proto.STRING,
+        number=15,
+    )
+    user_agent = proto.Field(
+        proto.STRING,
+        number=16,
+    )
+    nickname = proto.Field(
+        proto.STRING,
+        number=40,
+    )
+    url_map_entry = proto.Field(
+        proto.STRING,
+        number=17,
+    )
+    host = proto.Field(
+        proto.STRING,
+        number=20,
+    )
+    cost = proto.Field(
+        proto.DOUBLE,
+        number=21,
+    )
+    task_queue_name = proto.Field(
+        proto.STRING,
+        number=22,
+    )
+    task_name = proto.Field(
+        proto.STRING,
+        number=23,
+    )
+    was_loading_request = proto.Field(
+        proto.BOOL,
+        number=24,
+    )
+    pending_time = proto.Field(
+        proto.MESSAGE,
+        number=25,
+        message=duration_pb2.Duration,
+    )
+    instance_index = proto.Field(
+        proto.INT32,
+        number=26,
+    )
+    finished = proto.Field(
+        proto.BOOL,
+        number=27,
+    )
+    first = proto.Field(
+        proto.BOOL,
+        number=42,
+    )
+    instance_id = proto.Field(
+        proto.STRING,
+        number=28,
+    )
+    line = proto.RepeatedField(
+        proto.MESSAGE,
+        number=29,
+        message="LogLine",
+    )
+    app_engine_release = proto.Field(
+        proto.STRING,
+        number=38,
+    )
+    trace_id = proto.Field(
+        proto.STRING,
+        number=39,
+    )
+    trace_sampled = proto.Field(
+        proto.BOOL,
+        number=43,
+    )
     source_reference = proto.RepeatedField(
-        proto.MESSAGE, number=41, message="SourceReference",
+        proto.MESSAGE,
+        number=41,
+        message="SourceReference",
     )
 
 
