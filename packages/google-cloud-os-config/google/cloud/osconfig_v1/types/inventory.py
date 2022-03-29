@@ -96,14 +96,38 @@ class Inventory(proto.Message):
                 running on the VM.
         """
 
-        hostname = proto.Field(proto.STRING, number=9,)
-        long_name = proto.Field(proto.STRING, number=2,)
-        short_name = proto.Field(proto.STRING, number=3,)
-        version = proto.Field(proto.STRING, number=4,)
-        architecture = proto.Field(proto.STRING, number=5,)
-        kernel_version = proto.Field(proto.STRING, number=6,)
-        kernel_release = proto.Field(proto.STRING, number=7,)
-        osconfig_agent_version = proto.Field(proto.STRING, number=8,)
+        hostname = proto.Field(
+            proto.STRING,
+            number=9,
+        )
+        long_name = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        short_name = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+        version = proto.Field(
+            proto.STRING,
+            number=4,
+        )
+        architecture = proto.Field(
+            proto.STRING,
+            number=5,
+        )
+        kernel_version = proto.Field(
+            proto.STRING,
+            number=6,
+        )
+        kernel_release = proto.Field(
+            proto.STRING,
+            number=7,
+        )
+        osconfig_agent_version = proto.Field(
+            proto.STRING,
+            number=8,
+        )
 
     class Item(proto.Message):
         r"""A single piece of inventory on a VM.
@@ -150,17 +174,30 @@ class Inventory(proto.Message):
             INSTALLED_PACKAGE = 1
             AVAILABLE_PACKAGE = 2
 
-        id = proto.Field(proto.STRING, number=1,)
+        id = proto.Field(
+            proto.STRING,
+            number=1,
+        )
         origin_type = proto.Field(
-            proto.ENUM, number=2, enum="Inventory.Item.OriginType",
+            proto.ENUM,
+            number=2,
+            enum="Inventory.Item.OriginType",
         )
         create_time = proto.Field(
-            proto.MESSAGE, number=8, message=timestamp_pb2.Timestamp,
+            proto.MESSAGE,
+            number=8,
+            message=timestamp_pb2.Timestamp,
         )
         update_time = proto.Field(
-            proto.MESSAGE, number=9, message=timestamp_pb2.Timestamp,
+            proto.MESSAGE,
+            number=9,
+            message=timestamp_pb2.Timestamp,
         )
-        type_ = proto.Field(proto.ENUM, number=5, enum="Inventory.Item.Type",)
+        type_ = proto.Field(
+            proto.ENUM,
+            number=5,
+            enum="Inventory.Item.Type",
+        )
         installed_package = proto.Field(
             proto.MESSAGE,
             number=6,
@@ -263,7 +300,10 @@ class Inventory(proto.Message):
             message="Inventory.VersionedPackage",
         )
         zypper_patch = proto.Field(
-            proto.MESSAGE, number=5, oneof="details", message="Inventory.ZypperPatch",
+            proto.MESSAGE,
+            number=5,
+            oneof="details",
+            message="Inventory.ZypperPatch",
         )
         wua_package = proto.Field(
             proto.MESSAGE,
@@ -305,9 +345,18 @@ class Inventory(proto.Message):
                 The version of the package.
         """
 
-        package_name = proto.Field(proto.STRING, number=4,)
-        architecture = proto.Field(proto.STRING, number=2,)
-        version = proto.Field(proto.STRING, number=3,)
+        package_name = proto.Field(
+            proto.STRING,
+            number=4,
+        )
+        architecture = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        version = proto.Field(
+            proto.STRING,
+            number=3,
+        )
 
     class ZypperPatch(proto.Message):
         r"""Details related to a Zypper Patch.
@@ -324,10 +373,22 @@ class Inventory(proto.Message):
                 patch.
         """
 
-        patch_name = proto.Field(proto.STRING, number=5,)
-        category = proto.Field(proto.STRING, number=2,)
-        severity = proto.Field(proto.STRING, number=3,)
-        summary = proto.Field(proto.STRING, number=4,)
+        patch_name = proto.Field(
+            proto.STRING,
+            number=5,
+        )
+        category = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        severity = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+        summary = proto.Field(
+            proto.STRING,
+            number=4,
+        )
 
     class WindowsUpdatePackage(proto.Message):
         r"""Details related to a Windows Update package. Field data and names
@@ -376,23 +437,52 @@ class Inventory(proto.Message):
                     The name of the windows update category.
             """
 
-            id = proto.Field(proto.STRING, number=1,)
-            name = proto.Field(proto.STRING, number=2,)
+            id = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            name = proto.Field(
+                proto.STRING,
+                number=2,
+            )
 
-        title = proto.Field(proto.STRING, number=1,)
-        description = proto.Field(proto.STRING, number=2,)
+        title = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        description = proto.Field(
+            proto.STRING,
+            number=2,
+        )
         categories = proto.RepeatedField(
             proto.MESSAGE,
             number=3,
             message="Inventory.WindowsUpdatePackage.WindowsUpdateCategory",
         )
-        kb_article_ids = proto.RepeatedField(proto.STRING, number=4,)
-        support_url = proto.Field(proto.STRING, number=11,)
-        more_info_urls = proto.RepeatedField(proto.STRING, number=5,)
-        update_id = proto.Field(proto.STRING, number=6,)
-        revision_number = proto.Field(proto.INT32, number=7,)
+        kb_article_ids = proto.RepeatedField(
+            proto.STRING,
+            number=4,
+        )
+        support_url = proto.Field(
+            proto.STRING,
+            number=11,
+        )
+        more_info_urls = proto.RepeatedField(
+            proto.STRING,
+            number=5,
+        )
+        update_id = proto.Field(
+            proto.STRING,
+            number=6,
+        )
+        revision_number = proto.Field(
+            proto.INT32,
+            number=7,
+        )
         last_deployment_change_time = proto.Field(
-            proto.MESSAGE, number=10, message=timestamp_pb2.Timestamp,
+            proto.MESSAGE,
+            number=10,
+            message=timestamp_pb2.Timestamp,
         )
 
     class WindowsQuickFixEngineeringPackage(proto.Message):
@@ -415,11 +505,22 @@ class Inventory(proto.Message):
                 installed_on field.
         """
 
-        caption = proto.Field(proto.STRING, number=1,)
-        description = proto.Field(proto.STRING, number=2,)
-        hot_fix_id = proto.Field(proto.STRING, number=3,)
+        caption = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        description = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        hot_fix_id = proto.Field(
+            proto.STRING,
+            number=3,
+        )
         install_time = proto.Field(
-            proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,
+            proto.MESSAGE,
+            number=5,
+            message=timestamp_pb2.Timestamp,
         )
 
     class WindowsApplication(proto.Message):
@@ -447,16 +548,48 @@ class Inventory(proto.Message):
                 The internet address for technical support.
         """
 
-        display_name = proto.Field(proto.STRING, number=1,)
-        display_version = proto.Field(proto.STRING, number=2,)
-        publisher = proto.Field(proto.STRING, number=3,)
-        install_date = proto.Field(proto.MESSAGE, number=4, message=date_pb2.Date,)
-        help_link = proto.Field(proto.STRING, number=5,)
+        display_name = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        display_version = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        publisher = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+        install_date = proto.Field(
+            proto.MESSAGE,
+            number=4,
+            message=date_pb2.Date,
+        )
+        help_link = proto.Field(
+            proto.STRING,
+            number=5,
+        )
 
-    name = proto.Field(proto.STRING, number=3,)
-    os_info = proto.Field(proto.MESSAGE, number=1, message=OsInfo,)
-    items = proto.MapField(proto.STRING, proto.MESSAGE, number=2, message=Item,)
-    update_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
+    name = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    os_info = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=OsInfo,
+    )
+    items = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=2,
+        message=Item,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 class GetInventoryRequest(proto.Message):
@@ -480,8 +613,15 @@ class GetInventoryRequest(proto.Message):
             unspecified, the default view is BASIC.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    view = proto.Field(proto.ENUM, number=2, enum="InventoryView",)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    view = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum="InventoryView",
+    )
 
 
 class ListInventoriesRequest(proto.Message):
@@ -513,11 +653,27 @@ class ListInventoriesRequest(proto.Message):
             response.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    view = proto.Field(proto.ENUM, number=2, enum="InventoryView",)
-    page_size = proto.Field(proto.INT32, number=3,)
-    page_token = proto.Field(proto.STRING, number=4,)
-    filter = proto.Field(proto.STRING, number=5,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    view = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum="InventoryView",
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class ListInventoriesResponse(proto.Message):
@@ -536,8 +692,15 @@ class ListInventoriesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    inventories = proto.RepeatedField(proto.MESSAGE, number=1, message="Inventory",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    inventories = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Inventory",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

@@ -67,9 +67,20 @@ class OSPolicyResourceConfigStep(proto.Message):
         SUCCEEDED = 1
         FAILED = 2
 
-    type_ = proto.Field(proto.ENUM, number=1, enum=Type,)
-    outcome = proto.Field(proto.ENUM, number=2, enum=Outcome,)
-    error_message = proto.Field(proto.STRING, number=3,)
+    type_ = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Type,
+    )
+    outcome = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=Outcome,
+    )
+    error_message = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class OSPolicyResourceCompliance(proto.Message):
@@ -100,15 +111,30 @@ class OSPolicyResourceCompliance(proto.Message):
                 run). Output size is limited to 100K bytes.
         """
 
-        enforcement_output = proto.Field(proto.BYTES, number=2,)
+        enforcement_output = proto.Field(
+            proto.BYTES,
+            number=2,
+        )
 
-    os_policy_resource_id = proto.Field(proto.STRING, number=1,)
-    config_steps = proto.RepeatedField(
-        proto.MESSAGE, number=2, message="OSPolicyResourceConfigStep",
+    os_policy_resource_id = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    state = proto.Field(proto.ENUM, number=3, enum="OSPolicyComplianceState",)
+    config_steps = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="OSPolicyResourceConfigStep",
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum="OSPolicyComplianceState",
+    )
     exec_resource_output = proto.Field(
-        proto.MESSAGE, number=4, oneof="output", message=ExecResourceOutput,
+        proto.MESSAGE,
+        number=4,
+        oneof="output",
+        message=ExecResourceOutput,
     )
 
 

@@ -105,7 +105,11 @@ def test__get_default_mtls_endpoint():
 
 
 @pytest.mark.parametrize(
-    "client_class", [OsConfigZonalServiceClient, OsConfigZonalServiceAsyncClient,]
+    "client_class",
+    [
+        OsConfigZonalServiceClient,
+        OsConfigZonalServiceAsyncClient,
+    ],
 )
 def test_os_config_zonal_service_client_from_service_account_info(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -147,7 +151,11 @@ def test_os_config_zonal_service_client_service_account_always_use_jwt(
 
 
 @pytest.mark.parametrize(
-    "client_class", [OsConfigZonalServiceClient, OsConfigZonalServiceAsyncClient,]
+    "client_class",
+    [
+        OsConfigZonalServiceClient,
+        OsConfigZonalServiceAsyncClient,
+    ],
 )
 def test_os_config_zonal_service_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -529,7 +537,9 @@ def test_os_config_zonal_service_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -670,11 +680,16 @@ def test_os_config_zonal_service_client_create_channel_credentials_file(
 
 
 @pytest.mark.parametrize(
-    "request_type", [os_policy_assignments.CreateOSPolicyAssignmentRequest, dict,]
+    "request_type",
+    [
+        os_policy_assignments.CreateOSPolicyAssignmentRequest,
+        dict,
+    ],
 )
 def test_create_os_policy_assignment(request_type, transport: str = "grpc"):
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -702,7 +717,8 @@ def test_create_os_policy_assignment_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -721,7 +737,8 @@ async def test_create_os_policy_assignment_async(
     request_type=os_policy_assignments.CreateOSPolicyAssignmentRequest,
 ):
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -777,7 +794,10 @@ def test_create_os_policy_assignment_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -808,7 +828,10 @@ async def test_create_os_policy_assignment_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_os_policy_assignment_flattened():
@@ -926,11 +949,16 @@ async def test_create_os_policy_assignment_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [os_policy_assignments.UpdateOSPolicyAssignmentRequest, dict,]
+    "request_type",
+    [
+        os_policy_assignments.UpdateOSPolicyAssignmentRequest,
+        dict,
+    ],
 )
 def test_update_os_policy_assignment(request_type, transport: str = "grpc"):
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -958,7 +986,8 @@ def test_update_os_policy_assignment_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -977,7 +1006,8 @@ async def test_update_os_policy_assignment_async(
     request_type=os_policy_assignments.UpdateOSPolicyAssignmentRequest,
 ):
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1178,11 +1208,16 @@ async def test_update_os_policy_assignment_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [os_policy_assignments.GetOSPolicyAssignmentRequest, dict,]
+    "request_type",
+    [
+        os_policy_assignments.GetOSPolicyAssignmentRequest,
+        dict,
+    ],
 )
 def test_get_os_policy_assignment(request_type, transport: str = "grpc"):
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1232,7 +1267,8 @@ def test_get_os_policy_assignment_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1251,7 +1287,8 @@ async def test_get_os_policy_assignment_async(
     request_type=os_policy_assignments.GetOSPolicyAssignmentRequest,
 ):
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1329,7 +1366,10 @@ def test_get_os_policy_assignment_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1360,7 +1400,10 @@ async def test_get_os_policy_assignment_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_os_policy_assignment_flattened():
@@ -1376,7 +1419,9 @@ def test_get_os_policy_assignment_flattened():
         call.return_value = os_policy_assignments.OSPolicyAssignment()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_os_policy_assignment(name="name_value",)
+        client.get_os_policy_assignment(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1396,7 +1441,8 @@ def test_get_os_policy_assignment_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_os_policy_assignment(
-            os_policy_assignments.GetOSPolicyAssignmentRequest(), name="name_value",
+            os_policy_assignments.GetOSPolicyAssignmentRequest(),
+            name="name_value",
         )
 
 
@@ -1418,7 +1464,9 @@ async def test_get_os_policy_assignment_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_os_policy_assignment(name="name_value",)
+        response = await client.get_os_policy_assignment(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1439,16 +1487,22 @@ async def test_get_os_policy_assignment_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_os_policy_assignment(
-            os_policy_assignments.GetOSPolicyAssignmentRequest(), name="name_value",
+            os_policy_assignments.GetOSPolicyAssignmentRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [os_policy_assignments.ListOSPolicyAssignmentsRequest, dict,]
+    "request_type",
+    [
+        os_policy_assignments.ListOSPolicyAssignmentsRequest,
+        dict,
+    ],
 )
 def test_list_os_policy_assignments(request_type, transport: str = "grpc"):
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1479,7 +1533,8 @@ def test_list_os_policy_assignments_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1498,7 +1553,8 @@ async def test_list_os_policy_assignments_async(
     request_type=os_policy_assignments.ListOSPolicyAssignmentsRequest,
 ):
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1557,7 +1613,10 @@ def test_list_os_policy_assignments_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1588,7 +1647,10 @@ async def test_list_os_policy_assignments_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_os_policy_assignments_flattened():
@@ -1604,7 +1666,9 @@ def test_list_os_policy_assignments_flattened():
         call.return_value = os_policy_assignments.ListOSPolicyAssignmentsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_os_policy_assignments(parent="parent_value",)
+        client.list_os_policy_assignments(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1647,7 +1711,9 @@ async def test_list_os_policy_assignments_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_os_policy_assignments(parent="parent_value",)
+        response = await client.list_os_policy_assignments(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1675,7 +1741,8 @@ async def test_list_os_policy_assignments_flattened_error_async():
 
 def test_list_os_policy_assignments_pager(transport_name: str = "grpc"):
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1693,10 +1760,13 @@ def test_list_os_policy_assignments_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             os_policy_assignments.ListOSPolicyAssignmentsResponse(
-                os_policy_assignments=[], next_page_token="def",
+                os_policy_assignments=[],
+                next_page_token="def",
             ),
             os_policy_assignments.ListOSPolicyAssignmentsResponse(
-                os_policy_assignments=[os_policy_assignments.OSPolicyAssignment(),],
+                os_policy_assignments=[
+                    os_policy_assignments.OSPolicyAssignment(),
+                ],
                 next_page_token="ghi",
             ),
             os_policy_assignments.ListOSPolicyAssignmentsResponse(
@@ -1725,7 +1795,8 @@ def test_list_os_policy_assignments_pager(transport_name: str = "grpc"):
 
 def test_list_os_policy_assignments_pages(transport_name: str = "grpc"):
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1743,10 +1814,13 @@ def test_list_os_policy_assignments_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             os_policy_assignments.ListOSPolicyAssignmentsResponse(
-                os_policy_assignments=[], next_page_token="def",
+                os_policy_assignments=[],
+                next_page_token="def",
             ),
             os_policy_assignments.ListOSPolicyAssignmentsResponse(
-                os_policy_assignments=[os_policy_assignments.OSPolicyAssignment(),],
+                os_policy_assignments=[
+                    os_policy_assignments.OSPolicyAssignment(),
+                ],
                 next_page_token="ghi",
             ),
             os_policy_assignments.ListOSPolicyAssignmentsResponse(
@@ -1785,10 +1859,13 @@ async def test_list_os_policy_assignments_async_pager():
                 next_page_token="abc",
             ),
             os_policy_assignments.ListOSPolicyAssignmentsResponse(
-                os_policy_assignments=[], next_page_token="def",
+                os_policy_assignments=[],
+                next_page_token="def",
             ),
             os_policy_assignments.ListOSPolicyAssignmentsResponse(
-                os_policy_assignments=[os_policy_assignments.OSPolicyAssignment(),],
+                os_policy_assignments=[
+                    os_policy_assignments.OSPolicyAssignment(),
+                ],
                 next_page_token="ghi",
             ),
             os_policy_assignments.ListOSPolicyAssignmentsResponse(
@@ -1799,7 +1876,9 @@ async def test_list_os_policy_assignments_async_pager():
             ),
             RuntimeError,
         )
-        async_pager = await client.list_os_policy_assignments(request={},)
+        async_pager = await client.list_os_policy_assignments(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -1834,10 +1913,13 @@ async def test_list_os_policy_assignments_async_pages():
                 next_page_token="abc",
             ),
             os_policy_assignments.ListOSPolicyAssignmentsResponse(
-                os_policy_assignments=[], next_page_token="def",
+                os_policy_assignments=[],
+                next_page_token="def",
             ),
             os_policy_assignments.ListOSPolicyAssignmentsResponse(
-                os_policy_assignments=[os_policy_assignments.OSPolicyAssignment(),],
+                os_policy_assignments=[
+                    os_policy_assignments.OSPolicyAssignment(),
+                ],
                 next_page_token="ghi",
             ),
             os_policy_assignments.ListOSPolicyAssignmentsResponse(
@@ -1857,11 +1939,15 @@ async def test_list_os_policy_assignments_async_pages():
 
 @pytest.mark.parametrize(
     "request_type",
-    [os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest, dict,],
+    [
+        os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest,
+        dict,
+    ],
 )
 def test_list_os_policy_assignment_revisions(request_type, transport: str = "grpc"):
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1873,8 +1959,10 @@ def test_list_os_policy_assignment_revisions(request_type, transport: str = "grp
         type(client.transport.list_os_policy_assignment_revisions), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse(
-            next_page_token="next_page_token_value",
+        call.return_value = (
+            os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse(
+                next_page_token="next_page_token_value",
+            )
         )
         response = client.list_os_policy_assignment_revisions(request)
 
@@ -1892,7 +1980,8 @@ def test_list_os_policy_assignment_revisions_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1911,7 +2000,8 @@ async def test_list_os_policy_assignment_revisions_async(
     request_type=os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest,
 ):
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1972,7 +2062,10 @@ def test_list_os_policy_assignment_revisions_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2003,7 +2096,10 @@ async def test_list_os_policy_assignment_revisions_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_list_os_policy_assignment_revisions_flattened():
@@ -2021,7 +2117,9 @@ def test_list_os_policy_assignment_revisions_flattened():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_os_policy_assignment_revisions(name="name_value",)
+        client.list_os_policy_assignment_revisions(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2066,7 +2164,9 @@ async def test_list_os_policy_assignment_revisions_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_os_policy_assignment_revisions(name="name_value",)
+        response = await client.list_os_policy_assignment_revisions(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2094,7 +2194,8 @@ async def test_list_os_policy_assignment_revisions_flattened_error_async():
 
 def test_list_os_policy_assignment_revisions_pager(transport_name: str = "grpc"):
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2112,10 +2213,13 @@ def test_list_os_policy_assignment_revisions_pager(transport_name: str = "grpc")
                 next_page_token="abc",
             ),
             os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse(
-                os_policy_assignments=[], next_page_token="def",
+                os_policy_assignments=[],
+                next_page_token="def",
             ),
             os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse(
-                os_policy_assignments=[os_policy_assignments.OSPolicyAssignment(),],
+                os_policy_assignments=[
+                    os_policy_assignments.OSPolicyAssignment(),
+                ],
                 next_page_token="ghi",
             ),
             os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse(
@@ -2144,7 +2248,8 @@ def test_list_os_policy_assignment_revisions_pager(transport_name: str = "grpc")
 
 def test_list_os_policy_assignment_revisions_pages(transport_name: str = "grpc"):
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2162,10 +2267,13 @@ def test_list_os_policy_assignment_revisions_pages(transport_name: str = "grpc")
                 next_page_token="abc",
             ),
             os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse(
-                os_policy_assignments=[], next_page_token="def",
+                os_policy_assignments=[],
+                next_page_token="def",
             ),
             os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse(
-                os_policy_assignments=[os_policy_assignments.OSPolicyAssignment(),],
+                os_policy_assignments=[
+                    os_policy_assignments.OSPolicyAssignment(),
+                ],
                 next_page_token="ghi",
             ),
             os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse(
@@ -2204,10 +2312,13 @@ async def test_list_os_policy_assignment_revisions_async_pager():
                 next_page_token="abc",
             ),
             os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse(
-                os_policy_assignments=[], next_page_token="def",
+                os_policy_assignments=[],
+                next_page_token="def",
             ),
             os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse(
-                os_policy_assignments=[os_policy_assignments.OSPolicyAssignment(),],
+                os_policy_assignments=[
+                    os_policy_assignments.OSPolicyAssignment(),
+                ],
                 next_page_token="ghi",
             ),
             os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse(
@@ -2218,7 +2329,9 @@ async def test_list_os_policy_assignment_revisions_async_pager():
             ),
             RuntimeError,
         )
-        async_pager = await client.list_os_policy_assignment_revisions(request={},)
+        async_pager = await client.list_os_policy_assignment_revisions(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -2253,10 +2366,13 @@ async def test_list_os_policy_assignment_revisions_async_pages():
                 next_page_token="abc",
             ),
             os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse(
-                os_policy_assignments=[], next_page_token="def",
+                os_policy_assignments=[],
+                next_page_token="def",
             ),
             os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse(
-                os_policy_assignments=[os_policy_assignments.OSPolicyAssignment(),],
+                os_policy_assignments=[
+                    os_policy_assignments.OSPolicyAssignment(),
+                ],
                 next_page_token="ghi",
             ),
             os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse(
@@ -2277,11 +2393,16 @@ async def test_list_os_policy_assignment_revisions_async_pages():
 
 
 @pytest.mark.parametrize(
-    "request_type", [os_policy_assignments.DeleteOSPolicyAssignmentRequest, dict,]
+    "request_type",
+    [
+        os_policy_assignments.DeleteOSPolicyAssignmentRequest,
+        dict,
+    ],
 )
 def test_delete_os_policy_assignment(request_type, transport: str = "grpc"):
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2309,7 +2430,8 @@ def test_delete_os_policy_assignment_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2328,7 +2450,8 @@ async def test_delete_os_policy_assignment_async(
     request_type=os_policy_assignments.DeleteOSPolicyAssignmentRequest,
 ):
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2384,7 +2507,10 @@ def test_delete_os_policy_assignment_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2415,7 +2541,10 @@ async def test_delete_os_policy_assignment_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_os_policy_assignment_flattened():
@@ -2431,7 +2560,9 @@ def test_delete_os_policy_assignment_flattened():
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_os_policy_assignment(name="name_value",)
+        client.delete_os_policy_assignment(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2451,7 +2582,8 @@ def test_delete_os_policy_assignment_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_os_policy_assignment(
-            os_policy_assignments.DeleteOSPolicyAssignmentRequest(), name="name_value",
+            os_policy_assignments.DeleteOSPolicyAssignmentRequest(),
+            name="name_value",
         )
 
 
@@ -2473,7 +2605,9 @@ async def test_delete_os_policy_assignment_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_os_policy_assignment(name="name_value",)
+        response = await client.delete_os_policy_assignment(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2494,17 +2628,22 @@ async def test_delete_os_policy_assignment_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_os_policy_assignment(
-            os_policy_assignments.DeleteOSPolicyAssignmentRequest(), name="name_value",
+            os_policy_assignments.DeleteOSPolicyAssignmentRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
     "request_type",
-    [instance_os_policies_compliance.GetInstanceOSPoliciesComplianceRequest, dict,],
+    [
+        instance_os_policies_compliance.GetInstanceOSPoliciesComplianceRequest,
+        dict,
+    ],
 )
 def test_get_instance_os_policies_compliance(request_type, transport: str = "grpc"):
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2516,13 +2655,15 @@ def test_get_instance_os_policies_compliance(request_type, transport: str = "grp
         type(client.transport.get_instance_os_policies_compliance), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = instance_os_policies_compliance.InstanceOSPoliciesCompliance(
-            name="name_value",
-            instance="instance_value",
-            state=config_common.OSPolicyComplianceState.COMPLIANT,
-            detailed_state="detailed_state_value",
-            detailed_state_reason="detailed_state_reason_value",
-            last_compliance_run_id="last_compliance_run_id_value",
+        call.return_value = (
+            instance_os_policies_compliance.InstanceOSPoliciesCompliance(
+                name="name_value",
+                instance="instance_value",
+                state=config_common.OSPolicyComplianceState.COMPLIANT,
+                detailed_state="detailed_state_value",
+                detailed_state_reason="detailed_state_reason_value",
+                last_compliance_run_id="last_compliance_run_id_value",
+            )
         )
         response = client.get_instance_os_policies_compliance(request)
 
@@ -2550,7 +2691,8 @@ def test_get_instance_os_policies_compliance_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2572,7 +2714,8 @@ async def test_get_instance_os_policies_compliance_async(
     request_type=instance_os_policies_compliance.GetInstanceOSPoliciesComplianceRequest,
 ):
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2648,7 +2791,10 @@ def test_get_instance_os_policies_compliance_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2679,7 +2825,10 @@ async def test_get_instance_os_policies_compliance_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_instance_os_policies_compliance_flattened():
@@ -2697,7 +2846,9 @@ def test_get_instance_os_policies_compliance_flattened():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_instance_os_policies_compliance(name="name_value",)
+        client.get_instance_os_policies_compliance(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2742,7 +2893,9 @@ async def test_get_instance_os_policies_compliance_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_instance_os_policies_compliance(name="name_value",)
+        response = await client.get_instance_os_policies_compliance(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2770,11 +2923,15 @@ async def test_get_instance_os_policies_compliance_flattened_error_async():
 
 @pytest.mark.parametrize(
     "request_type",
-    [instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesRequest, dict,],
+    [
+        instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesRequest,
+        dict,
+    ],
 )
 def test_list_instance_os_policies_compliances(request_type, transport: str = "grpc"):
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2786,8 +2943,10 @@ def test_list_instance_os_policies_compliances(request_type, transport: str = "g
         type(client.transport.list_instance_os_policies_compliances), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesResponse(
-            next_page_token="next_page_token_value",
+        call.return_value = (
+            instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesResponse(
+                next_page_token="next_page_token_value",
+            )
         )
         response = client.list_instance_os_policies_compliances(request)
 
@@ -2808,7 +2967,8 @@ def test_list_instance_os_policies_compliances_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2830,7 +2990,8 @@ async def test_list_instance_os_policies_compliances_async(
     request_type=instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesRequest,
 ):
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2894,7 +3055,10 @@ def test_list_instance_os_policies_compliances_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2925,7 +3089,10 @@ async def test_list_instance_os_policies_compliances_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_instance_os_policies_compliances_flattened():
@@ -2943,7 +3110,9 @@ def test_list_instance_os_policies_compliances_flattened():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_instance_os_policies_compliances(parent="parent_value",)
+        client.list_instance_os_policies_compliances(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3018,7 +3187,8 @@ async def test_list_instance_os_policies_compliances_flattened_error_async():
 
 def test_list_instance_os_policies_compliances_pager(transport_name: str = "grpc"):
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3036,7 +3206,8 @@ def test_list_instance_os_policies_compliances_pager(transport_name: str = "grpc
                 next_page_token="abc",
             ),
             instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesResponse(
-                instance_os_policies_compliances=[], next_page_token="def",
+                instance_os_policies_compliances=[],
+                next_page_token="def",
             ),
             instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesResponse(
                 instance_os_policies_compliances=[
@@ -3071,7 +3242,8 @@ def test_list_instance_os_policies_compliances_pager(transport_name: str = "grpc
 
 def test_list_instance_os_policies_compliances_pages(transport_name: str = "grpc"):
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3089,7 +3261,8 @@ def test_list_instance_os_policies_compliances_pages(transport_name: str = "grpc
                 next_page_token="abc",
             ),
             instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesResponse(
-                instance_os_policies_compliances=[], next_page_token="def",
+                instance_os_policies_compliances=[],
+                next_page_token="def",
             ),
             instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesResponse(
                 instance_os_policies_compliances=[
@@ -3133,7 +3306,8 @@ async def test_list_instance_os_policies_compliances_async_pager():
                 next_page_token="abc",
             ),
             instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesResponse(
-                instance_os_policies_compliances=[], next_page_token="def",
+                instance_os_policies_compliances=[],
+                next_page_token="def",
             ),
             instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesResponse(
                 instance_os_policies_compliances=[
@@ -3149,7 +3323,9 @@ async def test_list_instance_os_policies_compliances_async_pager():
             ),
             RuntimeError,
         )
-        async_pager = await client.list_instance_os_policies_compliances(request={},)
+        async_pager = await client.list_instance_os_policies_compliances(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -3185,7 +3361,8 @@ async def test_list_instance_os_policies_compliances_async_pages():
                 next_page_token="abc",
             ),
             instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesResponse(
-                instance_os_policies_compliances=[], next_page_token="def",
+                instance_os_policies_compliances=[],
+                next_page_token="def",
             ),
             instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesResponse(
                 instance_os_policies_compliances=[
@@ -3212,11 +3389,15 @@ async def test_list_instance_os_policies_compliances_async_pages():
 
 @pytest.mark.parametrize(
     "request_type",
-    [os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest, dict,],
+    [
+        os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest,
+        dict,
+    ],
 )
 def test_get_os_policy_assignment_report(request_type, transport: str = "grpc"):
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3255,7 +3436,8 @@ def test_get_os_policy_assignment_report_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3276,7 +3458,8 @@ async def test_get_os_policy_assignment_report_async(
     request_type=os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest,
 ):
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3343,7 +3526,10 @@ def test_get_os_policy_assignment_report_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -3374,7 +3560,10 @@ async def test_get_os_policy_assignment_report_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_os_policy_assignment_report_flattened():
@@ -3390,7 +3579,9 @@ def test_get_os_policy_assignment_report_flattened():
         call.return_value = os_policy_assignment_reports.OSPolicyAssignmentReport()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_os_policy_assignment_report(name="name_value",)
+        client.get_os_policy_assignment_report(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3433,7 +3624,9 @@ async def test_get_os_policy_assignment_report_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_os_policy_assignment_report(name="name_value",)
+        response = await client.get_os_policy_assignment_report(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3461,11 +3654,15 @@ async def test_get_os_policy_assignment_report_flattened_error_async():
 
 @pytest.mark.parametrize(
     "request_type",
-    [os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest, dict,],
+    [
+        os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest,
+        dict,
+    ],
 )
 def test_list_os_policy_assignment_reports(request_type, transport: str = "grpc"):
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3477,8 +3674,10 @@ def test_list_os_policy_assignment_reports(request_type, transport: str = "grpc"
         type(client.transport.list_os_policy_assignment_reports), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse(
-            next_page_token="next_page_token_value",
+        call.return_value = (
+            os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse(
+                next_page_token="next_page_token_value",
+            )
         )
         response = client.list_os_policy_assignment_reports(request)
 
@@ -3499,7 +3698,8 @@ def test_list_os_policy_assignment_reports_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3521,7 +3721,8 @@ async def test_list_os_policy_assignment_reports_async(
     request_type=os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest,
 ):
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3585,7 +3786,10 @@ def test_list_os_policy_assignment_reports_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -3616,7 +3820,10 @@ async def test_list_os_policy_assignment_reports_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_os_policy_assignment_reports_flattened():
@@ -3634,7 +3841,9 @@ def test_list_os_policy_assignment_reports_flattened():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_os_policy_assignment_reports(parent="parent_value",)
+        client.list_os_policy_assignment_reports(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3709,7 +3918,8 @@ async def test_list_os_policy_assignment_reports_flattened_error_async():
 
 def test_list_os_policy_assignment_reports_pager(transport_name: str = "grpc"):
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3727,7 +3937,8 @@ def test_list_os_policy_assignment_reports_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse(
-                os_policy_assignment_reports=[], next_page_token="def",
+                os_policy_assignment_reports=[],
+                next_page_token="def",
             ),
             os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse(
                 os_policy_assignment_reports=[
@@ -3762,7 +3973,8 @@ def test_list_os_policy_assignment_reports_pager(transport_name: str = "grpc"):
 
 def test_list_os_policy_assignment_reports_pages(transport_name: str = "grpc"):
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3780,7 +3992,8 @@ def test_list_os_policy_assignment_reports_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse(
-                os_policy_assignment_reports=[], next_page_token="def",
+                os_policy_assignment_reports=[],
+                next_page_token="def",
             ),
             os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse(
                 os_policy_assignment_reports=[
@@ -3824,7 +4037,8 @@ async def test_list_os_policy_assignment_reports_async_pager():
                 next_page_token="abc",
             ),
             os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse(
-                os_policy_assignment_reports=[], next_page_token="def",
+                os_policy_assignment_reports=[],
+                next_page_token="def",
             ),
             os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse(
                 os_policy_assignment_reports=[
@@ -3840,7 +4054,9 @@ async def test_list_os_policy_assignment_reports_async_pager():
             ),
             RuntimeError,
         )
-        async_pager = await client.list_os_policy_assignment_reports(request={},)
+        async_pager = await client.list_os_policy_assignment_reports(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -3876,7 +4092,8 @@ async def test_list_os_policy_assignment_reports_async_pages():
                 next_page_token="abc",
             ),
             os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse(
-                os_policy_assignment_reports=[], next_page_token="def",
+                os_policy_assignment_reports=[],
+                next_page_token="def",
             ),
             os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse(
                 os_policy_assignment_reports=[
@@ -3901,10 +4118,17 @@ async def test_list_os_policy_assignment_reports_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [inventory.GetInventoryRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        inventory.GetInventoryRequest,
+        dict,
+    ],
+)
 def test_get_inventory(request_type, transport: str = "grpc"):
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3914,7 +4138,9 @@ def test_get_inventory(request_type, transport: str = "grpc"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_inventory), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = inventory.Inventory(name="name_value",)
+        call.return_value = inventory.Inventory(
+            name="name_value",
+        )
         response = client.get_inventory(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -3931,7 +4157,8 @@ def test_get_inventory_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3947,7 +4174,8 @@ async def test_get_inventory_async(
     transport: str = "grpc_asyncio", request_type=inventory.GetInventoryRequest
 ):
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3958,7 +4186,9 @@ async def test_get_inventory_async(
     with mock.patch.object(type(client.transport.get_inventory), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            inventory.Inventory(name="name_value",)
+            inventory.Inventory(
+                name="name_value",
+            )
         )
         response = await client.get_inventory(request)
 
@@ -4000,7 +4230,10 @@ def test_get_inventory_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -4027,7 +4260,10 @@ async def test_get_inventory_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_inventory_flattened():
@@ -4041,7 +4277,9 @@ def test_get_inventory_flattened():
         call.return_value = inventory.Inventory()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_inventory(name="name_value",)
+        client.get_inventory(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -4061,7 +4299,8 @@ def test_get_inventory_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_inventory(
-            inventory.GetInventoryRequest(), name="name_value",
+            inventory.GetInventoryRequest(),
+            name="name_value",
         )
 
 
@@ -4079,7 +4318,9 @@ async def test_get_inventory_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(inventory.Inventory())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_inventory(name="name_value",)
+        response = await client.get_inventory(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -4100,14 +4341,22 @@ async def test_get_inventory_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_inventory(
-            inventory.GetInventoryRequest(), name="name_value",
+            inventory.GetInventoryRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [inventory.ListInventoriesRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        inventory.ListInventoriesRequest,
+        dict,
+    ],
+)
 def test_list_inventories(request_type, transport: str = "grpc"):
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4136,7 +4385,8 @@ def test_list_inventories_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4152,7 +4402,8 @@ async def test_list_inventories_async(
     transport: str = "grpc_asyncio", request_type=inventory.ListInventoriesRequest
 ):
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4163,7 +4414,9 @@ async def test_list_inventories_async(
     with mock.patch.object(type(client.transport.list_inventories), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            inventory.ListInventoriesResponse(next_page_token="next_page_token_value",)
+            inventory.ListInventoriesResponse(
+                next_page_token="next_page_token_value",
+            )
         )
         response = await client.list_inventories(request)
 
@@ -4205,7 +4458,10 @@ def test_list_inventories_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -4234,7 +4490,10 @@ async def test_list_inventories_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_inventories_flattened():
@@ -4248,7 +4507,9 @@ def test_list_inventories_flattened():
         call.return_value = inventory.ListInventoriesResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_inventories(parent="parent_value",)
+        client.list_inventories(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -4268,7 +4529,8 @@ def test_list_inventories_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_inventories(
-            inventory.ListInventoriesRequest(), parent="parent_value",
+            inventory.ListInventoriesRequest(),
+            parent="parent_value",
         )
 
 
@@ -4288,7 +4550,9 @@ async def test_list_inventories_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_inventories(parent="parent_value",)
+        response = await client.list_inventories(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -4309,13 +4573,15 @@ async def test_list_inventories_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_inventories(
-            inventory.ListInventoriesRequest(), parent="parent_value",
+            inventory.ListInventoriesRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_inventories_pager(transport_name: str = "grpc"):
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4330,12 +4596,21 @@ def test_list_inventories_pager(transport_name: str = "grpc"):
                 ],
                 next_page_token="abc",
             ),
-            inventory.ListInventoriesResponse(inventories=[], next_page_token="def",),
             inventory.ListInventoriesResponse(
-                inventories=[inventory.Inventory(),], next_page_token="ghi",
+                inventories=[],
+                next_page_token="def",
             ),
             inventory.ListInventoriesResponse(
-                inventories=[inventory.Inventory(), inventory.Inventory(),],
+                inventories=[
+                    inventory.Inventory(),
+                ],
+                next_page_token="ghi",
+            ),
+            inventory.ListInventoriesResponse(
+                inventories=[
+                    inventory.Inventory(),
+                    inventory.Inventory(),
+                ],
             ),
             RuntimeError,
         )
@@ -4355,7 +4630,8 @@ def test_list_inventories_pager(transport_name: str = "grpc"):
 
 def test_list_inventories_pages(transport_name: str = "grpc"):
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4370,12 +4646,21 @@ def test_list_inventories_pages(transport_name: str = "grpc"):
                 ],
                 next_page_token="abc",
             ),
-            inventory.ListInventoriesResponse(inventories=[], next_page_token="def",),
             inventory.ListInventoriesResponse(
-                inventories=[inventory.Inventory(),], next_page_token="ghi",
+                inventories=[],
+                next_page_token="def",
             ),
             inventory.ListInventoriesResponse(
-                inventories=[inventory.Inventory(), inventory.Inventory(),],
+                inventories=[
+                    inventory.Inventory(),
+                ],
+                next_page_token="ghi",
+            ),
+            inventory.ListInventoriesResponse(
+                inventories=[
+                    inventory.Inventory(),
+                    inventory.Inventory(),
+                ],
             ),
             RuntimeError,
         )
@@ -4404,16 +4689,27 @@ async def test_list_inventories_async_pager():
                 ],
                 next_page_token="abc",
             ),
-            inventory.ListInventoriesResponse(inventories=[], next_page_token="def",),
             inventory.ListInventoriesResponse(
-                inventories=[inventory.Inventory(),], next_page_token="ghi",
+                inventories=[],
+                next_page_token="def",
             ),
             inventory.ListInventoriesResponse(
-                inventories=[inventory.Inventory(), inventory.Inventory(),],
+                inventories=[
+                    inventory.Inventory(),
+                ],
+                next_page_token="ghi",
+            ),
+            inventory.ListInventoriesResponse(
+                inventories=[
+                    inventory.Inventory(),
+                    inventory.Inventory(),
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.list_inventories(request={},)
+        async_pager = await client.list_inventories(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -4443,12 +4739,21 @@ async def test_list_inventories_async_pages():
                 ],
                 next_page_token="abc",
             ),
-            inventory.ListInventoriesResponse(inventories=[], next_page_token="def",),
             inventory.ListInventoriesResponse(
-                inventories=[inventory.Inventory(),], next_page_token="ghi",
+                inventories=[],
+                next_page_token="def",
             ),
             inventory.ListInventoriesResponse(
-                inventories=[inventory.Inventory(), inventory.Inventory(),],
+                inventories=[
+                    inventory.Inventory(),
+                ],
+                next_page_token="ghi",
+            ),
+            inventory.ListInventoriesResponse(
+                inventories=[
+                    inventory.Inventory(),
+                    inventory.Inventory(),
+                ],
             ),
             RuntimeError,
         )
@@ -4460,11 +4765,16 @@ async def test_list_inventories_async_pages():
 
 
 @pytest.mark.parametrize(
-    "request_type", [vulnerability.GetVulnerabilityReportRequest, dict,]
+    "request_type",
+    [
+        vulnerability.GetVulnerabilityReportRequest,
+        dict,
+    ],
 )
 def test_get_vulnerability_report(request_type, transport: str = "grpc"):
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4476,7 +4786,9 @@ def test_get_vulnerability_report(request_type, transport: str = "grpc"):
         type(client.transport.get_vulnerability_report), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = vulnerability.VulnerabilityReport(name="name_value",)
+        call.return_value = vulnerability.VulnerabilityReport(
+            name="name_value",
+        )
         response = client.get_vulnerability_report(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -4493,7 +4805,8 @@ def test_get_vulnerability_report_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4512,7 +4825,8 @@ async def test_get_vulnerability_report_async(
     request_type=vulnerability.GetVulnerabilityReportRequest,
 ):
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4525,7 +4839,9 @@ async def test_get_vulnerability_report_async(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            vulnerability.VulnerabilityReport(name="name_value",)
+            vulnerability.VulnerabilityReport(
+                name="name_value",
+            )
         )
         response = await client.get_vulnerability_report(request)
 
@@ -4569,7 +4885,10 @@ def test_get_vulnerability_report_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -4600,7 +4919,10 @@ async def test_get_vulnerability_report_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_vulnerability_report_flattened():
@@ -4616,7 +4938,9 @@ def test_get_vulnerability_report_flattened():
         call.return_value = vulnerability.VulnerabilityReport()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_vulnerability_report(name="name_value",)
+        client.get_vulnerability_report(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -4636,7 +4960,8 @@ def test_get_vulnerability_report_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_vulnerability_report(
-            vulnerability.GetVulnerabilityReportRequest(), name="name_value",
+            vulnerability.GetVulnerabilityReportRequest(),
+            name="name_value",
         )
 
 
@@ -4658,7 +4983,9 @@ async def test_get_vulnerability_report_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_vulnerability_report(name="name_value",)
+        response = await client.get_vulnerability_report(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -4679,16 +5006,22 @@ async def test_get_vulnerability_report_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_vulnerability_report(
-            vulnerability.GetVulnerabilityReportRequest(), name="name_value",
+            vulnerability.GetVulnerabilityReportRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [vulnerability.ListVulnerabilityReportsRequest, dict,]
+    "request_type",
+    [
+        vulnerability.ListVulnerabilityReportsRequest,
+        dict,
+    ],
 )
 def test_list_vulnerability_reports(request_type, transport: str = "grpc"):
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4719,7 +5052,8 @@ def test_list_vulnerability_reports_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4738,7 +5072,8 @@ async def test_list_vulnerability_reports_async(
     request_type=vulnerability.ListVulnerabilityReportsRequest,
 ):
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4797,7 +5132,10 @@ def test_list_vulnerability_reports_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -4828,7 +5166,10 @@ async def test_list_vulnerability_reports_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_vulnerability_reports_flattened():
@@ -4844,7 +5185,9 @@ def test_list_vulnerability_reports_flattened():
         call.return_value = vulnerability.ListVulnerabilityReportsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_vulnerability_reports(parent="parent_value",)
+        client.list_vulnerability_reports(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -4864,7 +5207,8 @@ def test_list_vulnerability_reports_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_vulnerability_reports(
-            vulnerability.ListVulnerabilityReportsRequest(), parent="parent_value",
+            vulnerability.ListVulnerabilityReportsRequest(),
+            parent="parent_value",
         )
 
 
@@ -4886,7 +5230,9 @@ async def test_list_vulnerability_reports_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_vulnerability_reports(parent="parent_value",)
+        response = await client.list_vulnerability_reports(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -4907,13 +5253,15 @@ async def test_list_vulnerability_reports_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_vulnerability_reports(
-            vulnerability.ListVulnerabilityReportsRequest(), parent="parent_value",
+            vulnerability.ListVulnerabilityReportsRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_vulnerability_reports_pager(transport_name: str = "grpc"):
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4931,10 +5279,13 @@ def test_list_vulnerability_reports_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             vulnerability.ListVulnerabilityReportsResponse(
-                vulnerability_reports=[], next_page_token="def",
+                vulnerability_reports=[],
+                next_page_token="def",
             ),
             vulnerability.ListVulnerabilityReportsResponse(
-                vulnerability_reports=[vulnerability.VulnerabilityReport(),],
+                vulnerability_reports=[
+                    vulnerability.VulnerabilityReport(),
+                ],
                 next_page_token="ghi",
             ),
             vulnerability.ListVulnerabilityReportsResponse(
@@ -4961,7 +5312,8 @@ def test_list_vulnerability_reports_pager(transport_name: str = "grpc"):
 
 def test_list_vulnerability_reports_pages(transport_name: str = "grpc"):
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4979,10 +5331,13 @@ def test_list_vulnerability_reports_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             vulnerability.ListVulnerabilityReportsResponse(
-                vulnerability_reports=[], next_page_token="def",
+                vulnerability_reports=[],
+                next_page_token="def",
             ),
             vulnerability.ListVulnerabilityReportsResponse(
-                vulnerability_reports=[vulnerability.VulnerabilityReport(),],
+                vulnerability_reports=[
+                    vulnerability.VulnerabilityReport(),
+                ],
                 next_page_token="ghi",
             ),
             vulnerability.ListVulnerabilityReportsResponse(
@@ -5021,10 +5376,13 @@ async def test_list_vulnerability_reports_async_pager():
                 next_page_token="abc",
             ),
             vulnerability.ListVulnerabilityReportsResponse(
-                vulnerability_reports=[], next_page_token="def",
+                vulnerability_reports=[],
+                next_page_token="def",
             ),
             vulnerability.ListVulnerabilityReportsResponse(
-                vulnerability_reports=[vulnerability.VulnerabilityReport(),],
+                vulnerability_reports=[
+                    vulnerability.VulnerabilityReport(),
+                ],
                 next_page_token="ghi",
             ),
             vulnerability.ListVulnerabilityReportsResponse(
@@ -5035,7 +5393,9 @@ async def test_list_vulnerability_reports_async_pager():
             ),
             RuntimeError,
         )
-        async_pager = await client.list_vulnerability_reports(request={},)
+        async_pager = await client.list_vulnerability_reports(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -5068,10 +5428,13 @@ async def test_list_vulnerability_reports_async_pages():
                 next_page_token="abc",
             ),
             vulnerability.ListVulnerabilityReportsResponse(
-                vulnerability_reports=[], next_page_token="def",
+                vulnerability_reports=[],
+                next_page_token="def",
             ),
             vulnerability.ListVulnerabilityReportsResponse(
-                vulnerability_reports=[vulnerability.VulnerabilityReport(),],
+                vulnerability_reports=[
+                    vulnerability.VulnerabilityReport(),
+                ],
                 next_page_token="ghi",
             ),
             vulnerability.ListVulnerabilityReportsResponse(
@@ -5096,7 +5459,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = OsConfigZonalServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -5117,7 +5481,8 @@ def test_credentials_transport_error():
     options.api_key = "api_key"
     with pytest.raises(ValueError):
         client = OsConfigZonalServiceClient(
-            client_options=options, transport=transport,
+            client_options=options,
+            transport=transport,
         )
 
     # It is an error to provide an api_key and a credential.
@@ -5134,7 +5499,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = OsConfigZonalServiceClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -5182,7 +5548,10 @@ def test_transport_grpc_default():
     client = OsConfigZonalServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
-    assert isinstance(client.transport, transports.OsConfigZonalServiceGrpcTransport,)
+    assert isinstance(
+        client.transport,
+        transports.OsConfigZonalServiceGrpcTransport,
+    )
 
 
 def test_os_config_zonal_service_base_transport_error():
@@ -5245,7 +5614,8 @@ def test_os_config_zonal_service_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.OsConfigZonalServiceTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -5407,7 +5777,8 @@ def test_os_config_zonal_service_grpc_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.OsConfigZonalServiceGrpcTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -5419,7 +5790,8 @@ def test_os_config_zonal_service_grpc_asyncio_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.OsConfigZonalServiceGrpcAsyncIOTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -5528,12 +5900,16 @@ def test_os_config_zonal_service_transport_channel_mtls_with_adc(transport_class
 
 def test_os_config_zonal_service_grpc_lro_client():
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
     transport = client.transport
 
     # Ensure that we have a api-core operations client.
-    assert isinstance(transport.operations_client, operations_v1.OperationsClient,)
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsClient,
+    )
 
     # Ensure that subsequent calls to the property send the exact same object.
     assert transport.operations_client is transport.operations_client
@@ -5541,12 +5917,16 @@ def test_os_config_zonal_service_grpc_lro_client():
 
 def test_os_config_zonal_service_grpc_lro_async_client():
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     transport = client.transport
 
     # Ensure that we have a api-core operations client.
-    assert isinstance(transport.operations_client, operations_v1.OperationsAsyncClient,)
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsAsyncClient,
+    )
 
     # Ensure that subsequent calls to the property send the exact same object.
     assert transport.operations_client is transport.operations_client
@@ -5557,7 +5937,9 @@ def test_instance_path():
     location = "clam"
     instance = "whelk"
     expected = "projects/{project}/locations/{location}/instances/{instance}".format(
-        project=project, location=location, instance=instance,
+        project=project,
+        location=location,
+        instance=instance,
     )
     actual = OsConfigZonalServiceClient.instance_path(project, location, instance)
     assert expected == actual
@@ -5581,7 +5963,9 @@ def test_instance_os_policies_compliance_path():
     location = "mussel"
     instance = "winkle"
     expected = "projects/{project}/locations/{location}/instanceOSPoliciesCompliances/{instance}".format(
-        project=project, location=location, instance=instance,
+        project=project,
+        location=location,
+        instance=instance,
     )
     actual = OsConfigZonalServiceClient.instance_os_policies_compliance_path(
         project, location, instance
@@ -5608,7 +5992,10 @@ def test_instance_os_policy_assignment_path():
     instance = "whelk"
     assignment = "octopus"
     expected = "projects/{project}/locations/{location}/instances/{instance}/osPolicyAssignments/{assignment}".format(
-        project=project, location=location, instance=instance, assignment=assignment,
+        project=project,
+        location=location,
+        instance=instance,
+        assignment=assignment,
     )
     actual = OsConfigZonalServiceClient.instance_os_policy_assignment_path(
         project, location, instance, assignment
@@ -5634,8 +6021,12 @@ def test_inventory_path():
     project = "winkle"
     location = "nautilus"
     instance = "scallop"
-    expected = "projects/{project}/locations/{location}/instances/{instance}/inventory".format(
-        project=project, location=location, instance=instance,
+    expected = (
+        "projects/{project}/locations/{location}/instances/{instance}/inventory".format(
+            project=project,
+            location=location,
+            instance=instance,
+        )
     )
     actual = OsConfigZonalServiceClient.inventory_path(project, location, instance)
     assert expected == actual
@@ -5659,7 +6050,9 @@ def test_os_policy_assignment_path():
     location = "octopus"
     os_policy_assignment = "oyster"
     expected = "projects/{project}/locations/{location}/osPolicyAssignments/{os_policy_assignment}".format(
-        project=project, location=location, os_policy_assignment=os_policy_assignment,
+        project=project,
+        location=location,
+        os_policy_assignment=os_policy_assignment,
     )
     actual = OsConfigZonalServiceClient.os_policy_assignment_path(
         project, location, os_policy_assignment
@@ -5686,7 +6079,10 @@ def test_os_policy_assignment_report_path():
     instance = "scallop"
     assignment = "abalone"
     expected = "projects/{project}/locations/{location}/instances/{instance}/osPolicyAssignments/{assignment}/report".format(
-        project=project, location=location, instance=instance, assignment=assignment,
+        project=project,
+        location=location,
+        instance=instance,
+        assignment=assignment,
     )
     actual = OsConfigZonalServiceClient.os_policy_assignment_report_path(
         project, location, instance, assignment
@@ -5713,7 +6109,9 @@ def test_vulnerability_report_path():
     location = "nudibranch"
     instance = "cuttlefish"
     expected = "projects/{project}/locations/{location}/instances/{instance}/vulnerabilityReport".format(
-        project=project, location=location, instance=instance,
+        project=project,
+        location=location,
+        instance=instance,
     )
     actual = OsConfigZonalServiceClient.vulnerability_report_path(
         project, location, instance
@@ -5756,7 +6154,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "squid"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = OsConfigZonalServiceClient.common_folder_path(folder)
     assert expected == actual
 
@@ -5774,7 +6174,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "whelk"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = OsConfigZonalServiceClient.common_organization_path(organization)
     assert expected == actual
 
@@ -5792,7 +6194,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "oyster"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = OsConfigZonalServiceClient.common_project_path(project)
     assert expected == actual
 
@@ -5812,7 +6216,8 @@ def test_common_location_path():
     project = "cuttlefish"
     location = "mussel"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = OsConfigZonalServiceClient.common_location_path(project, location)
     assert expected == actual
@@ -5837,7 +6242,8 @@ def test_client_with_default_client_info():
         transports.OsConfigZonalServiceTransport, "_prep_wrapped_messages"
     ) as prep:
         client = OsConfigZonalServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -5846,7 +6252,8 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = OsConfigZonalServiceClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -5854,7 +6261,8 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     with mock.patch.object(
         type(getattr(client.transport, "grpc_channel")), "close"

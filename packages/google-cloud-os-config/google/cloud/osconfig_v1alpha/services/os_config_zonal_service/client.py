@@ -68,7 +68,8 @@ class OsConfigZonalServiceClientMeta(type):
     _transport_registry["grpc_asyncio"] = OsConfigZonalServiceGrpcAsyncIOTransport
 
     def get_transport_class(
-        cls, label: str = None,
+        cls,
+        label: str = None,
     ) -> Type[OsConfigZonalServiceTransport]:
         """Returns an appropriate transport class.
 
@@ -178,10 +179,16 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
         return self._transport
 
     @staticmethod
-    def instance_path(project: str, location: str, instance: str,) -> str:
+    def instance_path(
+        project: str,
+        location: str,
+        instance: str,
+    ) -> str:
         """Returns a fully-qualified instance string."""
         return "projects/{project}/locations/{location}/instances/{instance}".format(
-            project=project, location=location, instance=instance,
+            project=project,
+            location=location,
+            instance=instance,
         )
 
     @staticmethod
@@ -195,11 +202,15 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
 
     @staticmethod
     def instance_os_policies_compliance_path(
-        project: str, location: str, instance: str,
+        project: str,
+        location: str,
+        instance: str,
     ) -> str:
         """Returns a fully-qualified instance_os_policies_compliance string."""
         return "projects/{project}/locations/{location}/instanceOSPoliciesCompliances/{instance}".format(
-            project=project, location=location, instance=instance,
+            project=project,
+            location=location,
+            instance=instance,
         )
 
     @staticmethod
@@ -213,7 +224,10 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
 
     @staticmethod
     def instance_os_policy_assignment_path(
-        project: str, location: str, instance: str, assignment: str,
+        project: str,
+        location: str,
+        instance: str,
+        assignment: str,
     ) -> str:
         """Returns a fully-qualified instance_os_policy_assignment string."""
         return "projects/{project}/locations/{location}/instances/{instance}/osPolicyAssignments/{assignment}".format(
@@ -233,10 +247,16 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def inventory_path(project: str, location: str, instance: str,) -> str:
+    def inventory_path(
+        project: str,
+        location: str,
+        instance: str,
+    ) -> str:
         """Returns a fully-qualified inventory string."""
         return "projects/{project}/locations/{location}/instances/{instance}/inventory".format(
-            project=project, location=location, instance=instance,
+            project=project,
+            location=location,
+            instance=instance,
         )
 
     @staticmethod
@@ -250,7 +270,9 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
 
     @staticmethod
     def os_policy_assignment_path(
-        project: str, location: str, os_policy_assignment: str,
+        project: str,
+        location: str,
+        os_policy_assignment: str,
     ) -> str:
         """Returns a fully-qualified os_policy_assignment string."""
         return "projects/{project}/locations/{location}/osPolicyAssignments/{os_policy_assignment}".format(
@@ -270,7 +292,10 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
 
     @staticmethod
     def os_policy_assignment_report_path(
-        project: str, location: str, instance: str, assignment: str,
+        project: str,
+        location: str,
+        instance: str,
+        assignment: str,
     ) -> str:
         """Returns a fully-qualified os_policy_assignment_report string."""
         return "projects/{project}/locations/{location}/instances/{instance}/osPolicyAssignments/{assignment}/report".format(
@@ -290,10 +315,16 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def vulnerability_report_path(project: str, location: str, instance: str,) -> str:
+    def vulnerability_report_path(
+        project: str,
+        location: str,
+        instance: str,
+    ) -> str:
         """Returns a fully-qualified vulnerability_report string."""
         return "projects/{project}/locations/{location}/instances/{instance}/vulnerabilityReport".format(
-            project=project, location=location, instance=instance,
+            project=project,
+            location=location,
+            instance=instance,
         )
 
     @staticmethod
@@ -306,7 +337,9 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_billing_account_path(billing_account: str,) -> str:
+    def common_billing_account_path(
+        billing_account: str,
+    ) -> str:
         """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
@@ -319,9 +352,13 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(folder: str,) -> str:
+    def common_folder_path(
+        folder: str,
+    ) -> str:
         """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(folder=folder,)
+        return "folders/{folder}".format(
+            folder=folder,
+        )
 
     @staticmethod
     def parse_common_folder_path(path: str) -> Dict[str, str]:
@@ -330,9 +367,13 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(organization: str,) -> str:
+    def common_organization_path(
+        organization: str,
+    ) -> str:
         """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(organization=organization,)
+        return "organizations/{organization}".format(
+            organization=organization,
+        )
 
     @staticmethod
     def parse_common_organization_path(path: str) -> Dict[str, str]:
@@ -341,9 +382,13 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(project: str,) -> str:
+    def common_project_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified project string."""
-        return "projects/{project}".format(project=project,)
+        return "projects/{project}".format(
+            project=project,
+        )
 
     @staticmethod
     def parse_common_project_path(path: str) -> Dict[str, str]:
@@ -352,10 +397,14 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(project: str, location: str,) -> str:
+    def common_location_path(
+        project: str,
+        location: str,
+    ) -> str:
         """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
-            project=project, location=location,
+            project=project,
+            location=location,
         )
 
     @staticmethod
@@ -687,7 +736,12 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -838,7 +892,12 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -953,7 +1012,12 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1055,12 +1119,20 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListOSPolicyAssignmentsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1165,12 +1237,20 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListOSPolicyAssignmentRevisionsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1297,7 +1377,12 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1412,8 +1497,10 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
             request,
             instance_os_policies_compliance.GetInstanceOSPoliciesComplianceRequest,
         ):
-            request = instance_os_policies_compliance.GetInstanceOSPoliciesComplianceRequest(
-                request
+            request = (
+                instance_os_policies_compliance.GetInstanceOSPoliciesComplianceRequest(
+                    request
+                )
             )
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
@@ -1433,7 +1520,12 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1550,12 +1642,20 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListInstanceOSPoliciesCompliancesPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1666,7 +1766,12 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1795,12 +1900,20 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListOSPolicyAssignmentReportsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1908,7 +2021,12 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2010,12 +2128,20 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListInventoriesPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -2120,7 +2246,12 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2225,12 +2356,20 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListVulnerabilityReportsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -2252,7 +2391,9 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-os-config",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-os-config",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()

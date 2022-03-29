@@ -111,29 +111,60 @@ class InstanceOSPoliciesCompliance(proto.Message):
                 applied to the VM.
         """
 
-        os_policy_id = proto.Field(proto.STRING, number=1,)
-        os_policy_assignment = proto.Field(proto.STRING, number=2,)
+        os_policy_id = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        os_policy_assignment = proto.Field(
+            proto.STRING,
+            number=2,
+        )
         state = proto.Field(
-            proto.ENUM, number=4, enum=config_common.OSPolicyComplianceState,
+            proto.ENUM,
+            number=4,
+            enum=config_common.OSPolicyComplianceState,
         )
         os_policy_resource_compliances = proto.RepeatedField(
-            proto.MESSAGE, number=5, message=config_common.OSPolicyResourceCompliance,
+            proto.MESSAGE,
+            number=5,
+            message=config_common.OSPolicyResourceCompliance,
         )
 
-    name = proto.Field(proto.STRING, number=1,)
-    instance = proto.Field(proto.STRING, number=2,)
-    state = proto.Field(
-        proto.ENUM, number=3, enum=config_common.OSPolicyComplianceState,
+    name = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    detailed_state = proto.Field(proto.STRING, number=4,)
-    detailed_state_reason = proto.Field(proto.STRING, number=5,)
+    instance = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=config_common.OSPolicyComplianceState,
+    )
+    detailed_state = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    detailed_state_reason = proto.Field(
+        proto.STRING,
+        number=5,
+    )
     os_policy_compliances = proto.RepeatedField(
-        proto.MESSAGE, number=6, message=OSPolicyCompliance,
+        proto.MESSAGE,
+        number=6,
+        message=OSPolicyCompliance,
     )
     last_compliance_check_time = proto.Field(
-        proto.MESSAGE, number=7, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=7,
+        message=timestamp_pb2.Timestamp,
     )
-    last_compliance_run_id = proto.Field(proto.STRING, number=8,)
+    last_compliance_run_id = proto.Field(
+        proto.STRING,
+        number=8,
+    )
 
 
 class GetInstanceOSPoliciesComplianceRequest(proto.Message):
@@ -154,7 +185,10 @@ class GetInstanceOSPoliciesComplianceRequest(proto.Message):
             provided.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListInstanceOSPoliciesCompliancesRequest(proto.Message):
@@ -181,10 +215,22 @@ class ListInstanceOSPoliciesCompliancesRequest(proto.Message):
             included in the response.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    filter = proto.Field(proto.STRING, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class ListInstanceOSPoliciesCompliancesResponse(proto.Message):
@@ -205,9 +251,14 @@ class ListInstanceOSPoliciesCompliancesResponse(proto.Message):
         return self
 
     instance_os_policies_compliances = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="InstanceOSPoliciesCompliance",
+        proto.MESSAGE,
+        number=1,
+        message="InstanceOSPoliciesCompliance",
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

@@ -405,7 +405,12 @@ class OsConfigZonalServiceAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation_async.from_gapic(
@@ -552,7 +557,12 @@ class OsConfigZonalServiceAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation_async.from_gapic(
@@ -667,7 +677,12 @@ class OsConfigZonalServiceAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -765,12 +780,20 @@ class OsConfigZonalServiceAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.
         response = pagers.ListOSPolicyAssignmentsAsyncPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -869,12 +892,20 @@ class OsConfigZonalServiceAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.
         response = pagers.ListOSPolicyAssignmentRevisionsAsyncPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -997,7 +1028,12 @@ class OsConfigZonalServiceAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation_async.from_gapic(
@@ -1104,8 +1140,10 @@ class OsConfigZonalServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = instance_os_policies_compliance.GetInstanceOSPoliciesComplianceRequest(
-            request
+        request = (
+            instance_os_policies_compliance.GetInstanceOSPoliciesComplianceRequest(
+                request
+            )
         )
 
         # If we have keyword arguments corresponding to fields on the
@@ -1128,7 +1166,12 @@ class OsConfigZonalServiceAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1216,8 +1259,10 @@ class OsConfigZonalServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesRequest(
-            request
+        request = (
+            instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesRequest(
+                request
+            )
         )
 
         # If we have keyword arguments corresponding to fields on the
@@ -1240,12 +1285,20 @@ class OsConfigZonalServiceAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.
         response = pagers.ListInstanceOSPoliciesCompliancesAsyncPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1352,7 +1405,12 @@ class OsConfigZonalServiceAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1477,12 +1535,20 @@ class OsConfigZonalServiceAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.
         response = pagers.ListOSPolicyAssignmentReportsAsyncPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1590,7 +1656,12 @@ class OsConfigZonalServiceAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1692,12 +1763,20 @@ class OsConfigZonalServiceAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.
         response = pagers.ListInventoriesAsyncPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1802,7 +1881,12 @@ class OsConfigZonalServiceAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1905,12 +1989,20 @@ class OsConfigZonalServiceAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.
         response = pagers.ListVulnerabilityReportsAsyncPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1925,7 +2017,9 @@ class OsConfigZonalServiceAsyncClient:
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-os-config",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-os-config",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()

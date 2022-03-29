@@ -145,7 +145,11 @@ class OSPolicyAssignment(proto.Message):
                 pairs specified in this map to be selected.
         """
 
-        labels = proto.MapField(proto.STRING, proto.STRING, number=1,)
+        labels = proto.MapField(
+            proto.STRING,
+            proto.STRING,
+            number=1,
+        )
 
     class InstanceFilter(proto.Message):
         r"""Filters to select target VMs for an assignment.
@@ -189,15 +193,28 @@ class OSPolicyAssignment(proto.Message):
                     An empty string matches all OS versions.
             """
 
-            os_short_name = proto.Field(proto.STRING, number=1,)
-            os_version = proto.Field(proto.STRING, number=2,)
+            os_short_name = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            os_version = proto.Field(
+                proto.STRING,
+                number=2,
+            )
 
-        all_ = proto.Field(proto.BOOL, number=1,)
+        all_ = proto.Field(
+            proto.BOOL,
+            number=1,
+        )
         inclusion_labels = proto.RepeatedField(
-            proto.MESSAGE, number=2, message="OSPolicyAssignment.LabelSet",
+            proto.MESSAGE,
+            number=2,
+            message="OSPolicyAssignment.LabelSet",
         )
         exclusion_labels = proto.RepeatedField(
-            proto.MESSAGE, number=3, message="OSPolicyAssignment.LabelSet",
+            proto.MESSAGE,
+            number=3,
+            message="OSPolicyAssignment.LabelSet",
         )
         inventories = proto.RepeatedField(
             proto.MESSAGE,
@@ -222,29 +239,73 @@ class OSPolicyAssignment(proto.Message):
         """
 
         disruption_budget = proto.Field(
-            proto.MESSAGE, number=1, message=osconfig_common.FixedOrPercent,
+            proto.MESSAGE,
+            number=1,
+            message=osconfig_common.FixedOrPercent,
         )
         min_wait_duration = proto.Field(
-            proto.MESSAGE, number=2, message=duration_pb2.Duration,
+            proto.MESSAGE,
+            number=2,
+            message=duration_pb2.Duration,
         )
 
-    name = proto.Field(proto.STRING, number=1,)
-    description = proto.Field(proto.STRING, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=2,
+    )
     os_policies = proto.RepeatedField(
-        proto.MESSAGE, number=3, message=os_policy.OSPolicy,
+        proto.MESSAGE,
+        number=3,
+        message=os_policy.OSPolicy,
     )
-    instance_filter = proto.Field(proto.MESSAGE, number=4, message=InstanceFilter,)
-    rollout = proto.Field(proto.MESSAGE, number=5, message=Rollout,)
-    revision_id = proto.Field(proto.STRING, number=6,)
+    instance_filter = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=InstanceFilter,
+    )
+    rollout = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=Rollout,
+    )
+    revision_id = proto.Field(
+        proto.STRING,
+        number=6,
+    )
     revision_create_time = proto.Field(
-        proto.MESSAGE, number=7, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=7,
+        message=timestamp_pb2.Timestamp,
     )
-    etag = proto.Field(proto.STRING, number=8,)
-    rollout_state = proto.Field(proto.ENUM, number=9, enum=RolloutState,)
-    baseline = proto.Field(proto.BOOL, number=10,)
-    deleted = proto.Field(proto.BOOL, number=11,)
-    reconciling = proto.Field(proto.BOOL, number=12,)
-    uid = proto.Field(proto.STRING, number=13,)
+    etag = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    rollout_state = proto.Field(
+        proto.ENUM,
+        number=9,
+        enum=RolloutState,
+    )
+    baseline = proto.Field(
+        proto.BOOL,
+        number=10,
+    )
+    deleted = proto.Field(
+        proto.BOOL,
+        number=11,
+    )
+    reconciling = proto.Field(
+        proto.BOOL,
+        number=12,
+    )
+    uid = proto.Field(
+        proto.STRING,
+        number=13,
+    )
 
 
 class OSPolicyAssignmentOperationMetadata(proto.Message):
@@ -282,14 +343,29 @@ class OSPolicyAssignmentOperationMetadata(proto.Message):
         CANCELLED = 3
         SUCCEEDED = 4
 
-    os_policy_assignment = proto.Field(proto.STRING, number=1,)
-    api_method = proto.Field(proto.ENUM, number=2, enum=APIMethod,)
-    rollout_state = proto.Field(proto.ENUM, number=3, enum=RolloutState,)
+    os_policy_assignment = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    api_method = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=APIMethod,
+    )
+    rollout_state = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=RolloutState,
+    )
     rollout_start_time = proto.Field(
-        proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
     )
     rollout_update_time = proto.Field(
-        proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
     )
 
 
@@ -315,11 +391,19 @@ class CreateOSPolicyAssignmentRequest(proto.Message):
             -  Must be unique within the project.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    os_policy_assignment = proto.Field(
-        proto.MESSAGE, number=2, message="OSPolicyAssignment",
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    os_policy_assignment_id = proto.Field(proto.STRING, number=3,)
+    os_policy_assignment = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="OSPolicyAssignment",
+    )
+    os_policy_assignment_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class UpdateOSPolicyAssignmentRequest(proto.Message):
@@ -334,10 +418,14 @@ class UpdateOSPolicyAssignmentRequest(proto.Message):
     """
 
     os_policy_assignment = proto.Field(
-        proto.MESSAGE, number=1, message="OSPolicyAssignment",
+        proto.MESSAGE,
+        number=1,
+        message="OSPolicyAssignment",
     )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -352,7 +440,10 @@ class GetOSPolicyAssignmentRequest(proto.Message):
             ``projects/{project}/locations/{location}/osPolicyAssignments/{os_policy_assignment}@{revisionId}``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListOSPolicyAssignmentsRequest(proto.Message):
@@ -370,9 +461,18 @@ class ListOSPolicyAssignmentsRequest(proto.Message):
             listing should continue from.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListOSPolicyAssignmentsResponse(proto.Message):
@@ -392,9 +492,14 @@ class ListOSPolicyAssignmentsResponse(proto.Message):
         return self
 
     os_policy_assignments = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="OSPolicyAssignment",
+        proto.MESSAGE,
+        number=1,
+        message="OSPolicyAssignment",
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class ListOSPolicyAssignmentRevisionsRequest(proto.Message):
@@ -413,9 +518,18 @@ class ListOSPolicyAssignmentRevisionsRequest(proto.Message):
             this listing should continue from.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListOSPolicyAssignmentRevisionsResponse(proto.Message):
@@ -435,9 +549,14 @@ class ListOSPolicyAssignmentRevisionsResponse(proto.Message):
         return self
 
     os_policy_assignments = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="OSPolicyAssignment",
+        proto.MESSAGE,
+        number=1,
+        message="OSPolicyAssignment",
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class DeleteOSPolicyAssignmentRequest(proto.Message):
@@ -449,7 +568,10 @@ class DeleteOSPolicyAssignmentRequest(proto.Message):
             assignment to be deleted
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

@@ -346,8 +346,10 @@ class ListInstanceOSPoliciesCompliancesPager:
                 sent along with the request as metadata.
         """
         self._method = method
-        self._request = instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesRequest(
-            request
+        self._request = (
+            instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesRequest(
+                request
+            )
         )
         self._response = response
         self._metadata = metadata
@@ -421,8 +423,10 @@ class ListInstanceOSPoliciesCompliancesAsyncPager:
                 sent along with the request as metadata.
         """
         self._method = method
-        self._request = instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesRequest(
-            request
+        self._request = (
+            instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesRequest(
+                request
+            )
         )
         self._response = response
         self._metadata = metadata
@@ -497,8 +501,8 @@ class ListOSPolicyAssignmentReportsPager:
                 sent along with the request as metadata.
         """
         self._method = method
-        self._request = os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest(
-            request
+        self._request = (
+            os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest(request)
         )
         self._response = response
         self._metadata = metadata
@@ -570,8 +574,8 @@ class ListOSPolicyAssignmentReportsAsyncPager:
                 sent along with the request as metadata.
         """
         self._method = method
-        self._request = os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest(
-            request
+        self._request = (
+            os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest(request)
         )
         self._response = response
         self._metadata = metadata

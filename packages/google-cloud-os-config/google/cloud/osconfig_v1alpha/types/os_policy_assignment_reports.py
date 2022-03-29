@@ -46,7 +46,10 @@ class GetOSPolicyAssignmentReportRequest(proto.Message):
             OSPolicyAssignment id must be provided.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListOSPolicyAssignmentReportsRequest(proto.Message):
@@ -92,10 +95,22 @@ class ListOSPolicyAssignmentReportsRequest(proto.Message):
             where this listing should continue from.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    filter = proto.Field(proto.STRING, number=3,)
-    page_token = proto.Field(proto.STRING, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class ListOSPolicyAssignmentReportsResponse(proto.Message):
@@ -115,9 +130,14 @@ class ListOSPolicyAssignmentReportsResponse(proto.Message):
         return self
 
     os_policy_assignment_reports = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="OSPolicyAssignmentReport",
+        proto.MESSAGE,
+        number=1,
+        message="OSPolicyAssignmentReport",
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class OSPolicyAssignmentReport(proto.Message):
@@ -271,7 +291,10 @@ class OSPolicyAssignmentReport(proto.Message):
                     number=1,
                     enum="OSPolicyAssignmentReport.OSPolicyCompliance.OSPolicyResourceCompliance.OSPolicyResourceConfigStep.Type",
                 )
-                error_message = proto.Field(proto.STRING, number=2,)
+                error_message = proto.Field(
+                    proto.STRING,
+                    number=2,
+                )
 
             class ExecResourceOutput(proto.Message):
                 r"""ExecResource specific output.
@@ -282,9 +305,15 @@ class OSPolicyAssignmentReport(proto.Message):
                         run). Output size is limited to 100K bytes.
                 """
 
-                enforcement_output = proto.Field(proto.BYTES, number=2,)
+                enforcement_output = proto.Field(
+                    proto.BYTES,
+                    number=2,
+                )
 
-            os_policy_resource_id = proto.Field(proto.STRING, number=1,)
+            os_policy_resource_id = proto.Field(
+                proto.STRING,
+                number=1,
+            )
             config_steps = proto.RepeatedField(
                 proto.MESSAGE,
                 number=2,
@@ -295,7 +324,10 @@ class OSPolicyAssignmentReport(proto.Message):
                 number=3,
                 enum="OSPolicyAssignmentReport.OSPolicyCompliance.OSPolicyResourceCompliance.ComplianceState",
             )
-            compliance_state_reason = proto.Field(proto.STRING, number=4,)
+            compliance_state_reason = proto.Field(
+                proto.STRING,
+                number=4,
+            )
             exec_resource_output = proto.Field(
                 proto.MESSAGE,
                 number=5,
@@ -303,27 +335,51 @@ class OSPolicyAssignmentReport(proto.Message):
                 message="OSPolicyAssignmentReport.OSPolicyCompliance.OSPolicyResourceCompliance.ExecResourceOutput",
             )
 
-        os_policy_id = proto.Field(proto.STRING, number=1,)
+        os_policy_id = proto.Field(
+            proto.STRING,
+            number=1,
+        )
         compliance_state = proto.Field(
             proto.ENUM,
             number=2,
             enum="OSPolicyAssignmentReport.OSPolicyCompliance.ComplianceState",
         )
-        compliance_state_reason = proto.Field(proto.STRING, number=3,)
+        compliance_state_reason = proto.Field(
+            proto.STRING,
+            number=3,
+        )
         os_policy_resource_compliances = proto.RepeatedField(
             proto.MESSAGE,
             number=4,
             message="OSPolicyAssignmentReport.OSPolicyCompliance.OSPolicyResourceCompliance",
         )
 
-    name = proto.Field(proto.STRING, number=1,)
-    instance = proto.Field(proto.STRING, number=2,)
-    os_policy_assignment = proto.Field(proto.STRING, number=3,)
-    os_policy_compliances = proto.RepeatedField(
-        proto.MESSAGE, number=4, message=OSPolicyCompliance,
+    name = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    update_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
-    last_run_id = proto.Field(proto.STRING, number=6,)
+    instance = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    os_policy_assignment = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    os_policy_compliances = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message=OSPolicyCompliance,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+    last_run_id = proto.Field(
+        proto.STRING,
+        number=6,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

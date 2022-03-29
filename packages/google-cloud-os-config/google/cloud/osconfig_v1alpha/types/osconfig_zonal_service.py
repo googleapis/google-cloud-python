@@ -15,7 +15,10 @@
 #
 
 
-__protobuf__ = proto.module(package="google.cloud.osconfig.v1alpha", manifest={},)
+__protobuf__ = proto.module(
+    package="google.cloud.osconfig.v1alpha",
+    manifest={},
+)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

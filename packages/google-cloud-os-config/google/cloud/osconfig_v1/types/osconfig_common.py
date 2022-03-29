@@ -17,7 +17,10 @@ import proto  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.osconfig.v1", manifest={"FixedOrPercent",},
+    package="google.cloud.osconfig.v1",
+    manifest={
+        "FixedOrPercent",
+    },
 )
 
 
@@ -45,8 +48,16 @@ class FixedOrPercent(proto.Message):
             This field is a member of `oneof`_ ``mode``.
     """
 
-    fixed = proto.Field(proto.INT32, number=1, oneof="mode",)
-    percent = proto.Field(proto.INT32, number=2, oneof="mode",)
+    fixed = proto.Field(
+        proto.INT32,
+        number=1,
+        oneof="mode",
+    )
+    percent = proto.Field(
+        proto.INT32,
+        number=2,
+        oneof="mode",
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
