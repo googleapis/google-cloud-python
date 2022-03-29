@@ -1510,7 +1510,8 @@ def test__download_table_bqstorage(
     bqstorage_client.create_read_session.return_value = fake_session
 
     table_ref = table.TableReference(
-        dataset.DatasetReference("project-x", "dataset-y"), "table-z",
+        dataset.DatasetReference("project-x", "dataset-y"),
+        "table-z",
     )
 
     def fake_download_stream(
@@ -1692,7 +1693,8 @@ def test_bq_to_arrow_field_type_override(module_under_test):
 
     assert (
         module_under_test.bq_to_arrow_field(
-            schema.SchemaField("g", "GEOGRAPHY"), pyarrow.binary(),
+            schema.SchemaField("g", "GEOGRAPHY"),
+            pyarrow.binary(),
         ).type
         == pyarrow.binary()
     )

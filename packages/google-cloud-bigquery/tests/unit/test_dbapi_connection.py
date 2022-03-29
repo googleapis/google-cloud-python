@@ -69,7 +69,8 @@ class TestConnection(unittest.TestCase):
         mock_client._ensure_bqstorage_client.return_value = mock_bqstorage_client
 
         connection = self._make_one(
-            client=mock_client, bqstorage_client=mock_bqstorage_client,
+            client=mock_client,
+            bqstorage_client=mock_bqstorage_client,
         )
 
         mock_client._ensure_bqstorage_client.assert_called_once_with(
@@ -119,7 +120,8 @@ class TestConnection(unittest.TestCase):
         mock_client._ensure_bqstorage_client.return_value = mock_bqstorage_client
 
         connection = connect(
-            client=mock_client, bqstorage_client=mock_bqstorage_client,
+            client=mock_client,
+            bqstorage_client=mock_bqstorage_client,
         )
 
         mock_client._ensure_bqstorage_client.assert_called_once_with(
@@ -154,7 +156,9 @@ class TestConnection(unittest.TestCase):
             return_value=client,
         )
         bqstorage_client_patcher = mock.patch.object(
-            client, "_ensure_bqstorage_client", return_value=bqstorage_client,
+            client,
+            "_ensure_bqstorage_client",
+            return_value=bqstorage_client,
         )
 
         with client_patcher, bqstorage_client_patcher:

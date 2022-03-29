@@ -2257,17 +2257,20 @@ class TestBigQuery(unittest.TestCase):
         return_table_type = StandardSqlTableType(
             columns=[
                 StandardSqlField(
-                    name="int_col", type=StandardSqlDataType(type_kind=INT64),
+                    name="int_col",
+                    type=StandardSqlDataType(type_kind=INT64),
                 ),
                 StandardSqlField(
-                    name="str_col", type=StandardSqlDataType(type_kind=STRING),
+                    name="str_col",
+                    type=StandardSqlDataType(type_kind=STRING),
                 ),
             ]
         )
 
         routine_args = [
             RoutineArgument(
-                name="threshold", data_type=StandardSqlDataType(type_kind=INT64),
+                name="threshold",
+                data_type=StandardSqlDataType(type_kind=INT64),
             )
         ]
 

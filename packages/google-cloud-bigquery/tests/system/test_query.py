@@ -20,7 +20,10 @@ def test_dry_run(bigquery_client: bigquery.Client, scalars_table: str):
     query_config.dry_run = True
 
     query_string = f"SELECT * FROM {scalars_table}"
-    query_job = bigquery_client.query(query_string, job_config=query_config,)
+    query_job = bigquery_client.query(
+        query_string,
+        job_config=query_config,
+    )
 
     # Note: `query_job.result()` is not necessary on a dry run query. All
     # necessary information is returned in the initial response.

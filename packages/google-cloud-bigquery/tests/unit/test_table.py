@@ -2859,7 +2859,8 @@ class TestRowIterator(unittest.TestCase):
         for progress_bar_type, progress_bar_mock in progress_bars:
             row_iterator = self._make_one(_mock_client(), api_request, path, schema)
             tbl = row_iterator.to_arrow(
-                progress_bar_type=progress_bar_type, create_bqstorage_client=False,
+                progress_bar_type=progress_bar_type,
+                create_bqstorage_client=False,
             )
 
             progress_bar_mock.assert_called()
@@ -3218,7 +3219,8 @@ class TestRowIterator(unittest.TestCase):
         for progress_bar_type, progress_bar_mock in progress_bars:
             row_iterator = self._make_one(_mock_client(), api_request, path, schema)
             df = row_iterator.to_dataframe(
-                progress_bar_type=progress_bar_type, create_bqstorage_client=False,
+                progress_bar_type=progress_bar_type,
+                create_bqstorage_client=False,
             )
 
             progress_bar_mock.assert_called()
@@ -3275,7 +3277,8 @@ class TestRowIterator(unittest.TestCase):
 
         with warnings.catch_warnings(record=True) as warned:
             df = row_iterator.to_dataframe(
-                progress_bar_type="tqdm", create_bqstorage_client=False,
+                progress_bar_type="tqdm",
+                create_bqstorage_client=False,
             )
 
         user_warnings = [
@@ -3313,7 +3316,8 @@ class TestRowIterator(unittest.TestCase):
 
             with warnings.catch_warnings(record=True) as warned:
                 df = row_iterator.to_dataframe(
-                    progress_bar_type=progress_bar_type, create_bqstorage_client=False,
+                    progress_bar_type=progress_bar_type,
+                    create_bqstorage_client=False,
                 )
 
             self.assertEqual(len(df), 4)  # all should be well
@@ -3355,9 +3359,9 @@ class TestRowIterator(unittest.TestCase):
         ]
         row_data = [
             [None, None, None, None, None, None],
-            ["1433836800000000", "420", "1.1", u"Cash", "true", "1999-12-01"],
-            ["1387811700000000", "2580", "17.7", u"Cash", "false", "1953-06-14"],
-            ["1385565300000000", "2280", "4.4", u"Credit", "true", "1981-11-04"],
+            ["1433836800000000", "420", "1.1", "Cash", "true", "1999-12-01"],
+            ["1387811700000000", "2580", "17.7", "Cash", "false", "1953-06-14"],
+            ["1385565300000000", "2280", "4.4", "Credit", "true", "1981-11-04"],
         ]
         rows = [{"f": [{"v": field} for field in row]} for row in row_data]
         path = "/foo"
@@ -3395,17 +3399,17 @@ class TestRowIterator(unittest.TestCase):
             SchemaField("date", "DATE"),
         ]
         row_data = [
-            ["1433836800000000", "420", "1.1", "1.77", u"Cash", "true", "1999-12-01"],
+            ["1433836800000000", "420", "1.1", "1.77", "Cash", "true", "1999-12-01"],
             [
                 "1387811700000000",
                 "2580",
                 "17.7",
                 "28.5",
-                u"Cash",
+                "Cash",
                 "false",
                 "1953-06-14",
             ],
-            ["1385565300000000", "2280", "4.4", "7.1", u"Credit", "true", "1981-11-04"],
+            ["1385565300000000", "2280", "4.4", "7.1", "Credit", "true", "1981-11-04"],
         ]
         rows = [{"f": [{"v": field} for field in row]} for row in row_data]
         path = "/foo"
@@ -3413,7 +3417,8 @@ class TestRowIterator(unittest.TestCase):
         row_iterator = self._make_one(_mock_client(), api_request, path, schema)
 
         df = row_iterator.to_dataframe(
-            dtypes={"km": "float16"}, create_bqstorage_client=False,
+            dtypes={"km": "float16"},
+            create_bqstorage_client=False,
         )
 
         self.assertIsInstance(df, pandas.DataFrame)
@@ -4037,7 +4042,8 @@ class TestRowIterator(unittest.TestCase):
         )
 
         df = row_iterator.to_dataframe(
-            bqstorage_client=None, create_bqstorage_client=False,
+            bqstorage_client=None,
+            create_bqstorage_client=False,
         )
 
         self.assertIsInstance(df, pandas.DataFrame)
@@ -4054,8 +4060,10 @@ class TestRowIterator(unittest.TestCase):
         from google.cloud.bigquery import table as mut
 
         bqstorage_client = mock.create_autospec(bigquery_storage.BigQueryReadClient)
-        bqstorage_client.create_read_session.side_effect = google.api_core.exceptions.Forbidden(
-            "TEST BigQuery Storage API not enabled. TEST"
+        bqstorage_client.create_read_session.side_effect = (
+            google.api_core.exceptions.Forbidden(
+                "TEST BigQuery Storage API not enabled. TEST"
+            )
         )
         path = "/foo"
         api_request = mock.Mock(return_value={"rows": []})
@@ -4185,7 +4193,8 @@ class TestRowIterator(unittest.TestCase):
             bqstorage_client=bqstorage_client,
             dtypes={
                 "col_category": pandas.core.dtypes.dtypes.CategoricalDtype(
-                    categories=["low", "medium", "high"], ordered=False,
+                    categories=["low", "medium", "high"],
+                    ordered=False,
                 ),
             },
         )
@@ -4203,7 +4212,8 @@ class TestRowIterator(unittest.TestCase):
         expected_dtypes = [
             pandas.core.dtypes.dtypes.np.dtype("O"),  # the default for string data
             pandas.core.dtypes.dtypes.CategoricalDtype(
-                categories=["low", "medium", "high"], ordered=False,
+                categories=["low", "medium", "high"],
+                ordered=False,
             ),
         ]
         self.assertEqual(list(got.dtypes), expected_dtypes)
@@ -4228,7 +4238,8 @@ class TestRowIterator(unittest.TestCase):
             ),
         )
         df = row_iterator.to_dataframe(
-            create_bqstorage_client=False, geography_as_object=True,
+            create_bqstorage_client=False,
+            geography_as_object=True,
         )
         self.assertIsInstance(df, pandas.DataFrame)
         self.assertEqual(len(df), 3)  # verify the number of rows
@@ -4395,7 +4406,10 @@ class TestRowIterator(unittest.TestCase):
         geography_column = "g"
 
         to_dataframe.return_value = pandas.DataFrame(
-            dict(name=["foo"], g=[wkt.loads("point(0 0)")],)
+            dict(
+                name=["foo"],
+                g=[wkt.loads("point(0 0)")],
+            )
         )
 
         df = row_iterator.to_geodataframe(

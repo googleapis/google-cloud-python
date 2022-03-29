@@ -37,28 +37,28 @@ _default_attributes = {
 @contextmanager
 def create_span(name, attributes=None, client=None, job_ref=None):
     """Creates a ContextManager for a Span to be exported to the configured exporter.
-        If no configuration exists yields None.
+    If no configuration exists yields None.
 
-            Args:
-                name (str): Name that will be set for the span being created
-                attributes (Optional[dict]):
-                    Additional attributes that pertain to
-                    the specific API call (i.e. not a default attribute)
-                client (Optional[google.cloud.bigquery.client.Client]):
-                    Pass in a Client object to extract any attributes that may be
-                    relevant to it and add them to the created spans.
-                job_ref (Optional[google.cloud.bigquery.job._AsyncJob])
-                    Pass in a _AsyncJob object to extract any attributes that may be
-                    relevant to it and add them to the created spans.
+        Args:
+            name (str): Name that will be set for the span being created
+            attributes (Optional[dict]):
+                Additional attributes that pertain to
+                the specific API call (i.e. not a default attribute)
+            client (Optional[google.cloud.bigquery.client.Client]):
+                Pass in a Client object to extract any attributes that may be
+                relevant to it and add them to the created spans.
+            job_ref (Optional[google.cloud.bigquery.job._AsyncJob])
+                Pass in a _AsyncJob object to extract any attributes that may be
+                relevant to it and add them to the created spans.
 
-            Yields:
-                opentelemetry.trace.Span: Yields the newly created Span.
+        Yields:
+            opentelemetry.trace.Span: Yields the newly created Span.
 
-            Raises:
-                google.api_core.exceptions.GoogleAPICallError:
-                    Raised if a span could not be yielded or issue with call to
-                    OpenTelemetry.
-            """
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError:
+                Raised if a span could not be yielded or issue with call to
+                OpenTelemetry.
+    """
     global _warned_telemetry
     final_attributes = _get_final_span_attributes(attributes, client, job_ref)
     if not HAS_OPENTELEMETRY:

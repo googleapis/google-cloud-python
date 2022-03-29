@@ -24,7 +24,7 @@ import nox
 
 MYPY_VERSION = "mypy==0.910"
 PYTYPE_VERSION = "pytype==2021.4.9"
-BLACK_VERSION = "black==19.10b0"
+BLACK_VERSION = "black==22.3.0"
 BLACK_PATHS = ("docs", "google", "samples", "tests", "noxfile.py", "setup.py")
 
 DEFAULT_PYTHON_VERSION = "3.8"
@@ -122,7 +122,10 @@ def mypy(session):
     # Just install the dependencies' type info directly, since "mypy --install-types"
     # might require an additional pass.
     session.install(
-        "types-protobuf", "types-python-dateutil", "types-requests", "types-setuptools",
+        "types-protobuf",
+        "types-python-dateutil",
+        "types-requests",
+        "types-setuptools",
     )
     session.run("mypy", "google/cloud")
 

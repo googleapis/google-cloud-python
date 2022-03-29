@@ -324,7 +324,8 @@ class QueryJobConfig(_JobConfig):
     @connection_properties.setter
     def connection_properties(self, value: Iterable[ConnectionProperty]):
         self._set_sub_prop(
-            "connectionProperties", [prop.to_api_repr() for prop in value],
+            "connectionProperties",
+            [prop.to_api_repr() for prop in value],
         )
 
     @property

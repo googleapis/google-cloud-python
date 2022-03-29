@@ -17,7 +17,10 @@ import proto  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.bigquery.v2", manifest={"TableReference",},
+    package="google.cloud.bigquery.v2",
+    manifest={
+        "TableReference",
+    },
 )
 
 
@@ -48,12 +51,30 @@ class TableReference(proto.Message):
             to translate the received data to the project_id field.
     """
 
-    project_id = proto.Field(proto.STRING, number=1,)
-    dataset_id = proto.Field(proto.STRING, number=2,)
-    table_id = proto.Field(proto.STRING, number=3,)
-    project_id_alternative = proto.RepeatedField(proto.STRING, number=4,)
-    dataset_id_alternative = proto.RepeatedField(proto.STRING, number=5,)
-    table_id_alternative = proto.RepeatedField(proto.STRING, number=6,)
+    project_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    dataset_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    table_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    project_id_alternative = proto.RepeatedField(
+        proto.STRING,
+        number=4,
+    )
+    dataset_id_alternative = proto.RepeatedField(
+        proto.STRING,
+        number=5,
+    )
+    table_id_alternative = proto.RepeatedField(
+        proto.STRING,
+        number=6,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

@@ -571,7 +571,8 @@ def test_bigquery_magic_does_not_clear_display_in_verbose_mode():
     )
 
     clear_patch = mock.patch(
-        "google.cloud.bigquery.magics.magics.display.clear_output", autospec=True,
+        "google.cloud.bigquery.magics.magics.display.clear_output",
+        autospec=True,
     )
     run_query_patch = mock.patch(
         "google.cloud.bigquery.magics.magics._run_query", autospec=True
@@ -591,7 +592,8 @@ def test_bigquery_magic_clears_display_in_non_verbose_mode():
     )
 
     clear_patch = mock.patch(
-        "google.cloud.bigquery.magics.magics.display.clear_output", autospec=True,
+        "google.cloud.bigquery.magics.magics.display.clear_output",
+        autospec=True,
     )
     run_query_patch = mock.patch(
         "google.cloud.bigquery.magics.magics._run_query", autospec=True
@@ -785,7 +787,8 @@ def test_bigquery_magic_w_max_results_query_job_results_fails():
         "google.cloud.bigquery.client.Client.query", autospec=True
     )
     close_transports_patch = mock.patch(
-        "google.cloud.bigquery.magics.magics._close_transports", autospec=True,
+        "google.cloud.bigquery.magics.magics._close_transports",
+        autospec=True,
     )
 
     sql = "SELECT 17 AS num"
@@ -938,7 +941,8 @@ def test_bigquery_magic_w_table_id_and_bqstorage_client():
 
         ip.run_cell_magic("bigquery", "--max_results=5", table_id)
         row_iterator_mock.to_dataframe.assert_called_once_with(
-            bqstorage_client=bqstorage_instance_mock, create_bqstorage_client=mock.ANY,
+            bqstorage_client=bqstorage_instance_mock,
+            create_bqstorage_client=mock.ANY,
         )
 
 
@@ -2023,7 +2027,8 @@ def test_bigquery_magic_create_dataset_fails():
         side_effect=OSError,
     )
     close_transports_patch = mock.patch(
-        "google.cloud.bigquery.magics.magics._close_transports", autospec=True,
+        "google.cloud.bigquery.magics.magics._close_transports",
+        autospec=True,
     )
 
     with pytest.raises(

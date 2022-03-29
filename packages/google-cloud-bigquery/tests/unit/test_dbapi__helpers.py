@@ -603,7 +603,8 @@ def test_complex_query_parameter_type_errors(type_, value, expect):
     from google.cloud.bigquery.dbapi import exceptions
 
     with pytest.raises(
-        exceptions.ProgrammingError, match=_expected_error_match(expect),
+        exceptions.ProgrammingError,
+        match=_expected_error_match(expect),
     ):
         complex_query_parameter("test", value, type_)
 

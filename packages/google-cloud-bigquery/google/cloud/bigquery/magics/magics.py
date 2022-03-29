@@ -586,7 +586,9 @@ def _cell_magic(line, query):
             bqstorage_client_options.api_endpoint = args.bqstorage_api_endpoint
 
     bqstorage_client = _make_bqstorage_client(
-        client, use_bqstorage_api, bqstorage_client_options,
+        client,
+        use_bqstorage_api,
+        bqstorage_client_options,
     )
 
     close_transports = functools.partial(_close_transports, client, bqstorage_client)
@@ -637,7 +639,8 @@ def _cell_magic(line, query):
                 return
 
             result = rows.to_dataframe(
-                bqstorage_client=bqstorage_client, create_bqstorage_client=False,
+                bqstorage_client=bqstorage_client,
+                create_bqstorage_client=False,
             )
             if args.destination_var:
                 IPython.get_ipython().push({args.destination_var: result})

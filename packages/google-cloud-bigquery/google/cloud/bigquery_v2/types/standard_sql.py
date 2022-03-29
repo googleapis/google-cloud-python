@@ -78,12 +78,22 @@ class StandardSqlDataType(proto.Message):
         ARRAY = 16
         STRUCT = 17
 
-    type_kind = proto.Field(proto.ENUM, number=1, enum=TypeKind,)
+    type_kind = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=TypeKind,
+    )
     array_element_type = proto.Field(
-        proto.MESSAGE, number=2, oneof="sub_type", message="StandardSqlDataType",
+        proto.MESSAGE,
+        number=2,
+        oneof="sub_type",
+        message="StandardSqlDataType",
     )
     struct_type = proto.Field(
-        proto.MESSAGE, number=3, oneof="sub_type", message="StandardSqlStructType",
+        proto.MESSAGE,
+        number=3,
+        oneof="sub_type",
+        message="StandardSqlStructType",
     )
 
 
@@ -102,8 +112,15 @@ class StandardSqlField(proto.Message):
             this "type" field).
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    type = proto.Field(proto.MESSAGE, number=2, message="StandardSqlDataType",)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    type = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="StandardSqlDataType",
+    )
 
 
 class StandardSqlStructType(proto.Message):
@@ -114,7 +131,11 @@ class StandardSqlStructType(proto.Message):
 
     """
 
-    fields = proto.RepeatedField(proto.MESSAGE, number=1, message="StandardSqlField",)
+    fields = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="StandardSqlField",
+    )
 
 
 class StandardSqlTableType(proto.Message):
@@ -125,7 +146,11 @@ class StandardSqlTableType(proto.Message):
             The columns in this table type
     """
 
-    columns = proto.RepeatedField(proto.MESSAGE, number=1, message="StandardSqlField",)
+    columns = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="StandardSqlField",
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

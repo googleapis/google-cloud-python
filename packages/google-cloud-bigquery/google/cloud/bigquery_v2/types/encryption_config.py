@@ -19,7 +19,10 @@ from google.protobuf import wrappers_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.bigquery.v2", manifest={"EncryptionConfiguration",},
+    package="google.cloud.bigquery.v2",
+    manifest={
+        "EncryptionConfiguration",
+    },
 )
 
 
@@ -36,7 +39,9 @@ class EncryptionConfiguration(proto.Message):
     """
 
     kms_key_name = proto.Field(
-        proto.MESSAGE, number=1, message=wrappers_pb2.StringValue,
+        proto.MESSAGE,
+        number=1,
+        message=wrappers_pb2.StringValue,
     )
 
 

@@ -1894,9 +1894,7 @@ class Client(ClientWithProject):
 
     def job_from_resource(
         self, resource: dict
-    ) -> Union[
-        job.CopyJob, job.ExtractJob, job.LoadJob, job.QueryJob, job.UnknownJob,
-    ]:
+    ) -> Union[job.CopyJob, job.ExtractJob, job.LoadJob, job.QueryJob, job.UnknownJob]:
         """Detect correct job type from resource and instantiate.
 
         Args:
@@ -1978,8 +1976,8 @@ class Client(ClientWithProject):
                 timeout=timeout,
             )
         elif "extract" in job_config:
-            extract_job_config = google.cloud.bigquery.job.ExtractJobConfig.from_api_repr(
-                job_config
+            extract_job_config = (
+                google.cloud.bigquery.job.ExtractJobConfig.from_api_repr(job_config)
             )
             source = _get_sub_prop(job_config, ["extract", "sourceTable"])
             if source:
@@ -2152,7 +2150,8 @@ class Client(ClientWithProject):
         job_instance = self.job_from_resource(resource["job"])  # never an UnknownJob
 
         return typing.cast(
-            Union[job.LoadJob, job.CopyJob, job.ExtractJob, job.QueryJob], job_instance,
+            Union[job.LoadJob, job.CopyJob, job.ExtractJob, job.QueryJob],
+            job_instance,
         )
 
     def list_jobs(

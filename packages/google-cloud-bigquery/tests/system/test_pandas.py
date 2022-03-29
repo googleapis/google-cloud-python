@@ -522,7 +522,10 @@ def test_load_table_from_dataframe_w_explicit_schema_source_format_csv(
         [
             ("bool_col", [True, None, False]),
             ("bytes_col", ["abc", None, "def"]),
-            ("date_col", [datetime.date(1, 1, 1), None, datetime.date(9999, 12, 31)],),
+            (
+                "date_col",
+                [datetime.date(1, 1, 1), None, datetime.date(9999, 12, 31)],
+            ),
             (
                 "dt_col",
                 [

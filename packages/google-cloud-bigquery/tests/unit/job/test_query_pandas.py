@@ -146,8 +146,10 @@ def test_to_dataframe_bqstorage_preserve_order(query, table_read_options_kwarg):
 
     job.to_dataframe(bqstorage_client=bqstorage_client)
 
-    destination_table = "projects/{projectId}/datasets/{datasetId}/tables/{tableId}".format(
-        **job_resource["configuration"]["query"]["destinationTable"]
+    destination_table = (
+        "projects/{projectId}/datasets/{datasetId}/tables/{tableId}".format(
+            **job_resource["configuration"]["query"]["destinationTable"]
+        )
     )
     expected_session = bigquery_storage.ReadSession(
         table=destination_table,
@@ -272,7 +274,8 @@ def test_to_arrow_max_results_no_progress_bar():
     row_iterator = table.RowIterator(client, api_request, path, schema)
 
     result_patch = mock.patch(
-        "google.cloud.bigquery.job.QueryJob.result", return_value=row_iterator,
+        "google.cloud.bigquery.job.QueryJob.result",
+        return_value=row_iterator,
     )
     with result_patch as result_patch_tqdm:
         tbl = job.to_arrow(create_bqstorage_client=False, max_results=123)
@@ -535,8 +538,10 @@ def test_to_dataframe_bqstorage(table_read_options_kwarg):
 
     job.to_dataframe(bqstorage_client=bqstorage_client)
 
-    destination_table = "projects/{projectId}/datasets/{datasetId}/tables/{tableId}".format(
-        **resource["configuration"]["query"]["destinationTable"]
+    destination_table = (
+        "projects/{projectId}/datasets/{datasetId}/tables/{tableId}".format(
+            **resource["configuration"]["query"]["destinationTable"]
+        )
     )
     expected_session = bigquery_storage.ReadSession(
         table=destination_table,
@@ -583,11 +588,14 @@ def test_to_dataframe_bqstorage_no_pyarrow_compression():
     ):
         job.to_dataframe(bqstorage_client=bqstorage_client)
 
-    destination_table = "projects/{projectId}/datasets/{datasetId}/tables/{tableId}".format(
-        **resource["configuration"]["query"]["destinationTable"]
+    destination_table = (
+        "projects/{projectId}/datasets/{datasetId}/tables/{tableId}".format(
+            **resource["configuration"]["query"]["destinationTable"]
+        )
     )
     expected_session = bigquery_storage.ReadSession(
-        table=destination_table, data_format=bigquery_storage.DataFormat.ARROW,
+        table=destination_table,
+        data_format=bigquery_storage.DataFormat.ARROW,
     )
     bqstorage_client.create_read_session.assert_called_once_with(
         parent=f"projects/{client.project}",
@@ -705,7 +713,11 @@ def test_to_dataframe_with_progress_bar(tqdm_mock):
     done_resource = copy.deepcopy(begun_resource)
     done_resource["status"] = {"state": "DONE"}
     connection = make_connection(
-        begun_resource, query_resource, done_resource, query_resource, query_resource,
+        begun_resource,
+        query_resource,
+        done_resource,
+        query_resource,
+        query_resource,
     )
     client = _make_client(connection=connection)
     job = target_class.from_api_repr(begun_resource, client)

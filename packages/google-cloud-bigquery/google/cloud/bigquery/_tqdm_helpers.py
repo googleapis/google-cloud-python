@@ -95,7 +95,9 @@ def wait_for_query(
             progress_bar.total = len(query_job.query_plan)
             progress_bar.set_description(
                 "Query executing stage {} and status {} : {:0.2f}s".format(
-                    current_stage.name, current_stage.status, time.time() - start_time,
+                    current_stage.name,
+                    current_stage.status,
+                    time.time() - start_time,
                 ),
             )
         try:

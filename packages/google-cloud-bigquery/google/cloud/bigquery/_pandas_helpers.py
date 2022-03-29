@@ -585,7 +585,10 @@ def dataframe_to_parquet(
     bq_schema = schema._to_schema_fields(bq_schema)
     arrow_table = dataframe_to_arrow(dataframe, bq_schema)
     pyarrow.parquet.write_table(
-        arrow_table, filepath, compression=parquet_compression, **kwargs,
+        arrow_table,
+        filepath,
+        compression=parquet_compression,
+        **kwargs,
     )
 
 

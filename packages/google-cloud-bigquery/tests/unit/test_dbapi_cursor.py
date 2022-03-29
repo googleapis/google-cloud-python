@@ -309,12 +309,14 @@ class TestCursor(unittest.TestCase):
 
         mock_client = self._mock_client(rows=row_data)
         mock_bqstorage_client = self._mock_bqstorage_client(
-            stream_count=1, rows=bqstorage_streamed_rows,
+            stream_count=1,
+            rows=bqstorage_streamed_rows,
         )
         mock_client._ensure_bqstorage_client.return_value = mock_bqstorage_client
 
         connection = dbapi.connect(
-            client=mock_client, bqstorage_client=mock_bqstorage_client,
+            client=mock_client,
+            bqstorage_client=mock_bqstorage_client,
         )
         cursor = connection.cursor()
         cursor.execute("SELECT foo, bar FROM some_table")
@@ -345,7 +347,8 @@ class TestCursor(unittest.TestCase):
         mock_client._ensure_bqstorage_client.return_value = mock_bqstorage_client
 
         connection = dbapi.connect(
-            client=mock_client, bqstorage_client=mock_bqstorage_client,
+            client=mock_client,
+            bqstorage_client=mock_bqstorage_client,
         )
         cursor = connection.cursor()
         cursor.execute("SELECT foo, bar FROM some_table")
@@ -373,13 +376,15 @@ class TestCursor(unittest.TestCase):
         mock_client = self._mock_client(rows=row_data)
         mock_client._ensure_bqstorage_client.side_effect = fake_ensure_bqstorage_client
         mock_bqstorage_client = self._mock_bqstorage_client(
-            stream_count=1, rows=row_data,
+            stream_count=1,
+            rows=row_data,
         )
         no_access_error = exceptions.Forbidden("invalid credentials")
         mock_bqstorage_client.create_read_session.side_effect = no_access_error
 
         connection = dbapi.connect(
-            client=mock_client, bqstorage_client=mock_bqstorage_client,
+            client=mock_client,
+            bqstorage_client=mock_bqstorage_client,
         )
         cursor = connection.cursor()
         cursor.execute("SELECT foo, bar FROM some_table")
@@ -408,11 +413,13 @@ class TestCursor(unittest.TestCase):
         mock_client = self._mock_client(rows=row_data)
         mock_client._ensure_bqstorage_client.side_effect = fake_ensure_bqstorage_client
         mock_bqstorage_client = self._mock_bqstorage_client(
-            stream_count=1, rows=bqstorage_streamed_rows,
+            stream_count=1,
+            rows=bqstorage_streamed_rows,
         )
 
         connection = dbapi.connect(
-            client=mock_client, bqstorage_client=mock_bqstorage_client,
+            client=mock_client,
+            bqstorage_client=mock_bqstorage_client,
         )
         cursor = connection.cursor()
         cursor.execute("SELECT foo, bar FROM some_table")

@@ -17,7 +17,10 @@ import proto  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.bigquery.v2", manifest={"ModelReference",},
+    package="google.cloud.bigquery.v2",
+    manifest={
+        "ModelReference",
+    },
 )
 
 
@@ -37,9 +40,18 @@ class ModelReference(proto.Message):
             maximum length is 1,024 characters.
     """
 
-    project_id = proto.Field(proto.STRING, number=1,)
-    dataset_id = proto.Field(proto.STRING, number=2,)
-    model_id = proto.Field(proto.STRING, number=3,)
+    project_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    dataset_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    model_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

@@ -23,7 +23,8 @@ def test_structs(bigquery_client, dataset_id, person_type_decl, table_id):
         ],
     )
     cursor.execute(
-        f"insert into {table_id} (person) values (%(v:{person_type})s)", dict(v=data),
+        f"insert into {table_id} (person) values (%(v:{person_type})s)",
+        dict(v=data),
     )
 
     cursor.execute(f"select * from {table_id}")

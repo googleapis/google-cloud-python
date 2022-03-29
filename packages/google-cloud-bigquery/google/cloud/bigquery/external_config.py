@@ -289,8 +289,7 @@ class BigtableColumnFamily(object):
 
 
 class BigtableOptions(object):
-    """Options that describe how to treat Bigtable tables as BigQuery tables.
-    """
+    """Options that describe how to treat Bigtable tables as BigQuery tables."""
 
     _SOURCE_FORMAT = "BIGTABLE"
     _RESOURCE_NAME = "bigtableOptions"
@@ -557,7 +556,11 @@ _OPTION_CLASSES = (
 )
 
 OptionsType = Union[
-    AvroOptions, BigtableOptions, CSVOptions, GoogleSheetsOptions, ParquetOptions,
+    AvroOptions,
+    BigtableOptions,
+    CSVOptions,
+    GoogleSheetsOptions,
+    ParquetOptions,
 ]
 
 

@@ -417,8 +417,7 @@ class PolicyTagList(object):
 
     @property
     def names(self):
-        """Tuple[str]: Policy tags associated with this definition.
-        """
+        """Tuple[str]: Policy tags associated with this definition."""
         return self._properties.get("names", ())
 
     def _key(self):

@@ -40,7 +40,13 @@ def test_list_models_empty_w_timeout(client, PROJECT, DS_ID):
 )
 @dataset_polymorphic
 def test_list_models_defaults(
-    make_dataset, get_reference, client, PROJECT, DS_ID, extra, query,
+    make_dataset,
+    get_reference,
+    client,
+    PROJECT,
+    DS_ID,
+    extra,
+    query,
 ):
     from google.cloud.bigquery.model import Model
 

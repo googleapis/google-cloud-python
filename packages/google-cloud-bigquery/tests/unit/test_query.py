@@ -825,7 +825,8 @@ class Test_ArrayQueryParameter(unittest.TestCase):
         }
         klass = self._get_target_class()
         param = klass.positional(
-            array_type=ScalarQueryParameterType("BOOLEAN"), values=[True, False],
+            array_type=ScalarQueryParameterType("BOOLEAN"),
+            values=[True, False],
         )
         self.assertEqual(param.to_api_repr(), EXPECTED)
 

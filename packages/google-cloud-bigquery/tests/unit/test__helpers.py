@@ -1150,7 +1150,8 @@ class Test_record_field_to_json(unittest.TestCase):
 
         # Unknown fields should be included (if not None), but converted as strings.
         self.assertEqual(
-            converted, {"whoami": "2020-07-20", "one": "111", "two": "222"},
+            converted,
+            {"whoami": "2020-07-20", "one": "111", "two": "222"},
         )
 
 
@@ -1327,8 +1328,7 @@ class _Field(object):
 
 
 def _field_isinstance_patcher():
-    """A patcher thank makes _Field instances seem like SchemaField instances.
-    """
+    """A patcher thank makes _Field instances seem like SchemaField instances."""
     from google.cloud.bigquery.schema import SchemaField
 
     def fake_isinstance(instance, target_class):

@@ -486,8 +486,7 @@ def raise_on_closed(
     """Make public instance methods raise an error if the instance is closed."""
 
     def _raise_on_closed(method):
-        """Make a non-static method raise an error if its containing instance is closed.
-        """
+        """Make a non-static method raise an error if its containing instance is closed."""
 
         def with_closed_check(self, *args, **kwargs):
             if getattr(self, closed_attr_name):
@@ -498,8 +497,7 @@ def raise_on_closed(
         return with_closed_check
 
     def decorate_public_methods(klass):
-        """Apply ``_raise_on_closed()`` decorator to public instance methods.
-        """
+        """Apply ``_raise_on_closed()`` decorator to public instance methods."""
         for name in dir(klass):
             if name.startswith("_") and name != "__iter__":
                 continue

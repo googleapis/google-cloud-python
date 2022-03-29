@@ -65,7 +65,9 @@ def test_list_rows_nullable_scalars_dtypes(
     ]
 
     arrow_table = bigquery_client.list_rows(
-        table_id, max_results=max_results, selected_fields=schema,
+        table_id,
+        max_results=max_results,
+        selected_fields=schema,
     ).to_arrow()
 
     schema = arrow_table.schema

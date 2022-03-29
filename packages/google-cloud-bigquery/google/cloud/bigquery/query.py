@@ -363,8 +363,7 @@ class StructQueryParameterType(_AbstractQueryParameterType):
 
 
 class _AbstractQueryParameter(object):
-    """Base class for named / positional query parameters.
-    """
+    """Base class for named / positional query parameters."""
 
     @classmethod
     def from_api_repr(cls, resource: dict) -> "_AbstractQueryParameter":

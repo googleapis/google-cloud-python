@@ -79,7 +79,7 @@ def test_from_api_repr(target_class):
         "description": "A friendly description.",
         "friendlyName": "A friendly name.",
         "modelType": "LOGISTIC_REGRESSION",
-        "labels": {"greeting": u"こんにちは"},
+        "labels": {"greeting": "こんにちは"},
         "trainingRuns": [
             {
                 "trainingOptions": {"initialLearnRate": 1.0},
@@ -115,10 +115,10 @@ def test_from_api_repr(target_class):
     assert got.created == creation_time
     assert got.modified == modified_time
     assert got.expires == expiration_time
-    assert got.description == u"A friendly description."
-    assert got.friendly_name == u"A friendly name."
+    assert got.description == "A friendly description."
+    assert got.friendly_name == "A friendly name."
     assert got.model_type == types.Model.ModelType.LOGISTIC_REGRESSION
-    assert got.labels == {"greeting": u"こんにちは"}
+    assert got.labels == {"greeting": "こんにちは"}
     assert got.encryption_configuration.kms_key_name == KMS_KEY_NAME
     assert got.training_runs[0].training_options.initial_learn_rate == 1.0
     assert (

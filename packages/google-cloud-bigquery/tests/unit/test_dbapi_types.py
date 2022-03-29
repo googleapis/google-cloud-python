@@ -48,8 +48,8 @@ class CustomBinary:
 @pytest.mark.parametrize(
     "raw,expected",
     [
-        (u"hello", b"hello"),
-        (u"\u1f60", u"\u1f60".encode("utf-8")),
+        ("hello", b"hello"),
+        ("\u1f60", "\u1f60".encode("utf-8")),
         (b"hello", b"hello"),
         (bytearray(b"hello"), b"hello"),
         (memoryview(b"hello"), b"hello"),

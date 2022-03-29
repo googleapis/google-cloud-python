@@ -191,7 +191,7 @@ class AccessEntry(object):
         )
 
     def _key(self):
-        """ A tuple key that uniquely describes this field.
+        """A tuple key that uniquely describes this field.
         Used to compute this instance's hashcode and evaluate equality.
         Returns:
             Tuple: The contents of this :class:`~google.cloud.bigquery.dataset.AccessEntry`.

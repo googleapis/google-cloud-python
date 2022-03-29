@@ -39,9 +39,15 @@ STANDARD_SQL_EXAMPLES = [
     ('SELECT "ABC"', "ABC"),
     ('SELECT CAST("foo" AS BYTES)', b"foo"),
     ('SELECT TIMESTAMP "%s"' % (_stamp,), _zoned),
-    ('SELECT TIMESTAMP "%s"' % (_stamp_microseconds,), _zoned_microseconds,),
+    (
+        'SELECT TIMESTAMP "%s"' % (_stamp_microseconds,),
+        _zoned_microseconds,
+    ),
     ('SELECT DATETIME(TIMESTAMP "%s")' % (_stamp,), _naive),
-    ('SELECT DATETIME(TIMESTAMP "%s")' % (_stamp_microseconds,), _naive_microseconds,),
+    (
+        'SELECT DATETIME(TIMESTAMP "%s")' % (_stamp_microseconds,),
+        _naive_microseconds,
+    ),
     ('SELECT DATE(TIMESTAMP "%s")' % (_stamp,), _naive.date()),
     ('SELECT TIME(TIMESTAMP "%s")' % (_stamp,), _naive.time()),
     ('SELECT NUMERIC "%s"' % (_numeric,), _numeric),
@@ -90,5 +96,6 @@ def _rate_limit_exceeded(forbidden):
 # they return instead of the more appropriate 429.
 # See https://cloud.google.com/bigquery/quota-policy
 retry_403 = test_utils.retry.RetryErrors(
-    google.api_core.exceptions.Forbidden, error_predicate=_rate_limit_exceeded,
+    google.api_core.exceptions.Forbidden,
+    error_predicate=_rate_limit_exceeded,
 )
