@@ -63,7 +63,10 @@ class DataplexServiceClientMeta(type):
     _transport_registry["grpc"] = DataplexServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = DataplexServiceGrpcAsyncIOTransport
 
-    def get_transport_class(cls, label: str = None,) -> Type[DataplexServiceTransport]:
+    def get_transport_class(
+        cls,
+        label: str = None,
+    ) -> Type[DataplexServiceTransport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -174,10 +177,18 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         return self._transport
 
     @staticmethod
-    def action_path(project: str, location: str, lake: str, action: str,) -> str:
+    def action_path(
+        project: str,
+        location: str,
+        lake: str,
+        action: str,
+    ) -> str:
         """Returns a fully-qualified action string."""
         return "projects/{project}/locations/{location}/lakes/{lake}/actions/{action}".format(
-            project=project, location=location, lake=lake, action=action,
+            project=project,
+            location=location,
+            lake=lake,
+            action=action,
         )
 
     @staticmethod
@@ -191,11 +202,19 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
     @staticmethod
     def asset_path(
-        project: str, location: str, lake: str, zone: str, asset: str,
+        project: str,
+        location: str,
+        lake: str,
+        zone: str,
+        asset: str,
     ) -> str:
         """Returns a fully-qualified asset string."""
         return "projects/{project}/locations/{location}/lakes/{lake}/zones/{zone}/assets/{asset}".format(
-            project=project, location=location, lake=lake, zone=zone, asset=asset,
+            project=project,
+            location=location,
+            lake=lake,
+            zone=zone,
+            asset=asset,
         )
 
     @staticmethod
@@ -209,11 +228,17 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
     @staticmethod
     def environment_path(
-        project: str, location: str, lake: str, environment: str,
+        project: str,
+        location: str,
+        lake: str,
+        environment: str,
     ) -> str:
         """Returns a fully-qualified environment string."""
         return "projects/{project}/locations/{location}/lakes/{lake}/environments/{environment}".format(
-            project=project, location=location, lake=lake, environment=environment,
+            project=project,
+            location=location,
+            lake=lake,
+            environment=environment,
         )
 
     @staticmethod
@@ -226,10 +251,20 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def job_path(project: str, location: str, lake: str, task: str, job: str,) -> str:
+    def job_path(
+        project: str,
+        location: str,
+        lake: str,
+        task: str,
+        job: str,
+    ) -> str:
         """Returns a fully-qualified job string."""
         return "projects/{project}/locations/{location}/lakes/{lake}/tasks/{task}/jobs/{job}".format(
-            project=project, location=location, lake=lake, task=task, job=job,
+            project=project,
+            location=location,
+            lake=lake,
+            task=task,
+            job=job,
         )
 
     @staticmethod
@@ -242,10 +277,16 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def lake_path(project: str, location: str, lake: str,) -> str:
+    def lake_path(
+        project: str,
+        location: str,
+        lake: str,
+    ) -> str:
         """Returns a fully-qualified lake string."""
         return "projects/{project}/locations/{location}/lakes/{lake}".format(
-            project=project, location=location, lake=lake,
+            project=project,
+            location=location,
+            lake=lake,
         )
 
     @staticmethod
@@ -259,7 +300,11 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
     @staticmethod
     def session_path(
-        project: str, location: str, lake: str, environment: str, session: str,
+        project: str,
+        location: str,
+        lake: str,
+        environment: str,
+        session: str,
     ) -> str:
         """Returns a fully-qualified session string."""
         return "projects/{project}/locations/{location}/lakes/{lake}/environments/{environment}/sessions/{session}".format(
@@ -280,10 +325,20 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def task_path(project: str, location: str, lake: str, task: str,) -> str:
+    def task_path(
+        project: str,
+        location: str,
+        lake: str,
+        task: str,
+    ) -> str:
         """Returns a fully-qualified task string."""
-        return "projects/{project}/locations/{location}/lakes/{lake}/tasks/{task}".format(
-            project=project, location=location, lake=lake, task=task,
+        return (
+            "projects/{project}/locations/{location}/lakes/{lake}/tasks/{task}".format(
+                project=project,
+                location=location,
+                lake=lake,
+                task=task,
+            )
         )
 
     @staticmethod
@@ -296,10 +351,20 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def zone_path(project: str, location: str, lake: str, zone: str,) -> str:
+    def zone_path(
+        project: str,
+        location: str,
+        lake: str,
+        zone: str,
+    ) -> str:
         """Returns a fully-qualified zone string."""
-        return "projects/{project}/locations/{location}/lakes/{lake}/zones/{zone}".format(
-            project=project, location=location, lake=lake, zone=zone,
+        return (
+            "projects/{project}/locations/{location}/lakes/{lake}/zones/{zone}".format(
+                project=project,
+                location=location,
+                lake=lake,
+                zone=zone,
+            )
         )
 
     @staticmethod
@@ -312,7 +377,9 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_billing_account_path(billing_account: str,) -> str:
+    def common_billing_account_path(
+        billing_account: str,
+    ) -> str:
         """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
@@ -325,9 +392,13 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(folder: str,) -> str:
+    def common_folder_path(
+        folder: str,
+    ) -> str:
         """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(folder=folder,)
+        return "folders/{folder}".format(
+            folder=folder,
+        )
 
     @staticmethod
     def parse_common_folder_path(path: str) -> Dict[str, str]:
@@ -336,9 +407,13 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(organization: str,) -> str:
+    def common_organization_path(
+        organization: str,
+    ) -> str:
         """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(organization=organization,)
+        return "organizations/{organization}".format(
+            organization=organization,
+        )
 
     @staticmethod
     def parse_common_organization_path(path: str) -> Dict[str, str]:
@@ -347,9 +422,13 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(project: str,) -> str:
+    def common_project_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified project string."""
-        return "projects/{project}".format(project=project,)
+        return "projects/{project}".format(
+            project=project,
+        )
 
     @staticmethod
     def parse_common_project_path(path: str) -> Dict[str, str]:
@@ -358,10 +437,14 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(project: str, location: str,) -> str:
+    def common_location_path(
+        project: str,
+        location: str,
+    ) -> str:
         """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
-            project=project, location=location,
+            project=project,
+            location=location,
         )
 
     @staticmethod
@@ -664,7 +747,12 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -786,7 +874,12 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -902,7 +995,12 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1004,12 +1102,20 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListLakesPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1113,7 +1219,12 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1205,12 +1316,20 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListLakeActionsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1344,7 +1463,12 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1464,7 +1588,12 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1580,7 +1709,12 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1680,12 +1814,20 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListZonesPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1781,7 +1923,12 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1873,12 +2020,20 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListZoneActionsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -2005,7 +2160,12 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -2121,7 +2281,12 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -2238,7 +2403,12 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -2338,12 +2508,20 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListAssetsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -2434,7 +2612,12 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2526,12 +2709,20 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListAssetActionsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -2652,7 +2843,12 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -2772,7 +2968,12 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -2886,7 +3087,12 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -2986,12 +3192,20 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListTasksPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -3079,7 +3293,12 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -3171,12 +3390,20 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListJobsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -3266,7 +3493,12 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -3347,7 +3579,10 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def create_environment(
@@ -3469,7 +3704,12 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -3585,7 +3825,12 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -3702,7 +3947,12 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -3802,12 +4052,20 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListEnvironmentsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -3898,7 +4156,12 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -3990,12 +4253,20 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListSessionsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -4017,7 +4288,9 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-dataplex",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-dataplex",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()

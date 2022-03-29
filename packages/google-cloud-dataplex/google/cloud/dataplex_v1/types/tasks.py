@@ -21,7 +21,11 @@ from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.dataplex.v1", manifest={"Task", "Job",},
+    package="google.cloud.dataplex.v1",
+    manifest={
+        "Task",
+        "Job",
+    },
 )
 
 
@@ -101,8 +105,14 @@ class Task(proto.Message):
                     > executors_count, then auto-scaling is enabled.
             """
 
-            executors_count = proto.Field(proto.INT32, number=1,)
-            max_executors_count = proto.Field(proto.INT32, number=2,)
+            executors_count = proto.Field(
+                proto.INT32,
+                number=1,
+            )
+            max_executors_count = proto.Field(
+                proto.INT32,
+                number=2,
+            )
 
         class ContainerImageRuntime(proto.Message):
             r"""Container Image Runtime Configuration used with Batch
@@ -127,9 +137,19 @@ class Task(proto.Message):
                     properties <https://cloud.google.com/dataproc/docs/concepts/cluster-properties>`__.
             """
 
-            java_jars = proto.RepeatedField(proto.STRING, number=2,)
-            python_packages = proto.RepeatedField(proto.STRING, number=3,)
-            properties = proto.MapField(proto.STRING, proto.STRING, number=4,)
+            java_jars = proto.RepeatedField(
+                proto.STRING,
+                number=2,
+            )
+            python_packages = proto.RepeatedField(
+                proto.STRING,
+                number=3,
+            )
+            properties = proto.MapField(
+                proto.STRING,
+                proto.STRING,
+                number=4,
+            )
 
         class VpcNetwork(proto.Message):
             r"""Cloud VPC Network used to run the infrastructure.
@@ -158,9 +178,20 @@ class Task(proto.Message):
                     the job.
             """
 
-            network = proto.Field(proto.STRING, number=1, oneof="network_name",)
-            sub_network = proto.Field(proto.STRING, number=2, oneof="network_name",)
-            network_tags = proto.RepeatedField(proto.STRING, number=3,)
+            network = proto.Field(
+                proto.STRING,
+                number=1,
+                oneof="network_name",
+            )
+            sub_network = proto.Field(
+                proto.STRING,
+                number=2,
+                oneof="network_name",
+            )
+            network_tags = proto.RepeatedField(
+                proto.STRING,
+                number=3,
+            )
 
         batch = proto.Field(
             proto.MESSAGE,
@@ -223,13 +254,29 @@ class Task(proto.Message):
             ON_DEMAND = 1
             RECURRING = 2
 
-        type_ = proto.Field(proto.ENUM, number=5, enum="Task.TriggerSpec.Type",)
-        start_time = proto.Field(
-            proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,
+        type_ = proto.Field(
+            proto.ENUM,
+            number=5,
+            enum="Task.TriggerSpec.Type",
         )
-        disabled = proto.Field(proto.BOOL, number=4,)
-        max_retries = proto.Field(proto.INT32, number=7,)
-        schedule = proto.Field(proto.STRING, number=100, oneof="trigger",)
+        start_time = proto.Field(
+            proto.MESSAGE,
+            number=6,
+            message=timestamp_pb2.Timestamp,
+        )
+        disabled = proto.Field(
+            proto.BOOL,
+            number=4,
+        )
+        max_retries = proto.Field(
+            proto.INT32,
+            number=7,
+        )
+        schedule = proto.Field(
+            proto.STRING,
+            number=100,
+            oneof="trigger",
+        )
 
     class ExecutionSpec(proto.Message):
         r"""Execution related settings, like retry and service_account.
@@ -258,10 +305,19 @@ class Task(proto.Message):
                 the job execution is expired.
         """
 
-        args = proto.MapField(proto.STRING, proto.STRING, number=4,)
-        service_account = proto.Field(proto.STRING, number=5,)
+        args = proto.MapField(
+            proto.STRING,
+            proto.STRING,
+            number=4,
+        )
+        service_account = proto.Field(
+            proto.STRING,
+            number=5,
+        )
         max_job_execution_lifetime = proto.Field(
-            proto.MESSAGE, number=8, message=duration_pb2.Duration,
+            proto.MESSAGE,
+            number=8,
+            message=duration_pb2.Duration,
         )
 
     class SparkTaskConfig(proto.Message):
@@ -321,29 +377,96 @@ class Task(proto.Message):
                 the execution.
         """
 
-        main_jar_file_uri = proto.Field(proto.STRING, number=100, oneof="driver",)
-        main_class = proto.Field(proto.STRING, number=101, oneof="driver",)
-        python_script_file = proto.Field(proto.STRING, number=102, oneof="driver",)
-        sql_script_file = proto.Field(proto.STRING, number=104, oneof="driver",)
-        sql_script = proto.Field(proto.STRING, number=105, oneof="driver",)
-        file_uris = proto.RepeatedField(proto.STRING, number=3,)
-        archive_uris = proto.RepeatedField(proto.STRING, number=4,)
+        main_jar_file_uri = proto.Field(
+            proto.STRING,
+            number=100,
+            oneof="driver",
+        )
+        main_class = proto.Field(
+            proto.STRING,
+            number=101,
+            oneof="driver",
+        )
+        python_script_file = proto.Field(
+            proto.STRING,
+            number=102,
+            oneof="driver",
+        )
+        sql_script_file = proto.Field(
+            proto.STRING,
+            number=104,
+            oneof="driver",
+        )
+        sql_script = proto.Field(
+            proto.STRING,
+            number=105,
+            oneof="driver",
+        )
+        file_uris = proto.RepeatedField(
+            proto.STRING,
+            number=3,
+        )
+        archive_uris = proto.RepeatedField(
+            proto.STRING,
+            number=4,
+        )
         infrastructure_spec = proto.Field(
-            proto.MESSAGE, number=6, message="Task.InfrastructureSpec",
+            proto.MESSAGE,
+            number=6,
+            message="Task.InfrastructureSpec",
         )
 
-    name = proto.Field(proto.STRING, number=1,)
-    uid = proto.Field(proto.STRING, number=2,)
-    create_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
-    description = proto.Field(proto.STRING, number=5,)
-    display_name = proto.Field(proto.STRING, number=6,)
-    state = proto.Field(proto.ENUM, number=7, enum=resources.State,)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=8,)
-    trigger_spec = proto.Field(proto.MESSAGE, number=100, message=TriggerSpec,)
-    execution_spec = proto.Field(proto.MESSAGE, number=101, message=ExecutionSpec,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    uid = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=7,
+        enum=resources.State,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=8,
+    )
+    trigger_spec = proto.Field(
+        proto.MESSAGE,
+        number=100,
+        message=TriggerSpec,
+    )
+    execution_spec = proto.Field(
+        proto.MESSAGE,
+        number=101,
+        message=ExecutionSpec,
+    )
     spark = proto.Field(
-        proto.MESSAGE, number=300, oneof="config", message=SparkTaskConfig,
+        proto.MESSAGE,
+        number=300,
+        oneof="config",
+        message=SparkTaskConfig,
     )
 
 
@@ -394,15 +517,46 @@ class Job(proto.Message):
         FAILED = 5
         ABORTED = 6
 
-    name = proto.Field(proto.STRING, number=1,)
-    uid = proto.Field(proto.STRING, number=2,)
-    start_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
-    end_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
-    state = proto.Field(proto.ENUM, number=5, enum=State,)
-    retry_count = proto.Field(proto.UINT32, number=6,)
-    service = proto.Field(proto.ENUM, number=7, enum=Service,)
-    service_job = proto.Field(proto.STRING, number=8,)
-    message = proto.Field(proto.STRING, number=9,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    uid = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    start_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum=State,
+    )
+    retry_count = proto.Field(
+        proto.UINT32,
+        number=6,
+    )
+    service = proto.Field(
+        proto.ENUM,
+        number=7,
+        enum=Service,
+    )
+    service_job = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    message = proto.Field(
+        proto.STRING,
+        number=9,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

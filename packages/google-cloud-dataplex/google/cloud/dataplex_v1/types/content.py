@@ -46,9 +46,19 @@ class CreateContentRequest(proto.Message):
             not perform mutations. The default is false.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    content = proto.Field(proto.MESSAGE, number=2, message=analyze.Content,)
-    validate_only = proto.Field(proto.BOOL, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    content = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=analyze.Content,
+    )
+    validate_only = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
 
 
 class UpdateContentRequest(proto.Message):
@@ -66,10 +76,19 @@ class UpdateContentRequest(proto.Message):
     """
 
     update_mask = proto.Field(
-        proto.MESSAGE, number=1, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=1,
+        message=field_mask_pb2.FieldMask,
     )
-    content = proto.Field(proto.MESSAGE, number=2, message=analyze.Content,)
-    validate_only = proto.Field(proto.BOOL, number=3,)
+    content = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=analyze.Content,
+    )
+    validate_only = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
 
 
 class DeleteContentRequest(proto.Message):
@@ -81,7 +100,10 @@ class DeleteContentRequest(proto.Message):
             projects/{project_id}/locations/{location_id}/lakes/{lake_id}/content/{content_id}
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListContentRequest(proto.Message):
@@ -114,10 +136,22 @@ class ListContentRequest(proto.Message):
             conjunctions.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    filter = proto.Field(proto.STRING, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class ListContentResponse(proto.Message):
@@ -136,8 +170,15 @@ class ListContentResponse(proto.Message):
     def raw_page(self):
         return self
 
-    content = proto.RepeatedField(proto.MESSAGE, number=1, message=analyze.Content,)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    content = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=analyze.Content,
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetContentRequest(proto.Message):
@@ -160,8 +201,15 @@ class GetContentRequest(proto.Message):
         BASIC = 1
         FULL = 2
 
-    name = proto.Field(proto.STRING, number=1,)
-    view = proto.Field(proto.ENUM, number=2, enum=ContentView,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    view = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=ContentView,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

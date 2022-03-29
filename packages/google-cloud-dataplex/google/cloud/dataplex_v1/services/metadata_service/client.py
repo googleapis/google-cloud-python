@@ -56,7 +56,10 @@ class MetadataServiceClientMeta(type):
     _transport_registry["grpc"] = MetadataServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = MetadataServiceGrpcAsyncIOTransport
 
-    def get_transport_class(cls, label: str = None,) -> Type[MetadataServiceTransport]:
+    def get_transport_class(
+        cls,
+        label: str = None,
+    ) -> Type[MetadataServiceTransport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -164,11 +167,19 @@ class MetadataServiceClient(metaclass=MetadataServiceClientMeta):
 
     @staticmethod
     def entity_path(
-        project: str, location: str, lake: str, zone: str, entity: str,
+        project: str,
+        location: str,
+        lake: str,
+        zone: str,
+        entity: str,
     ) -> str:
         """Returns a fully-qualified entity string."""
         return "projects/{project}/locations/{location}/lakes/{lake}/zones/{zone}/entities/{entity}".format(
-            project=project, location=location, lake=lake, zone=zone, entity=entity,
+            project=project,
+            location=location,
+            lake=lake,
+            zone=zone,
+            entity=entity,
         )
 
     @staticmethod
@@ -182,7 +193,12 @@ class MetadataServiceClient(metaclass=MetadataServiceClientMeta):
 
     @staticmethod
     def partition_path(
-        project: str, location: str, lake: str, zone: str, entity: str, partition: str,
+        project: str,
+        location: str,
+        lake: str,
+        zone: str,
+        entity: str,
+        partition: str,
     ) -> str:
         """Returns a fully-qualified partition string."""
         return "projects/{project}/locations/{location}/lakes/{lake}/zones/{zone}/entities/{entity}/partitions/{partition}".format(
@@ -204,10 +220,20 @@ class MetadataServiceClient(metaclass=MetadataServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def zone_path(project: str, location: str, lake: str, zone: str,) -> str:
+    def zone_path(
+        project: str,
+        location: str,
+        lake: str,
+        zone: str,
+    ) -> str:
         """Returns a fully-qualified zone string."""
-        return "projects/{project}/locations/{location}/lakes/{lake}/zones/{zone}".format(
-            project=project, location=location, lake=lake, zone=zone,
+        return (
+            "projects/{project}/locations/{location}/lakes/{lake}/zones/{zone}".format(
+                project=project,
+                location=location,
+                lake=lake,
+                zone=zone,
+            )
         )
 
     @staticmethod
@@ -220,7 +246,9 @@ class MetadataServiceClient(metaclass=MetadataServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_billing_account_path(billing_account: str,) -> str:
+    def common_billing_account_path(
+        billing_account: str,
+    ) -> str:
         """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
@@ -233,9 +261,13 @@ class MetadataServiceClient(metaclass=MetadataServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(folder: str,) -> str:
+    def common_folder_path(
+        folder: str,
+    ) -> str:
         """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(folder=folder,)
+        return "folders/{folder}".format(
+            folder=folder,
+        )
 
     @staticmethod
     def parse_common_folder_path(path: str) -> Dict[str, str]:
@@ -244,9 +276,13 @@ class MetadataServiceClient(metaclass=MetadataServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(organization: str,) -> str:
+    def common_organization_path(
+        organization: str,
+    ) -> str:
         """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(organization=organization,)
+        return "organizations/{organization}".format(
+            organization=organization,
+        )
 
     @staticmethod
     def parse_common_organization_path(path: str) -> Dict[str, str]:
@@ -255,9 +291,13 @@ class MetadataServiceClient(metaclass=MetadataServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(project: str,) -> str:
+    def common_project_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified project string."""
-        return "projects/{project}".format(project=project,)
+        return "projects/{project}".format(
+            project=project,
+        )
 
     @staticmethod
     def parse_common_project_path(path: str) -> Dict[str, str]:
@@ -266,10 +306,14 @@ class MetadataServiceClient(metaclass=MetadataServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(project: str, location: str,) -> str:
+    def common_location_path(
+        project: str,
+        location: str,
+    ) -> str:
         """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
-            project=project, location=location,
+            project=project,
+            location=location,
         )
 
     @staticmethod
@@ -545,7 +589,12 @@ class MetadataServiceClient(metaclass=MetadataServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -630,7 +679,12 @@ class MetadataServiceClient(metaclass=MetadataServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -712,7 +766,10 @@ class MetadataServiceClient(metaclass=MetadataServiceClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def get_entity(
@@ -799,7 +856,12 @@ class MetadataServiceClient(metaclass=MetadataServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -892,12 +954,20 @@ class MetadataServiceClient(metaclass=MetadataServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListEntitiesPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1000,7 +1070,12 @@ class MetadataServiceClient(metaclass=MetadataServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1084,7 +1159,10 @@ class MetadataServiceClient(metaclass=MetadataServiceClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def get_partition(
@@ -1174,7 +1252,12 @@ class MetadataServiceClient(metaclass=MetadataServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1266,12 +1349,20 @@ class MetadataServiceClient(metaclass=MetadataServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListPartitionsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1293,7 +1384,9 @@ class MetadataServiceClient(metaclass=MetadataServiceClientMeta):
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-dataplex",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-dataplex",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()

@@ -98,7 +98,11 @@ def test__get_default_mtls_endpoint():
 
 
 @pytest.mark.parametrize(
-    "client_class", [DataplexServiceClient, DataplexServiceAsyncClient,]
+    "client_class",
+    [
+        DataplexServiceClient,
+        DataplexServiceAsyncClient,
+    ],
 )
 def test_dataplex_service_client_from_service_account_info(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -140,7 +144,11 @@ def test_dataplex_service_client_service_account_always_use_jwt(
 
 
 @pytest.mark.parametrize(
-    "client_class", [DataplexServiceClient, DataplexServiceAsyncClient,]
+    "client_class",
+    [
+        DataplexServiceClient,
+        DataplexServiceAsyncClient,
+    ],
 )
 def test_dataplex_service_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -514,7 +522,9 @@ def test_dataplex_service_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -654,10 +664,17 @@ def test_dataplex_service_client_create_channel_credentials_file(
         )
 
 
-@pytest.mark.parametrize("request_type", [service.CreateLakeRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateLakeRequest,
+        dict,
+    ],
+)
 def test_create_lake(request_type, transport: str = "grpc"):
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -683,7 +700,8 @@ def test_create_lake_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -699,7 +717,8 @@ async def test_create_lake_async(
     transport: str = "grpc_asyncio", request_type=service.CreateLakeRequest
 ):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -729,7 +748,9 @@ async def test_create_lake_async_from_dict():
 
 
 def test_create_lake_field_headers():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -749,7 +770,10 @@ def test_create_lake_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -778,11 +802,16 @@ async def test_create_lake_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_lake_flattened():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_lake), "__call__") as call:
@@ -812,7 +841,9 @@ def test_create_lake_flattened():
 
 
 def test_create_lake_flattened_error():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -879,10 +910,17 @@ async def test_create_lake_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [service.UpdateLakeRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UpdateLakeRequest,
+        dict,
+    ],
+)
 def test_update_lake(request_type, transport: str = "grpc"):
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -908,7 +946,8 @@ def test_update_lake_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -924,7 +963,8 @@ async def test_update_lake_async(
     transport: str = "grpc_asyncio", request_type=service.UpdateLakeRequest
 ):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -954,7 +994,9 @@ async def test_update_lake_async_from_dict():
 
 
 def test_update_lake_field_headers():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -974,7 +1016,10 @@ def test_update_lake_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "lake.name=lake.name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "lake.name=lake.name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1003,11 +1048,16 @@ async def test_update_lake_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "lake.name=lake.name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "lake.name=lake.name/value",
+    ) in kw["metadata"]
 
 
 def test_update_lake_flattened():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_lake), "__call__") as call:
@@ -1033,7 +1083,9 @@ def test_update_lake_flattened():
 
 
 def test_update_lake_flattened_error():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1094,10 +1146,17 @@ async def test_update_lake_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [service.DeleteLakeRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DeleteLakeRequest,
+        dict,
+    ],
+)
 def test_delete_lake(request_type, transport: str = "grpc"):
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1123,7 +1182,8 @@ def test_delete_lake_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1139,7 +1199,8 @@ async def test_delete_lake_async(
     transport: str = "grpc_asyncio", request_type=service.DeleteLakeRequest
 ):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1169,7 +1230,9 @@ async def test_delete_lake_async_from_dict():
 
 
 def test_delete_lake_field_headers():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1189,7 +1252,10 @@ def test_delete_lake_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1218,11 +1284,16 @@ async def test_delete_lake_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_lake_flattened():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_lake), "__call__") as call:
@@ -1230,7 +1301,9 @@ def test_delete_lake_flattened():
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_lake(name="name_value",)
+        client.delete_lake(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1242,13 +1315,16 @@ def test_delete_lake_flattened():
 
 
 def test_delete_lake_flattened_error():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_lake(
-            service.DeleteLakeRequest(), name="name_value",
+            service.DeleteLakeRequest(),
+            name="name_value",
         )
 
 
@@ -1268,7 +1344,9 @@ async def test_delete_lake_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_lake(name="name_value",)
+        response = await client.delete_lake(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1289,14 +1367,22 @@ async def test_delete_lake_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_lake(
-            service.DeleteLakeRequest(), name="name_value",
+            service.DeleteLakeRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [service.ListLakesRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListLakesRequest,
+        dict,
+    ],
+)
 def test_list_lakes(request_type, transport: str = "grpc"):
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1327,7 +1413,8 @@ def test_list_lakes_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1343,7 +1430,8 @@ async def test_list_lakes_async(
     transport: str = "grpc_asyncio", request_type=service.ListLakesRequest
 ):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1378,7 +1466,9 @@ async def test_list_lakes_async_from_dict():
 
 
 def test_list_lakes_field_headers():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1398,7 +1488,10 @@ def test_list_lakes_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1427,11 +1520,16 @@ async def test_list_lakes_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_lakes_flattened():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_lakes), "__call__") as call:
@@ -1439,7 +1537,9 @@ def test_list_lakes_flattened():
         call.return_value = service.ListLakesResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_lakes(parent="parent_value",)
+        client.list_lakes(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1451,13 +1551,16 @@ def test_list_lakes_flattened():
 
 
 def test_list_lakes_flattened_error():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_lakes(
-            service.ListLakesRequest(), parent="parent_value",
+            service.ListLakesRequest(),
+            parent="parent_value",
         )
 
 
@@ -1477,7 +1580,9 @@ async def test_list_lakes_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_lakes(parent="parent_value",)
+        response = await client.list_lakes(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1498,13 +1603,15 @@ async def test_list_lakes_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_lakes(
-            service.ListLakesRequest(), parent="parent_value",
+            service.ListLakesRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_lakes_pager(transport_name: str = "grpc"):
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1512,14 +1619,29 @@ def test_list_lakes_pager(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListLakesResponse(
-                lakes=[resources.Lake(), resources.Lake(), resources.Lake(),],
+                lakes=[
+                    resources.Lake(),
+                    resources.Lake(),
+                    resources.Lake(),
+                ],
                 next_page_token="abc",
             ),
-            service.ListLakesResponse(lakes=[], next_page_token="def",),
             service.ListLakesResponse(
-                lakes=[resources.Lake(),], next_page_token="ghi",
+                lakes=[],
+                next_page_token="def",
             ),
-            service.ListLakesResponse(lakes=[resources.Lake(), resources.Lake(),],),
+            service.ListLakesResponse(
+                lakes=[
+                    resources.Lake(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListLakesResponse(
+                lakes=[
+                    resources.Lake(),
+                    resources.Lake(),
+                ],
+            ),
             RuntimeError,
         )
 
@@ -1538,7 +1660,8 @@ def test_list_lakes_pager(transport_name: str = "grpc"):
 
 def test_list_lakes_pages(transport_name: str = "grpc"):
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1546,14 +1669,29 @@ def test_list_lakes_pages(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListLakesResponse(
-                lakes=[resources.Lake(), resources.Lake(), resources.Lake(),],
+                lakes=[
+                    resources.Lake(),
+                    resources.Lake(),
+                    resources.Lake(),
+                ],
                 next_page_token="abc",
             ),
-            service.ListLakesResponse(lakes=[], next_page_token="def",),
             service.ListLakesResponse(
-                lakes=[resources.Lake(),], next_page_token="ghi",
+                lakes=[],
+                next_page_token="def",
             ),
-            service.ListLakesResponse(lakes=[resources.Lake(), resources.Lake(),],),
+            service.ListLakesResponse(
+                lakes=[
+                    resources.Lake(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListLakesResponse(
+                lakes=[
+                    resources.Lake(),
+                    resources.Lake(),
+                ],
+            ),
             RuntimeError,
         )
         pages = list(client.list_lakes(request={}).pages)
@@ -1574,17 +1712,34 @@ async def test_list_lakes_async_pager():
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListLakesResponse(
-                lakes=[resources.Lake(), resources.Lake(), resources.Lake(),],
+                lakes=[
+                    resources.Lake(),
+                    resources.Lake(),
+                    resources.Lake(),
+                ],
                 next_page_token="abc",
             ),
-            service.ListLakesResponse(lakes=[], next_page_token="def",),
             service.ListLakesResponse(
-                lakes=[resources.Lake(),], next_page_token="ghi",
+                lakes=[],
+                next_page_token="def",
             ),
-            service.ListLakesResponse(lakes=[resources.Lake(), resources.Lake(),],),
+            service.ListLakesResponse(
+                lakes=[
+                    resources.Lake(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListLakesResponse(
+                lakes=[
+                    resources.Lake(),
+                    resources.Lake(),
+                ],
+            ),
             RuntimeError,
         )
-        async_pager = await client.list_lakes(request={},)
+        async_pager = await client.list_lakes(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -1607,14 +1762,29 @@ async def test_list_lakes_async_pages():
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListLakesResponse(
-                lakes=[resources.Lake(), resources.Lake(), resources.Lake(),],
+                lakes=[
+                    resources.Lake(),
+                    resources.Lake(),
+                    resources.Lake(),
+                ],
                 next_page_token="abc",
             ),
-            service.ListLakesResponse(lakes=[], next_page_token="def",),
             service.ListLakesResponse(
-                lakes=[resources.Lake(),], next_page_token="ghi",
+                lakes=[],
+                next_page_token="def",
             ),
-            service.ListLakesResponse(lakes=[resources.Lake(), resources.Lake(),],),
+            service.ListLakesResponse(
+                lakes=[
+                    resources.Lake(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListLakesResponse(
+                lakes=[
+                    resources.Lake(),
+                    resources.Lake(),
+                ],
+            ),
             RuntimeError,
         )
         pages = []
@@ -1624,10 +1794,17 @@ async def test_list_lakes_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [service.GetLakeRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetLakeRequest,
+        dict,
+    ],
+)
 def test_get_lake(request_type, transport: str = "grpc"):
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1666,7 +1843,8 @@ def test_get_lake_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1682,7 +1860,8 @@ async def test_get_lake_async(
     transport: str = "grpc_asyncio", request_type=service.GetLakeRequest
 ):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1725,7 +1904,9 @@ async def test_get_lake_async_from_dict():
 
 
 def test_get_lake_field_headers():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1745,7 +1926,10 @@ def test_get_lake_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1772,11 +1956,16 @@ async def test_get_lake_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_lake_flattened():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_lake), "__call__") as call:
@@ -1784,7 +1973,9 @@ def test_get_lake_flattened():
         call.return_value = resources.Lake()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_lake(name="name_value",)
+        client.get_lake(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1796,13 +1987,16 @@ def test_get_lake_flattened():
 
 
 def test_get_lake_flattened_error():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_lake(
-            service.GetLakeRequest(), name="name_value",
+            service.GetLakeRequest(),
+            name="name_value",
         )
 
 
@@ -1820,7 +2014,9 @@ async def test_get_lake_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(resources.Lake())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_lake(name="name_value",)
+        response = await client.get_lake(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1841,14 +2037,22 @@ async def test_get_lake_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_lake(
-            service.GetLakeRequest(), name="name_value",
+            service.GetLakeRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [service.ListLakeActionsRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListLakeActionsRequest,
+        dict,
+    ],
+)
 def test_list_lake_actions(request_type, transport: str = "grpc"):
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1879,7 +2083,8 @@ def test_list_lake_actions_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1897,7 +2102,8 @@ async def test_list_lake_actions_async(
     transport: str = "grpc_asyncio", request_type=service.ListLakeActionsRequest
 ):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1910,7 +2116,9 @@ async def test_list_lake_actions_async(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListActionsResponse(next_page_token="next_page_token_value",)
+            service.ListActionsResponse(
+                next_page_token="next_page_token_value",
+            )
         )
         response = await client.list_lake_actions(request)
 
@@ -1930,7 +2138,9 @@ async def test_list_lake_actions_async_from_dict():
 
 
 def test_list_lake_actions_field_headers():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1952,7 +2162,10 @@ def test_list_lake_actions_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1983,11 +2196,16 @@ async def test_list_lake_actions_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_lake_actions_flattened():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1997,7 +2215,9 @@ def test_list_lake_actions_flattened():
         call.return_value = service.ListActionsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_lake_actions(parent="parent_value",)
+        client.list_lake_actions(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2009,13 +2229,16 @@ def test_list_lake_actions_flattened():
 
 
 def test_list_lake_actions_flattened_error():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_lake_actions(
-            service.ListLakeActionsRequest(), parent="parent_value",
+            service.ListLakeActionsRequest(),
+            parent="parent_value",
         )
 
 
@@ -2037,7 +2260,9 @@ async def test_list_lake_actions_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_lake_actions(parent="parent_value",)
+        response = await client.list_lake_actions(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2058,13 +2283,15 @@ async def test_list_lake_actions_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_lake_actions(
-            service.ListLakeActionsRequest(), parent="parent_value",
+            service.ListLakeActionsRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_lake_actions_pager(transport_name: str = "grpc"):
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2074,15 +2301,28 @@ def test_list_lake_actions_pager(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListActionsResponse(
-                actions=[resources.Action(), resources.Action(), resources.Action(),],
+                actions=[
+                    resources.Action(),
+                    resources.Action(),
+                    resources.Action(),
+                ],
                 next_page_token="abc",
             ),
-            service.ListActionsResponse(actions=[], next_page_token="def",),
             service.ListActionsResponse(
-                actions=[resources.Action(),], next_page_token="ghi",
+                actions=[],
+                next_page_token="def",
             ),
             service.ListActionsResponse(
-                actions=[resources.Action(), resources.Action(),],
+                actions=[
+                    resources.Action(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListActionsResponse(
+                actions=[
+                    resources.Action(),
+                    resources.Action(),
+                ],
             ),
             RuntimeError,
         )
@@ -2102,7 +2342,8 @@ def test_list_lake_actions_pager(transport_name: str = "grpc"):
 
 def test_list_lake_actions_pages(transport_name: str = "grpc"):
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2112,15 +2353,28 @@ def test_list_lake_actions_pages(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListActionsResponse(
-                actions=[resources.Action(), resources.Action(), resources.Action(),],
+                actions=[
+                    resources.Action(),
+                    resources.Action(),
+                    resources.Action(),
+                ],
                 next_page_token="abc",
             ),
-            service.ListActionsResponse(actions=[], next_page_token="def",),
             service.ListActionsResponse(
-                actions=[resources.Action(),], next_page_token="ghi",
+                actions=[],
+                next_page_token="def",
             ),
             service.ListActionsResponse(
-                actions=[resources.Action(), resources.Action(),],
+                actions=[
+                    resources.Action(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListActionsResponse(
+                actions=[
+                    resources.Action(),
+                    resources.Action(),
+                ],
             ),
             RuntimeError,
         )
@@ -2144,19 +2398,34 @@ async def test_list_lake_actions_async_pager():
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListActionsResponse(
-                actions=[resources.Action(), resources.Action(), resources.Action(),],
+                actions=[
+                    resources.Action(),
+                    resources.Action(),
+                    resources.Action(),
+                ],
                 next_page_token="abc",
             ),
-            service.ListActionsResponse(actions=[], next_page_token="def",),
             service.ListActionsResponse(
-                actions=[resources.Action(),], next_page_token="ghi",
+                actions=[],
+                next_page_token="def",
             ),
             service.ListActionsResponse(
-                actions=[resources.Action(), resources.Action(),],
+                actions=[
+                    resources.Action(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListActionsResponse(
+                actions=[
+                    resources.Action(),
+                    resources.Action(),
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.list_lake_actions(request={},)
+        async_pager = await client.list_lake_actions(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -2181,15 +2450,28 @@ async def test_list_lake_actions_async_pages():
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListActionsResponse(
-                actions=[resources.Action(), resources.Action(), resources.Action(),],
+                actions=[
+                    resources.Action(),
+                    resources.Action(),
+                    resources.Action(),
+                ],
                 next_page_token="abc",
             ),
-            service.ListActionsResponse(actions=[], next_page_token="def",),
             service.ListActionsResponse(
-                actions=[resources.Action(),], next_page_token="ghi",
+                actions=[],
+                next_page_token="def",
             ),
             service.ListActionsResponse(
-                actions=[resources.Action(), resources.Action(),],
+                actions=[
+                    resources.Action(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListActionsResponse(
+                actions=[
+                    resources.Action(),
+                    resources.Action(),
+                ],
             ),
             RuntimeError,
         )
@@ -2200,10 +2482,17 @@ async def test_list_lake_actions_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [service.CreateZoneRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateZoneRequest,
+        dict,
+    ],
+)
 def test_create_zone(request_type, transport: str = "grpc"):
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2229,7 +2518,8 @@ def test_create_zone_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2245,7 +2535,8 @@ async def test_create_zone_async(
     transport: str = "grpc_asyncio", request_type=service.CreateZoneRequest
 ):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2275,7 +2566,9 @@ async def test_create_zone_async_from_dict():
 
 
 def test_create_zone_field_headers():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2295,7 +2588,10 @@ def test_create_zone_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2324,11 +2620,16 @@ async def test_create_zone_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_zone_flattened():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_zone), "__call__") as call:
@@ -2358,7 +2659,9 @@ def test_create_zone_flattened():
 
 
 def test_create_zone_flattened_error():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2425,10 +2728,17 @@ async def test_create_zone_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [service.UpdateZoneRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UpdateZoneRequest,
+        dict,
+    ],
+)
 def test_update_zone(request_type, transport: str = "grpc"):
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2454,7 +2764,8 @@ def test_update_zone_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2470,7 +2781,8 @@ async def test_update_zone_async(
     transport: str = "grpc_asyncio", request_type=service.UpdateZoneRequest
 ):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2500,7 +2812,9 @@ async def test_update_zone_async_from_dict():
 
 
 def test_update_zone_field_headers():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2520,7 +2834,10 @@ def test_update_zone_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "zone.name=zone.name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "zone.name=zone.name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2549,11 +2866,16 @@ async def test_update_zone_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "zone.name=zone.name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "zone.name=zone.name/value",
+    ) in kw["metadata"]
 
 
 def test_update_zone_flattened():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_zone), "__call__") as call:
@@ -2579,7 +2901,9 @@ def test_update_zone_flattened():
 
 
 def test_update_zone_flattened_error():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2640,10 +2964,17 @@ async def test_update_zone_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [service.DeleteZoneRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DeleteZoneRequest,
+        dict,
+    ],
+)
 def test_delete_zone(request_type, transport: str = "grpc"):
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2669,7 +3000,8 @@ def test_delete_zone_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2685,7 +3017,8 @@ async def test_delete_zone_async(
     transport: str = "grpc_asyncio", request_type=service.DeleteZoneRequest
 ):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2715,7 +3048,9 @@ async def test_delete_zone_async_from_dict():
 
 
 def test_delete_zone_field_headers():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2735,7 +3070,10 @@ def test_delete_zone_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2764,11 +3102,16 @@ async def test_delete_zone_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_zone_flattened():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_zone), "__call__") as call:
@@ -2776,7 +3119,9 @@ def test_delete_zone_flattened():
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_zone(name="name_value",)
+        client.delete_zone(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2788,13 +3133,16 @@ def test_delete_zone_flattened():
 
 
 def test_delete_zone_flattened_error():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_zone(
-            service.DeleteZoneRequest(), name="name_value",
+            service.DeleteZoneRequest(),
+            name="name_value",
         )
 
 
@@ -2814,7 +3162,9 @@ async def test_delete_zone_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_zone(name="name_value",)
+        response = await client.delete_zone(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2835,14 +3185,22 @@ async def test_delete_zone_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_zone(
-            service.DeleteZoneRequest(), name="name_value",
+            service.DeleteZoneRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [service.ListZonesRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListZonesRequest,
+        dict,
+    ],
+)
 def test_list_zones(request_type, transport: str = "grpc"):
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2871,7 +3229,8 @@ def test_list_zones_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2887,7 +3246,8 @@ async def test_list_zones_async(
     transport: str = "grpc_asyncio", request_type=service.ListZonesRequest
 ):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2898,7 +3258,9 @@ async def test_list_zones_async(
     with mock.patch.object(type(client.transport.list_zones), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListZonesResponse(next_page_token="next_page_token_value",)
+            service.ListZonesResponse(
+                next_page_token="next_page_token_value",
+            )
         )
         response = await client.list_zones(request)
 
@@ -2918,7 +3280,9 @@ async def test_list_zones_async_from_dict():
 
 
 def test_list_zones_field_headers():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2938,7 +3302,10 @@ def test_list_zones_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2967,11 +3334,16 @@ async def test_list_zones_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_zones_flattened():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_zones), "__call__") as call:
@@ -2979,7 +3351,9 @@ def test_list_zones_flattened():
         call.return_value = service.ListZonesResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_zones(parent="parent_value",)
+        client.list_zones(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2991,13 +3365,16 @@ def test_list_zones_flattened():
 
 
 def test_list_zones_flattened_error():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_zones(
-            service.ListZonesRequest(), parent="parent_value",
+            service.ListZonesRequest(),
+            parent="parent_value",
         )
 
 
@@ -3017,7 +3394,9 @@ async def test_list_zones_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_zones(parent="parent_value",)
+        response = await client.list_zones(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3038,13 +3417,15 @@ async def test_list_zones_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_zones(
-            service.ListZonesRequest(), parent="parent_value",
+            service.ListZonesRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_zones_pager(transport_name: str = "grpc"):
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3052,14 +3433,29 @@ def test_list_zones_pager(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListZonesResponse(
-                zones=[resources.Zone(), resources.Zone(), resources.Zone(),],
+                zones=[
+                    resources.Zone(),
+                    resources.Zone(),
+                    resources.Zone(),
+                ],
                 next_page_token="abc",
             ),
-            service.ListZonesResponse(zones=[], next_page_token="def",),
             service.ListZonesResponse(
-                zones=[resources.Zone(),], next_page_token="ghi",
+                zones=[],
+                next_page_token="def",
             ),
-            service.ListZonesResponse(zones=[resources.Zone(), resources.Zone(),],),
+            service.ListZonesResponse(
+                zones=[
+                    resources.Zone(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListZonesResponse(
+                zones=[
+                    resources.Zone(),
+                    resources.Zone(),
+                ],
+            ),
             RuntimeError,
         )
 
@@ -3078,7 +3474,8 @@ def test_list_zones_pager(transport_name: str = "grpc"):
 
 def test_list_zones_pages(transport_name: str = "grpc"):
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3086,14 +3483,29 @@ def test_list_zones_pages(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListZonesResponse(
-                zones=[resources.Zone(), resources.Zone(), resources.Zone(),],
+                zones=[
+                    resources.Zone(),
+                    resources.Zone(),
+                    resources.Zone(),
+                ],
                 next_page_token="abc",
             ),
-            service.ListZonesResponse(zones=[], next_page_token="def",),
             service.ListZonesResponse(
-                zones=[resources.Zone(),], next_page_token="ghi",
+                zones=[],
+                next_page_token="def",
             ),
-            service.ListZonesResponse(zones=[resources.Zone(), resources.Zone(),],),
+            service.ListZonesResponse(
+                zones=[
+                    resources.Zone(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListZonesResponse(
+                zones=[
+                    resources.Zone(),
+                    resources.Zone(),
+                ],
+            ),
             RuntimeError,
         )
         pages = list(client.list_zones(request={}).pages)
@@ -3114,17 +3526,34 @@ async def test_list_zones_async_pager():
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListZonesResponse(
-                zones=[resources.Zone(), resources.Zone(), resources.Zone(),],
+                zones=[
+                    resources.Zone(),
+                    resources.Zone(),
+                    resources.Zone(),
+                ],
                 next_page_token="abc",
             ),
-            service.ListZonesResponse(zones=[], next_page_token="def",),
             service.ListZonesResponse(
-                zones=[resources.Zone(),], next_page_token="ghi",
+                zones=[],
+                next_page_token="def",
             ),
-            service.ListZonesResponse(zones=[resources.Zone(), resources.Zone(),],),
+            service.ListZonesResponse(
+                zones=[
+                    resources.Zone(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListZonesResponse(
+                zones=[
+                    resources.Zone(),
+                    resources.Zone(),
+                ],
+            ),
             RuntimeError,
         )
-        async_pager = await client.list_zones(request={},)
+        async_pager = await client.list_zones(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -3147,14 +3576,29 @@ async def test_list_zones_async_pages():
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListZonesResponse(
-                zones=[resources.Zone(), resources.Zone(), resources.Zone(),],
+                zones=[
+                    resources.Zone(),
+                    resources.Zone(),
+                    resources.Zone(),
+                ],
                 next_page_token="abc",
             ),
-            service.ListZonesResponse(zones=[], next_page_token="def",),
             service.ListZonesResponse(
-                zones=[resources.Zone(),], next_page_token="ghi",
+                zones=[],
+                next_page_token="def",
             ),
-            service.ListZonesResponse(zones=[resources.Zone(), resources.Zone(),],),
+            service.ListZonesResponse(
+                zones=[
+                    resources.Zone(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListZonesResponse(
+                zones=[
+                    resources.Zone(),
+                    resources.Zone(),
+                ],
+            ),
             RuntimeError,
         )
         pages = []
@@ -3164,10 +3608,17 @@ async def test_list_zones_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [service.GetZoneRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetZoneRequest,
+        dict,
+    ],
+)
 def test_get_zone(request_type, transport: str = "grpc"):
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3206,7 +3657,8 @@ def test_get_zone_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3222,7 +3674,8 @@ async def test_get_zone_async(
     transport: str = "grpc_asyncio", request_type=service.GetZoneRequest
 ):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3265,7 +3718,9 @@ async def test_get_zone_async_from_dict():
 
 
 def test_get_zone_field_headers():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3285,7 +3740,10 @@ def test_get_zone_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -3312,11 +3770,16 @@ async def test_get_zone_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_zone_flattened():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_zone), "__call__") as call:
@@ -3324,7 +3787,9 @@ def test_get_zone_flattened():
         call.return_value = resources.Zone()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_zone(name="name_value",)
+        client.get_zone(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3336,13 +3801,16 @@ def test_get_zone_flattened():
 
 
 def test_get_zone_flattened_error():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_zone(
-            service.GetZoneRequest(), name="name_value",
+            service.GetZoneRequest(),
+            name="name_value",
         )
 
 
@@ -3360,7 +3828,9 @@ async def test_get_zone_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(resources.Zone())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_zone(name="name_value",)
+        response = await client.get_zone(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3381,14 +3851,22 @@ async def test_get_zone_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_zone(
-            service.GetZoneRequest(), name="name_value",
+            service.GetZoneRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [service.ListZoneActionsRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListZoneActionsRequest,
+        dict,
+    ],
+)
 def test_list_zone_actions(request_type, transport: str = "grpc"):
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3419,7 +3897,8 @@ def test_list_zone_actions_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3437,7 +3916,8 @@ async def test_list_zone_actions_async(
     transport: str = "grpc_asyncio", request_type=service.ListZoneActionsRequest
 ):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3450,7 +3930,9 @@ async def test_list_zone_actions_async(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListActionsResponse(next_page_token="next_page_token_value",)
+            service.ListActionsResponse(
+                next_page_token="next_page_token_value",
+            )
         )
         response = await client.list_zone_actions(request)
 
@@ -3470,7 +3952,9 @@ async def test_list_zone_actions_async_from_dict():
 
 
 def test_list_zone_actions_field_headers():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3492,7 +3976,10 @@ def test_list_zone_actions_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -3523,11 +4010,16 @@ async def test_list_zone_actions_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_zone_actions_flattened():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3537,7 +4029,9 @@ def test_list_zone_actions_flattened():
         call.return_value = service.ListActionsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_zone_actions(parent="parent_value",)
+        client.list_zone_actions(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3549,13 +4043,16 @@ def test_list_zone_actions_flattened():
 
 
 def test_list_zone_actions_flattened_error():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_zone_actions(
-            service.ListZoneActionsRequest(), parent="parent_value",
+            service.ListZoneActionsRequest(),
+            parent="parent_value",
         )
 
 
@@ -3577,7 +4074,9 @@ async def test_list_zone_actions_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_zone_actions(parent="parent_value",)
+        response = await client.list_zone_actions(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3598,13 +4097,15 @@ async def test_list_zone_actions_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_zone_actions(
-            service.ListZoneActionsRequest(), parent="parent_value",
+            service.ListZoneActionsRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_zone_actions_pager(transport_name: str = "grpc"):
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3614,15 +4115,28 @@ def test_list_zone_actions_pager(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListActionsResponse(
-                actions=[resources.Action(), resources.Action(), resources.Action(),],
+                actions=[
+                    resources.Action(),
+                    resources.Action(),
+                    resources.Action(),
+                ],
                 next_page_token="abc",
             ),
-            service.ListActionsResponse(actions=[], next_page_token="def",),
             service.ListActionsResponse(
-                actions=[resources.Action(),], next_page_token="ghi",
+                actions=[],
+                next_page_token="def",
             ),
             service.ListActionsResponse(
-                actions=[resources.Action(), resources.Action(),],
+                actions=[
+                    resources.Action(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListActionsResponse(
+                actions=[
+                    resources.Action(),
+                    resources.Action(),
+                ],
             ),
             RuntimeError,
         )
@@ -3642,7 +4156,8 @@ def test_list_zone_actions_pager(transport_name: str = "grpc"):
 
 def test_list_zone_actions_pages(transport_name: str = "grpc"):
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3652,15 +4167,28 @@ def test_list_zone_actions_pages(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListActionsResponse(
-                actions=[resources.Action(), resources.Action(), resources.Action(),],
+                actions=[
+                    resources.Action(),
+                    resources.Action(),
+                    resources.Action(),
+                ],
                 next_page_token="abc",
             ),
-            service.ListActionsResponse(actions=[], next_page_token="def",),
             service.ListActionsResponse(
-                actions=[resources.Action(),], next_page_token="ghi",
+                actions=[],
+                next_page_token="def",
             ),
             service.ListActionsResponse(
-                actions=[resources.Action(), resources.Action(),],
+                actions=[
+                    resources.Action(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListActionsResponse(
+                actions=[
+                    resources.Action(),
+                    resources.Action(),
+                ],
             ),
             RuntimeError,
         )
@@ -3684,19 +4212,34 @@ async def test_list_zone_actions_async_pager():
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListActionsResponse(
-                actions=[resources.Action(), resources.Action(), resources.Action(),],
+                actions=[
+                    resources.Action(),
+                    resources.Action(),
+                    resources.Action(),
+                ],
                 next_page_token="abc",
             ),
-            service.ListActionsResponse(actions=[], next_page_token="def",),
             service.ListActionsResponse(
-                actions=[resources.Action(),], next_page_token="ghi",
+                actions=[],
+                next_page_token="def",
             ),
             service.ListActionsResponse(
-                actions=[resources.Action(), resources.Action(),],
+                actions=[
+                    resources.Action(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListActionsResponse(
+                actions=[
+                    resources.Action(),
+                    resources.Action(),
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.list_zone_actions(request={},)
+        async_pager = await client.list_zone_actions(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -3721,15 +4264,28 @@ async def test_list_zone_actions_async_pages():
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListActionsResponse(
-                actions=[resources.Action(), resources.Action(), resources.Action(),],
+                actions=[
+                    resources.Action(),
+                    resources.Action(),
+                    resources.Action(),
+                ],
                 next_page_token="abc",
             ),
-            service.ListActionsResponse(actions=[], next_page_token="def",),
             service.ListActionsResponse(
-                actions=[resources.Action(),], next_page_token="ghi",
+                actions=[],
+                next_page_token="def",
             ),
             service.ListActionsResponse(
-                actions=[resources.Action(), resources.Action(),],
+                actions=[
+                    resources.Action(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListActionsResponse(
+                actions=[
+                    resources.Action(),
+                    resources.Action(),
+                ],
             ),
             RuntimeError,
         )
@@ -3740,10 +4296,17 @@ async def test_list_zone_actions_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [service.CreateAssetRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateAssetRequest,
+        dict,
+    ],
+)
 def test_create_asset(request_type, transport: str = "grpc"):
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3769,7 +4332,8 @@ def test_create_asset_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3785,7 +4349,8 @@ async def test_create_asset_async(
     transport: str = "grpc_asyncio", request_type=service.CreateAssetRequest
 ):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3815,7 +4380,9 @@ async def test_create_asset_async_from_dict():
 
 
 def test_create_asset_field_headers():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3835,7 +4402,10 @@ def test_create_asset_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -3864,11 +4434,16 @@ async def test_create_asset_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_asset_flattened():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_asset), "__call__") as call:
@@ -3898,7 +4473,9 @@ def test_create_asset_flattened():
 
 
 def test_create_asset_flattened_error():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -3965,10 +4542,17 @@ async def test_create_asset_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [service.UpdateAssetRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UpdateAssetRequest,
+        dict,
+    ],
+)
 def test_update_asset(request_type, transport: str = "grpc"):
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3994,7 +4578,8 @@ def test_update_asset_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4010,7 +4595,8 @@ async def test_update_asset_async(
     transport: str = "grpc_asyncio", request_type=service.UpdateAssetRequest
 ):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4040,7 +4626,9 @@ async def test_update_asset_async_from_dict():
 
 
 def test_update_asset_field_headers():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -4060,7 +4648,10 @@ def test_update_asset_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "asset.name=asset.name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "asset.name=asset.name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -4089,11 +4680,16 @@ async def test_update_asset_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "asset.name=asset.name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "asset.name=asset.name/value",
+    ) in kw["metadata"]
 
 
 def test_update_asset_flattened():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_asset), "__call__") as call:
@@ -4119,7 +4715,9 @@ def test_update_asset_flattened():
 
 
 def test_update_asset_flattened_error():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -4180,10 +4778,17 @@ async def test_update_asset_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [service.DeleteAssetRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DeleteAssetRequest,
+        dict,
+    ],
+)
 def test_delete_asset(request_type, transport: str = "grpc"):
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4209,7 +4814,8 @@ def test_delete_asset_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4225,7 +4831,8 @@ async def test_delete_asset_async(
     transport: str = "grpc_asyncio", request_type=service.DeleteAssetRequest
 ):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4255,7 +4862,9 @@ async def test_delete_asset_async_from_dict():
 
 
 def test_delete_asset_field_headers():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -4275,7 +4884,10 @@ def test_delete_asset_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -4304,11 +4916,16 @@ async def test_delete_asset_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_asset_flattened():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_asset), "__call__") as call:
@@ -4316,7 +4933,9 @@ def test_delete_asset_flattened():
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_asset(name="name_value",)
+        client.delete_asset(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -4328,13 +4947,16 @@ def test_delete_asset_flattened():
 
 
 def test_delete_asset_flattened_error():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_asset(
-            service.DeleteAssetRequest(), name="name_value",
+            service.DeleteAssetRequest(),
+            name="name_value",
         )
 
 
@@ -4354,7 +4976,9 @@ async def test_delete_asset_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_asset(name="name_value",)
+        response = await client.delete_asset(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -4375,14 +4999,22 @@ async def test_delete_asset_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_asset(
-            service.DeleteAssetRequest(), name="name_value",
+            service.DeleteAssetRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [service.ListAssetsRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListAssetsRequest,
+        dict,
+    ],
+)
 def test_list_assets(request_type, transport: str = "grpc"):
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4411,7 +5043,8 @@ def test_list_assets_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4427,7 +5060,8 @@ async def test_list_assets_async(
     transport: str = "grpc_asyncio", request_type=service.ListAssetsRequest
 ):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4438,7 +5072,9 @@ async def test_list_assets_async(
     with mock.patch.object(type(client.transport.list_assets), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListAssetsResponse(next_page_token="next_page_token_value",)
+            service.ListAssetsResponse(
+                next_page_token="next_page_token_value",
+            )
         )
         response = await client.list_assets(request)
 
@@ -4458,7 +5094,9 @@ async def test_list_assets_async_from_dict():
 
 
 def test_list_assets_field_headers():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -4478,7 +5116,10 @@ def test_list_assets_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -4507,11 +5148,16 @@ async def test_list_assets_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_assets_flattened():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_assets), "__call__") as call:
@@ -4519,7 +5165,9 @@ def test_list_assets_flattened():
         call.return_value = service.ListAssetsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_assets(parent="parent_value",)
+        client.list_assets(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -4531,13 +5179,16 @@ def test_list_assets_flattened():
 
 
 def test_list_assets_flattened_error():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_assets(
-            service.ListAssetsRequest(), parent="parent_value",
+            service.ListAssetsRequest(),
+            parent="parent_value",
         )
 
 
@@ -4557,7 +5208,9 @@ async def test_list_assets_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_assets(parent="parent_value",)
+        response = await client.list_assets(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -4578,13 +5231,15 @@ async def test_list_assets_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_assets(
-            service.ListAssetsRequest(), parent="parent_value",
+            service.ListAssetsRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_assets_pager(transport_name: str = "grpc"):
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4592,14 +5247,29 @@ def test_list_assets_pager(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListAssetsResponse(
-                assets=[resources.Asset(), resources.Asset(), resources.Asset(),],
+                assets=[
+                    resources.Asset(),
+                    resources.Asset(),
+                    resources.Asset(),
+                ],
                 next_page_token="abc",
             ),
-            service.ListAssetsResponse(assets=[], next_page_token="def",),
             service.ListAssetsResponse(
-                assets=[resources.Asset(),], next_page_token="ghi",
+                assets=[],
+                next_page_token="def",
             ),
-            service.ListAssetsResponse(assets=[resources.Asset(), resources.Asset(),],),
+            service.ListAssetsResponse(
+                assets=[
+                    resources.Asset(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListAssetsResponse(
+                assets=[
+                    resources.Asset(),
+                    resources.Asset(),
+                ],
+            ),
             RuntimeError,
         )
 
@@ -4618,7 +5288,8 @@ def test_list_assets_pager(transport_name: str = "grpc"):
 
 def test_list_assets_pages(transport_name: str = "grpc"):
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4626,14 +5297,29 @@ def test_list_assets_pages(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListAssetsResponse(
-                assets=[resources.Asset(), resources.Asset(), resources.Asset(),],
+                assets=[
+                    resources.Asset(),
+                    resources.Asset(),
+                    resources.Asset(),
+                ],
                 next_page_token="abc",
             ),
-            service.ListAssetsResponse(assets=[], next_page_token="def",),
             service.ListAssetsResponse(
-                assets=[resources.Asset(),], next_page_token="ghi",
+                assets=[],
+                next_page_token="def",
             ),
-            service.ListAssetsResponse(assets=[resources.Asset(), resources.Asset(),],),
+            service.ListAssetsResponse(
+                assets=[
+                    resources.Asset(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListAssetsResponse(
+                assets=[
+                    resources.Asset(),
+                    resources.Asset(),
+                ],
+            ),
             RuntimeError,
         )
         pages = list(client.list_assets(request={}).pages)
@@ -4654,17 +5340,34 @@ async def test_list_assets_async_pager():
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListAssetsResponse(
-                assets=[resources.Asset(), resources.Asset(), resources.Asset(),],
+                assets=[
+                    resources.Asset(),
+                    resources.Asset(),
+                    resources.Asset(),
+                ],
                 next_page_token="abc",
             ),
-            service.ListAssetsResponse(assets=[], next_page_token="def",),
             service.ListAssetsResponse(
-                assets=[resources.Asset(),], next_page_token="ghi",
+                assets=[],
+                next_page_token="def",
             ),
-            service.ListAssetsResponse(assets=[resources.Asset(), resources.Asset(),],),
+            service.ListAssetsResponse(
+                assets=[
+                    resources.Asset(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListAssetsResponse(
+                assets=[
+                    resources.Asset(),
+                    resources.Asset(),
+                ],
+            ),
             RuntimeError,
         )
-        async_pager = await client.list_assets(request={},)
+        async_pager = await client.list_assets(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -4687,14 +5390,29 @@ async def test_list_assets_async_pages():
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListAssetsResponse(
-                assets=[resources.Asset(), resources.Asset(), resources.Asset(),],
+                assets=[
+                    resources.Asset(),
+                    resources.Asset(),
+                    resources.Asset(),
+                ],
                 next_page_token="abc",
             ),
-            service.ListAssetsResponse(assets=[], next_page_token="def",),
             service.ListAssetsResponse(
-                assets=[resources.Asset(),], next_page_token="ghi",
+                assets=[],
+                next_page_token="def",
             ),
-            service.ListAssetsResponse(assets=[resources.Asset(), resources.Asset(),],),
+            service.ListAssetsResponse(
+                assets=[
+                    resources.Asset(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListAssetsResponse(
+                assets=[
+                    resources.Asset(),
+                    resources.Asset(),
+                ],
+            ),
             RuntimeError,
         )
         pages = []
@@ -4704,10 +5422,17 @@ async def test_list_assets_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [service.GetAssetRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetAssetRequest,
+        dict,
+    ],
+)
 def test_get_asset(request_type, transport: str = "grpc"):
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4744,7 +5469,8 @@ def test_get_asset_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4760,7 +5486,8 @@ async def test_get_asset_async(
     transport: str = "grpc_asyncio", request_type=service.GetAssetRequest
 ):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4801,7 +5528,9 @@ async def test_get_asset_async_from_dict():
 
 
 def test_get_asset_field_headers():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -4821,7 +5550,10 @@ def test_get_asset_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -4848,11 +5580,16 @@ async def test_get_asset_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_asset_flattened():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_asset), "__call__") as call:
@@ -4860,7 +5597,9 @@ def test_get_asset_flattened():
         call.return_value = resources.Asset()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_asset(name="name_value",)
+        client.get_asset(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -4872,13 +5611,16 @@ def test_get_asset_flattened():
 
 
 def test_get_asset_flattened_error():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_asset(
-            service.GetAssetRequest(), name="name_value",
+            service.GetAssetRequest(),
+            name="name_value",
         )
 
 
@@ -4896,7 +5638,9 @@ async def test_get_asset_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(resources.Asset())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_asset(name="name_value",)
+        response = await client.get_asset(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -4917,14 +5661,22 @@ async def test_get_asset_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_asset(
-            service.GetAssetRequest(), name="name_value",
+            service.GetAssetRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [service.ListAssetActionsRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListAssetActionsRequest,
+        dict,
+    ],
+)
 def test_list_asset_actions(request_type, transport: str = "grpc"):
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4955,7 +5707,8 @@ def test_list_asset_actions_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4973,7 +5726,8 @@ async def test_list_asset_actions_async(
     transport: str = "grpc_asyncio", request_type=service.ListAssetActionsRequest
 ):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4986,7 +5740,9 @@ async def test_list_asset_actions_async(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListActionsResponse(next_page_token="next_page_token_value",)
+            service.ListActionsResponse(
+                next_page_token="next_page_token_value",
+            )
         )
         response = await client.list_asset_actions(request)
 
@@ -5006,7 +5762,9 @@ async def test_list_asset_actions_async_from_dict():
 
 
 def test_list_asset_actions_field_headers():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -5028,7 +5786,10 @@ def test_list_asset_actions_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -5059,11 +5820,16 @@ async def test_list_asset_actions_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_asset_actions_flattened():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5073,7 +5839,9 @@ def test_list_asset_actions_flattened():
         call.return_value = service.ListActionsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_asset_actions(parent="parent_value",)
+        client.list_asset_actions(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -5085,13 +5853,16 @@ def test_list_asset_actions_flattened():
 
 
 def test_list_asset_actions_flattened_error():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_asset_actions(
-            service.ListAssetActionsRequest(), parent="parent_value",
+            service.ListAssetActionsRequest(),
+            parent="parent_value",
         )
 
 
@@ -5113,7 +5884,9 @@ async def test_list_asset_actions_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_asset_actions(parent="parent_value",)
+        response = await client.list_asset_actions(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -5134,13 +5907,15 @@ async def test_list_asset_actions_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_asset_actions(
-            service.ListAssetActionsRequest(), parent="parent_value",
+            service.ListAssetActionsRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_asset_actions_pager(transport_name: str = "grpc"):
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5150,15 +5925,28 @@ def test_list_asset_actions_pager(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListActionsResponse(
-                actions=[resources.Action(), resources.Action(), resources.Action(),],
+                actions=[
+                    resources.Action(),
+                    resources.Action(),
+                    resources.Action(),
+                ],
                 next_page_token="abc",
             ),
-            service.ListActionsResponse(actions=[], next_page_token="def",),
             service.ListActionsResponse(
-                actions=[resources.Action(),], next_page_token="ghi",
+                actions=[],
+                next_page_token="def",
             ),
             service.ListActionsResponse(
-                actions=[resources.Action(), resources.Action(),],
+                actions=[
+                    resources.Action(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListActionsResponse(
+                actions=[
+                    resources.Action(),
+                    resources.Action(),
+                ],
             ),
             RuntimeError,
         )
@@ -5178,7 +5966,8 @@ def test_list_asset_actions_pager(transport_name: str = "grpc"):
 
 def test_list_asset_actions_pages(transport_name: str = "grpc"):
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5188,15 +5977,28 @@ def test_list_asset_actions_pages(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListActionsResponse(
-                actions=[resources.Action(), resources.Action(), resources.Action(),],
+                actions=[
+                    resources.Action(),
+                    resources.Action(),
+                    resources.Action(),
+                ],
                 next_page_token="abc",
             ),
-            service.ListActionsResponse(actions=[], next_page_token="def",),
             service.ListActionsResponse(
-                actions=[resources.Action(),], next_page_token="ghi",
+                actions=[],
+                next_page_token="def",
             ),
             service.ListActionsResponse(
-                actions=[resources.Action(), resources.Action(),],
+                actions=[
+                    resources.Action(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListActionsResponse(
+                actions=[
+                    resources.Action(),
+                    resources.Action(),
+                ],
             ),
             RuntimeError,
         )
@@ -5220,19 +6022,34 @@ async def test_list_asset_actions_async_pager():
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListActionsResponse(
-                actions=[resources.Action(), resources.Action(), resources.Action(),],
+                actions=[
+                    resources.Action(),
+                    resources.Action(),
+                    resources.Action(),
+                ],
                 next_page_token="abc",
             ),
-            service.ListActionsResponse(actions=[], next_page_token="def",),
             service.ListActionsResponse(
-                actions=[resources.Action(),], next_page_token="ghi",
+                actions=[],
+                next_page_token="def",
             ),
             service.ListActionsResponse(
-                actions=[resources.Action(), resources.Action(),],
+                actions=[
+                    resources.Action(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListActionsResponse(
+                actions=[
+                    resources.Action(),
+                    resources.Action(),
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.list_asset_actions(request={},)
+        async_pager = await client.list_asset_actions(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -5257,15 +6074,28 @@ async def test_list_asset_actions_async_pages():
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListActionsResponse(
-                actions=[resources.Action(), resources.Action(), resources.Action(),],
+                actions=[
+                    resources.Action(),
+                    resources.Action(),
+                    resources.Action(),
+                ],
                 next_page_token="abc",
             ),
-            service.ListActionsResponse(actions=[], next_page_token="def",),
             service.ListActionsResponse(
-                actions=[resources.Action(),], next_page_token="ghi",
+                actions=[],
+                next_page_token="def",
             ),
             service.ListActionsResponse(
-                actions=[resources.Action(), resources.Action(),],
+                actions=[
+                    resources.Action(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListActionsResponse(
+                actions=[
+                    resources.Action(),
+                    resources.Action(),
+                ],
             ),
             RuntimeError,
         )
@@ -5276,10 +6106,17 @@ async def test_list_asset_actions_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [service.CreateTaskRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateTaskRequest,
+        dict,
+    ],
+)
 def test_create_task(request_type, transport: str = "grpc"):
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5305,7 +6142,8 @@ def test_create_task_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5321,7 +6159,8 @@ async def test_create_task_async(
     transport: str = "grpc_asyncio", request_type=service.CreateTaskRequest
 ):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5351,7 +6190,9 @@ async def test_create_task_async_from_dict():
 
 
 def test_create_task_field_headers():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -5371,7 +6212,10 @@ def test_create_task_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -5400,11 +6244,16 @@ async def test_create_task_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_task_flattened():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_task), "__call__") as call:
@@ -5434,7 +6283,9 @@ def test_create_task_flattened():
 
 
 def test_create_task_flattened_error():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -5501,10 +6352,17 @@ async def test_create_task_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [service.UpdateTaskRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UpdateTaskRequest,
+        dict,
+    ],
+)
 def test_update_task(request_type, transport: str = "grpc"):
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5530,7 +6388,8 @@ def test_update_task_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5546,7 +6405,8 @@ async def test_update_task_async(
     transport: str = "grpc_asyncio", request_type=service.UpdateTaskRequest
 ):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5576,7 +6436,9 @@ async def test_update_task_async_from_dict():
 
 
 def test_update_task_field_headers():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -5596,7 +6458,10 @@ def test_update_task_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "task.name=task.name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "task.name=task.name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -5625,11 +6490,16 @@ async def test_update_task_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "task.name=task.name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "task.name=task.name/value",
+    ) in kw["metadata"]
 
 
 def test_update_task_flattened():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_task), "__call__") as call:
@@ -5655,7 +6525,9 @@ def test_update_task_flattened():
 
 
 def test_update_task_flattened_error():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -5716,10 +6588,17 @@ async def test_update_task_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [service.DeleteTaskRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DeleteTaskRequest,
+        dict,
+    ],
+)
 def test_delete_task(request_type, transport: str = "grpc"):
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5745,7 +6624,8 @@ def test_delete_task_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5761,7 +6641,8 @@ async def test_delete_task_async(
     transport: str = "grpc_asyncio", request_type=service.DeleteTaskRequest
 ):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5791,7 +6672,9 @@ async def test_delete_task_async_from_dict():
 
 
 def test_delete_task_field_headers():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -5811,7 +6694,10 @@ def test_delete_task_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -5840,11 +6726,16 @@ async def test_delete_task_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_task_flattened():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_task), "__call__") as call:
@@ -5852,7 +6743,9 @@ def test_delete_task_flattened():
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_task(name="name_value",)
+        client.delete_task(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -5864,13 +6757,16 @@ def test_delete_task_flattened():
 
 
 def test_delete_task_flattened_error():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_task(
-            service.DeleteTaskRequest(), name="name_value",
+            service.DeleteTaskRequest(),
+            name="name_value",
         )
 
 
@@ -5890,7 +6786,9 @@ async def test_delete_task_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_task(name="name_value",)
+        response = await client.delete_task(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -5911,14 +6809,22 @@ async def test_delete_task_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_task(
-            service.DeleteTaskRequest(), name="name_value",
+            service.DeleteTaskRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [service.ListTasksRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListTasksRequest,
+        dict,
+    ],
+)
 def test_list_tasks(request_type, transport: str = "grpc"):
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5949,7 +6855,8 @@ def test_list_tasks_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5965,7 +6872,8 @@ async def test_list_tasks_async(
     transport: str = "grpc_asyncio", request_type=service.ListTasksRequest
 ):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -6000,7 +6908,9 @@ async def test_list_tasks_async_from_dict():
 
 
 def test_list_tasks_field_headers():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -6020,7 +6930,10 @@ def test_list_tasks_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -6049,11 +6962,16 @@ async def test_list_tasks_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_tasks_flattened():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_tasks), "__call__") as call:
@@ -6061,7 +6979,9 @@ def test_list_tasks_flattened():
         call.return_value = service.ListTasksResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_tasks(parent="parent_value",)
+        client.list_tasks(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -6073,13 +6993,16 @@ def test_list_tasks_flattened():
 
 
 def test_list_tasks_flattened_error():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_tasks(
-            service.ListTasksRequest(), parent="parent_value",
+            service.ListTasksRequest(),
+            parent="parent_value",
         )
 
 
@@ -6099,7 +7022,9 @@ async def test_list_tasks_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_tasks(parent="parent_value",)
+        response = await client.list_tasks(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -6120,13 +7045,15 @@ async def test_list_tasks_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_tasks(
-            service.ListTasksRequest(), parent="parent_value",
+            service.ListTasksRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_tasks_pager(transport_name: str = "grpc"):
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6134,12 +7061,29 @@ def test_list_tasks_pager(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListTasksResponse(
-                tasks=[tasks.Task(), tasks.Task(), tasks.Task(),],
+                tasks=[
+                    tasks.Task(),
+                    tasks.Task(),
+                    tasks.Task(),
+                ],
                 next_page_token="abc",
             ),
-            service.ListTasksResponse(tasks=[], next_page_token="def",),
-            service.ListTasksResponse(tasks=[tasks.Task(),], next_page_token="ghi",),
-            service.ListTasksResponse(tasks=[tasks.Task(), tasks.Task(),],),
+            service.ListTasksResponse(
+                tasks=[],
+                next_page_token="def",
+            ),
+            service.ListTasksResponse(
+                tasks=[
+                    tasks.Task(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListTasksResponse(
+                tasks=[
+                    tasks.Task(),
+                    tasks.Task(),
+                ],
+            ),
             RuntimeError,
         )
 
@@ -6158,7 +7102,8 @@ def test_list_tasks_pager(transport_name: str = "grpc"):
 
 def test_list_tasks_pages(transport_name: str = "grpc"):
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6166,12 +7111,29 @@ def test_list_tasks_pages(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListTasksResponse(
-                tasks=[tasks.Task(), tasks.Task(), tasks.Task(),],
+                tasks=[
+                    tasks.Task(),
+                    tasks.Task(),
+                    tasks.Task(),
+                ],
                 next_page_token="abc",
             ),
-            service.ListTasksResponse(tasks=[], next_page_token="def",),
-            service.ListTasksResponse(tasks=[tasks.Task(),], next_page_token="ghi",),
-            service.ListTasksResponse(tasks=[tasks.Task(), tasks.Task(),],),
+            service.ListTasksResponse(
+                tasks=[],
+                next_page_token="def",
+            ),
+            service.ListTasksResponse(
+                tasks=[
+                    tasks.Task(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListTasksResponse(
+                tasks=[
+                    tasks.Task(),
+                    tasks.Task(),
+                ],
+            ),
             RuntimeError,
         )
         pages = list(client.list_tasks(request={}).pages)
@@ -6192,15 +7154,34 @@ async def test_list_tasks_async_pager():
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListTasksResponse(
-                tasks=[tasks.Task(), tasks.Task(), tasks.Task(),],
+                tasks=[
+                    tasks.Task(),
+                    tasks.Task(),
+                    tasks.Task(),
+                ],
                 next_page_token="abc",
             ),
-            service.ListTasksResponse(tasks=[], next_page_token="def",),
-            service.ListTasksResponse(tasks=[tasks.Task(),], next_page_token="ghi",),
-            service.ListTasksResponse(tasks=[tasks.Task(), tasks.Task(),],),
+            service.ListTasksResponse(
+                tasks=[],
+                next_page_token="def",
+            ),
+            service.ListTasksResponse(
+                tasks=[
+                    tasks.Task(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListTasksResponse(
+                tasks=[
+                    tasks.Task(),
+                    tasks.Task(),
+                ],
+            ),
             RuntimeError,
         )
-        async_pager = await client.list_tasks(request={},)
+        async_pager = await client.list_tasks(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -6223,12 +7204,29 @@ async def test_list_tasks_async_pages():
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListTasksResponse(
-                tasks=[tasks.Task(), tasks.Task(), tasks.Task(),],
+                tasks=[
+                    tasks.Task(),
+                    tasks.Task(),
+                    tasks.Task(),
+                ],
                 next_page_token="abc",
             ),
-            service.ListTasksResponse(tasks=[], next_page_token="def",),
-            service.ListTasksResponse(tasks=[tasks.Task(),], next_page_token="ghi",),
-            service.ListTasksResponse(tasks=[tasks.Task(), tasks.Task(),],),
+            service.ListTasksResponse(
+                tasks=[],
+                next_page_token="def",
+            ),
+            service.ListTasksResponse(
+                tasks=[
+                    tasks.Task(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListTasksResponse(
+                tasks=[
+                    tasks.Task(),
+                    tasks.Task(),
+                ],
+            ),
             RuntimeError,
         )
         pages = []
@@ -6238,10 +7236,17 @@ async def test_list_tasks_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [service.GetTaskRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetTaskRequest,
+        dict,
+    ],
+)
 def test_get_task(request_type, transport: str = "grpc"):
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -6281,7 +7286,8 @@ def test_get_task_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6297,7 +7303,8 @@ async def test_get_task_async(
     transport: str = "grpc_asyncio", request_type=service.GetTaskRequest
 ):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -6338,7 +7345,9 @@ async def test_get_task_async_from_dict():
 
 
 def test_get_task_field_headers():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -6358,7 +7367,10 @@ def test_get_task_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -6385,11 +7397,16 @@ async def test_get_task_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_task_flattened():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_task), "__call__") as call:
@@ -6397,7 +7414,9 @@ def test_get_task_flattened():
         call.return_value = tasks.Task()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_task(name="name_value",)
+        client.get_task(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -6409,13 +7428,16 @@ def test_get_task_flattened():
 
 
 def test_get_task_flattened_error():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_task(
-            service.GetTaskRequest(), name="name_value",
+            service.GetTaskRequest(),
+            name="name_value",
         )
 
 
@@ -6433,7 +7455,9 @@ async def test_get_task_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(tasks.Task())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_task(name="name_value",)
+        response = await client.get_task(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -6454,14 +7478,22 @@ async def test_get_task_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_task(
-            service.GetTaskRequest(), name="name_value",
+            service.GetTaskRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [service.ListJobsRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListJobsRequest,
+        dict,
+    ],
+)
 def test_list_jobs(request_type, transport: str = "grpc"):
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -6490,7 +7522,8 @@ def test_list_jobs_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6506,7 +7539,8 @@ async def test_list_jobs_async(
     transport: str = "grpc_asyncio", request_type=service.ListJobsRequest
 ):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -6517,7 +7551,9 @@ async def test_list_jobs_async(
     with mock.patch.object(type(client.transport.list_jobs), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListJobsResponse(next_page_token="next_page_token_value",)
+            service.ListJobsResponse(
+                next_page_token="next_page_token_value",
+            )
         )
         response = await client.list_jobs(request)
 
@@ -6537,7 +7573,9 @@ async def test_list_jobs_async_from_dict():
 
 
 def test_list_jobs_field_headers():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -6557,7 +7595,10 @@ def test_list_jobs_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -6586,11 +7627,16 @@ async def test_list_jobs_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_jobs_flattened():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_jobs), "__call__") as call:
@@ -6598,7 +7644,9 @@ def test_list_jobs_flattened():
         call.return_value = service.ListJobsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_jobs(parent="parent_value",)
+        client.list_jobs(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -6610,13 +7658,16 @@ def test_list_jobs_flattened():
 
 
 def test_list_jobs_flattened_error():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_jobs(
-            service.ListJobsRequest(), parent="parent_value",
+            service.ListJobsRequest(),
+            parent="parent_value",
         )
 
 
@@ -6636,7 +7687,9 @@ async def test_list_jobs_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_jobs(parent="parent_value",)
+        response = await client.list_jobs(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -6657,13 +7710,15 @@ async def test_list_jobs_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_jobs(
-            service.ListJobsRequest(), parent="parent_value",
+            service.ListJobsRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_jobs_pager(transport_name: str = "grpc"):
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6671,11 +7726,29 @@ def test_list_jobs_pager(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListJobsResponse(
-                jobs=[tasks.Job(), tasks.Job(), tasks.Job(),], next_page_token="abc",
+                jobs=[
+                    tasks.Job(),
+                    tasks.Job(),
+                    tasks.Job(),
+                ],
+                next_page_token="abc",
             ),
-            service.ListJobsResponse(jobs=[], next_page_token="def",),
-            service.ListJobsResponse(jobs=[tasks.Job(),], next_page_token="ghi",),
-            service.ListJobsResponse(jobs=[tasks.Job(), tasks.Job(),],),
+            service.ListJobsResponse(
+                jobs=[],
+                next_page_token="def",
+            ),
+            service.ListJobsResponse(
+                jobs=[
+                    tasks.Job(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListJobsResponse(
+                jobs=[
+                    tasks.Job(),
+                    tasks.Job(),
+                ],
+            ),
             RuntimeError,
         )
 
@@ -6694,7 +7767,8 @@ def test_list_jobs_pager(transport_name: str = "grpc"):
 
 def test_list_jobs_pages(transport_name: str = "grpc"):
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6702,11 +7776,29 @@ def test_list_jobs_pages(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListJobsResponse(
-                jobs=[tasks.Job(), tasks.Job(), tasks.Job(),], next_page_token="abc",
+                jobs=[
+                    tasks.Job(),
+                    tasks.Job(),
+                    tasks.Job(),
+                ],
+                next_page_token="abc",
             ),
-            service.ListJobsResponse(jobs=[], next_page_token="def",),
-            service.ListJobsResponse(jobs=[tasks.Job(),], next_page_token="ghi",),
-            service.ListJobsResponse(jobs=[tasks.Job(), tasks.Job(),],),
+            service.ListJobsResponse(
+                jobs=[],
+                next_page_token="def",
+            ),
+            service.ListJobsResponse(
+                jobs=[
+                    tasks.Job(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListJobsResponse(
+                jobs=[
+                    tasks.Job(),
+                    tasks.Job(),
+                ],
+            ),
             RuntimeError,
         )
         pages = list(client.list_jobs(request={}).pages)
@@ -6727,14 +7819,34 @@ async def test_list_jobs_async_pager():
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListJobsResponse(
-                jobs=[tasks.Job(), tasks.Job(), tasks.Job(),], next_page_token="abc",
+                jobs=[
+                    tasks.Job(),
+                    tasks.Job(),
+                    tasks.Job(),
+                ],
+                next_page_token="abc",
             ),
-            service.ListJobsResponse(jobs=[], next_page_token="def",),
-            service.ListJobsResponse(jobs=[tasks.Job(),], next_page_token="ghi",),
-            service.ListJobsResponse(jobs=[tasks.Job(), tasks.Job(),],),
+            service.ListJobsResponse(
+                jobs=[],
+                next_page_token="def",
+            ),
+            service.ListJobsResponse(
+                jobs=[
+                    tasks.Job(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListJobsResponse(
+                jobs=[
+                    tasks.Job(),
+                    tasks.Job(),
+                ],
+            ),
             RuntimeError,
         )
-        async_pager = await client.list_jobs(request={},)
+        async_pager = await client.list_jobs(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -6757,11 +7869,29 @@ async def test_list_jobs_async_pages():
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListJobsResponse(
-                jobs=[tasks.Job(), tasks.Job(), tasks.Job(),], next_page_token="abc",
+                jobs=[
+                    tasks.Job(),
+                    tasks.Job(),
+                    tasks.Job(),
+                ],
+                next_page_token="abc",
             ),
-            service.ListJobsResponse(jobs=[], next_page_token="def",),
-            service.ListJobsResponse(jobs=[tasks.Job(),], next_page_token="ghi",),
-            service.ListJobsResponse(jobs=[tasks.Job(), tasks.Job(),],),
+            service.ListJobsResponse(
+                jobs=[],
+                next_page_token="def",
+            ),
+            service.ListJobsResponse(
+                jobs=[
+                    tasks.Job(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListJobsResponse(
+                jobs=[
+                    tasks.Job(),
+                    tasks.Job(),
+                ],
+            ),
             RuntimeError,
         )
         pages = []
@@ -6771,10 +7901,17 @@ async def test_list_jobs_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [service.GetJobRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetJobRequest,
+        dict,
+    ],
+)
 def test_get_job(request_type, transport: str = "grpc"):
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -6815,7 +7952,8 @@ def test_get_job_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6831,7 +7969,8 @@ async def test_get_job_async(
     transport: str = "grpc_asyncio", request_type=service.GetJobRequest
 ):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -6876,7 +8015,9 @@ async def test_get_job_async_from_dict():
 
 
 def test_get_job_field_headers():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -6896,7 +8037,10 @@ def test_get_job_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -6923,11 +8067,16 @@ async def test_get_job_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_job_flattened():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_job), "__call__") as call:
@@ -6935,7 +8084,9 @@ def test_get_job_flattened():
         call.return_value = tasks.Job()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_job(name="name_value",)
+        client.get_job(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -6947,13 +8098,16 @@ def test_get_job_flattened():
 
 
 def test_get_job_flattened_error():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_job(
-            service.GetJobRequest(), name="name_value",
+            service.GetJobRequest(),
+            name="name_value",
         )
 
 
@@ -6971,7 +8125,9 @@ async def test_get_job_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(tasks.Job())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_job(name="name_value",)
+        response = await client.get_job(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -6992,14 +8148,22 @@ async def test_get_job_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_job(
-            service.GetJobRequest(), name="name_value",
+            service.GetJobRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [service.CancelJobRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CancelJobRequest,
+        dict,
+    ],
+)
 def test_cancel_job(request_type, transport: str = "grpc"):
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -7025,7 +8189,8 @@ def test_cancel_job_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7041,7 +8206,8 @@ async def test_cancel_job_async(
     transport: str = "grpc_asyncio", request_type=service.CancelJobRequest
 ):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -7069,7 +8235,9 @@ async def test_cancel_job_async_from_dict():
 
 
 def test_cancel_job_field_headers():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -7089,7 +8257,10 @@ def test_cancel_job_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -7116,11 +8287,16 @@ async def test_cancel_job_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_cancel_job_flattened():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.cancel_job), "__call__") as call:
@@ -7128,7 +8304,9 @@ def test_cancel_job_flattened():
         call.return_value = None
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.cancel_job(name="name_value",)
+        client.cancel_job(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -7140,13 +8318,16 @@ def test_cancel_job_flattened():
 
 
 def test_cancel_job_flattened_error():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.cancel_job(
-            service.CancelJobRequest(), name="name_value",
+            service.CancelJobRequest(),
+            name="name_value",
         )
 
 
@@ -7164,7 +8345,9 @@ async def test_cancel_job_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.cancel_job(name="name_value",)
+        response = await client.cancel_job(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -7185,14 +8368,22 @@ async def test_cancel_job_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.cancel_job(
-            service.CancelJobRequest(), name="name_value",
+            service.CancelJobRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [service.CreateEnvironmentRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateEnvironmentRequest,
+        dict,
+    ],
+)
 def test_create_environment(request_type, transport: str = "grpc"):
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -7220,7 +8411,8 @@ def test_create_environment_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7238,7 +8430,8 @@ async def test_create_environment_async(
     transport: str = "grpc_asyncio", request_type=service.CreateEnvironmentRequest
 ):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -7270,7 +8463,9 @@ async def test_create_environment_async_from_dict():
 
 
 def test_create_environment_field_headers():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -7292,7 +8487,10 @@ def test_create_environment_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -7323,11 +8521,16 @@ async def test_create_environment_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_environment_flattened():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7359,7 +8562,9 @@ def test_create_environment_flattened():
 
 
 def test_create_environment_flattened_error():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -7428,10 +8633,17 @@ async def test_create_environment_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [service.UpdateEnvironmentRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UpdateEnvironmentRequest,
+        dict,
+    ],
+)
 def test_update_environment(request_type, transport: str = "grpc"):
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -7459,7 +8671,8 @@ def test_update_environment_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7477,7 +8690,8 @@ async def test_update_environment_async(
     transport: str = "grpc_asyncio", request_type=service.UpdateEnvironmentRequest
 ):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -7509,7 +8723,9 @@ async def test_update_environment_async_from_dict():
 
 
 def test_update_environment_field_headers():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -7531,9 +8747,10 @@ def test_update_environment_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "environment.name=environment.name/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "environment.name=environment.name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -7564,13 +8781,16 @@ async def test_update_environment_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "environment.name=environment.name/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "environment.name=environment.name/value",
+    ) in kw["metadata"]
 
 
 def test_update_environment_flattened():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7598,7 +8818,9 @@ def test_update_environment_flattened():
 
 
 def test_update_environment_flattened_error():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -7661,10 +8883,17 @@ async def test_update_environment_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [service.DeleteEnvironmentRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DeleteEnvironmentRequest,
+        dict,
+    ],
+)
 def test_delete_environment(request_type, transport: str = "grpc"):
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -7692,7 +8921,8 @@ def test_delete_environment_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7710,7 +8940,8 @@ async def test_delete_environment_async(
     transport: str = "grpc_asyncio", request_type=service.DeleteEnvironmentRequest
 ):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -7742,7 +8973,9 @@ async def test_delete_environment_async_from_dict():
 
 
 def test_delete_environment_field_headers():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -7764,7 +8997,10 @@ def test_delete_environment_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -7795,11 +9031,16 @@ async def test_delete_environment_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_environment_flattened():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7809,7 +9050,9 @@ def test_delete_environment_flattened():
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_environment(name="name_value",)
+        client.delete_environment(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -7821,13 +9064,16 @@ def test_delete_environment_flattened():
 
 
 def test_delete_environment_flattened_error():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_environment(
-            service.DeleteEnvironmentRequest(), name="name_value",
+            service.DeleteEnvironmentRequest(),
+            name="name_value",
         )
 
 
@@ -7849,7 +9095,9 @@ async def test_delete_environment_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_environment(name="name_value",)
+        response = await client.delete_environment(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -7870,14 +9118,22 @@ async def test_delete_environment_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_environment(
-            service.DeleteEnvironmentRequest(), name="name_value",
+            service.DeleteEnvironmentRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [service.ListEnvironmentsRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListEnvironmentsRequest,
+        dict,
+    ],
+)
 def test_list_environments(request_type, transport: str = "grpc"):
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -7908,7 +9164,8 @@ def test_list_environments_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7926,7 +9183,8 @@ async def test_list_environments_async(
     transport: str = "grpc_asyncio", request_type=service.ListEnvironmentsRequest
 ):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -7939,7 +9197,9 @@ async def test_list_environments_async(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListEnvironmentsResponse(next_page_token="next_page_token_value",)
+            service.ListEnvironmentsResponse(
+                next_page_token="next_page_token_value",
+            )
         )
         response = await client.list_environments(request)
 
@@ -7959,7 +9219,9 @@ async def test_list_environments_async_from_dict():
 
 
 def test_list_environments_field_headers():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -7981,7 +9243,10 @@ def test_list_environments_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -8012,11 +9277,16 @@ async def test_list_environments_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_environments_flattened():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8026,7 +9296,9 @@ def test_list_environments_flattened():
         call.return_value = service.ListEnvironmentsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_environments(parent="parent_value",)
+        client.list_environments(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -8038,13 +9310,16 @@ def test_list_environments_flattened():
 
 
 def test_list_environments_flattened_error():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_environments(
-            service.ListEnvironmentsRequest(), parent="parent_value",
+            service.ListEnvironmentsRequest(),
+            parent="parent_value",
         )
 
 
@@ -8066,7 +9341,9 @@ async def test_list_environments_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_environments(parent="parent_value",)
+        response = await client.list_environments(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -8087,13 +9364,15 @@ async def test_list_environments_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_environments(
-            service.ListEnvironmentsRequest(), parent="parent_value",
+            service.ListEnvironmentsRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_environments_pager(transport_name: str = "grpc"):
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8110,12 +9389,21 @@ def test_list_environments_pager(transport_name: str = "grpc"):
                 ],
                 next_page_token="abc",
             ),
-            service.ListEnvironmentsResponse(environments=[], next_page_token="def",),
             service.ListEnvironmentsResponse(
-                environments=[analyze.Environment(),], next_page_token="ghi",
+                environments=[],
+                next_page_token="def",
             ),
             service.ListEnvironmentsResponse(
-                environments=[analyze.Environment(), analyze.Environment(),],
+                environments=[
+                    analyze.Environment(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListEnvironmentsResponse(
+                environments=[
+                    analyze.Environment(),
+                    analyze.Environment(),
+                ],
             ),
             RuntimeError,
         )
@@ -8135,7 +9423,8 @@ def test_list_environments_pager(transport_name: str = "grpc"):
 
 def test_list_environments_pages(transport_name: str = "grpc"):
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8152,12 +9441,21 @@ def test_list_environments_pages(transport_name: str = "grpc"):
                 ],
                 next_page_token="abc",
             ),
-            service.ListEnvironmentsResponse(environments=[], next_page_token="def",),
             service.ListEnvironmentsResponse(
-                environments=[analyze.Environment(),], next_page_token="ghi",
+                environments=[],
+                next_page_token="def",
             ),
             service.ListEnvironmentsResponse(
-                environments=[analyze.Environment(), analyze.Environment(),],
+                environments=[
+                    analyze.Environment(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListEnvironmentsResponse(
+                environments=[
+                    analyze.Environment(),
+                    analyze.Environment(),
+                ],
             ),
             RuntimeError,
         )
@@ -8188,16 +9486,27 @@ async def test_list_environments_async_pager():
                 ],
                 next_page_token="abc",
             ),
-            service.ListEnvironmentsResponse(environments=[], next_page_token="def",),
             service.ListEnvironmentsResponse(
-                environments=[analyze.Environment(),], next_page_token="ghi",
+                environments=[],
+                next_page_token="def",
             ),
             service.ListEnvironmentsResponse(
-                environments=[analyze.Environment(), analyze.Environment(),],
+                environments=[
+                    analyze.Environment(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListEnvironmentsResponse(
+                environments=[
+                    analyze.Environment(),
+                    analyze.Environment(),
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.list_environments(request={},)
+        async_pager = await client.list_environments(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -8229,12 +9538,21 @@ async def test_list_environments_async_pages():
                 ],
                 next_page_token="abc",
             ),
-            service.ListEnvironmentsResponse(environments=[], next_page_token="def",),
             service.ListEnvironmentsResponse(
-                environments=[analyze.Environment(),], next_page_token="ghi",
+                environments=[],
+                next_page_token="def",
             ),
             service.ListEnvironmentsResponse(
-                environments=[analyze.Environment(), analyze.Environment(),],
+                environments=[
+                    analyze.Environment(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListEnvironmentsResponse(
+                environments=[
+                    analyze.Environment(),
+                    analyze.Environment(),
+                ],
             ),
             RuntimeError,
         )
@@ -8245,10 +9563,17 @@ async def test_list_environments_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [service.GetEnvironmentRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetEnvironmentRequest,
+        dict,
+    ],
+)
 def test_get_environment(request_type, transport: str = "grpc"):
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -8285,7 +9610,8 @@ def test_get_environment_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8301,7 +9627,8 @@ async def test_get_environment_async(
     transport: str = "grpc_asyncio", request_type=service.GetEnvironmentRequest
 ):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -8342,7 +9669,9 @@ async def test_get_environment_async_from_dict():
 
 
 def test_get_environment_field_headers():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -8362,7 +9691,10 @@ def test_get_environment_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -8389,11 +9721,16 @@ async def test_get_environment_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_environment_flattened():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_environment), "__call__") as call:
@@ -8401,7 +9738,9 @@ def test_get_environment_flattened():
         call.return_value = analyze.Environment()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_environment(name="name_value",)
+        client.get_environment(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -8413,13 +9752,16 @@ def test_get_environment_flattened():
 
 
 def test_get_environment_flattened_error():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_environment(
-            service.GetEnvironmentRequest(), name="name_value",
+            service.GetEnvironmentRequest(),
+            name="name_value",
         )
 
 
@@ -8437,7 +9779,9 @@ async def test_get_environment_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(analyze.Environment())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_environment(name="name_value",)
+        response = await client.get_environment(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -8458,14 +9802,22 @@ async def test_get_environment_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_environment(
-            service.GetEnvironmentRequest(), name="name_value",
+            service.GetEnvironmentRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [service.ListSessionsRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListSessionsRequest,
+        dict,
+    ],
+)
 def test_list_sessions(request_type, transport: str = "grpc"):
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -8494,7 +9846,8 @@ def test_list_sessions_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8510,7 +9863,8 @@ async def test_list_sessions_async(
     transport: str = "grpc_asyncio", request_type=service.ListSessionsRequest
 ):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -8521,7 +9875,9 @@ async def test_list_sessions_async(
     with mock.patch.object(type(client.transport.list_sessions), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListSessionsResponse(next_page_token="next_page_token_value",)
+            service.ListSessionsResponse(
+                next_page_token="next_page_token_value",
+            )
         )
         response = await client.list_sessions(request)
 
@@ -8541,7 +9897,9 @@ async def test_list_sessions_async_from_dict():
 
 
 def test_list_sessions_field_headers():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -8561,7 +9919,10 @@ def test_list_sessions_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -8590,11 +9951,16 @@ async def test_list_sessions_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_sessions_flattened():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_sessions), "__call__") as call:
@@ -8602,7 +9968,9 @@ def test_list_sessions_flattened():
         call.return_value = service.ListSessionsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_sessions(parent="parent_value",)
+        client.list_sessions(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -8614,13 +9982,16 @@ def test_list_sessions_flattened():
 
 
 def test_list_sessions_flattened_error():
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_sessions(
-            service.ListSessionsRequest(), parent="parent_value",
+            service.ListSessionsRequest(),
+            parent="parent_value",
         )
 
 
@@ -8640,7 +10011,9 @@ async def test_list_sessions_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_sessions(parent="parent_value",)
+        response = await client.list_sessions(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -8661,13 +10034,15 @@ async def test_list_sessions_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_sessions(
-            service.ListSessionsRequest(), parent="parent_value",
+            service.ListSessionsRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_sessions_pager(transport_name: str = "grpc"):
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8675,15 +10050,28 @@ def test_list_sessions_pager(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListSessionsResponse(
-                sessions=[analyze.Session(), analyze.Session(), analyze.Session(),],
+                sessions=[
+                    analyze.Session(),
+                    analyze.Session(),
+                    analyze.Session(),
+                ],
                 next_page_token="abc",
             ),
-            service.ListSessionsResponse(sessions=[], next_page_token="def",),
             service.ListSessionsResponse(
-                sessions=[analyze.Session(),], next_page_token="ghi",
+                sessions=[],
+                next_page_token="def",
             ),
             service.ListSessionsResponse(
-                sessions=[analyze.Session(), analyze.Session(),],
+                sessions=[
+                    analyze.Session(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListSessionsResponse(
+                sessions=[
+                    analyze.Session(),
+                    analyze.Session(),
+                ],
             ),
             RuntimeError,
         )
@@ -8703,7 +10091,8 @@ def test_list_sessions_pager(transport_name: str = "grpc"):
 
 def test_list_sessions_pages(transport_name: str = "grpc"):
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8711,15 +10100,28 @@ def test_list_sessions_pages(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListSessionsResponse(
-                sessions=[analyze.Session(), analyze.Session(), analyze.Session(),],
+                sessions=[
+                    analyze.Session(),
+                    analyze.Session(),
+                    analyze.Session(),
+                ],
                 next_page_token="abc",
             ),
-            service.ListSessionsResponse(sessions=[], next_page_token="def",),
             service.ListSessionsResponse(
-                sessions=[analyze.Session(),], next_page_token="ghi",
+                sessions=[],
+                next_page_token="def",
             ),
             service.ListSessionsResponse(
-                sessions=[analyze.Session(), analyze.Session(),],
+                sessions=[
+                    analyze.Session(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListSessionsResponse(
+                sessions=[
+                    analyze.Session(),
+                    analyze.Session(),
+                ],
             ),
             RuntimeError,
         )
@@ -8741,19 +10143,34 @@ async def test_list_sessions_async_pager():
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListSessionsResponse(
-                sessions=[analyze.Session(), analyze.Session(), analyze.Session(),],
+                sessions=[
+                    analyze.Session(),
+                    analyze.Session(),
+                    analyze.Session(),
+                ],
                 next_page_token="abc",
             ),
-            service.ListSessionsResponse(sessions=[], next_page_token="def",),
             service.ListSessionsResponse(
-                sessions=[analyze.Session(),], next_page_token="ghi",
+                sessions=[],
+                next_page_token="def",
             ),
             service.ListSessionsResponse(
-                sessions=[analyze.Session(), analyze.Session(),],
+                sessions=[
+                    analyze.Session(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListSessionsResponse(
+                sessions=[
+                    analyze.Session(),
+                    analyze.Session(),
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.list_sessions(request={},)
+        async_pager = await client.list_sessions(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -8776,15 +10193,28 @@ async def test_list_sessions_async_pages():
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListSessionsResponse(
-                sessions=[analyze.Session(), analyze.Session(), analyze.Session(),],
+                sessions=[
+                    analyze.Session(),
+                    analyze.Session(),
+                    analyze.Session(),
+                ],
                 next_page_token="abc",
             ),
-            service.ListSessionsResponse(sessions=[], next_page_token="def",),
             service.ListSessionsResponse(
-                sessions=[analyze.Session(),], next_page_token="ghi",
+                sessions=[],
+                next_page_token="def",
             ),
             service.ListSessionsResponse(
-                sessions=[analyze.Session(), analyze.Session(),],
+                sessions=[
+                    analyze.Session(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListSessionsResponse(
+                sessions=[
+                    analyze.Session(),
+                    analyze.Session(),
+                ],
             ),
             RuntimeError,
         )
@@ -8802,7 +10232,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = DataplexServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -8822,7 +10253,10 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = DataplexServiceClient(client_options=options, transport=transport,)
+        client = DataplexServiceClient(
+            client_options=options,
+            transport=transport,
+        )
 
     # It is an error to provide an api_key and a credential.
     options = mock.Mock()
@@ -8838,7 +10272,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = DataplexServiceClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -8883,8 +10318,13 @@ def test_transport_adc(transport_class):
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
-    client = DataplexServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
-    assert isinstance(client.transport, transports.DataplexServiceGrpcTransport,)
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    assert isinstance(
+        client.transport,
+        transports.DataplexServiceGrpcTransport,
+    )
 
 
 def test_dataplex_service_base_transport_error():
@@ -8965,7 +10405,8 @@ def test_dataplex_service_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.DataplexServiceTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -9123,7 +10564,8 @@ def test_dataplex_service_grpc_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.DataplexServiceGrpcTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -9135,7 +10577,8 @@ def test_dataplex_service_grpc_asyncio_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.DataplexServiceGrpcAsyncIOTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -9244,12 +10687,16 @@ def test_dataplex_service_transport_channel_mtls_with_adc(transport_class):
 
 def test_dataplex_service_grpc_lro_client():
     client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
     transport = client.transport
 
     # Ensure that we have a api-core operations client.
-    assert isinstance(transport.operations_client, operations_v1.OperationsClient,)
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsClient,
+    )
 
     # Ensure that subsequent calls to the property send the exact same object.
     assert transport.operations_client is transport.operations_client
@@ -9257,12 +10704,16 @@ def test_dataplex_service_grpc_lro_client():
 
 def test_dataplex_service_grpc_lro_async_client():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     transport = client.transport
 
     # Ensure that we have a api-core operations client.
-    assert isinstance(transport.operations_client, operations_v1.OperationsAsyncClient,)
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsAsyncClient,
+    )
 
     # Ensure that subsequent calls to the property send the exact same object.
     assert transport.operations_client is transport.operations_client
@@ -9273,8 +10724,13 @@ def test_action_path():
     location = "clam"
     lake = "whelk"
     action = "octopus"
-    expected = "projects/{project}/locations/{location}/lakes/{lake}/actions/{action}".format(
-        project=project, location=location, lake=lake, action=action,
+    expected = (
+        "projects/{project}/locations/{location}/lakes/{lake}/actions/{action}".format(
+            project=project,
+            location=location,
+            lake=lake,
+            action=action,
+        )
     )
     actual = DataplexServiceClient.action_path(project, location, lake, action)
     assert expected == actual
@@ -9301,7 +10757,11 @@ def test_asset_path():
     zone = "abalone"
     asset = "squid"
     expected = "projects/{project}/locations/{location}/lakes/{lake}/zones/{zone}/assets/{asset}".format(
-        project=project, location=location, lake=lake, zone=zone, asset=asset,
+        project=project,
+        location=location,
+        lake=lake,
+        zone=zone,
+        asset=asset,
     )
     actual = DataplexServiceClient.asset_path(project, location, lake, zone, asset)
     assert expected == actual
@@ -9328,7 +10788,10 @@ def test_environment_path():
     lake = "winkle"
     environment = "nautilus"
     expected = "projects/{project}/locations/{location}/lakes/{lake}/environments/{environment}".format(
-        project=project, location=location, lake=lake, environment=environment,
+        project=project,
+        location=location,
+        lake=lake,
+        environment=environment,
     )
     actual = DataplexServiceClient.environment_path(
         project, location, lake, environment
@@ -9357,7 +10820,11 @@ def test_job_path():
     task = "nudibranch"
     job = "cuttlefish"
     expected = "projects/{project}/locations/{location}/lakes/{lake}/tasks/{task}/jobs/{job}".format(
-        project=project, location=location, lake=lake, task=task, job=job,
+        project=project,
+        location=location,
+        lake=lake,
+        task=task,
+        job=job,
     )
     actual = DataplexServiceClient.job_path(project, location, lake, task, job)
     assert expected == actual
@@ -9383,7 +10850,9 @@ def test_lake_path():
     location = "clam"
     lake = "whelk"
     expected = "projects/{project}/locations/{location}/lakes/{lake}".format(
-        project=project, location=location, lake=lake,
+        project=project,
+        location=location,
+        lake=lake,
     )
     actual = DataplexServiceClient.lake_path(project, location, lake)
     assert expected == actual
@@ -9441,8 +10910,13 @@ def test_task_path():
     location = "nudibranch"
     lake = "cuttlefish"
     task = "mussel"
-    expected = "projects/{project}/locations/{location}/lakes/{lake}/tasks/{task}".format(
-        project=project, location=location, lake=lake, task=task,
+    expected = (
+        "projects/{project}/locations/{location}/lakes/{lake}/tasks/{task}".format(
+            project=project,
+            location=location,
+            lake=lake,
+            task=task,
+        )
     )
     actual = DataplexServiceClient.task_path(project, location, lake, task)
     assert expected == actual
@@ -9467,8 +10941,13 @@ def test_zone_path():
     location = "clam"
     lake = "whelk"
     zone = "octopus"
-    expected = "projects/{project}/locations/{location}/lakes/{lake}/zones/{zone}".format(
-        project=project, location=location, lake=lake, zone=zone,
+    expected = (
+        "projects/{project}/locations/{location}/lakes/{lake}/zones/{zone}".format(
+            project=project,
+            location=location,
+            lake=lake,
+            zone=zone,
+        )
     )
     actual = DataplexServiceClient.zone_path(project, location, lake, zone)
     assert expected == actual
@@ -9510,7 +10989,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "scallop"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = DataplexServiceClient.common_folder_path(folder)
     assert expected == actual
 
@@ -9528,7 +11009,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "squid"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = DataplexServiceClient.common_organization_path(organization)
     assert expected == actual
 
@@ -9546,7 +11029,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "whelk"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = DataplexServiceClient.common_project_path(project)
     assert expected == actual
 
@@ -9566,7 +11051,8 @@ def test_common_location_path():
     project = "oyster"
     location = "nudibranch"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = DataplexServiceClient.common_location_path(project, location)
     assert expected == actual
@@ -9591,7 +11077,8 @@ def test_client_with_default_client_info():
         transports.DataplexServiceTransport, "_prep_wrapped_messages"
     ) as prep:
         client = DataplexServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -9600,7 +11087,8 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = DataplexServiceClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -9608,7 +11096,8 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     with mock.patch.object(
         type(getattr(client.transport, "grpc_channel")), "close"

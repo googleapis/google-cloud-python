@@ -95,10 +95,23 @@ class CreateLakeRequest(proto.Message):
             not perform mutations. The default is false.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    lake_id = proto.Field(proto.STRING, number=2,)
-    lake = proto.Field(proto.MESSAGE, number=3, message=resources.Lake,)
-    validate_only = proto.Field(proto.BOOL, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    lake_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    lake = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=resources.Lake,
+    )
+    validate_only = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
 
 
 class UpdateLakeRequest(proto.Message):
@@ -116,10 +129,19 @@ class UpdateLakeRequest(proto.Message):
     """
 
     update_mask = proto.Field(
-        proto.MESSAGE, number=1, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=1,
+        message=field_mask_pb2.FieldMask,
     )
-    lake = proto.Field(proto.MESSAGE, number=2, message=resources.Lake,)
-    validate_only = proto.Field(proto.BOOL, number=3,)
+    lake = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=resources.Lake,
+    )
+    validate_only = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
 
 
 class DeleteLakeRequest(proto.Message):
@@ -131,7 +153,10 @@ class DeleteLakeRequest(proto.Message):
             ``projects/{project_number}/locations/{location_id}/lakes/{lake_id}``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListLakesRequest(proto.Message):
@@ -159,11 +184,26 @@ class ListLakesRequest(proto.Message):
             Optional. Order by fields for the result.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    filter = proto.Field(proto.STRING, number=4,)
-    order_by = proto.Field(proto.STRING, number=5,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class ListLakesResponse(proto.Message):
@@ -184,9 +224,19 @@ class ListLakesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    lakes = proto.RepeatedField(proto.MESSAGE, number=1, message=resources.Lake,)
-    next_page_token = proto.Field(proto.STRING, number=2,)
-    unreachable_locations = proto.RepeatedField(proto.STRING, number=3,)
+    lakes = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=resources.Lake,
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable_locations = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListLakeActionsRequest(proto.Message):
@@ -210,9 +260,18 @@ class ListLakeActionsRequest(proto.Message):
             provided the page token.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListActionsResponse(proto.Message):
@@ -232,8 +291,15 @@ class ListActionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    actions = proto.RepeatedField(proto.MESSAGE, number=1, message=resources.Action,)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    actions = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=resources.Action,
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetLakeRequest(proto.Message):
@@ -245,7 +311,10 @@ class GetLakeRequest(proto.Message):
             ``projects/{project_number}/locations/{location_id}/lakes/{lake_id}``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CreateZoneRequest(proto.Message):
@@ -275,10 +344,23 @@ class CreateZoneRequest(proto.Message):
             not perform mutations. The default is false.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    zone_id = proto.Field(proto.STRING, number=2,)
-    zone = proto.Field(proto.MESSAGE, number=3, message=resources.Zone,)
-    validate_only = proto.Field(proto.BOOL, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    zone_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    zone = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=resources.Zone,
+    )
+    validate_only = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
 
 
 class UpdateZoneRequest(proto.Message):
@@ -296,10 +378,19 @@ class UpdateZoneRequest(proto.Message):
     """
 
     update_mask = proto.Field(
-        proto.MESSAGE, number=1, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=1,
+        message=field_mask_pb2.FieldMask,
     )
-    zone = proto.Field(proto.MESSAGE, number=2, message=resources.Zone,)
-    validate_only = proto.Field(proto.BOOL, number=3,)
+    zone = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=resources.Zone,
+    )
+    validate_only = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
 
 
 class DeleteZoneRequest(proto.Message):
@@ -311,7 +402,10 @@ class DeleteZoneRequest(proto.Message):
             ``projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListZonesRequest(proto.Message):
@@ -338,11 +432,26 @@ class ListZonesRequest(proto.Message):
             Optional. Order by fields for the result.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    filter = proto.Field(proto.STRING, number=4,)
-    order_by = proto.Field(proto.STRING, number=5,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class ListZonesResponse(proto.Message):
@@ -361,8 +470,15 @@ class ListZonesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    zones = proto.RepeatedField(proto.MESSAGE, number=1, message=resources.Zone,)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    zones = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=resources.Zone,
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class ListZoneActionsRequest(proto.Message):
@@ -386,9 +502,18 @@ class ListZoneActionsRequest(proto.Message):
             provided the page token.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class GetZoneRequest(proto.Message):
@@ -400,7 +525,10 @@ class GetZoneRequest(proto.Message):
             ``projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CreateAssetRequest(proto.Message):
@@ -427,10 +555,23 @@ class CreateAssetRequest(proto.Message):
             not perform mutations. The default is false.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    asset_id = proto.Field(proto.STRING, number=2,)
-    asset = proto.Field(proto.MESSAGE, number=3, message=resources.Asset,)
-    validate_only = proto.Field(proto.BOOL, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    asset_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    asset = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=resources.Asset,
+    )
+    validate_only = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
 
 
 class UpdateAssetRequest(proto.Message):
@@ -448,10 +589,19 @@ class UpdateAssetRequest(proto.Message):
     """
 
     update_mask = proto.Field(
-        proto.MESSAGE, number=1, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=1,
+        message=field_mask_pb2.FieldMask,
     )
-    asset = proto.Field(proto.MESSAGE, number=2, message=resources.Asset,)
-    validate_only = proto.Field(proto.BOOL, number=3,)
+    asset = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=resources.Asset,
+    )
+    validate_only = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
 
 
 class DeleteAssetRequest(proto.Message):
@@ -463,7 +613,10 @@ class DeleteAssetRequest(proto.Message):
             ``projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}/assets/{asset_id}``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListAssetsRequest(proto.Message):
@@ -490,11 +643,26 @@ class ListAssetsRequest(proto.Message):
             Optional. Order by fields for the result.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    filter = proto.Field(proto.STRING, number=4,)
-    order_by = proto.Field(proto.STRING, number=5,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class ListAssetsResponse(proto.Message):
@@ -513,8 +681,15 @@ class ListAssetsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    assets = proto.RepeatedField(proto.MESSAGE, number=1, message=resources.Asset,)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    assets = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=resources.Asset,
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class ListAssetActionsRequest(proto.Message):
@@ -538,9 +713,18 @@ class ListAssetActionsRequest(proto.Message):
             provided the page token.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class GetAssetRequest(proto.Message):
@@ -552,7 +736,10 @@ class GetAssetRequest(proto.Message):
             ``projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}/assets/{asset_id}``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class OperationMetadata(proto.Message):
@@ -585,13 +772,36 @@ class OperationMetadata(proto.Message):
             operation.
     """
 
-    create_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
-    end_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    target = proto.Field(proto.STRING, number=3,)
-    verb = proto.Field(proto.STRING, number=4,)
-    status_message = proto.Field(proto.STRING, number=5,)
-    requested_cancellation = proto.Field(proto.BOOL, number=6,)
-    api_version = proto.Field(proto.STRING, number=7,)
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    target = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    verb = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    status_message = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    requested_cancellation = proto.Field(
+        proto.BOOL,
+        number=6,
+    )
+    api_version = proto.Field(
+        proto.STRING,
+        number=7,
+    )
 
 
 class CreateTaskRequest(proto.Message):
@@ -610,10 +820,23 @@ class CreateTaskRequest(proto.Message):
             not perform mutations. The default is false.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    task_id = proto.Field(proto.STRING, number=2,)
-    task = proto.Field(proto.MESSAGE, number=3, message=gcd_tasks.Task,)
-    validate_only = proto.Field(proto.BOOL, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    task_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    task = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=gcd_tasks.Task,
+    )
+    validate_only = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
 
 
 class UpdateTaskRequest(proto.Message):
@@ -631,10 +854,19 @@ class UpdateTaskRequest(proto.Message):
     """
 
     update_mask = proto.Field(
-        proto.MESSAGE, number=1, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=1,
+        message=field_mask_pb2.FieldMask,
     )
-    task = proto.Field(proto.MESSAGE, number=2, message=gcd_tasks.Task,)
-    validate_only = proto.Field(proto.BOOL, number=3,)
+    task = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=gcd_tasks.Task,
+    )
+    validate_only = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
 
 
 class DeleteTaskRequest(proto.Message):
@@ -646,7 +878,10 @@ class DeleteTaskRequest(proto.Message):
             ``projects/{project_number}/locations/{location_id}/lakes/{lake_id}/task/{task_id}``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListTasksRequest(proto.Message):
@@ -673,11 +908,26 @@ class ListTasksRequest(proto.Message):
             Optional. Order by fields for the result.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    filter = proto.Field(proto.STRING, number=4,)
-    order_by = proto.Field(proto.STRING, number=5,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class ListTasksResponse(proto.Message):
@@ -698,9 +948,19 @@ class ListTasksResponse(proto.Message):
     def raw_page(self):
         return self
 
-    tasks = proto.RepeatedField(proto.MESSAGE, number=1, message=gcd_tasks.Task,)
-    next_page_token = proto.Field(proto.STRING, number=2,)
-    unreachable_locations = proto.RepeatedField(proto.STRING, number=3,)
+    tasks = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=gcd_tasks.Task,
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable_locations = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 class GetTaskRequest(proto.Message):
@@ -712,7 +972,10 @@ class GetTaskRequest(proto.Message):
             ``projects/{project_number}/locations/{location_id}/lakes/{lake_id}/tasks/{tasks_id}``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class GetJobRequest(proto.Message):
@@ -724,7 +987,10 @@ class GetJobRequest(proto.Message):
             ``projects/{project_number}/locations/{location_id}/lakes/{lake_id}/tasks/{task_id}/jobs/{job_id}``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListJobsRequest(proto.Message):
@@ -747,9 +1013,18 @@ class ListJobsRequest(proto.Message):
             must match the call that provided the page token.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListJobsResponse(proto.Message):
@@ -768,8 +1043,15 @@ class ListJobsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    jobs = proto.RepeatedField(proto.MESSAGE, number=1, message=gcd_tasks.Job,)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    jobs = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=gcd_tasks.Job,
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class CancelJobRequest(proto.Message):
@@ -781,7 +1063,10 @@ class CancelJobRequest(proto.Message):
             ``projects/{project_number}/locations/{location_id}/lakes/{lake_id}/task/{task_id}/job/{job_id}``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CreateEnvironmentRequest(proto.Message):
@@ -806,10 +1091,23 @@ class CreateEnvironmentRequest(proto.Message):
             not perform mutations. The default is false.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    environment_id = proto.Field(proto.STRING, number=2,)
-    environment = proto.Field(proto.MESSAGE, number=3, message=analyze.Environment,)
-    validate_only = proto.Field(proto.BOOL, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    environment_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    environment = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=analyze.Environment,
+    )
+    validate_only = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
 
 
 class UpdateEnvironmentRequest(proto.Message):
@@ -827,10 +1125,19 @@ class UpdateEnvironmentRequest(proto.Message):
     """
 
     update_mask = proto.Field(
-        proto.MESSAGE, number=1, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=1,
+        message=field_mask_pb2.FieldMask,
     )
-    environment = proto.Field(proto.MESSAGE, number=2, message=analyze.Environment,)
-    validate_only = proto.Field(proto.BOOL, number=3,)
+    environment = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=analyze.Environment,
+    )
+    validate_only = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
 
 
 class DeleteEnvironmentRequest(proto.Message):
@@ -842,7 +1149,10 @@ class DeleteEnvironmentRequest(proto.Message):
             projects/{project_id}/locations/{location_id}/lakes/{lake_id}/environments/{environment_id}\`
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListEnvironmentsRequest(proto.Message):
@@ -870,11 +1180,26 @@ class ListEnvironmentsRequest(proto.Message):
             Optional. Order by fields for the result.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    filter = proto.Field(proto.STRING, number=4,)
-    order_by = proto.Field(proto.STRING, number=5,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class ListEnvironmentsResponse(proto.Message):
@@ -894,9 +1219,14 @@ class ListEnvironmentsResponse(proto.Message):
         return self
 
     environments = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=analyze.Environment,
+        proto.MESSAGE,
+        number=1,
+        message=analyze.Environment,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetEnvironmentRequest(proto.Message):
@@ -908,7 +1238,10 @@ class GetEnvironmentRequest(proto.Message):
             projects/{project_id}/locations/{location_id}/lakes/{lake_id}/environments/{environment_id}
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListSessionsRequest(proto.Message):
@@ -932,9 +1265,18 @@ class ListSessionsRequest(proto.Message):
             provided the page token.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListSessionsResponse(proto.Message):
@@ -953,8 +1295,15 @@ class ListSessionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    sessions = proto.RepeatedField(proto.MESSAGE, number=1, message=analyze.Session,)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    sessions = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=analyze.Session,
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

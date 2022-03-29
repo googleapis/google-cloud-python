@@ -35,7 +35,9 @@ from google.protobuf import empty_pb2  # type: ignore
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-dataplex",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-dataplex",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
@@ -125,13 +127,19 @@ class DataplexServiceTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.create_lake: gapic_v1.method.wrap_method(
-                self.create_lake, default_timeout=60.0, client_info=client_info,
+                self.create_lake,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.update_lake: gapic_v1.method.wrap_method(
-                self.update_lake, default_timeout=60.0, client_info=client_info,
+                self.update_lake,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.delete_lake: gapic_v1.method.wrap_method(
-                self.delete_lake, default_timeout=60.0, client_info=client_info,
+                self.delete_lake,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.list_lakes: gapic_v1.method.wrap_method(
                 self.list_lakes,
@@ -176,13 +184,19 @@ class DataplexServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.create_zone: gapic_v1.method.wrap_method(
-                self.create_zone, default_timeout=60.0, client_info=client_info,
+                self.create_zone,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.update_zone: gapic_v1.method.wrap_method(
-                self.update_zone, default_timeout=60.0, client_info=client_info,
+                self.update_zone,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.delete_zone: gapic_v1.method.wrap_method(
-                self.delete_zone, default_timeout=60.0, client_info=client_info,
+                self.delete_zone,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.list_zones: gapic_v1.method.wrap_method(
                 self.list_zones,
@@ -227,13 +241,19 @@ class DataplexServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.create_asset: gapic_v1.method.wrap_method(
-                self.create_asset, default_timeout=60.0, client_info=client_info,
+                self.create_asset,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.update_asset: gapic_v1.method.wrap_method(
-                self.update_asset, default_timeout=60.0, client_info=client_info,
+                self.update_asset,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.delete_asset: gapic_v1.method.wrap_method(
-                self.delete_asset, default_timeout=60.0, client_info=client_info,
+                self.delete_asset,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.list_assets: gapic_v1.method.wrap_method(
                 self.list_assets,
@@ -278,13 +298,19 @@ class DataplexServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.create_task: gapic_v1.method.wrap_method(
-                self.create_task, default_timeout=60.0, client_info=client_info,
+                self.create_task,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.update_task: gapic_v1.method.wrap_method(
-                self.update_task, default_timeout=60.0, client_info=client_info,
+                self.update_task,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.delete_task: gapic_v1.method.wrap_method(
-                self.delete_task, default_timeout=60.0, client_info=client_info,
+                self.delete_task,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.list_tasks: gapic_v1.method.wrap_method(
                 self.list_tasks,
@@ -343,34 +369,48 @@ class DataplexServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.cancel_job: gapic_v1.method.wrap_method(
-                self.cancel_job, default_timeout=60.0, client_info=client_info,
+                self.cancel_job,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.create_environment: gapic_v1.method.wrap_method(
-                self.create_environment, default_timeout=None, client_info=client_info,
+                self.create_environment,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.update_environment: gapic_v1.method.wrap_method(
-                self.update_environment, default_timeout=None, client_info=client_info,
+                self.update_environment,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.delete_environment: gapic_v1.method.wrap_method(
-                self.delete_environment, default_timeout=None, client_info=client_info,
+                self.delete_environment,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_environments: gapic_v1.method.wrap_method(
-                self.list_environments, default_timeout=None, client_info=client_info,
+                self.list_environments,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_environment: gapic_v1.method.wrap_method(
-                self.get_environment, default_timeout=None, client_info=client_info,
+                self.get_environment,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_sessions: gapic_v1.method.wrap_method(
-                self.list_sessions, default_timeout=None, client_info=client_info,
+                self.list_sessions,
+                default_timeout=None,
+                client_info=client_info,
             ),
         }
 
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

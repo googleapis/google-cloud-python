@@ -21,7 +21,12 @@ from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.dataplex.v1", manifest={"Environment", "Content", "Session",},
+    package="google.cloud.dataplex.v1",
+    manifest={
+        "Environment",
+        "Content",
+        "Session",
+    },
 )
 
 
@@ -104,9 +109,18 @@ class Environment(proto.Message):
                     node_count, then auto-scaling is enabled.
             """
 
-            disk_size_gb = proto.Field(proto.INT32, number=1,)
-            node_count = proto.Field(proto.INT32, number=2,)
-            max_node_count = proto.Field(proto.INT32, number=3,)
+            disk_size_gb = proto.Field(
+                proto.INT32,
+                number=1,
+            )
+            node_count = proto.Field(
+                proto.INT32,
+                number=2,
+            )
+            max_node_count = proto.Field(
+                proto.INT32,
+                number=3,
+            )
 
         class OsImageRuntime(proto.Message):
             r"""Software Runtime Configuration to run Analyze.
@@ -131,10 +145,23 @@ class Environment(proto.Message):
                     ``prefix:property`` format. The prefix must be "spark".
             """
 
-            image_version = proto.Field(proto.STRING, number=1,)
-            java_libraries = proto.RepeatedField(proto.STRING, number=2,)
-            python_packages = proto.RepeatedField(proto.STRING, number=3,)
-            properties = proto.MapField(proto.STRING, proto.STRING, number=4,)
+            image_version = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            java_libraries = proto.RepeatedField(
+                proto.STRING,
+                number=2,
+            )
+            python_packages = proto.RepeatedField(
+                proto.STRING,
+                number=3,
+            )
+            properties = proto.MapField(
+                proto.STRING,
+                proto.STRING,
+                number=4,
+            )
 
         compute = proto.Field(
             proto.MESSAGE,
@@ -169,9 +196,14 @@ class Environment(proto.Message):
         """
 
         max_idle_duration = proto.Field(
-            proto.MESSAGE, number=1, message=duration_pb2.Duration,
+            proto.MESSAGE,
+            number=1,
+            message=duration_pb2.Duration,
         )
-        enable_fast_startup = proto.Field(proto.BOOL, number=2,)
+        enable_fast_startup = proto.Field(
+            proto.BOOL,
+            number=2,
+        )
 
     class SessionStatus(proto.Message):
         r"""
@@ -183,7 +215,10 @@ class Environment(proto.Message):
                 not
         """
 
-        active = proto.Field(proto.BOOL, number=1,)
+        active = proto.Field(
+            proto.BOOL,
+            number=1,
+        )
 
     class Endpoints(proto.Message):
         r"""
@@ -195,23 +230,71 @@ class Environment(proto.Message):
                 Output only. URI to serve SQL APIs
         """
 
-        notebooks = proto.Field(proto.STRING, number=1,)
-        sql = proto.Field(proto.STRING, number=2,)
+        notebooks = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        sql = proto.Field(
+            proto.STRING,
+            number=2,
+        )
 
-    name = proto.Field(proto.STRING, number=1,)
-    display_name = proto.Field(proto.STRING, number=2,)
-    uid = proto.Field(proto.STRING, number=3,)
-    create_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=6,)
-    description = proto.Field(proto.STRING, number=7,)
-    state = proto.Field(proto.ENUM, number=8, enum=resources.State,)
-    infrastructure_spec = proto.Field(
-        proto.MESSAGE, number=100, message=InfrastructureSpec,
+    name = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    session_spec = proto.Field(proto.MESSAGE, number=101, message=SessionSpec,)
-    session_status = proto.Field(proto.MESSAGE, number=102, message=SessionStatus,)
-    endpoints = proto.Field(proto.MESSAGE, number=200, message=Endpoints,)
+    display_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    uid = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=6,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=8,
+        enum=resources.State,
+    )
+    infrastructure_spec = proto.Field(
+        proto.MESSAGE,
+        number=100,
+        message=InfrastructureSpec,
+    )
+    session_spec = proto.Field(
+        proto.MESSAGE,
+        number=101,
+        message=SessionSpec,
+    )
+    session_status = proto.Field(
+        proto.MESSAGE,
+        number=102,
+        message=SessionStatus,
+    )
+    endpoints = proto.Field(
+        proto.MESSAGE,
+        number=200,
+        message=Endpoints,
+    )
 
 
 class Content(proto.Message):
@@ -278,7 +361,9 @@ class Content(proto.Message):
             SPARK = 2
 
         engine = proto.Field(
-            proto.ENUM, number=1, enum="Content.SqlScript.QueryEngine",
+            proto.ENUM,
+            number=1,
+            enum="Content.SqlScript.QueryEngine",
         )
 
     class Notebook(proto.Message):
@@ -295,22 +380,58 @@ class Content(proto.Message):
             PYTHON3 = 1
 
         kernel_type = proto.Field(
-            proto.ENUM, number=1, enum="Content.Notebook.KernelType",
+            proto.ENUM,
+            number=1,
+            enum="Content.Notebook.KernelType",
         )
 
-    name = proto.Field(proto.STRING, number=1,)
-    uid = proto.Field(proto.STRING, number=2,)
-    path = proto.Field(proto.STRING, number=3,)
-    create_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=6,)
-    description = proto.Field(proto.STRING, number=7,)
-    data_text = proto.Field(proto.STRING, number=9, oneof="data",)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    uid = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    path = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=6,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    data_text = proto.Field(
+        proto.STRING,
+        number=9,
+        oneof="data",
+    )
     sql_script = proto.Field(
-        proto.MESSAGE, number=100, oneof="content", message=SqlScript,
+        proto.MESSAGE,
+        number=100,
+        oneof="content",
+        message=SqlScript,
     )
     notebook = proto.Field(
-        proto.MESSAGE, number=101, oneof="content", message=Notebook,
+        proto.MESSAGE,
+        number=101,
+        oneof="content",
+        message=Notebook,
     )
 
 
@@ -331,10 +452,24 @@ class Session(proto.Message):
 
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    user_id = proto.Field(proto.STRING, number=2,)
-    create_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
-    state = proto.Field(proto.ENUM, number=4, enum=resources.State,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    user_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=resources.State,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

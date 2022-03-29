@@ -21,7 +21,14 @@ from google.protobuf import timestamp_pb2  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.dataplex.v1",
-    manifest={"State", "Lake", "AssetStatus", "Zone", "Action", "Asset",},
+    manifest={
+        "State",
+        "Lake",
+        "AssetStatus",
+        "Zone",
+        "Action",
+        "Asset",
+    },
 )
 
 
@@ -97,7 +104,10 @@ class Lake(proto.Message):
                 ``projects/{project_id}/locations/{location_id}/services/{service_id}``
         """
 
-        service = proto.Field(proto.STRING, number=1,)
+        service = proto.Field(
+            proto.STRING,
+            number=1,
+        )
 
     class MetastoreStatus(proto.Message):
         r"""Status of Lake and Dataproc Metastore service instance
@@ -125,25 +135,80 @@ class Lake(proto.Message):
             UPDATING = 3
             ERROR = 4
 
-        state = proto.Field(proto.ENUM, number=1, enum="Lake.MetastoreStatus.State",)
-        message = proto.Field(proto.STRING, number=2,)
-        update_time = proto.Field(
-            proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,
+        state = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="Lake.MetastoreStatus.State",
         )
-        endpoint = proto.Field(proto.STRING, number=4,)
+        message = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        update_time = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message=timestamp_pb2.Timestamp,
+        )
+        endpoint = proto.Field(
+            proto.STRING,
+            number=4,
+        )
 
-    name = proto.Field(proto.STRING, number=1,)
-    display_name = proto.Field(proto.STRING, number=2,)
-    uid = proto.Field(proto.STRING, number=3,)
-    create_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=6,)
-    description = proto.Field(proto.STRING, number=7,)
-    state = proto.Field(proto.ENUM, number=8, enum="State",)
-    service_account = proto.Field(proto.STRING, number=9,)
-    metastore = proto.Field(proto.MESSAGE, number=102, message=Metastore,)
-    asset_status = proto.Field(proto.MESSAGE, number=103, message="AssetStatus",)
-    metastore_status = proto.Field(proto.MESSAGE, number=104, message=MetastoreStatus,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    uid = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=6,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=8,
+        enum="State",
+    )
+    service_account = proto.Field(
+        proto.STRING,
+        number=9,
+    )
+    metastore = proto.Field(
+        proto.MESSAGE,
+        number=102,
+        message=Metastore,
+    )
+    asset_status = proto.Field(
+        proto.MESSAGE,
+        number=103,
+        message="AssetStatus",
+    )
+    metastore_status = proto.Field(
+        proto.MESSAGE,
+        number=104,
+        message=MetastoreStatus,
+    )
 
 
 class AssetStatus(proto.Message):
@@ -160,9 +225,19 @@ class AssetStatus(proto.Message):
             resources.
     """
 
-    update_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
-    active_assets = proto.Field(proto.INT32, number=2,)
-    security_policy_applying_assets = proto.Field(proto.INT32, number=3,)
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    active_assets = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    security_policy_applying_assets = proto.Field(
+        proto.INT32,
+        number=3,
+    )
 
 
 class Zone(proto.Message):
@@ -232,7 +307,9 @@ class Zone(proto.Message):
             MULTI_REGION = 2
 
         location_type = proto.Field(
-            proto.ENUM, number=1, enum="Zone.ResourceSpec.LocationType",
+            proto.ENUM,
+            number=1,
+            enum="Zone.ResourceSpec.LocationType",
         )
 
     class DiscoverySpec(proto.Message):
@@ -301,10 +378,22 @@ class Zone(proto.Message):
                     will be registered as strings.
             """
 
-            header_rows = proto.Field(proto.INT32, number=1,)
-            delimiter = proto.Field(proto.STRING, number=2,)
-            encoding = proto.Field(proto.STRING, number=3,)
-            disable_type_inference = proto.Field(proto.BOOL, number=4,)
+            header_rows = proto.Field(
+                proto.INT32,
+                number=1,
+            )
+            delimiter = proto.Field(
+                proto.STRING,
+                number=2,
+            )
+            encoding = proto.Field(
+                proto.STRING,
+                number=3,
+            )
+            disable_type_inference = proto.Field(
+                proto.BOOL,
+                number=4,
+            )
 
         class JsonOptions(proto.Message):
             r"""Describe JSON data format.
@@ -320,32 +409,99 @@ class Zone(proto.Message):
                     (strings, number or boolean).
             """
 
-            encoding = proto.Field(proto.STRING, number=1,)
-            disable_type_inference = proto.Field(proto.BOOL, number=2,)
+            encoding = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            disable_type_inference = proto.Field(
+                proto.BOOL,
+                number=2,
+            )
 
-        enabled = proto.Field(proto.BOOL, number=1,)
-        include_patterns = proto.RepeatedField(proto.STRING, number=2,)
-        exclude_patterns = proto.RepeatedField(proto.STRING, number=3,)
+        enabled = proto.Field(
+            proto.BOOL,
+            number=1,
+        )
+        include_patterns = proto.RepeatedField(
+            proto.STRING,
+            number=2,
+        )
+        exclude_patterns = proto.RepeatedField(
+            proto.STRING,
+            number=3,
+        )
         csv_options = proto.Field(
-            proto.MESSAGE, number=4, message="Zone.DiscoverySpec.CsvOptions",
+            proto.MESSAGE,
+            number=4,
+            message="Zone.DiscoverySpec.CsvOptions",
         )
         json_options = proto.Field(
-            proto.MESSAGE, number=5, message="Zone.DiscoverySpec.JsonOptions",
+            proto.MESSAGE,
+            number=5,
+            message="Zone.DiscoverySpec.JsonOptions",
         )
-        schedule = proto.Field(proto.STRING, number=10, oneof="trigger",)
+        schedule = proto.Field(
+            proto.STRING,
+            number=10,
+            oneof="trigger",
+        )
 
-    name = proto.Field(proto.STRING, number=1,)
-    display_name = proto.Field(proto.STRING, number=2,)
-    uid = proto.Field(proto.STRING, number=3,)
-    create_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=6,)
-    description = proto.Field(proto.STRING, number=7,)
-    state = proto.Field(proto.ENUM, number=8, enum="State",)
-    type_ = proto.Field(proto.ENUM, number=9, enum=Type,)
-    discovery_spec = proto.Field(proto.MESSAGE, number=103, message=DiscoverySpec,)
-    resource_spec = proto.Field(proto.MESSAGE, number=104, message=ResourceSpec,)
-    asset_status = proto.Field(proto.MESSAGE, number=105, message="AssetStatus",)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    uid = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=6,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=8,
+        enum="State",
+    )
+    type_ = proto.Field(
+        proto.ENUM,
+        number=9,
+        enum=Type,
+    )
+    discovery_spec = proto.Field(
+        proto.MESSAGE,
+        number=103,
+        message=DiscoverySpec,
+    )
+    resource_spec = proto.Field(
+        proto.MESSAGE,
+        number=104,
+        message=ResourceSpec,
+    )
+    asset_status = proto.Field(
+        proto.MESSAGE,
+        number=105,
+        message="AssetStatus",
+    )
 
 
 class Action(proto.Message):
@@ -468,7 +624,10 @@ class Action(proto.Message):
                 for a lake or zone resource only.
         """
 
-        asset = proto.Field(proto.STRING, number=1,)
+        asset = proto.Field(
+            proto.STRING,
+            number=1,
+        )
 
     class InvalidDataFormat(proto.Message):
         r"""Action details for invalid or unsupported data files detected
@@ -485,9 +644,18 @@ class Action(proto.Message):
                 entity.
         """
 
-        sampled_data_locations = proto.RepeatedField(proto.STRING, number=1,)
-        expected_format = proto.Field(proto.STRING, number=2,)
-        new_format = proto.Field(proto.STRING, number=3,)
+        sampled_data_locations = proto.RepeatedField(
+            proto.STRING,
+            number=1,
+        )
+        expected_format = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        new_format = proto.Field(
+            proto.STRING,
+            number=3,
+        )
 
     class IncompatibleDataSchema(proto.Message):
         r"""Action details for incompatible schemas detected by
@@ -523,12 +691,26 @@ class Action(proto.Message):
             INCOMPATIBLE = 1
             MODIFIED = 2
 
-        table = proto.Field(proto.STRING, number=1,)
-        existing_schema = proto.Field(proto.STRING, number=2,)
-        new_schema = proto.Field(proto.STRING, number=3,)
-        sampled_data_locations = proto.RepeatedField(proto.STRING, number=4,)
+        table = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        existing_schema = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        new_schema = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+        sampled_data_locations = proto.RepeatedField(
+            proto.STRING,
+            number=4,
+        )
         schema_change = proto.Field(
-            proto.ENUM, number=5, enum="Action.IncompatibleDataSchema.SchemaChange",
+            proto.ENUM,
+            number=5,
+            enum="Action.IncompatibleDataSchema.SchemaChange",
         )
 
     class InvalidDataPartition(proto.Message):
@@ -547,48 +729,98 @@ class Action(proto.Message):
             HIVE_STYLE_KEYS = 2
 
         expected_structure = proto.Field(
-            proto.ENUM, number=1, enum="Action.InvalidDataPartition.PartitionStructure",
+            proto.ENUM,
+            number=1,
+            enum="Action.InvalidDataPartition.PartitionStructure",
         )
 
     class MissingData(proto.Message):
-        r"""Action details for absence of data detected by discovery.
-        """
+        r"""Action details for absence of data detected by discovery."""
 
     class InvalidDataOrganization(proto.Message):
-        r"""Action details for invalid data arrangement.
-        """
+        r"""Action details for invalid data arrangement."""
 
-    category = proto.Field(proto.ENUM, number=1, enum=Category,)
-    issue = proto.Field(proto.STRING, number=2,)
-    detect_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
-    name = proto.Field(proto.STRING, number=5,)
-    lake = proto.Field(proto.STRING, number=6,)
-    zone = proto.Field(proto.STRING, number=7,)
-    asset = proto.Field(proto.STRING, number=8,)
-    data_locations = proto.RepeatedField(proto.STRING, number=9,)
+    category = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Category,
+    )
+    issue = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    detect_time = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    name = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    lake = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    zone = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    asset = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    data_locations = proto.RepeatedField(
+        proto.STRING,
+        number=9,
+    )
     invalid_data_format = proto.Field(
-        proto.MESSAGE, number=10, oneof="details", message=InvalidDataFormat,
+        proto.MESSAGE,
+        number=10,
+        oneof="details",
+        message=InvalidDataFormat,
     )
     incompatible_data_schema = proto.Field(
-        proto.MESSAGE, number=11, oneof="details", message=IncompatibleDataSchema,
+        proto.MESSAGE,
+        number=11,
+        oneof="details",
+        message=IncompatibleDataSchema,
     )
     invalid_data_partition = proto.Field(
-        proto.MESSAGE, number=12, oneof="details", message=InvalidDataPartition,
+        proto.MESSAGE,
+        number=12,
+        oneof="details",
+        message=InvalidDataPartition,
     )
     missing_data = proto.Field(
-        proto.MESSAGE, number=13, oneof="details", message=MissingData,
+        proto.MESSAGE,
+        number=13,
+        oneof="details",
+        message=MissingData,
     )
     missing_resource = proto.Field(
-        proto.MESSAGE, number=14, oneof="details", message=MissingResource,
+        proto.MESSAGE,
+        number=14,
+        oneof="details",
+        message=MissingResource,
     )
     unauthorized_resource = proto.Field(
-        proto.MESSAGE, number=15, oneof="details", message=UnauthorizedResource,
+        proto.MESSAGE,
+        number=15,
+        oneof="details",
+        message=UnauthorizedResource,
     )
     failed_security_policy_apply = proto.Field(
-        proto.MESSAGE, number=21, oneof="details", message=FailedSecurityPolicyApply,
+        proto.MESSAGE,
+        number=21,
+        oneof="details",
+        message=FailedSecurityPolicyApply,
     )
     invalid_data_organization = proto.Field(
-        proto.MESSAGE, number=22, oneof="details", message=InvalidDataOrganization,
+        proto.MESSAGE,
+        number=22,
+        oneof="details",
+        message=InvalidDataOrganization,
     )
 
 
@@ -662,10 +894,19 @@ class Asset(proto.Message):
             APPLYING = 2
             ERROR = 3
 
-        state = proto.Field(proto.ENUM, number=1, enum="Asset.SecurityStatus.State",)
-        message = proto.Field(proto.STRING, number=2,)
+        state = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="Asset.SecurityStatus.State",
+        )
+        message = proto.Field(
+            proto.STRING,
+            number=2,
+        )
         update_time = proto.Field(
-            proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,
+            proto.MESSAGE,
+            number=3,
+            message=timestamp_pb2.Timestamp,
         )
 
     class DiscoverySpec(proto.Message):
@@ -734,10 +975,22 @@ class Asset(proto.Message):
                     will be registered as strings.
             """
 
-            header_rows = proto.Field(proto.INT32, number=1,)
-            delimiter = proto.Field(proto.STRING, number=2,)
-            encoding = proto.Field(proto.STRING, number=3,)
-            disable_type_inference = proto.Field(proto.BOOL, number=4,)
+            header_rows = proto.Field(
+                proto.INT32,
+                number=1,
+            )
+            delimiter = proto.Field(
+                proto.STRING,
+                number=2,
+            )
+            encoding = proto.Field(
+                proto.STRING,
+                number=3,
+            )
+            disable_type_inference = proto.Field(
+                proto.BOOL,
+                number=4,
+            )
 
         class JsonOptions(proto.Message):
             r"""Describe JSON data format.
@@ -753,19 +1006,42 @@ class Asset(proto.Message):
                     (strings, number or boolean).
             """
 
-            encoding = proto.Field(proto.STRING, number=1,)
-            disable_type_inference = proto.Field(proto.BOOL, number=2,)
+            encoding = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            disable_type_inference = proto.Field(
+                proto.BOOL,
+                number=2,
+            )
 
-        enabled = proto.Field(proto.BOOL, number=1,)
-        include_patterns = proto.RepeatedField(proto.STRING, number=2,)
-        exclude_patterns = proto.RepeatedField(proto.STRING, number=3,)
+        enabled = proto.Field(
+            proto.BOOL,
+            number=1,
+        )
+        include_patterns = proto.RepeatedField(
+            proto.STRING,
+            number=2,
+        )
+        exclude_patterns = proto.RepeatedField(
+            proto.STRING,
+            number=3,
+        )
         csv_options = proto.Field(
-            proto.MESSAGE, number=4, message="Asset.DiscoverySpec.CsvOptions",
+            proto.MESSAGE,
+            number=4,
+            message="Asset.DiscoverySpec.CsvOptions",
         )
         json_options = proto.Field(
-            proto.MESSAGE, number=5, message="Asset.DiscoverySpec.JsonOptions",
+            proto.MESSAGE,
+            number=5,
+            message="Asset.DiscoverySpec.JsonOptions",
         )
-        schedule = proto.Field(proto.STRING, number=10, oneof="trigger",)
+        schedule = proto.Field(
+            proto.STRING,
+            number=10,
+            oneof="trigger",
+        )
 
     class ResourceSpec(proto.Message):
         r"""Identifies the cloud resource that is referenced by this
@@ -787,8 +1063,15 @@ class Asset(proto.Message):
             STORAGE_BUCKET = 1
             BIGQUERY_DATASET = 2
 
-        name = proto.Field(proto.STRING, number=1,)
-        type_ = proto.Field(proto.ENUM, number=2, enum="Asset.ResourceSpec.Type",)
+        name = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        type_ = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum="Asset.ResourceSpec.Type",
+        )
 
     class ResourceStatus(proto.Message):
         r"""Status of the resource referenced by an asset.
@@ -809,10 +1092,19 @@ class Asset(proto.Message):
             READY = 1
             ERROR = 2
 
-        state = proto.Field(proto.ENUM, number=1, enum="Asset.ResourceStatus.State",)
-        message = proto.Field(proto.STRING, number=2,)
+        state = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="Asset.ResourceStatus.State",
+        )
+        message = proto.Field(
+            proto.STRING,
+            number=2,
+        )
         update_time = proto.Field(
-            proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,
+            proto.MESSAGE,
+            number=3,
+            message=timestamp_pb2.Timestamp,
         )
 
     class DiscoveryStatus(proto.Message):
@@ -862,39 +1154,114 @@ class Asset(proto.Message):
                     referenced resource.
             """
 
-            data_items = proto.Field(proto.INT64, number=1,)
-            data_size = proto.Field(proto.INT64, number=2,)
-            tables = proto.Field(proto.INT64, number=3,)
-            filesets = proto.Field(proto.INT64, number=4,)
+            data_items = proto.Field(
+                proto.INT64,
+                number=1,
+            )
+            data_size = proto.Field(
+                proto.INT64,
+                number=2,
+            )
+            tables = proto.Field(
+                proto.INT64,
+                number=3,
+            )
+            filesets = proto.Field(
+                proto.INT64,
+                number=4,
+            )
 
-        state = proto.Field(proto.ENUM, number=1, enum="Asset.DiscoveryStatus.State",)
-        message = proto.Field(proto.STRING, number=2,)
+        state = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="Asset.DiscoveryStatus.State",
+        )
+        message = proto.Field(
+            proto.STRING,
+            number=2,
+        )
         update_time = proto.Field(
-            proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,
+            proto.MESSAGE,
+            number=3,
+            message=timestamp_pb2.Timestamp,
         )
         last_run_time = proto.Field(
-            proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,
+            proto.MESSAGE,
+            number=4,
+            message=timestamp_pb2.Timestamp,
         )
         stats = proto.Field(
-            proto.MESSAGE, number=6, message="Asset.DiscoveryStatus.Stats",
+            proto.MESSAGE,
+            number=6,
+            message="Asset.DiscoveryStatus.Stats",
         )
         last_run_duration = proto.Field(
-            proto.MESSAGE, number=7, message=duration_pb2.Duration,
+            proto.MESSAGE,
+            number=7,
+            message=duration_pb2.Duration,
         )
 
-    name = proto.Field(proto.STRING, number=1,)
-    display_name = proto.Field(proto.STRING, number=2,)
-    uid = proto.Field(proto.STRING, number=3,)
-    create_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=6,)
-    description = proto.Field(proto.STRING, number=7,)
-    state = proto.Field(proto.ENUM, number=8, enum="State",)
-    resource_spec = proto.Field(proto.MESSAGE, number=100, message=ResourceSpec,)
-    resource_status = proto.Field(proto.MESSAGE, number=101, message=ResourceStatus,)
-    security_status = proto.Field(proto.MESSAGE, number=103, message=SecurityStatus,)
-    discovery_spec = proto.Field(proto.MESSAGE, number=106, message=DiscoverySpec,)
-    discovery_status = proto.Field(proto.MESSAGE, number=107, message=DiscoveryStatus,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    uid = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=6,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=8,
+        enum="State",
+    )
+    resource_spec = proto.Field(
+        proto.MESSAGE,
+        number=100,
+        message=ResourceSpec,
+    )
+    resource_status = proto.Field(
+        proto.MESSAGE,
+        number=101,
+        message=ResourceStatus,
+    )
+    security_status = proto.Field(
+        proto.MESSAGE,
+        number=103,
+        message=SecurityStatus,
+    )
+    discovery_spec = proto.Field(
+        proto.MESSAGE,
+        number=106,
+        message=DiscoverySpec,
+    )
+    discovery_status = proto.Field(
+        proto.MESSAGE,
+        number=107,
+        message=DiscoveryStatus,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

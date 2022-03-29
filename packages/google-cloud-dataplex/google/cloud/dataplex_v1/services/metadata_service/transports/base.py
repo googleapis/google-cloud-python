@@ -30,7 +30,9 @@ from google.protobuf import empty_pb2  # type: ignore
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-dataplex",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-dataplex",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
@@ -120,13 +122,19 @@ class MetadataServiceTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.create_entity: gapic_v1.method.wrap_method(
-                self.create_entity, default_timeout=60.0, client_info=client_info,
+                self.create_entity,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.update_entity: gapic_v1.method.wrap_method(
-                self.update_entity, default_timeout=60.0, client_info=client_info,
+                self.update_entity,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.delete_entity: gapic_v1.method.wrap_method(
-                self.delete_entity, default_timeout=60.0, client_info=client_info,
+                self.delete_entity,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.get_entity: gapic_v1.method.wrap_method(
                 self.get_entity,
@@ -157,10 +165,14 @@ class MetadataServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.create_partition: gapic_v1.method.wrap_method(
-                self.create_partition, default_timeout=60.0, client_info=client_info,
+                self.create_partition,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.delete_partition: gapic_v1.method.wrap_method(
-                self.delete_partition, default_timeout=60.0, client_info=client_info,
+                self.delete_partition,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.get_partition: gapic_v1.method.wrap_method(
                 self.get_partition,
@@ -195,9 +207,9 @@ class MetadataServiceTransport(abc.ABC):
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 
