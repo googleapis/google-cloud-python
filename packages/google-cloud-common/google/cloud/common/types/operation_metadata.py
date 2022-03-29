@@ -19,7 +19,10 @@ from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.common", manifest={"OperationMetadata",},
+    package="google.cloud.common",
+    manifest={
+        "OperationMetadata",
+    },
 )
 
 
@@ -53,13 +56,36 @@ class OperationMetadata(proto.Message):
             operation.
     """
 
-    create_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
-    end_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    target = proto.Field(proto.STRING, number=3,)
-    verb = proto.Field(proto.STRING, number=4,)
-    status_detail = proto.Field(proto.STRING, number=5,)
-    cancel_requested = proto.Field(proto.BOOL, number=6,)
-    api_version = proto.Field(proto.STRING, number=7,)
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    target = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    verb = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    status_detail = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    cancel_requested = proto.Field(
+        proto.BOOL,
+        number=6,
+    )
+    api_version = proto.Field(
+        proto.STRING,
+        number=7,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
