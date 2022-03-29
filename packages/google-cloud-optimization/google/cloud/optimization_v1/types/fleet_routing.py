@@ -297,30 +297,87 @@ class OptimizeToursRequest(proto.Message):
         RETURN_FAST = 1
         CONSUME_ALL_AVAILABLE_TIME = 2
 
-    parent = proto.Field(proto.STRING, number=1,)
-    timeout = proto.Field(proto.MESSAGE, number=2, message=duration_pb2.Duration,)
-    model = proto.Field(proto.MESSAGE, number=3, message="ShipmentModel",)
-    solving_mode = proto.Field(proto.ENUM, number=4, enum=SolvingMode,)
-    max_validation_errors = proto.Field(proto.INT32, number=5, optional=True,)
-    search_mode = proto.Field(proto.ENUM, number=6, enum=SearchMode,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    timeout = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=duration_pb2.Duration,
+    )
+    model = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="ShipmentModel",
+    )
+    solving_mode = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=SolvingMode,
+    )
+    max_validation_errors = proto.Field(
+        proto.INT32,
+        number=5,
+        optional=True,
+    )
+    search_mode = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum=SearchMode,
+    )
     injected_first_solution_routes = proto.RepeatedField(
-        proto.MESSAGE, number=7, message="ShipmentRoute",
+        proto.MESSAGE,
+        number=7,
+        message="ShipmentRoute",
     )
     injected_solution_constraint = proto.Field(
-        proto.MESSAGE, number=8, message="InjectedSolutionConstraint",
+        proto.MESSAGE,
+        number=8,
+        message="InjectedSolutionConstraint",
     )
     refresh_details_routes = proto.RepeatedField(
-        proto.MESSAGE, number=9, message="ShipmentRoute",
+        proto.MESSAGE,
+        number=9,
+        message="ShipmentRoute",
     )
-    interpret_injected_solutions_using_labels = proto.Field(proto.BOOL, number=10,)
-    consider_road_traffic = proto.Field(proto.BOOL, number=11,)
-    populate_polylines = proto.Field(proto.BOOL, number=12,)
-    populate_transition_polylines = proto.Field(proto.BOOL, number=13,)
-    allow_large_deadline_despite_interruption_risk = proto.Field(proto.BOOL, number=14,)
-    use_geodesic_distances = proto.Field(proto.BOOL, number=15,)
-    geodesic_meters_per_second = proto.Field(proto.DOUBLE, number=16, optional=True,)
-    label = proto.Field(proto.STRING, number=17,)
-    populate_travel_step_polylines = proto.Field(proto.BOOL, number=20,)
+    interpret_injected_solutions_using_labels = proto.Field(
+        proto.BOOL,
+        number=10,
+    )
+    consider_road_traffic = proto.Field(
+        proto.BOOL,
+        number=11,
+    )
+    populate_polylines = proto.Field(
+        proto.BOOL,
+        number=12,
+    )
+    populate_transition_polylines = proto.Field(
+        proto.BOOL,
+        number=13,
+    )
+    allow_large_deadline_despite_interruption_risk = proto.Field(
+        proto.BOOL,
+        number=14,
+    )
+    use_geodesic_distances = proto.Field(
+        proto.BOOL,
+        number=15,
+    )
+    geodesic_meters_per_second = proto.Field(
+        proto.DOUBLE,
+        number=16,
+        optional=True,
+    )
+    label = proto.Field(
+        proto.STRING,
+        number=17,
+    )
+    populate_travel_step_polylines = proto.Field(
+        proto.BOOL,
+        number=20,
+    )
 
 
 class OptimizeToursResponse(proto.Message):
@@ -398,29 +455,66 @@ class OptimizeToursResponse(proto.Message):
         """
 
         aggregated_route_metrics = proto.Field(
-            proto.MESSAGE, number=1, message="AggregatedMetrics",
+            proto.MESSAGE,
+            number=1,
+            message="AggregatedMetrics",
         )
-        skipped_mandatory_shipment_count = proto.Field(proto.INT32, number=2,)
-        used_vehicle_count = proto.Field(proto.INT32, number=3,)
+        skipped_mandatory_shipment_count = proto.Field(
+            proto.INT32,
+            number=2,
+        )
+        used_vehicle_count = proto.Field(
+            proto.INT32,
+            number=3,
+        )
         earliest_vehicle_start_time = proto.Field(
-            proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,
+            proto.MESSAGE,
+            number=4,
+            message=timestamp_pb2.Timestamp,
         )
         latest_vehicle_end_time = proto.Field(
-            proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,
+            proto.MESSAGE,
+            number=5,
+            message=timestamp_pb2.Timestamp,
         )
-        costs = proto.MapField(proto.STRING, proto.DOUBLE, number=10,)
-        total_cost = proto.Field(proto.DOUBLE, number=6,)
+        costs = proto.MapField(
+            proto.STRING,
+            proto.DOUBLE,
+            number=10,
+        )
+        total_cost = proto.Field(
+            proto.DOUBLE,
+            number=6,
+        )
 
-    routes = proto.RepeatedField(proto.MESSAGE, number=1, message="ShipmentRoute",)
-    request_label = proto.Field(proto.STRING, number=3,)
+    routes = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="ShipmentRoute",
+    )
+    request_label = proto.Field(
+        proto.STRING,
+        number=3,
+    )
     skipped_shipments = proto.RepeatedField(
-        proto.MESSAGE, number=4, message="SkippedShipment",
+        proto.MESSAGE,
+        number=4,
+        message="SkippedShipment",
     )
     validation_errors = proto.RepeatedField(
-        proto.MESSAGE, number=5, message="OptimizeToursValidationError",
+        proto.MESSAGE,
+        number=5,
+        message="OptimizeToursValidationError",
     )
-    metrics = proto.Field(proto.MESSAGE, number=6, message=Metrics,)
-    total_cost = proto.Field(proto.DOUBLE, number=2,)
+    metrics = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=Metrics,
+    )
+    total_cost = proto.Field(
+        proto.DOUBLE,
+        number=2,
+    )
 
 
 class BatchOptimizeToursRequest(proto.Message):
@@ -469,18 +563,33 @@ class BatchOptimizeToursRequest(proto.Message):
                 prevents the risk of interruption.
         """
 
-        display_name = proto.Field(proto.STRING, number=1,)
+        display_name = proto.Field(
+            proto.STRING,
+            number=1,
+        )
         input_config = proto.Field(
-            proto.MESSAGE, number=2, message=async_model.InputConfig,
+            proto.MESSAGE,
+            number=2,
+            message=async_model.InputConfig,
         )
         output_config = proto.Field(
-            proto.MESSAGE, number=3, message=async_model.OutputConfig,
+            proto.MESSAGE,
+            number=3,
+            message=async_model.OutputConfig,
         )
-        enable_checkpoints = proto.Field(proto.BOOL, number=4,)
+        enable_checkpoints = proto.Field(
+            proto.BOOL,
+            number=4,
+        )
 
-    parent = proto.Field(proto.STRING, number=1,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     model_configs = proto.RepeatedField(
-        proto.MESSAGE, number=2, message=AsyncModelConfig,
+        proto.MESSAGE,
+        number=2,
+        message=AsyncModelConfig,
     )
 
 
@@ -726,14 +835,24 @@ class ShipmentModel(proto.Message):
             """
 
             durations = proto.RepeatedField(
-                proto.MESSAGE, number=1, message=duration_pb2.Duration,
+                proto.MESSAGE,
+                number=1,
+                message=duration_pb2.Duration,
             )
-            meters = proto.RepeatedField(proto.DOUBLE, number=2,)
+            meters = proto.RepeatedField(
+                proto.DOUBLE,
+                number=2,
+            )
 
         rows = proto.RepeatedField(
-            proto.MESSAGE, number=1, message="ShipmentModel.DurationDistanceMatrix.Row",
+            proto.MESSAGE,
+            number=1,
+            message="ShipmentModel.DurationDistanceMatrix.Row",
         )
-        vehicle_start_tag = proto.Field(proto.STRING, number=2,)
+        vehicle_start_tag = proto.Field(
+            proto.STRING,
+            number=2,
+        )
 
     class PrecedenceRule(proto.Message):
         r"""A precedence rule between two events (each event is the pickup or
@@ -768,12 +887,28 @@ class ShipmentModel(proto.Message):
                 event. It can be negative.
         """
 
-        first_index = proto.Field(proto.INT32, number=1, optional=True,)
-        first_is_delivery = proto.Field(proto.BOOL, number=3,)
-        second_index = proto.Field(proto.INT32, number=2, optional=True,)
-        second_is_delivery = proto.Field(proto.BOOL, number=4,)
+        first_index = proto.Field(
+            proto.INT32,
+            number=1,
+            optional=True,
+        )
+        first_is_delivery = proto.Field(
+            proto.BOOL,
+            number=3,
+        )
+        second_index = proto.Field(
+            proto.INT32,
+            number=2,
+            optional=True,
+        )
+        second_is_delivery = proto.Field(
+            proto.BOOL,
+            number=4,
+        )
         offset_duration = proto.Field(
-            proto.MESSAGE, number=5, message=duration_pb2.Duration,
+            proto.MESSAGE,
+            number=5,
+            message=duration_pb2.Duration,
         )
 
     class BreakRule(proto.Message):
@@ -822,13 +957,19 @@ class ShipmentModel(proto.Message):
             """
 
             earliest_start_time = proto.Field(
-                proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,
+                proto.MESSAGE,
+                number=1,
+                message=timestamp_pb2.Timestamp,
             )
             latest_start_time = proto.Field(
-                proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,
+                proto.MESSAGE,
+                number=2,
+                message=timestamp_pb2.Timestamp,
             )
             min_duration = proto.Field(
-                proto.MESSAGE, number=3, message=duration_pb2.Duration,
+                proto.MESSAGE,
+                number=3,
+                message=duration_pb2.Duration,
             )
 
         class FrequencyConstraint(proto.Message):
@@ -880,14 +1021,20 @@ class ShipmentModel(proto.Message):
             """
 
             min_break_duration = proto.Field(
-                proto.MESSAGE, number=1, message=duration_pb2.Duration,
+                proto.MESSAGE,
+                number=1,
+                message=duration_pb2.Duration,
             )
             max_inter_break_duration = proto.Field(
-                proto.MESSAGE, number=2, message=duration_pb2.Duration,
+                proto.MESSAGE,
+                number=2,
+                message=duration_pb2.Duration,
             )
 
         break_requests = proto.RepeatedField(
-            proto.MESSAGE, number=1, message="ShipmentModel.BreakRule.BreakRequest",
+            proto.MESSAGE,
+            number=1,
+            message="ShipmentModel.BreakRule.BreakRequest",
         )
         frequency_constraints = proto.RepeatedField(
             proto.MESSAGE,
@@ -895,34 +1042,73 @@ class ShipmentModel(proto.Message):
             message="ShipmentModel.BreakRule.FrequencyConstraint",
         )
 
-    shipments = proto.RepeatedField(proto.MESSAGE, number=1, message="Shipment",)
-    vehicles = proto.RepeatedField(proto.MESSAGE, number=2, message="Vehicle",)
-    max_active_vehicles = proto.Field(proto.INT32, number=4, optional=True,)
+    shipments = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Shipment",
+    )
+    vehicles = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="Vehicle",
+    )
+    max_active_vehicles = proto.Field(
+        proto.INT32,
+        number=4,
+        optional=True,
+    )
     global_start_time = proto.Field(
-        proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
     )
     global_end_time = proto.Field(
-        proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
     )
-    global_duration_cost_per_hour = proto.Field(proto.DOUBLE, number=7,)
+    global_duration_cost_per_hour = proto.Field(
+        proto.DOUBLE,
+        number=7,
+    )
     duration_distance_matrices = proto.RepeatedField(
-        proto.MESSAGE, number=8, message=DurationDistanceMatrix,
+        proto.MESSAGE,
+        number=8,
+        message=DurationDistanceMatrix,
     )
-    duration_distance_matrix_src_tags = proto.RepeatedField(proto.STRING, number=9,)
-    duration_distance_matrix_dst_tags = proto.RepeatedField(proto.STRING, number=10,)
+    duration_distance_matrix_src_tags = proto.RepeatedField(
+        proto.STRING,
+        number=9,
+    )
+    duration_distance_matrix_dst_tags = proto.RepeatedField(
+        proto.STRING,
+        number=10,
+    )
     transition_attributes = proto.RepeatedField(
-        proto.MESSAGE, number=11, message="TransitionAttributes",
+        proto.MESSAGE,
+        number=11,
+        message="TransitionAttributes",
     )
     shipment_type_incompatibilities = proto.RepeatedField(
-        proto.MESSAGE, number=12, message="ShipmentTypeIncompatibility",
+        proto.MESSAGE,
+        number=12,
+        message="ShipmentTypeIncompatibility",
     )
     shipment_type_requirements = proto.RepeatedField(
-        proto.MESSAGE, number=13, message="ShipmentTypeRequirement",
+        proto.MESSAGE,
+        number=13,
+        message="ShipmentTypeRequirement",
     )
     precedence_rules = proto.RepeatedField(
-        proto.MESSAGE, number=14, message=PrecedenceRule,
+        proto.MESSAGE,
+        number=14,
+        message=PrecedenceRule,
     )
-    break_rules = proto.RepeatedField(proto.MESSAGE, number=15, message=BreakRule,)
+    break_rules = proto.RepeatedField(
+        proto.MESSAGE,
+        number=15,
+        message=BreakRule,
+    )
 
 
 class Shipment(proto.Message):
@@ -1162,26 +1348,61 @@ class Shipment(proto.Message):
         """
 
         arrival_location = proto.Field(
-            proto.MESSAGE, number=1, message=latlng_pb2.LatLng,
+            proto.MESSAGE,
+            number=1,
+            message=latlng_pb2.LatLng,
         )
-        arrival_waypoint = proto.Field(proto.MESSAGE, number=2, message="Waypoint",)
+        arrival_waypoint = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message="Waypoint",
+        )
         departure_location = proto.Field(
-            proto.MESSAGE, number=3, message=latlng_pb2.LatLng,
+            proto.MESSAGE,
+            number=3,
+            message=latlng_pb2.LatLng,
         )
-        departure_waypoint = proto.Field(proto.MESSAGE, number=4, message="Waypoint",)
-        tags = proto.RepeatedField(proto.STRING, number=5,)
+        departure_waypoint = proto.Field(
+            proto.MESSAGE,
+            number=4,
+            message="Waypoint",
+        )
+        tags = proto.RepeatedField(
+            proto.STRING,
+            number=5,
+        )
         time_windows = proto.RepeatedField(
-            proto.MESSAGE, number=6, message="TimeWindow",
+            proto.MESSAGE,
+            number=6,
+            message="TimeWindow",
         )
-        duration = proto.Field(proto.MESSAGE, number=7, message=duration_pb2.Duration,)
-        cost = proto.Field(proto.DOUBLE, number=8,)
+        duration = proto.Field(
+            proto.MESSAGE,
+            number=7,
+            message=duration_pb2.Duration,
+        )
+        cost = proto.Field(
+            proto.DOUBLE,
+            number=8,
+        )
         load_demands = proto.MapField(
-            proto.STRING, proto.MESSAGE, number=12, message="Shipment.Load",
+            proto.STRING,
+            proto.MESSAGE,
+            number=12,
+            message="Shipment.Load",
         )
-        visit_types = proto.RepeatedField(proto.STRING, number=10,)
-        label = proto.Field(proto.STRING, number=11,)
+        visit_types = proto.RepeatedField(
+            proto.STRING,
+            number=10,
+        )
+        label = proto.Field(
+            proto.STRING,
+            number=11,
+        )
         demands = proto.RepeatedField(
-            proto.MESSAGE, number=9, message="CapacityQuantity",
+            proto.MESSAGE,
+            number=9,
+            message="CapacityQuantity",
         )
 
     class Load(proto.Message):
@@ -1199,28 +1420,76 @@ class Shipment(proto.Message):
                 precision. Must be ≥ 0.
         """
 
-        amount = proto.Field(proto.INT64, number=2,)
+        amount = proto.Field(
+            proto.INT64,
+            number=2,
+        )
 
-    pickups = proto.RepeatedField(proto.MESSAGE, number=1, message=VisitRequest,)
-    deliveries = proto.RepeatedField(proto.MESSAGE, number=2, message=VisitRequest,)
-    load_demands = proto.MapField(proto.STRING, proto.MESSAGE, number=14, message=Load,)
-    penalty_cost = proto.Field(proto.DOUBLE, number=4, optional=True,)
-    allowed_vehicle_indices = proto.RepeatedField(proto.INT32, number=5,)
-    costs_per_vehicle = proto.RepeatedField(proto.DOUBLE, number=6,)
-    costs_per_vehicle_indices = proto.RepeatedField(proto.INT32, number=7,)
+    pickups = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=VisitRequest,
+    )
+    deliveries = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=VisitRequest,
+    )
+    load_demands = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=14,
+        message=Load,
+    )
+    penalty_cost = proto.Field(
+        proto.DOUBLE,
+        number=4,
+        optional=True,
+    )
+    allowed_vehicle_indices = proto.RepeatedField(
+        proto.INT32,
+        number=5,
+    )
+    costs_per_vehicle = proto.RepeatedField(
+        proto.DOUBLE,
+        number=6,
+    )
+    costs_per_vehicle_indices = proto.RepeatedField(
+        proto.INT32,
+        number=7,
+    )
     pickup_to_delivery_relative_detour_limit = proto.Field(
-        proto.DOUBLE, number=8, optional=True,
+        proto.DOUBLE,
+        number=8,
+        optional=True,
     )
     pickup_to_delivery_absolute_detour_limit = proto.Field(
-        proto.MESSAGE, number=9, message=duration_pb2.Duration,
+        proto.MESSAGE,
+        number=9,
+        message=duration_pb2.Duration,
     )
     pickup_to_delivery_time_limit = proto.Field(
-        proto.MESSAGE, number=10, message=duration_pb2.Duration,
+        proto.MESSAGE,
+        number=10,
+        message=duration_pb2.Duration,
     )
-    shipment_type = proto.Field(proto.STRING, number=11,)
-    label = proto.Field(proto.STRING, number=12,)
-    ignore = proto.Field(proto.BOOL, number=13,)
-    demands = proto.RepeatedField(proto.MESSAGE, number=3, message="CapacityQuantity",)
+    shipment_type = proto.Field(
+        proto.STRING,
+        number=11,
+    )
+    label = proto.Field(
+        proto.STRING,
+        number=12,
+    )
+    ignore = proto.Field(
+        proto.BOOL,
+        number=13,
+    )
+    demands = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message="CapacityQuantity",
+    )
 
 
 class ShipmentTypeIncompatibility(proto.Message):
@@ -1244,8 +1513,15 @@ class ShipmentTypeIncompatibility(proto.Message):
         NOT_PERFORMED_BY_SAME_VEHICLE = 1
         NOT_IN_SAME_VEHICLE_SIMULTANEOUSLY = 2
 
-    types = proto.RepeatedField(proto.STRING, number=1,)
-    incompatibility_mode = proto.Field(proto.ENUM, number=2, enum=IncompatibilityMode,)
+    types = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
+    incompatibility_mode = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=IncompatibilityMode,
+    )
 
 
 class ShipmentTypeRequirement(proto.Message):
@@ -1278,9 +1554,19 @@ class ShipmentTypeRequirement(proto.Message):
         IN_SAME_VEHICLE_AT_PICKUP_TIME = 2
         IN_SAME_VEHICLE_AT_DELIVERY_TIME = 3
 
-    required_shipment_type_alternatives = proto.RepeatedField(proto.STRING, number=1,)
-    dependent_shipment_types = proto.RepeatedField(proto.STRING, number=2,)
-    requirement_mode = proto.Field(proto.ENUM, number=3, enum=RequirementMode,)
+    required_shipment_type_alternatives = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
+    dependent_shipment_types = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+    requirement_mode = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=RequirementMode,
+    )
 
 
 class Vehicle(proto.Message):
@@ -1567,17 +1853,38 @@ class Vehicle(proto.Message):
                     This field is a member of `oneof`_ ``_max``.
             """
 
-            min_ = proto.Field(proto.INT64, number=1,)
-            max_ = proto.Field(proto.INT64, number=2, optional=True,)
+            min_ = proto.Field(
+                proto.INT64,
+                number=1,
+            )
+            max_ = proto.Field(
+                proto.INT64,
+                number=2,
+                optional=True,
+            )
 
-        max_load = proto.Field(proto.INT64, number=1, optional=True,)
-        soft_max_load = proto.Field(proto.INT64, number=2,)
-        cost_per_unit_above_soft_max = proto.Field(proto.DOUBLE, number=3,)
+        max_load = proto.Field(
+            proto.INT64,
+            number=1,
+            optional=True,
+        )
+        soft_max_load = proto.Field(
+            proto.INT64,
+            number=2,
+        )
+        cost_per_unit_above_soft_max = proto.Field(
+            proto.DOUBLE,
+            number=3,
+        )
         start_load_interval = proto.Field(
-            proto.MESSAGE, number=4, message="Vehicle.LoadLimit.Interval",
+            proto.MESSAGE,
+            number=4,
+            message="Vehicle.LoadLimit.Interval",
         )
         end_load_interval = proto.Field(
-            proto.MESSAGE, number=5, message="Vehicle.LoadLimit.Interval",
+            proto.MESSAGE,
+            number=5,
+            message="Vehicle.LoadLimit.Interval",
         )
 
     class DurationLimit(proto.Message):
@@ -1646,66 +1953,162 @@ class Vehicle(proto.Message):
         """
 
         max_duration = proto.Field(
-            proto.MESSAGE, number=1, message=duration_pb2.Duration,
+            proto.MESSAGE,
+            number=1,
+            message=duration_pb2.Duration,
         )
         soft_max_duration = proto.Field(
-            proto.MESSAGE, number=2, message=duration_pb2.Duration,
+            proto.MESSAGE,
+            number=2,
+            message=duration_pb2.Duration,
         )
         cost_per_hour_after_soft_max = proto.Field(
-            proto.DOUBLE, number=3, optional=True,
+            proto.DOUBLE,
+            number=3,
+            optional=True,
         )
         quadratic_soft_max_duration = proto.Field(
-            proto.MESSAGE, number=4, message=duration_pb2.Duration,
+            proto.MESSAGE,
+            number=4,
+            message=duration_pb2.Duration,
         )
         cost_per_square_hour_after_quadratic_soft_max = proto.Field(
-            proto.DOUBLE, number=5, optional=True,
+            proto.DOUBLE,
+            number=5,
+            optional=True,
         )
 
-    travel_mode = proto.Field(proto.ENUM, number=1, enum=TravelMode,)
-    start_location = proto.Field(proto.MESSAGE, number=3, message=latlng_pb2.LatLng,)
-    start_waypoint = proto.Field(proto.MESSAGE, number=4, message="Waypoint",)
-    end_location = proto.Field(proto.MESSAGE, number=5, message=latlng_pb2.LatLng,)
-    end_waypoint = proto.Field(proto.MESSAGE, number=6, message="Waypoint",)
-    start_tags = proto.RepeatedField(proto.STRING, number=7,)
-    end_tags = proto.RepeatedField(proto.STRING, number=8,)
+    travel_mode = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=TravelMode,
+    )
+    start_location = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=latlng_pb2.LatLng,
+    )
+    start_waypoint = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="Waypoint",
+    )
+    end_location = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=latlng_pb2.LatLng,
+    )
+    end_waypoint = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message="Waypoint",
+    )
+    start_tags = proto.RepeatedField(
+        proto.STRING,
+        number=7,
+    )
+    end_tags = proto.RepeatedField(
+        proto.STRING,
+        number=8,
+    )
     start_time_windows = proto.RepeatedField(
-        proto.MESSAGE, number=9, message="TimeWindow",
+        proto.MESSAGE,
+        number=9,
+        message="TimeWindow",
     )
     end_time_windows = proto.RepeatedField(
-        proto.MESSAGE, number=10, message="TimeWindow",
+        proto.MESSAGE,
+        number=10,
+        message="TimeWindow",
     )
-    travel_duration_multiple = proto.Field(proto.DOUBLE, number=11, optional=True,)
-    unloading_policy = proto.Field(proto.ENUM, number=12, enum=UnloadingPolicy,)
+    travel_duration_multiple = proto.Field(
+        proto.DOUBLE,
+        number=11,
+        optional=True,
+    )
+    unloading_policy = proto.Field(
+        proto.ENUM,
+        number=12,
+        enum=UnloadingPolicy,
+    )
     load_limits = proto.MapField(
-        proto.STRING, proto.MESSAGE, number=30, message=LoadLimit,
+        proto.STRING,
+        proto.MESSAGE,
+        number=30,
+        message=LoadLimit,
     )
-    cost_per_hour = proto.Field(proto.DOUBLE, number=16,)
-    cost_per_traveled_hour = proto.Field(proto.DOUBLE, number=17,)
-    cost_per_kilometer = proto.Field(proto.DOUBLE, number=18,)
-    fixed_cost = proto.Field(proto.DOUBLE, number=19,)
-    used_if_route_is_empty = proto.Field(proto.BOOL, number=20,)
-    route_duration_limit = proto.Field(proto.MESSAGE, number=21, message=DurationLimit,)
+    cost_per_hour = proto.Field(
+        proto.DOUBLE,
+        number=16,
+    )
+    cost_per_traveled_hour = proto.Field(
+        proto.DOUBLE,
+        number=17,
+    )
+    cost_per_kilometer = proto.Field(
+        proto.DOUBLE,
+        number=18,
+    )
+    fixed_cost = proto.Field(
+        proto.DOUBLE,
+        number=19,
+    )
+    used_if_route_is_empty = proto.Field(
+        proto.BOOL,
+        number=20,
+    )
+    route_duration_limit = proto.Field(
+        proto.MESSAGE,
+        number=21,
+        message=DurationLimit,
+    )
     travel_duration_limit = proto.Field(
-        proto.MESSAGE, number=22, message=DurationLimit,
+        proto.MESSAGE,
+        number=22,
+        message=DurationLimit,
     )
     route_distance_limit = proto.Field(
-        proto.MESSAGE, number=23, message="DistanceLimit",
+        proto.MESSAGE,
+        number=23,
+        message="DistanceLimit",
     )
     extra_visit_duration_for_visit_type = proto.MapField(
-        proto.STRING, proto.MESSAGE, number=24, message=duration_pb2.Duration,
+        proto.STRING,
+        proto.MESSAGE,
+        number=24,
+        message=duration_pb2.Duration,
     )
-    break_rule = proto.Field(proto.MESSAGE, number=25, message="BreakRule",)
-    label = proto.Field(proto.STRING, number=27,)
-    ignore = proto.Field(proto.BOOL, number=28,)
-    break_rule_indices = proto.RepeatedField(proto.INT32, number=29,)
+    break_rule = proto.Field(
+        proto.MESSAGE,
+        number=25,
+        message="BreakRule",
+    )
+    label = proto.Field(
+        proto.STRING,
+        number=27,
+    )
+    ignore = proto.Field(
+        proto.BOOL,
+        number=28,
+    )
+    break_rule_indices = proto.RepeatedField(
+        proto.INT32,
+        number=29,
+    )
     capacities = proto.RepeatedField(
-        proto.MESSAGE, number=13, message="CapacityQuantity",
+        proto.MESSAGE,
+        number=13,
+        message="CapacityQuantity",
     )
     start_load_intervals = proto.RepeatedField(
-        proto.MESSAGE, number=14, message="CapacityQuantityInterval",
+        proto.MESSAGE,
+        number=14,
+        message="CapacityQuantityInterval",
     )
     end_load_intervals = proto.RepeatedField(
-        proto.MESSAGE, number=15, message="CapacityQuantityInterval",
+        proto.MESSAGE,
+        number=15,
+        message="CapacityQuantityInterval",
     )
 
 
@@ -1775,19 +2178,35 @@ class TimeWindow(proto.Message):
             This field is a member of `oneof`_ ``_cost_per_hour_after_soft_end_time``.
     """
 
-    start_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
-    end_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
+    start_time = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
     soft_start_time = proto.Field(
-        proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
     )
     soft_end_time = proto.Field(
-        proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
     )
     cost_per_hour_before_soft_start_time = proto.Field(
-        proto.DOUBLE, number=5, optional=True,
+        proto.DOUBLE,
+        number=5,
+        optional=True,
     )
     cost_per_hour_after_soft_end_time = proto.Field(
-        proto.DOUBLE, number=6, optional=True,
+        proto.DOUBLE,
+        number=6,
+        optional=True,
     )
 
 
@@ -1802,8 +2221,14 @@ class CapacityQuantity(proto.Message):
 
     """
 
-    type_ = proto.Field(proto.STRING, number=1,)
-    value = proto.Field(proto.INT64, number=2,)
+    type_ = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    value = proto.Field(
+        proto.INT64,
+        number=2,
+    )
 
 
 class CapacityQuantityInterval(proto.Message):
@@ -1820,9 +2245,20 @@ class CapacityQuantityInterval(proto.Message):
             This field is a member of `oneof`_ ``_max_value``.
     """
 
-    type_ = proto.Field(proto.STRING, number=1,)
-    min_value = proto.Field(proto.INT64, number=2, optional=True,)
-    max_value = proto.Field(proto.INT64, number=3, optional=True,)
+    type_ = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    min_value = proto.Field(
+        proto.INT64,
+        number=2,
+        optional=True,
+    )
+    max_value = proto.Field(
+        proto.INT64,
+        number=3,
+        optional=True,
+    )
 
 
 class DistanceLimit(proto.Message):
@@ -1864,10 +2300,20 @@ class DistanceLimit(proto.Message):
             This field is a member of `oneof`_ ``_cost_per_kilometer_above_soft_max``.
     """
 
-    max_meters = proto.Field(proto.INT64, number=1, optional=True,)
-    soft_max_meters = proto.Field(proto.INT64, number=2, optional=True,)
+    max_meters = proto.Field(
+        proto.INT64,
+        number=1,
+        optional=True,
+    )
+    soft_max_meters = proto.Field(
+        proto.INT64,
+        number=2,
+        optional=True,
+    )
     cost_per_kilometer_above_soft_max = proto.Field(
-        proto.DOUBLE, number=3, optional=True,
+        proto.DOUBLE,
+        number=3,
+        optional=True,
     )
 
 
@@ -1926,14 +2372,40 @@ class TransitionAttributes(proto.Message):
             and *before* starting the destination visit.
     """
 
-    src_tag = proto.Field(proto.STRING, number=1,)
-    excluded_src_tag = proto.Field(proto.STRING, number=2,)
-    dst_tag = proto.Field(proto.STRING, number=3,)
-    excluded_dst_tag = proto.Field(proto.STRING, number=4,)
-    cost = proto.Field(proto.DOUBLE, number=5,)
-    cost_per_kilometer = proto.Field(proto.DOUBLE, number=6,)
-    distance_limit = proto.Field(proto.MESSAGE, number=7, message="DistanceLimit",)
-    delay = proto.Field(proto.MESSAGE, number=8, message=duration_pb2.Duration,)
+    src_tag = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    excluded_src_tag = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    dst_tag = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    excluded_dst_tag = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    cost = proto.Field(
+        proto.DOUBLE,
+        number=5,
+    )
+    cost_per_kilometer = proto.Field(
+        proto.DOUBLE,
+        number=6,
+    )
+    distance_limit = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message="DistanceLimit",
+    )
+    delay = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=duration_pb2.Duration,
+    )
 
 
 class Waypoint(proto.Message):
@@ -1971,10 +2443,20 @@ class Waypoint(proto.Message):
     """
 
     location = proto.Field(
-        proto.MESSAGE, number=1, oneof="location_type", message="Location",
+        proto.MESSAGE,
+        number=1,
+        oneof="location_type",
+        message="Location",
     )
-    place_id = proto.Field(proto.STRING, number=2, oneof="location_type",)
-    side_of_road = proto.Field(proto.BOOL, number=3,)
+    place_id = proto.Field(
+        proto.STRING,
+        number=2,
+        oneof="location_type",
+    )
+    side_of_road = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
 
 
 class Location(proto.Message):
@@ -1995,8 +2477,16 @@ class Location(proto.Message):
             This field is a member of `oneof`_ ``_heading``.
     """
 
-    lat_lng = proto.Field(proto.MESSAGE, number=1, message=latlng_pb2.LatLng,)
-    heading = proto.Field(proto.INT32, number=2, optional=True,)
+    lat_lng = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=latlng_pb2.LatLng,
+    )
+    heading = proto.Field(
+        proto.INT32,
+        number=2,
+        optional=True,
+    )
 
 
 class BreakRule(proto.Message):
@@ -2044,13 +2534,19 @@ class BreakRule(proto.Message):
         """
 
         earliest_start_time = proto.Field(
-            proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,
+            proto.MESSAGE,
+            number=1,
+            message=timestamp_pb2.Timestamp,
         )
         latest_start_time = proto.Field(
-            proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,
+            proto.MESSAGE,
+            number=2,
+            message=timestamp_pb2.Timestamp,
         )
         min_duration = proto.Field(
-            proto.MESSAGE, number=3, message=duration_pb2.Duration,
+            proto.MESSAGE,
+            number=3,
+            message=duration_pb2.Duration,
         )
 
     class FrequencyConstraint(proto.Message):
@@ -2102,15 +2598,25 @@ class BreakRule(proto.Message):
         """
 
         min_break_duration = proto.Field(
-            proto.MESSAGE, number=1, message=duration_pb2.Duration,
+            proto.MESSAGE,
+            number=1,
+            message=duration_pb2.Duration,
         )
         max_inter_break_duration = proto.Field(
-            proto.MESSAGE, number=2, message=duration_pb2.Duration,
+            proto.MESSAGE,
+            number=2,
+            message=duration_pb2.Duration,
         )
 
-    break_requests = proto.RepeatedField(proto.MESSAGE, number=1, message=BreakRequest,)
+    break_requests = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=BreakRequest,
+    )
     frequency_constraints = proto.RepeatedField(
-        proto.MESSAGE, number=2, message=FrequencyConstraint,
+        proto.MESSAGE,
+        number=2,
+        message=FrequencyConstraint,
     )
 
 
@@ -2323,9 +2829,15 @@ class ShipmentRoute(proto.Message):
         """
 
         start_time = proto.Field(
-            proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,
+            proto.MESSAGE,
+            number=1,
+            message=timestamp_pb2.Timestamp,
         )
-        duration = proto.Field(proto.MESSAGE, number=2, message=duration_pb2.Duration,)
+        duration = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message=duration_pb2.Duration,
+        )
 
     class Visit(proto.Message):
         r"""A visit performed during a route. This visit corresponds to a pickup
@@ -2397,26 +2909,56 @@ class ShipmentRoute(proto.Message):
                 Deprecated: Use [Visit.load_demands][] instead.
         """
 
-        shipment_index = proto.Field(proto.INT32, number=1,)
-        is_pickup = proto.Field(proto.BOOL, number=2,)
-        visit_request_index = proto.Field(proto.INT32, number=3,)
+        shipment_index = proto.Field(
+            proto.INT32,
+            number=1,
+        )
+        is_pickup = proto.Field(
+            proto.BOOL,
+            number=2,
+        )
+        visit_request_index = proto.Field(
+            proto.INT32,
+            number=3,
+        )
         start_time = proto.Field(
-            proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,
+            proto.MESSAGE,
+            number=4,
+            message=timestamp_pb2.Timestamp,
         )
         load_demands = proto.MapField(
-            proto.STRING, proto.MESSAGE, number=11, message="Shipment.Load",
+            proto.STRING,
+            proto.MESSAGE,
+            number=11,
+            message="Shipment.Load",
         )
-        detour = proto.Field(proto.MESSAGE, number=6, message=duration_pb2.Duration,)
-        shipment_label = proto.Field(proto.STRING, number=7,)
-        visit_label = proto.Field(proto.STRING, number=8,)
+        detour = proto.Field(
+            proto.MESSAGE,
+            number=6,
+            message=duration_pb2.Duration,
+        )
+        shipment_label = proto.Field(
+            proto.STRING,
+            number=7,
+        )
+        visit_label = proto.Field(
+            proto.STRING,
+            number=8,
+        )
         arrival_loads = proto.RepeatedField(
-            proto.MESSAGE, number=9, message="CapacityQuantity",
+            proto.MESSAGE,
+            number=9,
+            message="CapacityQuantity",
         )
         delay_before_start = proto.Field(
-            proto.MESSAGE, number=10, message="ShipmentRoute.Delay",
+            proto.MESSAGE,
+            number=10,
+            message="ShipmentRoute.Delay",
         )
         demands = proto.RepeatedField(
-            proto.MESSAGE, number=5, message="CapacityQuantity",
+            proto.MESSAGE,
+            number=5,
+            message="CapacityQuantity",
         )
 
     class Transition(proto.Message):
@@ -2493,33 +3035,58 @@ class ShipmentRoute(proto.Message):
         """
 
         travel_duration = proto.Field(
-            proto.MESSAGE, number=1, message=duration_pb2.Duration,
+            proto.MESSAGE,
+            number=1,
+            message=duration_pb2.Duration,
         )
-        travel_distance_meters = proto.Field(proto.DOUBLE, number=2,)
-        traffic_info_unavailable = proto.Field(proto.BOOL, number=3,)
+        travel_distance_meters = proto.Field(
+            proto.DOUBLE,
+            number=2,
+        )
+        traffic_info_unavailable = proto.Field(
+            proto.BOOL,
+            number=3,
+        )
         delay_duration = proto.Field(
-            proto.MESSAGE, number=4, message=duration_pb2.Duration,
+            proto.MESSAGE,
+            number=4,
+            message=duration_pb2.Duration,
         )
         break_duration = proto.Field(
-            proto.MESSAGE, number=5, message=duration_pb2.Duration,
+            proto.MESSAGE,
+            number=5,
+            message=duration_pb2.Duration,
         )
         wait_duration = proto.Field(
-            proto.MESSAGE, number=6, message=duration_pb2.Duration,
+            proto.MESSAGE,
+            number=6,
+            message=duration_pb2.Duration,
         )
         total_duration = proto.Field(
-            proto.MESSAGE, number=7, message=duration_pb2.Duration,
+            proto.MESSAGE,
+            number=7,
+            message=duration_pb2.Duration,
         )
         start_time = proto.Field(
-            proto.MESSAGE, number=8, message=timestamp_pb2.Timestamp,
+            proto.MESSAGE,
+            number=8,
+            message=timestamp_pb2.Timestamp,
         )
         route_polyline = proto.Field(
-            proto.MESSAGE, number=9, message="ShipmentRoute.EncodedPolyline",
+            proto.MESSAGE,
+            number=9,
+            message="ShipmentRoute.EncodedPolyline",
         )
         vehicle_loads = proto.MapField(
-            proto.STRING, proto.MESSAGE, number=11, message="ShipmentRoute.VehicleLoad",
+            proto.STRING,
+            proto.MESSAGE,
+            number=11,
+            message="ShipmentRoute.VehicleLoad",
         )
         loads = proto.RepeatedField(
-            proto.MESSAGE, number=10, message="CapacityQuantity",
+            proto.MESSAGE,
+            number=10,
+            message="CapacityQuantity",
         )
 
     class VehicleLoad(proto.Message):
@@ -2534,7 +3101,10 @@ class ShipmentRoute(proto.Message):
                 [Transition.vehicle_loads][google.cloud.optimization.v1.ShipmentRoute.Transition.vehicle_loads].
         """
 
-        amount = proto.Field(proto.INT64, number=1,)
+        amount = proto.Field(
+            proto.INT64,
+            number=1,
+        )
 
     class EncodedPolyline(proto.Message):
         r"""The encoded representation of a polyline. More information on
@@ -2548,7 +3118,10 @@ class ShipmentRoute(proto.Message):
                 polyline.
         """
 
-        points = proto.Field(proto.STRING, number=1,)
+        points = proto.Field(
+            proto.STRING,
+            number=1,
+        )
 
     class Break(proto.Message):
         r"""Data representing the execution of a break.
@@ -2561,9 +3134,15 @@ class ShipmentRoute(proto.Message):
         """
 
         start_time = proto.Field(
-            proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,
+            proto.MESSAGE,
+            number=1,
+            message=timestamp_pb2.Timestamp,
         )
-        duration = proto.Field(proto.MESSAGE, number=2, message=duration_pb2.Duration,)
+        duration = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message=duration_pb2.Duration,
+        )
 
     class TravelStep(proto.Message):
         r"""Deprecated: Use [ShipmentRoute.transitions][] instead. Travel
@@ -2601,37 +3180,101 @@ class ShipmentRoute(proto.Message):
                 is set to true.
         """
 
-        duration = proto.Field(proto.MESSAGE, number=1, message=duration_pb2.Duration,)
-        distance_meters = proto.Field(proto.DOUBLE, number=2,)
-        traffic_info_unavailable = proto.Field(proto.BOOL, number=3,)
+        duration = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=duration_pb2.Duration,
+        )
+        distance_meters = proto.Field(
+            proto.DOUBLE,
+            number=2,
+        )
+        traffic_info_unavailable = proto.Field(
+            proto.BOOL,
+            number=3,
+        )
         route_polyline = proto.Field(
-            proto.MESSAGE, number=4, message="ShipmentRoute.EncodedPolyline",
+            proto.MESSAGE,
+            number=4,
+            message="ShipmentRoute.EncodedPolyline",
         )
 
-    vehicle_index = proto.Field(proto.INT32, number=1,)
-    vehicle_label = proto.Field(proto.STRING, number=2,)
+    vehicle_index = proto.Field(
+        proto.INT32,
+        number=1,
+    )
+    vehicle_label = proto.Field(
+        proto.STRING,
+        number=2,
+    )
     vehicle_start_time = proto.Field(
-        proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
     )
     vehicle_end_time = proto.Field(
-        proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
     )
-    visits = proto.RepeatedField(proto.MESSAGE, number=7, message=Visit,)
-    transitions = proto.RepeatedField(proto.MESSAGE, number=8, message=Transition,)
-    has_traffic_infeasibilities = proto.Field(proto.BOOL, number=9,)
-    route_polyline = proto.Field(proto.MESSAGE, number=10, message=EncodedPolyline,)
-    breaks = proto.RepeatedField(proto.MESSAGE, number=11, message=Break,)
-    metrics = proto.Field(proto.MESSAGE, number=12, message="AggregatedMetrics",)
-    route_costs = proto.MapField(proto.STRING, proto.DOUBLE, number=17,)
-    route_total_cost = proto.Field(proto.DOUBLE, number=18,)
+    visits = proto.RepeatedField(
+        proto.MESSAGE,
+        number=7,
+        message=Visit,
+    )
+    transitions = proto.RepeatedField(
+        proto.MESSAGE,
+        number=8,
+        message=Transition,
+    )
+    has_traffic_infeasibilities = proto.Field(
+        proto.BOOL,
+        number=9,
+    )
+    route_polyline = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message=EncodedPolyline,
+    )
+    breaks = proto.RepeatedField(
+        proto.MESSAGE,
+        number=11,
+        message=Break,
+    )
+    metrics = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        message="AggregatedMetrics",
+    )
+    route_costs = proto.MapField(
+        proto.STRING,
+        proto.DOUBLE,
+        number=17,
+    )
+    route_total_cost = proto.Field(
+        proto.DOUBLE,
+        number=18,
+    )
     end_loads = proto.RepeatedField(
-        proto.MESSAGE, number=13, message="CapacityQuantity",
+        proto.MESSAGE,
+        number=13,
+        message="CapacityQuantity",
     )
-    travel_steps = proto.RepeatedField(proto.MESSAGE, number=14, message=TravelStep,)
+    travel_steps = proto.RepeatedField(
+        proto.MESSAGE,
+        number=14,
+        message=TravelStep,
+    )
     vehicle_detour = proto.Field(
-        proto.MESSAGE, number=15, message=duration_pb2.Duration,
+        proto.MESSAGE,
+        number=15,
+        message=duration_pb2.Duration,
     )
-    delay_before_vehicle_end = proto.Field(proto.MESSAGE, number=16, message=Delay,)
+    delay_before_vehicle_end = proto.Field(
+        proto.MESSAGE,
+        number=16,
+        message=Delay,
+    )
 
 
 class SkippedShipment(proto.Message):
@@ -2712,13 +3355,34 @@ class SkippedShipment(proto.Message):
             CANNOT_BE_PERFORMED_WITHIN_VEHICLE_TIME_WINDOWS = 6
             VEHICLE_NOT_ALLOWED = 7
 
-        code = proto.Field(proto.ENUM, number=1, enum="SkippedShipment.Reason.Code",)
-        example_vehicle_index = proto.Field(proto.INT32, number=2, optional=True,)
-        example_exceeded_capacity_type = proto.Field(proto.STRING, number=3,)
+        code = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="SkippedShipment.Reason.Code",
+        )
+        example_vehicle_index = proto.Field(
+            proto.INT32,
+            number=2,
+            optional=True,
+        )
+        example_exceeded_capacity_type = proto.Field(
+            proto.STRING,
+            number=3,
+        )
 
-    index = proto.Field(proto.INT32, number=1,)
-    label = proto.Field(proto.STRING, number=2,)
-    reasons = proto.RepeatedField(proto.MESSAGE, number=3, message=Reason,)
+    index = proto.Field(
+        proto.INT32,
+        number=1,
+    )
+    label = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    reasons = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=Reason,
+    )
 
 
 class AggregatedMetrics(proto.Message):
@@ -2776,29 +3440,59 @@ class AggregatedMetrics(proto.Message):
             [OptimizeToursResponse.Metrics.total_cost][] instead.
     """
 
-    performed_shipment_count = proto.Field(proto.INT32, number=1,)
-    travel_duration = proto.Field(
-        proto.MESSAGE, number=2, message=duration_pb2.Duration,
+    performed_shipment_count = proto.Field(
+        proto.INT32,
+        number=1,
     )
-    wait_duration = proto.Field(proto.MESSAGE, number=3, message=duration_pb2.Duration,)
+    travel_duration = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=duration_pb2.Duration,
+    )
+    wait_duration = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=duration_pb2.Duration,
+    )
     delay_duration = proto.Field(
-        proto.MESSAGE, number=4, message=duration_pb2.Duration,
+        proto.MESSAGE,
+        number=4,
+        message=duration_pb2.Duration,
     )
     break_duration = proto.Field(
-        proto.MESSAGE, number=5, message=duration_pb2.Duration,
+        proto.MESSAGE,
+        number=5,
+        message=duration_pb2.Duration,
     )
     visit_duration = proto.Field(
-        proto.MESSAGE, number=6, message=duration_pb2.Duration,
+        proto.MESSAGE,
+        number=6,
+        message=duration_pb2.Duration,
     )
     total_duration = proto.Field(
-        proto.MESSAGE, number=7, message=duration_pb2.Duration,
+        proto.MESSAGE,
+        number=7,
+        message=duration_pb2.Duration,
     )
-    travel_distance_meters = proto.Field(proto.DOUBLE, number=8,)
+    travel_distance_meters = proto.Field(
+        proto.DOUBLE,
+        number=8,
+    )
     max_loads = proto.MapField(
-        proto.STRING, proto.MESSAGE, number=9, message="ShipmentRoute.VehicleLoad",
+        proto.STRING,
+        proto.MESSAGE,
+        number=9,
+        message="ShipmentRoute.VehicleLoad",
     )
-    costs = proto.MapField(proto.STRING, proto.DOUBLE, number=10,)
-    total_cost = proto.Field(proto.DOUBLE, number=11,)
+    costs = proto.MapField(
+        proto.STRING,
+        proto.DOUBLE,
+        number=10,
+    )
+    total_cost = proto.Field(
+        proto.DOUBLE,
+        number=11,
+    )
 
 
 class InjectedSolutionConstraint(proto.Message):
@@ -2927,23 +3621,39 @@ class InjectedSolutionConstraint(proto.Message):
                 enum="InjectedSolutionConstraint.ConstraintRelaxation.Relaxation.Level",
             )
             threshold_time = proto.Field(
-                proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,
+                proto.MESSAGE,
+                number=2,
+                message=timestamp_pb2.Timestamp,
             )
-            threshold_visit_count = proto.Field(proto.INT32, number=3,)
+            threshold_visit_count = proto.Field(
+                proto.INT32,
+                number=3,
+            )
 
         relaxations = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="InjectedSolutionConstraint.ConstraintRelaxation.Relaxation",
         )
-        vehicle_indices = proto.RepeatedField(proto.INT32, number=2,)
+        vehicle_indices = proto.RepeatedField(
+            proto.INT32,
+            number=2,
+        )
 
-    routes = proto.RepeatedField(proto.MESSAGE, number=1, message="ShipmentRoute",)
+    routes = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="ShipmentRoute",
+    )
     skipped_shipments = proto.RepeatedField(
-        proto.MESSAGE, number=2, message="SkippedShipment",
+        proto.MESSAGE,
+        number=2,
+        message="SkippedShipment",
     )
     constraint_relaxations = proto.RepeatedField(
-        proto.MESSAGE, number=3, message=ConstraintRelaxation,
+        proto.MESSAGE,
+        number=3,
+        message=ConstraintRelaxation,
     )
 
 
@@ -3347,20 +4057,47 @@ class OptimizeToursValidationError(proto.Message):
                 Recursively nested sub-field, if needed.
         """
 
-        name = proto.Field(proto.STRING, number=1,)
-        index = proto.Field(proto.INT32, number=2, oneof="index_or_key",)
-        key = proto.Field(proto.STRING, number=4, oneof="index_or_key",)
+        name = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        index = proto.Field(
+            proto.INT32,
+            number=2,
+            oneof="index_or_key",
+        )
+        key = proto.Field(
+            proto.STRING,
+            number=4,
+            oneof="index_or_key",
+        )
         sub_field = proto.Field(
             proto.MESSAGE,
             number=3,
             message="OptimizeToursValidationError.FieldReference",
         )
 
-    code = proto.Field(proto.INT32, number=1,)
-    display_name = proto.Field(proto.STRING, number=2,)
-    fields = proto.RepeatedField(proto.MESSAGE, number=3, message=FieldReference,)
-    error_message = proto.Field(proto.STRING, number=4,)
-    offending_values = proto.Field(proto.STRING, number=5,)
+    code = proto.Field(
+        proto.INT32,
+        number=1,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    fields = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=FieldReference,
+    )
+    error_message = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    offending_values = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

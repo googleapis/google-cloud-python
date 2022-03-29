@@ -55,9 +55,16 @@ class InputConfig(proto.Message):
     """
 
     gcs_source = proto.Field(
-        proto.MESSAGE, number=1, oneof="source", message="GcsSource",
+        proto.MESSAGE,
+        number=1,
+        oneof="source",
+        message="GcsSource",
     )
-    data_format = proto.Field(proto.ENUM, number=2, enum="DataFormat",)
+    data_format = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum="DataFormat",
+    )
 
 
 class OutputConfig(proto.Message):
@@ -77,9 +84,16 @@ class OutputConfig(proto.Message):
     """
 
     gcs_destination = proto.Field(
-        proto.MESSAGE, number=1, oneof="destination", message="GcsDestination",
+        proto.MESSAGE,
+        number=1,
+        oneof="destination",
+        message="GcsDestination",
     )
-    data_format = proto.Field(proto.ENUM, number=2, enum="DataFormat",)
+    data_format = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum="DataFormat",
+    )
 
 
 class GcsSource(proto.Message):
@@ -92,7 +106,10 @@ class GcsSource(proto.Message):
             location.
     """
 
-    uri = proto.Field(proto.STRING, number=1,)
+    uri = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class GcsDestination(proto.Message):
@@ -105,7 +122,10 @@ class GcsDestination(proto.Message):
             location.
     """
 
-    uri = proto.Field(proto.STRING, number=1,)
+    uri = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class AsyncModelMetadata(proto.Message):
@@ -133,10 +153,25 @@ class AsyncModelMetadata(proto.Message):
         CANCELLED = 3
         FAILED = 4
 
-    state = proto.Field(proto.ENUM, number=1, enum=State,)
-    state_message = proto.Field(proto.STRING, number=2,)
-    create_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
+    state = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=State,
+    )
+    state_message = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
