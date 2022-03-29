@@ -23,7 +23,12 @@ from google.protobuf import wrappers_pb2  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.retail.v2",
-    manifest={"UserEvent", "ProductDetail", "CompletionDetail", "PurchaseTransaction",},
+    manifest={
+        "UserEvent",
+        "ProductDetail",
+        "CompletionDetail",
+        "PurchaseTransaction",
+    },
 )
 
 
@@ -281,34 +286,93 @@ class UserEvent(proto.Message):
             automatically.
     """
 
-    event_type = proto.Field(proto.STRING, number=1,)
-    visitor_id = proto.Field(proto.STRING, number=2,)
-    session_id = proto.Field(proto.STRING, number=21,)
-    event_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
-    experiment_ids = proto.RepeatedField(proto.STRING, number=4,)
-    attribution_token = proto.Field(proto.STRING, number=5,)
+    event_type = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    visitor_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    session_id = proto.Field(
+        proto.STRING,
+        number=21,
+    )
+    event_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    experiment_ids = proto.RepeatedField(
+        proto.STRING,
+        number=4,
+    )
+    attribution_token = proto.Field(
+        proto.STRING,
+        number=5,
+    )
     product_details = proto.RepeatedField(
-        proto.MESSAGE, number=6, message="ProductDetail",
+        proto.MESSAGE,
+        number=6,
+        message="ProductDetail",
     )
     completion_detail = proto.Field(
-        proto.MESSAGE, number=22, message="CompletionDetail",
+        proto.MESSAGE,
+        number=22,
+        message="CompletionDetail",
     )
     attributes = proto.MapField(
-        proto.STRING, proto.MESSAGE, number=7, message=common.CustomAttribute,
+        proto.STRING,
+        proto.MESSAGE,
+        number=7,
+        message=common.CustomAttribute,
     )
-    cart_id = proto.Field(proto.STRING, number=8,)
+    cart_id = proto.Field(
+        proto.STRING,
+        number=8,
+    )
     purchase_transaction = proto.Field(
-        proto.MESSAGE, number=9, message="PurchaseTransaction",
+        proto.MESSAGE,
+        number=9,
+        message="PurchaseTransaction",
     )
-    search_query = proto.Field(proto.STRING, number=10,)
-    filter = proto.Field(proto.STRING, number=16,)
-    order_by = proto.Field(proto.STRING, number=17,)
-    offset = proto.Field(proto.INT32, number=18,)
-    page_categories = proto.RepeatedField(proto.STRING, number=11,)
-    user_info = proto.Field(proto.MESSAGE, number=12, message=common.UserInfo,)
-    uri = proto.Field(proto.STRING, number=13,)
-    referrer_uri = proto.Field(proto.STRING, number=14,)
-    page_view_id = proto.Field(proto.STRING, number=15,)
+    search_query = proto.Field(
+        proto.STRING,
+        number=10,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=16,
+    )
+    order_by = proto.Field(
+        proto.STRING,
+        number=17,
+    )
+    offset = proto.Field(
+        proto.INT32,
+        number=18,
+    )
+    page_categories = proto.RepeatedField(
+        proto.STRING,
+        number=11,
+    )
+    user_info = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        message=common.UserInfo,
+    )
+    uri = proto.Field(
+        proto.STRING,
+        number=13,
+    )
+    referrer_uri = proto.Field(
+        proto.STRING,
+        number=14,
+    )
+    page_view_id = proto.Field(
+        proto.STRING,
+        number=15,
+    )
 
 
 class ProductDetail(proto.Message):
@@ -343,8 +407,16 @@ class ProductDetail(proto.Message):
             types.
     """
 
-    product = proto.Field(proto.MESSAGE, number=1, message=gcr_product.Product,)
-    quantity = proto.Field(proto.MESSAGE, number=2, message=wrappers_pb2.Int32Value,)
+    product = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=gcr_product.Product,
+    )
+    quantity = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=wrappers_pb2.Int32Value,
+    )
 
 
 class CompletionDetail(proto.Message):
@@ -364,9 +436,18 @@ class CompletionDetail(proto.Message):
             position, starting from 0.
     """
 
-    completion_attribution_token = proto.Field(proto.STRING, number=1,)
-    selected_suggestion = proto.Field(proto.STRING, number=2,)
-    selected_position = proto.Field(proto.INT32, number=3,)
+    completion_attribution_token = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    selected_suggestion = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    selected_position = proto.Field(
+        proto.INT32,
+        number=3,
+    )
 
 
 class PurchaseTransaction(proto.Message):
@@ -399,11 +480,26 @@ class PurchaseTransaction(proto.Message):
             ISO-4217 code.
     """
 
-    id = proto.Field(proto.STRING, number=1,)
-    revenue = proto.Field(proto.FLOAT, number=2,)
-    tax = proto.Field(proto.FLOAT, number=3,)
-    cost = proto.Field(proto.FLOAT, number=4,)
-    currency_code = proto.Field(proto.STRING, number=5,)
+    id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    revenue = proto.Field(
+        proto.FLOAT,
+        number=2,
+    )
+    tax = proto.Field(
+        proto.FLOAT,
+        number=3,
+    )
+    cost = proto.Field(
+        proto.FLOAT,
+        number=4,
+    )
+    currency_code = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

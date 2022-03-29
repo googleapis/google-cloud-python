@@ -35,7 +35,9 @@ from google.protobuf import empty_pb2  # type: ignore
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-retail",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-retail",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
@@ -125,19 +127,29 @@ class ProductServiceTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.create_product: gapic_v1.method.wrap_method(
-                self.create_product, default_timeout=None, client_info=client_info,
+                self.create_product,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_product: gapic_v1.method.wrap_method(
-                self.get_product, default_timeout=None, client_info=client_info,
+                self.get_product,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_products: gapic_v1.method.wrap_method(
-                self.list_products, default_timeout=None, client_info=client_info,
+                self.list_products,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.update_product: gapic_v1.method.wrap_method(
-                self.update_product, default_timeout=None, client_info=client_info,
+                self.update_product,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.delete_product: gapic_v1.method.wrap_method(
-                self.delete_product, default_timeout=None, client_info=client_info,
+                self.delete_product,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.import_products: gapic_v1.method.wrap_method(
                 self.import_products,
@@ -155,7 +167,9 @@ class ProductServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.set_inventory: gapic_v1.method.wrap_method(
-                self.set_inventory, default_timeout=None, client_info=client_info,
+                self.set_inventory,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.add_fulfillment_places: gapic_v1.method.wrap_method(
                 self.add_fulfillment_places,
@@ -182,9 +196,9 @@ class ProductServiceTransport(abc.ABC):
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

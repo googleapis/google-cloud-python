@@ -35,7 +35,9 @@ from google.longrunning import operations_pb2  # type: ignore
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-retail",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-retail",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
@@ -125,10 +127,14 @@ class UserEventServiceTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.write_user_event: gapic_v1.method.wrap_method(
-                self.write_user_event, default_timeout=None, client_info=client_info,
+                self.write_user_event,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.collect_user_event: gapic_v1.method.wrap_method(
-                self.collect_user_event, default_timeout=None, client_info=client_info,
+                self.collect_user_event,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.purge_user_events: gapic_v1.method.wrap_method(
                 self.purge_user_events,
@@ -161,16 +167,18 @@ class UserEventServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.rejoin_user_events: gapic_v1.method.wrap_method(
-                self.rejoin_user_events, default_timeout=None, client_info=client_info,
+                self.rejoin_user_events,
+                default_timeout=None,
+                client_info=client_info,
             ),
         }
 
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

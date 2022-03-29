@@ -16,7 +16,12 @@
 import proto  # type: ignore
 
 
-__protobuf__ = proto.module(package="google.cloud.retail.v2", manifest={"Promotion",},)
+__protobuf__ = proto.module(
+    package="google.cloud.retail.v2",
+    manifest={
+        "Promotion",
+    },
+)
 
 
 class Promotion(proto.Message):
@@ -36,7 +41,10 @@ class Promotion(proto.Message):
             `promotion <https://support.google.com/merchants/answer/7050148>`__.
     """
 
-    promotion_id = proto.Field(proto.STRING, number=1,)
+    promotion_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

@@ -67,9 +67,18 @@ class ListCatalogsRequest(proto.Message):
             an INVALID_ARGUMENT error is returned.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListCatalogsResponse(proto.Message):
@@ -93,9 +102,14 @@ class ListCatalogsResponse(proto.Message):
         return self
 
     catalogs = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=gcr_catalog.Catalog,
+        proto.MESSAGE,
+        number=1,
+        message=gcr_catalog.Catalog,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class UpdateCatalogRequest(proto.Message):
@@ -123,9 +137,15 @@ class UpdateCatalogRequest(proto.Message):
             INVALID_ARGUMENT error is returned.
     """
 
-    catalog = proto.Field(proto.MESSAGE, number=1, message=gcr_catalog.Catalog,)
+    catalog = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=gcr_catalog.Catalog,
+    )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -160,10 +180,22 @@ class SetDefaultBranchRequest(proto.Message):
             even if it has no sufficient active products.
     """
 
-    catalog = proto.Field(proto.STRING, number=1,)
-    branch_id = proto.Field(proto.STRING, number=2,)
-    note = proto.Field(proto.STRING, number=3,)
-    force = proto.Field(proto.BOOL, number=4,)
+    catalog = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    branch_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    note = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    force = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
 
 
 class GetDefaultBranchRequest(proto.Message):
@@ -176,7 +208,10 @@ class GetDefaultBranchRequest(proto.Message):
             ``projects/*/locations/global/catalogs/default_catalog``.
     """
 
-    catalog = proto.Field(proto.STRING, number=1,)
+    catalog = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class GetDefaultBranchResponse(proto.Message):
@@ -195,9 +230,19 @@ class GetDefaultBranchResponse(proto.Message):
             field, when this branch was set as default.
     """
 
-    branch = proto.Field(proto.STRING, number=1,)
-    set_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    note = proto.Field(proto.STRING, number=3,)
+    branch = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    set_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    note = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

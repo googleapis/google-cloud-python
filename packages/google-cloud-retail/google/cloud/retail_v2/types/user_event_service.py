@@ -41,8 +41,15 @@ class WriteUserEventRequest(proto.Message):
             Required. User event to write.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    user_event = proto.Field(proto.MESSAGE, number=2, message=gcr_user_event.UserEvent,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    user_event = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=gcr_user_event.UserEvent,
+    )
 
 
 class CollectUserEventRequest(proto.Message):
@@ -68,10 +75,22 @@ class CollectUserEventRequest(proto.Message):
             the payload bytes.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    user_event = proto.Field(proto.STRING, number=2,)
-    uri = proto.Field(proto.STRING, number=3,)
-    ets = proto.Field(proto.INT64, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    user_event = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    uri = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    ets = proto.Field(
+        proto.INT64,
+        number=4,
+    )
 
 
 class RejoinUserEventsRequest(proto.Message):
@@ -102,9 +121,14 @@ class RejoinUserEventsRequest(proto.Message):
         JOINED_EVENTS = 1
         UNJOINED_EVENTS = 2
 
-    parent = proto.Field(proto.STRING, number=1,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     user_event_rejoin_scope = proto.Field(
-        proto.ENUM, number=2, enum=UserEventRejoinScope,
+        proto.ENUM,
+        number=2,
+        enum=UserEventRejoinScope,
     )
 
 
@@ -117,12 +141,14 @@ class RejoinUserEventsResponse(proto.Message):
             latest product catalog.
     """
 
-    rejoined_user_events_count = proto.Field(proto.INT64, number=1,)
+    rejoined_user_events_count = proto.Field(
+        proto.INT64,
+        number=1,
+    )
 
 
 class RejoinUserEventsMetadata(proto.Message):
-    r"""Metadata for RejoinUserEvents method.
-    """
+    r"""Metadata for RejoinUserEvents method."""
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

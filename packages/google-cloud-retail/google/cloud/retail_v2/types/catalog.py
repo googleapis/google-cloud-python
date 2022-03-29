@@ -17,7 +17,11 @@ import proto  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.retail.v2", manifest={"ProductLevelConfig", "Catalog",},
+    package="google.cloud.retail.v2",
+    manifest={
+        "ProductLevelConfig",
+        "Catalog",
+    },
 )
 
 
@@ -81,8 +85,14 @@ class ProductLevelConfig(proto.Message):
             for more details.
     """
 
-    ingestion_product_type = proto.Field(proto.STRING, number=1,)
-    merchant_center_product_id_field = proto.Field(proto.STRING, number=2,)
+    ingestion_product_type = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    merchant_center_product_id_field = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class Catalog(proto.Message):
@@ -102,10 +112,18 @@ class Catalog(proto.Message):
             Required. The product level configuration.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    display_name = proto.Field(proto.STRING, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
     product_level_config = proto.Field(
-        proto.MESSAGE, number=4, message="ProductLevelConfig",
+        proto.MESSAGE,
+        number=4,
+        message="ProductLevelConfig",
     )
 
 

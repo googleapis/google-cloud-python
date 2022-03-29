@@ -20,7 +20,11 @@ from google.protobuf import struct_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.retail.v2", manifest={"PredictRequest", "PredictResponse",},
+    package="google.cloud.retail.v2",
+    manifest={
+        "PredictRequest",
+        "PredictResponse",
+    },
 )
 
 
@@ -147,16 +151,42 @@ class PredictRequest(proto.Message):
             for more details.
     """
 
-    placement = proto.Field(proto.STRING, number=1,)
-    user_event = proto.Field(proto.MESSAGE, number=2, message=gcr_user_event.UserEvent,)
-    page_size = proto.Field(proto.INT32, number=3,)
-    page_token = proto.Field(proto.STRING, number=4,)
-    filter = proto.Field(proto.STRING, number=5,)
-    validate_only = proto.Field(proto.BOOL, number=6,)
-    params = proto.MapField(
-        proto.STRING, proto.MESSAGE, number=7, message=struct_pb2.Value,
+    placement = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    labels = proto.MapField(proto.STRING, proto.STRING, number=8,)
+    user_event = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=gcr_user_event.UserEvent,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    validate_only = proto.Field(
+        proto.BOOL,
+        number=6,
+    )
+    params = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=7,
+        message=struct_pb2.Value,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=8,
+    )
 
 
 class PredictResponse(proto.Message):
@@ -200,15 +230,34 @@ class PredictResponse(proto.Message):
                    ``PredictRequest.params``.
         """
 
-        id = proto.Field(proto.STRING, number=1,)
+        id = proto.Field(
+            proto.STRING,
+            number=1,
+        )
         metadata = proto.MapField(
-            proto.STRING, proto.MESSAGE, number=2, message=struct_pb2.Value,
+            proto.STRING,
+            proto.MESSAGE,
+            number=2,
+            message=struct_pb2.Value,
         )
 
-    results = proto.RepeatedField(proto.MESSAGE, number=1, message=PredictionResult,)
-    attribution_token = proto.Field(proto.STRING, number=2,)
-    missing_ids = proto.RepeatedField(proto.STRING, number=3,)
-    validate_only = proto.Field(proto.BOOL, number=4,)
+    results = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=PredictionResult,
+    )
+    attribution_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    missing_ids = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+    validate_only = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

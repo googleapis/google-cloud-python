@@ -63,7 +63,10 @@ class UserEventServiceClientMeta(type):
     _transport_registry["grpc"] = UserEventServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = UserEventServiceGrpcAsyncIOTransport
 
-    def get_transport_class(cls, label: str = None,) -> Type[UserEventServiceTransport]:
+    def get_transport_class(
+        cls,
+        label: str = None,
+    ) -> Type[UserEventServiceTransport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -170,10 +173,16 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
         return self._transport
 
     @staticmethod
-    def catalog_path(project: str, location: str, catalog: str,) -> str:
+    def catalog_path(
+        project: str,
+        location: str,
+        catalog: str,
+    ) -> str:
         """Returns a fully-qualified catalog string."""
         return "projects/{project}/locations/{location}/catalogs/{catalog}".format(
-            project=project, location=location, catalog=catalog,
+            project=project,
+            location=location,
+            catalog=catalog,
         )
 
     @staticmethod
@@ -187,7 +196,11 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
 
     @staticmethod
     def product_path(
-        project: str, location: str, catalog: str, branch: str, product: str,
+        project: str,
+        location: str,
+        catalog: str,
+        branch: str,
+        product: str,
     ) -> str:
         """Returns a fully-qualified product string."""
         return "projects/{project}/locations/{location}/catalogs/{catalog}/branches/{branch}/products/{product}".format(
@@ -208,7 +221,9 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_billing_account_path(billing_account: str,) -> str:
+    def common_billing_account_path(
+        billing_account: str,
+    ) -> str:
         """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
@@ -221,9 +236,13 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(folder: str,) -> str:
+    def common_folder_path(
+        folder: str,
+    ) -> str:
         """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(folder=folder,)
+        return "folders/{folder}".format(
+            folder=folder,
+        )
 
     @staticmethod
     def parse_common_folder_path(path: str) -> Dict[str, str]:
@@ -232,9 +251,13 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(organization: str,) -> str:
+    def common_organization_path(
+        organization: str,
+    ) -> str:
         """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(organization=organization,)
+        return "organizations/{organization}".format(
+            organization=organization,
+        )
 
     @staticmethod
     def parse_common_organization_path(path: str) -> Dict[str, str]:
@@ -243,9 +266,13 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(project: str,) -> str:
+    def common_project_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified project string."""
-        return "projects/{project}".format(project=project,)
+        return "projects/{project}".format(
+            project=project,
+        )
 
     @staticmethod
     def parse_common_project_path(path: str) -> Dict[str, str]:
@@ -254,10 +281,14 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(project: str, location: str,) -> str:
+    def common_location_path(
+        project: str,
+        location: str,
+    ) -> str:
         """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
-            project=project, location=location,
+            project=project,
+            location=location,
         )
 
     @staticmethod
@@ -502,7 +533,12 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -622,7 +658,12 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -704,7 +745,12 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -802,7 +848,12 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -897,7 +948,12 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -926,7 +982,9 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-retail",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-retail",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()

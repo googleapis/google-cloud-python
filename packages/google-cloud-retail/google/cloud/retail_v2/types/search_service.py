@@ -22,7 +22,11 @@ from google.protobuf import struct_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.retail.v2", manifest={"SearchRequest", "SearchResponse",},
+    package="google.cloud.retail.v2",
+    manifest={
+        "SearchRequest",
+        "SearchResponse",
+    },
 )
 
 
@@ -474,22 +478,53 @@ class SearchRequest(proto.Message):
                     both in stock and ship to store "123".
             """
 
-            key = proto.Field(proto.STRING, number=1,)
-            intervals = proto.RepeatedField(
-                proto.MESSAGE, number=2, message=common.Interval,
+            key = proto.Field(
+                proto.STRING,
+                number=1,
             )
-            restricted_values = proto.RepeatedField(proto.STRING, number=3,)
-            prefixes = proto.RepeatedField(proto.STRING, number=8,)
-            contains = proto.RepeatedField(proto.STRING, number=9,)
-            order_by = proto.Field(proto.STRING, number=4,)
-            query = proto.Field(proto.STRING, number=5,)
+            intervals = proto.RepeatedField(
+                proto.MESSAGE,
+                number=2,
+                message=common.Interval,
+            )
+            restricted_values = proto.RepeatedField(
+                proto.STRING,
+                number=3,
+            )
+            prefixes = proto.RepeatedField(
+                proto.STRING,
+                number=8,
+            )
+            contains = proto.RepeatedField(
+                proto.STRING,
+                number=9,
+            )
+            order_by = proto.Field(
+                proto.STRING,
+                number=4,
+            )
+            query = proto.Field(
+                proto.STRING,
+                number=5,
+            )
 
         facet_key = proto.Field(
-            proto.MESSAGE, number=1, message="SearchRequest.FacetSpec.FacetKey",
+            proto.MESSAGE,
+            number=1,
+            message="SearchRequest.FacetSpec.FacetKey",
         )
-        limit = proto.Field(proto.INT32, number=2,)
-        excluded_filter_keys = proto.RepeatedField(proto.STRING, number=3,)
-        enable_dynamic_position = proto.Field(proto.BOOL, number=4,)
+        limit = proto.Field(
+            proto.INT32,
+            number=2,
+        )
+        excluded_filter_keys = proto.RepeatedField(
+            proto.STRING,
+            number=3,
+        )
+        enable_dynamic_position = proto.Field(
+            proto.BOOL,
+            number=4,
+        )
 
     class DynamicFacetSpec(proto.Message):
         r"""The specifications of dynamically generated facets.
@@ -508,7 +543,9 @@ class SearchRequest(proto.Message):
             ENABLED = 2
 
         mode = proto.Field(
-            proto.ENUM, number=1, enum="SearchRequest.DynamicFacetSpec.Mode",
+            proto.ENUM,
+            number=1,
+            enum="SearchRequest.DynamicFacetSpec.Mode",
         )
 
     class BoostSpec(proto.Message):
@@ -572,15 +609,25 @@ class SearchRequest(proto.Message):
                     condition is ignored.
             """
 
-            condition = proto.Field(proto.STRING, number=1,)
-            boost = proto.Field(proto.FLOAT, number=2,)
+            condition = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            boost = proto.Field(
+                proto.FLOAT,
+                number=2,
+            )
 
         condition_boost_specs = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="SearchRequest.BoostSpec.ConditionBoostSpec",
         )
-        skip_boost_spec_validation = proto.Field(proto.BOOL, number=2, optional=True,)
+        skip_boost_spec_validation = proto.Field(
+            proto.BOOL,
+            number=2,
+            optional=True,
+        )
 
     class QueryExpansionSpec(proto.Message):
         r"""Specification to determine under which conditions query
@@ -607,9 +654,14 @@ class SearchRequest(proto.Message):
             AUTO = 3
 
         condition = proto.Field(
-            proto.ENUM, number=1, enum="SearchRequest.QueryExpansionSpec.Condition",
+            proto.ENUM,
+            number=1,
+            enum="SearchRequest.QueryExpansionSpec.Condition",
         )
-        pin_unexpanded_results = proto.Field(proto.BOOL, number=2,)
+        pin_unexpanded_results = proto.Field(
+            proto.BOOL,
+            number=2,
+        )
 
     class PersonalizationSpec(proto.Message):
         r"""The specification for personalization.
@@ -627,33 +679,93 @@ class SearchRequest(proto.Message):
             DISABLED = 2
 
         mode = proto.Field(
-            proto.ENUM, number=1, enum="SearchRequest.PersonalizationSpec.Mode",
+            proto.ENUM,
+            number=1,
+            enum="SearchRequest.PersonalizationSpec.Mode",
         )
 
-    placement = proto.Field(proto.STRING, number=1,)
-    branch = proto.Field(proto.STRING, number=2,)
-    query = proto.Field(proto.STRING, number=3,)
-    visitor_id = proto.Field(proto.STRING, number=4,)
-    user_info = proto.Field(proto.MESSAGE, number=5, message=common.UserInfo,)
-    page_size = proto.Field(proto.INT32, number=7,)
-    page_token = proto.Field(proto.STRING, number=8,)
-    offset = proto.Field(proto.INT32, number=9,)
-    filter = proto.Field(proto.STRING, number=10,)
-    canonical_filter = proto.Field(proto.STRING, number=28,)
-    order_by = proto.Field(proto.STRING, number=11,)
-    facet_specs = proto.RepeatedField(proto.MESSAGE, number=12, message=FacetSpec,)
+    placement = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    branch = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    query = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    visitor_id = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    user_info = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=common.UserInfo,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=7,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    offset = proto.Field(
+        proto.INT32,
+        number=9,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=10,
+    )
+    canonical_filter = proto.Field(
+        proto.STRING,
+        number=28,
+    )
+    order_by = proto.Field(
+        proto.STRING,
+        number=11,
+    )
+    facet_specs = proto.RepeatedField(
+        proto.MESSAGE,
+        number=12,
+        message=FacetSpec,
+    )
     dynamic_facet_spec = proto.Field(
-        proto.MESSAGE, number=21, message=DynamicFacetSpec,
+        proto.MESSAGE,
+        number=21,
+        message=DynamicFacetSpec,
     )
-    boost_spec = proto.Field(proto.MESSAGE, number=13, message=BoostSpec,)
+    boost_spec = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        message=BoostSpec,
+    )
     query_expansion_spec = proto.Field(
-        proto.MESSAGE, number=14, message=QueryExpansionSpec,
+        proto.MESSAGE,
+        number=14,
+        message=QueryExpansionSpec,
     )
-    variant_rollup_keys = proto.RepeatedField(proto.STRING, number=17,)
-    page_categories = proto.RepeatedField(proto.STRING, number=23,)
-    search_mode = proto.Field(proto.ENUM, number=31, enum=SearchMode,)
+    variant_rollup_keys = proto.RepeatedField(
+        proto.STRING,
+        number=17,
+    )
+    page_categories = proto.RepeatedField(
+        proto.STRING,
+        number=23,
+    )
+    search_mode = proto.Field(
+        proto.ENUM,
+        number=31,
+        enum=SearchMode,
+    )
     personalization_spec = proto.Field(
-        proto.MESSAGE, number=32, message=PersonalizationSpec,
+        proto.MESSAGE,
+        number=32,
+        message=PersonalizationSpec,
     )
 
 
@@ -788,14 +900,30 @@ class SearchResponse(proto.Message):
                 in the store "store1".
         """
 
-        id = proto.Field(proto.STRING, number=1,)
-        product = proto.Field(proto.MESSAGE, number=2, message=gcr_product.Product,)
-        matching_variant_count = proto.Field(proto.INT32, number=3,)
+        id = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        product = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message=gcr_product.Product,
+        )
+        matching_variant_count = proto.Field(
+            proto.INT32,
+            number=3,
+        )
         matching_variant_fields = proto.MapField(
-            proto.STRING, proto.MESSAGE, number=4, message=field_mask_pb2.FieldMask,
+            proto.STRING,
+            proto.MESSAGE,
+            number=4,
+            message=field_mask_pb2.FieldMask,
         )
         variant_rollup_values = proto.MapField(
-            proto.STRING, proto.MESSAGE, number=5, message=struct_pb2.Value,
+            proto.STRING,
+            proto.MESSAGE,
+            number=5,
+            message=struct_pb2.Value,
         )
 
     class Facet(proto.Message):
@@ -836,17 +964,35 @@ class SearchResponse(proto.Message):
                     Number of items that have this facet value.
             """
 
-            value = proto.Field(proto.STRING, number=1, oneof="facet_value",)
-            interval = proto.Field(
-                proto.MESSAGE, number=2, oneof="facet_value", message=common.Interval,
+            value = proto.Field(
+                proto.STRING,
+                number=1,
+                oneof="facet_value",
             )
-            count = proto.Field(proto.INT64, number=3,)
+            interval = proto.Field(
+                proto.MESSAGE,
+                number=2,
+                oneof="facet_value",
+                message=common.Interval,
+            )
+            count = proto.Field(
+                proto.INT64,
+                number=3,
+            )
 
-        key = proto.Field(proto.STRING, number=1,)
-        values = proto.RepeatedField(
-            proto.MESSAGE, number=2, message="SearchResponse.Facet.FacetValue",
+        key = proto.Field(
+            proto.STRING,
+            number=1,
         )
-        dynamic_facet = proto.Field(proto.BOOL, number=3,)
+        values = proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="SearchResponse.Facet.FacetValue",
+        )
+        dynamic_facet = proto.Field(
+            proto.BOOL,
+            number=3,
+        )
 
     class QueryExpansionInfo(proto.Message):
         r"""Information describing query expansion including whether
@@ -863,26 +1009,62 @@ class SearchResponse(proto.Message):
                 is set to true.
         """
 
-        expanded_query = proto.Field(proto.BOOL, number=1,)
-        pinned_result_count = proto.Field(proto.INT64, number=2,)
+        expanded_query = proto.Field(
+            proto.BOOL,
+            number=1,
+        )
+        pinned_result_count = proto.Field(
+            proto.INT64,
+            number=2,
+        )
 
     @property
     def raw_page(self):
         return self
 
-    results = proto.RepeatedField(proto.MESSAGE, number=1, message=SearchResult,)
-    facets = proto.RepeatedField(proto.MESSAGE, number=2, message=Facet,)
-    total_size = proto.Field(proto.INT32, number=3,)
-    corrected_query = proto.Field(proto.STRING, number=4,)
-    attribution_token = proto.Field(proto.STRING, number=5,)
-    next_page_token = proto.Field(proto.STRING, number=6,)
-    query_expansion_info = proto.Field(
-        proto.MESSAGE, number=7, message=QueryExpansionInfo,
+    results = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=SearchResult,
     )
-    redirect_uri = proto.Field(proto.STRING, number=10,)
-    applied_controls = proto.RepeatedField(proto.STRING, number=12,)
+    facets = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=Facet,
+    )
+    total_size = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    corrected_query = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    attribution_token = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    query_expansion_info = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=QueryExpansionInfo,
+    )
+    redirect_uri = proto.Field(
+        proto.STRING,
+        number=10,
+    )
+    applied_controls = proto.RepeatedField(
+        proto.STRING,
+        number=12,
+    )
     invalid_condition_boost_specs = proto.RepeatedField(
-        proto.MESSAGE, number=14, message="SearchRequest.BoostSpec.ConditionBoostSpec",
+        proto.MESSAGE,
+        number=14,
+        message="SearchRequest.BoostSpec.ConditionBoostSpec",
     )
 
 

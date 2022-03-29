@@ -31,7 +31,9 @@ from google.protobuf import empty_pb2  # type: ignore
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-retail",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-retail",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
@@ -121,25 +123,33 @@ class CatalogServiceTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.list_catalogs: gapic_v1.method.wrap_method(
-                self.list_catalogs, default_timeout=None, client_info=client_info,
+                self.list_catalogs,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.update_catalog: gapic_v1.method.wrap_method(
-                self.update_catalog, default_timeout=None, client_info=client_info,
+                self.update_catalog,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.set_default_branch: gapic_v1.method.wrap_method(
-                self.set_default_branch, default_timeout=None, client_info=client_info,
+                self.set_default_branch,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_default_branch: gapic_v1.method.wrap_method(
-                self.get_default_branch, default_timeout=None, client_info=client_info,
+                self.get_default_branch,
+                default_timeout=None,
+                client_info=client_info,
             ),
         }
 
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

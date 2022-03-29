@@ -23,7 +23,12 @@ from google.protobuf import timestamp_pb2  # type: ignore
 from google.protobuf import wrappers_pb2  # type: ignore
 
 
-__protobuf__ = proto.module(package="google.cloud.retail.v2", manifest={"Product",},)
+__protobuf__ = proto.module(
+    package="google.cloud.retail.v2",
+    manifest={
+        "Product",
+    },
+)
 
 
 class Product(proto.Message):
@@ -541,56 +546,157 @@ class Product(proto.Message):
         BACKORDER = 4
 
     expire_time = proto.Field(
-        proto.MESSAGE, number=16, oneof="expiration", message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=16,
+        oneof="expiration",
+        message=timestamp_pb2.Timestamp,
     )
     ttl = proto.Field(
-        proto.MESSAGE, number=17, oneof="expiration", message=duration_pb2.Duration,
+        proto.MESSAGE,
+        number=17,
+        oneof="expiration",
+        message=duration_pb2.Duration,
     )
-    name = proto.Field(proto.STRING, number=1,)
-    id = proto.Field(proto.STRING, number=2,)
-    type_ = proto.Field(proto.ENUM, number=3, enum=Type,)
-    primary_product_id = proto.Field(proto.STRING, number=4,)
-    collection_member_ids = proto.RepeatedField(proto.STRING, number=5,)
-    gtin = proto.Field(proto.STRING, number=6,)
-    categories = proto.RepeatedField(proto.STRING, number=7,)
-    title = proto.Field(proto.STRING, number=8,)
-    brands = proto.RepeatedField(proto.STRING, number=9,)
-    description = proto.Field(proto.STRING, number=10,)
-    language_code = proto.Field(proto.STRING, number=11,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    type_ = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=Type,
+    )
+    primary_product_id = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    collection_member_ids = proto.RepeatedField(
+        proto.STRING,
+        number=5,
+    )
+    gtin = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    categories = proto.RepeatedField(
+        proto.STRING,
+        number=7,
+    )
+    title = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    brands = proto.RepeatedField(
+        proto.STRING,
+        number=9,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=10,
+    )
+    language_code = proto.Field(
+        proto.STRING,
+        number=11,
+    )
     attributes = proto.MapField(
-        proto.STRING, proto.MESSAGE, number=12, message=common.CustomAttribute,
+        proto.STRING,
+        proto.MESSAGE,
+        number=12,
+        message=common.CustomAttribute,
     )
-    tags = proto.RepeatedField(proto.STRING, number=13,)
-    price_info = proto.Field(proto.MESSAGE, number=14, message=common.PriceInfo,)
-    rating = proto.Field(proto.MESSAGE, number=15, message=common.Rating,)
+    tags = proto.RepeatedField(
+        proto.STRING,
+        number=13,
+    )
+    price_info = proto.Field(
+        proto.MESSAGE,
+        number=14,
+        message=common.PriceInfo,
+    )
+    rating = proto.Field(
+        proto.MESSAGE,
+        number=15,
+        message=common.Rating,
+    )
     available_time = proto.Field(
-        proto.MESSAGE, number=18, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=18,
+        message=timestamp_pb2.Timestamp,
     )
-    availability = proto.Field(proto.ENUM, number=19, enum=Availability,)
+    availability = proto.Field(
+        proto.ENUM,
+        number=19,
+        enum=Availability,
+    )
     available_quantity = proto.Field(
-        proto.MESSAGE, number=20, message=wrappers_pb2.Int32Value,
+        proto.MESSAGE,
+        number=20,
+        message=wrappers_pb2.Int32Value,
     )
     fulfillment_info = proto.RepeatedField(
-        proto.MESSAGE, number=21, message=common.FulfillmentInfo,
+        proto.MESSAGE,
+        number=21,
+        message=common.FulfillmentInfo,
     )
-    uri = proto.Field(proto.STRING, number=22,)
-    images = proto.RepeatedField(proto.MESSAGE, number=23, message=common.Image,)
-    audience = proto.Field(proto.MESSAGE, number=24, message=common.Audience,)
-    color_info = proto.Field(proto.MESSAGE, number=25, message=common.ColorInfo,)
-    sizes = proto.RepeatedField(proto.STRING, number=26,)
-    materials = proto.RepeatedField(proto.STRING, number=27,)
-    patterns = proto.RepeatedField(proto.STRING, number=28,)
-    conditions = proto.RepeatedField(proto.STRING, number=29,)
+    uri = proto.Field(
+        proto.STRING,
+        number=22,
+    )
+    images = proto.RepeatedField(
+        proto.MESSAGE,
+        number=23,
+        message=common.Image,
+    )
+    audience = proto.Field(
+        proto.MESSAGE,
+        number=24,
+        message=common.Audience,
+    )
+    color_info = proto.Field(
+        proto.MESSAGE,
+        number=25,
+        message=common.ColorInfo,
+    )
+    sizes = proto.RepeatedField(
+        proto.STRING,
+        number=26,
+    )
+    materials = proto.RepeatedField(
+        proto.STRING,
+        number=27,
+    )
+    patterns = proto.RepeatedField(
+        proto.STRING,
+        number=28,
+    )
+    conditions = proto.RepeatedField(
+        proto.STRING,
+        number=29,
+    )
     promotions = proto.RepeatedField(
-        proto.MESSAGE, number=34, message=promotion.Promotion,
+        proto.MESSAGE,
+        number=34,
+        message=promotion.Promotion,
     )
     publish_time = proto.Field(
-        proto.MESSAGE, number=33, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=33,
+        message=timestamp_pb2.Timestamp,
     )
     retrievable_fields = proto.Field(
-        proto.MESSAGE, number=30, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=30,
+        message=field_mask_pb2.FieldMask,
     )
-    variants = proto.RepeatedField(proto.MESSAGE, number=31, message="Product",)
+    variants = proto.RepeatedField(
+        proto.MESSAGE,
+        number=31,
+        message="Product",
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

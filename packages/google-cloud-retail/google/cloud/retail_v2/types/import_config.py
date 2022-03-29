@@ -91,8 +91,14 @@ class GcsSource(proto.Message):
                [CatalogAttribute][] per line.
     """
 
-    input_uris = proto.RepeatedField(proto.STRING, number=1,)
-    data_schema = proto.Field(proto.STRING, number=2,)
+    input_uris = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
+    data_schema = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class BigQuerySource(proto.Message):
@@ -161,13 +167,31 @@ class BigQuerySource(proto.Message):
     """
 
     partition_date = proto.Field(
-        proto.MESSAGE, number=6, oneof="partition", message=date_pb2.Date,
+        proto.MESSAGE,
+        number=6,
+        oneof="partition",
+        message=date_pb2.Date,
     )
-    project_id = proto.Field(proto.STRING, number=5,)
-    dataset_id = proto.Field(proto.STRING, number=1,)
-    table_id = proto.Field(proto.STRING, number=2,)
-    gcs_staging_dir = proto.Field(proto.STRING, number=3,)
-    data_schema = proto.Field(proto.STRING, number=4,)
+    project_id = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    dataset_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    table_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    gcs_staging_dir = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    data_schema = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class ProductInlineSource(proto.Message):
@@ -182,7 +206,11 @@ class ProductInlineSource(proto.Message):
             max of 100 items.
     """
 
-    products = proto.RepeatedField(proto.MESSAGE, number=1, message=product.Product,)
+    products = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=product.Product,
+    )
 
 
 class UserEventInlineSource(proto.Message):
@@ -196,7 +224,9 @@ class UserEventInlineSource(proto.Message):
     """
 
     user_events = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=user_event.UserEvent,
+        proto.MESSAGE,
+        number=1,
+        message=user_event.UserEvent,
     )
 
 
@@ -215,7 +245,11 @@ class ImportErrorsConfig(proto.Message):
             This field is a member of `oneof`_ ``destination``.
     """
 
-    gcs_prefix = proto.Field(proto.STRING, number=1, oneof="destination",)
+    gcs_prefix = proto.Field(
+        proto.STRING,
+        number=1,
+        oneof="destination",
+    )
 
 
 class ImportProductsRequest(proto.Message):
@@ -266,15 +300,38 @@ class ImportProductsRequest(proto.Message):
         INCREMENTAL = 1
         FULL = 2
 
-    parent = proto.Field(proto.STRING, number=1,)
-    request_id = proto.Field(proto.STRING, number=6,)
-    input_config = proto.Field(proto.MESSAGE, number=2, message="ProductInputConfig",)
-    errors_config = proto.Field(proto.MESSAGE, number=3, message="ImportErrorsConfig",)
-    update_mask = proto.Field(
-        proto.MESSAGE, number=4, message=field_mask_pb2.FieldMask,
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    reconciliation_mode = proto.Field(proto.ENUM, number=5, enum=ReconciliationMode,)
-    notification_pubsub_topic = proto.Field(proto.STRING, number=7,)
+    request_id = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    input_config = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="ProductInputConfig",
+    )
+    errors_config = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="ImportErrorsConfig",
+    )
+    update_mask = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=field_mask_pb2.FieldMask,
+    )
+    reconciliation_mode = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum=ReconciliationMode,
+    )
+    notification_pubsub_topic = proto.Field(
+        proto.STRING,
+        number=7,
+    )
 
 
 class ImportUserEventsRequest(proto.Message):
@@ -293,9 +350,20 @@ class ImportUserEventsRequest(proto.Message):
             event imports.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    input_config = proto.Field(proto.MESSAGE, number=2, message="UserEventInputConfig",)
-    errors_config = proto.Field(proto.MESSAGE, number=3, message="ImportErrorsConfig",)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    input_config = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="UserEventInputConfig",
+    )
+    errors_config = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="ImportErrorsConfig",
+    )
 
 
 class ImportCompletionDataRequest(proto.Message):
@@ -320,11 +388,19 @@ class ImportCompletionDataRequest(proto.Message):
             ``projects/{project}/topics/{topic}``.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    input_config = proto.Field(
-        proto.MESSAGE, number=2, message="CompletionDataInputConfig",
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    notification_pubsub_topic = proto.Field(proto.STRING, number=3,)
+    input_config = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="CompletionDataInputConfig",
+    )
+    notification_pubsub_topic = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ProductInputConfig(proto.Message):
@@ -355,13 +431,22 @@ class ProductInputConfig(proto.Message):
     """
 
     product_inline_source = proto.Field(
-        proto.MESSAGE, number=1, oneof="source", message="ProductInlineSource",
+        proto.MESSAGE,
+        number=1,
+        oneof="source",
+        message="ProductInlineSource",
     )
     gcs_source = proto.Field(
-        proto.MESSAGE, number=2, oneof="source", message="GcsSource",
+        proto.MESSAGE,
+        number=2,
+        oneof="source",
+        message="GcsSource",
     )
     big_query_source = proto.Field(
-        proto.MESSAGE, number=3, oneof="source", message="BigQuerySource",
+        proto.MESSAGE,
+        number=3,
+        oneof="source",
+        message="BigQuerySource",
     )
 
 
@@ -393,13 +478,22 @@ class UserEventInputConfig(proto.Message):
     """
 
     user_event_inline_source = proto.Field(
-        proto.MESSAGE, number=1, oneof="source", message="UserEventInlineSource",
+        proto.MESSAGE,
+        number=1,
+        oneof="source",
+        message="UserEventInlineSource",
     )
     gcs_source = proto.Field(
-        proto.MESSAGE, number=2, oneof="source", message="GcsSource",
+        proto.MESSAGE,
+        number=2,
+        oneof="source",
+        message="GcsSource",
     )
     big_query_source = proto.Field(
-        proto.MESSAGE, number=3, oneof="source", message="BigQuerySource",
+        proto.MESSAGE,
+        number=3,
+        oneof="source",
+        message="BigQuerySource",
     )
 
 
@@ -421,7 +515,10 @@ class CompletionDataInputConfig(proto.Message):
     """
 
     big_query_source = proto.Field(
-        proto.MESSAGE, number=1, oneof="source", message="BigQuerySource",
+        proto.MESSAGE,
+        number=1,
+        oneof="source",
+        message="BigQuerySource",
     )
 
 
@@ -453,12 +550,32 @@ class ImportMetadata(proto.Message):
             ``projects/{project}/topics/{topic}``.
     """
 
-    create_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    success_count = proto.Field(proto.INT64, number=3,)
-    failure_count = proto.Field(proto.INT64, number=4,)
-    request_id = proto.Field(proto.STRING, number=5,)
-    notification_pubsub_topic = proto.Field(proto.STRING, number=6,)
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    success_count = proto.Field(
+        proto.INT64,
+        number=3,
+    )
+    failure_count = proto.Field(
+        proto.INT64,
+        number=4,
+    )
+    request_id = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    notification_pubsub_topic = proto.Field(
+        proto.STRING,
+        number=6,
+    )
 
 
 class ImportProductsResponse(proto.Message):
@@ -478,9 +595,15 @@ class ImportProductsResponse(proto.Message):
     """
 
     error_samples = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=status_pb2.Status,
+        proto.MESSAGE,
+        number=1,
+        message=status_pb2.Status,
     )
-    errors_config = proto.Field(proto.MESSAGE, number=2, message="ImportErrorsConfig",)
+    errors_config = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="ImportErrorsConfig",
+    )
 
 
 class ImportUserEventsResponse(proto.Message):
@@ -502,11 +625,19 @@ class ImportUserEventsResponse(proto.Message):
     """
 
     error_samples = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=status_pb2.Status,
+        proto.MESSAGE,
+        number=1,
+        message=status_pb2.Status,
     )
-    errors_config = proto.Field(proto.MESSAGE, number=2, message="ImportErrorsConfig",)
+    errors_config = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="ImportErrorsConfig",
+    )
     import_summary = proto.Field(
-        proto.MESSAGE, number=3, message="UserEventImportSummary",
+        proto.MESSAGE,
+        number=3,
+        message="UserEventImportSummary",
     )
 
 
@@ -524,8 +655,14 @@ class UserEventImportSummary(proto.Message):
             catalog.
     """
 
-    joined_events_count = proto.Field(proto.INT64, number=1,)
-    unjoined_events_count = proto.Field(proto.INT64, number=2,)
+    joined_events_count = proto.Field(
+        proto.INT64,
+        number=1,
+    )
+    unjoined_events_count = proto.Field(
+        proto.INT64,
+        number=2,
+    )
 
 
 class ImportCompletionDataResponse(proto.Message):
@@ -542,7 +679,9 @@ class ImportCompletionDataResponse(proto.Message):
     """
 
     error_samples = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=status_pb2.Status,
+        proto.MESSAGE,
+        number=1,
+        message=status_pb2.Status,
     )
 
 

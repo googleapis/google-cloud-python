@@ -70,8 +70,14 @@ class Audience(proto.Message):
             `Product.audience.suggestedMaxAge <https://schema.org/suggestedMaxAge>`__.
     """
 
-    genders = proto.RepeatedField(proto.STRING, number=1,)
-    age_groups = proto.RepeatedField(proto.STRING, number=2,)
+    genders = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
+    age_groups = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
 
 
 class ColorInfo(proto.Message):
@@ -112,8 +118,14 @@ class ColorInfo(proto.Message):
             `Product.color <https://schema.org/color>`__.
     """
 
-    color_families = proto.RepeatedField(proto.STRING, number=1,)
-    colors = proto.RepeatedField(proto.STRING, number=2,)
+    color_families = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
+    colors = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
 
 
 class CustomAttribute(proto.Message):
@@ -180,10 +192,24 @@ class CustomAttribute(proto.Message):
             This field is a member of `oneof`_ ``_indexable``.
     """
 
-    text = proto.RepeatedField(proto.STRING, number=1,)
-    numbers = proto.RepeatedField(proto.DOUBLE, number=2,)
-    searchable = proto.Field(proto.BOOL, number=3, optional=True,)
-    indexable = proto.Field(proto.BOOL, number=4, optional=True,)
+    text = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
+    numbers = proto.RepeatedField(
+        proto.DOUBLE,
+        number=2,
+    )
+    searchable = proto.Field(
+        proto.BOOL,
+        number=3,
+        optional=True,
+    )
+    indexable = proto.Field(
+        proto.BOOL,
+        number=4,
+        optional=True,
+    )
 
 
 class FulfillmentInfo(proto.Message):
@@ -225,8 +251,14 @@ class FulfillmentInfo(proto.Message):
             Otherwise, an INVALID_ARGUMENT error is returned.
     """
 
-    type_ = proto.Field(proto.STRING, number=1,)
-    place_ids = proto.RepeatedField(proto.STRING, number=2,)
+    type_ = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    place_ids = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
 
 
 class Image(proto.Message):
@@ -260,9 +292,18 @@ class Image(proto.Message):
             INVALID_ARGUMENT error is returned.
     """
 
-    uri = proto.Field(proto.STRING, number=1,)
-    height = proto.Field(proto.INT32, number=2,)
-    width = proto.Field(proto.INT32, number=3,)
+    uri = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    height = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    width = proto.Field(
+        proto.INT32,
+        number=3,
+    )
 
 
 class Interval(proto.Message):
@@ -294,10 +335,26 @@ class Interval(proto.Message):
             This field is a member of `oneof`_ ``max``.
     """
 
-    minimum = proto.Field(proto.DOUBLE, number=1, oneof="min",)
-    exclusive_minimum = proto.Field(proto.DOUBLE, number=2, oneof="min",)
-    maximum = proto.Field(proto.DOUBLE, number=3, oneof="max",)
-    exclusive_maximum = proto.Field(proto.DOUBLE, number=4, oneof="max",)
+    minimum = proto.Field(
+        proto.DOUBLE,
+        number=1,
+        oneof="min",
+    )
+    exclusive_minimum = proto.Field(
+        proto.DOUBLE,
+        number=2,
+        oneof="min",
+    )
+    maximum = proto.Field(
+        proto.DOUBLE,
+        number=3,
+        oneof="max",
+    )
+    exclusive_maximum = proto.Field(
+        proto.DOUBLE,
+        number=4,
+        oneof="max",
+    )
 
 
 class PriceInfo(proto.Message):
@@ -414,20 +471,48 @@ class PriceInfo(proto.Message):
                 [Product.primary_product_id][google.cloud.retail.v2.Product.primary_product_id].
         """
 
-        price = proto.Field(proto.MESSAGE, number=1, message="Interval",)
-        original_price = proto.Field(proto.MESSAGE, number=2, message="Interval",)
+        price = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message="Interval",
+        )
+        original_price = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message="Interval",
+        )
 
-    currency_code = proto.Field(proto.STRING, number=1,)
-    price = proto.Field(proto.FLOAT, number=2,)
-    original_price = proto.Field(proto.FLOAT, number=3,)
-    cost = proto.Field(proto.FLOAT, number=4,)
+    currency_code = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    price = proto.Field(
+        proto.FLOAT,
+        number=2,
+    )
+    original_price = proto.Field(
+        proto.FLOAT,
+        number=3,
+    )
+    cost = proto.Field(
+        proto.FLOAT,
+        number=4,
+    )
     price_effective_time = proto.Field(
-        proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
     )
     price_expire_time = proto.Field(
-        proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
     )
-    price_range = proto.Field(proto.MESSAGE, number=7, message=PriceRange,)
+    price_range = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=PriceRange,
+    )
 
 
 class Rating(proto.Message):
@@ -458,9 +543,18 @@ class Rating(proto.Message):
             with 1 star, 14 ratings with 2 star, and so on.
     """
 
-    rating_count = proto.Field(proto.INT32, number=1,)
-    average_rating = proto.Field(proto.FLOAT, number=2,)
-    rating_histogram = proto.RepeatedField(proto.INT32, number=3,)
+    rating_count = proto.Field(
+        proto.INT32,
+        number=1,
+    )
+    average_rating = proto.Field(
+        proto.FLOAT,
+        number=2,
+    )
+    rating_histogram = proto.RepeatedField(
+        proto.INT32,
+        number=3,
+    )
 
 
 class UserInfo(proto.Message):
@@ -523,10 +617,22 @@ class UserInfo(proto.Message):
             [UserEventService.CollectUserEvent][google.cloud.retail.v2.UserEventService.CollectUserEvent].
     """
 
-    user_id = proto.Field(proto.STRING, number=1,)
-    ip_address = proto.Field(proto.STRING, number=2,)
-    user_agent = proto.Field(proto.STRING, number=3,)
-    direct_user_request = proto.Field(proto.BOOL, number=4,)
+    user_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    ip_address = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    user_agent = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    direct_user_request = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
 
 
 class LocalInventory(proto.Message):
@@ -590,12 +696,25 @@ class LocalInventory(proto.Message):
             INVALID_ARGUMENT error is returned.
     """
 
-    place_id = proto.Field(proto.STRING, number=1,)
-    price_info = proto.Field(proto.MESSAGE, number=2, message="PriceInfo",)
-    attributes = proto.MapField(
-        proto.STRING, proto.MESSAGE, number=3, message="CustomAttribute",
+    place_id = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    fulfillment_types = proto.RepeatedField(proto.STRING, number=4,)
+    price_info = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="PriceInfo",
+    )
+    attributes = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=3,
+        message="CustomAttribute",
+    )
+    fulfillment_types = proto.RepeatedField(
+        proto.STRING,
+        number=4,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

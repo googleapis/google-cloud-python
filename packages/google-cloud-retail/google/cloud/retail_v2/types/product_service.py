@@ -80,9 +80,19 @@ class CreateProductRequest(proto.Message):
             error is returned.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    product = proto.Field(proto.MESSAGE, number=2, message=gcr_product.Product,)
-    product_id = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    product = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=gcr_product.Product,
+    )
+    product_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class GetProductRequest(proto.Message):
@@ -103,7 +113,10 @@ class GetProductRequest(proto.Message):
             does not exist, a NOT_FOUND error is returned.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class UpdateProductRequest(proto.Message):
@@ -138,11 +151,20 @@ class UpdateProductRequest(proto.Message):
             created. In this situation, ``update_mask`` is ignored.
     """
 
-    product = proto.Field(proto.MESSAGE, number=1, message=gcr_product.Product,)
-    update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+    product = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=gcr_product.Product,
     )
-    allow_missing = proto.Field(proto.BOOL, number=3,)
+    update_mask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+    allow_missing = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
 
 
 class DeleteProductRequest(proto.Message):
@@ -175,7 +197,10 @@ class DeleteProductRequest(proto.Message):
             [Product][google.cloud.retail.v2.Product] will be deleted.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListProductsRequest(proto.Message):
@@ -265,11 +290,27 @@ class ListProductsRequest(proto.Message):
             INVALID_ARGUMENT error is returned.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    filter = proto.Field(proto.STRING, number=4,)
-    read_mask = proto.Field(proto.MESSAGE, number=5, message=field_mask_pb2.FieldMask,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    read_mask = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=field_mask_pb2.FieldMask,
+    )
 
 
 class ListProductsResponse(proto.Message):
@@ -292,9 +333,14 @@ class ListProductsResponse(proto.Message):
         return self
 
     products = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=gcr_product.Product,
+        proto.MESSAGE,
+        number=1,
+        message=gcr_product.Product,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class SetInventoryRequest(proto.Message):
@@ -388,10 +434,25 @@ class SetInventoryRequest(proto.Message):
             [Product][google.cloud.retail.v2.Product] is not found.
     """
 
-    inventory = proto.Field(proto.MESSAGE, number=1, message=gcr_product.Product,)
-    set_mask = proto.Field(proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,)
-    set_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
-    allow_missing = proto.Field(proto.BOOL, number=4,)
+    inventory = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=gcr_product.Product,
+    )
+    set_mask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+    set_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    allow_missing = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
 
 
 class SetInventoryMetadata(proto.Message):
@@ -477,11 +538,27 @@ class AddFulfillmentPlacesRequest(proto.Message):
             [Product][google.cloud.retail.v2.Product] is not found.
     """
 
-    product = proto.Field(proto.STRING, number=1,)
-    type_ = proto.Field(proto.STRING, number=2,)
-    place_ids = proto.RepeatedField(proto.STRING, number=3,)
-    add_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
-    allow_missing = proto.Field(proto.BOOL, number=5,)
+    product = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    type_ = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    place_ids = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+    add_time = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    allow_missing = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
 
 
 class AddFulfillmentPlacesMetadata(proto.Message):
@@ -552,13 +629,29 @@ class AddLocalInventoriesRequest(proto.Message):
             [Product][google.cloud.retail.v2.Product] is not found.
     """
 
-    product = proto.Field(proto.STRING, number=1,)
-    local_inventories = proto.RepeatedField(
-        proto.MESSAGE, number=2, message=common.LocalInventory,
+    product = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    add_mask = proto.Field(proto.MESSAGE, number=4, message=field_mask_pb2.FieldMask,)
-    add_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
-    allow_missing = proto.Field(proto.BOOL, number=6,)
+    local_inventories = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=common.LocalInventory,
+    )
+    add_mask = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=field_mask_pb2.FieldMask,
+    )
+    add_time = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+    allow_missing = proto.Field(
+        proto.BOOL,
+        number=6,
+    )
 
 
 class AddLocalInventoriesMetadata(proto.Message):
@@ -609,10 +702,23 @@ class RemoveLocalInventoriesRequest(proto.Message):
             [Product][google.cloud.retail.v2.Product] is not found.
     """
 
-    product = proto.Field(proto.STRING, number=1,)
-    place_ids = proto.RepeatedField(proto.STRING, number=2,)
-    remove_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
-    allow_missing = proto.Field(proto.BOOL, number=3,)
+    product = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    place_ids = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+    remove_time = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+    allow_missing = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
 
 
 class RemoveLocalInventoriesMetadata(proto.Message):
@@ -693,11 +799,27 @@ class RemoveFulfillmentPlacesRequest(proto.Message):
             [Product][google.cloud.retail.v2.Product] is not found.
     """
 
-    product = proto.Field(proto.STRING, number=1,)
-    type_ = proto.Field(proto.STRING, number=2,)
-    place_ids = proto.RepeatedField(proto.STRING, number=3,)
-    remove_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
-    allow_missing = proto.Field(proto.BOOL, number=5,)
+    product = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    type_ = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    place_ids = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+    remove_time = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    allow_missing = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
 
 
 class RemoveFulfillmentPlacesMetadata(proto.Message):

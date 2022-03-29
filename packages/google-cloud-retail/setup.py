@@ -48,7 +48,9 @@ setuptools.setup(
         "proto-plus >= 1.15.0",
     ),
     python_requires=">=3.6",
-    scripts=["scripts/fixup_retail_v2_keywords.py",],
+    scripts=[
+        "scripts/fixup_retail_v2_keywords.py",
+    ],
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Developers",
