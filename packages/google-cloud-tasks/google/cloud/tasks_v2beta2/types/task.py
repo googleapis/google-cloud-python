@@ -22,7 +22,11 @@ from google.rpc import status_pb2  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.tasks.v2beta2",
-    manifest={"Task", "TaskStatus", "AttemptStatus",},
+    manifest={
+        "Task",
+        "TaskStatus",
+        "AttemptStatus",
+    },
 )
 
 
@@ -121,7 +125,10 @@ class Task(proto.Message):
         BASIC = 1
         FULL = 2
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     app_engine_http_request = proto.Field(
         proto.MESSAGE,
         number=3,
@@ -129,14 +136,31 @@ class Task(proto.Message):
         message=target.AppEngineHttpRequest,
     )
     pull_message = proto.Field(
-        proto.MESSAGE, number=4, oneof="payload_type", message=target.PullMessage,
+        proto.MESSAGE,
+        number=4,
+        oneof="payload_type",
+        message=target.PullMessage,
     )
     schedule_time = proto.Field(
-        proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
     )
-    create_time = proto.Field(proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,)
-    status = proto.Field(proto.MESSAGE, number=7, message="TaskStatus",)
-    view = proto.Field(proto.ENUM, number=8, enum=View,)
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
+    )
+    status = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message="TaskStatus",
+    )
+    view = proto.Field(
+        proto.ENUM,
+        number=8,
+        enum=View,
+    )
 
 
 class TaskStatus(proto.Message):
@@ -172,12 +196,24 @@ class TaskStatus(proto.Message):
             tasks][google.cloud.tasks.v2beta2.PullMessage].
     """
 
-    attempt_dispatch_count = proto.Field(proto.INT32, number=1,)
-    attempt_response_count = proto.Field(proto.INT32, number=2,)
-    first_attempt_status = proto.Field(
-        proto.MESSAGE, number=3, message="AttemptStatus",
+    attempt_dispatch_count = proto.Field(
+        proto.INT32,
+        number=1,
     )
-    last_attempt_status = proto.Field(proto.MESSAGE, number=4, message="AttemptStatus",)
+    attempt_response_count = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    first_attempt_status = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="AttemptStatus",
+    )
+    last_attempt_status = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="AttemptStatus",
+    )
 
 
 class AttemptStatus(proto.Message):
@@ -209,15 +245,25 @@ class AttemptStatus(proto.Message):
     """
 
     schedule_time = proto.Field(
-        proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
     )
     dispatch_time = proto.Field(
-        proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
     )
     response_time = proto.Field(
-        proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
     )
-    response_status = proto.Field(proto.MESSAGE, number=4, message=status_pb2.Status,)
+    response_status = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=status_pb2.Status,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

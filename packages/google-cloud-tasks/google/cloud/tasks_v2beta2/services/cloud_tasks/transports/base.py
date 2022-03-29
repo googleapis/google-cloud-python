@@ -36,7 +36,9 @@ from google.protobuf import empty_pb2  # type: ignore
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-tasks",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-tasks",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
@@ -156,10 +158,14 @@ class CloudTasksTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.create_queue: gapic_v1.method.wrap_method(
-                self.create_queue, default_timeout=20.0, client_info=client_info,
+                self.create_queue,
+                default_timeout=20.0,
+                client_info=client_info,
             ),
             self.update_queue: gapic_v1.method.wrap_method(
-                self.update_queue, default_timeout=20.0, client_info=client_info,
+                self.update_queue,
+                default_timeout=20.0,
+                client_info=client_info,
             ),
             self.delete_queue: gapic_v1.method.wrap_method(
                 self.delete_queue,
@@ -177,13 +183,19 @@ class CloudTasksTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.purge_queue: gapic_v1.method.wrap_method(
-                self.purge_queue, default_timeout=20.0, client_info=client_info,
+                self.purge_queue,
+                default_timeout=20.0,
+                client_info=client_info,
             ),
             self.pause_queue: gapic_v1.method.wrap_method(
-                self.pause_queue, default_timeout=20.0, client_info=client_info,
+                self.pause_queue,
+                default_timeout=20.0,
+                client_info=client_info,
             ),
             self.resume_queue: gapic_v1.method.wrap_method(
-                self.resume_queue, default_timeout=20.0, client_info=client_info,
+                self.resume_queue,
+                default_timeout=20.0,
+                client_info=client_info,
             ),
             self.get_iam_policy: gapic_v1.method.wrap_method(
                 self.get_iam_policy,
@@ -201,7 +213,9 @@ class CloudTasksTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.set_iam_policy: gapic_v1.method.wrap_method(
-                self.set_iam_policy, default_timeout=20.0, client_info=client_info,
+                self.set_iam_policy,
+                default_timeout=20.0,
+                client_info=client_info,
             ),
             self.test_iam_permissions: gapic_v1.method.wrap_method(
                 self.test_iam_permissions,
@@ -249,7 +263,9 @@ class CloudTasksTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.create_task: gapic_v1.method.wrap_method(
-                self.create_task, default_timeout=20.0, client_info=client_info,
+                self.create_task,
+                default_timeout=20.0,
+                client_info=client_info,
             ),
             self.delete_task: gapic_v1.method.wrap_method(
                 self.delete_task,
@@ -267,28 +283,38 @@ class CloudTasksTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.lease_tasks: gapic_v1.method.wrap_method(
-                self.lease_tasks, default_timeout=20.0, client_info=client_info,
+                self.lease_tasks,
+                default_timeout=20.0,
+                client_info=client_info,
             ),
             self.acknowledge_task: gapic_v1.method.wrap_method(
-                self.acknowledge_task, default_timeout=20.0, client_info=client_info,
+                self.acknowledge_task,
+                default_timeout=20.0,
+                client_info=client_info,
             ),
             self.renew_lease: gapic_v1.method.wrap_method(
-                self.renew_lease, default_timeout=20.0, client_info=client_info,
+                self.renew_lease,
+                default_timeout=20.0,
+                client_info=client_info,
             ),
             self.cancel_lease: gapic_v1.method.wrap_method(
-                self.cancel_lease, default_timeout=20.0, client_info=client_info,
+                self.cancel_lease,
+                default_timeout=20.0,
+                client_info=client_info,
             ),
             self.run_task: gapic_v1.method.wrap_method(
-                self.run_task, default_timeout=20.0, client_info=client_info,
+                self.run_task,
+                default_timeout=20.0,
+                client_info=client_info,
             ),
         }
 
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

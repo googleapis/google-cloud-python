@@ -22,7 +22,11 @@ from google.rpc import status_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.tasks.v2beta3", manifest={"Task", "Attempt",},
+    package="google.cloud.tasks.v2beta3",
+    manifest={
+        "Task",
+        "Attempt",
+    },
 )
 
 
@@ -177,7 +181,10 @@ class Task(proto.Message):
         BASIC = 1
         FULL = 2
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     app_engine_http_request = proto.Field(
         proto.MESSAGE,
         number=3,
@@ -185,23 +192,55 @@ class Task(proto.Message):
         message=target.AppEngineHttpRequest,
     )
     http_request = proto.Field(
-        proto.MESSAGE, number=11, oneof="payload_type", message=target.HttpRequest,
+        proto.MESSAGE,
+        number=11,
+        oneof="payload_type",
+        message=target.HttpRequest,
     )
     pull_message = proto.Field(
-        proto.MESSAGE, number=13, oneof="payload_type", message=target.PullMessage,
+        proto.MESSAGE,
+        number=13,
+        oneof="payload_type",
+        message=target.PullMessage,
     )
     schedule_time = proto.Field(
-        proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
     )
-    create_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
     dispatch_deadline = proto.Field(
-        proto.MESSAGE, number=12, message=duration_pb2.Duration,
+        proto.MESSAGE,
+        number=12,
+        message=duration_pb2.Duration,
     )
-    dispatch_count = proto.Field(proto.INT32, number=6,)
-    response_count = proto.Field(proto.INT32, number=7,)
-    first_attempt = proto.Field(proto.MESSAGE, number=8, message="Attempt",)
-    last_attempt = proto.Field(proto.MESSAGE, number=9, message="Attempt",)
-    view = proto.Field(proto.ENUM, number=10, enum=View,)
+    dispatch_count = proto.Field(
+        proto.INT32,
+        number=6,
+    )
+    response_count = proto.Field(
+        proto.INT32,
+        number=7,
+    )
+    first_attempt = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message="Attempt",
+    )
+    last_attempt = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message="Attempt",
+    )
+    view = proto.Field(
+        proto.ENUM,
+        number=10,
+        enum=View,
+    )
 
 
 class Attempt(proto.Message):
@@ -233,15 +272,25 @@ class Attempt(proto.Message):
     """
 
     schedule_time = proto.Field(
-        proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
     )
     dispatch_time = proto.Field(
-        proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
     )
     response_time = proto.Field(
-        proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
     )
-    response_status = proto.Field(proto.MESSAGE, number=4, message=status_pb2.Status,)
+    response_status = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=status_pb2.Status,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

@@ -95,7 +95,13 @@ def test__get_default_mtls_endpoint():
     assert CloudTasksClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
 
 
-@pytest.mark.parametrize("client_class", [CloudTasksClient, CloudTasksAsyncClient,])
+@pytest.mark.parametrize(
+    "client_class",
+    [
+        CloudTasksClient,
+        CloudTasksAsyncClient,
+    ],
+)
 def test_cloud_tasks_client_from_service_account_info(client_class):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
@@ -135,7 +141,13 @@ def test_cloud_tasks_client_service_account_always_use_jwt(
         use_jwt.assert_not_called()
 
 
-@pytest.mark.parametrize("client_class", [CloudTasksClient, CloudTasksAsyncClient,])
+@pytest.mark.parametrize(
+    "client_class",
+    [
+        CloudTasksClient,
+        CloudTasksAsyncClient,
+    ],
+)
 def test_cloud_tasks_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
@@ -490,7 +502,9 @@ def test_cloud_tasks_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -618,10 +632,17 @@ def test_cloud_tasks_client_create_channel_credentials_file(
         )
 
 
-@pytest.mark.parametrize("request_type", [cloudtasks.ListQueuesRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudtasks.ListQueuesRequest,
+        dict,
+    ],
+)
 def test_list_queues(request_type, transport: str = "grpc"):
     client = CloudTasksClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -650,7 +671,8 @@ def test_list_queues_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudTasksClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -666,7 +688,8 @@ async def test_list_queues_async(
     transport: str = "grpc_asyncio", request_type=cloudtasks.ListQueuesRequest
 ):
     client = CloudTasksAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -677,7 +700,9 @@ async def test_list_queues_async(
     with mock.patch.object(type(client.transport.list_queues), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            cloudtasks.ListQueuesResponse(next_page_token="next_page_token_value",)
+            cloudtasks.ListQueuesResponse(
+                next_page_token="next_page_token_value",
+            )
         )
         response = await client.list_queues(request)
 
@@ -697,7 +722,9 @@ async def test_list_queues_async_from_dict():
 
 
 def test_list_queues_field_headers():
-    client = CloudTasksClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -717,12 +744,17 @@ def test_list_queues_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_list_queues_field_headers_async():
-    client = CloudTasksAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -744,11 +776,16 @@ async def test_list_queues_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_queues_flattened():
-    client = CloudTasksClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_queues), "__call__") as call:
@@ -756,7 +793,9 @@ def test_list_queues_flattened():
         call.return_value = cloudtasks.ListQueuesResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_queues(parent="parent_value",)
+        client.list_queues(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -768,19 +807,24 @@ def test_list_queues_flattened():
 
 
 def test_list_queues_flattened_error():
-    client = CloudTasksClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_queues(
-            cloudtasks.ListQueuesRequest(), parent="parent_value",
+            cloudtasks.ListQueuesRequest(),
+            parent="parent_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_list_queues_flattened_async():
-    client = CloudTasksAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_queues), "__call__") as call:
@@ -792,7 +836,9 @@ async def test_list_queues_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_queues(parent="parent_value",)
+        response = await client.list_queues(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -805,19 +851,23 @@ async def test_list_queues_flattened_async():
 
 @pytest.mark.asyncio
 async def test_list_queues_flattened_error_async():
-    client = CloudTasksAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_queues(
-            cloudtasks.ListQueuesRequest(), parent="parent_value",
+            cloudtasks.ListQueuesRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_queues_pager(transport_name: str = "grpc"):
     client = CloudTasksClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -825,14 +875,29 @@ def test_list_queues_pager(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             cloudtasks.ListQueuesResponse(
-                queues=[queue.Queue(), queue.Queue(), queue.Queue(),],
+                queues=[
+                    queue.Queue(),
+                    queue.Queue(),
+                    queue.Queue(),
+                ],
                 next_page_token="abc",
             ),
-            cloudtasks.ListQueuesResponse(queues=[], next_page_token="def",),
             cloudtasks.ListQueuesResponse(
-                queues=[queue.Queue(),], next_page_token="ghi",
+                queues=[],
+                next_page_token="def",
             ),
-            cloudtasks.ListQueuesResponse(queues=[queue.Queue(), queue.Queue(),],),
+            cloudtasks.ListQueuesResponse(
+                queues=[
+                    queue.Queue(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloudtasks.ListQueuesResponse(
+                queues=[
+                    queue.Queue(),
+                    queue.Queue(),
+                ],
+            ),
             RuntimeError,
         )
 
@@ -851,7 +916,8 @@ def test_list_queues_pager(transport_name: str = "grpc"):
 
 def test_list_queues_pages(transport_name: str = "grpc"):
     client = CloudTasksClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -859,14 +925,29 @@ def test_list_queues_pages(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             cloudtasks.ListQueuesResponse(
-                queues=[queue.Queue(), queue.Queue(), queue.Queue(),],
+                queues=[
+                    queue.Queue(),
+                    queue.Queue(),
+                    queue.Queue(),
+                ],
                 next_page_token="abc",
             ),
-            cloudtasks.ListQueuesResponse(queues=[], next_page_token="def",),
             cloudtasks.ListQueuesResponse(
-                queues=[queue.Queue(),], next_page_token="ghi",
+                queues=[],
+                next_page_token="def",
             ),
-            cloudtasks.ListQueuesResponse(queues=[queue.Queue(), queue.Queue(),],),
+            cloudtasks.ListQueuesResponse(
+                queues=[
+                    queue.Queue(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloudtasks.ListQueuesResponse(
+                queues=[
+                    queue.Queue(),
+                    queue.Queue(),
+                ],
+            ),
             RuntimeError,
         )
         pages = list(client.list_queues(request={}).pages)
@@ -876,7 +957,9 @@ def test_list_queues_pages(transport_name: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_list_queues_async_pager():
-    client = CloudTasksAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = CloudTasksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -885,17 +968,34 @@ async def test_list_queues_async_pager():
         # Set the response to a series of pages.
         call.side_effect = (
             cloudtasks.ListQueuesResponse(
-                queues=[queue.Queue(), queue.Queue(), queue.Queue(),],
+                queues=[
+                    queue.Queue(),
+                    queue.Queue(),
+                    queue.Queue(),
+                ],
                 next_page_token="abc",
             ),
-            cloudtasks.ListQueuesResponse(queues=[], next_page_token="def",),
             cloudtasks.ListQueuesResponse(
-                queues=[queue.Queue(),], next_page_token="ghi",
+                queues=[],
+                next_page_token="def",
             ),
-            cloudtasks.ListQueuesResponse(queues=[queue.Queue(), queue.Queue(),],),
+            cloudtasks.ListQueuesResponse(
+                queues=[
+                    queue.Queue(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloudtasks.ListQueuesResponse(
+                queues=[
+                    queue.Queue(),
+                    queue.Queue(),
+                ],
+            ),
             RuntimeError,
         )
-        async_pager = await client.list_queues(request={},)
+        async_pager = await client.list_queues(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -907,7 +1007,9 @@ async def test_list_queues_async_pager():
 
 @pytest.mark.asyncio
 async def test_list_queues_async_pages():
-    client = CloudTasksAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = CloudTasksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -916,14 +1018,29 @@ async def test_list_queues_async_pages():
         # Set the response to a series of pages.
         call.side_effect = (
             cloudtasks.ListQueuesResponse(
-                queues=[queue.Queue(), queue.Queue(), queue.Queue(),],
+                queues=[
+                    queue.Queue(),
+                    queue.Queue(),
+                    queue.Queue(),
+                ],
                 next_page_token="abc",
             ),
-            cloudtasks.ListQueuesResponse(queues=[], next_page_token="def",),
             cloudtasks.ListQueuesResponse(
-                queues=[queue.Queue(),], next_page_token="ghi",
+                queues=[],
+                next_page_token="def",
             ),
-            cloudtasks.ListQueuesResponse(queues=[queue.Queue(), queue.Queue(),],),
+            cloudtasks.ListQueuesResponse(
+                queues=[
+                    queue.Queue(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloudtasks.ListQueuesResponse(
+                queues=[
+                    queue.Queue(),
+                    queue.Queue(),
+                ],
+            ),
             RuntimeError,
         )
         pages = []
@@ -933,10 +1050,17 @@ async def test_list_queues_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [cloudtasks.GetQueueRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudtasks.GetQueueRequest,
+        dict,
+    ],
+)
 def test_get_queue(request_type, transport: str = "grpc"):
     client = CloudTasksClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -947,7 +1071,8 @@ def test_get_queue(request_type, transport: str = "grpc"):
     with mock.patch.object(type(client.transport.get_queue), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = queue.Queue(
-            name="name_value", state=queue.Queue.State.RUNNING,
+            name="name_value",
+            state=queue.Queue.State.RUNNING,
         )
         response = client.get_queue(request)
 
@@ -966,7 +1091,8 @@ def test_get_queue_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudTasksClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -982,7 +1108,8 @@ async def test_get_queue_async(
     transport: str = "grpc_asyncio", request_type=cloudtasks.GetQueueRequest
 ):
     client = CloudTasksAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -993,7 +1120,10 @@ async def test_get_queue_async(
     with mock.patch.object(type(client.transport.get_queue), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            queue.Queue(name="name_value", state=queue.Queue.State.RUNNING,)
+            queue.Queue(
+                name="name_value",
+                state=queue.Queue.State.RUNNING,
+            )
         )
         response = await client.get_queue(request)
 
@@ -1014,7 +1144,9 @@ async def test_get_queue_async_from_dict():
 
 
 def test_get_queue_field_headers():
-    client = CloudTasksClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1034,12 +1166,17 @@ def test_get_queue_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_get_queue_field_headers_async():
-    client = CloudTasksAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1059,11 +1196,16 @@ async def test_get_queue_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_queue_flattened():
-    client = CloudTasksClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_queue), "__call__") as call:
@@ -1071,7 +1213,9 @@ def test_get_queue_flattened():
         call.return_value = queue.Queue()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_queue(name="name_value",)
+        client.get_queue(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1083,19 +1227,24 @@ def test_get_queue_flattened():
 
 
 def test_get_queue_flattened_error():
-    client = CloudTasksClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_queue(
-            cloudtasks.GetQueueRequest(), name="name_value",
+            cloudtasks.GetQueueRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_get_queue_flattened_async():
-    client = CloudTasksAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_queue), "__call__") as call:
@@ -1105,7 +1254,9 @@ async def test_get_queue_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(queue.Queue())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_queue(name="name_value",)
+        response = await client.get_queue(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1118,20 +1269,30 @@ async def test_get_queue_flattened_async():
 
 @pytest.mark.asyncio
 async def test_get_queue_flattened_error_async():
-    client = CloudTasksAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_queue(
-            cloudtasks.GetQueueRequest(), name="name_value",
+            cloudtasks.GetQueueRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [cloudtasks.CreateQueueRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudtasks.CreateQueueRequest,
+        dict,
+    ],
+)
 def test_create_queue(request_type, transport: str = "grpc"):
     client = CloudTasksClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1142,7 +1303,8 @@ def test_create_queue(request_type, transport: str = "grpc"):
     with mock.patch.object(type(client.transport.create_queue), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = gct_queue.Queue(
-            name="name_value", state=gct_queue.Queue.State.RUNNING,
+            name="name_value",
+            state=gct_queue.Queue.State.RUNNING,
         )
         response = client.create_queue(request)
 
@@ -1161,7 +1323,8 @@ def test_create_queue_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudTasksClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1177,7 +1340,8 @@ async def test_create_queue_async(
     transport: str = "grpc_asyncio", request_type=cloudtasks.CreateQueueRequest
 ):
     client = CloudTasksAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1188,7 +1352,10 @@ async def test_create_queue_async(
     with mock.patch.object(type(client.transport.create_queue), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gct_queue.Queue(name="name_value", state=gct_queue.Queue.State.RUNNING,)
+            gct_queue.Queue(
+                name="name_value",
+                state=gct_queue.Queue.State.RUNNING,
+            )
         )
         response = await client.create_queue(request)
 
@@ -1209,7 +1376,9 @@ async def test_create_queue_async_from_dict():
 
 
 def test_create_queue_field_headers():
-    client = CloudTasksClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1229,12 +1398,17 @@ def test_create_queue_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_create_queue_field_headers_async():
-    client = CloudTasksAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1254,11 +1428,16 @@ async def test_create_queue_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_queue_flattened():
-    client = CloudTasksClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_queue), "__call__") as call:
@@ -1267,7 +1446,8 @@ def test_create_queue_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.create_queue(
-            parent="parent_value", queue=gct_queue.Queue(name="name_value"),
+            parent="parent_value",
+            queue=gct_queue.Queue(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -1283,7 +1463,9 @@ def test_create_queue_flattened():
 
 
 def test_create_queue_flattened_error():
-    client = CloudTasksClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1297,7 +1479,9 @@ def test_create_queue_flattened_error():
 
 @pytest.mark.asyncio
 async def test_create_queue_flattened_async():
-    client = CloudTasksAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_queue), "__call__") as call:
@@ -1308,7 +1492,8 @@ async def test_create_queue_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.create_queue(
-            parent="parent_value", queue=gct_queue.Queue(name="name_value"),
+            parent="parent_value",
+            queue=gct_queue.Queue(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -1325,7 +1510,9 @@ async def test_create_queue_flattened_async():
 
 @pytest.mark.asyncio
 async def test_create_queue_flattened_error_async():
-    client = CloudTasksAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1337,10 +1524,17 @@ async def test_create_queue_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [cloudtasks.UpdateQueueRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudtasks.UpdateQueueRequest,
+        dict,
+    ],
+)
 def test_update_queue(request_type, transport: str = "grpc"):
     client = CloudTasksClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1351,7 +1545,8 @@ def test_update_queue(request_type, transport: str = "grpc"):
     with mock.patch.object(type(client.transport.update_queue), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = gct_queue.Queue(
-            name="name_value", state=gct_queue.Queue.State.RUNNING,
+            name="name_value",
+            state=gct_queue.Queue.State.RUNNING,
         )
         response = client.update_queue(request)
 
@@ -1370,7 +1565,8 @@ def test_update_queue_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudTasksClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1386,7 +1582,8 @@ async def test_update_queue_async(
     transport: str = "grpc_asyncio", request_type=cloudtasks.UpdateQueueRequest
 ):
     client = CloudTasksAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1397,7 +1594,10 @@ async def test_update_queue_async(
     with mock.patch.object(type(client.transport.update_queue), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gct_queue.Queue(name="name_value", state=gct_queue.Queue.State.RUNNING,)
+            gct_queue.Queue(
+                name="name_value",
+                state=gct_queue.Queue.State.RUNNING,
+            )
         )
         response = await client.update_queue(request)
 
@@ -1418,7 +1618,9 @@ async def test_update_queue_async_from_dict():
 
 
 def test_update_queue_field_headers():
-    client = CloudTasksClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1438,12 +1640,17 @@ def test_update_queue_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "queue.name=queue.name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "queue.name=queue.name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_update_queue_field_headers_async():
-    client = CloudTasksAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1463,11 +1670,16 @@ async def test_update_queue_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "queue.name=queue.name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "queue.name=queue.name/value",
+    ) in kw["metadata"]
 
 
 def test_update_queue_flattened():
-    client = CloudTasksClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_queue), "__call__") as call:
@@ -1493,7 +1705,9 @@ def test_update_queue_flattened():
 
 
 def test_update_queue_flattened_error():
-    client = CloudTasksClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1507,7 +1721,9 @@ def test_update_queue_flattened_error():
 
 @pytest.mark.asyncio
 async def test_update_queue_flattened_async():
-    client = CloudTasksAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_queue), "__call__") as call:
@@ -1536,7 +1752,9 @@ async def test_update_queue_flattened_async():
 
 @pytest.mark.asyncio
 async def test_update_queue_flattened_error_async():
-    client = CloudTasksAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1548,10 +1766,17 @@ async def test_update_queue_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [cloudtasks.DeleteQueueRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudtasks.DeleteQueueRequest,
+        dict,
+    ],
+)
 def test_delete_queue(request_type, transport: str = "grpc"):
     client = CloudTasksClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1577,7 +1802,8 @@ def test_delete_queue_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudTasksClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1593,7 +1819,8 @@ async def test_delete_queue_async(
     transport: str = "grpc_asyncio", request_type=cloudtasks.DeleteQueueRequest
 ):
     client = CloudTasksAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1621,7 +1848,9 @@ async def test_delete_queue_async_from_dict():
 
 
 def test_delete_queue_field_headers():
-    client = CloudTasksClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1641,12 +1870,17 @@ def test_delete_queue_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_delete_queue_field_headers_async():
-    client = CloudTasksAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1666,11 +1900,16 @@ async def test_delete_queue_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_queue_flattened():
-    client = CloudTasksClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_queue), "__call__") as call:
@@ -1678,7 +1917,9 @@ def test_delete_queue_flattened():
         call.return_value = None
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_queue(name="name_value",)
+        client.delete_queue(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1690,19 +1931,24 @@ def test_delete_queue_flattened():
 
 
 def test_delete_queue_flattened_error():
-    client = CloudTasksClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_queue(
-            cloudtasks.DeleteQueueRequest(), name="name_value",
+            cloudtasks.DeleteQueueRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_delete_queue_flattened_async():
-    client = CloudTasksAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_queue), "__call__") as call:
@@ -1712,7 +1958,9 @@ async def test_delete_queue_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_queue(name="name_value",)
+        response = await client.delete_queue(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1725,20 +1973,30 @@ async def test_delete_queue_flattened_async():
 
 @pytest.mark.asyncio
 async def test_delete_queue_flattened_error_async():
-    client = CloudTasksAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_queue(
-            cloudtasks.DeleteQueueRequest(), name="name_value",
+            cloudtasks.DeleteQueueRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [cloudtasks.PurgeQueueRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudtasks.PurgeQueueRequest,
+        dict,
+    ],
+)
 def test_purge_queue(request_type, transport: str = "grpc"):
     client = CloudTasksClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1749,7 +2007,8 @@ def test_purge_queue(request_type, transport: str = "grpc"):
     with mock.patch.object(type(client.transport.purge_queue), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = queue.Queue(
-            name="name_value", state=queue.Queue.State.RUNNING,
+            name="name_value",
+            state=queue.Queue.State.RUNNING,
         )
         response = client.purge_queue(request)
 
@@ -1768,7 +2027,8 @@ def test_purge_queue_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudTasksClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1784,7 +2044,8 @@ async def test_purge_queue_async(
     transport: str = "grpc_asyncio", request_type=cloudtasks.PurgeQueueRequest
 ):
     client = CloudTasksAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1795,7 +2056,10 @@ async def test_purge_queue_async(
     with mock.patch.object(type(client.transport.purge_queue), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            queue.Queue(name="name_value", state=queue.Queue.State.RUNNING,)
+            queue.Queue(
+                name="name_value",
+                state=queue.Queue.State.RUNNING,
+            )
         )
         response = await client.purge_queue(request)
 
@@ -1816,7 +2080,9 @@ async def test_purge_queue_async_from_dict():
 
 
 def test_purge_queue_field_headers():
-    client = CloudTasksClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1836,12 +2102,17 @@ def test_purge_queue_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_purge_queue_field_headers_async():
-    client = CloudTasksAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1861,11 +2132,16 @@ async def test_purge_queue_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_purge_queue_flattened():
-    client = CloudTasksClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.purge_queue), "__call__") as call:
@@ -1873,7 +2149,9 @@ def test_purge_queue_flattened():
         call.return_value = queue.Queue()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.purge_queue(name="name_value",)
+        client.purge_queue(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1885,19 +2163,24 @@ def test_purge_queue_flattened():
 
 
 def test_purge_queue_flattened_error():
-    client = CloudTasksClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.purge_queue(
-            cloudtasks.PurgeQueueRequest(), name="name_value",
+            cloudtasks.PurgeQueueRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_purge_queue_flattened_async():
-    client = CloudTasksAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.purge_queue), "__call__") as call:
@@ -1907,7 +2190,9 @@ async def test_purge_queue_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(queue.Queue())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.purge_queue(name="name_value",)
+        response = await client.purge_queue(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1920,20 +2205,30 @@ async def test_purge_queue_flattened_async():
 
 @pytest.mark.asyncio
 async def test_purge_queue_flattened_error_async():
-    client = CloudTasksAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.purge_queue(
-            cloudtasks.PurgeQueueRequest(), name="name_value",
+            cloudtasks.PurgeQueueRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [cloudtasks.PauseQueueRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudtasks.PauseQueueRequest,
+        dict,
+    ],
+)
 def test_pause_queue(request_type, transport: str = "grpc"):
     client = CloudTasksClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1944,7 +2239,8 @@ def test_pause_queue(request_type, transport: str = "grpc"):
     with mock.patch.object(type(client.transport.pause_queue), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = queue.Queue(
-            name="name_value", state=queue.Queue.State.RUNNING,
+            name="name_value",
+            state=queue.Queue.State.RUNNING,
         )
         response = client.pause_queue(request)
 
@@ -1963,7 +2259,8 @@ def test_pause_queue_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudTasksClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1979,7 +2276,8 @@ async def test_pause_queue_async(
     transport: str = "grpc_asyncio", request_type=cloudtasks.PauseQueueRequest
 ):
     client = CloudTasksAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1990,7 +2288,10 @@ async def test_pause_queue_async(
     with mock.patch.object(type(client.transport.pause_queue), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            queue.Queue(name="name_value", state=queue.Queue.State.RUNNING,)
+            queue.Queue(
+                name="name_value",
+                state=queue.Queue.State.RUNNING,
+            )
         )
         response = await client.pause_queue(request)
 
@@ -2011,7 +2312,9 @@ async def test_pause_queue_async_from_dict():
 
 
 def test_pause_queue_field_headers():
-    client = CloudTasksClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2031,12 +2334,17 @@ def test_pause_queue_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_pause_queue_field_headers_async():
-    client = CloudTasksAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2056,11 +2364,16 @@ async def test_pause_queue_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_pause_queue_flattened():
-    client = CloudTasksClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.pause_queue), "__call__") as call:
@@ -2068,7 +2381,9 @@ def test_pause_queue_flattened():
         call.return_value = queue.Queue()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.pause_queue(name="name_value",)
+        client.pause_queue(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2080,19 +2395,24 @@ def test_pause_queue_flattened():
 
 
 def test_pause_queue_flattened_error():
-    client = CloudTasksClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.pause_queue(
-            cloudtasks.PauseQueueRequest(), name="name_value",
+            cloudtasks.PauseQueueRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_pause_queue_flattened_async():
-    client = CloudTasksAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.pause_queue), "__call__") as call:
@@ -2102,7 +2422,9 @@ async def test_pause_queue_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(queue.Queue())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.pause_queue(name="name_value",)
+        response = await client.pause_queue(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2115,20 +2437,30 @@ async def test_pause_queue_flattened_async():
 
 @pytest.mark.asyncio
 async def test_pause_queue_flattened_error_async():
-    client = CloudTasksAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.pause_queue(
-            cloudtasks.PauseQueueRequest(), name="name_value",
+            cloudtasks.PauseQueueRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [cloudtasks.ResumeQueueRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudtasks.ResumeQueueRequest,
+        dict,
+    ],
+)
 def test_resume_queue(request_type, transport: str = "grpc"):
     client = CloudTasksClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2139,7 +2471,8 @@ def test_resume_queue(request_type, transport: str = "grpc"):
     with mock.patch.object(type(client.transport.resume_queue), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = queue.Queue(
-            name="name_value", state=queue.Queue.State.RUNNING,
+            name="name_value",
+            state=queue.Queue.State.RUNNING,
         )
         response = client.resume_queue(request)
 
@@ -2158,7 +2491,8 @@ def test_resume_queue_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudTasksClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2174,7 +2508,8 @@ async def test_resume_queue_async(
     transport: str = "grpc_asyncio", request_type=cloudtasks.ResumeQueueRequest
 ):
     client = CloudTasksAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2185,7 +2520,10 @@ async def test_resume_queue_async(
     with mock.patch.object(type(client.transport.resume_queue), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            queue.Queue(name="name_value", state=queue.Queue.State.RUNNING,)
+            queue.Queue(
+                name="name_value",
+                state=queue.Queue.State.RUNNING,
+            )
         )
         response = await client.resume_queue(request)
 
@@ -2206,7 +2544,9 @@ async def test_resume_queue_async_from_dict():
 
 
 def test_resume_queue_field_headers():
-    client = CloudTasksClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2226,12 +2566,17 @@ def test_resume_queue_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_resume_queue_field_headers_async():
-    client = CloudTasksAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2251,11 +2596,16 @@ async def test_resume_queue_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_resume_queue_flattened():
-    client = CloudTasksClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.resume_queue), "__call__") as call:
@@ -2263,7 +2613,9 @@ def test_resume_queue_flattened():
         call.return_value = queue.Queue()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.resume_queue(name="name_value",)
+        client.resume_queue(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2275,19 +2627,24 @@ def test_resume_queue_flattened():
 
 
 def test_resume_queue_flattened_error():
-    client = CloudTasksClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.resume_queue(
-            cloudtasks.ResumeQueueRequest(), name="name_value",
+            cloudtasks.ResumeQueueRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_resume_queue_flattened_async():
-    client = CloudTasksAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.resume_queue), "__call__") as call:
@@ -2297,7 +2654,9 @@ async def test_resume_queue_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(queue.Queue())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.resume_queue(name="name_value",)
+        response = await client.resume_queue(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2310,20 +2669,30 @@ async def test_resume_queue_flattened_async():
 
 @pytest.mark.asyncio
 async def test_resume_queue_flattened_error_async():
-    client = CloudTasksAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.resume_queue(
-            cloudtasks.ResumeQueueRequest(), name="name_value",
+            cloudtasks.ResumeQueueRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [iam_policy_pb2.GetIamPolicyRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.GetIamPolicyRequest,
+        dict,
+    ],
+)
 def test_get_iam_policy(request_type, transport: str = "grpc"):
     client = CloudTasksClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2333,7 +2702,10 @@ def test_get_iam_policy(request_type, transport: str = "grpc"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = policy_pb2.Policy(version=774, etag=b"etag_blob",)
+        call.return_value = policy_pb2.Policy(
+            version=774,
+            etag=b"etag_blob",
+        )
         response = client.get_iam_policy(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2351,7 +2723,8 @@ def test_get_iam_policy_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudTasksClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2367,7 +2740,8 @@ async def test_get_iam_policy_async(
     transport: str = "grpc_asyncio", request_type=iam_policy_pb2.GetIamPolicyRequest
 ):
     client = CloudTasksAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2378,7 +2752,10 @@ async def test_get_iam_policy_async(
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            policy_pb2.Policy(version=774, etag=b"etag_blob",)
+            policy_pb2.Policy(
+                version=774,
+                etag=b"etag_blob",
+            )
         )
         response = await client.get_iam_policy(request)
 
@@ -2399,7 +2776,9 @@ async def test_get_iam_policy_async_from_dict():
 
 
 def test_get_iam_policy_field_headers():
-    client = CloudTasksClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2419,12 +2798,17 @@ def test_get_iam_policy_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_get_iam_policy_field_headers_async():
-    client = CloudTasksAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2444,11 +2828,16 @@ async def test_get_iam_policy_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
 
 
 def test_get_iam_policy_from_dict_foreign():
-    client = CloudTasksClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
@@ -2463,7 +2852,9 @@ def test_get_iam_policy_from_dict_foreign():
 
 
 def test_get_iam_policy_flattened():
-    client = CloudTasksClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -2471,7 +2862,9 @@ def test_get_iam_policy_flattened():
         call.return_value = policy_pb2.Policy()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_iam_policy(resource="resource_value",)
+        client.get_iam_policy(
+            resource="resource_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2483,19 +2876,24 @@ def test_get_iam_policy_flattened():
 
 
 def test_get_iam_policy_flattened_error():
-    client = CloudTasksClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_iam_policy(
-            iam_policy_pb2.GetIamPolicyRequest(), resource="resource_value",
+            iam_policy_pb2.GetIamPolicyRequest(),
+            resource="resource_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_get_iam_policy_flattened_async():
-    client = CloudTasksAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -2505,7 +2903,9 @@ async def test_get_iam_policy_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(policy_pb2.Policy())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_iam_policy(resource="resource_value",)
+        response = await client.get_iam_policy(
+            resource="resource_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2518,20 +2918,30 @@ async def test_get_iam_policy_flattened_async():
 
 @pytest.mark.asyncio
 async def test_get_iam_policy_flattened_error_async():
-    client = CloudTasksAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_iam_policy(
-            iam_policy_pb2.GetIamPolicyRequest(), resource="resource_value",
+            iam_policy_pb2.GetIamPolicyRequest(),
+            resource="resource_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [iam_policy_pb2.SetIamPolicyRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.SetIamPolicyRequest,
+        dict,
+    ],
+)
 def test_set_iam_policy(request_type, transport: str = "grpc"):
     client = CloudTasksClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2541,7 +2951,10 @@ def test_set_iam_policy(request_type, transport: str = "grpc"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = policy_pb2.Policy(version=774, etag=b"etag_blob",)
+        call.return_value = policy_pb2.Policy(
+            version=774,
+            etag=b"etag_blob",
+        )
         response = client.set_iam_policy(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2559,7 +2972,8 @@ def test_set_iam_policy_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudTasksClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2575,7 +2989,8 @@ async def test_set_iam_policy_async(
     transport: str = "grpc_asyncio", request_type=iam_policy_pb2.SetIamPolicyRequest
 ):
     client = CloudTasksAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2586,7 +3001,10 @@ async def test_set_iam_policy_async(
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            policy_pb2.Policy(version=774, etag=b"etag_blob",)
+            policy_pb2.Policy(
+                version=774,
+                etag=b"etag_blob",
+            )
         )
         response = await client.set_iam_policy(request)
 
@@ -2607,7 +3025,9 @@ async def test_set_iam_policy_async_from_dict():
 
 
 def test_set_iam_policy_field_headers():
-    client = CloudTasksClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2627,12 +3047,17 @@ def test_set_iam_policy_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_set_iam_policy_field_headers_async():
-    client = CloudTasksAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2652,11 +3077,16 @@ async def test_set_iam_policy_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
 
 
 def test_set_iam_policy_from_dict_foreign():
-    client = CloudTasksClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
@@ -2671,7 +3101,9 @@ def test_set_iam_policy_from_dict_foreign():
 
 
 def test_set_iam_policy_flattened():
-    client = CloudTasksClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -2679,7 +3111,9 @@ def test_set_iam_policy_flattened():
         call.return_value = policy_pb2.Policy()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.set_iam_policy(resource="resource_value",)
+        client.set_iam_policy(
+            resource="resource_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2691,19 +3125,24 @@ def test_set_iam_policy_flattened():
 
 
 def test_set_iam_policy_flattened_error():
-    client = CloudTasksClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.set_iam_policy(
-            iam_policy_pb2.SetIamPolicyRequest(), resource="resource_value",
+            iam_policy_pb2.SetIamPolicyRequest(),
+            resource="resource_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_set_iam_policy_flattened_async():
-    client = CloudTasksAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -2713,7 +3152,9 @@ async def test_set_iam_policy_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(policy_pb2.Policy())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.set_iam_policy(resource="resource_value",)
+        response = await client.set_iam_policy(
+            resource="resource_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2726,22 +3167,30 @@ async def test_set_iam_policy_flattened_async():
 
 @pytest.mark.asyncio
 async def test_set_iam_policy_flattened_error_async():
-    client = CloudTasksAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.set_iam_policy(
-            iam_policy_pb2.SetIamPolicyRequest(), resource="resource_value",
+            iam_policy_pb2.SetIamPolicyRequest(),
+            resource="resource_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [iam_policy_pb2.TestIamPermissionsRequest, dict,]
+    "request_type",
+    [
+        iam_policy_pb2.TestIamPermissionsRequest,
+        dict,
+    ],
 )
 def test_test_iam_permissions(request_type, transport: str = "grpc"):
     client = CloudTasksClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2772,7 +3221,8 @@ def test_test_iam_permissions_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudTasksClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2791,7 +3241,8 @@ async def test_test_iam_permissions_async(
     request_type=iam_policy_pb2.TestIamPermissionsRequest,
 ):
     client = CloudTasksAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2826,7 +3277,9 @@ async def test_test_iam_permissions_async_from_dict():
 
 
 def test_test_iam_permissions_field_headers():
-    client = CloudTasksClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2848,12 +3301,17 @@ def test_test_iam_permissions_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_test_iam_permissions_field_headers_async():
-    client = CloudTasksAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2877,11 +3335,16 @@ async def test_test_iam_permissions_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
 
 
 def test_test_iam_permissions_from_dict_foreign():
-    client = CloudTasksClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
         type(client.transport.test_iam_permissions), "__call__"
@@ -2898,7 +3361,9 @@ def test_test_iam_permissions_from_dict_foreign():
 
 
 def test_test_iam_permissions_flattened():
-    client = CloudTasksClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2909,7 +3374,8 @@ def test_test_iam_permissions_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.test_iam_permissions(
-            resource="resource_value", permissions=["permissions_value"],
+            resource="resource_value",
+            permissions=["permissions_value"],
         )
 
         # Establish that the underlying call was made with the expected
@@ -2925,7 +3391,9 @@ def test_test_iam_permissions_flattened():
 
 
 def test_test_iam_permissions_flattened_error():
-    client = CloudTasksClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2939,7 +3407,9 @@ def test_test_iam_permissions_flattened_error():
 
 @pytest.mark.asyncio
 async def test_test_iam_permissions_flattened_async():
-    client = CloudTasksAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2954,7 +3424,8 @@ async def test_test_iam_permissions_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.test_iam_permissions(
-            resource="resource_value", permissions=["permissions_value"],
+            resource="resource_value",
+            permissions=["permissions_value"],
         )
 
         # Establish that the underlying call was made with the expected
@@ -2971,7 +3442,9 @@ async def test_test_iam_permissions_flattened_async():
 
 @pytest.mark.asyncio
 async def test_test_iam_permissions_flattened_error_async():
-    client = CloudTasksAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2983,10 +3456,17 @@ async def test_test_iam_permissions_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [cloudtasks.ListTasksRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudtasks.ListTasksRequest,
+        dict,
+    ],
+)
 def test_list_tasks(request_type, transport: str = "grpc"):
     client = CloudTasksClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3015,7 +3495,8 @@ def test_list_tasks_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudTasksClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3031,7 +3512,8 @@ async def test_list_tasks_async(
     transport: str = "grpc_asyncio", request_type=cloudtasks.ListTasksRequest
 ):
     client = CloudTasksAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3042,7 +3524,9 @@ async def test_list_tasks_async(
     with mock.patch.object(type(client.transport.list_tasks), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            cloudtasks.ListTasksResponse(next_page_token="next_page_token_value",)
+            cloudtasks.ListTasksResponse(
+                next_page_token="next_page_token_value",
+            )
         )
         response = await client.list_tasks(request)
 
@@ -3062,7 +3546,9 @@ async def test_list_tasks_async_from_dict():
 
 
 def test_list_tasks_field_headers():
-    client = CloudTasksClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3082,12 +3568,17 @@ def test_list_tasks_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_list_tasks_field_headers_async():
-    client = CloudTasksAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3109,11 +3600,16 @@ async def test_list_tasks_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_tasks_flattened():
-    client = CloudTasksClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_tasks), "__call__") as call:
@@ -3121,7 +3617,9 @@ def test_list_tasks_flattened():
         call.return_value = cloudtasks.ListTasksResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_tasks(parent="parent_value",)
+        client.list_tasks(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3133,19 +3631,24 @@ def test_list_tasks_flattened():
 
 
 def test_list_tasks_flattened_error():
-    client = CloudTasksClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_tasks(
-            cloudtasks.ListTasksRequest(), parent="parent_value",
+            cloudtasks.ListTasksRequest(),
+            parent="parent_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_list_tasks_flattened_async():
-    client = CloudTasksAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_tasks), "__call__") as call:
@@ -3157,7 +3660,9 @@ async def test_list_tasks_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_tasks(parent="parent_value",)
+        response = await client.list_tasks(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3170,19 +3675,23 @@ async def test_list_tasks_flattened_async():
 
 @pytest.mark.asyncio
 async def test_list_tasks_flattened_error_async():
-    client = CloudTasksAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_tasks(
-            cloudtasks.ListTasksRequest(), parent="parent_value",
+            cloudtasks.ListTasksRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_tasks_pager(transport_name: str = "grpc"):
     client = CloudTasksClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3190,11 +3699,29 @@ def test_list_tasks_pager(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             cloudtasks.ListTasksResponse(
-                tasks=[task.Task(), task.Task(), task.Task(),], next_page_token="abc",
+                tasks=[
+                    task.Task(),
+                    task.Task(),
+                    task.Task(),
+                ],
+                next_page_token="abc",
             ),
-            cloudtasks.ListTasksResponse(tasks=[], next_page_token="def",),
-            cloudtasks.ListTasksResponse(tasks=[task.Task(),], next_page_token="ghi",),
-            cloudtasks.ListTasksResponse(tasks=[task.Task(), task.Task(),],),
+            cloudtasks.ListTasksResponse(
+                tasks=[],
+                next_page_token="def",
+            ),
+            cloudtasks.ListTasksResponse(
+                tasks=[
+                    task.Task(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloudtasks.ListTasksResponse(
+                tasks=[
+                    task.Task(),
+                    task.Task(),
+                ],
+            ),
             RuntimeError,
         )
 
@@ -3213,7 +3740,8 @@ def test_list_tasks_pager(transport_name: str = "grpc"):
 
 def test_list_tasks_pages(transport_name: str = "grpc"):
     client = CloudTasksClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3221,11 +3749,29 @@ def test_list_tasks_pages(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             cloudtasks.ListTasksResponse(
-                tasks=[task.Task(), task.Task(), task.Task(),], next_page_token="abc",
+                tasks=[
+                    task.Task(),
+                    task.Task(),
+                    task.Task(),
+                ],
+                next_page_token="abc",
             ),
-            cloudtasks.ListTasksResponse(tasks=[], next_page_token="def",),
-            cloudtasks.ListTasksResponse(tasks=[task.Task(),], next_page_token="ghi",),
-            cloudtasks.ListTasksResponse(tasks=[task.Task(), task.Task(),],),
+            cloudtasks.ListTasksResponse(
+                tasks=[],
+                next_page_token="def",
+            ),
+            cloudtasks.ListTasksResponse(
+                tasks=[
+                    task.Task(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloudtasks.ListTasksResponse(
+                tasks=[
+                    task.Task(),
+                    task.Task(),
+                ],
+            ),
             RuntimeError,
         )
         pages = list(client.list_tasks(request={}).pages)
@@ -3235,7 +3781,9 @@ def test_list_tasks_pages(transport_name: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_list_tasks_async_pager():
-    client = CloudTasksAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = CloudTasksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3244,14 +3792,34 @@ async def test_list_tasks_async_pager():
         # Set the response to a series of pages.
         call.side_effect = (
             cloudtasks.ListTasksResponse(
-                tasks=[task.Task(), task.Task(), task.Task(),], next_page_token="abc",
+                tasks=[
+                    task.Task(),
+                    task.Task(),
+                    task.Task(),
+                ],
+                next_page_token="abc",
             ),
-            cloudtasks.ListTasksResponse(tasks=[], next_page_token="def",),
-            cloudtasks.ListTasksResponse(tasks=[task.Task(),], next_page_token="ghi",),
-            cloudtasks.ListTasksResponse(tasks=[task.Task(), task.Task(),],),
+            cloudtasks.ListTasksResponse(
+                tasks=[],
+                next_page_token="def",
+            ),
+            cloudtasks.ListTasksResponse(
+                tasks=[
+                    task.Task(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloudtasks.ListTasksResponse(
+                tasks=[
+                    task.Task(),
+                    task.Task(),
+                ],
+            ),
             RuntimeError,
         )
-        async_pager = await client.list_tasks(request={},)
+        async_pager = await client.list_tasks(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -3263,7 +3831,9 @@ async def test_list_tasks_async_pager():
 
 @pytest.mark.asyncio
 async def test_list_tasks_async_pages():
-    client = CloudTasksAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = CloudTasksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3272,11 +3842,29 @@ async def test_list_tasks_async_pages():
         # Set the response to a series of pages.
         call.side_effect = (
             cloudtasks.ListTasksResponse(
-                tasks=[task.Task(), task.Task(), task.Task(),], next_page_token="abc",
+                tasks=[
+                    task.Task(),
+                    task.Task(),
+                    task.Task(),
+                ],
+                next_page_token="abc",
             ),
-            cloudtasks.ListTasksResponse(tasks=[], next_page_token="def",),
-            cloudtasks.ListTasksResponse(tasks=[task.Task(),], next_page_token="ghi",),
-            cloudtasks.ListTasksResponse(tasks=[task.Task(), task.Task(),],),
+            cloudtasks.ListTasksResponse(
+                tasks=[],
+                next_page_token="def",
+            ),
+            cloudtasks.ListTasksResponse(
+                tasks=[
+                    task.Task(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloudtasks.ListTasksResponse(
+                tasks=[
+                    task.Task(),
+                    task.Task(),
+                ],
+            ),
             RuntimeError,
         )
         pages = []
@@ -3286,10 +3874,17 @@ async def test_list_tasks_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [cloudtasks.GetTaskRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudtasks.GetTaskRequest,
+        dict,
+    ],
+)
 def test_get_task(request_type, transport: str = "grpc"):
     client = CloudTasksClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3327,7 +3922,8 @@ def test_get_task_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudTasksClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3343,7 +3939,8 @@ async def test_get_task_async(
     transport: str = "grpc_asyncio", request_type=cloudtasks.GetTaskRequest
 ):
     client = CloudTasksAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3382,7 +3979,9 @@ async def test_get_task_async_from_dict():
 
 
 def test_get_task_field_headers():
-    client = CloudTasksClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3402,12 +4001,17 @@ def test_get_task_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_get_task_field_headers_async():
-    client = CloudTasksAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3427,11 +4031,16 @@ async def test_get_task_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_task_flattened():
-    client = CloudTasksClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_task), "__call__") as call:
@@ -3439,7 +4048,9 @@ def test_get_task_flattened():
         call.return_value = task.Task()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_task(name="name_value",)
+        client.get_task(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3451,19 +4062,24 @@ def test_get_task_flattened():
 
 
 def test_get_task_flattened_error():
-    client = CloudTasksClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_task(
-            cloudtasks.GetTaskRequest(), name="name_value",
+            cloudtasks.GetTaskRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_get_task_flattened_async():
-    client = CloudTasksAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_task), "__call__") as call:
@@ -3473,7 +4089,9 @@ async def test_get_task_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(task.Task())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_task(name="name_value",)
+        response = await client.get_task(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3486,20 +4104,30 @@ async def test_get_task_flattened_async():
 
 @pytest.mark.asyncio
 async def test_get_task_flattened_error_async():
-    client = CloudTasksAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_task(
-            cloudtasks.GetTaskRequest(), name="name_value",
+            cloudtasks.GetTaskRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [cloudtasks.CreateTaskRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudtasks.CreateTaskRequest,
+        dict,
+    ],
+)
 def test_create_task(request_type, transport: str = "grpc"):
     client = CloudTasksClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3537,7 +4165,8 @@ def test_create_task_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudTasksClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3553,7 +4182,8 @@ async def test_create_task_async(
     transport: str = "grpc_asyncio", request_type=cloudtasks.CreateTaskRequest
 ):
     client = CloudTasksAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3592,7 +4222,9 @@ async def test_create_task_async_from_dict():
 
 
 def test_create_task_field_headers():
-    client = CloudTasksClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3612,12 +4244,17 @@ def test_create_task_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_create_task_field_headers_async():
-    client = CloudTasksAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3637,11 +4274,16 @@ async def test_create_task_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_task_flattened():
-    client = CloudTasksClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_task), "__call__") as call:
@@ -3650,7 +4292,8 @@ def test_create_task_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.create_task(
-            parent="parent_value", task=gct_task.Task(name="name_value"),
+            parent="parent_value",
+            task=gct_task.Task(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -3666,7 +4309,9 @@ def test_create_task_flattened():
 
 
 def test_create_task_flattened_error():
-    client = CloudTasksClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -3680,7 +4325,9 @@ def test_create_task_flattened_error():
 
 @pytest.mark.asyncio
 async def test_create_task_flattened_async():
-    client = CloudTasksAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_task), "__call__") as call:
@@ -3691,7 +4338,8 @@ async def test_create_task_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.create_task(
-            parent="parent_value", task=gct_task.Task(name="name_value"),
+            parent="parent_value",
+            task=gct_task.Task(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -3708,7 +4356,9 @@ async def test_create_task_flattened_async():
 
 @pytest.mark.asyncio
 async def test_create_task_flattened_error_async():
-    client = CloudTasksAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -3720,10 +4370,17 @@ async def test_create_task_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [cloudtasks.DeleteTaskRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudtasks.DeleteTaskRequest,
+        dict,
+    ],
+)
 def test_delete_task(request_type, transport: str = "grpc"):
     client = CloudTasksClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3749,7 +4406,8 @@ def test_delete_task_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudTasksClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3765,7 +4423,8 @@ async def test_delete_task_async(
     transport: str = "grpc_asyncio", request_type=cloudtasks.DeleteTaskRequest
 ):
     client = CloudTasksAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3793,7 +4452,9 @@ async def test_delete_task_async_from_dict():
 
 
 def test_delete_task_field_headers():
-    client = CloudTasksClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3813,12 +4474,17 @@ def test_delete_task_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_delete_task_field_headers_async():
-    client = CloudTasksAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3838,11 +4504,16 @@ async def test_delete_task_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_task_flattened():
-    client = CloudTasksClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_task), "__call__") as call:
@@ -3850,7 +4521,9 @@ def test_delete_task_flattened():
         call.return_value = None
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_task(name="name_value",)
+        client.delete_task(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3862,19 +4535,24 @@ def test_delete_task_flattened():
 
 
 def test_delete_task_flattened_error():
-    client = CloudTasksClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_task(
-            cloudtasks.DeleteTaskRequest(), name="name_value",
+            cloudtasks.DeleteTaskRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_delete_task_flattened_async():
-    client = CloudTasksAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_task), "__call__") as call:
@@ -3884,7 +4562,9 @@ async def test_delete_task_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_task(name="name_value",)
+        response = await client.delete_task(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3897,20 +4577,30 @@ async def test_delete_task_flattened_async():
 
 @pytest.mark.asyncio
 async def test_delete_task_flattened_error_async():
-    client = CloudTasksAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_task(
-            cloudtasks.DeleteTaskRequest(), name="name_value",
+            cloudtasks.DeleteTaskRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [cloudtasks.RunTaskRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudtasks.RunTaskRequest,
+        dict,
+    ],
+)
 def test_run_task(request_type, transport: str = "grpc"):
     client = CloudTasksClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3948,7 +4638,8 @@ def test_run_task_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CloudTasksClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3964,7 +4655,8 @@ async def test_run_task_async(
     transport: str = "grpc_asyncio", request_type=cloudtasks.RunTaskRequest
 ):
     client = CloudTasksAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4003,7 +4695,9 @@ async def test_run_task_async_from_dict():
 
 
 def test_run_task_field_headers():
-    client = CloudTasksClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -4023,12 +4717,17 @@ def test_run_task_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_run_task_field_headers_async():
-    client = CloudTasksAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -4048,11 +4747,16 @@ async def test_run_task_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_run_task_flattened():
-    client = CloudTasksClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.run_task), "__call__") as call:
@@ -4060,7 +4764,9 @@ def test_run_task_flattened():
         call.return_value = task.Task()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.run_task(name="name_value",)
+        client.run_task(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -4072,19 +4778,24 @@ def test_run_task_flattened():
 
 
 def test_run_task_flattened_error():
-    client = CloudTasksClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.run_task(
-            cloudtasks.RunTaskRequest(), name="name_value",
+            cloudtasks.RunTaskRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_run_task_flattened_async():
-    client = CloudTasksAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.run_task), "__call__") as call:
@@ -4094,7 +4805,9 @@ async def test_run_task_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(task.Task())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.run_task(name="name_value",)
+        response = await client.run_task(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -4107,13 +4820,16 @@ async def test_run_task_flattened_async():
 
 @pytest.mark.asyncio
 async def test_run_task_flattened_error_async():
-    client = CloudTasksAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = CloudTasksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.run_task(
-            cloudtasks.RunTaskRequest(), name="name_value",
+            cloudtasks.RunTaskRequest(),
+            name="name_value",
         )
 
 
@@ -4124,7 +4840,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = CloudTasksClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -4144,7 +4861,10 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = CloudTasksClient(client_options=options, transport=transport,)
+        client = CloudTasksClient(
+            client_options=options,
+            transport=transport,
+        )
 
     # It is an error to provide an api_key and a credential.
     options = mock.Mock()
@@ -4160,7 +4880,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = CloudTasksClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -4190,7 +4911,10 @@ def test_transport_get_channel():
 
 @pytest.mark.parametrize(
     "transport_class",
-    [transports.CloudTasksGrpcTransport, transports.CloudTasksGrpcAsyncIOTransport,],
+    [
+        transports.CloudTasksGrpcTransport,
+        transports.CloudTasksGrpcAsyncIOTransport,
+    ],
 )
 def test_transport_adc(transport_class):
     # Test default credentials are used if not provided.
@@ -4202,8 +4926,13 @@ def test_transport_adc(transport_class):
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
-    client = CloudTasksClient(credentials=ga_credentials.AnonymousCredentials(),)
-    assert isinstance(client.transport, transports.CloudTasksGrpcTransport,)
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    assert isinstance(
+        client.transport,
+        transports.CloudTasksGrpcTransport,
+    )
 
 
 def test_cloud_tasks_base_transport_error():
@@ -4263,7 +4992,8 @@ def test_cloud_tasks_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.CloudTasksTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -4298,7 +5028,10 @@ def test_cloud_tasks_auth_adc():
 
 @pytest.mark.parametrize(
     "transport_class",
-    [transports.CloudTasksGrpcTransport, transports.CloudTasksGrpcAsyncIOTransport,],
+    [
+        transports.CloudTasksGrpcTransport,
+        transports.CloudTasksGrpcAsyncIOTransport,
+    ],
 )
 def test_cloud_tasks_transport_auth_adc(transport_class):
     # If credentials and host are not provided, the transport class should use
@@ -4415,7 +5148,8 @@ def test_cloud_tasks_grpc_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.CloudTasksGrpcTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -4427,7 +5161,8 @@ def test_cloud_tasks_grpc_asyncio_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.CloudTasksGrpcAsyncIOTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -4531,7 +5266,9 @@ def test_queue_path():
     location = "clam"
     queue = "whelk"
     expected = "projects/{project}/locations/{location}/queues/{queue}".format(
-        project=project, location=location, queue=queue,
+        project=project,
+        location=location,
+        queue=queue,
     )
     actual = CloudTasksClient.queue_path(project, location, queue)
     assert expected == actual
@@ -4555,8 +5292,13 @@ def test_task_path():
     location = "mussel"
     queue = "winkle"
     task = "nautilus"
-    expected = "projects/{project}/locations/{location}/queues/{queue}/tasks/{task}".format(
-        project=project, location=location, queue=queue, task=task,
+    expected = (
+        "projects/{project}/locations/{location}/queues/{queue}/tasks/{task}".format(
+            project=project,
+            location=location,
+            queue=queue,
+            task=task,
+        )
     )
     actual = CloudTasksClient.task_path(project, location, queue, task)
     assert expected == actual
@@ -4598,7 +5340,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "oyster"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = CloudTasksClient.common_folder_path(folder)
     assert expected == actual
 
@@ -4616,7 +5360,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "cuttlefish"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = CloudTasksClient.common_organization_path(organization)
     assert expected == actual
 
@@ -4634,7 +5380,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "winkle"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = CloudTasksClient.common_project_path(project)
     assert expected == actual
 
@@ -4654,7 +5402,8 @@ def test_common_location_path():
     project = "scallop"
     location = "abalone"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = CloudTasksClient.common_location_path(project, location)
     assert expected == actual
@@ -4679,7 +5428,8 @@ def test_client_with_default_client_info():
         transports.CloudTasksTransport, "_prep_wrapped_messages"
     ) as prep:
         client = CloudTasksClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -4688,7 +5438,8 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = CloudTasksClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -4696,7 +5447,8 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = CloudTasksAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     with mock.patch.object(
         type(getattr(client.transport, "grpc_channel")), "close"
