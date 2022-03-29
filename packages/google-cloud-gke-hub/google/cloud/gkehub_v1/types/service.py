@@ -92,11 +92,26 @@ class ListMembershipsRequest(proto.Message):
             https://google.aip.dev/132#ordering.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    filter = proto.Field(proto.STRING, number=4,)
-    order_by = proto.Field(proto.STRING, number=5,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class ListMembershipsResponse(proto.Message):
@@ -119,10 +134,18 @@ class ListMembershipsResponse(proto.Message):
         return self
 
     resources = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=membership.Membership,
+        proto.MESSAGE,
+        number=1,
+        message=membership.Membership,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
-    unreachable = proto.RepeatedField(proto.STRING, number=3,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 class GetMembershipRequest(proto.Message):
@@ -134,7 +157,10 @@ class GetMembershipRequest(proto.Message):
             ``projects/*/locations/*/memberships/*``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CreateMembershipRequest(proto.Message):
@@ -180,10 +206,23 @@ class CreateMembershipRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    membership_id = proto.Field(proto.STRING, number=2,)
-    resource = proto.Field(proto.MESSAGE, number=3, message=membership.Membership,)
-    request_id = proto.Field(proto.STRING, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    membership_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    resource = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=membership.Membership,
+    )
+    request_id = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class DeleteMembershipRequest(proto.Message):
@@ -213,8 +252,14 @@ class DeleteMembershipRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    request_id = proto.Field(proto.STRING, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    request_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class UpdateMembershipRequest(proto.Message):
@@ -255,12 +300,24 @@ class UpdateMembershipRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+    name = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    resource = proto.Field(proto.MESSAGE, number=3, message=membership.Membership,)
-    request_id = proto.Field(proto.STRING, number=4,)
+    update_mask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+    resource = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=membership.Membership,
+    )
+    request_id = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class GenerateConnectManifestRequest(proto.Message):
@@ -300,13 +357,34 @@ class GenerateConnectManifestRequest(proto.Message):
             the registry, if not public.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    namespace = proto.Field(proto.STRING, number=2,)
-    proxy = proto.Field(proto.BYTES, number=3,)
-    version = proto.Field(proto.STRING, number=4,)
-    is_upgrade = proto.Field(proto.BOOL, number=5,)
-    registry = proto.Field(proto.STRING, number=6,)
-    image_pull_secret_content = proto.Field(proto.BYTES, number=7,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    namespace = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    proxy = proto.Field(
+        proto.BYTES,
+        number=3,
+    )
+    version = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    is_upgrade = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
+    registry = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    image_pull_secret_content = proto.Field(
+        proto.BYTES,
+        number=7,
+    )
 
 
 class GenerateConnectManifestResponse(proto.Message):
@@ -321,7 +399,9 @@ class GenerateConnectManifestResponse(proto.Message):
     """
 
     manifest = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="ConnectAgentResource",
+        proto.MESSAGE,
+        number=1,
+        message="ConnectAgentResource",
     )
 
 
@@ -336,8 +416,15 @@ class ConnectAgentResource(proto.Message):
             YAML manifest of the resource.
     """
 
-    type_ = proto.Field(proto.MESSAGE, number=1, message="TypeMeta",)
-    manifest = proto.Field(proto.STRING, number=2,)
+    type_ = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="TypeMeta",
+    )
+    manifest = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class TypeMeta(proto.Message):
@@ -351,8 +438,14 @@ class TypeMeta(proto.Message):
             APIVersion of the resource (e.g. v1).
     """
 
-    kind = proto.Field(proto.STRING, number=1,)
-    api_version = proto.Field(proto.STRING, number=2,)
+    kind = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    api_version = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class ListFeaturesRequest(proto.Message):
@@ -397,11 +490,26 @@ class ListFeaturesRequest(proto.Message):
             https://google.aip.dev/132#ordering.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    filter = proto.Field(proto.STRING, number=4,)
-    order_by = proto.Field(proto.STRING, number=5,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class ListFeaturesResponse(proto.Message):
@@ -420,8 +528,15 @@ class ListFeaturesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    resources = proto.RepeatedField(proto.MESSAGE, number=1, message=feature.Feature,)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    resources = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=feature.Feature,
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetFeatureRequest(proto.Message):
@@ -433,7 +548,10 @@ class GetFeatureRequest(proto.Message):
             ``projects/*/locations/*/features/*``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CreateFeatureRequest(proto.Message):
@@ -468,10 +586,23 @@ class CreateFeatureRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    feature_id = proto.Field(proto.STRING, number=2,)
-    resource = proto.Field(proto.MESSAGE, number=3, message=feature.Feature,)
-    request_id = proto.Field(proto.STRING, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    feature_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    resource = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=feature.Feature,
+    )
+    request_id = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class DeleteFeatureRequest(proto.Message):
@@ -506,9 +637,18 @@ class DeleteFeatureRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    force = proto.Field(proto.BOOL, number=2,)
-    request_id = proto.Field(proto.STRING, number=3,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    force = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+    request_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class UpdateFeatureRequest(proto.Message):
@@ -549,12 +689,24 @@ class UpdateFeatureRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+    name = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    resource = proto.Field(proto.MESSAGE, number=3, message=feature.Feature,)
-    request_id = proto.Field(proto.STRING, number=4,)
+    update_mask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+    resource = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=feature.Feature,
+    )
+    request_id = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class OperationMetadata(proto.Message):
@@ -587,13 +739,36 @@ class OperationMetadata(proto.Message):
             operation.
     """
 
-    create_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
-    end_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    target = proto.Field(proto.STRING, number=3,)
-    verb = proto.Field(proto.STRING, number=4,)
-    status_detail = proto.Field(proto.STRING, number=5,)
-    cancel_requested = proto.Field(proto.BOOL, number=6,)
-    api_version = proto.Field(proto.STRING, number=7,)
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    target = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    verb = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    status_detail = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    cancel_requested = proto.Field(
+        proto.BOOL,
+        number=6,
+    )
+    api_version = proto.Field(
+        proto.STRING,
+        number=7,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

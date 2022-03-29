@@ -112,21 +112,62 @@ class Membership(proto.Message):
     """
 
     endpoint = proto.Field(
-        proto.MESSAGE, number=4, oneof="type", message="MembershipEndpoint",
+        proto.MESSAGE,
+        number=4,
+        oneof="type",
+        message="MembershipEndpoint",
     )
-    name = proto.Field(proto.STRING, number=1,)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=2,)
-    description = proto.Field(proto.STRING, number=3,)
-    state = proto.Field(proto.MESSAGE, number=5, message="MembershipState",)
-    create_time = proto.Field(proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=7, message=timestamp_pb2.Timestamp,)
-    delete_time = proto.Field(proto.MESSAGE, number=8, message=timestamp_pb2.Timestamp,)
-    external_id = proto.Field(proto.STRING, number=9,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=2,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    state = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message="MembershipState",
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=timestamp_pb2.Timestamp,
+    )
+    delete_time = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=timestamp_pb2.Timestamp,
+    )
+    external_id = proto.Field(
+        proto.STRING,
+        number=9,
+    )
     last_connection_time = proto.Field(
-        proto.MESSAGE, number=10, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=10,
+        message=timestamp_pb2.Timestamp,
     )
-    unique_id = proto.Field(proto.STRING, number=11,)
-    authority = proto.Field(proto.MESSAGE, number=12, message="Authority",)
+    unique_id = proto.Field(
+        proto.STRING,
+        number=11,
+    )
+    authority = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        message="Authority",
+    )
 
 
 class MembershipEndpoint(proto.Message):
@@ -153,12 +194,20 @@ class MembershipEndpoint(proto.Message):
                Features.
     """
 
-    gke_cluster = proto.Field(proto.MESSAGE, number=1, message="GkeCluster",)
+    gke_cluster = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="GkeCluster",
+    )
     kubernetes_metadata = proto.Field(
-        proto.MESSAGE, number=2, message="KubernetesMetadata",
+        proto.MESSAGE,
+        number=2,
+        message="KubernetesMetadata",
     )
     kubernetes_resource = proto.Field(
-        proto.MESSAGE, number=3, message="KubernetesResource",
+        proto.MESSAGE,
+        number=3,
+        message="KubernetesResource",
     )
 
 
@@ -207,14 +256,25 @@ class KubernetesResource(proto.Message):
             generation.
     """
 
-    membership_cr_manifest = proto.Field(proto.STRING, number=1,)
+    membership_cr_manifest = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     membership_resources = proto.RepeatedField(
-        proto.MESSAGE, number=2, message="ResourceManifest",
+        proto.MESSAGE,
+        number=2,
+        message="ResourceManifest",
     )
     connect_resources = proto.RepeatedField(
-        proto.MESSAGE, number=3, message="ResourceManifest",
+        proto.MESSAGE,
+        number=3,
+        message="ResourceManifest",
     )
-    resource_options = proto.Field(proto.MESSAGE, number=4, message="ResourceOptions",)
+    resource_options = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="ResourceOptions",
+    )
 
 
 class ResourceOptions(proto.Message):
@@ -239,9 +299,18 @@ class ResourceOptions(proto.Message):
             ``apiextensions/v1beta1`` or\ ``apiextensions/v1``.
     """
 
-    connect_version = proto.Field(proto.STRING, number=1,)
-    v1beta1_crd = proto.Field(proto.BOOL, number=2,)
-    k8s_version = proto.Field(proto.STRING, number=3,)
+    connect_version = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    v1beta1_crd = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+    k8s_version = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ResourceManifest(proto.Message):
@@ -260,8 +329,14 @@ class ResourceManifest(proto.Message):
             resource in a cluster.
     """
 
-    manifest = proto.Field(proto.STRING, number=1,)
-    cluster_scoped = proto.Field(proto.BOOL, number=2,)
+    manifest = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    cluster_scoped = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
 
 
 class GkeCluster(proto.Message):
@@ -275,7 +350,10 @@ class GkeCluster(proto.Message):
             Zonal clusters are also supported.
     """
 
-    resource_link = proto.Field(proto.STRING, number=1,)
+    resource_link = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class KubernetesMetadata(proto.Message):
@@ -309,13 +387,30 @@ class KubernetesMetadata(proto.Message):
             updated internally for API consumers.
     """
 
-    kubernetes_api_server_version = proto.Field(proto.STRING, number=1,)
-    node_provider_id = proto.Field(proto.STRING, number=2,)
-    node_count = proto.Field(proto.INT32, number=3,)
-    vcpu_count = proto.Field(proto.INT32, number=4,)
-    memory_mb = proto.Field(proto.INT32, number=5,)
+    kubernetes_api_server_version = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    node_provider_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    node_count = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    vcpu_count = proto.Field(
+        proto.INT32,
+        number=4,
+    )
+    memory_mb = proto.Field(
+        proto.INT32,
+        number=5,
+    )
     update_time = proto.Field(
-        proto.MESSAGE, number=100, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=100,
+        message=timestamp_pb2.Timestamp,
     )
 
 
@@ -337,7 +432,11 @@ class MembershipState(proto.Message):
         UPDATING = 4
         SERVICE_UPDATING = 5
 
-    code = proto.Field(proto.ENUM, number=1, enum=Code,)
+    code = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Code,
+    )
 
 
 class Authority(proto.Message):
@@ -382,10 +481,22 @@ class Authority(proto.Message):
             using this field.
     """
 
-    issuer = proto.Field(proto.STRING, number=1,)
-    workload_identity_pool = proto.Field(proto.STRING, number=2,)
-    identity_provider = proto.Field(proto.STRING, number=3,)
-    oidc_jwks = proto.Field(proto.BYTES, number=4,)
+    issuer = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    workload_identity_pool = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    identity_provider = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    oidc_jwks = proto.Field(
+        proto.BYTES,
+        number=4,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

@@ -31,7 +31,9 @@ from google.longrunning import operations_pb2  # type: ignore
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-gke-hub",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-gke-hub",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
@@ -121,19 +123,29 @@ class GkeHubMembershipServiceTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.list_memberships: gapic_v1.method.wrap_method(
-                self.list_memberships, default_timeout=None, client_info=client_info,
+                self.list_memberships,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_membership: gapic_v1.method.wrap_method(
-                self.get_membership, default_timeout=None, client_info=client_info,
+                self.get_membership,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.create_membership: gapic_v1.method.wrap_method(
-                self.create_membership, default_timeout=None, client_info=client_info,
+                self.create_membership,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.delete_membership: gapic_v1.method.wrap_method(
-                self.delete_membership, default_timeout=None, client_info=client_info,
+                self.delete_membership,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.update_membership: gapic_v1.method.wrap_method(
-                self.update_membership, default_timeout=None, client_info=client_info,
+                self.update_membership,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.generate_connect_manifest: gapic_v1.method.wrap_method(
                 self.generate_connect_manifest,
@@ -155,9 +167,9 @@ class GkeHubMembershipServiceTransport(abc.ABC):
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

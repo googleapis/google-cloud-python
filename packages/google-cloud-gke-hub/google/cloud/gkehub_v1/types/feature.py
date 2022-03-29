@@ -97,23 +97,56 @@ class Feature(proto.Message):
             deleted.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=2,
+    )
     resource_state = proto.Field(
-        proto.MESSAGE, number=3, message="FeatureResourceState",
+        proto.MESSAGE,
+        number=3,
+        message="FeatureResourceState",
     )
-    spec = proto.Field(proto.MESSAGE, number=4, message="CommonFeatureSpec",)
+    spec = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="CommonFeatureSpec",
+    )
     membership_specs = proto.MapField(
-        proto.STRING, proto.MESSAGE, number=5, message="MembershipFeatureSpec",
+        proto.STRING,
+        proto.MESSAGE,
+        number=5,
+        message="MembershipFeatureSpec",
     )
-    state = proto.Field(proto.MESSAGE, number=6, message="CommonFeatureState",)
+    state = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message="CommonFeatureState",
+    )
     membership_states = proto.MapField(
-        proto.STRING, proto.MESSAGE, number=7, message="MembershipFeatureState",
+        proto.STRING,
+        proto.MESSAGE,
+        number=7,
+        message="MembershipFeatureState",
     )
-    create_time = proto.Field(proto.MESSAGE, number=8, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=9, message=timestamp_pb2.Timestamp,)
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message=timestamp_pb2.Timestamp,
+    )
     delete_time = proto.Field(
-        proto.MESSAGE, number=10, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=10,
+        message=timestamp_pb2.Timestamp,
     )
 
 
@@ -137,7 +170,11 @@ class FeatureResourceState(proto.Message):
         UPDATING = 4
         SERVICE_UPDATING = 5
 
-    state = proto.Field(proto.ENUM, number=1, enum=State,)
+    state = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=State,
+    )
 
 
 class FeatureState(proto.Message):
@@ -166,9 +203,20 @@ class FeatureState(proto.Message):
         WARNING = 2
         ERROR = 3
 
-    code = proto.Field(proto.ENUM, number=1, enum=Code,)
-    description = proto.Field(proto.STRING, number=2,)
-    update_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
+    code = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Code,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 class CommonFeatureSpec(proto.Message):
@@ -201,7 +249,11 @@ class CommonFeatureState(proto.Message):
             Feature in this Hub.
     """
 
-    state = proto.Field(proto.MESSAGE, number=1, message="FeatureState",)
+    state = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="FeatureState",
+    )
 
 
 class MembershipFeatureSpec(proto.Message):
@@ -249,7 +301,11 @@ class MembershipFeatureState(proto.Message):
         oneof="feature_state",
         message=configmanagement_v1.MembershipState,
     )
-    state = proto.Field(proto.MESSAGE, number=1, message="FeatureState",)
+    state = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="FeatureState",
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

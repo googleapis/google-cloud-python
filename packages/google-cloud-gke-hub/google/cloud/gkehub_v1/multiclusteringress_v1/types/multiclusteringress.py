@@ -17,7 +17,10 @@ import proto  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.gkehub.multiclusteringress.v1", manifest={"FeatureSpec",},
+    package="google.cloud.gkehub.multiclusteringress.v1",
+    manifest={
+        "FeatureSpec",
+    },
 )
 
 
@@ -32,7 +35,10 @@ class FeatureSpec(proto.Message):
             ``projects/foo-proj/locations/global/memberships/bar``
     """
 
-    config_membership = proto.Field(proto.STRING, number=1,)
+    config_membership = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
