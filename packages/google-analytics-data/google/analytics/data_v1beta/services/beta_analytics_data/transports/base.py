@@ -29,7 +29,9 @@ from google.analytics.data_v1beta.types import analytics_data_api
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-analytics-data",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-analytics-data",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
@@ -122,13 +124,19 @@ class BetaAnalyticsDataTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.run_report: gapic_v1.method.wrap_method(
-                self.run_report, default_timeout=60.0, client_info=client_info,
+                self.run_report,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.run_pivot_report: gapic_v1.method.wrap_method(
-                self.run_pivot_report, default_timeout=60.0, client_info=client_info,
+                self.run_pivot_report,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.batch_run_reports: gapic_v1.method.wrap_method(
-                self.batch_run_reports, default_timeout=60.0, client_info=client_info,
+                self.batch_run_reports,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.batch_run_pivot_reports: gapic_v1.method.wrap_method(
                 self.batch_run_pivot_reports,
@@ -136,22 +144,28 @@ class BetaAnalyticsDataTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.get_metadata: gapic_v1.method.wrap_method(
-                self.get_metadata, default_timeout=None, client_info=client_info,
+                self.get_metadata,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.run_realtime_report: gapic_v1.method.wrap_method(
-                self.run_realtime_report, default_timeout=60.0, client_info=client_info,
+                self.run_realtime_report,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.check_compatibility: gapic_v1.method.wrap_method(
-                self.check_compatibility, default_timeout=None, client_info=client_info,
+                self.check_compatibility,
+                default_timeout=None,
+                client_info=client_info,
             ),
         }
 
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

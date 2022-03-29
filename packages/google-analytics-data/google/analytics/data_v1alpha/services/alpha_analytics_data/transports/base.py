@@ -30,7 +30,9 @@ from google.analytics.data_v1alpha.types import analytics_data_api
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-analytics-data",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-analytics-data",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
@@ -156,13 +158,19 @@ class AlphaAnalyticsDataTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.run_report: gapic_v1.method.wrap_method(
-                self.run_report, default_timeout=60.0, client_info=client_info,
+                self.run_report,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.run_pivot_report: gapic_v1.method.wrap_method(
-                self.run_pivot_report, default_timeout=60.0, client_info=client_info,
+                self.run_pivot_report,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.batch_run_reports: gapic_v1.method.wrap_method(
-                self.batch_run_reports, default_timeout=60.0, client_info=client_info,
+                self.batch_run_reports,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.batch_run_pivot_reports: gapic_v1.method.wrap_method(
                 self.batch_run_pivot_reports,
@@ -170,10 +178,14 @@ class AlphaAnalyticsDataTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.get_metadata: gapic_v1.method.wrap_method(
-                self.get_metadata, default_timeout=None, client_info=client_info,
+                self.get_metadata,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.run_realtime_report: gapic_v1.method.wrap_method(
-                self.run_realtime_report, default_timeout=None, client_info=client_info,
+                self.run_realtime_report,
+                default_timeout=None,
+                client_info=client_info,
             ),
         }
 

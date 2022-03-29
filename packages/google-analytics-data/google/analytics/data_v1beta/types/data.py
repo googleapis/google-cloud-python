@@ -123,9 +123,18 @@ class DateRange(proto.Message):
             in the request: ``date_range_0``, ``date_range_1``, etc.
     """
 
-    start_date = proto.Field(proto.STRING, number=1,)
-    end_date = proto.Field(proto.STRING, number=2,)
-    name = proto.Field(proto.STRING, number=3,)
+    start_date = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    end_date = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    name = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class MinuteRange(proto.Message):
@@ -169,9 +178,20 @@ class MinuteRange(proto.Message):
             etc.
     """
 
-    start_minutes_ago = proto.Field(proto.INT32, number=1, optional=True,)
-    end_minutes_ago = proto.Field(proto.INT32, number=2, optional=True,)
-    name = proto.Field(proto.STRING, number=3,)
+    start_minutes_ago = proto.Field(
+        proto.INT32,
+        number=1,
+        optional=True,
+    )
+    end_minutes_ago = proto.Field(
+        proto.INT32,
+        number=2,
+        optional=True,
+    )
+    name = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class Dimension(proto.Message):
@@ -204,9 +224,14 @@ class Dimension(proto.Message):
             ", ", city).
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     dimension_expression = proto.Field(
-        proto.MESSAGE, number=2, message="DimensionExpression",
+        proto.MESSAGE,
+        number=2,
+        message="DimensionExpression",
     )
 
 
@@ -252,7 +277,10 @@ class DimensionExpression(proto.Message):
                 to a name in dimensions field of the request.
         """
 
-        dimension_name = proto.Field(proto.STRING, number=1,)
+        dimension_name = proto.Field(
+            proto.STRING,
+            number=1,
+        )
 
     class ConcatenateExpression(proto.Message):
         r"""Used to combine dimension values to a single dimension.
@@ -273,17 +301,32 @@ class DimensionExpression(proto.Message):
                 response will contain "US,FR,JP".
         """
 
-        dimension_names = proto.RepeatedField(proto.STRING, number=1,)
-        delimiter = proto.Field(proto.STRING, number=2,)
+        dimension_names = proto.RepeatedField(
+            proto.STRING,
+            number=1,
+        )
+        delimiter = proto.Field(
+            proto.STRING,
+            number=2,
+        )
 
     lower_case = proto.Field(
-        proto.MESSAGE, number=4, oneof="one_expression", message=CaseExpression,
+        proto.MESSAGE,
+        number=4,
+        oneof="one_expression",
+        message=CaseExpression,
     )
     upper_case = proto.Field(
-        proto.MESSAGE, number=5, oneof="one_expression", message=CaseExpression,
+        proto.MESSAGE,
+        number=5,
+        oneof="one_expression",
+        message=CaseExpression,
     )
     concatenate = proto.Field(
-        proto.MESSAGE, number=6, oneof="one_expression", message=ConcatenateExpression,
+        proto.MESSAGE,
+        number=6,
+        oneof="one_expression",
+        message=ConcatenateExpression,
     )
 
 
@@ -318,9 +361,18 @@ class Metric(proto.Message):
             ``orderBys``, or a metric ``expression``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    expression = proto.Field(proto.STRING, number=2,)
-    invisible = proto.Field(proto.BOOL, number=3,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    expression = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    invisible = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
 
 
 class FilterExpression(proto.Message):
@@ -357,15 +409,29 @@ class FilterExpression(proto.Message):
     """
 
     and_group = proto.Field(
-        proto.MESSAGE, number=1, oneof="expr", message="FilterExpressionList",
+        proto.MESSAGE,
+        number=1,
+        oneof="expr",
+        message="FilterExpressionList",
     )
     or_group = proto.Field(
-        proto.MESSAGE, number=2, oneof="expr", message="FilterExpressionList",
+        proto.MESSAGE,
+        number=2,
+        oneof="expr",
+        message="FilterExpressionList",
     )
     not_expression = proto.Field(
-        proto.MESSAGE, number=3, oneof="expr", message="FilterExpression",
+        proto.MESSAGE,
+        number=3,
+        oneof="expr",
+        message="FilterExpression",
     )
-    filter = proto.Field(proto.MESSAGE, number=4, oneof="expr", message="Filter",)
+    filter = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="expr",
+        message="Filter",
+    )
 
 
 class FilterExpressionList(proto.Message):
@@ -377,7 +443,9 @@ class FilterExpressionList(proto.Message):
     """
 
     expressions = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="FilterExpression",
+        proto.MESSAGE,
+        number=1,
+        message="FilterExpression",
     )
 
 
@@ -436,10 +504,18 @@ class Filter(proto.Message):
             PARTIAL_REGEXP = 6
 
         match_type = proto.Field(
-            proto.ENUM, number=1, enum="Filter.StringFilter.MatchType",
+            proto.ENUM,
+            number=1,
+            enum="Filter.StringFilter.MatchType",
         )
-        value = proto.Field(proto.STRING, number=2,)
-        case_sensitive = proto.Field(proto.BOOL, number=3,)
+        value = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        case_sensitive = proto.Field(
+            proto.BOOL,
+            number=3,
+        )
 
     class InListFilter(proto.Message):
         r"""The result needs to be in a list of string values.
@@ -452,8 +528,14 @@ class Filter(proto.Message):
                 If true, the string value is case sensitive.
         """
 
-        values = proto.RepeatedField(proto.STRING, number=1,)
-        case_sensitive = proto.Field(proto.BOOL, number=2,)
+        values = proto.RepeatedField(
+            proto.STRING,
+            number=1,
+        )
+        case_sensitive = proto.Field(
+            proto.BOOL,
+            number=2,
+        )
 
     class NumericFilter(proto.Message):
         r"""Filters for numeric or date values.
@@ -475,9 +557,15 @@ class Filter(proto.Message):
             GREATER_THAN_OR_EQUAL = 5
 
         operation = proto.Field(
-            proto.ENUM, number=1, enum="Filter.NumericFilter.Operation",
+            proto.ENUM,
+            number=1,
+            enum="Filter.NumericFilter.Operation",
         )
-        value = proto.Field(proto.MESSAGE, number=2, message="NumericValue",)
+        value = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message="NumericValue",
+        )
 
     class BetweenFilter(proto.Message):
         r"""To express that the result needs to be between two numbers
@@ -490,21 +578,44 @@ class Filter(proto.Message):
                 Ends with this number.
         """
 
-        from_value = proto.Field(proto.MESSAGE, number=1, message="NumericValue",)
-        to_value = proto.Field(proto.MESSAGE, number=2, message="NumericValue",)
+        from_value = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message="NumericValue",
+        )
+        to_value = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message="NumericValue",
+        )
 
-    field_name = proto.Field(proto.STRING, number=1,)
+    field_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     string_filter = proto.Field(
-        proto.MESSAGE, number=3, oneof="one_filter", message=StringFilter,
+        proto.MESSAGE,
+        number=3,
+        oneof="one_filter",
+        message=StringFilter,
     )
     in_list_filter = proto.Field(
-        proto.MESSAGE, number=4, oneof="one_filter", message=InListFilter,
+        proto.MESSAGE,
+        number=4,
+        oneof="one_filter",
+        message=InListFilter,
     )
     numeric_filter = proto.Field(
-        proto.MESSAGE, number=5, oneof="one_filter", message=NumericFilter,
+        proto.MESSAGE,
+        number=5,
+        oneof="one_filter",
+        message=NumericFilter,
     )
     between_filter = proto.Field(
-        proto.MESSAGE, number=6, oneof="one_filter", message=BetweenFilter,
+        proto.MESSAGE,
+        number=6,
+        oneof="one_filter",
+        message=BetweenFilter,
     )
 
 
@@ -544,7 +655,10 @@ class OrderBy(proto.Message):
                 A metric name in the request to order by.
         """
 
-        metric_name = proto.Field(proto.STRING, number=1,)
+        metric_name = proto.Field(
+            proto.STRING,
+            number=1,
+        )
 
     class DimensionOrderBy(proto.Message):
         r"""Sorts by dimension values.
@@ -564,9 +678,14 @@ class OrderBy(proto.Message):
             CASE_INSENSITIVE_ALPHANUMERIC = 2
             NUMERIC = 3
 
-        dimension_name = proto.Field(proto.STRING, number=1,)
+        dimension_name = proto.Field(
+            proto.STRING,
+            number=1,
+        )
         order_type = proto.Field(
-            proto.ENUM, number=2, enum="OrderBy.DimensionOrderBy.OrderType",
+            proto.ENUM,
+            number=2,
+            enum="OrderBy.DimensionOrderBy.OrderType",
         )
 
     class PivotOrderBy(proto.Message):
@@ -613,24 +732,47 @@ class OrderBy(proto.Message):
                     this value.
             """
 
-            dimension_name = proto.Field(proto.STRING, number=1,)
-            dimension_value = proto.Field(proto.STRING, number=2,)
+            dimension_name = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            dimension_value = proto.Field(
+                proto.STRING,
+                number=2,
+            )
 
-        metric_name = proto.Field(proto.STRING, number=1,)
+        metric_name = proto.Field(
+            proto.STRING,
+            number=1,
+        )
         pivot_selections = proto.RepeatedField(
-            proto.MESSAGE, number=2, message="OrderBy.PivotOrderBy.PivotSelection",
+            proto.MESSAGE,
+            number=2,
+            message="OrderBy.PivotOrderBy.PivotSelection",
         )
 
     metric = proto.Field(
-        proto.MESSAGE, number=1, oneof="one_order_by", message=MetricOrderBy,
+        proto.MESSAGE,
+        number=1,
+        oneof="one_order_by",
+        message=MetricOrderBy,
     )
     dimension = proto.Field(
-        proto.MESSAGE, number=2, oneof="one_order_by", message=DimensionOrderBy,
+        proto.MESSAGE,
+        number=2,
+        oneof="one_order_by",
+        message=DimensionOrderBy,
     )
     pivot = proto.Field(
-        proto.MESSAGE, number=3, oneof="one_order_by", message=PivotOrderBy,
+        proto.MESSAGE,
+        number=3,
+        oneof="one_order_by",
+        message=PivotOrderBy,
     )
-    desc = proto.Field(proto.BOOL, number=4,)
+    desc = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
 
 
 class Pivot(proto.Message):
@@ -669,12 +811,27 @@ class Pivot(proto.Message):
             specified metric_aggregations.
     """
 
-    field_names = proto.RepeatedField(proto.STRING, number=1,)
-    order_bys = proto.RepeatedField(proto.MESSAGE, number=2, message="OrderBy",)
-    offset = proto.Field(proto.INT64, number=3,)
-    limit = proto.Field(proto.INT64, number=4,)
+    field_names = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
+    order_bys = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="OrderBy",
+    )
+    offset = proto.Field(
+        proto.INT64,
+        number=3,
+    )
+    limit = proto.Field(
+        proto.INT64,
+        number=4,
+    )
     metric_aggregations = proto.RepeatedField(
-        proto.ENUM, number=5, enum="MetricAggregation",
+        proto.ENUM,
+        number=5,
+        enum="MetricAggregation",
     )
 
 
@@ -714,10 +871,20 @@ class CohortSpec(proto.Message):
             Optional settings for a cohort report.
     """
 
-    cohorts = proto.RepeatedField(proto.MESSAGE, number=1, message="Cohort",)
-    cohorts_range = proto.Field(proto.MESSAGE, number=2, message="CohortsRange",)
+    cohorts = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Cohort",
+    )
+    cohorts_range = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="CohortsRange",
+    )
     cohort_report_settings = proto.Field(
-        proto.MESSAGE, number=3, message="CohortReportSettings",
+        proto.MESSAGE,
+        number=3,
+        message="CohortReportSettings",
     )
 
 
@@ -760,9 +927,19 @@ class Cohort(proto.Message):
             month.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    dimension = proto.Field(proto.STRING, number=2,)
-    date_range = proto.Field(proto.MESSAGE, number=3, message="DateRange",)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    dimension = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    date_range = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="DateRange",
+    )
 
 
 class CohortsRange(proto.Message):
@@ -821,9 +998,19 @@ class CohortsRange(proto.Message):
         WEEKLY = 2
         MONTHLY = 3
 
-    granularity = proto.Field(proto.ENUM, number=1, enum=Granularity,)
-    start_offset = proto.Field(proto.INT32, number=2,)
-    end_offset = proto.Field(proto.INT32, number=3,)
+    granularity = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Granularity,
+    )
+    start_offset = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    end_offset = proto.Field(
+        proto.INT32,
+        number=3,
+    )
 
 
 class CohortReportSettings(proto.Message):
@@ -835,7 +1022,10 @@ class CohortReportSettings(proto.Message):
             end day. Not supported in ``RunReportRequest``.
     """
 
-    accumulate = proto.Field(proto.BOOL, number=1,)
+    accumulate = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
 
 
 class ResponseMetaData(proto.Message):
@@ -910,9 +1100,15 @@ class ResponseMetaData(proto.Message):
                     The reason for this metric's restriction.
             """
 
-            metric_name = proto.Field(proto.STRING, number=1, optional=True,)
+            metric_name = proto.Field(
+                proto.STRING,
+                number=1,
+                optional=True,
+            )
             restricted_metric_types = proto.RepeatedField(
-                proto.ENUM, number=2, enum="RestrictedMetricType",
+                proto.ENUM,
+                number=2,
+                enum="RestrictedMetricType",
             )
 
         active_metric_restrictions = proto.RepeatedField(
@@ -921,13 +1117,31 @@ class ResponseMetaData(proto.Message):
             message="ResponseMetaData.SchemaRestrictionResponse.ActiveMetricRestriction",
         )
 
-    data_loss_from_other_row = proto.Field(proto.BOOL, number=3,)
-    schema_restriction_response = proto.Field(
-        proto.MESSAGE, number=4, optional=True, message=SchemaRestrictionResponse,
+    data_loss_from_other_row = proto.Field(
+        proto.BOOL,
+        number=3,
     )
-    currency_code = proto.Field(proto.STRING, number=5, optional=True,)
-    time_zone = proto.Field(proto.STRING, number=6, optional=True,)
-    empty_reason = proto.Field(proto.STRING, number=7, optional=True,)
+    schema_restriction_response = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        optional=True,
+        message=SchemaRestrictionResponse,
+    )
+    currency_code = proto.Field(
+        proto.STRING,
+        number=5,
+        optional=True,
+    )
+    time_zone = proto.Field(
+        proto.STRING,
+        number=6,
+        optional=True,
+    )
+    empty_reason = proto.Field(
+        proto.STRING,
+        number=7,
+        optional=True,
+    )
 
 
 class DimensionHeader(proto.Message):
@@ -942,7 +1156,10 @@ class DimensionHeader(proto.Message):
             The dimension's name.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class MetricHeader(proto.Message):
@@ -959,8 +1176,15 @@ class MetricHeader(proto.Message):
             The metric's data type.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    type_ = proto.Field(proto.ENUM, number=2, enum="MetricType",)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    type_ = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum="MetricType",
+    )
 
 
 class PivotHeader(proto.Message):
@@ -977,9 +1201,14 @@ class PivotHeader(proto.Message):
     """
 
     pivot_dimension_headers = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="PivotDimensionHeader",
+        proto.MESSAGE,
+        number=1,
+        message="PivotDimensionHeader",
     )
-    row_count = proto.Field(proto.INT32, number=2,)
+    row_count = proto.Field(
+        proto.INT32,
+        number=2,
+    )
 
 
 class PivotDimensionHeader(proto.Message):
@@ -991,7 +1220,9 @@ class PivotDimensionHeader(proto.Message):
     """
 
     dimension_values = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="DimensionValue",
+        proto.MESSAGE,
+        number=1,
+        message="DimensionValue",
     )
 
 
@@ -1043,9 +1274,15 @@ class Row(proto.Message):
     """
 
     dimension_values = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="DimensionValue",
+        proto.MESSAGE,
+        number=1,
+        message="DimensionValue",
     )
-    metric_values = proto.RepeatedField(proto.MESSAGE, number=2, message="MetricValue",)
+    metric_values = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="MetricValue",
+    )
 
 
 class DimensionValue(proto.Message):
@@ -1061,7 +1298,11 @@ class DimensionValue(proto.Message):
             This field is a member of `oneof`_ ``one_value``.
     """
 
-    value = proto.Field(proto.STRING, number=1, oneof="one_value",)
+    value = proto.Field(
+        proto.STRING,
+        number=1,
+        oneof="one_value",
+    )
 
 
 class MetricValue(proto.Message):
@@ -1076,7 +1317,11 @@ class MetricValue(proto.Message):
             This field is a member of `oneof`_ ``one_value``.
     """
 
-    value = proto.Field(proto.STRING, number=4, oneof="one_value",)
+    value = proto.Field(
+        proto.STRING,
+        number=4,
+        oneof="one_value",
+    )
 
 
 class NumericValue(proto.Message):
@@ -1100,8 +1345,16 @@ class NumericValue(proto.Message):
             This field is a member of `oneof`_ ``one_value``.
     """
 
-    int64_value = proto.Field(proto.INT64, number=1, oneof="one_value",)
-    double_value = proto.Field(proto.DOUBLE, number=2, oneof="one_value",)
+    int64_value = proto.Field(
+        proto.INT64,
+        number=1,
+        oneof="one_value",
+    )
+    double_value = proto.Field(
+        proto.DOUBLE,
+        number=2,
+        oneof="one_value",
+    )
 
 
 class PropertyQuota(proto.Message):
@@ -1141,14 +1394,30 @@ class PropertyQuota(proto.Message):
             dimensions.
     """
 
-    tokens_per_day = proto.Field(proto.MESSAGE, number=1, message="QuotaStatus",)
-    tokens_per_hour = proto.Field(proto.MESSAGE, number=2, message="QuotaStatus",)
-    concurrent_requests = proto.Field(proto.MESSAGE, number=3, message="QuotaStatus",)
+    tokens_per_day = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="QuotaStatus",
+    )
+    tokens_per_hour = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="QuotaStatus",
+    )
+    concurrent_requests = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="QuotaStatus",
+    )
     server_errors_per_project_per_hour = proto.Field(
-        proto.MESSAGE, number=4, message="QuotaStatus",
+        proto.MESSAGE,
+        number=4,
+        message="QuotaStatus",
     )
     potentially_thresholded_requests_per_hour = proto.Field(
-        proto.MESSAGE, number=5, message="QuotaStatus",
+        proto.MESSAGE,
+        number=5,
+        message="QuotaStatus",
     )
 
 
@@ -1162,8 +1431,14 @@ class QuotaStatus(proto.Message):
             Quota remaining after this request.
     """
 
-    consumed = proto.Field(proto.INT32, number=1,)
-    remaining = proto.Field(proto.INT32, number=2,)
+    consumed = proto.Field(
+        proto.INT32,
+        number=1,
+    )
+    remaining = proto.Field(
+        proto.INT32,
+        number=2,
+    )
 
 
 class DimensionMetadata(proto.Message):
@@ -1195,12 +1470,30 @@ class DimensionMetadata(proto.Message):
             metrics are categorized together.
     """
 
-    api_name = proto.Field(proto.STRING, number=1,)
-    ui_name = proto.Field(proto.STRING, number=2,)
-    description = proto.Field(proto.STRING, number=3,)
-    deprecated_api_names = proto.RepeatedField(proto.STRING, number=4,)
-    custom_definition = proto.Field(proto.BOOL, number=5,)
-    category = proto.Field(proto.STRING, number=7,)
+    api_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    ui_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    deprecated_api_names = proto.RepeatedField(
+        proto.STRING,
+        number=4,
+    )
+    custom_definition = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
+    category = proto.Field(
+        proto.STRING,
+        number=7,
+    )
 
 
 class MetricMetadata(proto.Message):
@@ -1254,15 +1547,44 @@ class MetricMetadata(proto.Message):
         NO_REVENUE_METRICS = 1
         NO_COST_METRICS = 2
 
-    api_name = proto.Field(proto.STRING, number=1,)
-    ui_name = proto.Field(proto.STRING, number=2,)
-    description = proto.Field(proto.STRING, number=3,)
-    deprecated_api_names = proto.RepeatedField(proto.STRING, number=4,)
-    type_ = proto.Field(proto.ENUM, number=5, enum="MetricType",)
-    expression = proto.Field(proto.STRING, number=6,)
-    custom_definition = proto.Field(proto.BOOL, number=7,)
-    blocked_reasons = proto.RepeatedField(proto.ENUM, number=8, enum=BlockedReason,)
-    category = proto.Field(proto.STRING, number=10,)
+    api_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    ui_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    deprecated_api_names = proto.RepeatedField(
+        proto.STRING,
+        number=4,
+    )
+    type_ = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum="MetricType",
+    )
+    expression = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    custom_definition = proto.Field(
+        proto.BOOL,
+        number=7,
+    )
+    blocked_reasons = proto.RepeatedField(
+        proto.ENUM,
+        number=8,
+        enum=BlockedReason,
+    )
+    category = proto.Field(
+        proto.STRING,
+        number=10,
+    )
 
 
 class DimensionCompatibility(proto.Message):
@@ -1285,10 +1607,16 @@ class DimensionCompatibility(proto.Message):
     """
 
     dimension_metadata = proto.Field(
-        proto.MESSAGE, number=1, optional=True, message="DimensionMetadata",
+        proto.MESSAGE,
+        number=1,
+        optional=True,
+        message="DimensionMetadata",
     )
     compatibility = proto.Field(
-        proto.ENUM, number=2, optional=True, enum="Compatibility",
+        proto.ENUM,
+        number=2,
+        optional=True,
+        enum="Compatibility",
     )
 
 
@@ -1312,10 +1640,16 @@ class MetricCompatibility(proto.Message):
     """
 
     metric_metadata = proto.Field(
-        proto.MESSAGE, number=1, optional=True, message="MetricMetadata",
+        proto.MESSAGE,
+        number=1,
+        optional=True,
+        message="MetricMetadata",
     )
     compatibility = proto.Field(
-        proto.ENUM, number=2, optional=True, enum="Compatibility",
+        proto.ENUM,
+        number=2,
+        optional=True,
+        enum="Compatibility",
     )
 
 

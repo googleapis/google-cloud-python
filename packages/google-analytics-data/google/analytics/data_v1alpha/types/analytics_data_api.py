@@ -50,11 +50,20 @@ class Metadata(proto.Message):
             The metric descriptions.
     """
 
-    name = proto.Field(proto.STRING, number=3,)
-    dimensions = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=data.DimensionMetadata,
+    name = proto.Field(
+        proto.STRING,
+        number=3,
     )
-    metrics = proto.RepeatedField(proto.MESSAGE, number=2, message=data.MetricMetadata,)
+    dimensions = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=data.DimensionMetadata,
+    )
+    metrics = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=data.MetricMetadata,
+    )
 
 
 class RunReportRequest(proto.Message):
@@ -124,24 +133,71 @@ class RunReportRequest(proto.Message):
             `PropertyQuota <#PropertyQuota>`__.
     """
 
-    entity = proto.Field(proto.MESSAGE, number=1, message=data.Entity,)
-    dimensions = proto.RepeatedField(proto.MESSAGE, number=2, message=data.Dimension,)
-    metrics = proto.RepeatedField(proto.MESSAGE, number=3, message=data.Metric,)
-    date_ranges = proto.RepeatedField(proto.MESSAGE, number=4, message=data.DateRange,)
-    offset = proto.Field(proto.INT64, number=5,)
-    limit = proto.Field(proto.INT64, number=6,)
+    entity = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=data.Entity,
+    )
+    dimensions = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=data.Dimension,
+    )
+    metrics = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=data.Metric,
+    )
+    date_ranges = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message=data.DateRange,
+    )
+    offset = proto.Field(
+        proto.INT64,
+        number=5,
+    )
+    limit = proto.Field(
+        proto.INT64,
+        number=6,
+    )
     metric_aggregations = proto.RepeatedField(
-        proto.ENUM, number=7, enum=data.MetricAggregation,
+        proto.ENUM,
+        number=7,
+        enum=data.MetricAggregation,
     )
     dimension_filter = proto.Field(
-        proto.MESSAGE, number=8, message=data.FilterExpression,
+        proto.MESSAGE,
+        number=8,
+        message=data.FilterExpression,
     )
-    metric_filter = proto.Field(proto.MESSAGE, number=9, message=data.FilterExpression,)
-    order_bys = proto.RepeatedField(proto.MESSAGE, number=10, message=data.OrderBy,)
-    currency_code = proto.Field(proto.STRING, number=11,)
-    cohort_spec = proto.Field(proto.MESSAGE, number=12, message=data.CohortSpec,)
-    keep_empty_rows = proto.Field(proto.BOOL, number=13,)
-    return_property_quota = proto.Field(proto.BOOL, number=14,)
+    metric_filter = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message=data.FilterExpression,
+    )
+    order_bys = proto.RepeatedField(
+        proto.MESSAGE,
+        number=10,
+        message=data.OrderBy,
+    )
+    currency_code = proto.Field(
+        proto.STRING,
+        number=11,
+    )
+    cohort_spec = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        message=data.CohortSpec,
+    )
+    keep_empty_rows = proto.Field(
+        proto.BOOL,
+        number=13,
+    )
+    return_property_quota = proto.Field(
+        proto.BOOL,
+        number=14,
+    )
 
 
 class RunReportResponse(proto.Message):
@@ -182,18 +238,49 @@ class RunReportResponse(proto.Message):
     """
 
     dimension_headers = proto.RepeatedField(
-        proto.MESSAGE, number=11, message=data.DimensionHeader,
+        proto.MESSAGE,
+        number=11,
+        message=data.DimensionHeader,
     )
     metric_headers = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=data.MetricHeader,
+        proto.MESSAGE,
+        number=1,
+        message=data.MetricHeader,
     )
-    rows = proto.RepeatedField(proto.MESSAGE, number=2, message=data.Row,)
-    totals = proto.RepeatedField(proto.MESSAGE, number=8, message=data.Row,)
-    maximums = proto.RepeatedField(proto.MESSAGE, number=9, message=data.Row,)
-    minimums = proto.RepeatedField(proto.MESSAGE, number=10, message=data.Row,)
-    row_count = proto.Field(proto.INT32, number=12,)
-    metadata = proto.Field(proto.MESSAGE, number=6, message=data.ResponseMetaData,)
-    property_quota = proto.Field(proto.MESSAGE, number=7, message=data.PropertyQuota,)
+    rows = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=data.Row,
+    )
+    totals = proto.RepeatedField(
+        proto.MESSAGE,
+        number=8,
+        message=data.Row,
+    )
+    maximums = proto.RepeatedField(
+        proto.MESSAGE,
+        number=9,
+        message=data.Row,
+    )
+    minimums = proto.RepeatedField(
+        proto.MESSAGE,
+        number=10,
+        message=data.Row,
+    )
+    row_count = proto.Field(
+        proto.INT32,
+        number=12,
+    )
+    metadata = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=data.ResponseMetaData,
+    )
+    property_quota = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=data.PropertyQuota,
+    )
 
 
 class RunPivotReportRequest(proto.Message):
@@ -257,19 +344,58 @@ class RunPivotReportRequest(proto.Message):
             `PropertyQuota <#PropertyQuota>`__.
     """
 
-    entity = proto.Field(proto.MESSAGE, number=1, message=data.Entity,)
-    dimensions = proto.RepeatedField(proto.MESSAGE, number=2, message=data.Dimension,)
-    metrics = proto.RepeatedField(proto.MESSAGE, number=3, message=data.Metric,)
-    dimension_filter = proto.Field(
-        proto.MESSAGE, number=4, message=data.FilterExpression,
+    entity = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=data.Entity,
     )
-    metric_filter = proto.Field(proto.MESSAGE, number=5, message=data.FilterExpression,)
-    pivots = proto.RepeatedField(proto.MESSAGE, number=6, message=data.Pivot,)
-    date_ranges = proto.RepeatedField(proto.MESSAGE, number=7, message=data.DateRange,)
-    currency_code = proto.Field(proto.STRING, number=8,)
-    cohort_spec = proto.Field(proto.MESSAGE, number=9, message=data.CohortSpec,)
-    keep_empty_rows = proto.Field(proto.BOOL, number=10,)
-    return_property_quota = proto.Field(proto.BOOL, number=11,)
+    dimensions = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=data.Dimension,
+    )
+    metrics = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=data.Metric,
+    )
+    dimension_filter = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=data.FilterExpression,
+    )
+    metric_filter = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=data.FilterExpression,
+    )
+    pivots = proto.RepeatedField(
+        proto.MESSAGE,
+        number=6,
+        message=data.Pivot,
+    )
+    date_ranges = proto.RepeatedField(
+        proto.MESSAGE,
+        number=7,
+        message=data.DateRange,
+    )
+    currency_code = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    cohort_spec = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message=data.CohortSpec,
+    )
+    keep_empty_rows = proto.Field(
+        proto.BOOL,
+        number=10,
+    )
+    return_property_quota = proto.Field(
+        proto.BOOL,
+        number=11,
+    )
 
 
 class RunPivotReportResponse(proto.Message):
@@ -344,18 +470,40 @@ class RunPivotReportResponse(proto.Message):
     """
 
     pivot_headers = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=data.PivotHeader,
+        proto.MESSAGE,
+        number=1,
+        message=data.PivotHeader,
     )
     dimension_headers = proto.RepeatedField(
-        proto.MESSAGE, number=7, message=data.DimensionHeader,
+        proto.MESSAGE,
+        number=7,
+        message=data.DimensionHeader,
     )
     metric_headers = proto.RepeatedField(
-        proto.MESSAGE, number=2, message=data.MetricHeader,
+        proto.MESSAGE,
+        number=2,
+        message=data.MetricHeader,
     )
-    rows = proto.RepeatedField(proto.MESSAGE, number=3, message=data.Row,)
-    aggregates = proto.RepeatedField(proto.MESSAGE, number=4, message=data.Row,)
-    metadata = proto.Field(proto.MESSAGE, number=5, message=data.ResponseMetaData,)
-    property_quota = proto.Field(proto.MESSAGE, number=6, message=data.PropertyQuota,)
+    rows = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=data.Row,
+    )
+    aggregates = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message=data.Row,
+    )
+    metadata = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=data.ResponseMetaData,
+    )
+    property_quota = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=data.PropertyQuota,
+    )
 
 
 class BatchRunReportsRequest(proto.Message):
@@ -372,8 +520,16 @@ class BatchRunReportsRequest(proto.Message):
             allowed up to 5 requests.
     """
 
-    entity = proto.Field(proto.MESSAGE, number=1, message=data.Entity,)
-    requests = proto.RepeatedField(proto.MESSAGE, number=2, message="RunReportRequest",)
+    entity = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=data.Entity,
+    )
+    requests = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="RunReportRequest",
+    )
 
 
 class BatchRunReportsResponse(proto.Message):
@@ -384,7 +540,11 @@ class BatchRunReportsResponse(proto.Message):
             separate report request.
     """
 
-    reports = proto.RepeatedField(proto.MESSAGE, number=1, message="RunReportResponse",)
+    reports = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="RunReportResponse",
+    )
 
 
 class BatchRunPivotReportsRequest(proto.Message):
@@ -401,9 +561,15 @@ class BatchRunPivotReportsRequest(proto.Message):
             request is allowed up to 5 requests.
     """
 
-    entity = proto.Field(proto.MESSAGE, number=1, message=data.Entity,)
+    entity = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=data.Entity,
+    )
     requests = proto.RepeatedField(
-        proto.MESSAGE, number=2, message="RunPivotReportRequest",
+        proto.MESSAGE,
+        number=2,
+        message="RunPivotReportRequest",
     )
 
 
@@ -416,7 +582,9 @@ class BatchRunPivotReportsResponse(proto.Message):
     """
 
     pivot_reports = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="RunPivotReportResponse",
+        proto.MESSAGE,
+        number=1,
+        message="RunPivotReportResponse",
     )
 
 
@@ -438,7 +606,10 @@ class GetMetadataRequest(proto.Message):
             not return custom dimensions and metrics.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class RunRealtimeReportRequest(proto.Message):
@@ -482,19 +653,48 @@ class RunRealtimeReportRequest(proto.Message):
             `PropertyQuota <#PropertyQuota>`__.
     """
 
-    property = proto.Field(proto.STRING, number=1,)
-    dimensions = proto.RepeatedField(proto.MESSAGE, number=2, message=data.Dimension,)
-    metrics = proto.RepeatedField(proto.MESSAGE, number=3, message=data.Metric,)
-    limit = proto.Field(proto.INT64, number=4,)
+    property = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    dimensions = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=data.Dimension,
+    )
+    metrics = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=data.Metric,
+    )
+    limit = proto.Field(
+        proto.INT64,
+        number=4,
+    )
     dimension_filter = proto.Field(
-        proto.MESSAGE, number=5, message=data.FilterExpression,
+        proto.MESSAGE,
+        number=5,
+        message=data.FilterExpression,
     )
-    metric_filter = proto.Field(proto.MESSAGE, number=6, message=data.FilterExpression,)
+    metric_filter = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=data.FilterExpression,
+    )
     metric_aggregations = proto.RepeatedField(
-        proto.ENUM, number=7, enum=data.MetricAggregation,
+        proto.ENUM,
+        number=7,
+        enum=data.MetricAggregation,
     )
-    order_bys = proto.RepeatedField(proto.MESSAGE, number=8, message=data.OrderBy,)
-    return_property_quota = proto.Field(proto.BOOL, number=9,)
+    order_bys = proto.RepeatedField(
+        proto.MESSAGE,
+        number=8,
+        message=data.OrderBy,
+    )
+    return_property_quota = proto.Field(
+        proto.BOOL,
+        number=9,
+    )
 
 
 class RunRealtimeReportResponse(proto.Message):
@@ -532,17 +732,44 @@ class RunRealtimeReportResponse(proto.Message):
     """
 
     dimension_headers = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=data.DimensionHeader,
+        proto.MESSAGE,
+        number=1,
+        message=data.DimensionHeader,
     )
     metric_headers = proto.RepeatedField(
-        proto.MESSAGE, number=2, message=data.MetricHeader,
+        proto.MESSAGE,
+        number=2,
+        message=data.MetricHeader,
     )
-    rows = proto.RepeatedField(proto.MESSAGE, number=3, message=data.Row,)
-    totals = proto.RepeatedField(proto.MESSAGE, number=4, message=data.Row,)
-    maximums = proto.RepeatedField(proto.MESSAGE, number=5, message=data.Row,)
-    minimums = proto.RepeatedField(proto.MESSAGE, number=6, message=data.Row,)
-    row_count = proto.Field(proto.INT32, number=7,)
-    property_quota = proto.Field(proto.MESSAGE, number=8, message=data.PropertyQuota,)
+    rows = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=data.Row,
+    )
+    totals = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message=data.Row,
+    )
+    maximums = proto.RepeatedField(
+        proto.MESSAGE,
+        number=5,
+        message=data.Row,
+    )
+    minimums = proto.RepeatedField(
+        proto.MESSAGE,
+        number=6,
+        message=data.Row,
+    )
+    row_count = proto.Field(
+        proto.INT32,
+        number=7,
+    )
+    property_quota = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=data.PropertyQuota,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

@@ -107,7 +107,11 @@ def test__get_default_mtls_endpoint():
 
 
 @pytest.mark.parametrize(
-    "client_class", [AlphaAnalyticsDataClient, AlphaAnalyticsDataAsyncClient,]
+    "client_class",
+    [
+        AlphaAnalyticsDataClient,
+        AlphaAnalyticsDataAsyncClient,
+    ],
 )
 def test_alpha_analytics_data_client_from_service_account_info(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -149,7 +153,11 @@ def test_alpha_analytics_data_client_service_account_always_use_jwt(
 
 
 @pytest.mark.parametrize(
-    "client_class", [AlphaAnalyticsDataClient, AlphaAnalyticsDataAsyncClient,]
+    "client_class",
+    [
+        AlphaAnalyticsDataClient,
+        AlphaAnalyticsDataAsyncClient,
+    ],
 )
 def test_alpha_analytics_data_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -442,7 +450,9 @@ def test_alpha_analytics_data_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options)
@@ -513,7 +523,8 @@ def test_run_report(
     transport: str = "grpc", request_type=analytics_data_api.RunReportRequest
 ):
     client = AlphaAnalyticsDataClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -523,7 +534,9 @@ def test_run_report(
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.run_report), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = analytics_data_api.RunReportResponse(row_count=992,)
+        call.return_value = analytics_data_api.RunReportResponse(
+            row_count=992,
+        )
         response = client.run_report(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -544,7 +557,8 @@ def test_run_report_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AlphaAnalyticsDataClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -560,7 +574,8 @@ async def test_run_report_async(
     transport: str = "grpc_asyncio", request_type=analytics_data_api.RunReportRequest
 ):
     client = AlphaAnalyticsDataAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -571,7 +586,9 @@ async def test_run_report_async(
     with mock.patch.object(type(client.transport.run_report), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            analytics_data_api.RunReportResponse(row_count=992,)
+            analytics_data_api.RunReportResponse(
+                row_count=992,
+            )
         )
         response = await client.run_report(request)
 
@@ -594,7 +611,8 @@ def test_run_pivot_report(
     transport: str = "grpc", request_type=analytics_data_api.RunPivotReportRequest
 ):
     client = AlphaAnalyticsDataClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -624,7 +642,8 @@ def test_run_pivot_report_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AlphaAnalyticsDataClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -641,7 +660,8 @@ async def test_run_pivot_report_async(
     request_type=analytics_data_api.RunPivotReportRequest,
 ):
     client = AlphaAnalyticsDataAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -674,7 +694,8 @@ def test_batch_run_reports(
     transport: str = "grpc", request_type=analytics_data_api.BatchRunReportsRequest
 ):
     client = AlphaAnalyticsDataClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -706,7 +727,8 @@ def test_batch_run_reports_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AlphaAnalyticsDataClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -725,7 +747,8 @@ async def test_batch_run_reports_async(
     request_type=analytics_data_api.BatchRunReportsRequest,
 ):
     client = AlphaAnalyticsDataAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -760,7 +783,8 @@ def test_batch_run_pivot_reports(
     transport: str = "grpc", request_type=analytics_data_api.BatchRunPivotReportsRequest
 ):
     client = AlphaAnalyticsDataClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -792,7 +816,8 @@ def test_batch_run_pivot_reports_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AlphaAnalyticsDataClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -811,7 +836,8 @@ async def test_batch_run_pivot_reports_async(
     request_type=analytics_data_api.BatchRunPivotReportsRequest,
 ):
     client = AlphaAnalyticsDataAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -846,7 +872,8 @@ def test_get_metadata(
     transport: str = "grpc", request_type=analytics_data_api.GetMetadataRequest
 ):
     client = AlphaAnalyticsDataClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -856,7 +883,9 @@ def test_get_metadata(
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_metadata), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = analytics_data_api.Metadata(name="name_value",)
+        call.return_value = analytics_data_api.Metadata(
+            name="name_value",
+        )
         response = client.get_metadata(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -877,7 +906,8 @@ def test_get_metadata_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AlphaAnalyticsDataClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -893,7 +923,8 @@ async def test_get_metadata_async(
     transport: str = "grpc_asyncio", request_type=analytics_data_api.GetMetadataRequest
 ):
     client = AlphaAnalyticsDataAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -904,7 +935,9 @@ async def test_get_metadata_async(
     with mock.patch.object(type(client.transport.get_metadata), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            analytics_data_api.Metadata(name="name_value",)
+            analytics_data_api.Metadata(
+                name="name_value",
+            )
         )
         response = await client.get_metadata(request)
 
@@ -946,7 +979,10 @@ def test_get_metadata_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -975,7 +1011,10 @@ async def test_get_metadata_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_metadata_flattened():
@@ -989,7 +1028,9 @@ def test_get_metadata_flattened():
         call.return_value = analytics_data_api.Metadata()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_metadata(name="name_value",)
+        client.get_metadata(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1007,7 +1048,8 @@ def test_get_metadata_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_metadata(
-            analytics_data_api.GetMetadataRequest(), name="name_value",
+            analytics_data_api.GetMetadataRequest(),
+            name="name_value",
         )
 
 
@@ -1027,7 +1069,9 @@ async def test_get_metadata_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_metadata(name="name_value",)
+        response = await client.get_metadata(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1046,7 +1090,8 @@ async def test_get_metadata_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_metadata(
-            analytics_data_api.GetMetadataRequest(), name="name_value",
+            analytics_data_api.GetMetadataRequest(),
+            name="name_value",
         )
 
 
@@ -1054,7 +1099,8 @@ def test_run_realtime_report(
     transport: str = "grpc", request_type=analytics_data_api.RunRealtimeReportRequest
 ):
     client = AlphaAnalyticsDataClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1066,7 +1112,9 @@ def test_run_realtime_report(
         type(client.transport.run_realtime_report), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = analytics_data_api.RunRealtimeReportResponse(row_count=992,)
+        call.return_value = analytics_data_api.RunRealtimeReportResponse(
+            row_count=992,
+        )
         response = client.run_realtime_report(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1087,7 +1135,8 @@ def test_run_realtime_report_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AlphaAnalyticsDataClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1106,7 +1155,8 @@ async def test_run_realtime_report_async(
     request_type=analytics_data_api.RunRealtimeReportRequest,
 ):
     client = AlphaAnalyticsDataAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1119,7 +1169,9 @@ async def test_run_realtime_report_async(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            analytics_data_api.RunRealtimeReportResponse(row_count=992,)
+            analytics_data_api.RunRealtimeReportResponse(
+                row_count=992,
+            )
         )
         response = await client.run_realtime_report(request)
 
@@ -1163,7 +1215,10 @@ def test_run_realtime_report_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "property=property/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "property=property/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1194,7 +1249,10 @@ async def test_run_realtime_report_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "property=property/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "property=property/value",
+    ) in kw["metadata"]
 
 
 def test_credentials_transport_error():
@@ -1204,7 +1262,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = AlphaAnalyticsDataClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -1223,7 +1282,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = AlphaAnalyticsDataClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -1271,7 +1331,10 @@ def test_transport_grpc_default():
     client = AlphaAnalyticsDataClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
-    assert isinstance(client.transport, transports.AlphaAnalyticsDataGrpcTransport,)
+    assert isinstance(
+        client.transport,
+        transports.AlphaAnalyticsDataGrpcTransport,
+    )
 
 
 def test_alpha_analytics_data_base_transport_error():
@@ -1319,7 +1382,8 @@ def test_alpha_analytics_data_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.AlphaAnalyticsDataTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -1343,7 +1407,8 @@ def test_alpha_analytics_data_base_transport_with_credentials_file_old_google_au
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.AlphaAnalyticsDataTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -1554,7 +1619,8 @@ def test_alpha_analytics_data_grpc_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.AlphaAnalyticsDataGrpcTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -1566,7 +1632,8 @@ def test_alpha_analytics_data_grpc_asyncio_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.AlphaAnalyticsDataGrpcAsyncIOTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -1675,7 +1742,9 @@ def test_alpha_analytics_data_transport_channel_mtls_with_adc(transport_class):
 
 def test_metadata_path():
     property = "squid"
-    expected = "properties/{property}/metadata".format(property=property,)
+    expected = "properties/{property}/metadata".format(
+        property=property,
+    )
     actual = AlphaAnalyticsDataClient.metadata_path(property)
     assert expected == actual
 
@@ -1713,7 +1782,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "oyster"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = AlphaAnalyticsDataClient.common_folder_path(folder)
     assert expected == actual
 
@@ -1731,7 +1802,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "cuttlefish"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = AlphaAnalyticsDataClient.common_organization_path(organization)
     assert expected == actual
 
@@ -1749,7 +1822,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "winkle"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = AlphaAnalyticsDataClient.common_project_path(project)
     assert expected == actual
 
@@ -1769,7 +1844,8 @@ def test_common_location_path():
     project = "scallop"
     location = "abalone"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = AlphaAnalyticsDataClient.common_location_path(project, location)
     assert expected == actual
@@ -1794,7 +1870,8 @@ def test_client_withDEFAULT_CLIENT_INFO():
         transports.AlphaAnalyticsDataTransport, "_prep_wrapped_messages"
     ) as prep:
         client = AlphaAnalyticsDataClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -1803,6 +1880,7 @@ def test_client_withDEFAULT_CLIENT_INFO():
     ) as prep:
         transport_class = AlphaAnalyticsDataClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
