@@ -63,7 +63,8 @@ class DataTransferServiceClientMeta(type):
     _transport_registry["grpc_asyncio"] = DataTransferServiceGrpcAsyncIOTransport
 
     def get_transport_class(
-        cls, label: str = None,
+        cls,
+        label: str = None,
     ) -> Type[DataTransferServiceTransport]:
         """Returns an appropriate transport class.
 
@@ -171,10 +172,14 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         return self._transport
 
     @staticmethod
-    def data_source_path(project: str, data_source: str,) -> str:
+    def data_source_path(
+        project: str,
+        data_source: str,
+    ) -> str:
         """Returns a fully-qualified data_source string."""
         return "projects/{project}/dataSources/{data_source}".format(
-            project=project, data_source=data_source,
+            project=project,
+            data_source=data_source,
         )
 
     @staticmethod
@@ -186,10 +191,16 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def run_path(project: str, transfer_config: str, run: str,) -> str:
+    def run_path(
+        project: str,
+        transfer_config: str,
+        run: str,
+    ) -> str:
         """Returns a fully-qualified run string."""
         return "projects/{project}/transferConfigs/{transfer_config}/runs/{run}".format(
-            project=project, transfer_config=transfer_config, run=run,
+            project=project,
+            transfer_config=transfer_config,
+            run=run,
         )
 
     @staticmethod
@@ -202,10 +213,14 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def transfer_config_path(project: str, transfer_config: str,) -> str:
+    def transfer_config_path(
+        project: str,
+        transfer_config: str,
+    ) -> str:
         """Returns a fully-qualified transfer_config string."""
         return "projects/{project}/transferConfigs/{transfer_config}".format(
-            project=project, transfer_config=transfer_config,
+            project=project,
+            transfer_config=transfer_config,
         )
 
     @staticmethod
@@ -218,7 +233,9 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_billing_account_path(billing_account: str,) -> str:
+    def common_billing_account_path(
+        billing_account: str,
+    ) -> str:
         """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
@@ -231,9 +248,13 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(folder: str,) -> str:
+    def common_folder_path(
+        folder: str,
+    ) -> str:
         """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(folder=folder,)
+        return "folders/{folder}".format(
+            folder=folder,
+        )
 
     @staticmethod
     def parse_common_folder_path(path: str) -> Dict[str, str]:
@@ -242,9 +263,13 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(organization: str,) -> str:
+    def common_organization_path(
+        organization: str,
+    ) -> str:
         """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(organization=organization,)
+        return "organizations/{organization}".format(
+            organization=organization,
+        )
 
     @staticmethod
     def parse_common_organization_path(path: str) -> Dict[str, str]:
@@ -253,9 +278,13 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(project: str,) -> str:
+    def common_project_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified project string."""
-        return "projects/{project}".format(project=project,)
+        return "projects/{project}".format(
+            project=project,
+        )
 
     @staticmethod
     def parse_common_project_path(path: str) -> Dict[str, str]:
@@ -264,10 +293,14 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(project: str, location: str,) -> str:
+    def common_location_path(
+        project: str,
+        location: str,
+    ) -> str:
         """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
-            project=project, location=location,
+            project=project,
+            location=location,
         )
 
     @staticmethod
@@ -530,7 +563,12 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -628,12 +666,20 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListDataSourcesPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -754,7 +800,12 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -869,7 +920,12 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -956,7 +1012,10 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def get_transfer_config(
@@ -1052,7 +1111,12 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1149,12 +1213,20 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListTransferConfigsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1276,7 +1348,12 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1350,7 +1427,12 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1443,7 +1525,12 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1528,7 +1615,10 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def list_transfer_runs(
@@ -1625,12 +1715,20 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListTransferRunsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1727,12 +1825,20 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListTransferLogsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1833,7 +1939,12 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1902,7 +2013,10 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def __enter__(self):
