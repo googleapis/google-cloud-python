@@ -20,7 +20,11 @@ from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.api.servicecontrol.v1", manifest={"MetricValue", "MetricValueSet",},
+    package="google.api.servicecontrol.v1",
+    manifest={
+        "MetricValue",
+        "MetricValueSet",
+    },
 )
 
 
@@ -75,15 +79,46 @@ class MetricValue(proto.Message):
             This field is a member of `oneof`_ ``value``.
     """
 
-    labels = proto.MapField(proto.STRING, proto.STRING, number=1,)
-    start_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    end_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
-    bool_value = proto.Field(proto.BOOL, number=4, oneof="value",)
-    int64_value = proto.Field(proto.INT64, number=5, oneof="value",)
-    double_value = proto.Field(proto.DOUBLE, number=6, oneof="value",)
-    string_value = proto.Field(proto.STRING, number=7, oneof="value",)
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=1,
+    )
+    start_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    bool_value = proto.Field(
+        proto.BOOL,
+        number=4,
+        oneof="value",
+    )
+    int64_value = proto.Field(
+        proto.INT64,
+        number=5,
+        oneof="value",
+    )
+    double_value = proto.Field(
+        proto.DOUBLE,
+        number=6,
+        oneof="value",
+    )
+    string_value = proto.Field(
+        proto.STRING,
+        number=7,
+        oneof="value",
+    )
     distribution_value = proto.Field(
-        proto.MESSAGE, number=8, oneof="value", message=gas_distribution.Distribution,
+        proto.MESSAGE,
+        number=8,
+        oneof="value",
+        message=gas_distribution.Distribution,
     )
 
 
@@ -100,8 +135,15 @@ class MetricValueSet(proto.Message):
             The values in this metric.
     """
 
-    metric_name = proto.Field(proto.STRING, number=1,)
-    metric_values = proto.RepeatedField(proto.MESSAGE, number=2, message="MetricValue",)
+    metric_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    metric_values = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="MetricValue",
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

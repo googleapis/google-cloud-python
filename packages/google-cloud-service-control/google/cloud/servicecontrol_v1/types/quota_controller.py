@@ -50,9 +50,19 @@ class AllocateQuotaRequest(proto.Message):
             can be found, the latest one will be used.
     """
 
-    service_name = proto.Field(proto.STRING, number=1,)
-    allocate_operation = proto.Field(proto.MESSAGE, number=2, message="QuotaOperation",)
-    service_config_id = proto.Field(proto.STRING, number=4,)
+    service_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    allocate_operation = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="QuotaOperation",
+    )
+    service_config_id = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class QuotaOperation(proto.Message):
@@ -118,14 +128,33 @@ class QuotaOperation(proto.Message):
         QUERY_ONLY = 4
         ADJUST_ONLY = 5
 
-    operation_id = proto.Field(proto.STRING, number=1,)
-    method_name = proto.Field(proto.STRING, number=2,)
-    consumer_id = proto.Field(proto.STRING, number=3,)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=4,)
-    quota_metrics = proto.RepeatedField(
-        proto.MESSAGE, number=5, message=metric_value.MetricValueSet,
+    operation_id = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    quota_mode = proto.Field(proto.ENUM, number=6, enum=QuotaMode,)
+    method_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    consumer_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=4,
+    )
+    quota_metrics = proto.RepeatedField(
+        proto.MESSAGE,
+        number=5,
+        message=metric_value.MetricValueSet,
+    )
+    quota_mode = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum=QuotaMode,
+    )
 
 
 class AllocateQuotaResponse(proto.Message):
@@ -155,14 +184,24 @@ class AllocateQuotaResponse(proto.Message):
             request.
     """
 
-    operation_id = proto.Field(proto.STRING, number=1,)
+    operation_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     allocate_errors = proto.RepeatedField(
-        proto.MESSAGE, number=2, message="QuotaError",
+        proto.MESSAGE,
+        number=2,
+        message="QuotaError",
     )
     quota_metrics = proto.RepeatedField(
-        proto.MESSAGE, number=3, message=metric_value.MetricValueSet,
+        proto.MESSAGE,
+        number=3,
+        message=metric_value.MetricValueSet,
     )
-    service_config_id = proto.Field(proto.STRING, number=4,)
+    service_config_id = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class QuotaError(proto.Message):
@@ -200,10 +239,24 @@ class QuotaError(proto.Message):
         API_KEY_INVALID = 105
         API_KEY_EXPIRED = 112
 
-    code = proto.Field(proto.ENUM, number=1, enum=Code,)
-    subject = proto.Field(proto.STRING, number=2,)
-    description = proto.Field(proto.STRING, number=3,)
-    status = proto.Field(proto.MESSAGE, number=4, message=status_pb2.Status,)
+    code = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Code,
+    )
+    subject = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    status = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=status_pb2.Status,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

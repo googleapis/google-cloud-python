@@ -22,7 +22,12 @@ from google.rpc import status_pb2  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.api.servicecontrol.v1",
-    manifest={"CheckRequest", "CheckResponse", "ReportRequest", "ReportResponse",},
+    manifest={
+        "CheckRequest",
+        "CheckResponse",
+        "ReportRequest",
+        "ReportResponse",
+    },
 )
 
 
@@ -47,9 +52,19 @@ class CheckRequest(proto.Message):
             found, the latest one will be used.
     """
 
-    service_name = proto.Field(proto.STRING, number=1,)
-    operation = proto.Field(proto.MESSAGE, number=2, message=gas_operation.Operation,)
-    service_config_id = proto.Field(proto.STRING, number=4,)
+    service_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    operation = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=gas_operation.Operation,
+    )
+    service_config_id = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class CheckResponse(proto.Message):
@@ -90,9 +105,14 @@ class CheckResponse(proto.Message):
                 Consumer info of this check.
         """
 
-        unused_arguments = proto.RepeatedField(proto.STRING, number=1,)
+        unused_arguments = proto.RepeatedField(
+            proto.STRING,
+            number=1,
+        )
         consumer_info = proto.Field(
-            proto.MESSAGE, number=2, message="CheckResponse.ConsumerInfo",
+            proto.MESSAGE,
+            number=2,
+            message="CheckResponse.ConsumerInfo",
         )
 
     class ConsumerInfo(proto.Message):
@@ -127,19 +147,42 @@ class CheckResponse(proto.Message):
             ORGANIZATION = 3
             SERVICE_SPECIFIC = 4
 
-        project_number = proto.Field(proto.INT64, number=1,)
-        type_ = proto.Field(
-            proto.ENUM, number=2, enum="CheckResponse.ConsumerInfo.ConsumerType",
+        project_number = proto.Field(
+            proto.INT64,
+            number=1,
         )
-        consumer_number = proto.Field(proto.INT64, number=3,)
+        type_ = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum="CheckResponse.ConsumerInfo.ConsumerType",
+        )
+        consumer_number = proto.Field(
+            proto.INT64,
+            number=3,
+        )
 
-    operation_id = proto.Field(proto.STRING, number=1,)
-    check_errors = proto.RepeatedField(
-        proto.MESSAGE, number=2, message=check_error.CheckError,
+    operation_id = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    service_config_id = proto.Field(proto.STRING, number=5,)
-    service_rollout_id = proto.Field(proto.STRING, number=11,)
-    check_info = proto.Field(proto.MESSAGE, number=6, message=CheckInfo,)
+    check_errors = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=check_error.CheckError,
+    )
+    service_config_id = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    service_rollout_id = proto.Field(
+        proto.STRING,
+        number=11,
+    )
+    check_info = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=CheckInfo,
+    )
 
 
 class ReportRequest(proto.Message):
@@ -174,11 +217,19 @@ class ReportRequest(proto.Message):
             found, the latest one will be used.
     """
 
-    service_name = proto.Field(proto.STRING, number=1,)
-    operations = proto.RepeatedField(
-        proto.MESSAGE, number=2, message=gas_operation.Operation,
+    service_name = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    service_config_id = proto.Field(proto.STRING, number=3,)
+    operations = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=gas_operation.Operation,
+    )
+    service_config_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ReportResponse(proto.Message):
@@ -224,12 +275,29 @@ class ReportResponse(proto.Message):
                 [Operation][google.api.servicecontrol.v1.Operation].
         """
 
-        operation_id = proto.Field(proto.STRING, number=1,)
-        status = proto.Field(proto.MESSAGE, number=2, message=status_pb2.Status,)
+        operation_id = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        status = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message=status_pb2.Status,
+        )
 
-    report_errors = proto.RepeatedField(proto.MESSAGE, number=1, message=ReportError,)
-    service_config_id = proto.Field(proto.STRING, number=2,)
-    service_rollout_id = proto.Field(proto.STRING, number=4,)
+    report_errors = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=ReportError,
+    )
+    service_config_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    service_rollout_id = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

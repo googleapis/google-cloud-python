@@ -19,7 +19,10 @@ from google.rpc import status_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.api.servicecontrol.v1", manifest={"CheckError",},
+    package="google.api.servicecontrol.v1",
+    manifest={
+        "CheckError",
+    },
 )
 
 
@@ -70,10 +73,24 @@ class CheckError(proto.Message):
         BILLING_STATUS_UNAVAILABLE = 302
         CLOUD_RESOURCE_MANAGER_BACKEND_UNAVAILABLE = 305
 
-    code = proto.Field(proto.ENUM, number=1, enum=Code,)
-    subject = proto.Field(proto.STRING, number=4,)
-    detail = proto.Field(proto.STRING, number=2,)
-    status = proto.Field(proto.MESSAGE, number=3, message=status_pb2.Status,)
+    code = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Code,
+    )
+    subject = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    detail = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    status = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=status_pb2.Status,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

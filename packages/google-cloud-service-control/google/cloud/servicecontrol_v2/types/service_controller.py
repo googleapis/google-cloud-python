@@ -59,13 +59,28 @@ class CheckRequest(proto.Message):
             flags.
     """
 
-    service_name = proto.Field(proto.STRING, number=1,)
-    service_config_id = proto.Field(proto.STRING, number=2,)
-    attributes = proto.Field(
-        proto.MESSAGE, number=3, message=attribute_context_pb2.AttributeContext,
+    service_name = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    resources = proto.RepeatedField(proto.MESSAGE, number=4, message="ResourceInfo",)
-    flags = proto.Field(proto.STRING, number=5,)
+    service_config_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    attributes = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=attribute_context_pb2.AttributeContext,
+    )
+    resources = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message="ResourceInfo",
+    )
+    flags = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class ResourceInfo(proto.Message):
@@ -99,11 +114,26 @@ class ResourceInfo(proto.Message):
             "northamerica-northeast1-a".
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    type_ = proto.Field(proto.STRING, number=2,)
-    permission = proto.Field(proto.STRING, number=3,)
-    container = proto.Field(proto.STRING, number=4,)
-    location = proto.Field(proto.STRING, number=5,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    type_ = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    permission = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    container = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    location = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class CheckResponse(proto.Message):
@@ -120,8 +150,16 @@ class CheckResponse(proto.Message):
             ``CheckRequest``.
     """
 
-    status = proto.Field(proto.MESSAGE, number=1, message=status_pb2.Status,)
-    headers = proto.MapField(proto.STRING, proto.STRING, number=2,)
+    status = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=status_pb2.Status,
+    )
+    headers = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=2,
+    )
 
 
 class ReportRequest(proto.Message):
@@ -148,10 +186,18 @@ class ReportRequest(proto.Message):
             around an API access.
     """
 
-    service_name = proto.Field(proto.STRING, number=1,)
-    service_config_id = proto.Field(proto.STRING, number=2,)
+    service_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    service_config_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
     operations = proto.RepeatedField(
-        proto.MESSAGE, number=3, message=attribute_context_pb2.AttributeContext,
+        proto.MESSAGE,
+        number=3,
+        message=attribute_context_pb2.AttributeContext,
     )
 
 

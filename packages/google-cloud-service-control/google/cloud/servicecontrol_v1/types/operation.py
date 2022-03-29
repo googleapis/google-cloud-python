@@ -22,7 +22,10 @@ from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.api.servicecontrol.v1", manifest={"Operation",},
+    package="google.api.servicecontrol.v1",
+    manifest={
+        "Operation",
+    },
 )
 
 
@@ -117,20 +120,53 @@ class Operation(proto.Message):
         LOW = 0
         HIGH = 1
 
-    operation_id = proto.Field(proto.STRING, number=1,)
-    operation_name = proto.Field(proto.STRING, number=2,)
-    consumer_id = proto.Field(proto.STRING, number=3,)
-    start_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
-    end_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=6,)
+    operation_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    operation_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    consumer_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    start_time = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=6,
+    )
     metric_value_sets = proto.RepeatedField(
-        proto.MESSAGE, number=7, message=metric_value.MetricValueSet,
+        proto.MESSAGE,
+        number=7,
+        message=metric_value.MetricValueSet,
     )
     log_entries = proto.RepeatedField(
-        proto.MESSAGE, number=8, message=log_entry.LogEntry,
+        proto.MESSAGE,
+        number=8,
+        message=log_entry.LogEntry,
     )
-    importance = proto.Field(proto.ENUM, number=11, enum=Importance,)
-    extensions = proto.RepeatedField(proto.MESSAGE, number=16, message=any_pb2.Any,)
+    importance = proto.Field(
+        proto.ENUM,
+        number=11,
+        enum=Importance,
+    )
+    extensions = proto.RepeatedField(
+        proto.MESSAGE,
+        number=16,
+        message=any_pb2.Any,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
