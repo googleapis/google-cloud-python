@@ -58,7 +58,10 @@ class CloudDeployClientMeta(type):
     _transport_registry["grpc"] = CloudDeployGrpcTransport
     _transport_registry["grpc_asyncio"] = CloudDeployGrpcAsyncIOTransport
 
-    def get_transport_class(cls, label: str = None,) -> Type[CloudDeployTransport]:
+    def get_transport_class(
+        cls,
+        label: str = None,
+    ) -> Type[CloudDeployTransport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -166,10 +169,16 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
         return self._transport
 
     @staticmethod
-    def build_path(project: str, location: str, build: str,) -> str:
+    def build_path(
+        project: str,
+        location: str,
+        build: str,
+    ) -> str:
         """Returns a fully-qualified build string."""
         return "projects/{project}/locations/{location}/builds/{build}".format(
-            project=project, location=location, build=build,
+            project=project,
+            location=location,
+            build=build,
         )
 
     @staticmethod
@@ -182,10 +191,16 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def cluster_path(project: str, location: str, cluster: str,) -> str:
+    def cluster_path(
+        project: str,
+        location: str,
+        cluster: str,
+    ) -> str:
         """Returns a fully-qualified cluster string."""
         return "projects/{project}/locations/{location}/clusters/{cluster}".format(
-            project=project, location=location, cluster=cluster,
+            project=project,
+            location=location,
+            cluster=cluster,
         )
 
     @staticmethod
@@ -198,10 +213,14 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def config_path(project: str, location: str,) -> str:
+    def config_path(
+        project: str,
+        location: str,
+    ) -> str:
         """Returns a fully-qualified config string."""
         return "projects/{project}/locations/{location}/config".format(
-            project=project, location=location,
+            project=project,
+            location=location,
         )
 
     @staticmethod
@@ -214,11 +233,15 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
 
     @staticmethod
     def delivery_pipeline_path(
-        project: str, location: str, delivery_pipeline: str,
+        project: str,
+        location: str,
+        delivery_pipeline: str,
     ) -> str:
         """Returns a fully-qualified delivery_pipeline string."""
         return "projects/{project}/locations/{location}/deliveryPipelines/{delivery_pipeline}".format(
-            project=project, location=location, delivery_pipeline=delivery_pipeline,
+            project=project,
+            location=location,
+            delivery_pipeline=delivery_pipeline,
         )
 
     @staticmethod
@@ -232,7 +255,10 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
 
     @staticmethod
     def release_path(
-        project: str, location: str, delivery_pipeline: str, release: str,
+        project: str,
+        location: str,
+        delivery_pipeline: str,
+        release: str,
     ) -> str:
         """Returns a fully-qualified release string."""
         return "projects/{project}/locations/{location}/deliveryPipelines/{delivery_pipeline}/releases/{release}".format(
@@ -253,7 +279,11 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
 
     @staticmethod
     def rollout_path(
-        project: str, location: str, delivery_pipeline: str, release: str, rollout: str,
+        project: str,
+        location: str,
+        delivery_pipeline: str,
+        release: str,
+        rollout: str,
     ) -> str:
         """Returns a fully-qualified rollout string."""
         return "projects/{project}/locations/{location}/deliveryPipelines/{delivery_pipeline}/releases/{release}/rollouts/{rollout}".format(
@@ -274,10 +304,16 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def target_path(project: str, location: str, target: str,) -> str:
+    def target_path(
+        project: str,
+        location: str,
+        target: str,
+    ) -> str:
         """Returns a fully-qualified target string."""
         return "projects/{project}/locations/{location}/targets/{target}".format(
-            project=project, location=location, target=target,
+            project=project,
+            location=location,
+            target=target,
         )
 
     @staticmethod
@@ -290,10 +326,18 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def worker_pool_path(project: str, location: str, worker_pool: str,) -> str:
+    def worker_pool_path(
+        project: str,
+        location: str,
+        worker_pool: str,
+    ) -> str:
         """Returns a fully-qualified worker_pool string."""
-        return "projects/{project}/locations/{location}/workerPools/{worker_pool}".format(
-            project=project, location=location, worker_pool=worker_pool,
+        return (
+            "projects/{project}/locations/{location}/workerPools/{worker_pool}".format(
+                project=project,
+                location=location,
+                worker_pool=worker_pool,
+            )
         )
 
     @staticmethod
@@ -306,7 +350,9 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_billing_account_path(billing_account: str,) -> str:
+    def common_billing_account_path(
+        billing_account: str,
+    ) -> str:
         """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
@@ -319,9 +365,13 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(folder: str,) -> str:
+    def common_folder_path(
+        folder: str,
+    ) -> str:
         """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(folder=folder,)
+        return "folders/{folder}".format(
+            folder=folder,
+        )
 
     @staticmethod
     def parse_common_folder_path(path: str) -> Dict[str, str]:
@@ -330,9 +380,13 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(organization: str,) -> str:
+    def common_organization_path(
+        organization: str,
+    ) -> str:
         """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(organization=organization,)
+        return "organizations/{organization}".format(
+            organization=organization,
+        )
 
     @staticmethod
     def parse_common_organization_path(path: str) -> Dict[str, str]:
@@ -341,9 +395,13 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(project: str,) -> str:
+    def common_project_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified project string."""
-        return "projects/{project}".format(project=project,)
+        return "projects/{project}".format(
+            project=project,
+        )
 
     @staticmethod
     def parse_common_project_path(path: str) -> Dict[str, str]:
@@ -352,10 +410,14 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(project: str, location: str,) -> str:
+    def common_location_path(
+        project: str,
+        location: str,
+    ) -> str:
         """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
-            project=project, location=location,
+            project=project,
+            location=location,
         )
 
     @staticmethod
@@ -620,12 +682,20 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListDeliveryPipelinesPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -720,7 +790,12 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -841,7 +916,12 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -964,7 +1044,12 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1080,7 +1165,12 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1182,12 +1272,20 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListTargetsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1279,7 +1377,12 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1397,7 +1500,12 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1518,7 +1626,12 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1634,7 +1747,12 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1735,12 +1853,20 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListReleasesPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1832,7 +1958,12 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1952,7 +2083,12 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -2051,7 +2187,12 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2145,12 +2286,20 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListRolloutsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -2243,7 +2392,12 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2367,7 +2521,12 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -2462,7 +2621,12 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2483,7 +2647,9 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-deploy",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-deploy",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()

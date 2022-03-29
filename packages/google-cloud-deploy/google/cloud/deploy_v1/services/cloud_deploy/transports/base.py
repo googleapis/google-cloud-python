@@ -31,7 +31,9 @@ from google.longrunning import operations_pb2  # type: ignore
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-deploy",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-deploy",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
@@ -192,13 +194,19 @@ class CloudDeployTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.create_target: gapic_v1.method.wrap_method(
-                self.create_target, default_timeout=60.0, client_info=client_info,
+                self.create_target,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.update_target: gapic_v1.method.wrap_method(
-                self.update_target, default_timeout=60.0, client_info=client_info,
+                self.update_target,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.delete_target: gapic_v1.method.wrap_method(
-                self.delete_target, default_timeout=60.0, client_info=client_info,
+                self.delete_target,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.list_releases: gapic_v1.method.wrap_method(
                 self.list_releases,
@@ -229,10 +237,14 @@ class CloudDeployTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.create_release: gapic_v1.method.wrap_method(
-                self.create_release, default_timeout=60.0, client_info=client_info,
+                self.create_release,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.approve_rollout: gapic_v1.method.wrap_method(
-                self.approve_rollout, default_timeout=60.0, client_info=client_info,
+                self.approve_rollout,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.list_rollouts: gapic_v1.method.wrap_method(
                 self.list_rollouts,
@@ -263,7 +275,9 @@ class CloudDeployTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.create_rollout: gapic_v1.method.wrap_method(
-                self.create_rollout, default_timeout=60.0, client_info=client_info,
+                self.create_rollout,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.get_config: gapic_v1.method.wrap_method(
                 self.get_config,
@@ -284,9 +298,9 @@ class CloudDeployTransport(abc.ABC):
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

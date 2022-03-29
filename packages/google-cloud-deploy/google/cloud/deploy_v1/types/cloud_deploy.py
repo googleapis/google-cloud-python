@@ -122,18 +122,53 @@ class DeliveryPipeline(proto.Message):
             has an up-to-date value before proceeding.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    uid = proto.Field(proto.STRING, number=2,)
-    description = proto.Field(proto.STRING, number=3,)
-    annotations = proto.MapField(proto.STRING, proto.STRING, number=4,)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=5,)
-    create_time = proto.Field(proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=7, message=timestamp_pb2.Timestamp,)
-    serial_pipeline = proto.Field(
-        proto.MESSAGE, number=8, oneof="pipeline", message="SerialPipeline",
+    name = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    condition = proto.Field(proto.MESSAGE, number=11, message="PipelineCondition",)
-    etag = proto.Field(proto.STRING, number=10,)
+    uid = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    annotations = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=4,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=5,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=timestamp_pb2.Timestamp,
+    )
+    serial_pipeline = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        oneof="pipeline",
+        message="SerialPipeline",
+    )
+    condition = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message="PipelineCondition",
+    )
+    etag = proto.Field(
+        proto.STRING,
+        number=10,
+    )
 
 
 class SerialPipeline(proto.Message):
@@ -146,7 +181,11 @@ class SerialPipeline(proto.Message):
             ordering of this list defines the promotion flow.
     """
 
-    stages = proto.RepeatedField(proto.MESSAGE, number=1, message="Stage",)
+    stages = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Stage",
+    )
 
 
 class Stage(proto.Message):
@@ -166,8 +205,14 @@ class Stage(proto.Message):
             this stage's ``Target``.
     """
 
-    target_id = proto.Field(proto.STRING, number=1,)
-    profiles = proto.RepeatedField(proto.STRING, number=2,)
+    target_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    profiles = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
 
 
 class PipelineReadyCondition(proto.Message):
@@ -185,8 +230,15 @@ class PipelineReadyCondition(proto.Message):
             Last time the condition was updated.
     """
 
-    status = proto.Field(proto.BOOL, number=3,)
-    update_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
+    status = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 class TargetsPresentCondition(proto.Message):
@@ -203,9 +255,19 @@ class TargetsPresentCondition(proto.Message):
             Last time the condition was updated.
     """
 
-    status = proto.Field(proto.BOOL, number=1,)
-    missing_targets = proto.RepeatedField(proto.STRING, number=2,)
-    update_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
+    status = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
+    missing_targets = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 class PipelineCondition(proto.Message):
@@ -221,10 +283,14 @@ class PipelineCondition(proto.Message):
     """
 
     pipeline_ready_condition = proto.Field(
-        proto.MESSAGE, number=1, message="PipelineReadyCondition",
+        proto.MESSAGE,
+        number=1,
+        message="PipelineReadyCondition",
     )
     targets_present_condition = proto.Field(
-        proto.MESSAGE, number=3, message="TargetsPresentCondition",
+        proto.MESSAGE,
+        number=3,
+        message="TargetsPresentCondition",
     )
 
 
@@ -258,11 +324,26 @@ class ListDeliveryPipelinesRequest(proto.Message):
             details.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    filter = proto.Field(proto.STRING, number=4,)
-    order_by = proto.Field(proto.STRING, number=5,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class ListDeliveryPipelinesResponse(proto.Message):
@@ -284,10 +365,18 @@ class ListDeliveryPipelinesResponse(proto.Message):
         return self
 
     delivery_pipelines = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="DeliveryPipeline",
+        proto.MESSAGE,
+        number=1,
+        message="DeliveryPipeline",
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
-    unreachable = proto.RepeatedField(proto.STRING, number=3,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 class GetDeliveryPipelineRequest(proto.Message):
@@ -299,7 +388,10 @@ class GetDeliveryPipelineRequest(proto.Message):
             projects/{project_id}/locations/{location_name}/deliveryPipelines/{pipeline_name}.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CreateDeliveryPipelineRequest(proto.Message):
@@ -338,13 +430,27 @@ class CreateDeliveryPipelineRequest(proto.Message):
             expected result, but no actual change is made.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    delivery_pipeline_id = proto.Field(proto.STRING, number=2,)
-    delivery_pipeline = proto.Field(
-        proto.MESSAGE, number=3, message="DeliveryPipeline",
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    request_id = proto.Field(proto.STRING, number=4,)
-    validate_only = proto.Field(proto.BOOL, number=5,)
+    delivery_pipeline_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    delivery_pipeline = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="DeliveryPipeline",
+    )
+    request_id = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    validate_only = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
 
 
 class UpdateDeliveryPipelineRequest(proto.Message):
@@ -389,14 +495,27 @@ class UpdateDeliveryPipelineRequest(proto.Message):
     """
 
     update_mask = proto.Field(
-        proto.MESSAGE, number=1, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=1,
+        message=field_mask_pb2.FieldMask,
     )
     delivery_pipeline = proto.Field(
-        proto.MESSAGE, number=2, message="DeliveryPipeline",
+        proto.MESSAGE,
+        number=2,
+        message="DeliveryPipeline",
     )
-    request_id = proto.Field(proto.STRING, number=3,)
-    allow_missing = proto.Field(proto.BOOL, number=4,)
-    validate_only = proto.Field(proto.BOOL, number=5,)
+    request_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    allow_missing = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
+    validate_only = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
 
 
 class DeleteDeliveryPipelineRequest(proto.Message):
@@ -444,12 +563,30 @@ class DeleteDeliveryPipelineRequest(proto.Message):
             proceeding.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    request_id = proto.Field(proto.STRING, number=2,)
-    allow_missing = proto.Field(proto.BOOL, number=3,)
-    validate_only = proto.Field(proto.BOOL, number=4,)
-    force = proto.Field(proto.BOOL, number=6,)
-    etag = proto.Field(proto.STRING, number=5,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    request_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    allow_missing = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+    validate_only = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
+    force = proto.Field(
+        proto.BOOL,
+        number=6,
+    )
+    etag = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class Target(proto.Message):
@@ -515,21 +652,60 @@ class Target(proto.Message):
             specified in ``DefaultPool``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    target_id = proto.Field(proto.STRING, number=2,)
-    uid = proto.Field(proto.STRING, number=3,)
-    description = proto.Field(proto.STRING, number=4,)
-    annotations = proto.MapField(proto.STRING, proto.STRING, number=5,)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=6,)
-    require_approval = proto.Field(proto.BOOL, number=13,)
-    create_time = proto.Field(proto.MESSAGE, number=8, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=9, message=timestamp_pb2.Timestamp,)
-    gke = proto.Field(
-        proto.MESSAGE, number=15, oneof="deployment_target", message="GkeCluster",
+    name = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    etag = proto.Field(proto.STRING, number=12,)
+    target_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    uid = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    annotations = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=5,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=6,
+    )
+    require_approval = proto.Field(
+        proto.BOOL,
+        number=13,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message=timestamp_pb2.Timestamp,
+    )
+    gke = proto.Field(
+        proto.MESSAGE,
+        number=15,
+        oneof="deployment_target",
+        message="GkeCluster",
+    )
+    etag = proto.Field(
+        proto.STRING,
+        number=12,
+    )
     execution_configs = proto.RepeatedField(
-        proto.MESSAGE, number=16, message="ExecutionConfig",
+        proto.MESSAGE,
+        number=16,
+        message="ExecutionConfig",
     )
 
 
@@ -564,12 +740,22 @@ class ExecutionConfig(proto.Message):
         RENDER = 1
         DEPLOY = 2
 
-    usages = proto.RepeatedField(proto.ENUM, number=1, enum=ExecutionEnvironmentUsage,)
+    usages = proto.RepeatedField(
+        proto.ENUM,
+        number=1,
+        enum=ExecutionEnvironmentUsage,
+    )
     default_pool = proto.Field(
-        proto.MESSAGE, number=2, oneof="execution_environment", message="DefaultPool",
+        proto.MESSAGE,
+        number=2,
+        oneof="execution_environment",
+        message="DefaultPool",
     )
     private_pool = proto.Field(
-        proto.MESSAGE, number=3, oneof="execution_environment", message="PrivatePool",
+        proto.MESSAGE,
+        number=3,
+        oneof="execution_environment",
+        message="PrivatePool",
     )
 
 
@@ -591,8 +777,14 @@ class DefaultPool(proto.Message):
             same region will be used.
     """
 
-    service_account = proto.Field(proto.STRING, number=1,)
-    artifact_storage = proto.Field(proto.STRING, number=2,)
+    service_account = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    artifact_storage = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class PrivatePool(proto.Message):
@@ -617,9 +809,18 @@ class PrivatePool(proto.Message):
             same region will be used.
     """
 
-    worker_pool = proto.Field(proto.STRING, number=1,)
-    service_account = proto.Field(proto.STRING, number=2,)
-    artifact_storage = proto.Field(proto.STRING, number=3,)
+    worker_pool = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    service_account = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    artifact_storage = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class GkeCluster(proto.Message):
@@ -631,7 +832,10 @@ class GkeCluster(proto.Message):
             \`projects/{project_id}/locations/{location_id}/clusters/{cluster_id}.
     """
 
-    cluster = proto.Field(proto.STRING, number=1,)
+    cluster = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListTargetsRequest(proto.Message):
@@ -664,11 +868,26 @@ class ListTargetsRequest(proto.Message):
             details.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    filter = proto.Field(proto.STRING, number=4,)
-    order_by = proto.Field(proto.STRING, number=5,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class ListTargetsResponse(proto.Message):
@@ -689,9 +908,19 @@ class ListTargetsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    targets = proto.RepeatedField(proto.MESSAGE, number=1, message="Target",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
-    unreachable = proto.RepeatedField(proto.STRING, number=3,)
+    targets = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Target",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 class GetTargetRequest(proto.Message):
@@ -703,7 +932,10 @@ class GetTargetRequest(proto.Message):
             projects/{project_id}/locations/{location_name}/targets/{target_name}.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CreateTargetRequest(proto.Message):
@@ -742,11 +974,27 @@ class CreateTargetRequest(proto.Message):
             expected result, but no actual change is made.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    target_id = proto.Field(proto.STRING, number=2,)
-    target = proto.Field(proto.MESSAGE, number=3, message="Target",)
-    request_id = proto.Field(proto.STRING, number=4,)
-    validate_only = proto.Field(proto.BOOL, number=5,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    target_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    target = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="Target",
+    )
+    request_id = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    validate_only = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
 
 
 class UpdateTargetRequest(proto.Message):
@@ -790,12 +1038,27 @@ class UpdateTargetRequest(proto.Message):
     """
 
     update_mask = proto.Field(
-        proto.MESSAGE, number=1, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=1,
+        message=field_mask_pb2.FieldMask,
     )
-    target = proto.Field(proto.MESSAGE, number=2, message="Target",)
-    request_id = proto.Field(proto.STRING, number=3,)
-    allow_missing = proto.Field(proto.BOOL, number=4,)
-    validate_only = proto.Field(proto.BOOL, number=5,)
+    target = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="Target",
+    )
+    request_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    allow_missing = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
+    validate_only = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
 
 
 class DeleteTargetRequest(proto.Message):
@@ -839,11 +1102,26 @@ class DeleteTargetRequest(proto.Message):
             proceeding.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    request_id = proto.Field(proto.STRING, number=2,)
-    allow_missing = proto.Field(proto.BOOL, number=3,)
-    validate_only = proto.Field(proto.BOOL, number=4,)
-    etag = proto.Field(proto.STRING, number=5,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    request_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    allow_missing = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+    validate_only = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
+    etag = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class Release(proto.Message):
@@ -952,40 +1230,100 @@ class Release(proto.Message):
             FAILED = 2
             IN_PROGRESS = 3
 
-        rendering_build = proto.Field(proto.STRING, number=1,)
+        rendering_build = proto.Field(
+            proto.STRING,
+            number=1,
+        )
         rendering_state = proto.Field(
-            proto.ENUM, number=2, enum="Release.TargetRender.TargetRenderState",
+            proto.ENUM,
+            number=2,
+            enum="Release.TargetRender.TargetRenderState",
         )
 
-    name = proto.Field(proto.STRING, number=1,)
-    uid = proto.Field(proto.STRING, number=2,)
-    description = proto.Field(proto.STRING, number=3,)
-    annotations = proto.MapField(proto.STRING, proto.STRING, number=4,)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=5,)
-    create_time = proto.Field(proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    uid = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    annotations = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=4,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=5,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
+    )
     render_start_time = proto.Field(
-        proto.MESSAGE, number=7, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=7,
+        message=timestamp_pb2.Timestamp,
     )
     render_end_time = proto.Field(
-        proto.MESSAGE, number=8, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=8,
+        message=timestamp_pb2.Timestamp,
     )
-    skaffold_config_uri = proto.Field(proto.STRING, number=17,)
-    skaffold_config_path = proto.Field(proto.STRING, number=9,)
+    skaffold_config_uri = proto.Field(
+        proto.STRING,
+        number=17,
+    )
+    skaffold_config_path = proto.Field(
+        proto.STRING,
+        number=9,
+    )
     build_artifacts = proto.RepeatedField(
-        proto.MESSAGE, number=10, message="BuildArtifact",
+        proto.MESSAGE,
+        number=10,
+        message="BuildArtifact",
     )
     delivery_pipeline_snapshot = proto.Field(
-        proto.MESSAGE, number=11, message="DeliveryPipeline",
+        proto.MESSAGE,
+        number=11,
+        message="DeliveryPipeline",
     )
-    target_snapshots = proto.RepeatedField(proto.MESSAGE, number=12, message="Target",)
-    render_state = proto.Field(proto.ENUM, number=13, enum=RenderState,)
-    etag = proto.Field(proto.STRING, number=16,)
-    skaffold_version = proto.Field(proto.STRING, number=19,)
+    target_snapshots = proto.RepeatedField(
+        proto.MESSAGE,
+        number=12,
+        message="Target",
+    )
+    render_state = proto.Field(
+        proto.ENUM,
+        number=13,
+        enum=RenderState,
+    )
+    etag = proto.Field(
+        proto.STRING,
+        number=16,
+    )
+    skaffold_version = proto.Field(
+        proto.STRING,
+        number=19,
+    )
     target_artifacts = proto.MapField(
-        proto.STRING, proto.MESSAGE, number=20, message="TargetArtifact",
+        proto.STRING,
+        proto.MESSAGE,
+        number=20,
+        message="TargetArtifact",
     )
     target_renders = proto.MapField(
-        proto.STRING, proto.MESSAGE, number=22, message=TargetRender,
+        proto.STRING,
+        proto.MESSAGE,
+        number=22,
+        message=TargetRender,
     )
 
 
@@ -1002,8 +1340,14 @@ class BuildArtifact(proto.Message):
             "gcr.io/my-project/busybox@sha256:abc123".
     """
 
-    image = proto.Field(proto.STRING, number=3,)
-    tag = proto.Field(proto.STRING, number=2,)
+    image = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    tag = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class TargetArtifact(proto.Message):
@@ -1027,9 +1371,19 @@ class TargetArtifact(proto.Message):
             manifest relative to the URI.
     """
 
-    artifact_uri = proto.Field(proto.STRING, number=4, oneof="uri",)
-    skaffold_config_path = proto.Field(proto.STRING, number=2,)
-    manifest_path = proto.Field(proto.STRING, number=3,)
+    artifact_uri = proto.Field(
+        proto.STRING,
+        number=4,
+        oneof="uri",
+    )
+    skaffold_config_path = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    manifest_path = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListReleasesRequest(proto.Message):
@@ -1061,11 +1415,26 @@ class ListReleasesRequest(proto.Message):
             details.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    filter = proto.Field(proto.STRING, number=4,)
-    order_by = proto.Field(proto.STRING, number=5,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class ListReleasesResponse(proto.Message):
@@ -1086,9 +1455,19 @@ class ListReleasesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    releases = proto.RepeatedField(proto.MESSAGE, number=1, message="Release",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
-    unreachable = proto.RepeatedField(proto.STRING, number=3,)
+    releases = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Release",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 class GetReleaseRequest(proto.Message):
@@ -1100,7 +1479,10 @@ class GetReleaseRequest(proto.Message):
             projects/{project_id}/locations/{location_name}/deliveryPipelines/{pipeline_name}/releases/{release_name}.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CreateReleaseRequest(proto.Message):
@@ -1139,11 +1521,27 @@ class CreateReleaseRequest(proto.Message):
             expected result, but no actual change is made.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    release_id = proto.Field(proto.STRING, number=2,)
-    release = proto.Field(proto.MESSAGE, number=3, message="Release",)
-    request_id = proto.Field(proto.STRING, number=4,)
-    validate_only = proto.Field(proto.BOOL, number=5,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    release_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    release = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="Release",
+    )
+    request_id = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    validate_only = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
 
 
 class Rollout(proto.Message):
@@ -1229,30 +1627,79 @@ class Rollout(proto.Message):
         PENDING = 6
         PENDING_RELEASE = 7
 
-    name = proto.Field(proto.STRING, number=1,)
-    uid = proto.Field(proto.STRING, number=2,)
-    description = proto.Field(proto.STRING, number=3,)
-    annotations = proto.MapField(proto.STRING, proto.STRING, number=4,)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=5,)
-    create_time = proto.Field(proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    uid = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    annotations = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=4,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=5,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
+    )
     approve_time = proto.Field(
-        proto.MESSAGE, number=7, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=7,
+        message=timestamp_pb2.Timestamp,
     )
     enqueue_time = proto.Field(
-        proto.MESSAGE, number=8, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=8,
+        message=timestamp_pb2.Timestamp,
     )
     deploy_start_time = proto.Field(
-        proto.MESSAGE, number=9, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=9,
+        message=timestamp_pb2.Timestamp,
     )
     deploy_end_time = proto.Field(
-        proto.MESSAGE, number=10, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=10,
+        message=timestamp_pb2.Timestamp,
     )
-    target_id = proto.Field(proto.STRING, number=18,)
-    approval_state = proto.Field(proto.ENUM, number=12, enum=ApprovalState,)
-    state = proto.Field(proto.ENUM, number=13, enum=State,)
-    failure_reason = proto.Field(proto.STRING, number=14,)
-    deploying_build = proto.Field(proto.STRING, number=17,)
-    etag = proto.Field(proto.STRING, number=16,)
+    target_id = proto.Field(
+        proto.STRING,
+        number=18,
+    )
+    approval_state = proto.Field(
+        proto.ENUM,
+        number=12,
+        enum=ApprovalState,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=13,
+        enum=State,
+    )
+    failure_reason = proto.Field(
+        proto.STRING,
+        number=14,
+    )
+    deploying_build = proto.Field(
+        proto.STRING,
+        number=17,
+    )
+    etag = proto.Field(
+        proto.STRING,
+        number=16,
+    )
 
 
 class ListRolloutsRequest(proto.Message):
@@ -1284,11 +1731,26 @@ class ListRolloutsRequest(proto.Message):
             details.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    filter = proto.Field(proto.STRING, number=4,)
-    order_by = proto.Field(proto.STRING, number=5,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class ListRolloutsResponse(proto.Message):
@@ -1310,9 +1772,19 @@ class ListRolloutsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    rollouts = proto.RepeatedField(proto.MESSAGE, number=1, message="Rollout",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
-    unreachable = proto.RepeatedField(proto.STRING, number=3,)
+    rollouts = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Rollout",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 class GetRolloutRequest(proto.Message):
@@ -1324,7 +1796,10 @@ class GetRolloutRequest(proto.Message):
             projects/{project_id}/locations/{location_name}/deliveryPipelines/{pipeline_name}/releases/{release_name}/rollouts/{rollout_name}.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CreateRolloutRequest(proto.Message):
@@ -1364,11 +1839,27 @@ class CreateRolloutRequest(proto.Message):
             expected result, but no actual change is made.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    rollout_id = proto.Field(proto.STRING, number=2,)
-    rollout = proto.Field(proto.MESSAGE, number=3, message="Rollout",)
-    request_id = proto.Field(proto.STRING, number=4,)
-    validate_only = proto.Field(proto.BOOL, number=5,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    rollout_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    rollout = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="Rollout",
+    )
+    request_id = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    validate_only = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
 
 
 class OperationMetadata(proto.Message):
@@ -1401,13 +1892,36 @@ class OperationMetadata(proto.Message):
             operation.
     """
 
-    create_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
-    end_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    target = proto.Field(proto.STRING, number=3,)
-    verb = proto.Field(proto.STRING, number=4,)
-    status_message = proto.Field(proto.STRING, number=5,)
-    requested_cancellation = proto.Field(proto.BOOL, number=6,)
-    api_version = proto.Field(proto.STRING, number=7,)
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    target = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    verb = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    status_message = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    requested_cancellation = proto.Field(
+        proto.BOOL,
+        number=6,
+    )
+    api_version = proto.Field(
+        proto.STRING,
+        number=7,
+    )
 
 
 class ApproveRolloutRequest(proto.Message):
@@ -1422,13 +1936,18 @@ class ApproveRolloutRequest(proto.Message):
             Required. True = approve; false = reject
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    approved = proto.Field(proto.BOOL, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    approved = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
 
 
 class ApproveRolloutResponse(proto.Message):
-    r"""The response object from ``ApproveRollout``.
-    """
+    r"""The response object from ``ApproveRollout``."""
 
 
 class Config(proto.Message):
@@ -1446,11 +1965,19 @@ class Config(proto.Message):
             specifying a Skaffold version.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    supported_versions = proto.RepeatedField(
-        proto.MESSAGE, number=2, message="SkaffoldVersion",
+    name = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    default_skaffold_version = proto.Field(proto.STRING, number=3,)
+    supported_versions = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="SkaffoldVersion",
+    )
+    default_skaffold_version = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class SkaffoldVersion(proto.Message):
@@ -1465,8 +1992,15 @@ class SkaffoldVersion(proto.Message):
             longer be supported.
     """
 
-    version = proto.Field(proto.STRING, number=1,)
-    support_end_date = proto.Field(proto.MESSAGE, number=2, message=date_pb2.Date,)
+    version = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    support_end_date = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=date_pb2.Date,
+    )
 
 
 class GetConfigRequest(proto.Message):
@@ -1477,7 +2011,10 @@ class GetConfigRequest(proto.Message):
             Required. Name of requested configuration.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
