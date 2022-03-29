@@ -66,8 +66,14 @@ class NetworkConfig(proto.Message):
             the customer network.
     """
 
-    network = proto.Field(proto.STRING, number=1,)
-    ip_allocation = proto.Field(proto.STRING, number=2,)
+    network = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    ip_allocation = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class Version(proto.Message):
@@ -98,10 +104,23 @@ class Version(proto.Message):
         TYPE_PREVIEW = 1
         TYPE_GENERAL_AVAILABILITY = 2
 
-    version_number = proto.Field(proto.STRING, number=1,)
-    default_version = proto.Field(proto.BOOL, number=2,)
-    available_features = proto.RepeatedField(proto.STRING, number=3,)
-    type_ = proto.Field(proto.ENUM, number=4, enum=Type,)
+    version_number = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    default_version = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+    available_features = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+    type_ = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=Type,
+    )
 
 
 class Accelerator(proto.Message):
@@ -130,8 +149,16 @@ class Accelerator(proto.Message):
         DISABLED = 2
         UNKNOWN = 3
 
-    accelerator_type = proto.Field(proto.ENUM, number=1, enum=AcceleratorType,)
-    state = proto.Field(proto.ENUM, number=2, enum=State,)
+    accelerator_type = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=AcceleratorType,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=State,
+    )
 
 
 class CryptoKeyConfig(proto.Message):
@@ -146,7 +173,10 @@ class CryptoKeyConfig(proto.Message):
             ``projects/*/locations/*/keyRings/*/cryptoKeys/*``.
     """
 
-    key_reference = proto.Field(proto.STRING, number=1,)
+    key_reference = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class Instance(proto.Message):
@@ -276,42 +306,129 @@ class Instance(proto.Message):
         DISABLED_REASON_UNSPECIFIED = 0
         KMS_KEY_ISSUE = 1
 
-    name = proto.Field(proto.STRING, number=1,)
-    description = proto.Field(proto.STRING, number=2,)
-    type_ = proto.Field(proto.ENUM, number=3, enum=Type,)
-    enable_stackdriver_logging = proto.Field(proto.BOOL, number=4,)
-    enable_stackdriver_monitoring = proto.Field(proto.BOOL, number=5,)
-    private_instance = proto.Field(proto.BOOL, number=6,)
-    network_config = proto.Field(proto.MESSAGE, number=7, message="NetworkConfig",)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=8,)
-    options = proto.MapField(proto.STRING, proto.STRING, number=9,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    type_ = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=Type,
+    )
+    enable_stackdriver_logging = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
+    enable_stackdriver_monitoring = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
+    private_instance = proto.Field(
+        proto.BOOL,
+        number=6,
+    )
+    network_config = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message="NetworkConfig",
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=8,
+    )
+    options = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=9,
+    )
     create_time = proto.Field(
-        proto.MESSAGE, number=10, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=10,
+        message=timestamp_pb2.Timestamp,
     )
     update_time = proto.Field(
-        proto.MESSAGE, number=11, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=11,
+        message=timestamp_pb2.Timestamp,
     )
-    state = proto.Field(proto.ENUM, number=12, enum=State,)
-    state_message = proto.Field(proto.STRING, number=13,)
-    service_endpoint = proto.Field(proto.STRING, number=14,)
-    zone = proto.Field(proto.STRING, number=15,)
-    version = proto.Field(proto.STRING, number=16,)
-    service_account = proto.Field(proto.STRING, number=17,)
-    display_name = proto.Field(proto.STRING, number=18,)
+    state = proto.Field(
+        proto.ENUM,
+        number=12,
+        enum=State,
+    )
+    state_message = proto.Field(
+        proto.STRING,
+        number=13,
+    )
+    service_endpoint = proto.Field(
+        proto.STRING,
+        number=14,
+    )
+    zone = proto.Field(
+        proto.STRING,
+        number=15,
+    )
+    version = proto.Field(
+        proto.STRING,
+        number=16,
+    )
+    service_account = proto.Field(
+        proto.STRING,
+        number=17,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=18,
+    )
     available_version = proto.RepeatedField(
-        proto.MESSAGE, number=19, message="Version",
+        proto.MESSAGE,
+        number=19,
+        message="Version",
     )
-    api_endpoint = proto.Field(proto.STRING, number=20,)
-    gcs_bucket = proto.Field(proto.STRING, number=21,)
-    accelerators = proto.RepeatedField(proto.MESSAGE, number=22, message="Accelerator",)
-    p4_service_account = proto.Field(proto.STRING, number=23,)
-    tenant_project_id = proto.Field(proto.STRING, number=24,)
-    dataproc_service_account = proto.Field(proto.STRING, number=25,)
-    enable_rbac = proto.Field(proto.BOOL, number=27,)
+    api_endpoint = proto.Field(
+        proto.STRING,
+        number=20,
+    )
+    gcs_bucket = proto.Field(
+        proto.STRING,
+        number=21,
+    )
+    accelerators = proto.RepeatedField(
+        proto.MESSAGE,
+        number=22,
+        message="Accelerator",
+    )
+    p4_service_account = proto.Field(
+        proto.STRING,
+        number=23,
+    )
+    tenant_project_id = proto.Field(
+        proto.STRING,
+        number=24,
+    )
+    dataproc_service_account = proto.Field(
+        proto.STRING,
+        number=25,
+    )
+    enable_rbac = proto.Field(
+        proto.BOOL,
+        number=27,
+    )
     crypto_key_config = proto.Field(
-        proto.MESSAGE, number=28, message="CryptoKeyConfig",
+        proto.MESSAGE,
+        number=28,
+        message="CryptoKeyConfig",
     )
-    disabled_reason = proto.RepeatedField(proto.ENUM, number=29, enum=DisabledReason,)
+    disabled_reason = proto.RepeatedField(
+        proto.ENUM,
+        number=29,
+        enum=DisabledReason,
+    )
 
 
 class ListInstancesRequest(proto.Message):
@@ -337,11 +454,26 @@ class ListInstancesRequest(proto.Message):
             "name desc",  or "" (unsorted).
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    filter = proto.Field(proto.STRING, number=4,)
-    order_by = proto.Field(proto.STRING, number=5,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class ListInstancesResponse(proto.Message):
@@ -361,9 +493,19 @@ class ListInstancesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    instances = proto.RepeatedField(proto.MESSAGE, number=1, message="Instance",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
-    unreachable = proto.RepeatedField(proto.STRING, number=3,)
+    instances = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Instance",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListAvailableVersionsRequest(proto.Message):
@@ -386,10 +528,22 @@ class ListAvailableVersionsRequest(proto.Message):
             then response will be [6.1.2, 6.2.0]
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    latest_patch_only = proto.Field(proto.BOOL, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    latest_patch_only = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
 
 
 class ListAvailableVersionsResponse(proto.Message):
@@ -409,9 +563,14 @@ class ListAvailableVersionsResponse(proto.Message):
         return self
 
     available_versions = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="Version",
+        proto.MESSAGE,
+        number=1,
+        message="Version",
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetInstanceRequest(proto.Message):
@@ -425,7 +584,10 @@ class GetInstanceRequest(proto.Message):
             projects/{project}/locations/{location}/instances/{instance}.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CreateInstanceRequest(proto.Message):
@@ -442,9 +604,19 @@ class CreateInstanceRequest(proto.Message):
             An instance resource.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    instance_id = proto.Field(proto.STRING, number=2,)
-    instance = proto.Field(proto.MESSAGE, number=3, message="Instance",)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    instance_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    instance = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="Instance",
+    )
 
 
 class DeleteInstanceRequest(proto.Message):
@@ -457,7 +629,10 @@ class DeleteInstanceRequest(proto.Message):
             projects/{project}/locations/{location}/instances/{instance}
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class UpdateInstanceRequest(proto.Message):
@@ -482,9 +657,15 @@ class UpdateInstanceRequest(proto.Message):
             overwritten.
     """
 
-    instance = proto.Field(proto.MESSAGE, number=1, message="Instance",)
+    instance = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="Instance",
+    )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -498,7 +679,10 @@ class RestartInstanceRequest(proto.Message):
             projects/{project}/locations/{location}/instances/{instance}
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class OperationMetadata(proto.Message):
@@ -533,14 +717,41 @@ class OperationMetadata(proto.Message):
             ENABLING, DISABLING or DELETING
     """
 
-    create_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
-    end_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    target = proto.Field(proto.STRING, number=3,)
-    verb = proto.Field(proto.STRING, number=4,)
-    status_detail = proto.Field(proto.STRING, number=5,)
-    requested_cancellation = proto.Field(proto.BOOL, number=6,)
-    api_version = proto.Field(proto.STRING, number=7,)
-    additional_status = proto.MapField(proto.STRING, proto.STRING, number=8,)
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    target = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    verb = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    status_detail = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    requested_cancellation = proto.Field(
+        proto.BOOL,
+        number=6,
+    )
+    api_version = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    additional_status = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=8,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
