@@ -121,28 +121,38 @@ class GatewayServiceTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.get_resource: gapic_v1.method.wrap_method(
-                self.get_resource, default_timeout=None, client_info=client_info,
+                self.get_resource,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.post_resource: gapic_v1.method.wrap_method(
-                self.post_resource, default_timeout=None, client_info=client_info,
+                self.post_resource,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.delete_resource: gapic_v1.method.wrap_method(
-                self.delete_resource, default_timeout=None, client_info=client_info,
+                self.delete_resource,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.put_resource: gapic_v1.method.wrap_method(
-                self.put_resource, default_timeout=None, client_info=client_info,
+                self.put_resource,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.patch_resource: gapic_v1.method.wrap_method(
-                self.patch_resource, default_timeout=None, client_info=client_info,
+                self.patch_resource,
+                default_timeout=None,
+                client_info=client_info,
             ),
         }
 
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 
