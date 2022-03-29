@@ -31,7 +31,9 @@ from google.longrunning import operations_pb2  # type: ignore
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-ids",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-ids",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
@@ -149,19 +151,23 @@ class IDSTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.create_endpoint: gapic_v1.method.wrap_method(
-                self.create_endpoint, default_timeout=3600.0, client_info=client_info,
+                self.create_endpoint,
+                default_timeout=3600.0,
+                client_info=client_info,
             ),
             self.delete_endpoint: gapic_v1.method.wrap_method(
-                self.delete_endpoint, default_timeout=3600.0, client_info=client_info,
+                self.delete_endpoint,
+                default_timeout=3600.0,
+                client_info=client_info,
             ),
         }
 
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

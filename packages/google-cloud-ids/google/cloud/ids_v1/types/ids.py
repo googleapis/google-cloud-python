@@ -82,17 +82,55 @@ class Endpoint(proto.Message):
         READY = 2
         DELETING = 3
 
-    name = proto.Field(proto.STRING, number=1,)
-    create_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=4,)
-    network = proto.Field(proto.STRING, number=5,)
-    endpoint_forwarding_rule = proto.Field(proto.STRING, number=6,)
-    endpoint_ip = proto.Field(proto.STRING, number=7,)
-    description = proto.Field(proto.STRING, number=8,)
-    severity = proto.Field(proto.ENUM, number=9, enum=Severity,)
-    state = proto.Field(proto.ENUM, number=12, enum=State,)
-    traffic_logs = proto.Field(proto.BOOL, number=13,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=4,
+    )
+    network = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    endpoint_forwarding_rule = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    endpoint_ip = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    severity = proto.Field(
+        proto.ENUM,
+        number=9,
+        enum=Severity,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=12,
+        enum=State,
+    )
+    traffic_logs = proto.Field(
+        proto.BOOL,
+        number=13,
+    )
 
 
 class ListEndpointsRequest(proto.Message):
@@ -124,11 +162,26 @@ class ListEndpointsRequest(proto.Message):
             https://google.aip.dev/132#ordering.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    filter = proto.Field(proto.STRING, number=4,)
-    order_by = proto.Field(proto.STRING, number=5,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class ListEndpointsResponse(proto.Message):
@@ -149,9 +202,19 @@ class ListEndpointsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    endpoints = proto.RepeatedField(proto.MESSAGE, number=1, message="Endpoint",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
-    unreachable = proto.RepeatedField(proto.STRING, number=3,)
+    endpoints = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Endpoint",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 class GetEndpointRequest(proto.Message):
@@ -163,7 +226,10 @@ class GetEndpointRequest(proto.Message):
             ``projects/{project}/locations/{location}/endpoints/{endpoint}``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CreateEndpointRequest(proto.Message):
@@ -201,10 +267,23 @@ class CreateEndpointRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    endpoint_id = proto.Field(proto.STRING, number=2,)
-    endpoint = proto.Field(proto.MESSAGE, number=3, message="Endpoint",)
-    request_id = proto.Field(proto.STRING, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    endpoint_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    endpoint = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="Endpoint",
+    )
+    request_id = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class DeleteEndpointRequest(proto.Message):
@@ -233,8 +312,14 @@ class DeleteEndpointRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    request_id = proto.Field(proto.STRING, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    request_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class OperationMetadata(proto.Message):
@@ -267,13 +352,36 @@ class OperationMetadata(proto.Message):
             operation.
     """
 
-    create_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
-    end_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    target = proto.Field(proto.STRING, number=3,)
-    verb = proto.Field(proto.STRING, number=4,)
-    status_message = proto.Field(proto.STRING, number=5,)
-    requested_cancellation = proto.Field(proto.BOOL, number=6,)
-    api_version = proto.Field(proto.STRING, number=7,)
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    target = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    verb = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    status_message = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    requested_cancellation = proto.Field(
+        proto.BOOL,
+        number=6,
+    )
+    api_version = proto.Field(
+        proto.STRING,
+        number=7,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
